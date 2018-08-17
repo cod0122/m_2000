@@ -1,0 +1,743 @@
+﻿$PBExportHeader$m_toolbar_windows.srm
+$PBExportComments$Menu Principale
+forward
+global type m_toolbar_windows from menu
+end type
+type m_strumenti from menu within m_toolbar_windows
+end type
+type m_fin_gest_libero1 from menu within m_strumenti
+end type
+type m_fin_gest_libero2 from menu within m_strumenti
+end type
+type m_fin_gest_libero3 from menu within m_strumenti
+end type
+type m_fin_gest_libero4 from menu within m_strumenti
+end type
+type m_fin_gest_libero5 from menu within m_strumenti
+end type
+type m_fin_gest_libero6 from menu within m_strumenti
+end type
+type m_fin_gest_libero7 from menucascade within m_strumenti
+end type
+type libero1 from menu within m_fin_gest_libero7
+end type
+type libero2 from menu within m_fin_gest_libero7
+end type
+type libero3 from menu within m_fin_gest_libero7
+end type
+type libero4 from menu within m_fin_gest_libero7
+end type
+type m_fin_gest_libero7 from menucascade within m_strumenti
+libero1 libero1
+libero2 libero2
+libero3 libero3
+libero4 libero4
+end type
+type m_fin_gest_libero8 from menu within m_strumenti
+end type
+type m_strumenti from menu within m_toolbar_windows
+m_fin_gest_libero1 m_fin_gest_libero1
+m_fin_gest_libero2 m_fin_gest_libero2
+m_fin_gest_libero3 m_fin_gest_libero3
+m_fin_gest_libero4 m_fin_gest_libero4
+m_fin_gest_libero5 m_fin_gest_libero5
+m_fin_gest_libero6 m_fin_gest_libero6
+m_fin_gest_libero7 m_fin_gest_libero7
+m_fin_gest_libero8 m_fin_gest_libero8
+end type
+global type m_toolbar_windows from menu
+m_strumenti m_strumenti
+end type
+end forward
+
+global type m_toolbar_windows from menu
+m_strumenti m_strumenti
+end type
+global m_toolbar_windows m_toolbar_windows
+
+type variables
+
+end variables
+
+on m_toolbar_windows.create
+m_toolbar_windows=this
+call super::create
+this.text = "m_main_toolbar_windows"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+this.m_strumenti=create m_strumenti
+this.Item[UpperBound(this.Item)+1]=this.m_strumenti
+end on
+
+on m_toolbar_windows.destroy
+call super::destroy
+destroy(this.m_strumenti)
+end on
+
+type m_strumenti from menu within m_toolbar_windows
+m_fin_gest_libero1 m_fin_gest_libero1
+m_fin_gest_libero2 m_fin_gest_libero2
+m_fin_gest_libero3 m_fin_gest_libero3
+m_fin_gest_libero4 m_fin_gest_libero4
+m_fin_gest_libero5 m_fin_gest_libero5
+m_fin_gest_libero6 m_fin_gest_libero6
+m_fin_gest_libero7 m_fin_gest_libero7
+m_fin_gest_libero8 m_fin_gest_libero8
+end type
+
+on m_strumenti.create
+call super::create
+this.visible = false
+this.text = "Strumenti"
+this.enabled = false
+this.microhelp = "Funzioni particolari"
+this.toolbaritemvisible = false
+this.toolbaritembarindex = 2
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.menutitletext = "   Utilità"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+this.m_fin_gest_libero1=create m_fin_gest_libero1
+this.m_fin_gest_libero2=create m_fin_gest_libero2
+this.m_fin_gest_libero3=create m_fin_gest_libero3
+this.m_fin_gest_libero4=create m_fin_gest_libero4
+this.m_fin_gest_libero5=create m_fin_gest_libero5
+this.m_fin_gest_libero6=create m_fin_gest_libero6
+this.m_fin_gest_libero7=create m_fin_gest_libero7
+this.m_fin_gest_libero8=create m_fin_gest_libero8
+this.Item[UpperBound(this.Item)+1]=this.m_fin_gest_libero1
+this.Item[UpperBound(this.Item)+1]=this.m_fin_gest_libero2
+this.Item[UpperBound(this.Item)+1]=this.m_fin_gest_libero3
+this.Item[UpperBound(this.Item)+1]=this.m_fin_gest_libero4
+this.Item[UpperBound(this.Item)+1]=this.m_fin_gest_libero5
+this.Item[UpperBound(this.Item)+1]=this.m_fin_gest_libero6
+this.Item[UpperBound(this.Item)+1]=this.m_fin_gest_libero7
+this.Item[UpperBound(this.Item)+1]=this.m_fin_gest_libero8
+end on
+
+on m_strumenti.destroy
+call super::destroy
+destroy(this.m_fin_gest_libero1)
+destroy(this.m_fin_gest_libero2)
+destroy(this.m_fin_gest_libero3)
+destroy(this.m_fin_gest_libero4)
+destroy(this.m_fin_gest_libero5)
+destroy(this.m_fin_gest_libero6)
+destroy(this.m_fin_gest_libero7)
+destroy(this.m_fin_gest_libero8)
+end on
+
+type m_fin_gest_libero1 from menu within m_strumenti
+end type
+
+event clicked;//
+window  k_w_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = KKG_FLAG_RICHIESTA_LIBERO1
+	if k_w_attiva.triggerevent("ue_menu") < 0 then
+		messagebox("Operazione non eseguita", "Funzione non Abilitata")
+	end if
+
+end if
+
+end event
+
+on m_fin_gest_libero1.create
+call super::create
+this.visible = false
+this.text = "libero"
+this.enabled = false
+this.toolbaritemvisible = false
+this.toolbaritemorder = 10
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_fin_gest_libero1.destroy
+call super::destroy
+end on
+
+type m_fin_gest_libero2 from menu within m_strumenti
+end type
+
+event clicked;//
+window  k_w_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = KKG_FLAG_RICHIESTA_LIBERO2
+	if k_w_attiva.triggerevent("ue_menu") < 0 then
+		messagebox("Operazione non eseguita", "Funzione non Abilitata")
+	end if
+end if
+
+end event
+
+on m_fin_gest_libero2.create
+call super::create
+this.visible = false
+this.text = "libero"
+this.enabled = false
+this.toolbaritemvisible = false
+this.toolbaritemorder = 15
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_fin_gest_libero2.destroy
+call super::destroy
+end on
+
+type m_fin_gest_libero3 from menu within m_strumenti
+end type
+
+event clicked;//
+window  k_w_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = KKG_FLAG_RICHIESTA_LIBERO3
+	if k_w_attiva.triggerevent("ue_menu") < 0 then
+		messagebox("Operazione non eseguita", "Funzione non Abilitata")
+	end if
+end if
+
+end event
+
+on m_fin_gest_libero3.create
+call super::create
+this.visible = false
+this.text = "libero"
+this.enabled = false
+this.toolbaritemvisible = false
+this.toolbaritemorder = 20
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_fin_gest_libero3.destroy
+call super::destroy
+end on
+
+type m_fin_gest_libero4 from menu within m_strumenti
+end type
+
+event clicked;//
+window  k_w_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = KKG_FLAG_RICHIESTA_LIBERO4
+	if k_w_attiva.triggerevent("ue_menu") < 0 then
+		messagebox("Operazione non eseguita", "Funzione non Abilitata")
+	end if
+end if
+
+end event
+
+on m_fin_gest_libero4.create
+call super::create
+this.visible = false
+this.text = "libero"
+this.enabled = false
+this.toolbaritemvisible = false
+this.toolbaritemorder = 25
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_fin_gest_libero4.destroy
+call super::destroy
+end on
+
+type m_fin_gest_libero5 from menu within m_strumenti
+end type
+
+event clicked;//
+window  k_w_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = KKG_FLAG_RICHIESTA_LIBERO5
+	if k_w_attiva.triggerevent("ue_menu") < 0 then
+		messagebox("Operazione non eseguita", "Funzione non Abilitata")
+	end if
+
+end if
+
+end event
+
+on m_fin_gest_libero5.create
+call super::create
+this.visible = false
+this.text = "libero"
+this.enabled = false
+this.toolbaritemvisible = false
+this.toolbaritemorder = 30
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_fin_gest_libero5.destroy
+call super::destroy
+end on
+
+type m_fin_gest_libero6 from menu within m_strumenti
+end type
+
+event clicked;//
+window  k_w_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = KKG_FLAG_RICHIESTA_LIBERO6
+	if k_w_attiva.triggerevent("ue_menu") < 0 then
+		messagebox("Operazione non eseguita", "Funzione non Abilitata")
+	end if
+
+end if
+
+end event
+
+on m_fin_gest_libero6.create
+call super::create
+this.visible = false
+this.text = "libero"
+this.enabled = false
+this.toolbaritemvisible = false
+this.toolbaritemorder = 35
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_fin_gest_libero6.destroy
+call super::destroy
+end on
+
+type m_fin_gest_libero7 from menucascade within m_strumenti
+libero1 libero1
+libero2 libero2
+libero3 libero3
+libero4 libero4
+end type
+
+on m_fin_gest_libero7.create
+call super::create
+this.visible = false
+this.text = "libero"
+this.enabled = false
+this.toolbaritemvisible = false
+this.toolbaritemorder = 40
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+this.libero1=create libero1
+this.libero2=create libero2
+this.libero3=create libero3
+this.libero4=create libero4
+this.Item[UpperBound(this.Item)+1]=this.libero1
+this.Item[UpperBound(this.Item)+1]=this.libero2
+this.Item[UpperBound(this.Item)+1]=this.libero3
+this.Item[UpperBound(this.Item)+1]=this.libero4
+end on
+
+on m_fin_gest_libero7.destroy
+call super::destroy
+destroy(this.libero1)
+destroy(this.libero2)
+destroy(this.libero3)
+destroy(this.libero4)
+end on
+
+type libero1 from menu within m_fin_gest_libero7
+end type
+
+event clicked;//
+window  k_w_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = KKG_FLAG_RICHIESTA_LIBERO71
+	if k_w_attiva.triggerevent("ue_menu") < 0 then
+		messagebox("Operazione non eseguita", "Funzione non Abilitata")
+	end if
+
+end if
+
+end event
+
+on libero1.create
+call super::create
+this.visible = false
+this.text = "libero"
+this.enabled = false
+this.toolbaritembarindex = 2
+this.toolbaritemorder = 40
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on libero1.destroy
+call super::destroy
+end on
+
+type libero2 from menu within m_fin_gest_libero7
+end type
+
+event clicked;//
+window  k_w_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = KKG_FLAG_RICHIESTA_LIBERO72
+	if k_w_attiva.triggerevent("ue_menu") < 0 then
+		messagebox("Operazione non eseguita", "Funzione non Abilitata")
+	end if
+
+end if
+
+end event
+
+on libero2.create
+call super::create
+this.visible = false
+this.text = "libero"
+this.enabled = false
+this.toolbaritembarindex = 2
+this.toolbaritemorder = 40
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on libero2.destroy
+call super::destroy
+end on
+
+type libero3 from menu within m_fin_gest_libero7
+end type
+
+event clicked;//
+window  k_w_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = KKG_FLAG_RICHIESTA_LIBERO73
+	if k_w_attiva.triggerevent("ue_menu") < 0 then
+		messagebox("Operazione non eseguita", "Funzione non Abilitata")
+	end if
+
+end if
+
+end event
+
+on libero3.create
+call super::create
+this.visible = false
+this.text = "libero"
+this.enabled = false
+this.toolbaritembarindex = 2
+this.toolbaritemorder = 40
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on libero3.destroy
+call super::destroy
+end on
+
+type libero4 from menu within m_fin_gest_libero7
+end type
+
+event clicked;//
+window  k_w_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = KKG_FLAG_RICHIESTA_LIBERO74
+	if k_w_attiva.triggerevent("ue_menu") < 0 then
+		messagebox("Operazione non eseguita", "Funzione non Abilitata")
+	end if
+
+end if
+
+end event
+
+on libero4.create
+call super::create
+this.visible = false
+this.text = "libero"
+this.enabled = false
+this.toolbaritembarindex = 2
+this.toolbaritemorder = 40
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on libero4.destroy
+call super::destroy
+end on
+
+type m_fin_gest_libero8 from menu within m_strumenti
+end type
+
+on m_fin_gest_libero8.create
+call super::create
+this.visible = false
+this.text = "libero"
+this.enabled = false
+this.toolbaritemvisible = false
+this.toolbaritemorder = 45
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_fin_gest_libero8.destroy
+call super::destroy
+end on
+
+event clicked;//
+window  k_w_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = KKG_FLAG_RICHIESTA_LIBERO8
+	if k_w_attiva.triggerevent("ue_menu") < 0 then
+		messagebox("Operazione non eseguita", "Funzione non Abilitata")
+	end if
+
+end if
+
+end event
+

@@ -1,0 +1,170 @@
+﻿$PBExportHeader$d_meca_barcode_elenco.srd
+release 8;
+datawindow(units=0 timer_interval=0 color=1073741824 processing=1 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no pointer="HyperLink!" grid.lines=0 )
+header(height=52 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=48 color="536870912" )
+detail(height=68 color="536870912" )
+table(column=(type=decimal(0) updatewhereclause=yes name=contati dbname="contati" )
+ column=(type=date updatewhereclause=yes name=meca_data_int dbname="meca.data_int" )
+ column=(type=long updatewhereclause=yes name=meca_num_int dbname="meca.num_int" )
+ column=(type=decimal(0) updatewhereclause=yes name=armo_colli_2 dbname="armo.colli_2" )
+ column=(type=decimal(0) updatewhereclause=yes name=meca_contratto dbname="meca.contratto" )
+ column=(type=char(1) updatewhereclause=yes name=meca_magazzino dbname="meca.magazzino" )
+ column=(type=char(12) updatewhereclause=yes name=contratti_mc_co dbname="contratti.mc_co" )
+ column=(type=char(12) updatewhereclause=yes name=contratti_sc_cf dbname="contratti.sc_cf" )
+ column=(type=char(12) updatewhereclause=yes name=contratti_sl_pt dbname="contratti.sl_pt" )
+ column=(type=char(50) updatewhereclause=yes name=contratti_descr dbname="contratti.descr" )
+ column=(type=long updatewhereclause=yes name=meca_clie_1 dbname="meca.clie_1" )
+ column=(type=char(30) updatewhereclause=yes name=clienti_rag_soc_10 dbname="clienti.rag_soc_10" )
+ column=(type=long updatewhereclause=yes name=meca_clie_3 dbname="meca.clie_3" )
+ column=(type=char(30) updatewhereclause=yes name=clienti_rag_soc_10_1 dbname="clienti.rag_soc_10" )
+ column=(type=char(10) updatewhereclause=yes name=meca_num_bolla_in dbname="meca.num_bolla_in" )
+ column=(type=date updatewhereclause=yes name=meca_data_bolla_in dbname="meca.data_bolla_in" )
+ column=(type=long updatewhereclause=yes name=barcode_fila_1 dbname="barcode.fila_1" )
+ column=(type=long updatewhereclause=yes name=barcode_fila_2 dbname="barcode.fila_2" )
+ column=(type=number updatewhereclause=yes name=pedane dbname="pedane" )
+ column=(type=decimal(1) updatewhereclause=yes name=armo_dose dbname="armo.dose" )
+ retrieve="  SELECT 
+         count (*) contati,
+         meca.data_int,   
+         meca.num_int,   
+			armo.colli_2,
+         meca.contratto,   
+         meca.magazzino,   
+         contratti.mc_co,   
+         contratti.sc_cf,   
+         contratti.sl_pt,   
+         contratti.descr,   
+         meca.clie_1,   
+         clienti_a.rag_soc_10,   
+         meca.clie_3,   
+         clienti_b.rag_soc_10,   
+         meca.num_bolla_in,   
+         meca.data_bolla_in,  
+         barcode.fila_1,   
+         barcode.fila_2,   
+         (armo.pedane / armo.colli_2)  * count (*)  as pedane,
+         armo.dose 
+
+    FROM  ((((meca
+          INNER JOIN barcode 
+          ON meca.num_int = barcode.num_int and meca.data_int = barcode.data_int) 
+          LEFT OUTER JOIN clienti 
+          clienti_a ON meca.clie_1 = clienti_a.codice) 
+          LEFT OUTER JOIN clienti 
+          clienti_b ON meca.clie_3 = clienti_b.codice) 
+          LEFT OUTER JOIN contratti 
+          ON meca.contratto = contratti.codice) 
+          LEFT OUTER JOIN armo 
+          ON barcode.id_armo = armo.id_armo 
+
+   WHERE 
+         meca.data_int >= :k_data_int  
+         AND  
+         ( meca.clie_1 = :k_clie_1  OR  
+           :k_clie_1 = 0 ) AND  
+         ( meca.clie_3 = :k_clie_3  OR  
+           :k_clie_3 = 0 ) AND  
+         ( meca.contratto = :k_contratto  OR  
+           :k_contratto = 0 )   
+			and 
+		   (
+			 (:k_operazione = ~"tutti~"
+           and (barcode.pl_barcode = :k_pl_barcode or :k_pl_barcode = 0)
+          )
+			 or 
+			 (:k_operazione = ~"no_pl~" 
+			  and ((barcode.pl_barcode = 0 or barcode.pl_barcode is null) 
+			    or (barcode.pl_barcode = :k_pl_barcode and  :k_pl_barcode > 0)) 
+			  and (barcode.barcode_lav is null or barcode.barcode_lav = ~"~")
+			  and barcode.data_stampa > 0 
+			  and (barcode.data_sosp = date(0) or barcode.data_sosp is null)  
+          ) 
+			 or
+			 (:k_operazione = ~"gia_pl~" and
+			  barcode.pl_barcode > 0) 
+			  or
+			 (:k_operazione = ~"in_lav~" and
+			  barcode.data_lav_ini > 0) 
+			 or
+			 (:k_operazione = ~"gia_lav~" and
+			  barcode.data_lav_fin > 0) 
+			 or
+			 (:k_operazione = ~"gia_ok~" and
+			  barcode.data_lav_ok > 0) 
+		   )
+	
+group by 
+         meca.data_int,   
+         meca.num_int,   
+			armo.colli_2,
+         meca.contratto,   
+         meca.magazzino,   
+         contratti.mc_co,   
+         contratti.sc_cf,   
+         contratti.sl_pt,   
+         contratti.descr,   
+         meca.clie_1,   
+         clienti_a.rag_soc_10,   
+         meca.clie_3,   
+         clienti_b.rag_soc_10,   
+         meca.num_bolla_in,   
+         meca.data_bolla_in,  
+         barcode.fila_1,   
+         barcode.fila_2,   
+         armo.pedane,
+         armo.dose 
+
+ORDER BY meca.data_int DESC,   
+         meca.num_int DESC   
+" arguments=(("k_data_int", date),("k_clie_1", number),("k_clie_3", number),("k_contratto", number),("k_operazione", string),("k_pl_barcode", number)) )
+text(band=header alignment="2" text="N.Rif" border="0" color="33554432" x="9" y="8" height="44" width="128" html.valueishtml="0"  name=meca_num_int_t visible="1"  font.face="Arial" font.height="-7" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="134217738" )
+text(band=header alignment="2" text="Dt.Rifer." border="0" color="33554432" x="146" y="8" height="44" width="192" html.valueishtml="0"  name=meca_data_int_t visible="1"  font.face="Arial" font.height="-7" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="134217738" )
+text(band=header alignment="2" text="Cliente" border="0" color="33554432" x="850" y="8" height="44" width="160" html.valueishtml="0"  name=meca_clie_3_t visible="1"  font.face="Arial" font.height="-7" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="134217738" )
+text(band=header alignment="2" text="Mc Co" border="0" color="33554432" x="2231" y="8" height="44" width="270" html.valueishtml="0"  name=contratti_mc_co_t visible="1"  resizeable=1  font.face="Arial" font.height="-7" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="134217738" )
+text(band=header alignment="2" text="Sc Cf" border="0" color="33554432" x="2510" y="8" height="44" width="215" html.valueishtml="0"  name=contratti_sc_cf_t visible="1"  resizeable=1  font.face="Arial" font.height="-7" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="134217738" )
+text(band=header alignment="2" text="Sl Pt" border="0" color="33554432" x="2734" y="8" height="44" width="215" html.valueishtml="0"  name=contratti_sl_pt_t visible="1"  resizeable=1  font.face="Arial" font.height="-7" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="134217738" )
+text(band=header alignment="2" text="Fila 1" border="0" color="33554432" x="1563" y="8" height="44" width="174" html.valueishtml="0"  name=barcode_fila_1_t visible="1"  font.face="Arial" font.height="-7" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="134217738" )
+text(band=header alignment="2" text="Fila 2" border="0" color="33554432" x="1746" y="8" height="44" width="151" html.valueishtml="0"  name=barcode_fila_2_t visible="1"  font.face="Arial" font.height="-7" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="134217738" )
+text(band=header alignment="0" text="entrata" border="0" color="33554432" x="3246" y="8" height="44" width="261" html.valueishtml="0"  name=meca_data_bolla_in_t visible="1"  resizeable=1  font.face="Arial" font.height="-7" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="134217738" )
+text(band=header alignment="1" text="Bolla di " border="0" color="33554432" x="2958" y="8" height="44" width="279" html.valueishtml="0"  name=meca_num_bolla_in_t visible="1"  font.face="Arial" font.height="-7" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="134217738" )
+text(band=header alignment="2" text="Colli" border="0" color="8388736" x="517" y="8" height="44" width="155" html.valueishtml="0"  name=contati_t visible="1"  resizeable=1  font.face="Arial" font.height="-7" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="134217738" )
+text(band=header alignment="2" text="Pedane" border="0" color="8388736" x="681" y="8" height="44" width="160" html.valueishtml="0"  name=pedane_t visible="1"  font.face="Arial" font.height="-7" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="134217738" )
+text(band=header alignment="2" text="Contratto" border="0" color="33554432" x="3515" y="8" height="44" width="197" html.valueishtml="0"  name=meca_contratto_t visible="0"  resizeable=1  font.face="Arial" font.height="-7" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="134217738" )
+text(band=header alignment="2" text="Descrizione" border="0" color="33554432" x="3721" y="8" height="44" width="809" html.valueishtml="0"  name=contratti_descr_t visible="0"  resizeable=1  font.face="Arial" font.height="-7" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="134217738" )
+text(band=header alignment="2" text="Mand." border="0" color="33554432" x="4539" y="8" height="44" width="137" html.valueishtml="0"  name=meca_clie_1_t visible="0"  resizeable=1  font.face="Arial" font.height="-7" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="134217738" )
+text(band=header alignment="2" text="Nominativo" border="0" color="33554432" x="4686" y="8" height="44" width="690" html.valueishtml="0"  name=clienti_rag_soc_10_t visible="0"  resizeable=1  font.face="Arial" font.height="-7" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="134217738" )
+text(band=header alignment="2" text="Nominativo" border="0" color="33554432" x="1019" y="8" height="44" width="535" html.valueishtml="0"  name=clienti_rag_soc_10_1_t visible="1"  font.face="Arial" font.height="-7" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="134217738" )
+text(band=header alignment="2" text="Entrati" border="0" color="33554432" x="347" y="8" height="44" width="160" html.valueishtml="0"  name=k_armo_colli_2_t visible="1"  font.face="Arial" font.height="-7" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="134217738" )
+text(band=header alignment="2" text="Dose" border="0" color="33554432" x="1906" y="8" height="44" width="215" html.valueishtml="0"  name=armo_dose_t visible="1"  font.face="Arial" font.height="-7" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="134217738" )
+column(band=detail id=3 alignment="1" tabsequence=32766 border="0" color="33554432" x="9" y="4" height="52" width="128" format="####0 " html.valueishtml="0"  name=meca_num_int visible="1"  resizeable=1 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-7" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=14 alignment="0" tabsequence=32766 border="0" color="33554432" x="1019" y="4" height="52" width="535" format="[general]" html.valueishtml="0"  name=clienti_rag_soc_10_1 visible="1"  resizeable=1 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-7" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=15 alignment="0" tabsequence=32766 border="0" color="33554432" x="2958" y="4" height="52" width="279" format="  [general]" html.valueishtml="0"  name=meca_num_bolla_in visible="1"  resizeable=1 edit.limit=10 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-7" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=16 alignment="2" tabsequence=32766 border="0" color="33554432" x="3246" y="4" height="52" width="261" format="d/m/yy" html.valueishtml="0"  name=meca_data_bolla_in visible="1"  resizeable=1 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-7" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=17 alignment="1" tabsequence=32766 border="0" color="33554432" x="1563" y="4" height="52" width="174" format="#### " html.valueishtml="0"  name=barcode_fila_1 visible="1"  resizeable=1 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-7" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=18 alignment="1" tabsequence=32766 border="0" color="33554432" x="1746" y="4" height="52" width="151" format="#### " html.valueishtml="0"  name=barcode_fila_2 visible="1"  resizeable=1 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-7" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=1 alignment="1" tabsequence=32766 border="0" color="8388736" x="517" y="4" height="52" width="155" format="####0" html.valueishtml="0"  name=contati visible="1"  resizeable=1 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-7" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=20 alignment="1" tabsequence=32766 border="0" color="33554432" x="1906" y="4" height="52" width="215" format="####0.0# " html.valueishtml="0"  name=armo_dose visible="1"  resizeable=1 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-7" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=13 alignment="1" tabsequence=32766 border="0" color="33554432" x="850" y="4" height="52" width="160" format="####0 " html.valueishtml="0"  name=meca_clie_3 visible="1"  resizeable=1 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-7" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="1" tabsequence=32766 border="0" color="33554432" x="3515" y="4" height="52" width="197" format="####0 " html.valueishtml="0"  name=meca_contratto visible="0"  resizeable=1 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-7" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=10 alignment="0" tabsequence=32766 border="0" color="33554432" x="3721" y="4" height="52" width="809" format="[general]" html.valueishtml="0"  name=contratti_descr visible="0"  resizeable=1 edit.limit=50 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-7" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=11 alignment="1" tabsequence=32766 border="0" color="33554432" x="4539" y="4" height="52" width="137" format="####0 " html.valueishtml="0"  name=meca_clie_1 visible="0"  resizeable=1 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-7" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=12 alignment="0" tabsequence=32766 border="0" color="33554432" x="4686" y="4" height="52" width="690" format="[general]" html.valueishtml="0"  name=clienti_rag_soc_10 visible="0"  resizeable=1 edit.limit=30 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-7" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="0" tabsequence=32766 border="0" color="33554432" x="2231" y="4" height="52" width="270" format=" [general]" html.valueishtml="0"  name=contratti_mc_co visible="1"  resizeable=1 edit.limit=12 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-7" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="0" tabsequence=32766 border="0" color="33554432" x="2510" y="4" height="52" width="215" format=" [general]" html.valueishtml="0"  name=contratti_sc_cf visible="1"  resizeable=1 edit.limit=12 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-7" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=9 alignment="0" tabsequence=32766 border="0" color="33554432" x="2734" y="4" height="52" width="215" format=" [general]" html.valueishtml="0"  name=contratti_sl_pt visible="1"  resizeable=1 edit.limit=12 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-7" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=2 alignment="2" tabsequence=32766 border="0" color="33554432" x="146" y="4" height="52" width="192" format="d/m/yy" html.valueishtml="0"  name=meca_data_int visible="1"  resizeable=1 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-7" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression="if(  (armo_colli_2 -  contati)  > 0, armo_colli_2 , 0)"border="0" color="33554432" x="347" y="4" height="52" width="160" format="#####" html.valueishtml="0"  name=k_armo_colli_2 visible="1"  font.face="Arial" font.height="-7" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=footer alignment="0" expression="'Presenti:' + string(count  (#1 for all), ~"###,###0~")"border="0" color="128" x="146" y="0" height="44" width="192" format="[GENERAL]" html.valueishtml="0"  name=compute_1 visible="1"  moveable=1  font.face="Arial" font.height="-7" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=footer alignment="1" expression="string(sum( pedane for all),~"###,### ~")"border="0" color="33554432" x="681" y="0" height="44" width="160" format="" html.valueishtml="0"  name=compute_5 visible="1"  font.face="Arial" font.height="-7" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=footer alignment="1" expression="string(sum(barcode_fila_2 * pedane for all),~"###,### ~")"border="0" color="33554432" x="1746" y="0" height="44" width="151" format="" html.valueishtml="0"  name=compute_3 visible="1"  font.face="Arial" font.height="-7" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=footer alignment="1" expression="string(sum(barcode_fila_1  * pedane for all),~"###,### ~")"border="0" color="33554432" x="1563" y="0" height="44" width="174" format="" html.valueishtml="0"  name=compute_2 visible="1"  font.face="Arial" font.height="-7" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=footer alignment="1" expression="string(sum(contati for all),~"###,### ~")"border="0" color="33554432" x="517" y="0" height="44" width="155" format="" html.valueishtml="0"  name=compute_4 visible="1"  font.face="Arial" font.height="-7" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=footer alignment="1" expression="string(sum(  armo_colli_2 for all),~"###,### ~")"border="0" color="33554432" x="347" y="0" height="44" width="160" format="[GENERAL]" html.valueishtml="0"  name=compute_6 visible="1"  font.face="Arial" font.height="-7" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=19 alignment="1" tabsequence=32766 border="0" color="8388736" x="681" y="4" height="52" width="160" format="####0.00" html.valueishtml="0"  name=pedane visible="1"  resizeable=1 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-7" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="M" border="0" color="8388736" x="2130" y="8" height="44" width="91" html.valueishtml="0"  name=meca_magazzino_t visible="1"  font.face="Arial" font.height="-7" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="134217738" )
+compute(band=detail alignment="2" expression="if (  meca_magazzino <> ~"M~", ~" ~" , meca_magazzino )"border="0" color="8388736" x="2130" y="4" height="52" width="91" format="[GENERAL]" html.valueishtml="0"  name=compute_7 visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+
+sparse(names="meca_num_int	meca_data_int")htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )

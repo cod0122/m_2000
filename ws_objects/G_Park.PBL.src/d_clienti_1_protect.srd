@@ -1,0 +1,116 @@
+﻿$PBExportHeader$d_clienti_1_protect.srd
+release 10.5;
+datawindow(units=0 timer_interval=0 color=12632256 processing=0 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 97 print.margin.bottom = 97 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes print.preview.outline=yes hidegrayline=no )
+header(height=0 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=1156 color="536870912" )
+table(column=(type=long update=yes updatewhereclause=yes key=yes identity=yes name=codice dbname="pagam.codice" dbalias=".codice" )
+ column=(type=char(30) update=yes updatewhereclause=yes name=rag_soc_10 dbname="pagam.rag_soc_10" dbalias=".rag_soc_10" )
+ column=(type=char(30) update=yes updatewhereclause=yes name=rag_soc_11 dbname="pagam.rag_soc_11" dbalias=".rag_soc_11" )
+ column=(type=char(30) update=yes updatewhereclause=yes name=indi_1 dbname="pagam.indi_1" dbalias=".indi_1" )
+ column=(type=char(5) update=yes updatewhereclause=yes name=cap_1 dbname="pagam.cap_1" dbalias=".cap_1" )
+ column=(type=char(30) update=yes updatewhereclause=yes name=loc_1 dbname="pagam.loc_1" dbalias=".loc_1" )
+ column=(type=char(2) update=yes updatewhereclause=yes name=prov_1 dbname="pagam.prov_1" dbalias=".prov_1" )
+ column=(type=char(3) update=yes updatewhereclause=yes name=zona dbname="pagam.zona" dbalias=".zona" )
+ column=(type=char(16) update=yes updatewhereclause=yes name=p_iva dbname="pagam.p_iva" dbalias=".p_iva" )
+ column=(type=char(16) update=yes updatewhereclause=yes name=cf dbname="pagam.cf" dbalias=".cf" )
+ column=(type=char(15) update=yes updatewhereclause=yes name=fono dbname="pagam.fono" dbalias=".fono" )
+ column=(type=char(15) update=yes updatewhereclause=yes name=fax dbname="pagam.fax" dbalias=".fax" )
+ column=(type=decimal(0) update=yes updatewhereclause=yes name=cod_pag dbname="pagam.cod_pag" dbalias=".cod_pag" )
+ column=(type=char(24) updatewhereclause=yes name=pagam_des dbname="pagam.des" dbalias=".des" )
+ column=(type=char(30) update=yes updatewhereclause=yes name=banca dbname="pagam.banca" dbalias=".banca" )
+ column=(type=decimal(0) update=yes updatewhereclause=yes name=abi dbname="pagam.abi" dbalias=".abi" )
+ column=(type=decimal(0) update=yes updatewhereclause=yes name=cab dbname="pagam.cab" dbalias=".cab" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=tipo_banca dbname="pagam.tipo_banca" dbalias=".tipo_banca" values=" 	 /0	0/1	1/2	2/3	3/4	4/" )
+ column=(type=decimal(0) update=yes updatewhereclause=yes name=iva dbname="pagam.iva" dbalias=".iva" )
+ column=(type=char(30) updatewhereclause=yes name=iva_des dbname="pagam.des" dbalias=".des" )
+ column=(type=long update=yes updatewhereclause=yes name=mese_es_1 dbname="pagam.mese_es_1" dbalias=".mese_es_1" )
+ column=(type=long update=yes updatewhereclause=yes name=mese_es_2 dbname="pagam.mese_es_2" dbalias=".mese_es_2" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=fattura dbname="pagam.fattura" dbalias=".fattura" values="fine mese	N/meta' mese (il 15)	S/" )
+ column=(type=char(30) updatewhereclause=yes name=indi_2 dbname="pagam.indi_2" dbalias=".indi_2" )
+ column=(type=char(5) updatewhereclause=yes name=cap_2 dbname="pagam.cap_2" dbalias=".cap_2" )
+ column=(type=char(30) updatewhereclause=yes name=loc_2 dbname="pagam.loc_2" dbalias=".loc_2" )
+ column=(type=char(2) updatewhereclause=yes name=prov_2 dbname="pagam.prov_2" dbalias=".prov_2" )
+ retrieve="  SELECT  clienti.codice ,
+           clienti.rag_soc_10 ,
+           clienti.rag_soc_11 ,
+           clienti.indi_1 ,
+           clienti.cap_1 ,
+           clienti.loc_1 ,
+           clienti.prov_1 ,
+           clienti.zona ,
+           clienti.p_iva ,
+           clienti.cf ,
+           clienti.fono ,
+           clienti.fax, 
+           clienti.cod_pag, 
+			  pagam.des,
+           clienti.banca, 
+           clienti.abi, 
+           clienti.cab, 
+           clienti.tipo_banca, 
+           clienti.iva, 
+           iva.des,
+           clienti.mese_es_1, 
+           clienti.mese_es_2, 
+           clienti.fattura,
+           clienti.indi_2 ,
+           clienti.cap_2 ,
+           clienti.loc_2 ,
+           clienti.prov_2 
+        FROM (clienti LEFT outer JOIN iva ON clienti.iva = iva.codice)
+				 LEFT outer JOIN pagam ON clienti.cod_pag = pagam.codice
+        WHERE ( clienti.codice = :k_id_cliente )
+" update="clienti" updatewhere=0 updatekeyinplace=no arguments=(("k_id_cliente", number)) )
+text(band=detail alignment="1" text="Telefono:" border="0" color="0" x="87" y="616" height="56" width="238" html.valueishtml="0"  name=clienti_tel_pref_t visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=11 alignment="0" tabsequence=32766 border="5" color="0" x="347" y="616" height="56" width="1102" format="[general]" html.valueishtml="0"  name=fono visible="1" edit.limit=15 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+text(band=detail alignment="1" text="FAX:" border="0" color="0" x="1490" y="616" height="56" width="114" html.valueishtml="0"  name=clienti_fax_pref_t visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=12 alignment="0" tabsequence=32766 border="5" color="0" x="1627" y="616" height="56" width="1070" format="[general]" html.valueishtml="0"  name=fax visible="1" edit.limit=15 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+text(band=detail alignment="1" text="Nominativo:" border="0" color="0" x="18" y="40" height="60" width="306" html.valueishtml="0"  name=clienti_id_cliente_t visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=2 alignment="0" tabsequence=10 border="5" color="8388608" x="347" y="40" height="60" width="1765" format="[general]" html.valueishtml="0"  name=rag_soc_10 visible="1" dddw.name=d_clienti_l dddw.displaycolumn=rag_soc_1 dddw.datacolumn=rag_soc_1 dddw.percentwidth=150 dddw.lines=0 dddw.limit=0 dddw.allowedit=no dddw.useasborder=no dddw.case=any dddw.hscrollbar=yes dddw.vscrollbar=yes  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="5" color="8388608" x="2158" y="40" height="60" width="174" format="[general]" html.valueishtml="0"  name=codice visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="5" color="8388608" x="347" y="120" height="60" width="1765" format="[general]" html.valueishtml="0"  name=rag_soc_11 visible="1" edit.limit=0 edit.case=upper edit.autoselect=yes  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+text(band=detail alignment="1" text="Indirizzo:" border="0" color="0" x="96" y="320" height="56" width="229" html.valueishtml="0"  name=clienti_indirizzo_t visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="5" color="0" x="347" y="320" height="56" width="1678" format="[general]" html.valueishtml="0"  name=indi_1 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+text(band=detail alignment="1" text="Cap:" border="0" color="0" x="2153" y="320" height="56" width="114" html.valueishtml="0"  name=clienti_cap_t visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="0" tabsequence=32766 border="5" color="0" x="2290" y="320" height="56" width="247" format="[general]" html.valueishtml="0"  name=cap_1 visible="1" edit.limit=5 edit.case=upper edit.autoselect=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+text(band=detail alignment="1" text="Localita'" border="0" color="0" x="105" y="408" height="56" width="219" html.valueishtml="0"  name=clienti_localita_t visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="0" tabsequence=32766 border="5" color="0" x="347" y="412" height="56" width="1678" format="[general]" html.valueishtml="0"  name=loc_1 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+text(band=detail alignment="1" text="Prov:" border="0" color="0" x="2135" y="408" height="56" width="133" html.valueishtml="0"  name=clienti_prov_t visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="0" tabsequence=32766 border="5" color="0" x="2295" y="408" height="56" width="160" format="[general]" html.valueishtml="0"  name=prov_1 visible="1" edit.limit=2 edit.case=upper edit.autoselect=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+text(band=detail alignment="1" text="Zona:" border="0" color="0" x="183" y="496" height="56" width="142" html.valueishtml="0"  name=clienti_nazione_t visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="0" tabsequence=32766 border="5" color="0" x="347" y="500" height="56" width="238" format="[general]" html.valueishtml="0"  name=zona visible="1" edit.limit=3 edit.case=upper edit.autoselect=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+text(band=detail alignment="1" text="Banca:" border="0" color="0" x="146" y="724" height="56" width="178" html.valueishtml="0"  name=t_1 visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=15 alignment="0" tabsequence=32766 border="5" color="0" x="347" y="724" height="56" width="1815" format="[general]" html.valueishtml="0"  name=banca visible="1" edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+text(band=detail alignment="1" text="Gruppo:" border="0" color="0" x="2304" y="724" height="56" width="233" html.valueishtml="0"  name=t_2 visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=18 alignment="0" tabsequence=32766 border="5" color="0" x="2565" y="724" height="56" width="133" format="[general]" html.valueishtml="0"  name=tipo_banca visible="1" ddlb.limit=0 ddlb.allowedit=no ddlb.case=any  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+text(band=detail alignment="1" text="ABI/CAB:" border="0" color="0" x="101" y="812" height="56" width="224" html.valueishtml="0"  name=t_3 visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=16 alignment="0" tabsequence=32766 border="5" color="0" x="347" y="812" height="56" width="242" format="[general]" html.valueishtml="0"  name=abi visible="1" edit.limit=5 edit.case=any edit.format="#####" edit.autoselect=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+column(band=detail id=17 alignment="0" tabsequence=32766 border="5" color="0" x="613" y="812" height="56" width="233" format="[general]" html.valueishtml="0"  name=cab visible="1" edit.limit=5 edit.case=any edit.format="#####" edit.autoselect=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+text(band=detail alignment="1" text="Pagamento:" border="0" color="0" x="14" y="936" height="56" width="311" html.valueishtml="0"  name=t_4 visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=13 alignment="0" tabsequence=32766 border="5" color="0" x="347" y="936" height="56" width="178" format="[general]" html.valueishtml="0"  name=cod_pag visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+column(band=detail id=14 alignment="0" tabsequence=32766 border="5" color="0" x="553" y="936" height="56" width="1006" format="" html.valueishtml="0"  name=pagam_des visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+text(band=detail alignment="1" text="Esenzione IVA:" border="0" color="0" x="1605" y="936" height="56" width="379" html.valueishtml="0"  name=t_5 visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=19 alignment="0" tabsequence=32766 border="5" color="0" x="2007" y="936" height="56" width="123" format="[general]" html.valueishtml="0"  name=iva visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+column(band=detail id=20 alignment="0" tabsequence=32766 border="5" color="0" x="2153" y="936" height="56" width="544" format="[general]" html.valueishtml="0"  name=iva_des visible="1" edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+text(band=detail alignment="1" text="Fattura a:" border="0" color="0" x="82" y="1032" height="56" width="242" html.valueishtml="0"  name=clienti_e_mail_t visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=23 alignment="0" tabsequence=32766 border="5" color="0" x="347" y="1032" height="56" width="466" format="[general]" html.valueishtml="0"  name=fattura visible="1" ddlb.limit=0 ddlb.allowedit=no ddlb.case=any  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+text(band=detail alignment="1" text="Non fattura nei mesi:" border="0" color="0" x="905" y="1032" height="56" width="535" html.valueishtml="0"  name=clienti_c_fiscale_t visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=21 alignment="0" tabsequence=32766 border="5" color="0" x="1472" y="1032" height="56" width="197" format="##" html.valueishtml="0"  name=mese_es_1 visible="1" editmask.spin=yes editmask.mask="##" editmask.spinrange="0~~12" editmask.spinincr=1 editmask.focusrectangle=no  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+column(band=detail id=22 alignment="0" tabsequence=32766 border="5" color="0" x="1710" y="1032" height="56" width="197" format="##" html.valueishtml="0"  name=mese_es_2 visible="1" editmask.spin=yes editmask.mask="##" editmask.spinrange="0~~12" editmask.spinincr=1 editmask.focusrectangle=no  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+text(band=detail alignment="1" text="Partita IVA:" border="0" color="0" x="5" y="212" height="56" width="320" html.valueishtml="0"  name=clienti_p_iva_t visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=9 alignment="0" tabsequence=32766 border="5" color="0" x="347" y="212" height="56" width="599" format="[general]" html.valueishtml="0"  name=p_iva visible="1" edit.limit=16 edit.case=upper edit.focusrectangle=no edit.autoselect=yes edit.nilisnull=yes edit.autohscroll=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+text(band=detail alignment="1" text="C.F.:" border="0" color="0" x="1047" y="208" height="60" width="137" html.valueishtml="0"  name=cf_t visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=10 alignment="0" tabsequence=20 border="5" color="0" x="1207" y="212" height="56" width="599" html.valueishtml="0"  name=cf visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" pagingmethod=0 generatedddwframes="1" )
+xhtmlgen() cssgen(sessionspecific="0" )
+xmlgen(inline="0" )
+xsltgen()
+jsgen()
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+export.xhtml()
+ 

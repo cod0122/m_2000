@@ -1,0 +1,10 @@
+﻿$PBExportHeader$st_tab_sd_md.srs
+global type st_tab_sd_md from structure
+	st_tab_g_0		st_tab_g_0
+	long		id_sd_md
+	string		sd_md		descriptor "comment" = "codice del Dose-Mapping"
+	string		sl_pt		descriptor "comment" = "codice Piano di Trattamento "
+	datetime		x_datins
+	string		x_utente
+end type
+

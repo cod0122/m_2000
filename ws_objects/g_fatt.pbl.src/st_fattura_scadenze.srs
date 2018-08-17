@@ -1,0 +1,16 @@
+﻿$PBExportHeader$st_fattura_scadenze.srs
+global type st_fattura_scadenze from structure
+	double		importo_1
+	double		importo_2
+	double		importo_3
+	double		importo_4
+	double		importo_5
+	double		importo_6
+	date		data_1
+	date		data_2
+	date		data_3
+	date		data_4
+	date		data_5
+	date		data_6
+end type
+

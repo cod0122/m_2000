@@ -1,0 +1,23 @@
+﻿$PBExportHeader$st_tab_email_invio.srs
+global type st_tab_email_invio from structure
+	st_tab_g_0		st_tab_g_0
+	long		id_email_invio
+	string		cod_funzione		descriptor "comment" = "codice che identifica da quale funzione scaturisce la email: vedi tab email_funzioni_cod"
+	long		id_oggetto		descriptor "comment" = "id dell'oggetto da cui è stato creato questo e-mail es: id_fattura o id_meca ...."
+	string		note		descriptor "comment" = "descrizione dell'invio - impostato dal pgm generante"
+	long		id_cliente		descriptor "comment" = "id del cliente (probailm. non significativo)"
+	string		email		descriptor "comment" = "indirizzo a cui inviare"
+	date		data_ins		descriptor "comment" = "data di inserimento della riga"
+	date		data_inviato		descriptor "comment" = "data email inviata"
+	string		ora_inviato		descriptor "comment" = "ora email inviata, formato hh:ss:ss"
+	string		oggetto		descriptor "comment" = "oggetto della e-mail"
+	string		link_lettera		descriptor "comment" = "file contenente la lettera da inviare"
+	string		flg_lettera_html		descriptor "comment" = "S/N indica se la lettera e' in html"
+	string		flg_ritorno_ricev		descriptor "comment" = "S/N indica se fare e-mail con richiesta ricev di ritorno"
+	string		email_di_ritorno		descriptor "comment" = "e-mail di ricevuta ritorno "
+	string		flg_allegati		descriptor "comment" = "S/N indica se deve fare allegati"
+	string		allegati_cartella		descriptor "comment" = "path della cartella contenente gli allegati"
+	datetime		x_datins
+	string		x_utente
+end type
+

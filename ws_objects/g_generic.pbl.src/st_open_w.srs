@@ -1,0 +1,35 @@
+﻿$PBExportHeader$st_open_w.srs
+global type st_open_w from structure
+	string		id_programma
+	string		id_programma_chiamante
+	string		nome_oggetto		descriptor "comment" = "nome user object che gestisce la funzione di solito kuf_... (es kuf_clienti)"
+	string		sr_settore		descriptor "comment" = "settore prevalente della funzione x il utente"
+	string		flag_primo_giro
+	string		flag_modalita
+	string		flag_adatta_win		descriptor "comment" = "come addattare la window (default)"
+	boolean		flag_open_maximized		descriptor "comment" = "se in OPEN subito a MAXIMIZED"
+	boolean		flag_utente_autorizzato
+	string		operazioni_autorizzate
+	string		flag_leggi_dw
+	string		flag_cerca_in_lista
+	string		window		descriptor "comment" = "nome window chiamata"
+	string		window_title
+	string		key1
+	string		key2
+	string		key3
+	string		key4
+	string		key5
+	string		key6
+	string		key7
+	string		key8
+	string		key9
+	w_g_tab		key10_window_chiamante		descriptor "comment" = "riferimento alla windows chiamante"
+	datastore		key11_ds		descriptor "comment" = "datastore"
+	any		key12_any		descriptor "comment" = "~r~n"
+	string		settrans		descriptor "comment" = "= transaction object, se non indicato assume sqlca"
+	string		flag_where
+	string		campo_where
+	st_tab_menu_window		st_tab_menu_window		descriptor "comment" = "contiene i dati della tab menu_window"
+	string		nome_id_tabella		descriptor "comment" = "nome campo chiave univoca della tabella coinvolta preso da MENU_WINDOW_ANTEPRIMA"
+end type
+

@@ -1,0 +1,16 @@
+﻿$PBExportHeader$st_tab_ricevute.srs
+global type st_tab_ricevute from structure
+	st_tab_g_0		st_tab_g_0
+	long		num_fatt
+	date		data_fatt
+	long		clie
+	date		scad
+	string		dist
+	string		tipo
+	date		data_st
+	string		flag_st
+	double		rata
+	double		importo
+	long		id
+end type
+

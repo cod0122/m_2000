@@ -1,0 +1,19 @@
+﻿$PBExportHeader$st_tab_treeview.srs
+global type st_tab_treeview from structure
+	character		tipo_menu
+	string		id
+	string		livello
+	string		sequenza
+	string		tipo_voce
+	string		voce
+	string		id_padre
+	string		funzione
+	string		descrizione_tipo
+	string		descrizione
+	string		descrizione_ulteriore
+	integer		pic_open
+	integer		pic_close
+	integer		pic_list
+	string		id_programma
+end type
+

@@ -1,0 +1,57 @@
+﻿$PBExportHeader$st_tab_sl_pt.srs
+global type st_tab_sl_pt from structure
+	st_tab_g_0		st_tab_g_0
+	long		contati
+	string		cod_sl_pt
+	string		descr
+	string		tipo_cicli
+	string		fila_pref		descriptor "comment" = "indicazione della lav fila preferita: 1 o 2 o ' ' nessuno"
+	integer		fila_1
+	integer		fila_2
+	integer		fila_1p
+	integer		fila_2p
+	string		proposta_tipo_cicli
+	string		proposta_fila_pref		descriptor "comment" = "indicazione della lav fila preferita: 1 o 2 o ' ' nessuno"
+	integer		proposta_fila_1
+	integer		proposta_fila_2
+	integer		proposta_fila_1p
+	integer		proposta_fila_2p
+	datetime		proposta_fila_2p_datins
+	string		proposta_fila_2p_utente
+	string		densita		descriptor "comment" = "densità minimo"
+	string		densitamax		descriptor "comment" = "densità massimo"
+	decimal { 2 }		dose
+	decimal { 2 }		dose_min
+	decimal { 2 }		dose_max
+	string		composizione
+	string		peso		descriptor "comment" = "peso minimo"
+	string		pesomax		descriptor "comment" = "peso massimo"
+	string		routine
+	string		dosimetrie_spec
+	string		note_descr
+	string		notestoccaggio		descriptor "comment" = "condizioni di stoccaggio: dati da comunicare all'operatore che effettua il carico del materiale"
+	string		tipo
+	integer		magazzino
+	integer		mis_x
+	integer		mis_y
+	integer		mis_z
+	integer		dosim_x_bcode		descriptor "comment" = "numero di dosimetri per barcode"
+	integer		dosim_delta_bcode		descriptor "comment" = "ogni quanti barcode. Es. se c'è 8 il dosimetro sarà sul plt 1, 9, 17, 25 ecc... "
+	string		dosim_et_descr		descriptor "comment" = "testo da stampare su etichetta dosimetro"
+	decimal { 2 }		dosetgminmin		descriptor "comment" = "dose 'target minima': range minimo"
+	decimal { 2 }		dosetgminmax		descriptor "comment" = "dose 'target minima': range massimo"
+	decimal { 2 }		dosetgmaxmin		descriptor "comment" = "dose 'target massima': range minimo"
+	decimal { 2 }		dosetgmaxmax		descriptor "comment" = "dose 'target massima': range massimo"
+	decimal { 3 }		dosetgminfattcorr		descriptor "comment" = "fattore di correzione 'punto di monitoraggio/dose minima'"
+	decimal { 3 }		dosetgmaxfattcorr		descriptor "comment" = "fattore di correzione 'punto di monitoraggio/dose massima'"
+	string		dosetgmintcalc		descriptor "comment" = "'tipo di calcolo dose minima': 'N=Dose misurata', 'S=Dose per fattore di correzione'"
+	string		dosetgmaxtcalc		descriptor "comment" = "'tipo di calcolo dose massima': 'N=Dose misurata', 'S=Dose per fattore di correzione'"
+	integer		id_cliente		descriptor "comment" = "cliente di riferimento"
+	string		cert_st_dose_min		descriptor "comment" = "flag Attestato: in stampa la dose minima applicata in lavorazione"
+	string		cert_st_dose_max		descriptor "comment" = "flag Attestato: in stampa la dose massima applicata in lavorazione"
+	string		cert_st_data_ini		descriptor "comment" = "flag Attestato: in stampa la data di inizio lavorazione"
+	string		cert_st_data_fin		descriptor "comment" = "flag Attestato: in stampa la data di fine lavorazione"
+	datetime		x_datins
+	string		x_utente
+end type
+

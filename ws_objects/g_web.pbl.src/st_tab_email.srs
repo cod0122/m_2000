@@ -1,0 +1,16 @@
+﻿$PBExportHeader$st_tab_email.srs
+global type st_tab_email from structure
+	st_tab_g_0		st_tab_g_0
+	long		id_email
+	string		stato		descriptor "comment" = "A=attivo; S=sospeso"
+	string		codice
+	string		des
+	string		oggetto		descriptor "comment" = "oggetto della e-mail"
+	string		link_lettera		descriptor "comment" = "file contenente la lettera da inviare"
+	string		flg_lettera_html		descriptor "comment" = "S/N indica se la lettera e' in html"
+	string		flg_ritorno_ricev		descriptor "comment" = "S/N indica se fare e-mail con richiesta ricev di ritorno"
+	string		email_di_ritorno		descriptor "comment" = "indirizzo e-mail della ricevuta di ritorno"
+	datetime		x_datins
+	string		x_utente
+end type
+

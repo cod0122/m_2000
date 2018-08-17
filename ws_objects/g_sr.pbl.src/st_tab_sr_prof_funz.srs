@@ -1,0 +1,9 @@
+﻿$PBExportHeader$st_tab_sr_prof_funz.srs
+global type st_tab_sr_prof_funz from structure
+	long		id
+	long		id_profili
+	long		id_funzioni
+	datetime		x_datins
+	string		x_utente
+end type
+

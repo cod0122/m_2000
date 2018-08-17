@@ -1,0 +1,18 @@
+﻿$PBExportHeader$st_tab_f5547014.srs
+global type st_tab_f5547014 from structure
+	string		xxx		descriptor "comment" = "ASN: dettaglio righe"
+	string		edapid		descriptor "comment" = "id_meca"
+	integer		edlnid		descriptor "comment" = "numero riga step di 1000 es: 1000, 2000, 3000..."
+	integer		eduorg		descriptor "comment" = "quantità"
+	string		edlitm		descriptor "comment" = "codice Listino E1 ovvero customer item (abbinato a contratto/capitolato)"
+	string		edir01		descriptor "comment" = "Customer pallet ID (barcode cliente di pkl)"
+	string		edir02		descriptor "comment" = "Customer load - numero del carico"
+	string		ededsp		descriptor "comment" = "Flag di conferma lettura della ASN da parte di E1"
+	string		edds01		descriptor "comment" = "Descrizione di un eventuale errore di processo della ASN"
+	string		eduser		descriptor "comment" = "Codice E1 dell'utente che ha inviato i dati da M2000"
+	string		edpid		descriptor "comment" = "Program id"
+	string		edjobn		descriptor "comment" = "Job number"
+	decimal { 0 }		edupmj		descriptor "comment" = "Date updated"
+	long		edtday		descriptor "comment" = "Time updated"
+end type
+

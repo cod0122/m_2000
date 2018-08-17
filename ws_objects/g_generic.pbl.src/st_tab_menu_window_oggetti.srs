@@ -1,0 +1,8 @@
+﻿$PBExportHeader$st_tab_menu_window_oggetti.srs
+global type st_tab_menu_window_oggetti from structure
+	long		id
+	string		nome_oggetto
+	string		funzione
+	string		id_menu_window
+end type
+

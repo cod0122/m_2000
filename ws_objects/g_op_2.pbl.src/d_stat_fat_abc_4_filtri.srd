@@ -1,0 +1,168 @@
+﻿$PBExportHeader$d_stat_fat_abc_4_filtri.srd
+release 11;
+datawindow(units=0 timer_interval=0 color=1090519039 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 97 print.margin.bottom = 97 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes print.preview.outline=yes hidegrayline=no showbackcoloronxp=no grid.lines=0 )
+header(height=64 color="-1" )
+summary(height=0 color="-1" )
+footer(height=72 color="-1" )
+detail(height=76 color="-1" )
+table(column=(type=char(12) updatewhereclause=yes name=art dbname="prodotti.art" )
+ column=(type=char(40) updatewhereclause=yes name=des dbname="prodotti.des" )
+ column=(type=decimal(1) updatewhereclause=yes name=dose dbname="prodotti.dose" )
+ column=(type=number updatewhereclause=yes name=k_fatt dbname="k_fatt" )
+ column=(type=decimal(0) updatewhereclause=yes name=k_colli dbname="k_colli" )
+ retrieve="  SELECT 
+			armo.art,
+			prodotti.des,
+			armo.dose,   
+         sum(s_arfa.prezzo_t) as k_fatt,   
+         sum(s_arfa.colli) as k_colli   
+    FROM (arfa as s_arfa  inner join armo on s_arfa.id_armo = armo.id_armo)
+			left outer join prodotti on armo.art = prodotti.codice   
+			left outer join gru on prodotti.gruppo = gru.codice
+			inner join clienti on s_arfa.clie_3 = clienti.codice 
+			left outer join clie_classi on 	clienti.id_clie_classe = clie_classi.id_clie_classe
+			left outer join province on clienti.prov_1 = province.sigla
+	where
+			s_arfa.tipo_doc = 'FT' and
+			(:k_id_cliente = 0 or s_arfa.clie_3 = :k_id_cliente) and   
+			( (:k_no_gruppo = 'S' and (prodotti.gruppo is null or prodotti.gruppo = 0) ) 
+                or (:k_no_gruppo = 'N' and prodotti.gruppo > 0 and ((:k_id_gruppo = 0 and gru.escludi_da_stat_glob = 'N') or prodotti.gruppo = :k_id_gruppo ))) and     
+			( (:k_no_dose = 'S' and armo.dose = 0)  
+			  or (:k_no_dose = 'N' and (:k_dose = 0 or armo.dose = :k_dose))
+         ) and 
+			(:k_art = '' or armo.art = :k_art ) and 
+			(:k_magazzino = 9 or armo.magazzino = :k_magazzino ) and 
+			(s_arfa.data_fatt between :k_data_da and :k_data_a) 
+			and (:k_id_clie_classe = '' or clienti.id_clie_classe = :k_id_clie_classe ) 
+			and (:k_classe_punteggio = '' or clie_classi.punteggio = :k_classe_punteggio ) 
+			and (:k_regione = '' or province.regione = :k_regione ) 
+		group by  
+			armo.art,
+			prodotti.des,
+			armo.dose
+
+ union all
+
+  SELECT 
+			arfa_v.art,
+			prodotti.des,
+			0,   
+         sum(arfa_v.prezzo_t) as k_fatt,   
+         sum(arfa_v.colli) as k_colli 
+    FROM arfa_v left outer join prodotti on arfa_v.art = prodotti.codice  
+			left outer join gru on prodotti.gruppo = gru.codice
+			inner join clienti on arfa_v.clie_3 = clienti.codice 
+			left outer join clie_classi on 	clienti.id_clie_classe = clie_classi.id_clie_classe
+			left outer join province on clienti.prov_1 = province.sigla
+	where
+			arfa_v.tipo_doc = 'FT' and
+			(:k_id_cliente = 0 or arfa_v.clie_3 = :k_id_cliente) and   
+			( (:k_no_gruppo = 'S' and (prodotti.gruppo is null or prodotti.gruppo = 0) ) 
+                or (:k_no_gruppo = 'N' and prodotti.gruppo > 0 and ((:k_id_gruppo = 0 and gru.escludi_da_stat_glob = 'N') or prodotti.gruppo = :k_id_gruppo ))) and     
+			( (:k_no_dose = 'S' )  
+			  or (:k_no_dose = 'N' and :k_dose = 0 )
+         ) and 
+			(:k_art = '' or arfa_v.art = :k_art ) and 
+			(:k_magazzino = 9 ) and 
+			(arfa_v.data_fatt between :k_data_da and :k_data_a) 
+			and (:k_id_clie_classe = '' or clienti.id_clie_classe = :k_id_clie_classe ) 
+			and (:k_classe_punteggio = '' or clie_classi.punteggio = :k_classe_punteggio ) 
+			and (:k_regione = '' or province.regione = :k_regione ) 
+		group by 
+			arfa_v.art,
+			prodotti.des
+
+ union all
+
+  SELECT 
+			armo.art,
+			prodotti.des,
+			armo.dose,   
+         sum(s_arfa.prezzo_t) * -1 as k_fatt,   
+         sum(s_arfa.colli) * -1 as k_colli   
+    FROM (arfa as s_arfa  inner join armo on s_arfa.id_armo = armo.id_armo)
+			left outer join prodotti on armo.art = prodotti.codice   
+			left outer join gru on prodotti.gruppo = gru.codice
+			inner join clienti on s_arfa.clie_3 = clienti.codice 
+			left outer join clie_classi on	clienti.id_clie_classe = clie_classi.id_clie_classe
+			left outer join province on clienti.prov_1 = province.sigla
+	where
+			s_arfa.tipo_doc = 'NC' and
+			(:k_id_cliente = 0 or s_arfa.clie_3 = :k_id_cliente) and   
+			( (:k_no_gruppo = 'S' and (prodotti.gruppo is null or prodotti.gruppo = 0) ) 
+                or (:k_no_gruppo = 'N' and prodotti.gruppo > 0 and ((:k_id_gruppo = 0 and gru.escludi_da_stat_glob = 'N') or prodotti.gruppo = :k_id_gruppo ))) and     
+			( (:k_no_dose = 'S' and armo.dose = 0)  
+			  or (:k_no_dose = 'N' and (:k_dose = 0 or armo.dose = :k_dose))
+         ) and 
+			(:k_art = '' or armo.art = :k_art ) and 
+			(:k_magazzino = 9 or armo.magazzino = :k_magazzino ) and 
+			(s_arfa.data_fatt between :k_data_da and :k_data_a) 
+			and (:k_id_clie_classe = '' or clienti.id_clie_classe = :k_id_clie_classe ) 
+			and (:k_classe_punteggio = '' or clie_classi.punteggio = :k_classe_punteggio ) 
+			and (:k_regione = '' or province.regione = :k_regione ) 
+		group by  
+			armo.art,
+			prodotti.des,
+			armo.dose 
+
+ union all
+
+  SELECT 
+			arfa_v.art,
+			prodotti.des,
+			0,   
+         sum(arfa_v.prezzo_t) * -1 as k_fatt,   
+         sum(arfa_v.colli) * -1 as k_colli   
+    FROM arfa_v left outer join prodotti on arfa_v.art = prodotti.codice  
+			left outer join gru on prodotti.gruppo = gru.codice
+			inner join clienti on arfa_v.clie_3 = clienti.codice 
+			left outer join clie_classi on clienti.id_clie_classe = clie_classi.id_clie_classe
+			left outer join province on clienti.prov_1 = province.sigla
+	where
+			arfa_v.tipo_doc = 'NC' and
+			(:k_id_cliente = 0 or arfa_v.clie_3 = :k_id_cliente) and   
+			( (:k_no_gruppo = 'S' and (prodotti.gruppo is null or prodotti.gruppo = 0) ) 
+                or (:k_no_gruppo = 'N' and prodotti.gruppo > 0 and ((:k_id_gruppo = 0 and gru.escludi_da_stat_glob = 'N') or prodotti.gruppo = :k_id_gruppo ))) and     
+			( (:k_no_dose = 'S' )  
+			  or (:k_no_dose = 'N' and :k_dose = 0 )
+         ) and 
+			(:k_art = '' or arfa_v.art = :k_art ) and 
+			(:k_magazzino = 9 ) and 
+			(arfa_v.data_fatt between :k_data_da and :k_data_a) 
+			and (:k_id_clie_classe = '' or clienti.id_clie_classe = :k_id_clie_classe ) 
+			and (:k_classe_punteggio = '' or clie_classi.punteggio = :k_classe_punteggio ) 
+			and (:k_regione = '' or province.regione = :k_regione ) 
+
+		group by  
+			arfa_v.art,
+			prodotti.des
+
+
+" arguments=(("k_id_gruppo", number),("k_id_cliente", number),("k_dose", number),("k_data_da", date),("k_data_a", date),("k_no_dose", string),("k_no_gruppo", string),("k_magazzino", number),("k_art", string),("k_id_clie_classe", string),("k_classe_punteggio", string),("k_regione", string))  sort="k_fatt D art A dose A " )
+text(band=header alignment="0" text=" Dose" border="0" color="0" x="1499" y="8" height="52" width="297" html.valueishtml="0"  name=dose_t visible="1"  font.face="Tahoma" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="32435950" )
+text(band=header alignment="0" text="Prezzo_collo" border="0" color="0" x="1801" y="8" height="52" width="293" html.valueishtml="0"  name=k_prezzo_m_t visible="1"  font.face="Tahoma" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="32435950" )
+text(band=header alignment="0" text="Colli" border="0" color="0" x="2537" y="8" height="52" width="293" html.valueishtml="0"  name=k_colli_t visible="1"  font.face="Tahoma" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="32435950" )
+text(band=header alignment="0" text="%" border="0" color="0" x="2839" y="8" height="56" width="201" html.valueishtml="0"  name=k_perc_t visible="1"  font.face="Tahoma" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="32435950" )
+text(band=header alignment="0" text="Fatturato" border="0" color="0" x="2103" y="8" height="52" width="425" html.valueishtml="0"  name=k_fatt_t visible="1"  font.face="Tahoma" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="32435950" )
+text(band=header alignment="0" text=" Articolo" border="0" color="0" x="5" y="8" height="52" width="503" html.valueishtml="0"  name=art_t visible="1"  font.face="Tahoma" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="32435950" )
+text(band=header alignment="0" text=" Descrizione" border="0" color="0" x="517" y="8" height="56" width="978" html.valueishtml="0"  name=des_t visible="1"  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="32435950" )
+compute(band=detail alignment="1" expression="100/sum(  k_fatt  for all )* k_fatt "border="0" color="0" x="2839" y="4" height="68" width="201" format="#,### " html.valueishtml="0"  name=k_perc visible="1"  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="1090519039" )
+column(band=detail id=4 alignment="1" tabsequence=32766 border="0" color="0" x="2103" y="4" height="68" width="425" format="###,###,##0.00 ;[RED](###,###,##0.00 ) " html.valueishtml="0"  name=k_fatt visible="1" edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="1090519039" )
+column(band=detail id=5 alignment="1" tabsequence=32766 border="0" color="0" x="2537" y="4" height="68" width="293" format="###,###,###,##0 " html.valueishtml="0"  name=k_colli visible="1" edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="1090519039" )
+compute(band=detail alignment="1" expression="k_fatt /  k_colli "border="0" color="0" x="1801" y="4" height="68" width="293" format="###,###,##0.00 " html.valueishtml="0"  name=k_prezzo_m visible="1"  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="1090519039" )
+column(band=detail id=3 alignment="1" tabsequence=32766 border="0" color="0" x="1504" y="4" height="68" width="293" format="###0.00 " html.valueishtml="0"  name=dose visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="1090519039" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="0" color="0" x="9" y="4" height="68" width="498" format=" [General]" html.valueishtml="0"  name=art visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="1090519039" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="0" x="521" y="4" height="68" width="974" format=" [General]" html.valueishtml="0"  name=des visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="1090519039" )
+compute(band=footer alignment="1" expression="avg(k_prezzo_m for all)"border="0" color="8388736" x="1801" y="4" height="60" width="293" format="###,###,##0.00 " html.valueishtml="0"  name=compute_1 visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=footer alignment="1" expression="sum(k_fatt for all)"border="0" color="8388736" x="2103" y="4" height="60" width="425" format="###,###,##0.00 ;[RED](###,###,##0.00 ) " html.valueishtml="0"  name=k_fatt_tot visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=footer alignment="1" expression="sum(k_colli for all)"border="0" color="8388736" x="2537" y="4" height="60" width="293" format="###,###,###,##0 " html.valueishtml="0"  name=compute_2 visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" pagingmethod=0 generatedddwframes="1" )
+xhtmlgen() cssgen(sessionspecific="0" )
+xmlgen(inline="0" )
+xsltgen()
+jsgen()
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+export.xhtml()

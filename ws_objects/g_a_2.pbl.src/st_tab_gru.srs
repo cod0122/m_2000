@@ -1,0 +1,15 @@
+﻿$PBExportHeader$st_tab_gru.srs
+global type st_tab_gru from structure
+	integer		codice
+	string		des
+	string		des_eng
+	integer		conto		descriptor "comment" = "conto x magazzino <> 1 e 2"
+	integer		s_conto		descriptor "comment" = "S.conto x magazzino <> 1 e 2"
+	integer		conto_m_1		descriptor "comment" = "conto x magazzino 1"
+	integer		s_conto_m_1		descriptor "comment" = "S.conto x magazzino 1"
+	integer		conto_m_2		descriptor "comment" = "conto x magazzino 2"
+	integer		s_conto_m_2		descriptor "comment" = "S.conto x magazzino 2"
+	string		id_clie_settore		descriptor "comment" = "codice settore"
+	string		escludi_da_stat_glob		descriptor "comment" = "S=calcolo STATISTICI solo se puntale no nel globali insieme ad altri gruppi"
+end type
+

@@ -1,0 +1,153 @@
+﻿$PBExportHeader$d_ric_l.srd
+release 8;
+datawindow(units=0 timer_interval=0 color=33554431 processing=1 HTMLDW=no print.documentname="" print.orientation = 1 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no grid.lines=0 )
+header(height=64 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=60 color="536870912" )
+detail(height=64 color="536870912" )
+table(column=(type=char(1) updatewhereclause=yes name=tipo dbname="ric.tipo" )
+ column=(type=char(1) updatewhereclause=yes name=dist dbname="ric.dist" )
+ column=(type=date updatewhereclause=yes name=scad dbname="ric.scad" )
+ column=(type=date updatewhereclause=yes name=data_fatt dbname="ric.data_fatt" )
+ column=(type=long updatewhereclause=yes name=num_fatt dbname="ric.num_fatt" )
+ column=(type=decimal(2) updatewhereclause=yes name=importo dbname="ric.importo" )
+ column=(type=decimal(2) updatewhereclause=yes name=rata dbname="ric.rata" )
+ column=(type=long updatewhereclause=yes name=clie dbname="ric.clie" )
+ column=(type=long updatewhereclause=yes name=id dbname="ric.id" )
+ column=(type=char(30) updatewhereclause=yes name=rag_soc_10 dbname="clienti.rag_soc_10" )
+ column=(type=char(30) updatewhereclause=yes name=indi_1 dbname="clienti.indi_1" )
+ column=(type=char(30) updatewhereclause=yes name=loc_1 dbname="clienti.loc_1" )
+ column=(type=char(2) updatewhereclause=yes name=prov_1 dbname="clienti.prov_1" )
+ column=(type=char(5) updatewhereclause=yes name=cap_1 dbname="clienti.cap_1" )
+ column=(type=char(16) updatewhereclause=yes name=p_iva dbname="clienti.p_iva" )
+ column=(type=char(30) updatewhereclause=yes name=banca dbname="clienti.banca" )
+ column=(type=decimal(0) updatewhereclause=yes name=cli_abi dbname="clienti.cli_abi" )
+ column=(type=decimal(0) updatewhereclause=yes name=cli_cab dbname="clienti.cli_cab" )
+ column=(type=char(1) updatewhereclause=yes name=tipo_banca dbname="clienti.tipo_banca" )
+ column=(type=char(30) updatewhereclause=yes name=ind_comm_rag_soc_1_c dbname="ind_comm.rag_soc_1_c" )
+ column=(type=char(30) updatewhereclause=yes name=ind_comm_indi_c dbname="ind_comm.indi_c" )
+ column=(type=char(30) updatewhereclause=yes name=ind_comm_loc_c dbname="ind_comm.loc_c" )
+ column=(type=char(2) updatewhereclause=yes name=ind_comm_prov_c dbname="ind_comm.prov_c" )
+ column=(type=char(5) updatewhereclause=yes name=ind_comm_cap_c dbname="ind_comm.cap_c" )
+ column=(type=char(100) updatewhereclause=yes name=descrizione dbname="banche.descrizione" )
+ column=(type=real updatewhereclause=yes name=abi dbname="banche.abi" )
+ column=(type=real updatewhereclause=yes name=cab dbname="banche.cab" )
+ column=(type=char(12) updatewhereclause=yes name=conto dbname="banche.conto" )
+ column=(type=char(1) updatewhereclause=yes name=flag_st dbname="ric.flag_st" values="Da Presentare	 /Presentata	S/Sospesa	X/Da non Presentare	N/" )
+ column=(type=date updatewhereclause=yes name=data_st dbname="ric.data_st" )
+ retrieve="SELECT 
+		ric.tipo, 
+		ric.dist, 
+		ric.scad, 
+		ric.data_fatt, 
+		ric.num_fatt, 
+		ric.importo, 
+		ric.rata, 
+		ric.clie, 
+		ric.id, 
+		clienti.rag_soc_10, 
+		clienti.indi_1, 
+		clienti.loc_1, 
+		clienti.prov_1, 
+		clienti.cap_1,
+		clienti.p_iva,
+		clienti.banca,
+		clienti.abi as cli_abi,
+		clienti.cab as cli_cab,
+      clienti.tipo_banca,
+		ind_comm.rag_soc_1_c, 
+		ind_comm.indi_c, 
+		ind_comm.loc_c, 
+		ind_comm.prov_c, 
+		ind_comm.cap_c,
+      banche.descrizione,
+      banche.abi,
+      banche.cab,
+      banche.conto, 
+		ric.flag_st,
+		ric.data_st 
+	FROM ((ric LEFT JOIN clienti ON ric.clie = clienti.codice)
+	      LEFT JOIN banche ON ric.tipo = banche.codice)
+	      LEFT JOIN ind_comm ON ric.clie = ind_comm.clie_c
+   where (ric.tipo = :k_tipo or :k_tipo = '*' or (:k_tipo = '' and ric.tipo is null))
+         and (ric.dist = :k_dist or :k_dist = '*'or (:k_dist = '' and ric.dist is null))
+         and (ric.scad      >= :k_scad_da and ric.scad      <= :k_scad_a)
+         and (ric.data_fatt >= :k_fatt_da and ric.data_fatt <= :k_fatt_a)
+         and (ric.clie = :k_clie or :k_clie = 0)
+         and (ric.data_st = :k_data_st or :k_data_st_null = 'S')
+         and (ric.flag_st = :k_flag_st or :k_flag_st = '*')
+	order by 
+			ric.tipo, 
+			ric.dist, 
+			ric.scad, 
+			ind_comm.rag_soc_1_c, 
+			clienti.rag_soc_10, 
+			ric.data_fatt, 
+			ric.num_fatt
+
+" arguments=(("k_tipo", string),("k_dist", string),("k_scad_da", date),("k_scad_a", date),("k_clie", number),("k_flag_st", string),("k_data_st", date),("k_data_st_null", string),("k_fatt_da", date),("k_fatt_a", date)) )
+group(level=1 header.height=0 trailer.height=64 by=("tipo" ) header.color="536870912" trailer.color="536870912" )
+group(level=2 header.height=0 trailer.height=76 by=("tipo" , "dist" ) header.color="536870912" trailer.color="536870912" )
+group(level=3 header.height=0 trailer.height=64 by=("tipo" , "dist" , "scad" ) header.color="536870912" trailer.color="536870912" )
+text(band=header alignment="2" text="D." border="0" color="0" x="768" y="4" height="56" width="105" html.valueishtml="0"  name=dist_t visible="1"  font.face="Courier New" font.height="-8" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="2" background.color="1090519039" )
+text(band=header alignment="2" text="Scadenza" border="0" color="0" x="882" y="4" height="56" width="270" html.valueishtml="0"  name=scad_t visible="1"  font.face="Courier New" font.height="-8" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="2" background.color="1090519039" )
+text(band=header alignment="2" text="Fattura" border="0" color="0" x="1161" y="4" height="56" width="229" html.valueishtml="0"  name=num_fatt_t visible="1"  font.face="Courier New" font.height="-8" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="2" background.color="1090519039" )
+text(band=header alignment="2" text="in Data" border="0" color="0" x="1399" y="4" height="56" width="279" html.valueishtml="0"  name=data_fatt_t visible="1"  font.face="Courier New" font.height="-8" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="2" background.color="1090519039" )
+text(band=header alignment="2" text="Importo" border="0" color="0" x="1687" y="4" height="56" width="411" html.valueishtml="0"  name=importo_t visible="1"  font.face="Courier New" font.height="-8" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="2" background.color="1090519039" )
+text(band=header alignment="2" text="Rata" border="0" color="0" x="2107" y="4" height="56" width="398" html.valueishtml="0"  name=rata_t visible="1"  font.face="Courier New" font.height="-8" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="2" background.color="1090519039" )
+text(band=header alignment="2" text="Località" border="0" color="0" x="3589" y="4" height="56" width="722" html.valueishtml="0"  name=loc_1_t visible="1"  font.face="Courier New" font.height="-8" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="2" background.color="1090519039" )
+text(band=header alignment="2" text="Pr." border="0" color="0" x="4320" y="4" height="56" width="128" html.valueishtml="0"  name=prov_1_t visible="1"  font.face="Courier New" font.height="-8" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="2" background.color="1090519039" )
+text(band=header alignment="2" text="CAP" border="0" color="0" x="4457" y="4" height="56" width="174" html.valueishtml="0"  name=cap_1_t visible="1"  font.face="Courier New" font.height="-8" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="2" background.color="1090519039" )
+text(band=header alignment="2" text="Presentata" border="0" color="0" x="4640" y="4" height="56" width="338" html.valueishtml="0"  name=flag_st_t visible="1"  font.face="Courier New" font.height="-8" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="2" background.color="1090519039" )
+text(band=header alignment="2" text="Data Pres." border="0" color="0" x="4987" y="4" height="56" width="315" html.valueishtml="0"  name=data_st_t visible="1"  font.face="Courier New" font.height="-8" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="2" background.color="1090519039" )
+text(band=header alignment="2" text="Partita IVA " border="0" color="0" x="5312" y="4" height="56" width="503" html.valueishtml="0"  name=p_iva_t visible="1"  font.face="Courier New" font.height="-8" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="2" background.color="1090519039" )
+text(band=header alignment="2" text="Ind Comm Indi C" border="0" color="8388608" x="8311" y="4" height="56" width="901" html.valueishtml="0"  name=t_3 visible="1"  font.face="Courier New" font.height="-8" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="2" background.color="1090519039" )
+text(band=header alignment="2" text="Ind Comm Loc C" border="0" color="8388608" x="9221" y="4" height="56" width="859" html.valueishtml="0"  name=t_4 visible="1"  font.face="Courier New" font.height="-8" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="2" background.color="1090519039" )
+text(band=header alignment="2" text="Ind Comm Prov C" border="0" color="8388608" x="10089" y="4" height="56" width="183" html.valueishtml="0"  name=t_5 visible="1"  font.face="Courier New" font.height="-8" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="2" background.color="1090519039" )
+text(band=header alignment="2" text="Ind Comm Cap C" border="0" color="8388608" x="10281" y="4" height="56" width="192" html.valueishtml="0"  name=t_6 visible="1"  font.face="Courier New" font.height="-8" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="2" background.color="1090519039" )
+text(band=header alignment="2" text="Stato" border="0" color="32768" x="10482" y="4" height="56" width="407" html.valueishtml="0"  name=flag_st_1_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="1090519039" )
+text(band=header alignment="2" text="Presentata" border="0" color="32768" x="10898" y="4" height="56" width="325" html.valueishtml="0"  name=data_st_1_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="1090519039" )
+text(band=header alignment="2" text="N.scad." border="0" color="0" x="11232" y="4" height="56" width="219" html.valueishtml="0"  name=id_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="1073741824" )
+column(band=detail id=1 alignment="2" tabsequence=32766 border="0" color="0" x="9" y="0" height="60" width="123" format="[general]" html.valueishtml="0"  name=tipo visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Courier New" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=25 alignment="0" tabsequence=32766 border="0" color="0" x="142" y="0" height="60" width="617" format="[general]" html.valueishtml="0"  name=descrizione visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Courier New" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=2 alignment="2" tabsequence=32766 border="0" color="0" x="768" y="0" height="60" width="105" format="[general]" html.valueishtml="0"  name=dist visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Courier New" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="2" tabsequence=32766 border="0" color="0" x="882" y="0" height="60" width="270" format="dd-mm-yy" html.valueishtml="0"  name=scad visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Courier New" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="1" tabsequence=32766 border="0" color="0" x="1161" y="0" height="60" width="229" format="#,###,##0 " html.valueishtml="0"  name=num_fatt visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Courier New" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="0" background.mode="2" background.color="33554431" )
+column(band=detail id=4 alignment="2" tabsequence=32766 border="0" color="0" x="1399" y="0" height="60" width="279" format="dd-mm-yy" html.valueishtml="0"  name=data_fatt visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Courier New" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="1" tabsequence=32766 border="0" color="0" x="1687" y="0" height="60" width="411" format="###,###,##0.00 " html.valueishtml="0"  name=importo visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Courier New" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="1" tabsequence=32766 border="0" color="0" x="2107" y="0" height="60" width="398" format="###,###,##0.00 " html.valueishtml="0"  name=rata visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Courier New" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="1" tabsequence=32766 border="0" color="0" x="2514" y="0" height="60" width="169" format="##### " html.valueishtml="0"  name=clie visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Courier New" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=10 alignment="0" tabsequence=32766 border="0" color="0" x="2693" y="0" height="60" width="887" format="[general]" html.valueishtml="0"  name=rag_soc_10 visible="1" edit.limit=30 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Courier New" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=12 alignment="0" tabsequence=32766 border="0" color="0" x="3589" y="0" height="60" width="722" format="[general]" html.valueishtml="0"  name=loc_1 visible="1" edit.limit=30 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Courier New" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=13 alignment="2" tabsequence=32766 border="0" color="0" x="4320" y="0" height="60" width="128" format="[general]" html.valueishtml="0"  name=prov_1 visible="1" edit.limit=2 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Courier New" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=14 alignment="2" tabsequence=32766 border="0" color="0" x="4457" y="0" height="60" width="174" format="[general]" html.valueishtml="0"  name=cap_1 visible="1" edit.limit=5 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Courier New" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=29 alignment="0" tabsequence=32766 border="0" color="0" x="4640" y="0" height="60" width="338" format="[general]" html.valueishtml="0"  name=flag_st visible="1" ddlb.limit=0 ddlb.allowedit=no ddlb.case=any ddlb.imemode=0  font.face="Courier New" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=30 alignment="2" tabsequence=32766 border="0" color="0" x="4987" y="0" height="60" width="315" format="dd-mm-yy" html.valueishtml="0"  name=data_st visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Courier New" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=20 alignment="0" tabsequence=32766 border="0" color="16711680" x="7365" y="0" height="60" width="937" format="[general]" html.valueishtml="0"  name=ind_comm_rag_soc_1_c visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Courier New" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=21 alignment="0" tabsequence=32766 border="0" color="16711680" x="8311" y="0" height="60" width="901" format="[general]" html.valueishtml="0"  name=ind_comm_indi_c visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Courier New" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=22 alignment="0" tabsequence=32766 border="0" color="16711680" x="9221" y="0" height="60" width="859" format="[general]" html.valueishtml="0"  name=ind_comm_loc_c visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Courier New" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=15 alignment="2" tabsequence=32766 border="0" color="0" x="5312" y="0" height="60" width="503" format="[general]" html.valueishtml="0"  name=p_iva visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="Courier New" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=16 alignment="0" tabsequence=32766 border="0" color="0" x="5824" y="0" height="60" width="1024" format="[general]" html.valueishtml="0"  name=banca visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Courier New" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=17 alignment="2" tabsequence=32766 border="0" color="0" x="6857" y="0" height="60" width="242" format="#####" html.valueishtml="0"  name=cli_abi visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Courier New" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=18 alignment="2" tabsequence=32766 border="0" color="0" x="7109" y="0" height="60" width="247" format="##### " html.valueishtml="0"  name=cli_cab visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Courier New" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=23 alignment="0" tabsequence=32766 border="0" color="16711680" x="10089" y="0" height="60" width="183" format="[general]" html.valueishtml="0"  name=ind_comm_prov_c visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Courier New" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=24 alignment="0" tabsequence=32766 border="0" color="16711680" x="10281" y="0" height="60" width="192" format="[general]" html.valueishtml="0"  name=ind_comm_cap_c visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Courier New" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=29 alignment="2" tabsequence=32766 border="0" color="32768" x="10482" y="0" height="60" width="407" format="[general]" html.valueishtml="0"  name=flag_st_1 visible="1" ddlb.limit=0 ddlb.allowedit=no ddlb.case=any ddlb.imemode=0  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=30 alignment="2" tabsequence=32766 border="0" color="32768" x="10898" y="0" height="60" width="325" format="[general]" html.valueishtml="0"  name=data_st_1 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=9 alignment="1" tabsequence=32766 border="0" color="0" x="11232" y="0" height="60" width="219" format="[general]" html.valueishtml="0"  name=id visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Courier New" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=trailer.3 alignment="1" expression="sum(importo for group 3)"border="0" color="8388608" x="1687" y="0" height="64" width="411" format="###,###,##0.00" html.valueishtml="0"  name=compute_1 visible="1"  font.face="Courier New" font.height="-8" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=trailer.3 alignment="1" expression="sum(rata for group 3)"border="0" color="8388608" x="2107" y="0" height="64" width="398" format="###,###,##0.00" html.valueishtml="0"  name=compute_2 visible="1"  font.face="Courier New" font.height="-8" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=trailer.2 alignment="1" expression="sum(importo for group 2)"border="0" color="8388608" x="1687" y="0" height="76" width="411" format="###,###,##0.00" html.valueishtml="0"  name=compute_3 visible="1"  font.face="Courier New" font.height="-8" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=trailer.2 alignment="1" expression="sum(rata for group 2)"border="0" color="8388608" x="2107" y="0" height="76" width="398" format="###,###,##0.00" html.valueishtml="0"  name=compute_4 visible="1"  font.face="Courier New" font.height="-8" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=trailer.1 alignment="1" expression="sum(importo for group 1 distinct num_fatt)"border="0" color="8388608" x="1687" y="0" height="64" width="411" format="###,###,##0.00" html.valueishtml="0"  name=compute_5 visible="1"  font.face="Courier New" font.height="-8" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=trailer.1 alignment="1" expression="sum(rata for group 1)"border="0" color="8388608" x="2107" y="0" height="64" width="398" format="###,###,##0.00" html.valueishtml="0"  name=compute_6 visible="1"  font.face="Courier New" font.height="-8" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=footer alignment="1" expression="sum(importo for all distinct num_fatt)"border="0" color="8388608" x="1687" y="0" height="64" width="411" format="###,###,##0.00" html.valueishtml="0"  name=compute_7 visible="1"  font.face="Courier New" font.height="-8" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=footer alignment="1" expression="sum(rata for all)"border="0" color="8388608" x="2107" y="0" height="64" width="398" format="###,###,##0.00" html.valueishtml="0"  name=compute_8 visible="1"  font.face="Courier New" font.height="-8" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=footer alignment="0" expression="'Presenti : ' + count(   scad for all ) "border="0" color="8388736" x="142" y="0" height="56" width="617" format="[general]" html.valueishtml="0"  name=compute_9 visible="1"  font.face="Courier New" font.height="-8" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=foreground alignment="2" text="Banca di Presentazione" border="0" color="0" x="9" y="4" height="56" width="745" html.valueishtml="0"  name=tipo_t visible="1"  resizeable=1  font.face="Courier New" font.height="-8" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="2" background.color="1090519039" )
+text(band=foreground alignment="2" text="Cliente" border="0" color="0" x="2505" y="4" height="56" width="1070" html.valueishtml="0"  name=clie_t visible="1"  font.face="Courier New" font.height="-8" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="2" background.color="1090519039" )
+text(band=foreground alignment="2" text="Banca cliente" border="0" color="0" x="5833" y="4" height="56" width="1522" html.valueishtml="0"  name=cliente_abi_t visible="1"  font.face="Courier New" font.height="-8" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="2" background.color="1090519039" )
+text(band=foreground alignment="2" text="Indirizzo Commerciale" border="0" color="8388608" x="7406" y="4" height="56" width="3072" html.valueishtml="0"  name=ind_comm_rag_soc_1_c_t visible="1"  font.face="Courier New" font.height="-8" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="2" background.color="1090519039" )
+
+sparse(names="tipo	descrizione")htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )

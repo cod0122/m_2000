@@ -1,0 +1,17 @@
+﻿$PBExportHeader$st_txt_fpilota_out.srs
+global type st_txt_fpilota_out from structure
+	string		path
+	string		path_temp
+	integer		filenum
+	long		byte
+	string		barcode
+	integer		g1_fila_1
+	integer		g1_fila_2
+	integer		g2_fila_1
+	integer		g2_fila_2
+	date		data_ini
+	time		ora_ini
+	date		data_fin
+	time		ora_fin
+end type
+

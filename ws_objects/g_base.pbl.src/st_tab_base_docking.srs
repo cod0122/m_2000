@@ -1,0 +1,10 @@
+﻿$PBExportHeader$st_tab_base_docking.srs
+global type st_tab_base_docking from structure
+	st_tab_g_0		st_tab_g_0
+	string		xxx		descriptor "comment" = "tabella x utente utilizzata per ricordare come l'utente risistema le window in modaltà docking"
+	string		id_base		descriptor "comment" = "codice generico 'azienda'"
+	long		id_utente		descriptor "comment" = "id dell'utente"
+	string		wname		descriptor "comment" = "nome della window "
+	string		wstate		descriptor "comment" = "stato della Window (Tabbed, Dock...)"
+end type
+

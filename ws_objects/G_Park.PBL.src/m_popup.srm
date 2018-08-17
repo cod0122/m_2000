@@ -1,0 +1,850 @@
+﻿$PBExportHeader$m_popup.srm
+forward
+global type m_popup from menu
+end type
+type m_pop_lib_1 from menu within m_popup
+end type
+type m_pop_lib_2 from menu within m_popup
+end type
+type m_t_pop_lib_1 from menu within m_popup
+end type
+type m_lib_1 from menu within m_popup
+end type
+type m_t_lib_1 from menu within m_popup
+end type
+type m_lib_2 from menu within m_popup
+end type
+type m_t_lib_2 from menu within m_popup
+end type
+type m_lib_3 from menu within m_popup
+end type
+type m_t_lib_3 from menu within m_popup
+end type
+type m_lib_4 from menu within m_popup
+end type
+type m_t_lib_4 from menu within m_popup
+end type
+type m_conferma from menu within m_popup
+end type
+type m_visualizza from menu within m_popup
+end type
+type m_inserisci from menu within m_popup
+end type
+type m_modifica from menu within m_popup
+end type
+type m_t_modifica from menu within m_popup
+end type
+type m_stampa from menu within m_popup
+end type
+type m_t_stampa from menu within m_popup
+end type
+type m_cancella from menu within m_popup
+end type
+type m_t_cancella from menu within m_popup
+end type
+type m_zoom_a from menu within m_popup
+end type
+type m_zoom_i from menu within m_popup
+end type
+type m_t_zoom from menu within m_popup
+end type
+type m_cerca from menu within m_popup
+end type
+type m_t_cerca from menu within m_popup
+end type
+type m_filtro from menu within m_popup
+end type
+type m_t_filtro from menu within m_popup
+end type
+type m_agglista from menu within m_popup
+end type
+type m_t_agglista from menu within m_popup
+end type
+type m_ritorna from menu within m_popup
+end type
+global type m_popup from menu
+m_pop_lib_1 m_pop_lib_1
+m_pop_lib_2 m_pop_lib_2
+m_t_pop_lib_1 m_t_pop_lib_1
+m_lib_1 m_lib_1
+m_t_lib_1 m_t_lib_1
+m_lib_2 m_lib_2
+m_t_lib_2 m_t_lib_2
+m_lib_3 m_lib_3
+m_t_lib_3 m_t_lib_3
+m_lib_4 m_lib_4
+m_t_lib_4 m_t_lib_4
+m_conferma m_conferma
+m_visualizza m_visualizza
+m_inserisci m_inserisci
+m_modifica m_modifica
+m_t_modifica m_t_modifica
+m_stampa m_stampa
+m_t_stampa m_t_stampa
+m_cancella m_cancella
+m_t_cancella m_t_cancella
+m_zoom_a m_zoom_a
+m_zoom_i m_zoom_i
+m_t_zoom m_t_zoom
+m_cerca m_cerca
+m_t_cerca m_t_cerca
+m_filtro m_filtro
+m_t_filtro m_t_filtro
+m_agglista m_agglista
+m_t_agglista m_t_agglista
+m_ritorna m_ritorna
+end type
+end forward
+
+global type m_popup from menu
+m_pop_lib_1 m_pop_lib_1
+m_pop_lib_2 m_pop_lib_2
+m_t_pop_lib_1 m_t_pop_lib_1
+m_lib_1 m_lib_1
+m_t_lib_1 m_t_lib_1
+m_lib_2 m_lib_2
+m_t_lib_2 m_t_lib_2
+m_lib_3 m_lib_3
+m_t_lib_3 m_t_lib_3
+m_lib_4 m_lib_4
+m_t_lib_4 m_t_lib_4
+m_conferma m_conferma
+m_visualizza m_visualizza
+m_inserisci m_inserisci
+m_modifica m_modifica
+m_t_modifica m_t_modifica
+m_stampa m_stampa
+m_t_stampa m_t_stampa
+m_cancella m_cancella
+m_t_cancella m_t_cancella
+m_zoom_a m_zoom_a
+m_zoom_i m_zoom_i
+m_t_zoom m_t_zoom
+m_cerca m_cerca
+m_t_cerca m_t_cerca
+m_filtro m_filtro
+m_t_filtro m_t_filtro
+m_agglista m_agglista
+m_t_agglista m_t_agglista
+m_ritorna m_ritorna
+end type
+global m_popup m_popup
+
+on m_popup.create
+m_popup=this
+call super::create
+this.m_pop_lib_1=create m_pop_lib_1
+this.m_pop_lib_2=create m_pop_lib_2
+this.m_t_pop_lib_1=create m_t_pop_lib_1
+this.m_lib_1=create m_lib_1
+this.m_t_lib_1=create m_t_lib_1
+this.m_lib_2=create m_lib_2
+this.m_t_lib_2=create m_t_lib_2
+this.m_lib_3=create m_lib_3
+this.m_t_lib_3=create m_t_lib_3
+this.m_lib_4=create m_lib_4
+this.m_t_lib_4=create m_t_lib_4
+this.m_conferma=create m_conferma
+this.m_visualizza=create m_visualizza
+this.m_inserisci=create m_inserisci
+this.m_modifica=create m_modifica
+this.m_t_modifica=create m_t_modifica
+this.m_stampa=create m_stampa
+this.m_t_stampa=create m_t_stampa
+this.m_cancella=create m_cancella
+this.m_t_cancella=create m_t_cancella
+this.m_zoom_a=create m_zoom_a
+this.m_zoom_i=create m_zoom_i
+this.m_t_zoom=create m_t_zoom
+this.m_cerca=create m_cerca
+this.m_t_cerca=create m_t_cerca
+this.m_filtro=create m_filtro
+this.m_t_filtro=create m_t_filtro
+this.m_agglista=create m_agglista
+this.m_t_agglista=create m_t_agglista
+this.m_ritorna=create m_ritorna
+this.Item[UpperBound(this.Item)+1]=this.m_pop_lib_1
+this.Item[UpperBound(this.Item)+1]=this.m_pop_lib_2
+this.Item[UpperBound(this.Item)+1]=this.m_t_pop_lib_1
+this.Item[UpperBound(this.Item)+1]=this.m_lib_1
+this.Item[UpperBound(this.Item)+1]=this.m_t_lib_1
+this.Item[UpperBound(this.Item)+1]=this.m_lib_2
+this.Item[UpperBound(this.Item)+1]=this.m_t_lib_2
+this.Item[UpperBound(this.Item)+1]=this.m_lib_3
+this.Item[UpperBound(this.Item)+1]=this.m_t_lib_3
+this.Item[UpperBound(this.Item)+1]=this.m_lib_4
+this.Item[UpperBound(this.Item)+1]=this.m_t_lib_4
+this.Item[UpperBound(this.Item)+1]=this.m_conferma
+this.Item[UpperBound(this.Item)+1]=this.m_visualizza
+this.Item[UpperBound(this.Item)+1]=this.m_inserisci
+this.Item[UpperBound(this.Item)+1]=this.m_modifica
+this.Item[UpperBound(this.Item)+1]=this.m_t_modifica
+this.Item[UpperBound(this.Item)+1]=this.m_stampa
+this.Item[UpperBound(this.Item)+1]=this.m_t_stampa
+this.Item[UpperBound(this.Item)+1]=this.m_cancella
+this.Item[UpperBound(this.Item)+1]=this.m_t_cancella
+this.Item[UpperBound(this.Item)+1]=this.m_zoom_a
+this.Item[UpperBound(this.Item)+1]=this.m_zoom_i
+this.Item[UpperBound(this.Item)+1]=this.m_t_zoom
+this.Item[UpperBound(this.Item)+1]=this.m_cerca
+this.Item[UpperBound(this.Item)+1]=this.m_t_cerca
+this.Item[UpperBound(this.Item)+1]=this.m_filtro
+this.Item[UpperBound(this.Item)+1]=this.m_t_filtro
+this.Item[UpperBound(this.Item)+1]=this.m_agglista
+this.Item[UpperBound(this.Item)+1]=this.m_t_agglista
+this.Item[UpperBound(this.Item)+1]=this.m_ritorna
+end on
+
+on m_popup.destroy
+call super::destroy
+destroy(this.m_pop_lib_1)
+destroy(this.m_pop_lib_2)
+destroy(this.m_t_pop_lib_1)
+destroy(this.m_lib_1)
+destroy(this.m_t_lib_1)
+destroy(this.m_lib_2)
+destroy(this.m_t_lib_2)
+destroy(this.m_lib_3)
+destroy(this.m_t_lib_3)
+destroy(this.m_lib_4)
+destroy(this.m_t_lib_4)
+destroy(this.m_conferma)
+destroy(this.m_visualizza)
+destroy(this.m_inserisci)
+destroy(this.m_modifica)
+destroy(this.m_t_modifica)
+destroy(this.m_stampa)
+destroy(this.m_t_stampa)
+destroy(this.m_cancella)
+destroy(this.m_t_cancella)
+destroy(this.m_zoom_a)
+destroy(this.m_zoom_i)
+destroy(this.m_t_zoom)
+destroy(this.m_cerca)
+destroy(this.m_t_cerca)
+destroy(this.m_filtro)
+destroy(this.m_t_filtro)
+destroy(this.m_agglista)
+destroy(this.m_t_agglista)
+destroy(this.m_ritorna)
+end on
+
+type m_pop_lib_1 from menu within m_popup
+end type
+
+on m_pop_lib_1.create
+call super::create
+this.visible = false
+this.text = "popup libero 1"
+this.enabled = false
+end on
+
+on m_pop_lib_1.destroy
+call super::destroy
+end on
+
+event clicked;//
+window  k_w_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = "p1"
+end if
+
+end event
+
+type m_pop_lib_2 from menu within m_popup
+end type
+
+on m_pop_lib_2.create
+call super::create
+this.visible = false
+this.text = "popup libero 2"
+this.enabled = false
+end on
+
+on m_pop_lib_2.destroy
+call super::destroy
+end on
+
+event clicked;//
+window  k_w_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = "p2"
+end if
+
+end event
+
+type m_t_pop_lib_1 from menu within m_popup
+end type
+
+on m_t_pop_lib_1.create
+call super::create
+this.visible = false
+this.text = "-"
+this.enabled = false
+end on
+
+on m_t_pop_lib_1.destroy
+call super::destroy
+end on
+
+type m_lib_1 from menu within m_popup
+end type
+
+on clicked;//
+window  k_w_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = "l1"
+end if
+
+end on
+
+on m_lib_1.create
+call super::create
+this.visible = false
+this.text = "Libero"
+end on
+
+on m_lib_1.destroy
+call super::destroy
+end on
+
+type m_t_lib_1 from menu within m_popup
+end type
+
+on m_t_lib_1.create
+call super::create
+this.visible = false
+this.text = "-"
+end on
+
+on m_t_lib_1.destroy
+call super::destroy
+end on
+
+type m_lib_2 from menu within m_popup
+end type
+
+event clicked;//
+window  k_w_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = "l2"
+end if
+
+end event
+
+on m_lib_2.create
+call super::create
+this.visible = false
+this.text = "Libero"
+end on
+
+on m_lib_2.destroy
+call super::destroy
+end on
+
+type m_t_lib_2 from menu within m_popup
+end type
+
+on m_t_lib_2.create
+call super::create
+this.visible = false
+this.text = "-"
+end on
+
+on m_t_lib_2.destroy
+call super::destroy
+end on
+
+type m_lib_3 from menu within m_popup
+end type
+
+on m_lib_3.create
+call super::create
+this.visible = false
+this.text = "libero"
+end on
+
+on m_lib_3.destroy
+call super::destroy
+end on
+
+event clicked;//
+window  k_w_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = "l3"
+end if
+
+end event
+
+type m_t_lib_3 from menu within m_popup
+end type
+
+on m_t_lib_3.create
+call super::create
+this.visible = false
+this.text = "-"
+end on
+
+on m_t_lib_3.destroy
+call super::destroy
+end on
+
+type m_lib_4 from menu within m_popup
+end type
+
+on m_lib_4.create
+call super::create
+this.visible = false
+this.text = "libero"
+end on
+
+on m_lib_4.destroy
+call super::destroy
+end on
+
+event clicked;//
+window  k_w_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = "l4"
+end if
+
+end event
+
+type m_t_lib_4 from menu within m_popup
+end type
+
+on m_t_lib_4.create
+call super::create
+this.visible = false
+this.text = "-"
+end on
+
+on m_t_lib_4.destroy
+call super::destroy
+end on
+
+type m_conferma from menu within m_popup
+end type
+
+on clicked;//
+window  k_w_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = "co"
+end if
+
+end on
+
+on m_conferma.create
+call super::create
+this.visible = false
+this.text = "Salva i dati                                  F10  "
+this.microhelp = "Aggiorna dati in archivio"
+end on
+
+on m_conferma.destroy
+call super::destroy
+end on
+
+type m_visualizza from menu within m_popup
+end type
+
+event clicked;//
+window  k_w_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = "vi"
+end if
+
+end event
+
+on m_visualizza.create
+call super::create
+this.visible = false
+this.text = "Visualizza                                      F2"
+this.microhelp = "Visualizzazione"
+end on
+
+on m_visualizza.destroy
+call super::destroy
+end on
+
+type m_inserisci from menu within m_popup
+end type
+
+on clicked;//
+window  k_w_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = "in"
+end if
+
+end on
+
+on m_inserisci.create
+call super::create
+this.visible = false
+this.text = "Nuovo                                           F4"
+this.microhelp = "Inserimento"
+end on
+
+on m_inserisci.destroy
+call super::destroy
+end on
+
+type m_modifica from menu within m_popup
+end type
+
+on clicked;//
+window  k_w_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = "mo"
+end if
+
+end on
+
+on m_modifica.create
+call super::create
+this.visible = false
+this.text = "Modifica                                 Ctrl+F2"
+this.microhelp = "Modifica"
+end on
+
+on m_modifica.destroy
+call super::destroy
+end on
+
+type m_t_modifica from menu within m_popup
+end type
+
+on m_t_modifica.create
+call super::create
+this.visible = false
+this.text = "-"
+end on
+
+on m_t_modifica.destroy
+call super::destroy
+end on
+
+type m_stampa from menu within m_popup
+end type
+
+on clicked;//
+window  k_w_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = "st"
+end if
+
+end on
+
+on m_stampa.create
+call super::create
+this.visible = false
+this.text = "Stampa                                          F9"
+this.microhelp = "In stampa"
+end on
+
+on m_stampa.destroy
+call super::destroy
+end on
+
+type m_t_stampa from menu within m_popup
+end type
+
+on m_t_stampa.create
+call super::create
+this.visible = false
+this.text = "-"
+end on
+
+on m_t_stampa.destroy
+call super::destroy
+end on
+
+type m_cancella from menu within m_popup
+end type
+
+on clicked;//
+window  k_w_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = "ca"
+end if
+
+end on
+
+on m_cancella.create
+call super::create
+this.visible = false
+this.text = "Cancella                                        F6"
+this.microhelp = "Elimina dati"
+end on
+
+on m_cancella.destroy
+call super::destroy
+end on
+
+type m_t_cancella from menu within m_popup
+end type
+
+on m_t_cancella.create
+call super::create
+this.visible = false
+this.text = "-"
+end on
+
+on m_t_cancella.destroy
+call super::destroy
+end on
+
+type m_zoom_a from menu within m_popup
+end type
+
+on clicked;//
+window  k_w_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = "za"
+end if
+
+end on
+
+on m_zoom_a.create
+call super::create
+this.visible = false
+this.text = "Zoom Avanti"
+end on
+
+on m_zoom_a.destroy
+call super::destroy
+end on
+
+type m_zoom_i from menu within m_popup
+end type
+
+on clicked;//
+window  k_w_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = "zi"
+end if
+
+end on
+
+on m_zoom_i.create
+call super::create
+this.visible = false
+this.text = "Zoom Indietro"
+end on
+
+on m_zoom_i.destroy
+call super::destroy
+end on
+
+type m_t_zoom from menu within m_popup
+end type
+
+on m_t_zoom.create
+call super::create
+this.visible = false
+this.text = "-"
+end on
+
+on m_t_zoom.destroy
+call super::destroy
+end on
+
+type m_cerca from menu within m_popup
+end type
+
+event clicked;//
+window  k_w_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = "f1"
+end if
+
+end event
+
+on m_cerca.create
+call super::create
+this.visible = false
+this.text = "Trova"
+this.microhelp = "Ricerca di un dato nella lista"
+end on
+
+on m_cerca.destroy
+call super::destroy
+end on
+
+type m_t_cerca from menu within m_popup
+end type
+
+on m_t_cerca.create
+call super::create
+this.visible = false
+this.text = "-"
+end on
+
+on m_t_cerca.destroy
+call super::destroy
+end on
+
+type m_filtro from menu within m_popup
+end type
+
+event clicked;//
+window  k_w_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = "fl"
+end if
+
+end event
+
+on m_filtro.create
+call super::create
+this.visible = false
+this.text = "Filtro righe in elenco                 Alt+F3"
+this.microhelp = "Seleziona i dati come desiderato (es. solo clienti Italiani)"
+end on
+
+on m_filtro.destroy
+call super::destroy
+end on
+
+type m_t_filtro from menu within m_popup
+end type
+
+on m_t_filtro.create
+call super::create
+this.visible = false
+this.text = "-"
+end on
+
+on m_t_filtro.destroy
+call super::destroy
+end on
+
+type m_agglista from menu within m_popup
+end type
+
+on clicked;//
+window  k_w_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = "ag"
+end if
+
+end on
+
+on m_agglista.create
+call super::create
+this.visible = false
+this.text = "Aggiorna Elenco                           F11"
+this.microhelp = "Aggiorna le liste "
+end on
+
+on m_agglista.destroy
+call super::destroy
+end on
+
+type m_t_agglista from menu within m_popup
+end type
+
+on m_t_agglista.create
+call super::create
+this.visible = false
+this.text = "-"
+end on
+
+on m_t_agglista.destroy
+call super::destroy
+end on
+
+type m_ritorna from menu within m_popup
+end type
+
+on clicked;//
+window  k_w_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = "ri"
+end if
+
+end on
+
+on m_ritorna.create
+call super::create
+this.visible = false
+this.text = "Esci                                      Ctrl+F10"
+this.microhelp = "Uscita"
+end on
+
+on m_ritorna.destroy
+call super::destroy
+end on
+

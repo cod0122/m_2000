@@ -1,0 +1,9 @@
+﻿$PBExportHeader$st_memo_allarme.srs
+global type st_memo_allarme from structure
+	string		allarme		descriptor "comment" = "tipo di allarme come in kuf_clienti o kuf_meca .... es. F=fattura, C=clienti ...."
+	string		descr		descriptor "comment" = "descrizione dell'allarme da visualizzare"
+	datastore		d_memo_allarme		descriptor "comment" = "datstore memo del allarme"
+	integer		numero		descriptor "comment" = "numero di allarmi per riga"
+	st_memo		st_memo
+end type
+

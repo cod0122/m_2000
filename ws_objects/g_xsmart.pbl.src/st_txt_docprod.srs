@@ -1,0 +1,24 @@
+﻿$PBExportHeader$st_txt_docprod.srs
+$PBExportComments$dati prodotti su file txt
+global type st_txt_docprod from structure
+	st_tab_g_0		st_tab_g_0
+	long		id_doc		descriptor "comment" = "id del documento es. id_fattura"
+	string		doc_nome		descriptor "comment" = "nome del file pdf"
+	string		doc_tipo		descriptor "comment" = "tipo dosumento es: FAT / SPE / ATT / ec..."
+	long		doc_num		descriptor "comment" = "numero documento ad es. num_fatt"
+	date		doc_data		descriptor "comment" = "data documento es. data_fatt"
+	string		doc_esporta_prefpath		descriptor "comment" = "cartella pers x cliente che contiene i documenti"
+	long		id_cliente		descriptor "comment" = "in Fatt. il clie_3, in sped il clie_2 ecc...."
+	long		num_int		descriptor "comment" = "numero del Lotto"
+	date		data_int		descriptor "comment" = "numero del Lotto"
+	long		id_meca		descriptor "comment" = "ID del Lotto"
+	datetime		caricato_ts		descriptor "comment" = "ts di inserimento di questa riga"
+	string		caricato_utente		descriptor "comment" = "utente di inserimento di questa riga"
+	datetime		esportato_ts		descriptor "comment" = "ts di esportazione di questo documento"
+	string		esportato_utente		descriptor "comment" = "utente di esportazione di questo documento"
+	datetime		rigenerato_ts		descriptor "comment" = "ts di aggiornamento di questa riga, magari x ristampa del doc"
+	string		rigenerato_utente		descriptor "comment" = "utente di aggiornamento di questa riga"
+	datetime		x_datins
+	string		x_utente
+end type
+

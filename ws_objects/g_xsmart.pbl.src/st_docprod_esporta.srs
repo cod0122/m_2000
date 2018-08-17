@@ -1,0 +1,10 @@
+﻿$PBExportHeader$st_docprod_esporta.srs
+global type st_docprod_esporta from structure
+	boolean		k_aggiorna_docprod		descriptor "comment" = "TRUE=Dopo Esportazione documenti    aggiorna la tabella DOCPROD"
+	st_tab_docprod		kst_tab_docprod[]		descriptor "comment" = "elenco dei documenti da esportare"
+	string		k_tipo		descriptor "comment" = "Tipo Documento, vedi in kuf_doctipo"
+	string		path[]		descriptor "comment" = "pdf completo (Cartella + nome file)"
+	boolean		duplica[]		descriptor "comment" = "TRUE=duplica il file del nel path item precedente con quello indicato nel item attuale"
+	boolean		flg_img_bn[]		descriptor "comment" = "TRUE=stampa in Biano e Nero x sembrare meno ufficiale"
+end type
+

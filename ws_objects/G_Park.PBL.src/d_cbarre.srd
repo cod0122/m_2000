@@ -1,0 +1,32 @@
+﻿$PBExportHeader$d_cbarre.srd
+release 6;
+datawindow(units=0 timer_interval=0 color=10789024 processing=0 print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=584 color="536870912" )
+table(column=(type=long update=yes updatewhereclause=yes name=num_int dbname="cbarre.num_int" )
+ column=(type=datetime update=yes updatewhereclause=yes name=data_int dbname="cbarre.data_int" )
+ column=(type=char(13) update=yes updatewhereclause=yes key=yes name=c_barre dbname="cbarre.c_barre" )
+ column=(type=datetime update=yes updatewhereclause=yes name=data dbname="cbarre.data" )
+ column=(type=char(13) update=yes updatewhereclause=yes name=c_barre_lav dbname="cbarre.c_barre_lav" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=stato dbname="cbarre.stato" values="Non disponibile	0/Da Trattare	1/In Lavorazione	4/Trattato	7/" )
+ retrieve="  SELECT cbarre.num_int,   
+         cbarre.data_int,   
+         cbarre.c_barre,   
+         cbarre.data,   
+         cbarre.c_barre_lav,   
+         cbarre.stato  
+    FROM cbarre   
+    where cbarre.c_barre = :k_c_barre" update="cbarre" updatewhere=1 updatekeyinplace=no arguments=(("k_c_barre", string)) )
+text(band=detail alignment="1" text="Riferimento:"border="0" color="0" x="201" y="36" height="64" width="361"  name=num_int_t  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=1 alignment="1" tabsequence=10 border="5" color="0" x="585" y="32" height="76" width="329" format="[general]"  name=num_int edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=2 alignment="0" tabsequence=20 border="5" color="0" x="942" y="32" height="76" width="357" format="dd/mm/yy"  name=data_int edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=detail alignment="1" text="Codice a barre:"border="0" color="0" x="114" y="180" height="64" width="448"  name=c_barre_t  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="0" tabsequence=30 border="5" color="0" x="585" y="176" height="76" width="384" format="[general]"  name=c_barre edit.limit=13 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=detail alignment="1" text="del:"border="0" color="0" x="1056" y="184" height="64" width="110"  name=data_t  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="0" tabsequence=40 border="5" color="0" x="1184" y="180" height="76" width="370" format="[shortdate] "  name=data edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=detail alignment="1" text="Codice a barre di lavorazione:"border="0" color="0" x="23" y="308" height="64" width="891"  name=c_barre_lav_t  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="0" tabsequence=50 border="5" color="0" x="937" y="304" height="76" width="384" format="[general]"  name=c_barre_lav edit.limit=13 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=detail alignment="1" text="Stato:"border="0" color="0" x="393" y="468" height="64" width="169"  name=stato_t  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="0" tabsequence=60 border="5" color="0" x="585" y="468" height="76" width="558" format="[general]"  name=stato ddlb.limit=0 ddlb.allowedit=no ddlb.case=any  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+htmltable(border="1" cellpadding="0" cellspacing="0" generatecss="no" nowrap="yes")

@@ -1,0 +1,109 @@
+﻿$PBExportHeader$d_listino.srd
+release 6;
+datawindow(units=0 timer_interval=0 color=12632256 processing=0 print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=1192 color="536870912" )
+table(column=(type=long update=yes updatewhereclause=yes key=yes name=cod_cli dbname="cod_cli" )
+ column=(type=char(30) updatewhereclause=yes name=rag_soc_1 dbname="rag_soc_10" )
+ column=(type=char(12) update=yes updatewhereclause=yes key=yes name=cod_art_des dbname="cod_art" )
+ column=(type=long update=yes updatewhereclause=yes key=yes name=magazzino dbname="magazzino" values="Impianto 1	1/Impianto 2	2/Hygen Co	5/Altro	3/" )
+ column=(type=long update=yes updatewhereclause=yes name=contratto dbname="contratto" )
+ column=(type=char(12) updatewhereclause=yes name=mc_co dbname="mc_co" )
+ column=(type=char(12) updatewhereclause=yes name=sc_cf dbname="sc_cf" )
+ column=(type=char(12) update=yes updatewhereclause=yes name=cod_sl_pt_des dbname="cod_sl_pt" )
+ column=(type=number update=yes updatewhereclause=yes key=yes name=dose dbname="dose" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=campione dbname="campione" values="Campione	S/Campione	N" )
+ column=(type=long update=yes updatewhereclause=yes key=yes name=mis_x dbname="mis_x" )
+ column=(type=long update=yes updatewhereclause=yes key=yes name=mis_y dbname="mis_y" )
+ column=(type=long update=yes updatewhereclause=yes key=yes name=mis_z dbname="mis_z" )
+ column=(type=number update=yes updatewhereclause=yes name=m_cubi_f dbname="m_cubi_f" )
+ column=(type=long update=yes updatewhereclause=yes name=occup_ped dbname="occup_ped" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=travaso dbname="travaso" values="Da Travasare	S/Da Travasare	N" )
+ column=(type=number update=yes updatewhereclause=yes name=peso_kg dbname="peso_kg" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=tipo dbname="tipo" values="Metro Cubo	M/Pedana	B/Collo	C/Kg (Peso)	P/" )
+ column=(type=long update=yes updatewhereclause=yes name=prezzo dbname="prezzo" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=attivo dbname="attivo" values="Attivo	S/Attivo	N" )
+ column=(type=char(255) updatewhereclause=yes name=k_pwd dbname="k_pwd" )
+ retrieve="  SELECT listino.cod_cli,   
+         clienti.rag_soc_10,
+         listino.cod_art,   
+         listino.magazzino,   
+         listino.contratto,   
+         contratti.mc_co,   
+         contratti.sc_cf,   
+         listino.cod_sl_pt,   
+         listino.dose,   
+         listino.campione,   
+         listino.mis_x,   
+         listino.mis_y,   
+         listino.mis_z,   
+         listino.m_cubi_f,   
+         listino.occup_ped,   
+         listino.travaso,   
+         listino.peso_kg,   
+         listino.tipo,   
+         listino.prezzo,   
+         listino.attivo,  
+         '1' as k_pwd
+    FROM (listino left outer join clienti on
+         listino.cod_cli = clienti.codice)
+         left outer join contratti on
+         listino.contratto = contratti.codice
+   WHERE ( listino.cod_cli = :k_cod_cli ) AND  
+         ( listino.cod_art = :k_cod_art ) and 
+         ( listino.dose = :k_dose ) and
+         ( listino.mis_x = :k_mis_x ) and
+         ( listino.mis_y = :k_mis_y ) and
+         ( listino.mis_z = :k_mis_z ) 
+            
+          
+" update="listino" updatewhere=0 updatekeyinplace=no arguments=(("k_cod_cli", number),("k_cod_art", string),("k_dose", number),("k_mis_x", number),("k_mis_y", number),("k_mis_z", number)) )
+text(band=detail alignment="1" text="Cliente:"border="0" color="8388608" x="128" y="48" height="64" width="224"  name=cod_cli_t  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=detail alignment="1" text="Articolo:"border="0" color="8388608" x="114" y="144" height="64" width="238"  name=cod_art_t  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=2 alignment="0" tabsequence=10 border="5" color="0" x="370" y="48" height="64" width="1253" format="[general]"  name=rag_soc_1 dddw.name=d_clienti_l dddw.displaycolumn=rag_soc_1 dddw.datacolumn=rag_soc_1 dddw.percentwidth=200 dddw.lines=0 dddw.limit=0 dddw.allowedit=yes dddw.useasborder=no dddw.case=any dddw.hscrollbar=yes dddw.vscrollbar=yes  font.face="Courier New" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="1090519039" )
+column(band=detail id=1 alignment="1" tabsequence=32766 border="5" color="0" x="1673" y="48" height="64" width="192" format="####0"  name=cod_cli dddw.name=d_clienti_l dddw.displaycolumn=id_cliente dddw.datacolumn=id_cliente dddw.percentwidth=100 dddw.lines=0 dddw.limit=0 dddw.allowedit=no dddw.useasborder=no dddw.case=any  font.face="Courier New" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+column(band=detail id=20 alignment="0" tabsequence=70 border="0" color="8388608" x="288" y="468" height="64" width="338" format="[general]"  name=attivo checkbox.text="Attivo" checkbox.on="S" checkbox.off="N" checkbox.scale=no checkbox.threed=yes  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=10 alignment="0" tabsequence=80 border="0" color="8388608" x="827" y="464" height="64" width="425" format="[general]"  name=campione checkbox.text="Campione" checkbox.on="S" checkbox.off="N" checkbox.scale=no checkbox.threed=yes  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=16 alignment="0" tabsequence=90 border="0" color="8388608" x="1509" y="468" height="64" width="562" format="[general]"  name=travaso checkbox.text="Da Travasare" checkbox.on="S" checkbox.off="N" checkbox.scale=no checkbox.threed=yes  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=detail alignment="1" text="Lavorazione:"border="0" color="8388608" x="73" y="588" height="64" width="389"  name=magazzino_t  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="1" tabsequence=100 border="0" color="8388608" x="475" y="588" height="64" width="2098" format="[general]"  name=magazzino radiobuttons.columns=4 radiobuttons.scale=yes radiobuttons.threed=yes  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=detail alignment="1" text="Dose:"border="0" color="8388608" x="73" y="716" height="64" width="174"  name=dose_t  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=9 alignment="1" tabsequence=110 border="5" color="0" x="265" y="716" height="64" width="311" format="###0.00"  name=dose edit.limit=0 edit.case=any edit.format="####.##" edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Courier New" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="1090519039" )
+text(band=detail alignment="1" text="Larghezza:"border="0" color="8388608" x="667" y="716" height="64" width="334"  name=mis_z_t  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=13 alignment="1" tabsequence=120 border="5" color="0" x="1024" y="716" height="64" width="329" format="#,###0"  name=mis_z edit.limit=0 edit.case=any edit.format="#####" edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Courier New" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="1090519039" )
+text(band=detail alignment="1" text="Lunghezza:"border="0" color="8388608" x="1399" y="716" height="64" width="347"  name=mis_x_t  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=11 alignment="1" tabsequence=130 border="5" color="0" x="1765" y="716" height="64" width="329" format="#,###0"  name=mis_x edit.limit=0 edit.case=any edit.format="#####" edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Courier New" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="1090519039" )
+text(band=detail alignment="1" text="Altezza:"border="0" color="8388608" x="2130" y="716" height="64" width="238"  name=mis_y_t  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=12 alignment="1" tabsequence=140 border="5" color="0" x="2386" y="716" height="64" width="329" format="#,###0"  name=mis_y edit.limit=0 edit.case=any edit.format="#####" edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Courier New" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="1090519039" )
+text(band=detail alignment="1" text="Occup. Pedana:"border="0" color="8388608" x="73" y="840" height="64" width="462"  name=occup_ped_t  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=15 alignment="1" tabsequence=150 border="5" color="0" x="553" y="840" height="64" width="256" format="##0"  name=occup_ped edit.limit=0 edit.case=any edit.format="###" edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Courier New" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="1090519039" )
+text(band=detail alignment="1" text="%"border="0" color="8388608" x="818" y="840" height="64" width="50"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=detail alignment="0" text="(dimensione pedana:"border="0" color="0" x="910" y="840" height="64" width="562"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" font.italic="1" background.mode="2" background.color="12632256" )
+text(band=detail alignment="1" text="1.000"border="0" color="0" x="1477" y="840" height="64" width="187"  name=t_mis_x  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" font.italic="1" background.mode="2" background.color="12632256" )
+text(band=detail alignment="0" text="x"border="0" color="0" x="1682" y="840" height="64" width="37"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" font.italic="1" background.mode="2" background.color="12632256" )
+text(band=detail alignment="1" text="1.000"border="0" color="0" x="1737" y="840" height="64" width="187"  name=t_mis_y  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" font.italic="1" background.mode="2" background.color="12632256" )
+text(band=detail alignment="0" text="x"border="0" color="0" x="1943" y="840" height="64" width="37"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" font.italic="1" background.mode="2" background.color="12632256" )
+text(band=detail alignment="1" text="1.000"border="0" color="0" x="1993" y="840" height="64" width="187"  name=t_mis_z  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" font.italic="1" background.mode="2" background.color="12632256" )
+text(band=detail alignment="0" text=")"border="0" color="0" x="2208" y="840" height="64" width="27"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" font.italic="1" background.mode="2" background.color="12632256" )
+text(band=detail alignment="1" text="Peso Kg:"border="0" color="8388608" x="73" y="972" height="64" width="265"  name=peso_kg_t  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=17 alignment="1" tabsequence=160 border="5" color="0" x="357" y="972" height="64" width="329" format="####0.00"  name=peso_kg edit.limit=0 edit.case=any edit.format="#####.##" edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Courier New" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="1090519039" )
+text(band=detail alignment="1" text="Forza mt. cubi x calcolo fattura:"border="0" color="8388608" x="1381" y="972" height="64" width="928"  name=m_cubi_f_t  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=14 alignment="1" tabsequence=170 border="5" color="0" x="2327" y="972" height="64" width="329" format="[general]"  name=m_cubi_f edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Courier New" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="1090519039" )
+text(band=detail alignment="1" text="Prezzo:"border="0" color="8388608" x="73" y="1108" height="64" width="229"  name=prezzo_t  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=19 alignment="1" tabsequence=180 border="5" color="0" x="320" y="1108" height="64" width="366" format="###,###,##0"  name=prezzo edit.limit=0 edit.case=any edit.format="#########" edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Courier New" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="1090519039" )
+text(band=detail alignment="1" text="a"border="0" color="8388608" x="718" y="1108" height="64" width="37"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=18 alignment="0" tabsequence=190 border="5" color="0" x="786" y="1108" height="64" width="475" format="[general]"  name=tipo ddlb.limit=0 ddlb.allowedit=no ddlb.case=any  font.face="Courier New" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="1090519039" )
+column(band=detail id=3 alignment="0" tabsequence=20 border="5" color="0" x="370" y="144" height="64" width="530" format="[general]"  name=cod_art dddw.name=d_prod_l dddw.displaycolumn=codice dddw.datacolumn=codice dddw.percentwidth=500 dddw.lines=0 dddw.limit=0 dddw.allowedit=yes dddw.useasborder=no dddw.case=upper dddw.hscrollbar=yes dddw.vscrollbar=yes  font.face="Courier New" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="0" background.mode="2" background.color="1090519039" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="5" color="0" x="965" y="144" height="64" width="1088" format="[general]"  name=cod_art_des dddw.name=d_prod_l dddw.displaycolumn=des dddw.datacolumn=codice dddw.percentwidth=100 dddw.lines=0 dddw.limit=0 dddw.allowedit=no dddw.useasborder=no dddw.case=any  font.face="Courier New" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+text(band=detail alignment="1" text="Contratto:"border="0" color="8388608" x="64" y="240" height="64" width="283"  name=cod_mc_co_t  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=detail alignment="1" text="mc-co:"border="0" color="8388608" x="352" y="248" height="56" width="192"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="0" tabsequence=30 border="5" color="0" x="571" y="240" height="64" width="402" format="[general]"  name=mc_co edit.limit=12 edit.case=upper edit.autoselect=yes  font.face="Courier New" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="1090519039" )
+text(band=detail alignment="1" text="sc-cf:"border="0" color="8388608" x="1038" y="248" height="56" width="155"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=detail alignment="1" text="codice:"border="0" color="8388608" x="1701" y="248" height="56" width="210"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=detail alignment="1" text="SL-PT:"border="0" color="8388608" x="160" y="340" height="64" width="192"  name=cod_sl_pt_t  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="0" tabsequence=60 border="5" color="0" x="370" y="340" height="64" width="530" format="[general]"  name=cod_sl_pt dddw.name=d_sl_pt_l dddw.displaycolumn=cod_sl_pt dddw.datacolumn=cod_sl_pt dddw.percentwidth=500 dddw.lines=0 dddw.limit=0 dddw.allowedit=yes dddw.useasborder=no dddw.case=upper dddw.hscrollbar=yes dddw.vscrollbar=yes  font.face="Courier New" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="1090519039" )
+column(band=detail id=8 alignment="0" tabsequence=32766 border="5" color="0" x="965" y="340" height="64" width="1088" format="[general]"  name=cod_sl_pt_des dddw.name=d_sl_pt_l dddw.displaycolumn=descr dddw.datacolumn=cod_sl_pt dddw.percentwidth=100 dddw.lines=0 dddw.limit=0 dddw.allowedit=no dddw.useasborder=no dddw.case=any  font.face="Courier New" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+column(band=detail id=7 alignment="0" tabsequence=40 border="5" color="0" x="1216" y="240" height="64" width="411" format="[general]"  name=sc_cf edit.limit=12 edit.case=upper edit.autoselect=yes  font.face="Courier New" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="1090519039" )
+column(band=detail id=5 alignment="0" tabsequence=50 border="5" color="0" x="1938" y="240" height="64" width="293" format="#####"  name=contratto dddw.name=d_contratti_l dddw.displaycolumn=codice dddw.datacolumn=codice dddw.percentwidth=700 dddw.lines=0 dddw.limit=0 dddw.allowedit=yes dddw.useasborder=no dddw.case=any dddw.hscrollbar=yes dddw.vscrollbar=yes  font.face="Courier New" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="1073741824" )
+htmltable(border="1" cellpadding="0" cellspacing="0" generatecss="no" nowrap="yes")

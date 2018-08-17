@@ -1,0 +1,49 @@
+﻿$PBExportHeader$st_tab_meca.srs
+global type st_tab_meca from structure
+	st_tab_g_0		st_tab_g_0
+	st_tab_meca_dosim		st_tab_meca_dosim		descriptor "comment" = "dati convalida dosimetrica tabella meca_dosim"
+	st_tab_meca_dosimbozza		st_tab_meca_dosimbozza
+	long		id
+	long		num_int
+	date		data_int
+	datetime		data_ent		descriptor "comment" = "data e ora di entrata a magazzino"
+	long		id_wm_pklist		descriptor "comment" = "id alla Packing-List Mandante"
+	string		num_bolla_in
+	date		data_bolla_in
+	long		clie_1
+	long		clie_2
+	long		clie_3
+	long		contratto
+	string		area_mag
+	string		aperto		descriptor "comment" = "S=aperto; N=chiuso; R=riaperto"
+	date		consegna_data
+	date		data_lav_fin
+	string		err_lav_fin
+	string		err_lav_ok		descriptor "comment" = "esito rilevazioni dosimetrie"
+	string		note_lav_ok		descriptor "comment" = "esito rilevazioni dosimetrie"
+	string		cert_forza_stampa
+	datetime		x_data_cert_f_st
+	string		x_utente_cert_f_st
+	string		cert_farma_st_ok
+	datetime		x_data_cert_farma
+	string		x_utente_cert_farm
+	string		cert_aliment_st_ok
+	datetime		x_data_cert_alim
+	string		x_utente_cert_alim
+	datetime		x_datins
+	string		x_utente
+	integer		stato
+	integer		stato_in_attenzione		descriptor "comment" = "solo x marcare questo lotto 'in attenzione' (=1)"
+	long		id_meca_causale
+	string		meca_blk_descrizione
+	integer		cod_blk
+	string		meca_blk_rich_autorizz		descriptor "comment" = "richiesta autorizzazione da utente specifico: M=mat.medicale "
+	long		e1doco		descriptor "comment" = "E1: work order number  "
+	long		e1rorn		descriptor "comment" = "E1: Sales_order number"
+	string		e1srst		descriptor "comment" = "E1: Stato da wasrst es 95 = chiuso"
+	datetime		x_datins_blk
+	string		x_utente_blk
+	datetime		x_datins_sblk
+	string		x_utente_sblk
+end type
+

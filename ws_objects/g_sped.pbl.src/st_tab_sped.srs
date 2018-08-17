@@ -1,0 +1,39 @@
+﻿$PBExportHeader$st_tab_sped.srs
+global type st_tab_sped from structure
+	st_tab_g_0		st_tab_g_0
+	st_tab_arsp		st_tab_arsp
+	long		id_sped
+	long		num_bolla_out
+	date		data_bolla_out
+	long		id_docprod		descriptor "comment" = "id che punta alla tabella docprod x visualizzare il documento"
+	long		clie_2
+	long		clie_3
+	string		stampa
+	string		rag_soc_1
+	string		rag_soc_2
+	string		indi
+	string		loc
+	string		prov
+	string		cap
+	string		id_nazione
+	long		colli
+	date		data_rit
+	string		ora_rit
+	date		data_uscita
+	string		vett_1
+	string		vett_2
+	string		note_1
+	string		note_2
+	string		caus_codice		descriptor "comment" = "codice causale di spedizione "
+	string		causale		descriptor "comment" = "la descrizione della causale di uscita"
+	string		ddt_st_num_data_in		descriptor "comment" = "N=non stampa num e data bolla di entrata"
+	string		aspetto
+	string		cura_trasp
+	string		porto
+	string		mezzo
+	integer		sv_call_vettore		descriptor "comment" = "1=chiamata vettore da fatturare"
+	string		form_di_stampa		descriptor "comment" = "nome del datawindow di stampa"
+	datetime		x_datins
+	string		x_utente
+end type
+

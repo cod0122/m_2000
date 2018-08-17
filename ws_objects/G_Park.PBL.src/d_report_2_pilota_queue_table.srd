@@ -1,0 +1,116 @@
+﻿$PBExportHeader$d_report_2_pilota_queue_table.srd
+release 10.5;
+datawindow(units=0 timer_interval=0 color=1073741824 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes print.preview.outline=yes hidegrayline=no grid.lines=0 )
+header(height=140 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=76 color="536870912" )
+detail(height=92 color="536870912" )
+table(column=(type=long update=yes updatewhereclause=yes name=ordine dbname="queue_table.Ordine" dbalias=".Ordine" )
+ column=(type=char(12) update=yes updatewhereclause=yes name=barcode dbname="queue_table.Barcode" dbalias=".Barcode" )
+ column=(type=char(4) update=yes updatewhereclause=yes name=posizione dbname="queue_table.Posizione" dbalias=".Posizione" )
+ column=(type=decimal(2) update=yes updatewhereclause=yes name=ciclifila1 dbname="CicliFila1" )
+ column=(type=decimal(2) update=yes updatewhereclause=yes name=ciclifila2 dbname="CicliFila2" )
+ column=(type=decimal(2) update=yes updatewhereclause=yes name=ciclifila1p dbname="CicliFila1P" )
+ column=(type=decimal(2) update=yes updatewhereclause=yes name=ciclifila2p dbname="CicliFila2P" )
+ column=(type=char(1) updatewhereclause=yes name=k_consegna_data dbname="queue_table.k_consegna_data" dbalias=".k_consegna_data" )
+ column=(type=decimal(0) updatewhereclause=yes name=num_int dbname="num_int" )
+ column=(type=char(1) updatewhereclause=yes name=k_note_1 dbname="queue_table.k_note_1" dbalias=".k_note_1" )
+ column=(type=char(1) updatewhereclause=yes name=k_note_2 dbname="queue_table.k_note_2" dbalias=".k_note_2" )
+ column=(type=date updatewhereclause=yes name=data_int dbname="data_int" )
+ column=(type=decimal(0) updatewhereclause=yes name=id_meca dbname="id_meca" )
+ column=(type=decimal(0) updatewhereclause=yes name=k_clie_2 dbname="k_clie_2" )
+ column=(type=char(1) updatewhereclause=yes name=k_area_mag dbname="queue_table.k_area_mag" dbalias=".k_area_mag" )
+ column=(type=char(1) updatewhereclause=yes name=k_rag_soc_10 dbname="queue_table.k_rag_soc_10" dbalias=".k_rag_soc_10" )
+ column=(type=char(1) updatewhereclause=yes name=k_colli dbname="queue_table.k_colli" dbalias=".k_colli" )
+ column=(type=char(12) updatewhereclause=yes name=groupage_barcode_figlio dbname="groupage.barcode_figlio" dbalias=".barcode_figlio" )
+ column=(type=number updatewhereclause=yes name=groupage_ordine_figlio dbname="groupage.ordine_figlio" dbalias=".ordine_figlio" )
+ retrieve="SELECT  queue_table.Ordine ,
+           queue_table.Barcode ,
+           queue_table.Posizione ,
+           cast(queue_table.CicliFila1 as decimal)  CicliFila1,
+           cast(queue_table.CicliFila2 as decimal)  CicliFila2,
+           cast(queue_table.CicliFila1P as decimal)  CicliFila1P,
+           cast(queue_table.CicliFila2P as decimal)  CicliFila2P
+	   , ~" ~" as k_consegna_data
+	   , 0 as num_int
+	   , ~" ~" as k_note_1
+	   , ~" ~" as k_note_2
+	   , date(0) as data_int
+	   , 0 as id_meca
+	   , 0 as k_clie_2
+	   , ~" ~" as k_area_mag
+	   , ~" ~" as k_rag_soc_10
+	   , ~" ~" as k_colli
+	   , groupage.pallet_figlio as barcode_figlio
+       , groupage.ordine_figlio as ordine_figlio
+        FROM queue_table left outer join groupage
+                 on queue_table.Barcode = groupage.padre
+"  sort="ordine A " )
+text(band=header alignment="0" text=" Colli 
+ Lav./Ent." border="0" color="33554432" x="4622" y="8" height="128" width="288" html.valueishtml="0"  name=k_colli_t visible="1"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="67108864" )
+text(band=header alignment="0" text=" Id Rif." border="0" color="33554432" x="4919" y="8" height="128" width="219" html.valueishtml="0"  name=id_meca_t visible="0"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="67108864" )
+text(band=header alignment="0" text=" Barcode
+ " border="0" color="33554432" x="9" y="8" height="128" width="384" html.valueishtml="0"  name=barcode_t visible="1"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="67108864" )
+text(band=header alignment="0" text=" Ric.
+ Cod." border="0" color="33554432" x="402" y="8" height="128" width="174" html.valueishtml="0"  name=k_clie_2_t visible="1"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="67108864" )
+text(band=header alignment="0" text=" Fila
+ 1" border="0" color="33554432" x="3666" y="8" height="128" width="187" html.valueishtml="0"  name=ciclifila1_t visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="67108864" )
+text(band=header alignment="0" text=" Fila
+ 2" border="0" color="33554432" x="3863" y="8" height="128" width="169" html.valueishtml="0"  name=ciclifila2_t visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="67108864" )
+text(band=header alignment="0" text=" Fila 1
+ perm" border="0" color="33554432" x="4041" y="8" height="120" width="178" html.valueishtml="0"  name=ciclifila1p_t visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="67108864" )
+text(band=header alignment="0" text=" Nominativo
+ " border="0" color="33554432" x="585" y="8" height="128" width="608" html.valueishtml="0"  name=k_rag_soc_10_t visible="1"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="67108864" )
+text(band=header alignment="0" text=" Ubicaz.
+ magazz." border="0" color="33554432" x="3278" y="8" height="128" width="379" html.valueishtml="0"  name=k_area_mag_t visible="1"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="67108864" )
+text(band=header alignment="0" text=" Fila 2
+ perm" border="0" color="33554432" x="4229" y="8" height="128" width="187" html.valueishtml="0"  name=ciclifila2p_t visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="67108864" )
+text(band=header alignment="0" text=" Ord.
+ " border="0" color="128" x="4425" y="8" height="128" width="187" html.valueishtml="0"  name=ordine_t visible="1"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="67108864" )
+text(band=header alignment="0" text=" Data
+ Consegna" border="0" color="33554432" x="1202" y="8" height="128" width="320" html.valueishtml="0"  name=k_consegna_data_t visible="1"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="67108864" )
+text(band=header alignment="0" text=" Data
+ Rif." border="0" color="33554432" x="2994" y="8" height="128" width="274" html.valueishtml="0"  name=data_int_t visible="1"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="67108864" )
+text(band=header alignment="0" text=" Num.
+ Rif." border="0" color="33554432" x="1531" y="8" height="128" width="219" html.valueishtml="0"  name=num_int_t visible="1"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="67108864" )
+text(band=header alignment="0" text=" Note 1
+ " border="0" color="33554432" x="1760" y="8" height="128" width="539" html.valueishtml="0"  name=k_note_1_t visible="1"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="67108864" )
+text(band=header alignment="0" text=" Note 2
+ " border="0" color="33554432" x="2309" y="8" height="128" width="677" html.valueishtml="0"  name=k_note_2_t visible="1"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="67108864" )
+column(band=detail id=15 alignment="0" tabsequence=32766 border="0" color="33554432" x="3278" y="0" height="84" width="379" format=" [General]" html.valueishtml="0"  name=k_area_mag visible="1" edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=14 alignment="1" tabsequence=32766 border="0" color="33554432" x="402" y="0" height="84" width="174" format="[General] " html.valueishtml="0"  name=k_clie_2 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=16 alignment="0" tabsequence=32766 border="0" color="33554432" x="585" y="0" height="84" width="608" format=" [General]" html.valueishtml="0"  name=k_rag_soc_10 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=1 alignment="1" tabsequence=32766 border="0" color="33554432" x="4425" y="0" height="84" width="187" format="[General] " html.valueishtml="0"  name=ordine visible="1" edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="67108864" )
+column(band=detail id=12 alignment="0" tabsequence=32766 border="0" color="33554432" x="2994" y="0" height="84" width="274" format=" dd.mmm" html.valueishtml="0"  name=data_int visible="1" edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=13 alignment="1" tabsequence=32766 border="0" color="33554432" x="4919" y="0" height="84" width="219" format="[General] " html.valueishtml="0"  name=id_meca visible="0" edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=17 alignment="1" tabsequence=32766 border="0" color="33554432" x="4622" y="0" height="84" width="288" format="[General] " html.valueishtml="0"  name=k_colli visible="1" edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="1" tabsequence=32766 border="0" color="33554432" x="3666" y="0" height="84" width="187" format="###0 " html.valueishtml="0"  name=ciclifila1 visible="1" edit.limit=2 edit.case=any edit.focusrectangle=no edit.autoselect=no  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="1" tabsequence=32766 border="0" color="33554432" x="3863" y="0" height="84" width="169" format="###0 " html.valueishtml="0"  name=ciclifila2 visible="1" edit.limit=2 edit.case=any edit.focusrectangle=no edit.autoselect=no  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="1" tabsequence=32766 border="0" color="33554432" x="4041" y="0" height="84" width="178" format="###0 " html.valueishtml="0"  name=ciclifila1p visible="1" edit.limit=2 edit.case=any edit.focusrectangle=no edit.autoselect=no  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="1" tabsequence=32766 border="0" color="33554432" x="4229" y="0" height="84" width="187" format="###0 " html.valueishtml="0"  name=ciclifila2p visible="1" edit.limit=2 edit.case=any edit.focusrectangle=no edit.autoselect=no  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="0" tabsequence=32766 border="0" color="33554432" x="1202" y="0" height="84" width="320" format=" [General]" html.valueishtml="0"  name=k_consegna_data visible="1" edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=10 alignment="0" tabsequence=32766 border="0" color="33554432" x="1760" y="0" height="84" width="539" format=" [General]" html.valueishtml="0"  name=k_note_1 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=11 alignment="0" tabsequence=32766 border="0" color="33554432" x="2309" y="0" height="84" width="677" format=" [General]" html.valueishtml="0"  name=k_note_2 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=9 alignment="1" tabsequence=32766 border="0" color="134217856" x="1531" y="0" height="84" width="219" format="[General] " html.valueishtml="0"  name=num_int pointer="HyperLink!" visible="1" edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="134217856" x="9" y="0" height="84" width="384" format=" [general]" html.valueishtml="0"  name=barcode visible="1" edit.limit=12 edit.case=any edit.focusrectangle=no edit.autoselect=no  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=footer alignment="0" expression="~"Tot.: ~" + count ( barcode for all)"border="0" color="128" x="9" y="4" height="64" width="384" format="[GENERAL]" html.valueishtml="0"  name=compute_1 visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" font.italic="1" background.mode="1" background.color="536870912" )
+compute(band=footer alignment="1" expression="string(sum(ciclifila1 for all  ), ~"#### ~")"border="0" color="128" x="3666" y="4" height="64" width="187" format="[General]" html.valueishtml="0"  name=compute_2 visible="1"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=footer alignment="1" expression="string(sum(ciclifila2 for all  ), ~"#### ~")"border="0" color="128" x="3863" y="4" height="64" width="169" format="[General]" html.valueishtml="0"  name=compute_3 visible="1"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=footer alignment="1" expression="string(sum(ciclifila1p for all  ), ~"#### ~")"border="0" color="128" x="4041" y="4" height="64" width="178" format="[General]" html.valueishtml="0"  name=compute_4 visible="1"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=footer alignment="1" expression="string(sum(ciclifila2p for all  ), ~"#### ~")"border="0" color="128" x="4229" y="0" height="64" width="187" format="[General]" html.valueishtml="0"  name=compute_5 visible="1"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=19 alignment="0" tabsequence=0 border="0" color="33554432" x="5157" y="0" height="64" width="2126" html.valueishtml="0"  name=groupage_ordine_figlio visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="0" text="Groupage Ordine Figlio" border="0" color="134217856" x="5152" y="4" height="64" width="2130" html.valueishtml="0"  name=groupage_ordine_figlio_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=18 alignment="0" tabsequence=0 border="0" color="33554432" x="7296" y="0" height="64" width="315" html.valueishtml="0"  name=groupage_barcode_figlio visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="0" text="Groupage Barcode Figlio" border="0" color="134217856" x="7291" y="4" height="64" width="320" html.valueishtml="0"  name=groupage_barcode_figlio_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+
+sparse(names="k_clie_2	k_rag_soc_10	k_colli	num_int	data_int	k_consegna_data	k_note_2	k_note_1")htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" pagingmethod=0 generatedddwframes="1" )
+xhtmlgen() cssgen(sessionspecific="0" )
+xmlgen(inline="0" )
+xsltgen()
+jsgen()
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+export.xhtml()
+ 

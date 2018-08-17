@@ -1,0 +1,54 @@
+﻿$PBExportHeader$d_arfa_note.srd
+release 11;
+datawindow(units=0 timer_interval=0 color=33540539 processing=0 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes print.preview.outline=yes hidegrayline=no showbackcoloronxp=no )
+header(height=0 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=776 color="536870912" )
+table(column=(type=long update=yes updatewhereclause=yes name=num_fatt dbname="fat1.num_fatt" )
+ column=(type=date update=yes updatewhereclause=yes name=data_fatt dbname="fat1.data_fatt" )
+ column=(type=long update=yes updatewhereclause=yes key=yes name=id_fattura dbname="fat1.id_fattura" )
+ column=(type=char(70) update=yes updatewhereclause=yes name=note_1 dbname="fat1.note_1" )
+ column=(type=char(70) update=yes updatewhereclause=yes name=note_2 dbname="fat1.note_2" )
+ column=(type=char(70) update=yes updatewhereclause=yes name=note_3 dbname="fat1.note_3" )
+ column=(type=char(70) update=yes updatewhereclause=yes name=note_4 dbname="fat1.note_4" )
+ column=(type=char(70) update=yes updatewhereclause=yes name=note_5 dbname="fat1.note_5" )
+ retrieve="  SELECT fat1.num_fatt,   
+         fat1.data_fatt,   
+         fat1.id_fattura,   
+         fat1.note_1,   
+         fat1.note_2,   
+         fat1.note_3,   
+         fat1.note_4,   
+         fat1.note_5  
+    FROM fat1  
+   WHERE fat1.id_fattura = :k_id_fattura    
+" update="fat1" updatewhere=1 updatekeyinplace=no arguments=(("k_id_fattura", number)) )
+groupbox(band=detail text=" Note "border="5" color="8388608" x="32" y="112" height="628" width="2304"  name=gb_note visible="1"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="553648127" )
+text(band=detail alignment="1" text="Fattura:" border="0" color="33554432" x="37" y="12" height="64" width="270" html.valueishtml="0"  name=num_fatt_t visible="1"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=1 alignment="1" tabsequence=32766 border="0" color="33554432" x="325" y="12" height="64" width="201" format="[general]" html.valueishtml="0"  name=num_fatt visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=detail alignment="1" text="Id:" border="0" color="33554432" x="1554" y="12" height="64" width="270" html.valueishtml="0"  name=id_fattura_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="0" color="128" x="1842" y="12" height="64" width="329" format="[general]" html.valueishtml="0"  name=id_fattura visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=detail alignment="1" text="del: " border="0" color="33554432" x="599" y="12" height="64" width="128" html.valueishtml="0"  name=data_fatt_t visible="1"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="33554432" x="768" y="12" height="64" width="329" format="[general]" html.valueishtml="0"  name=data_fatt visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="0" tabsequence=10 border="5" color="33554432" x="288" y="208" height="76" width="1947" format="[general]" html.valueishtml="0"  name=note_1 visible="1" edit.limit=70 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=detail alignment="1" text="riga 1:" border="0" color="33554432" x="55" y="220" height="64" width="206" html.valueishtml="0"  name=note_1_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" font.italic="1" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="0" tabsequence=20 border="5" color="33554432" x="288" y="304" height="76" width="1947" format="[general]" html.valueishtml="0"  name=note_2 visible="1" edit.limit=70 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=detail alignment="1" text="riga 2:" border="0" color="33554432" x="55" y="316" height="64" width="206" html.valueishtml="0"  name=note_2_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" font.italic="1" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="0" tabsequence=30 border="5" color="33554432" x="288" y="400" height="76" width="1947" format="[general]" html.valueishtml="0"  name=note_3 visible="1" edit.limit=70 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=detail alignment="1" text="riga 3:" border="0" color="33554432" x="50" y="412" height="64" width="206" html.valueishtml="0"  name=note_3_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" font.italic="1" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="0" tabsequence=40 border="5" color="33554432" x="288" y="496" height="76" width="1947" format="[general]" html.valueishtml="0"  name=note_4 visible="1" edit.limit=70 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=detail alignment="1" text="riga 4:" border="0" color="33554432" x="55" y="508" height="64" width="206" html.valueishtml="0"  name=note_4_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" font.italic="1" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="0" tabsequence=50 border="5" color="33554432" x="288" y="592" height="76" width="1947" format="[general]" html.valueishtml="0"  name=note_5 visible="1" edit.limit=70 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=detail alignment="1" text="riga 5:" border="0" color="33554432" x="55" y="604" height="64" width="206" html.valueishtml="0"  name=note_5_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" font.italic="1" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" pagingmethod=0 generatedddwframes="1" )
+xhtmlgen() cssgen(sessionspecific="0" )
+xmlgen(inline="0" )
+xsltgen()
+jsgen()
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+export.xhtml()
+ 

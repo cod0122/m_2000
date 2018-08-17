@@ -1,0 +1,24 @@
+﻿$PBExportHeader$st_ricevute_scadenze.srs
+global type st_ricevute_scadenze from structure
+	double		importo_1
+	double		importo_2
+	double		importo_3
+	double		importo_4
+	double		importo_5
+	double		importo_6
+	double		importo_7
+	double		importo_8
+	double		importo_9
+	double		importo_10
+	date		data_1
+	date		data_2
+	date		data_3
+	date		data_4
+	date		data_5
+	date		data_6
+	date		data_7
+	date		data_8
+	date		data_9
+	date		data_10
+end type
+

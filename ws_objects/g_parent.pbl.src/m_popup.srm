@@ -1,0 +1,2224 @@
+﻿$PBExportHeader$m_popup.srm
+forward
+global type m_popup from menu
+end type
+type m_pop_lib_1 from menu within m_popup
+end type
+type m_pop_lib_2 from menu within m_popup
+end type
+type m_t_pop_lib_1 from menu within m_popup
+end type
+type m_lib_1 from menu within m_popup
+end type
+type m_t_lib_1 from menu within m_popup
+end type
+type m_lib_2 from menu within m_popup
+end type
+type m_t_lib_2 from menu within m_popup
+end type
+type m_lib_3 from menu within m_popup
+end type
+type m_t_lib_3 from menu within m_popup
+end type
+type m_lib_4 from menu within m_popup
+end type
+type m_lib_5 from menu within m_popup
+end type
+type m_lib_6 from menu within m_popup
+end type
+type m_t_lib_4 from menu within m_popup
+end type
+type m_lib_71 from menu within m_popup
+end type
+type m_lib_72 from menu within m_popup
+end type
+type m_lib_73 from menu within m_popup
+end type
+type m_lib_74 from menu within m_popup
+end type
+type m_lib_75 from menu within m_popup
+end type
+type m_t_lib_7 from menu within m_popup
+end type
+type m_lib_8 from menu within m_popup
+end type
+type m_lib_9 from menu within m_popup
+end type
+type m_lib_10 from menu within m_popup
+end type
+type m_t_lib_8 from menu within m_popup
+end type
+type m_conferma from menu within m_popup
+end type
+type m_visualizza from menu within m_popup
+end type
+type m_inserisci from menu within m_popup
+end type
+type m_modifica from menu within m_popup
+end type
+type m_t_modifica from menu within m_popup
+end type
+type m_stampa from menu within m_popup
+end type
+type m_t_stampa from menu within m_popup
+end type
+type m_cancella from menu within m_popup
+end type
+type m_t_cancella from menu within m_popup
+end type
+type m_zoom_a from menu within m_popup
+end type
+type m_zoom_i from menu within m_popup
+end type
+type m_adatta from menu within m_popup
+end type
+type m_t_zoom from menu within m_popup
+end type
+type m_cerca from menu within m_popup
+end type
+type m_t_cerca from menu within m_popup
+end type
+type m_filtro from menu within m_popup
+end type
+type m_t_filtro from menu within m_popup
+end type
+type m_agglista from menu within m_popup
+end type
+type m_t_agglista from menu within m_popup
+end type
+type m_copiaabilitata from menu within m_popup
+end type
+type m_copia from menu within m_popup
+end type
+type m_t_cutpaste from menu within m_popup
+end type
+type m_impostazioni_utente from menu within m_popup
+end type
+type m_ritorna from menu within m_popup
+end type
+global type m_popup from menu
+m_pop_lib_1 m_pop_lib_1
+m_pop_lib_2 m_pop_lib_2
+m_t_pop_lib_1 m_t_pop_lib_1
+m_lib_1 m_lib_1
+m_t_lib_1 m_t_lib_1
+m_lib_2 m_lib_2
+m_t_lib_2 m_t_lib_2
+m_lib_3 m_lib_3
+m_t_lib_3 m_t_lib_3
+m_lib_4 m_lib_4
+m_lib_5 m_lib_5
+m_lib_6 m_lib_6
+m_t_lib_4 m_t_lib_4
+m_lib_71 m_lib_71
+m_lib_72 m_lib_72
+m_lib_73 m_lib_73
+m_lib_74 m_lib_74
+m_lib_75 m_lib_75
+m_t_lib_7 m_t_lib_7
+m_lib_8 m_lib_8
+m_lib_9 m_lib_9
+m_lib_10 m_lib_10
+m_t_lib_8 m_t_lib_8
+m_conferma m_conferma
+m_visualizza m_visualizza
+m_inserisci m_inserisci
+m_modifica m_modifica
+m_t_modifica m_t_modifica
+m_stampa m_stampa
+m_t_stampa m_t_stampa
+m_cancella m_cancella
+m_t_cancella m_t_cancella
+m_zoom_a m_zoom_a
+m_zoom_i m_zoom_i
+m_adatta m_adatta
+m_t_zoom m_t_zoom
+m_cerca m_cerca
+m_t_cerca m_t_cerca
+m_filtro m_filtro
+m_t_filtro m_t_filtro
+m_agglista m_agglista
+m_t_agglista m_t_agglista
+m_copiaabilitata m_copiaabilitata
+m_copia m_copia
+m_t_cutpaste m_t_cutpaste
+m_impostazioni_utente m_impostazioni_utente
+m_ritorna m_ritorna
+end type
+end forward
+
+global type m_popup from menu
+m_pop_lib_1 m_pop_lib_1
+m_pop_lib_2 m_pop_lib_2
+m_t_pop_lib_1 m_t_pop_lib_1
+m_lib_1 m_lib_1
+m_t_lib_1 m_t_lib_1
+m_lib_2 m_lib_2
+m_t_lib_2 m_t_lib_2
+m_lib_3 m_lib_3
+m_t_lib_3 m_t_lib_3
+m_lib_4 m_lib_4
+m_lib_5 m_lib_5
+m_lib_6 m_lib_6
+m_t_lib_4 m_t_lib_4
+m_lib_71 m_lib_71
+m_lib_72 m_lib_72
+m_lib_73 m_lib_73
+m_lib_74 m_lib_74
+m_lib_75 m_lib_75
+m_t_lib_7 m_t_lib_7
+m_lib_8 m_lib_8
+m_lib_9 m_lib_9
+m_lib_10 m_lib_10
+m_t_lib_8 m_t_lib_8
+m_conferma m_conferma
+m_visualizza m_visualizza
+m_inserisci m_inserisci
+m_modifica m_modifica
+m_t_modifica m_t_modifica
+m_stampa m_stampa
+m_t_stampa m_t_stampa
+m_cancella m_cancella
+m_t_cancella m_t_cancella
+m_zoom_a m_zoom_a
+m_zoom_i m_zoom_i
+m_adatta m_adatta
+m_t_zoom m_t_zoom
+m_cerca m_cerca
+m_t_cerca m_t_cerca
+m_filtro m_filtro
+m_t_filtro m_t_filtro
+m_agglista m_agglista
+m_t_agglista m_t_agglista
+m_copiaabilitata m_copiaabilitata
+m_copia m_copia
+m_t_cutpaste m_t_cutpaste
+m_impostazioni_utente m_impostazioni_utente
+m_ritorna m_ritorna
+end type
+global m_popup m_popup
+
+forward prototypes
+public subroutine u_inizializza ()
+public subroutine u_copia_off ()
+end prototypes
+
+public subroutine u_inizializza ();//
+//--- Imposta cose all'inizio
+//
+GraphicObject  kgo_1
+datawindow kdw_1
+string k_nome
+
+kgo_1 = getfocus() 
+
+if isvalid(kgo_1) then
+	
+	m_impostazioni_utente.menuimage = "settings.png"
+	
+	if kgo_1.typeof( ) = MultiLineEdit! then
+		this.m_copiaabilitata.checked = true
+	elseif kgo_1.typeof( ) = SingleLineEdit! then
+		this.m_copiaabilitata.checked = true
+	elseif kgo_1.typeof( ) = RichTextEdit! then
+		this.m_copiaabilitata.checked = true
+	elseif kgo_1.typeof( ) = InkEdit! then
+		this.m_copiaabilitata.checked = true
+	
+	elseif kgo_1.typeof( ) = datawindow! then
+		
+		kdw_1 = kgo_1
+		
+		if isvalid(kdw_1) then
+			if kdw_1.rowcount() > 0 then
+				k_nome = kdw_1.getcolumnname( )
+				//--- set copia-abilitata se dw ha l'opzione selected-mouse abilitata oppure se sono su un campo di edit
+				if kdw_1.Describe("DataWindow.Selected.Mouse") = "yes" or k_nome > " " then
+					this.m_copiaabilitata.checked = true
+				else
+					this.m_copiaabilitata.checked = false
+				end if
+			end if
+		end if
+	else
+		this.m_copiaabilitata.checked = false
+		this.m_copiaabilitata.enabled = false
+		this.m_copia.enabled = false
+	end if
+	
+end if
+
+end subroutine
+
+public subroutine u_copia_off ();//
+//--- Imposta cose all'inizio
+//
+	this.m_copiaabilitata.visible = false
+	this.m_copia.visible = false
+
+
+end subroutine
+
+on m_popup.create
+m_popup=this
+call super::create
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbargradient = true
+this.bitmapgradient = true
+this.m_pop_lib_1=create m_pop_lib_1
+this.m_pop_lib_2=create m_pop_lib_2
+this.m_t_pop_lib_1=create m_t_pop_lib_1
+this.m_lib_1=create m_lib_1
+this.m_t_lib_1=create m_t_lib_1
+this.m_lib_2=create m_lib_2
+this.m_t_lib_2=create m_t_lib_2
+this.m_lib_3=create m_lib_3
+this.m_t_lib_3=create m_t_lib_3
+this.m_lib_4=create m_lib_4
+this.m_lib_5=create m_lib_5
+this.m_lib_6=create m_lib_6
+this.m_t_lib_4=create m_t_lib_4
+this.m_lib_71=create m_lib_71
+this.m_lib_72=create m_lib_72
+this.m_lib_73=create m_lib_73
+this.m_lib_74=create m_lib_74
+this.m_lib_75=create m_lib_75
+this.m_t_lib_7=create m_t_lib_7
+this.m_lib_8=create m_lib_8
+this.m_lib_9=create m_lib_9
+this.m_lib_10=create m_lib_10
+this.m_t_lib_8=create m_t_lib_8
+this.m_conferma=create m_conferma
+this.m_visualizza=create m_visualizza
+this.m_inserisci=create m_inserisci
+this.m_modifica=create m_modifica
+this.m_t_modifica=create m_t_modifica
+this.m_stampa=create m_stampa
+this.m_t_stampa=create m_t_stampa
+this.m_cancella=create m_cancella
+this.m_t_cancella=create m_t_cancella
+this.m_zoom_a=create m_zoom_a
+this.m_zoom_i=create m_zoom_i
+this.m_adatta=create m_adatta
+this.m_t_zoom=create m_t_zoom
+this.m_cerca=create m_cerca
+this.m_t_cerca=create m_t_cerca
+this.m_filtro=create m_filtro
+this.m_t_filtro=create m_t_filtro
+this.m_agglista=create m_agglista
+this.m_t_agglista=create m_t_agglista
+this.m_copiaabilitata=create m_copiaabilitata
+this.m_copia=create m_copia
+this.m_t_cutpaste=create m_t_cutpaste
+this.m_impostazioni_utente=create m_impostazioni_utente
+this.m_ritorna=create m_ritorna
+this.Item[UpperBound(this.Item)+1]=this.m_pop_lib_1
+this.Item[UpperBound(this.Item)+1]=this.m_pop_lib_2
+this.Item[UpperBound(this.Item)+1]=this.m_t_pop_lib_1
+this.Item[UpperBound(this.Item)+1]=this.m_lib_1
+this.Item[UpperBound(this.Item)+1]=this.m_t_lib_1
+this.Item[UpperBound(this.Item)+1]=this.m_lib_2
+this.Item[UpperBound(this.Item)+1]=this.m_t_lib_2
+this.Item[UpperBound(this.Item)+1]=this.m_lib_3
+this.Item[UpperBound(this.Item)+1]=this.m_t_lib_3
+this.Item[UpperBound(this.Item)+1]=this.m_lib_4
+this.Item[UpperBound(this.Item)+1]=this.m_lib_5
+this.Item[UpperBound(this.Item)+1]=this.m_lib_6
+this.Item[UpperBound(this.Item)+1]=this.m_t_lib_4
+this.Item[UpperBound(this.Item)+1]=this.m_lib_71
+this.Item[UpperBound(this.Item)+1]=this.m_lib_72
+this.Item[UpperBound(this.Item)+1]=this.m_lib_73
+this.Item[UpperBound(this.Item)+1]=this.m_lib_74
+this.Item[UpperBound(this.Item)+1]=this.m_lib_75
+this.Item[UpperBound(this.Item)+1]=this.m_t_lib_7
+this.Item[UpperBound(this.Item)+1]=this.m_lib_8
+this.Item[UpperBound(this.Item)+1]=this.m_lib_9
+this.Item[UpperBound(this.Item)+1]=this.m_lib_10
+this.Item[UpperBound(this.Item)+1]=this.m_t_lib_8
+this.Item[UpperBound(this.Item)+1]=this.m_conferma
+this.Item[UpperBound(this.Item)+1]=this.m_visualizza
+this.Item[UpperBound(this.Item)+1]=this.m_inserisci
+this.Item[UpperBound(this.Item)+1]=this.m_modifica
+this.Item[UpperBound(this.Item)+1]=this.m_t_modifica
+this.Item[UpperBound(this.Item)+1]=this.m_stampa
+this.Item[UpperBound(this.Item)+1]=this.m_t_stampa
+this.Item[UpperBound(this.Item)+1]=this.m_cancella
+this.Item[UpperBound(this.Item)+1]=this.m_t_cancella
+this.Item[UpperBound(this.Item)+1]=this.m_zoom_a
+this.Item[UpperBound(this.Item)+1]=this.m_zoom_i
+this.Item[UpperBound(this.Item)+1]=this.m_adatta
+this.Item[UpperBound(this.Item)+1]=this.m_t_zoom
+this.Item[UpperBound(this.Item)+1]=this.m_cerca
+this.Item[UpperBound(this.Item)+1]=this.m_t_cerca
+this.Item[UpperBound(this.Item)+1]=this.m_filtro
+this.Item[UpperBound(this.Item)+1]=this.m_t_filtro
+this.Item[UpperBound(this.Item)+1]=this.m_agglista
+this.Item[UpperBound(this.Item)+1]=this.m_t_agglista
+this.Item[UpperBound(this.Item)+1]=this.m_copiaabilitata
+this.Item[UpperBound(this.Item)+1]=this.m_copia
+this.Item[UpperBound(this.Item)+1]=this.m_t_cutpaste
+this.Item[UpperBound(this.Item)+1]=this.m_impostazioni_utente
+this.Item[UpperBound(this.Item)+1]=this.m_ritorna
+end on
+
+on m_popup.destroy
+call super::destroy
+destroy(this.m_pop_lib_1)
+destroy(this.m_pop_lib_2)
+destroy(this.m_t_pop_lib_1)
+destroy(this.m_lib_1)
+destroy(this.m_t_lib_1)
+destroy(this.m_lib_2)
+destroy(this.m_t_lib_2)
+destroy(this.m_lib_3)
+destroy(this.m_t_lib_3)
+destroy(this.m_lib_4)
+destroy(this.m_lib_5)
+destroy(this.m_lib_6)
+destroy(this.m_t_lib_4)
+destroy(this.m_lib_71)
+destroy(this.m_lib_72)
+destroy(this.m_lib_73)
+destroy(this.m_lib_74)
+destroy(this.m_lib_75)
+destroy(this.m_t_lib_7)
+destroy(this.m_lib_8)
+destroy(this.m_lib_9)
+destroy(this.m_lib_10)
+destroy(this.m_t_lib_8)
+destroy(this.m_conferma)
+destroy(this.m_visualizza)
+destroy(this.m_inserisci)
+destroy(this.m_modifica)
+destroy(this.m_t_modifica)
+destroy(this.m_stampa)
+destroy(this.m_t_stampa)
+destroy(this.m_cancella)
+destroy(this.m_t_cancella)
+destroy(this.m_zoom_a)
+destroy(this.m_zoom_i)
+destroy(this.m_adatta)
+destroy(this.m_t_zoom)
+destroy(this.m_cerca)
+destroy(this.m_t_cerca)
+destroy(this.m_filtro)
+destroy(this.m_t_filtro)
+destroy(this.m_agglista)
+destroy(this.m_t_agglista)
+destroy(this.m_copiaabilitata)
+destroy(this.m_copia)
+destroy(this.m_t_cutpaste)
+destroy(this.m_impostazioni_utente)
+destroy(this.m_ritorna)
+end on
+
+type m_pop_lib_1 from menu within m_popup
+end type
+
+on m_pop_lib_1.create
+call super::create
+this.visible = false
+this.text = "popup libero 1"
+this.enabled = false
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_pop_lib_1.destroy
+call super::destroy
+end on
+
+event clicked;//
+//w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+//kw_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(kguo_g.kgw_attiva) THEN
+	kguo_g.kgw_attiva.event ue_menu( "p1")	
+end if
+
+end event
+
+type m_pop_lib_2 from menu within m_popup
+end type
+
+on m_pop_lib_2.create
+call super::create
+this.visible = false
+this.text = "popup libero 2"
+this.enabled = false
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_pop_lib_2.destroy
+call super::destroy
+end on
+
+event clicked;//
+//w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+//kw_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(kguo_g.kgw_attiva) THEN
+	kguo_g.kgw_attiva.event ue_menu( "p2")	
+end if
+
+end event
+
+type m_t_pop_lib_1 from menu within m_popup
+end type
+
+on m_t_pop_lib_1.create
+call super::create
+this.visible = false
+this.text = "-"
+this.enabled = false
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_t_pop_lib_1.destroy
+call super::destroy
+end on
+
+type m_lib_1 from menu within m_popup
+end type
+
+on clicked;//
+//w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+//kw_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(kguo_g.kgw_attiva) THEN
+	kguo_g.kgw_attiva.event ue_menu(KKG_FLAG_RICHIESTA.LIBERO1)	
+end if
+
+end on
+
+on m_lib_1.create
+call super::create
+this.tag = "[Alt+1]"
+this.visible = false
+this.text = "Libero"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbaranimation = true
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_lib_1.destroy
+call super::destroy
+end on
+
+type m_t_lib_1 from menu within m_popup
+end type
+
+on m_t_lib_1.create
+call super::create
+this.visible = false
+this.text = "-"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_t_lib_1.destroy
+call super::destroy
+end on
+
+type m_lib_2 from menu within m_popup
+end type
+
+event clicked;//
+//w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+//kw_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(kguo_g.kgw_attiva) THEN
+	kguo_g.kgw_attiva.event ue_menu(KKG_FLAG_RICHIESTA.LIBERO2)	
+end if
+
+end event
+
+on m_lib_2.create
+call super::create
+this.visible = false
+this.text = "Libero"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbaranimation = true
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_lib_2.destroy
+call super::destroy
+end on
+
+type m_t_lib_2 from menu within m_popup
+end type
+
+on m_t_lib_2.create
+call super::create
+this.visible = false
+this.text = "-"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_t_lib_2.destroy
+call super::destroy
+end on
+
+type m_lib_3 from menu within m_popup
+end type
+
+on m_lib_3.create
+call super::create
+this.visible = false
+this.text = "libero"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbaranimation = true
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_lib_3.destroy
+call super::destroy
+end on
+
+event clicked;//
+//w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+//kw_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(kguo_g.kgw_attiva) THEN
+	kguo_g.kgw_attiva.event ue_menu(KKG_FLAG_RICHIESTA.LIBERO3)	
+end if
+
+end event
+
+type m_t_lib_3 from menu within m_popup
+end type
+
+on m_t_lib_3.create
+call super::create
+this.visible = false
+this.text = "-"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_t_lib_3.destroy
+call super::destroy
+end on
+
+type m_lib_4 from menu within m_popup
+end type
+
+on m_lib_4.create
+call super::create
+this.visible = false
+this.text = "libero"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbaranimation = true
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_lib_4.destroy
+call super::destroy
+end on
+
+event clicked;//
+//w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+//kw_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(kguo_g.kgw_attiva) THEN
+	kguo_g.kgw_attiva.event ue_menu(KKG_FLAG_RICHIESTA.LIBERO4)	
+end if
+
+end event
+
+type m_lib_5 from menu within m_popup
+end type
+
+on m_lib_5.create
+call super::create
+this.visible = false
+this.text = "libero"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbaranimation = true
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_lib_5.destroy
+call super::destroy
+end on
+
+event clicked;//
+//w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+//kw_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(kguo_g.kgw_attiva) THEN
+	kguo_g.kgw_attiva.event ue_menu(KKG_FLAG_RICHIESTA.LIBERO5)	
+end if
+
+end event
+
+type m_lib_6 from menu within m_popup
+end type
+
+on m_lib_6.create
+call super::create
+this.visible = false
+this.text = "libero"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbaranimation = true
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_lib_6.destroy
+call super::destroy
+end on
+
+event clicked;//
+//w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+//kw_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(kguo_g.kgw_attiva) THEN
+	kguo_g.kgw_attiva.event ue_menu(KKG_FLAG_RICHIESTA.LIBERO6)	
+end if
+
+end event
+
+type m_t_lib_4 from menu within m_popup
+end type
+
+on m_t_lib_4.create
+call super::create
+this.visible = false
+this.text = "-"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_t_lib_4.destroy
+call super::destroy
+end on
+
+type m_lib_71 from menu within m_popup
+end type
+
+on m_lib_71.create
+call super::create
+this.visible = false
+this.text = "libero"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbaranimation = true
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_lib_71.destroy
+call super::destroy
+end on
+
+event clicked;//
+//w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+//kw_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(kguo_g.kgw_attiva) THEN
+	kguo_g.kgw_attiva.event ue_menu(KKG_FLAG_RICHIESTA.LIBERO71)	
+end if
+
+end event
+
+type m_lib_72 from menu within m_popup
+end type
+
+on m_lib_72.create
+call super::create
+this.visible = false
+this.text = "libero"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbaranimation = true
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_lib_72.destroy
+call super::destroy
+end on
+
+event clicked;//
+//w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+//kw_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(kguo_g.kgw_attiva) THEN
+	kguo_g.kgw_attiva.event ue_menu(KKG_FLAG_RICHIESTA.LIBERO72)	
+end if
+
+end event
+
+type m_lib_73 from menu within m_popup
+end type
+
+on m_lib_73.create
+call super::create
+this.visible = false
+this.text = "libero"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbaranimation = true
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_lib_73.destroy
+call super::destroy
+end on
+
+event clicked;//
+//w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+//kw_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(kguo_g.kgw_attiva) THEN
+	kguo_g.kgw_attiva.event ue_menu(KKG_FLAG_RICHIESTA.LIBERO73)	
+end if
+
+end event
+
+type m_lib_74 from menu within m_popup
+end type
+
+on m_lib_74.create
+call super::create
+this.visible = false
+this.text = "libero"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbaranimation = true
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_lib_74.destroy
+call super::destroy
+end on
+
+event clicked;//
+//w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+//kw_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(kguo_g.kgw_attiva) THEN
+	kguo_g.kgw_attiva.event ue_menu(KKG_FLAG_RICHIESTA.LIBERO74)	
+end if
+
+end event
+
+type m_lib_75 from menu within m_popup
+end type
+
+event clicked;//
+//w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+//kw_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(kguo_g.kgw_attiva) THEN
+	kguo_g.kgw_attiva.event ue_menu(KKG_FLAG_RICHIESTA.LIBERO75)	
+end if
+
+end event
+
+on m_lib_75.create
+call super::create
+this.visible = false
+this.text = "libero"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbaranimation = true
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_lib_75.destroy
+call super::destroy
+end on
+
+type m_t_lib_7 from menu within m_popup
+end type
+
+on m_t_lib_7.create
+call super::create
+this.visible = false
+this.text = "-"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_t_lib_7.destroy
+call super::destroy
+end on
+
+type m_lib_8 from menu within m_popup
+end type
+
+on m_lib_8.create
+call super::create
+this.visible = false
+this.text = "libero"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbaranimation = true
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_lib_8.destroy
+call super::destroy
+end on
+
+event clicked;//
+//w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+//kw_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(kguo_g.kgw_attiva) THEN
+	kguo_g.kgw_attiva.event ue_menu(KKG_FLAG_RICHIESTA.LIBERO8)	
+end if
+
+end event
+
+type m_lib_9 from menu within m_popup
+end type
+
+on m_lib_9.create
+call super::create
+this.visible = false
+this.text = "libero"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbaranimation = true
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_lib_9.destroy
+call super::destroy
+end on
+
+event clicked;//
+//w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+//kw_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(kguo_g.kgw_attiva) THEN
+	kguo_g.kgw_attiva.event ue_menu(KKG_FLAG_RICHIESTA.LIBERO9)	
+end if
+
+end event
+
+type m_lib_10 from menu within m_popup
+end type
+
+on m_lib_10.create
+call super::create
+this.visible = false
+this.text = "libero"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbaranimation = true
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_lib_10.destroy
+call super::destroy
+end on
+
+event clicked;//
+IF IsValid(kguo_g.kgw_attiva) THEN
+	kguo_g.kgw_attiva.event ue_menu(KKG_FLAG_RICHIESTA.LIBERO10)	
+end if
+
+end event
+
+type m_t_lib_8 from menu within m_popup
+end type
+
+on m_t_lib_8.create
+call super::create
+this.visible = false
+this.text = "-"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_t_lib_8.destroy
+call super::destroy
+end on
+
+type m_conferma from menu within m_popup
+end type
+
+on clicked;//
+//w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+//kw_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(kguo_g.kgw_attiva) THEN
+	kguo_g.kgw_attiva.event ue_menu(KKG_FLAG_RICHIESTA.CONFERMA)	
+end if
+
+end on
+
+on m_conferma.create
+call super::create
+this.tag = "[F10]"
+this.visible = false
+this.text = "Salva i dati"
+this.microhelp = "Aggiorna dati in archivio"
+this.menuimage = "save!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_conferma.destroy
+call super::destroy
+end on
+
+type m_visualizza from menu within m_popup
+end type
+
+event clicked;//
+w_g_tab kw_attiva
+
+//=== Prende la window attiva in quel momento
+//kw_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(kguo_g.kgw_attiva) THEN
+	kguo_g.kgw_attiva.event ue_menu(KKG_FLAG_RICHIESTA.VISUALIZZAZIONE)
+end if
+
+end event
+
+on m_visualizza.create
+call super::create
+this.tag = "[F2]"
+this.visible = false
+this.text = "Visualizza"
+this.microhelp = "Visualizza dati"
+this.menuimage = "Preview!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_visualizza.destroy
+call super::destroy
+end on
+
+type m_inserisci from menu within m_popup
+end type
+
+on clicked;//
+//w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+//kw_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(kguo_g.kgw_attiva) THEN
+	kguo_g.kgw_attiva.event ue_menu(KKG_FLAG_RICHIESTA.INSERIMENTO)	
+end if
+
+end on
+
+on m_inserisci.create
+call super::create
+this.tag = "[F4]"
+this.visible = false
+this.text = "Nuovo"
+this.microhelp = "Inserimento "
+this.menuimage = "New!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_inserisci.destroy
+call super::destroy
+end on
+
+type m_modifica from menu within m_popup
+end type
+
+on clicked;//
+//w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+//kw_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(kguo_g.kgw_attiva) THEN
+	kguo_g.kgw_attiva.event ue_menu(KKG_FLAG_RICHIESTA.MODIFICA)	
+end if
+
+end on
+
+on m_modifica.create
+call super::create
+this.tag = "[Ctrl+F2]"
+this.visible = false
+this.text = "Modifica"
+this.microhelp = "Modifica"
+this.menuimage = "DosEdit!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_modifica.destroy
+call super::destroy
+end on
+
+type m_t_modifica from menu within m_popup
+end type
+
+on m_t_modifica.create
+call super::create
+this.visible = false
+this.text = "-"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_t_modifica.destroy
+call super::destroy
+end on
+
+type m_stampa from menu within m_popup
+end type
+
+on clicked;//
+//w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+//kw_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(kguo_g.kgw_attiva) THEN
+	kguo_g.kgw_attiva.event ue_menu(KKG_FLAG_RICHIESTA.STAMPA)	
+end if
+
+end on
+
+on m_stampa.create
+call super::create
+this.tag = "[F9]"
+this.visible = false
+this.text = "Stampa"
+this.microhelp = "In stampa"
+this.menuimage = "print!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_stampa.destroy
+call super::destroy
+end on
+
+type m_t_stampa from menu within m_popup
+end type
+
+on m_t_stampa.create
+call super::create
+this.visible = false
+this.text = "-"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_t_stampa.destroy
+call super::destroy
+end on
+
+type m_cancella from menu within m_popup
+end type
+
+on clicked;//
+//w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+//kw_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(kguo_g.kgw_attiva) THEN
+	kguo_g.kgw_attiva.event ue_menu(KKG_FLAG_RICHIESTA.CANCELLAZIONE)	
+end if
+
+end on
+
+on m_cancella.create
+call super::create
+this.tag = "[F6]"
+this.visible = false
+this.text = "Cancella"
+this.microhelp = "Elimina dati"
+this.menuimage = "Custom021!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_cancella.destroy
+call super::destroy
+end on
+
+type m_t_cancella from menu within m_popup
+end type
+
+on m_t_cancella.create
+call super::create
+this.visible = false
+this.text = "-"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_t_cancella.destroy
+call super::destroy
+end on
+
+type m_zoom_a from menu within m_popup
+end type
+
+on clicked;//
+//w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+//kw_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(kguo_g.kgw_attiva) THEN
+	kguo_g.kgw_attiva.event ue_menu("za")	
+end if
+
+end on
+
+on m_zoom_a.create
+call super::create
+this.visible = false
+this.text = "Zoom Avanti"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_zoom_a.destroy
+call super::destroy
+end on
+
+type m_zoom_i from menu within m_popup
+end type
+
+on clicked;//
+//w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+//kw_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(kguo_g.kgw_attiva) THEN
+	kguo_g.kgw_attiva.event ue_menu("zi")	
+end if
+
+end on
+
+on m_zoom_i.create
+call super::create
+this.visible = false
+this.text = "Zoom Indietro"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_zoom_i.destroy
+call super::destroy
+end on
+
+type m_adatta from menu within m_popup
+end type
+
+on m_adatta.create
+call super::create
+this.visible = false
+this.text = "Adatta"
+this.microhelp = "Sistema le dimensioni della Finestra "
+this.menuimage = "sizeboth!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_adatta.destroy
+call super::destroy
+end on
+
+event clicked;//
+//=== Apro tutte le windows children
+window wSheet
+kuf_utility kuf1_utility
+
+
+
+wSheet = w_main.GetFirstSheet()
+IF IsValid(wSheet) THEN
+	
+	kuf1_utility = create kuf_utility
+	kuf1_utility.u_window_adatta_size(wSheet)
+	destroy kuf1_utility
+	
+end if
+
+
+end event
+
+type m_t_zoom from menu within m_popup
+end type
+
+on m_t_zoom.create
+call super::create
+this.visible = false
+this.text = "-"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_t_zoom.destroy
+call super::destroy
+end on
+
+type m_cerca from menu within m_popup
+end type
+
+event clicked;//
+//w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+//kw_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(kguo_g.kgw_attiva) THEN
+	kguo_g.kgw_attiva.event ue_menu(KKG_FLAG_RICHIESTA.TROVA)	
+end if
+
+end event
+
+on m_cerca.create
+call super::create
+this.visible = false
+this.text = "Trova"
+this.microhelp = "Ricerca dati in elenco"
+this.menuimage = "Find!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_cerca.destroy
+call super::destroy
+end on
+
+type m_t_cerca from menu within m_popup
+end type
+
+on m_t_cerca.create
+call super::create
+this.visible = false
+this.text = "-"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_t_cerca.destroy
+call super::destroy
+end on
+
+type m_filtro from menu within m_popup
+end type
+
+event clicked;//
+//w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+//kw_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(kguo_g.kgw_attiva) THEN
+	kguo_g.kgw_attiva.event ue_menu(KKG_FLAG_RICHIESTA.FILTRO)	
+end if
+
+end event
+
+on m_filtro.create
+call super::create
+this.visible = false
+this.text = "Filtro righe in elenco                 Alt+F3"
+this.microhelp = "Seleziona i dati come desiderato (es. solo clienti Italiani)"
+this.menuimage = "custom096!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_filtro.destroy
+call super::destroy
+end on
+
+type m_t_filtro from menu within m_popup
+end type
+
+on m_t_filtro.create
+call super::create
+this.visible = false
+this.text = "-"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_t_filtro.destroy
+call super::destroy
+end on
+
+type m_agglista from menu within m_popup
+end type
+
+on clicked;//
+//w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+//kw_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(kguo_g.kgw_attiva) THEN
+	kguo_g.kgw_attiva.event ue_menu(KKG_FLAG_RICHIESTA.REFRESH)	
+end if
+
+end on
+
+on m_agglista.create
+call super::create
+this.tag = "[F11]"
+this.visible = false
+this.text = "Aggiorna Elenco"
+this.microhelp = "Aggiorna le liste "
+this.menuimage = "Regenerate5!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_agglista.destroy
+call super::destroy
+end on
+
+type m_t_agglista from menu within m_popup
+end type
+
+on m_t_agglista.create
+call super::create
+this.visible = false
+this.text = "-"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_t_agglista.destroy
+call super::destroy
+end on
+
+type m_copiaabilitata from menu within m_popup
+end type
+
+on m_copiaabilitata.create
+call super::create
+this.text = "Copia Abilitata"
+this.checked = true
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_copiaabilitata.destroy
+call super::destroy
+end on
+
+event clicked;//
+datawindow kdw_1
+
+
+//--- fisso l'elenco di ricerca 	
+	kdw_1 = getfocus() //get_obj_trova()
+	
+	if isvalid(kdw_1) then
+		if kdw_1.rowcount() > 0 then
+			if this.checked then
+				kdw_1.Modify("DataWindow.Selected.Mouse='no'")
+			else
+				kdw_1.Modify("DataWindow.Selected.Mouse='yes'")
+			end if
+			this.checked = not this.checked
+		end if
+	end if
+
+
+
+end event
+
+type m_copia from menu within m_popup
+end type
+
+event clicked;//
+IF IsValid(kguo_g.kgw_attiva) THEN
+	kguo_g.kgw_attiva.event ue_menu(KKG_FLAG_RICHIESTA.COPY)	
+end if
+
+end event
+
+on m_copia.create
+call super::create
+this.text = "Copia"
+this.menuimage = "Copy!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_copia.destroy
+call super::destroy
+end on
+
+type m_t_cutpaste from menu within m_popup
+end type
+
+on m_t_cutpaste.create
+call super::create
+this.visible = false
+this.text = "-"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_t_cutpaste.destroy
+call super::destroy
+end on
+
+type m_impostazioni_utente from menu within m_popup
+end type
+
+on m_impostazioni_utente.create
+call super::create
+this.text = "Proprietà"
+this.microhelp = "Impostazioni utente"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_impostazioni_utente.destroy
+call super::destroy
+end on
+
+event clicked;//
+IF IsValid(kguo_g.kgw_attiva) THEN
+	kguo_g.kgw_attiva.event ue_menu(KKG_FLAG_RICHIESTA.PROPRIETA)	
+end if
+
+end event
+
+type m_ritorna from menu within m_popup
+end type
+
+on clicked;//
+//w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+//kw_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(kguo_g.kgw_attiva) THEN
+	kguo_g.kgw_attiva.event ue_menu(KKG_FLAG_RICHIESTA.ESCI)	
+end if
+
+end on
+
+on m_ritorna.create
+call super::create
+this.tag = "[Ctrl+F10]"
+this.visible = false
+this.text = "Esci"
+this.microhelp = "Uscita"
+this.menuimage = "exit!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_ritorna.destroy
+call super::destroy
+end on
+

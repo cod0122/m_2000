@@ -1,0 +1,12 @@
+﻿$PBExportHeader$st_tab_memo_utenti.srs
+global type st_tab_memo_utenti from structure
+	st_tab_g_0		st_tab_g_0
+	long		id_memo_utente
+	long		id_memo		descriptor "comment" = "collegamento al memo"
+	long		id_sr_utente		descriptor "comment" = "id utente"
+	integer		stato		descriptor "comment" = "0=nuovo, 2=letto,  8=cancellato "
+	integer		contatore		descriptor "comment" = "numero di volte letto"
+	datetime		x_datins
+	string		x_utente
+end type
+

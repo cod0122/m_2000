@@ -1,0 +1,86 @@
+﻿$PBExportHeader$gf_dw_pop_calendar.srf
+global type gf_dw_pop_calendar from function_object
+end type
+
+forward prototypes
+global function integer gf_dw_pop_calendar (ref datawindow a_dw, string a_col_name, string a_col_type, long a_row)
+end prototypes
+
+global function integer gf_dw_pop_calendar (ref datawindow a_dw, string a_col_name, string a_col_type, long a_row);////////////////////////////////////////////////////////////////////
+//	Object Name:	PBCALNDR60, gf_dw_pop_calendar()
+// Created By:		Marc J. Mataya, PowerCerv
+// Date Created:	July 21, 1998
+// Date Modified:	July 21, 1998
+// Description:	Calls the popup calendar from this datawindow
+//
+// Parameters:		datawindow by ref, column name, column type, row
+//
+//	Returns:			1 = Successful Change, turn on save
+//						0 = ESC or Cancelled
+//					  -1 = Not a date column
+////////////////////////////////////////////////////////////////////
+
+String ls
+datetime ldt,ldt2
+date ld,ld2
+boolean ib_save = false
+
+if not a_row > 0 then return -2 // return if no row is selected
+// determine if we are on a date field
+if a_col_type = 'datetime' or a_col_type = 'date' then
+	ls = a_col_name
+	a_dw.setcolumn(ls) //to set focus to the column if necessary
+	a_dw.AcceptText()  // pushes edits into the primary buffer
+	if a_col_type = 'datetime' then
+		ldt = a_dw.getitemdatetime(a_row,ls)  // hold the existing datetime
+//		if isnull(ldt) then ldt = datetime(date('01/01/1900'))
+		if isnull(ldt) or ldt = datetime(date('01/01/1900')) or ldt = datetime(date(0)) then 
+			ldt = datetime(today())
+		end if
+	else  // has to be a date
+		ld = a_dw.getitemdate(a_row,ls)  // hold the existing date
+//		if isnull(ld) then ld = date('01/01/1900')
+		if isnull(ld) or ld = date('01/01/1900') or ldt = datetime(date(0)) then 
+			ld = today()
+		end if
+	end if
+	str_calendar lstr_cal  // create a structure (included in the calendar .pbl)
+	lstr_cal.active_datawindow = a_dw
+	lstr_cal.active_row = a_row
+	lstr_cal.active_column = a_col_name
+	
+	openwithparm(w_pb_calendar,lstr_cal)
+	
+	a_dw.Accepttext()
+	// enable the save button on the menu
+	if a_col_type = 'datetime' then
+		ldt2 = a_dw.getitemdatetime(a_row,lstr_cal.active_column)
+//		if isnull(ldt2) then ldt2 = datetime(date('01/01/1900'))
+		if isnull(ldt2) or ldt2 = datetime(date('01/01/1900')) or ldt2 = datetime(date(0)) then 
+			ldt2 = datetime(today())
+		end if
+		if ldt <> ldt2  then 
+			ib_save = true
+		end if
+	else
+		ld2 = a_dw.getitemdate(a_row,lstr_cal.active_column)
+//		if isnull(ld2) then ld2 = date('01/01/1900')
+		if isnull(ld2) or ld2 = date('01/01/1900') or ld2 = date(0) then 
+			ld2 = today()
+		end if
+		if ld <> ld2 then 
+			ib_save = true
+		end if
+	end if
+	if ib_save then
+		return 1  // turn on save when we get back
+	else
+		return 0  // they selected the same date or hit escape (didn't change the col)
+	end if
+else
+	// not a date field, pop up the usual menu or no menu at all
+	return -1
+end if
+
+end function
+

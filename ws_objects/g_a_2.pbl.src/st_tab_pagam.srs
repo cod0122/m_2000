@@ -1,0 +1,13 @@
+﻿$PBExportHeader$st_tab_pagam.srs
+global type st_tab_pagam from structure
+	st_tab_g_0		st_tab_g_0
+	integer		codice
+	string		des
+	string		tipo
+	string		scad
+	integer		rate
+	integer		gg_1_rata		descriptor "comment" = "passo di 30 giorni ovvero 2 mesi = a 60"
+	integer		gg_int		descriptor "comment" = "passo di 30 giorni ovvero 1 mesi = a 30"
+	integer		gg_ulteriori		descriptor "comment" = "gg effettivi ulteriori da sommare alla data di scadenza"
+end type
+

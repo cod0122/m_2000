@@ -1,0 +1,36 @@
+﻿$PBExportHeader$d_sl_pt_old.srd
+release 6;
+datawindow(units=0 timer_interval=0 color=12632256 processing=0 print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=732 color="536870912" )
+table(column=(type=char(12) update=yes updatewhereclause=yes key=yes name=cod_sl_pt dbname="sl_pt.cod_sl_pt" )
+ column=(type=char(12) update=yes updatewhereclause=yes name=contratto dbname="sl_pt.contratto" )
+ column=(type=char(50) update=yes updatewhereclause=yes name=descr dbname="sl_pt.descr" )
+ column=(type=long update=yes updatewhereclause=yes name=fila_1 dbname="sl_pt.fila_1" )
+ column=(type=long update=yes updatewhereclause=yes name=fila_2 dbname="sl_pt.fila_2" )
+ column=(type=datetime update=yes updatewhereclause=yes name=x_datins dbname="sl_pt.x_datins" )
+ column=(type=char(12) update=yes updatewhereclause=yes name=x_utente dbname="sl_pt.x_utente" )
+ retrieve="  SELECT sl_pt.cod_sl_pt,   
+         sl_pt.contratto,   
+         sl_pt.descr,   
+         sl_pt.fila_1,   
+         sl_pt.fila_2,
+         sl_pt.x_datins,
+         sl_pt.x_utente  
+    FROM sl_pt   
+    where cod_sl_pt = :k_cod_sl_pt" update="sl_pt" updatewhere=1 updatekeyinplace=no arguments=(("k_cod_sl_pt", string)) )
+text(band=detail alignment="1" text="Codice:"border="0" color="0" x="210" y="84" height="64" width="219"  name=cod_sl_pt_t  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=detail alignment="1" text="Contratto:"border="0" color="0" x="146" y="220" height="64" width="283"  name=contratto_t  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=detail alignment="1" text="Descrizione:"border="0" color="0" x="55" y="356" height="64" width="375"  name=descr_t  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=detail alignment="1" text="Giri fila 1:"border="0" color="0" x="142" y="492" height="64" width="288"  name=fila_1_t  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=detail alignment="1" text="Giri fila 2:"border="0" color="0" x="951" y="492" height="64" width="288"  name=fila_2_t  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="1" tabsequence=50 border="1" color="0" x="1257" y="488" height="76" width="242" format="###"  name=fila_2 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="15793151" )
+text(band=detail alignment="1" text="Aggiornato:"border="0" color="0" x="96" y="636" height="64" width="334"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="0" tabsequence=32766 border="1" color="0" x="1125" y="636" height="64" width="357" format="[general]"  name=x_utente edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+column(band=detail id=1 alignment="0" tabsequence=10 border="1" color="0" x="448" y="80" height="76" width="357" format="[general]"  name=cod_sl_pt edit.limit=12 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12639424" )
+column(band=detail id=2 alignment="0" tabsequence=20 border="1" color="0" x="448" y="216" height="76" width="375" format="[general]"  name=contratto dddw.name=d_contratto_l dddw.displaycolumn=codice dddw.datacolumn=codice dddw.percentwidth=250 dddw.lines=0 dddw.limit=0 dddw.allowedit=no dddw.useasborder=no dddw.case=any dddw.hscrollbar=yes dddw.vscrollbar=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="15793151" )
+column(band=detail id=3 alignment="0" tabsequence=30 border="1" color="0" x="448" y="352" height="76" width="1399" format="[general]"  name=descr edit.limit=50 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="15793151" )
+column(band=detail id=4 alignment="1" tabsequence=40 border="1" color="0" x="448" y="488" height="76" width="242" format="###"  name=fila_1 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="15793151" )
+column(band=detail id=6 alignment="0" tabsequence=32766 border="1" color="0" x="448" y="636" height="64" width="599" format="[shortdate] [time]"  name=x_datins edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+htmltable(border="1" cellpadding="0" cellspacing="0" generatecss="no" nowrap="yes")

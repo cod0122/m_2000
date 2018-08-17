@@ -1,0 +1,13 @@
+﻿$PBExportHeader$st_sped_ddt.srs
+global type st_sped_ddt from structure
+	st_tab_sped		kst_tab_sped
+	st_tab_clienti		kst_tab_clienti
+	st_tab_prodotti		kst_tab_prodotti
+	st_tab_pagam		kst_tab_pagam
+	st_tab_armo		kst_tab_armo
+	st_tab_meca		kst_tab_meca
+	st_tab_nazioni		kst_tab_nazioni
+	integer		sel		descriptor "comment" = "1=selezionata"
+	string		diprova		descriptor "comment" = "N=effettiva (aggiornamento); S=solo di prova"
+end type
+

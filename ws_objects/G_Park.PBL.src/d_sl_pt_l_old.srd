@@ -1,0 +1,35 @@
+﻿$PBExportHeader$d_sl_pt_l_old.srd
+release 6;
+datawindow(units=0 timer_interval=0 color=16777215 processing=1 print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no grid.lines=0 )
+header(height=68 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=64 color="536870912" )
+detail(height=60 color="536870912" )
+table(column=(type=char(12) update=yes updatewhereclause=yes key=yes name=cod_sl_pt dbname="sl_pt.cod_sl_pt" )
+ column=(type=char(12) update=yes updatewhereclause=yes name=contratto dbname="sl_pt.contratto" )
+ column=(type=char(50) update=yes updatewhereclause=yes name=descr dbname="sl_pt.descr" )
+ column=(type=long update=yes updatewhereclause=yes name=fila_1 dbname="sl_pt.fila_1" )
+ column=(type=long update=yes updatewhereclause=yes name=fila_2 dbname="sl_pt.fila_2" )
+ retrieve="  SELECT sl_pt.cod_sl_pt,   
+         sl_pt.contratto,   
+         sl_pt.descr,   
+         sl_pt.fila_1,   
+         sl_pt.fila_2  
+    FROM sl_pt   
+    where cod_sl_pt like :k_cod_sl_pt and
+          (contratto = :k_contratto or :k_contratto = '*')
+    order by cod_sl_pt
+
+" update="sl_pt" updatewhere=1 updatekeyinplace=no arguments=(("k_cod_sl_pt", string),("k_contratto", string)) )
+text(band=header alignment="2" text="Codice"border="0" color="0" x="9" y="8" height="56" width="357"  name=cod_sl_pt_t  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="65535" )
+text(band=header alignment="2" text="Contratto"border="0" color="0" x="375" y="8" height="56" width="407"  name=contratto_t  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="65535" )
+text(band=header alignment="2" text="Descrizione"border="0" color="0" x="791" y="8" height="56" width="1193"  name=descr_t  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="65535" )
+text(band=header alignment="2" text="Fila 1"border="0" color="0" x="1993" y="8" height="56" width="201"  name=fila_1_t  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="65535" )
+text(band=header alignment="2" text="Fila 2"border="0" color="0" x="2203" y="8" height="56" width="187"  name=fila_2_t  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="65535" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="0" color="0" x="9" y="4" height="56" width="357" format="[general]"  name=cod_sl_pt edit.limit=12 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="0" x="375" y="4" height="56" width="407" format="[general]"  name=contratto dddw.name=d_contratto_l dddw.displaycolumn=codice dddw.datacolumn=codice dddw.percentwidth=250 dddw.lines=0 dddw.limit=0 dddw.allowedit=no dddw.useasborder=no dddw.case=any dddw.hscrollbar=yes dddw.vscrollbar=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="0" color="0" x="791" y="4" height="56" width="1193" format="[general]"  name=descr edit.limit=50 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="1" tabsequence=32766 border="0" color="0" x="1993" y="4" height="56" width="201" format="###"  name=fila_1 edit.limit=0 edit.case=any edit.format="###" edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="1" tabsequence=32766 border="0" color="0" x="2203" y="4" height="56" width="187" format="###"  name=fila_2 edit.limit=0 edit.case=any edit.format="###" edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=footer alignment="0" expression="'Presenti : ' + count(   descr for all ) "border="0" color="8388736" x="791" y="0" height="64" width="1193" format="[general]"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+htmltable(border="1" cellpadding="0" cellspacing="0" generatecss="no" nowrap="yes")

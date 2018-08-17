@@ -1,0 +1,11 @@
+﻿$PBExportHeader$st_clienti_wm.srs
+global type st_clienti_wm from structure
+	long		id_cliente
+	string		nome
+	string		indirizzo
+	string		cap
+	string		localita
+	string		prov
+	string		nazione
+end type
+

@@ -1,0 +1,11 @@
+﻿$PBExportHeader$st_tab_banche.srs
+global type st_tab_banche from structure
+	string		codice
+	string		descrizione
+	long		abi
+	long		cab
+	string		conto
+	string		esito
+	string		divisa
+end type
+

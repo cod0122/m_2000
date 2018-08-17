@@ -1,0 +1,130 @@
+﻿$PBExportHeader$d_stat_fat_1.srd
+release 8;
+datawindow(units=0 timer_interval=0 color=1090519039 processing=0 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 97 print.margin.bottom = 97 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no )
+summary(height=1320 color="-1" )
+footer(height=0 color="-1" )
+detail(height=0 color="-1" )
+table(column=(type=char(1) updatewhereclause=yes name=tipo dbname="tipo" )
+ column=(type=decimal(0) updatewhereclause=yes name=gruppo dbname="s_arfa.gruppo" )
+ column=(type=number updatewhereclause=yes name=k_prev_int dbname="k_prev_int" )
+ column=(type=decimal(0) updatewhereclause=yes name=k_prev_art dbname="k_prev_art" )
+ column=(type=number updatewhereclause=yes name=k_mc_out dbname="k_mc_out" )
+ retrieve="   SELECT 
+		   'c' as tipo,
+			s_arfa.gruppo,
+         sum(s_arfa.prezzo_t) as k_prev_int, 
+         sum(s_arfa.colli) as k_prev_art,
+	      sum(s_arfa.cub_tot) as k_mc_out
+     FROM s_arfa  
+    WHERE 
+			s_arfa.tipo_doc = 'FT' and
+			(s_arfa.gruppo = :k_id_gruppo or
+ 			 :k_id_gruppo = 0) and    
+			(s_arfa.clie_3 = :k_id_cliente or
+ 			 :k_id_cliente = 0) and   
+			(s_arfa.dose = :k_dose or
+ 			 :k_dose = 0) and 
+			s_arfa.data_fatt >= :k_data_da and
+			s_arfa.data_fatt <= :k_data_a 
+		group by s_arfa.gruppo
+  union all
+   SELECT 
+		   't' as tipo,
+			s_arfa.gruppo,
+         sum(s_arfa.prezzo_t) as k_prev_int, 
+         sum(s_arfa.colli) as k_prev_art,
+	      sum(s_arfa.cub_tot) as k_mc_out
+     FROM s_arfa  
+    WHERE 
+		   :k_totale = 'S' and
+			s_arfa.tipo_doc = 'FT' and
+			(s_arfa.gruppo = :k_id_gruppo or
+ 			 :k_id_gruppo = 0) and    
+			(s_arfa.dose = :k_dose or
+ 			 :k_dose = 0) and 
+			s_arfa.data_fatt >= :k_data_da and
+			s_arfa.data_fatt <= :k_data_a 
+		group by s_arfa.gruppo
+  union all
+   SELECT 
+		   'c' as tipo,
+			s_arfa.gruppo,
+         sum(s_arfa.prezzo_t) * -1 as k_prev_int, 
+         sum(s_arfa.colli) * -1as k_prev_art,
+	      sum(s_arfa.cub_tot) * -1 as k_mc_out
+     FROM s_arfa  
+    WHERE 
+			s_arfa.tipo_doc = 'NC' and
+			(s_arfa.gruppo = :k_id_gruppo or
+ 			 :k_id_gruppo = 0) and    
+			(s_arfa.clie_3 = :k_id_cliente or
+ 			 :k_id_cliente = 0) and   
+			(s_arfa.dose = :k_dose or
+ 			 :k_dose = 0) and 
+			s_arfa.data_fatt >= :k_data_da and
+			s_arfa.data_fatt <= :k_data_a 
+		group by s_arfa.gruppo
+  union all
+   SELECT 
+		   't' as tipo,
+			s_arfa.gruppo,
+         sum(s_arfa.prezzo_t) * -1 as k_prev_int, 
+         sum(s_arfa.colli) * -1 as k_prev_art,
+	      sum(s_arfa.cub_tot) * -1 as k_mc_out
+     FROM s_arfa  
+    WHERE 
+		   :k_totale = 'S' and
+			s_arfa.tipo_doc = 'NC' and
+			(s_arfa.gruppo = :k_id_gruppo or
+ 			 :k_id_gruppo = 0) and    
+			(s_arfa.dose = :k_dose or
+ 			 :k_dose = 0) and 
+			s_arfa.data_fatt >= :k_data_da and
+			s_arfa.data_fatt <= :k_data_a 
+		group by s_arfa.gruppo
+" arguments=(("k_id_gruppo", number),("k_id_cliente", number),("k_dose", number),("k_data_da", date),("k_data_a", date),("k_totale", string)) )
+group(level=1 header.height=0 trailer.height=0 by=("k_mc_out > 0" ) header.color="536870912" trailer.color="536870912" )
+graph(band=summary height="1160" width="1787" graphtype="13" perspective="2" rotation="-20" color="0" backcolor="1090519039" shadecolor="8355711" range= 0 border="5" overlappercent="0" spacing="100" elevation="20" depth="100"x="1650" y="16" height="1160" width="1787"  name=kgr_1 visible="1~t0"  category="if (100 / sum(k_fatt_gru for all) * k_fatt_gru > 3 , gruppo, 0)"  values="k_fatt_gru"  title="(None)"  title.dispattr.backcolor="553648127"  title.dispattr.alignment="2"  title.dispattr.autosize="1"  title.dispattr.font.charset="0"  title.dispattr.font.escapement="0"  title.dispattr.font.face="Arial"  title.dispattr.font.family="2"  title.dispattr.font.height="0"  title.dispattr.font.italic="0"  title.dispattr.font.orientation="0"  title.dispattr.font.pitch="2"  title.dispattr.font.strikethrough="0"  title.dispattr.font.underline="0"  title.dispattr.font.weight="700"  title.dispattr.format="[General]"  title.dispattr.textcolor="0"  title.dispattr.displayexpression="~"Ripartizione Fatturato Cliente x Gruppi ~""  legend="1"  legend.dispattr.backcolor="553648127"  legend.dispattr.alignment="0"  legend.dispattr.autosize="1"  legend.dispattr.font.charset="0"  legend.dispattr.font.escapement="0"  legend.dispattr.font.face="Arial"  legend.dispattr.font.family="2"  legend.dispattr.font.height="0"  legend.dispattr.font.italic="0"  legend.dispattr.font.orientation="0"  legend.dispattr.font.pitch="2"  legend.dispattr.font.strikethrough="0"  legend.dispattr.font.underline="0"  legend.dispattr.font.weight="400"  legend.dispattr.format="[General]"  legend.dispattr.textcolor="0"  legend.dispattr.displayexpression=" category "  pie.dispattr.backcolor="553648127"  pie.dispattr.alignment="0"  pie.dispattr.autosize="1"  pie.dispattr.font.charset="0"  pie.dispattr.font.escapement="0"  pie.dispattr.font.face="Arial"  pie.dispattr.font.family="2"  pie.dispattr.font.height="0"  pie.dispattr.font.italic="0"  pie.dispattr.font.orientation="0"  pie.dispattr.font.pitch="2"  pie.dispattr.font.strikethrough="0"  pie.dispattr.font.underline="0"  pie.dispattr.font.weight="400"  pie.dispattr.format="[General]"  pie.dispattr.textcolor="0"  pie.dispattr.displayexpression="if(seriescount > 1, series,string(percentofseries,~"0.00%~"))" 
+	series.autoscale="1" 
+	series.displayeverynlabels="0"  series.droplines="0"  series.frame="1"  series.label="Series"  series.majordivisions="0"  series.majorgridline="0"  series.majortic="3"  series.maximumvalue="0"  series.minimumvalue="0"  series.minordivisions="0"  series.minorgridline="0"  series.minortic="1"  series.originline="0"  series.primaryline="1"  series.roundto="0"  series.roundtounit="0"  series.scaletype="1"  series.scalevalue="1"  series.secondaryline="0"  series.shadebackedge="0"  series.dispattr.backcolor="536870912"  series.dispattr.alignment="0"  series.dispattr.autosize="1"  series.dispattr.font.charset="0"  series.dispattr.font.escapement="0"  series.dispattr.font.face="Arial"  series.dispattr.font.family="2"  series.dispattr.font.height="0"  series.dispattr.font.italic="0"  series.dispattr.font.orientation="0"  series.dispattr.font.pitch="2"  series.dispattr.font.strikethrough="0"  series.dispattr.font.underline="0"  series.dispattr.font.weight="400"  series.dispattr.format="[General]"  series.dispattr.textcolor="0"  series.dispattr.displayexpression="series"  series.labeldispattr.backcolor="536870912"  series.labeldispattr.alignment="2"  series.labeldispattr.autosize="0"  series.labeldispattr.font.charset="0"  series.labeldispattr.font.escapement="0"  series.labeldispattr.font.face="Arial"  series.labeldispattr.font.family="2"  series.labeldispattr.font.height="-8"  series.labeldispattr.font.italic="0"  series.labeldispattr.font.orientation="0"  series.labeldispattr.font.pitch="2"  series.labeldispattr.font.strikethrough="0"  series.labeldispattr.font.underline="0"  series.labeldispattr.font.weight="1000"  series.labeldispattr.format="[General]"  series.labeldispattr.textcolor="0"  series.labeldispattr.displayexpression="seriesaxislabel"  series.sort="2" 
+	category.autoscale="1" 
+	category.displayeverynlabels="0"  category.droplines="0"  category.frame="1"  category.label="Category"  category.majordivisions="0"  category.majorgridline="0"  category.majortic="3"  category.maximumvalue="0"  category.minimumvalue="0"  category.minordivisions="0"  category.minorgridline="0"  category.minortic="1"  category.originline="0"  category.primaryline="1"  category.roundto="0"  category.roundtounit="0"  category.scaletype="1"  category.scalevalue="1"  category.secondaryline="0"  category.shadebackedge="1"  category.dispattr.backcolor="536870912"  category.dispattr.alignment="2"  category.dispattr.autosize="1"  category.dispattr.font.charset="0"  category.dispattr.font.escapement="0"  category.dispattr.font.face="Arial"  category.dispattr.font.family="2"  category.dispattr.font.height="0"  category.dispattr.font.italic="0"  category.dispattr.font.orientation="0"  category.dispattr.font.pitch="2"  category.dispattr.font.strikethrough="0"  category.dispattr.font.underline="0"  category.dispattr.font.weight="400"  category.dispattr.format="[General]"  category.dispattr.textcolor="0"  category.dispattr.displayexpression="category"  category.labeldispattr.backcolor="536870912"  category.labeldispattr.alignment="2"  category.labeldispattr.autosize="0"  category.labeldispattr.font.charset="0"  category.labeldispattr.font.escapement="0"  category.labeldispattr.font.face="Arial"  category.labeldispattr.font.family="2"  category.labeldispattr.font.height="-8"  category.labeldispattr.font.italic="0"  category.labeldispattr.font.orientation="0"  category.labeldispattr.font.pitch="2"  category.labeldispattr.font.strikethrough="0"  category.labeldispattr.font.underline="0"  category.labeldispattr.font.weight="1000"  category.labeldispattr.format="[General]"  category.labeldispattr.textcolor="0"  category.labeldispattr.displayexpression="categoryaxislabel"  category.sort="2" 
+	values.autoscale="0" 
+	values.displayeverynlabels="0"  values.droplines="0"  values.frame="1"  values.label="Value"  values.majordivisions="0"  values.majorgridline="0"  values.majortic="3"  values.maximumvalue="250"  values.minimumvalue="0"  values.minordivisions="0"  values.minorgridline="0"  values.minortic="1"  values.originline="1"  values.primaryline="1"  values.roundto="0"  values.roundtounit="0"  values.scaletype="1"  values.scalevalue="1"  values.secondaryline="0"  values.shadebackedge="0"  values.dispattr.backcolor="536870912"  values.dispattr.alignment="1"  values.dispattr.autosize="1"  values.dispattr.font.charset="0"  values.dispattr.font.escapement="0"  values.dispattr.font.face="Arial"  values.dispattr.font.family="2"  values.dispattr.font.height="0"  values.dispattr.font.italic="0"  values.dispattr.font.orientation="0"  values.dispattr.font.pitch="2"  values.dispattr.font.strikethrough="0"  values.dispattr.font.underline="0"  values.dispattr.font.weight="400"  values.dispattr.format="[General]"  values.dispattr.textcolor="0"  values.dispattr.displayexpression="value"  values.labeldispattr.backcolor="536870912"  values.labeldispattr.alignment="2"  values.labeldispattr.autosize="0"  values.labeldispattr.font.charset="0"  values.labeldispattr.font.escapement="900"  values.labeldispattr.font.face="Arial"  values.labeldispattr.font.family="2"  values.labeldispattr.font.height="-8"  values.labeldispattr.font.italic="0"  values.labeldispattr.font.orientation="900"  values.labeldispattr.font.pitch="2"  values.labeldispattr.font.strikethrough="0"  values.labeldispattr.font.underline="0"  values.labeldispattr.font.weight="1000"  values.labeldispattr.format="[General]"  values.labeldispattr.textcolor="0"  values.labeldispattr.displayexpression="valuesaxislabel" )
+text(band=summary alignment="0" text="text" border="0" color="0" x="142" y="56" height="56" width="142" html.valueishtml="0"  name=k_codice visible="1~t0"  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=summary alignment="1" text="Cliente" border="0" color="0" x="631" y="132" height="64" width="206" html.valueishtml="0"  name=t_2 visible="1"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=summary alignment="1" text="Totale" border="0" color="0" x="1029" y="132" height="64" width="183" html.valueishtml="0"  name=t_3 visible="1"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=summary alignment="1" text="Incidenza" border="0" color="0" x="1294" y="132" height="64" width="283" html.valueishtml="0"  name=t_4 visible="1"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=summary alignment="1" expression="(( 100/k_int_tot) *  k_prev_int_tot)/100"border="0" color="0" x="1216" y="224" height="80" width="370" format="###0.00%" html.valueishtml="0"  name=k_int_d visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=summary alignment="1" expression="sum(if (tipo='t', k_prev_int, 0) for all)"border="0" color="0" x="841" y="224" height="80" width="370" format="###,###,##0;[red]###,###,##0" html.valueishtml="0"  name=k_int_tot visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=summary alignment="1" expression="avg( k_fatt_t /   k_mc_t)  "border="0" color="0" x="841" y="356" height="80" width="370" format="###,##0.00" html.valueishtml="0"  name=k_est_tot visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=summary alignment="1" expression="sum(if (tipo='t', k_prev_art, 0) for all)  "border="0" color="0" x="841" y="488" height="80" width="370" format="###,###,###,##0;[red]###,###,###,##0" html.valueishtml="0"  name=k_art_tot visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=summary alignment="1" expression="sum(if (tipo='c', k_prev_int, 0) for all)  "border="0" color="0" x="466" y="224" height="80" width="370" format="###,###,##0;[red]###,###,##0" html.valueishtml="0"  name=k_prev_int_tot visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=summary alignment="1" expression="avg( k_fatt_c /   k_mc_c)  "border="0" color="0" x="466" y="356" height="80" width="370" format="###,##0.00" html.valueishtml="0"  name=k_prev_est_tot visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=summary alignment="1" expression="sum(if (tipo='c', k_prev_art, 0) for all) "border="0" color="0" x="466" y="488" height="80" width="370" format="###,###,###,##0;[red]###,###,###,##0" html.valueishtml="0"  name=k_prev_art_tot visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=summary alignment="1" text="Fatturato:" border="0" color="0" x="155" y="224" height="64" width="279" html.valueishtml="0"  name=k_prev_int_t visible="1"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=summary alignment="1" text="Prezzo medio" border="0" color="0" x="41" y="356" height="64" width="402" html.valueishtml="0"  name=k_prev_est_t visible="1"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=summary alignment="1" text="Colli:" border="0" color="0" x="283" y="488" height="64" width="151" html.valueishtml="0"  name=k_prev_art_t visible="1"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=summary alignment="1" text="M_cubi out:" border="0" color="0" x="101" y="620" height="64" width="334" html.valueishtml="0"  name=t_5 visible="1"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=summary alignment="1" expression="sum(if (tipo='c', k_mc_out, 0) for all) "border="0" color="0" x="466" y="620" height="80" width="370" format="###,###,##0.00;[red]###,###,##0.00" html.valueishtml="0"  name=k_prev_mc_out_tot visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=summary alignment="1" expression="sum(if (tipo='t', k_mc_out, 0) for all)  "border="0" color="0" x="841" y="620" height="80" width="370" format="###,###,##0.00;[red]###,###,##0.00" html.valueishtml="0"  name=k_mc_out_tot visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=summary alignment="1" expression="((100/ k_art_tot) *  k_prev_art_tot)/100"border="0" color="0" x="1216" y="488" height="80" width="370" format="###0.00%" html.valueishtml="0"  name=k_art_d visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=summary alignment="1" expression="((100/ k_mc_out_tot) *  k_prev_mc_out_tot)/100"border="0" color="0" x="1216" y="620" height="80" width="370" format="###0.00%" html.valueishtml="0"  name=compute_1 visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+button(band=summary text="Grafico"filename=""action="0" border="0" color="8388608" x="1385" y="16" height="72" width="197" vtextalign="0" htextalign="0"  name=kcb_gr visible="1"  font.face="Times New Roman" font.height="-8" font.weight="400"  font.family="1" font.pitch="2" font.charset="0" font.italic="1" background.mode="2" background.color="12632256" )
+compute(band=trailer.1 alignment="0" expression="if( k_mc_out > 0, k_prev_int / k_mc_out ,0)"border="0" color="0" x="741" y="12" height="64" width="1179" format="[general]" html.valueishtml="0"  name=k_prev_est visible="0"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression="if (tipo='t', k_prev_int, 0)"border="0" color="0" x="133" y="104" height="64" width="480" format="[general]" html.valueishtml="0"  name=k_int visible="0"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression="if(100/sum(  (if (tipo='t', k_prev_int, 0))  for all )*(if (tipo='t', k_prev_int, 0))>3, gruppo  ,0)"border="0" color="0" x="105" y="212" height="64" width="3205" format="[general]" html.valueishtml="0"  name=k_gruppo visible="0"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="0" expression="if(100/sum(  (if (tipo='t', k_prev_int, 0))  for all )*(if (tipo='t', k_prev_int, 0))>3, (if (tipo='t', k_prev_int, 0)) ,  (if (tipo='t', k_prev_int, 0)) )"border="0" color="0" x="101" y="304" height="60" width="3214" format="[general]" html.valueishtml="0"  name=k_fatt visible="0"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="0" expression="if (tipo='c', k_prev_int, 0)"border="0" color="0" x="2665" y="120" height="64" width="763" format="[general]" html.valueishtml="0"  name=k_fatt_gru visible="0"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="0" color="0" x="105" y="4" height="64" width="114" format="[general]" html.valueishtml="0"  name=tipo visible="0" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="0" tabsequence=32766 border="0" color="0" x="3026" y="8" height="64" width="343" format="[general]" html.valueishtml="0"  name=k_mc_out visible="0" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="1" tabsequence=32766 border="0" color="0" x="2048" y="4" height="76" width="329" format="[general]" html.valueishtml="0"  name=k_prev_art visible="0" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression="if (tipo='t', k_prev_art,0)"border="0" color="0" x="2427" y="8" height="64" width="224" format="[general]" html.valueishtml="0"  name=k_art visible="0"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="0" x="2711" y="12" height="64" width="256" format="[general]" html.valueishtml="0"  name=gruppo visible="0" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="1" tabsequence=32766 border="0" color="0" x="288" y="4" height="76" width="329" format="[general]" html.valueishtml="0"  name=k_prev_int visible="0" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression="if (tipo='t', k_prev_int, 0)"border="0" color="0" x="709" y="24" height="64" width="626" format="[general]" html.valueishtml="0"  name=k_fatt_t visible="0"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression="if (tipo='c', k_prev_int, 0)"border="0" color="0" x="709" y="112" height="64" width="631" format="[general]" html.valueishtml="0"  name=k_fatt_c visible="0"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression="if (tipo='t', k_mc_out, 0)"border="0" color="0" x="1362" y="24" height="64" width="626" format="[general]" html.valueishtml="0"  name=k_mc_t visible="0"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression="if (tipo='c', k_mc_out, 0)"border="0" color="0" x="1376" y="108" height="64" width="626" format="[general]" html.valueishtml="0"  name=k_mc_c visible="0"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )

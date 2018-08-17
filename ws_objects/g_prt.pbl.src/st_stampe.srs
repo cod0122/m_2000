@@ -1,0 +1,20 @@
+﻿$PBExportHeader$st_stampe.srs
+global type st_stampe from structure
+	string		tipo
+	string		titolo
+	string		titolo_2
+	string		nome_file		descriptor "comment" = "usato come nome file ad esempio per xls e pdf"
+	string		pathfile		descriptor "comment" = "usato ad esempio se stampa PDF batch"
+	string		dataobject
+	string		scegli_pagina
+	datawindow		dw_print		descriptor "comment" = "dati da stampare in formato dw"
+	datastore		ds_print		descriptor "comment" = "dati da stampare in formato ds"
+	datastore		ds_esporta		descriptor "comment" = "se dati da esportare (es.XLS)  diversi da  quelli in dw_print allora valorizzo"
+	string		dw_syntax
+	graph		graph_print
+	string		stampante_predefinita
+	string		modificafont		descriptor "comment" = "x mantenere il font originali metti modficafont_no"
+	string		testata_xls		descriptor "comment" = "se fare o meno la testata xls (S/N)"
+	blob		blob_print		descriptor "comment" = "contiene il dw o ds da stampare"
+end type
+

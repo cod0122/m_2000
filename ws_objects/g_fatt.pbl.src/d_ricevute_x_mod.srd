@@ -1,0 +1,44 @@
+﻿$PBExportHeader$d_ricevute_x_mod.srd
+release 10.5;
+datawindow(units=0 timer_interval=0 color=12632256 processing=0 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes print.preview.outline=yes hidegrayline=no )
+header(height=0 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=704 color="536870912" )
+table(column=(type=date update=yes updatewhereclause=yes name=ric_scad dbname="ric.scad" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=ric_dist dbname="ric.dist" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=ric_tipo dbname="ric.tipo" )
+ column=(type=date update=yes updatewhereclause=yes name=ric_data_st dbname="ric.data_st" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=ric_flag_st dbname="ric.flag_st" values="Da Presentare	P/Presentata	S/Sospesa	X/Da Non Presentare	N/<non modificare>	/" )
+ retrieve="  SELECT ric.scad,   
+         ric.dist,   
+         ric.tipo,   
+         ric.data_st,   
+         ric.flag_st
+    FROM ric
+    where id = :k_id
+" arguments=(("k_id", number)) )
+text(band=detail alignment="1" text="Scadenza:" border="0" color="0" x="165" y="68" height="64" width="402" html.valueishtml="0"  name=ric_scad_t visible="1"  font.face="Courier New" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=2 alignment="0" tabsequence=20 border="5" color="0" x="585" y="184" height="64" width="311" format="[general]" html.valueishtml="0"  name=ric_dist visible="1" dddw.name=d_ric_t_distinta dddw.displaycolumn=dist dddw.datacolumn=dist dddw.percentwidth=300 dddw.lines=0 dddw.limit=0 dddw.allowedit=yes dddw.useasborder=yes dddw.case=any dddw.vscrollbar=yes  font.face="Courier New" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=3 alignment="0" tabsequence=30 border="5" color="0" x="585" y="300" height="64" width="1769" format="[general]" html.valueishtml="0"  name=ric_tipo visible="1" dddw.name=d_banche_l dddw.displaycolumn=descrizione dddw.datacolumn=codice dddw.percentwidth=100 dddw.lines=0 dddw.limit=0 dddw.allowedit=no dddw.useasborder=yes dddw.case=any dddw.hsplitscroll=yes dddw.hscrollbar=yes dddw.vscrollbar=yes  font.face="Courier New" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=detail alignment="1" text="Tipo Distinta:" border="0" color="0" x="41" y="184" height="64" width="526" html.valueishtml="0"  name=ric_dist_t visible="1"  font.face="Courier New" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=detail alignment="1" text="Banca:" border="0" color="0" x="160" y="300" height="64" width="407" html.valueishtml="0"  name=ric_tipo_t visible="1"  font.face="Courier New" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="0" tabsequence=50 border="5" color="0" x="1810" y="420" height="64" width="539" format="[general]" html.valueishtml="0"  name=ric_flag_st visible="1" ddlb.limit=0 ddlb.allowedit=no ddlb.case=any  font.face="Courier New" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=detail alignment="1" text="Data Stampa:" border="0" color="0" x="69" y="420" height="64" width="498" html.valueishtml="0"  name=ric_data_st_t visible="1"  font.face="Courier New" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=detail alignment="1" text="Stato:" border="0" color="0" x="1170" y="420" height="64" width="617" html.valueishtml="0"  name=t_1 visible="1"  font.face="Courier New" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="1" background.color="536870912" )
+button(band=detail text="Aggiorna" filename="" enabled=yes action="0" border="0" color="0" x="1504" y="556" height="88" width="329" vtextalign="0" htextalign="0"  name=cb_aggiorna visible="1"  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="67108864" )
+button(band=detail text="Chiudi" filename="" enabled=yes action="0" border="0" color="0" x="1929" y="556" height="88" width="421" vtextalign="0" htextalign="0"  name=cb_esci visible="1"  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="67108864" )
+text(band=detail alignment="2" text="Aggiornamento di tutte le scadenze presenti nella Lista" border="1" color="255" x="1138" y="60" height="132" width="1097" html.valueishtml="0"  name=t_2 visible="1"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=1 alignment="2" tabsequence=10 border="5" color="0" x="585" y="68" height="64" width="448" format="dd/mm/yy" html.valueishtml="0"  name=ric_scad visible="1" editmask.ddcalendar=yes editmask.mask="dd/mm/yy" editmask.focusrectangle=no  font.face="Courier New" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=4 alignment="2" tabsequence=40 border="5" color="0" x="585" y="420" height="64" width="448" format="dd/mm/yy" html.valueishtml="0"  name=ric_data_st visible="1" editmask.ddcalendar=yes editmask.mask="dd/mm/yy" editmask.focusrectangle=no  font.face="Courier New" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" pagingmethod=0 generatedddwframes="1" )
+xhtmlgen() cssgen(sessionspecific="0" )
+xmlgen(inline="0" )
+xsltgen()
+jsgen()
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+export.xhtml()
+ 

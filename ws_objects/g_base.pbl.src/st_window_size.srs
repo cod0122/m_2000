@@ -1,0 +1,10 @@
+﻿$PBExportHeader$st_window_size.srs
+global type st_window_size from structure
+	string		nome
+	long		x
+	long		y
+	long		w
+	long		h
+	string		windowstate
+end type
+

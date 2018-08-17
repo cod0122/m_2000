@@ -1,0 +1,11 @@
+﻿$PBExportHeader$st_tab_sr_profili.srs
+global type st_tab_sr_profili from structure
+	st_tab_g_0		st_tab_g_0
+	long		id
+	string		nome
+	string		descrizione
+	string		stato
+	datetime		x_datins
+	string		x_utente
+end type
+

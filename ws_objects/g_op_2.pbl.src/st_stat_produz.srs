@@ -1,0 +1,21 @@
+﻿$PBExportHeader$st_stat_produz.srs
+$PBExportComments$x w_stat_produz
+global type st_stat_produz from structure
+	long		id_cliente
+	integer		id_gruppo
+	date		data_da
+	date		data_a
+	double		dose
+	string		dose_str
+	string		no_dose
+	integer		magazzino
+	string		tipo_data
+	string		utente
+	long		id_meca_da
+	long		id_meca_a
+	string		data_estrazione_stat
+	integer		gruppo_flag
+	integer		no_prezzo
+	long		id_listino
+end type
+

@@ -1,0 +1,14 @@
+﻿$PBExportHeader$st_tab_lettore_grp.srs
+global type st_tab_lettore_grp from structure
+	st_tab_g_0		st_tab_g_0		descriptor "comment" = "standard sempre su tutte le strutture tabelle "
+	long		id
+	string		lkey		descriptor "comment" = "chiave di ciascun record sul lettore "
+	string		timestamp_inizio		descriptor "comment" = "data e ora di apertura dei groupage da lettore"
+	string		padre		descriptor "comment" = "barcode padre da lettore"
+	string		figlio		descriptor "comment" = "barcode foglio da lettore"
+	string		timestamp_lettura		descriptor "comment" = "data e ora lettura barcode"
+	string		utente		descriptor "comment" = "utente da lettore"
+	string		x_datins		descriptor "comment" = "aggiornam. di questo record"
+	string		x_utente		descriptor "comment" = "utente di agg. di questo rec"
+end type
+

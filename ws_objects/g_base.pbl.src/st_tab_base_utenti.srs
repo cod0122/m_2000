@@ -1,0 +1,10 @@
+﻿$PBExportHeader$st_tab_base_utenti.srs
+global type st_tab_base_utenti from structure
+	st_tab_g_0		st_tab_g_0
+	string		xxx		descriptor "comment" = "tabella utilizzata per parametri vari utente"
+	string		id_base		descriptor "comment" = "codice generico 'azienda'"
+	string		id_utente		descriptor "comment" = "id dell'utente"
+	string		codice		descriptor "comment" = "codice che identifica il parametro es.'STCERT1' = stampante attestato pagina 1, 'STCERT2'=stampante attestato pagine dettaglio"
+	string		valore		descriptor "comment" = "valore "
+end type
+

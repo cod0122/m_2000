@@ -1,0 +1,39 @@
+﻿$PBExportHeader$st_tab_contratti.srs
+global type st_tab_contratti from structure
+	st_tab_g_0		st_tab_g_0
+	long		codice
+	string		attivo		descriptor "comment" = "S=attivo"
+	datetime		contratto_co_data_ins		descriptor "comment" = "data+ora di carico del Contratto Commerciale/C.to Deposito/Ricerca Sviluppo"
+	long		id_contratto_co		descriptor "comment" = "id del contratto Commerciale"
+	long		id_contratto_dp		descriptor "comment" = "id del contratto Conto Deposito"
+	long		id_contratto_rd		descriptor "comment" = "id del contratto Ricerca Sviluppo"
+	string		mc_co
+	string		sc_cf
+	string		sl_pt
+	date		data
+	string		tipo		descriptor "comment" = "S=standard;N=da non trattare"
+	date		data_scad
+	long		cod_cli
+	string		m_r_f
+	string		descr
+	string		cert_st_dose_min		descriptor "comment" = "OBSOLETO, spostato su tab SL-PT"
+	string		cert_st_dose_max		descriptor "comment" = "OBSOLETO, spostato su tab SL-PT"
+	string		cert_st_data_ini		descriptor "comment" = "OBSOLETO, spostato su tab SL-PT"
+	string		cert_st_data_fin		descriptor "comment" = "OBSOLETO, spostato su tab SL-PT"
+	string		cert_st_dati_bolla_in
+	string		et_bcode_st_dt_rif
+	string		et_bcode_note
+	string		sc_cv
+	string		sd_md
+	integer		magazzino
+	string		flag_bolla_in_dett
+	string		non_conforme
+	integer		id_meca_causale
+	string		costi_accessori		descriptor "comment" = "OBSOLETO! mai usato"
+	integer		et_dosimetro		descriptor "comment" = "0=assenza del barcode 'dosimetro' / 1 o nulla = presenza (default)"
+	string		flg_fatt_dopo_valid		descriptor "comment" = "S=Fatturazione dopo la Validazione (x i ctr SD)"
+	string		flg_acconto		descriptor "comment" = "S=Contratto con acconto (x i ctr SD)"
+	datetime		x_datins
+	string		x_utente
+end type
+

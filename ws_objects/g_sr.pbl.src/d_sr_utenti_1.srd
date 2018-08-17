@@ -1,0 +1,49 @@
+﻿$PBExportHeader$d_sr_utenti_1.srd
+release 11;
+datawindow(units=0 timer_interval=0 color=31449055 processing=0 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes print.preview.outline=yes hidegrayline=no showbackcoloronxp=no )
+header(height=0 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=560 color="536870912" )
+table(column=(type=char(80) update=yes updatewhereclause=yes name=nome dbname="nome" )
+ column=(type=char(120) update=yes updatewhereclause=yes name=descrizione dbname="descrizione" )
+ column=(type=char(24) update=yes updatewhereclause=yes name=codice dbname="codice" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=stato dbname="sr_utenti.stato" values="Attivo	0/Disattivato	1/Sospeso	2/" )
+ column=(type=long update=yes updatewhereclause=yes key=yes identity=yes name=id dbname="sr_utenti.id" )
+ column=(type=date updatewhereclause=yes name=dt_ultimo_accesso dbname="sr_utenti.dt_ultimo_accesso" )
+ column=(type=date updatewhereclause=yes name=dt_ultima_modifica dbname="sr_utenti.dt_ultima_modifica" )
+ retrieve="  SELECT trim(sr_utenti.nome)          nome,   
+         trim(sr_utenti.descrizione)   descrizione,   
+         trim(sr_utenti.codice)        codice,   
+         sr_utenti.stato,   
+         sr_utenti.id,   
+         sr_utenti.dt_ultimo_accesso,  
+         sr_utenti.dt_ultima_modifica 
+    FROM sr_utenti  
+   WHERE sr_utenti.id = :k_id    
+" update="sr_utenti" updatewhere=1 updatekeyinplace=no arguments=(("k_id", number)) )
+text(band=detail alignment="1" text="Nome:" border="0" color="33554432" x="78" y="48" height="64" width="329" html.valueishtml="0"  name=nome_t visible="1"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="1" tabsequence=32766 border="5" color="33554432" x="2400" y="28" height="68" width="201" format="[general]" html.valueishtml="0"  name=id visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=detail alignment="1" text="Id:" border="0" color="33554432" x="2272" y="28" height="64" width="105" html.valueishtml="0"  name=id_t visible="1"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=detail alignment="1" text="Codice:" border="0" color="33554432" x="78" y="152" height="64" width="329" html.valueishtml="0"  name=codice_t visible="1"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=detail alignment="1" text="Descrizione:" border="0" color="33554432" x="50" y="260" height="64" width="357" html.valueishtml="0"  name=descrizione_t visible="1"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=detail alignment="1" text="Stato:" border="0" color="33554432" x="183" y="364" height="64" width="224" html.valueishtml="0"  name=stato_t visible="1"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=detail alignment="1" text="Ultimo accesso:" border="0" color="33554432" x="1559" y="372" height="64" width="453" html.valueishtml="0"  name=t_3 visible="1"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=detail alignment="1" text="Ultima modifica password:" border="0" color="33554432" x="1243" y="468" height="64" width="768" html.valueishtml="0"  name=dt_ultima_modifica_t visible="1"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="0" tabsequence=32766 border="5" color="33554432" x="2034" y="372" height="68" width="594" format="[general]" html.valueishtml="0"  name=dt_ultimo_accesso visible="1" edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="553648127" )
+column(band=detail id=7 alignment="0" tabsequence=32766 border="5" color="33554432" x="2034" y="468" height="64" width="594" format="[general]" html.valueishtml="0"  name=dt_ultima_modifica visible="1" edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="553648127" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="5" color="33554432" x="430" y="364" height="64" width="567" format="[general]" html.valueishtml="0"  name=stato visible="1" ddlb.limit=0 ddlb.allowedit=no ddlb.case=any  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="553648127" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="5" color="33554432" x="430" y="260" height="68" width="2194" format="[general]" html.valueishtml="0"  name=descrizione visible="1" edit.limit=120 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="553648127" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="5" color="33554432" x="430" y="152" height="68" width="567" format="[general]" html.valueishtml="0"  name=codice visible="1" edit.limit=24 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="553648127" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="5" color="128" x="430" y="48" height="68" width="1403" format="[general]" html.valueishtml="0"  name=nome visible="1" edit.limit=80 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="553648127" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" pagingmethod=0 generatedddwframes="1" )
+xhtmlgen() cssgen(sessionspecific="0" )
+xmlgen(inline="0" )
+xsltgen()
+jsgen()
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+export.xhtml()
+ 

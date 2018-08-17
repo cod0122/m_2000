@@ -1,0 +1,11 @@
+﻿$PBExportHeader$st_tab_clienti_m_r_f.srs
+global type st_tab_clienti_m_r_f from structure
+	st_tab_g_0		st_tab_g_0
+	long		clie_1
+	long		clie_2
+	long		clie_3
+	long		e1an		descriptor "comment" = "codice legame da passare a E1 come codice Ricevente, potrebbe non esistere in anagrafica"
+	datetime		x_datins
+	string		x_utente
+end type
+

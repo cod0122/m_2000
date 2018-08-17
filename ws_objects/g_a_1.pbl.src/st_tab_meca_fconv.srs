@@ -1,0 +1,10 @@
+﻿$PBExportHeader$st_tab_meca_fconv.srs
+global type st_tab_meca_fconv from structure
+	st_tab_g_0		st_tab_g_0
+	long		id_meca
+	datetime		x_datins_fconv		descriptor "comment" = "data e ora di forzatura convalida"
+	string		x_utente_fconv		descriptor "comment" = "utente"
+	datetime		x_datins
+	string		x_utente
+end type
+

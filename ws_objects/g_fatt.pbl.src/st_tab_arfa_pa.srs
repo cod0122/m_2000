@@ -1,0 +1,13 @@
+﻿$PBExportHeader$st_tab_arfa_pa.srs
+global type st_tab_arfa_pa from structure
+	st_tab_g_0		st_tab_g_0
+	long		id_fattura
+	string		ordineacquisto_id		descriptor "comment" = "numero ordine o numero impegno"
+	date		ordineacquisto_data		descriptor "comment" = ""
+	string		ordineacquisto_commessa		descriptor "comment" = "codice della commessa o della convenzione"
+	string		codice_cig		descriptor "comment" = "codice gestito dal CIPE che caratterizza ogni progetto di investimento pubblico (Codice Unitario Progetto)."
+	string		codice_cup		descriptor "comment" = "Codice Identificativo della Gara"
+	datetime		x_datins
+	string		x_utente
+end type
+

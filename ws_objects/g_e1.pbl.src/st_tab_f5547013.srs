@@ -1,0 +1,24 @@
+﻿$PBExportHeader$st_tab_f5547013.srs
+global type st_tab_f5547013 from structure
+	string		xxx		descriptor "comment" = "ASN: testata"
+	st_tab_g_0		st_tab_g_0		descriptor "comment" = "struct standard"
+	string		ehapid		descriptor "comment" = "id_meca conv in alphanumeric"
+	integer		ehan8		descriptor "comment" = "cliente"
+	integer		ehshan		descriptor "comment" = "mandante"
+	string		ehvr01		descriptor "comment" = "ddt mandante"
+	integer		ehdrqj		descriptor "comment" = "lasciare vuoto  - (data di previsto ricevimento)"
+	string		eha801		descriptor "comment" = "Data prevista di ricevimento merce formato testo DDMMYYYY"
+	long		ehdrqt		descriptor "comment" = "Ora prevista di ricevimento merce formato testo HHMMSS"
+	long		ehcars		descriptor "comment" = "lasciare vuoto  - Codice del trasportatore (solo per gli USA?)	"
+	string		ehcknu		descriptor "comment" = "lasciare vuoto - Codice del Freight Bill (solo per glu USA?)"
+	integer		ehuorg		descriptor "comment" = "lasciare vuoto - Numero di pallet/scatole della freight bill"
+	string		ehmcu		descriptor "comment" = "Codice della facility di Minerbio "
+	string		ehedsp		descriptor "comment" = "Flag di conferma lettura della ASN da parte di E1"
+	string		ehds01		descriptor "comment" = "Descrizione di un eventuale errore di processo della ASN"
+	string		ehuser		descriptor "comment" = "Codice E1 dell'utente che ha inviato i dati da M2000"
+	string		ehpid		descriptor "comment" = "Program id"
+	string		ehjobn		descriptor "comment" = "Job number"
+	decimal { 0 }		ehupmj		descriptor "comment" = "Date updated"
+	long		ehtday		descriptor "comment" = "Time updated"
+end type
+

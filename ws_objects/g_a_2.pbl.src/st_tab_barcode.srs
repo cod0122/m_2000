@@ -1,0 +1,50 @@
+﻿$PBExportHeader$st_tab_barcode.srs
+global type st_tab_barcode from structure
+	st_tab_g_0		st_tab_g_0
+	long		contati
+	string		barcode
+	date		data
+	string		groupage
+	string		barcode_lav
+	long		id_armo
+	string		flg_dosimetro		descriptor "comment" = "1=presenza dosimetro"
+	long		pl_barcode
+	long		pl_barcode_progr
+	string		causale
+	string		tipo_cicli
+	integer		fila_1
+	integer		fila_2
+	integer		fila_1p
+	integer		fila_2p
+	string		posizione
+	integer		bilancella
+	long		id_meca
+	long		num_int
+	date		data_int
+	date		data_stampa
+	date		data_lav_ini
+	time		ora_lav_ini
+	date		data_lav_fin
+	time		ora_lav_fin
+	date		data_lav_ok
+	date		data_sosp
+	double		lav_dose
+	integer		lav_fila_1
+	integer		lav_fila_2
+	integer		lav_fila_1p
+	integer		lav_fila_2p
+	string		err_lav_fin
+	string		err_lav_ok
+	string		note_lav_fin
+	string		note_lav_ok
+	string		upd_utente_fin
+	string		upd_utente_ok
+	datetime		upd_data_fin
+	datetime		upd_data_ok
+	datetime		modgiri_data		descriptor "comment" = "data modifica giri"
+	string		modgiri_utente		descriptor "comment" = "utente che ha modificato i giri"
+	long		imptime_second		descriptor "comment" = "tempo tot in secondi impiegato nei cicli impianto"
+	datetime		x_datins
+	string		x_utente
+end type
+

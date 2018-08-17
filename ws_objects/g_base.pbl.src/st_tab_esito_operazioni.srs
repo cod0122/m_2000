@@ -1,0 +1,13 @@
+﻿$PBExportHeader$st_tab_esito_operazioni.srs
+global type st_tab_esito_operazioni from structure
+	st_tab_g_0		st_tab_g_0		descriptor "comment" = "standard"
+	long		id_esito_operazioni
+	datetime		ts_operazione		descriptor "comment" = "ts dell'operazione (anche + esiti)"
+	string		tipo_operazione		descriptor "comment" = "tipo dell'operazione (anche + esiti)"
+	datetime		ts_esito		descriptor "comment" = "ts dell'esito"
+	string		esito_ko		descriptor "comment" = "S=se messaggio per un esito di errore, N=messaggio informativo "
+	string		esito		descriptor "comment" = "testo esito"
+	datetime		x_datins
+	string		x_utente
+end type
+

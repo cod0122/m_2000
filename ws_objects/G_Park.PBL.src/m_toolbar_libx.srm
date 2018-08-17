@@ -1,0 +1,997 @@
+﻿$PBExportHeader$m_toolbar_libx.srm
+$PBExportComments$Menu Principale
+forward
+global type m_toolbar_libx from menu
+end type
+type m_finestra from menu within m_toolbar_libx
+end type
+type m_chiudifinestra from menu within m_finestra
+end type
+type m_finestra from menu within m_toolbar_libx
+m_chiudifinestra m_chiudifinestra
+end type
+type m_strumenti from menu within m_toolbar_libx
+end type
+type m_fin_gest_libero1 from menu within m_strumenti
+end type
+type m_fin_gest_libero2 from menu within m_strumenti
+end type
+type m_fin_gest_libero3 from menu within m_strumenti
+end type
+type m_fin_gest_libero4 from menu within m_strumenti
+end type
+type m_fin_gest_libero5 from menu within m_strumenti
+end type
+type m_fin_gest_libero6 from menu within m_strumenti
+end type
+type m_fin_gest_libero7 from menucascade within m_strumenti
+end type
+type libero1 from menu within m_fin_gest_libero7
+end type
+type libero2 from menu within m_fin_gest_libero7
+end type
+type libero3 from menu within m_fin_gest_libero7
+end type
+type libero4 from menu within m_fin_gest_libero7
+end type
+type libero5 from menu within m_fin_gest_libero7
+end type
+type m_fin_gest_libero7 from menucascade within m_strumenti
+libero1 libero1
+libero2 libero2
+libero3 libero3
+libero4 libero4
+libero5 libero5
+end type
+type m_fin_gest_libero8 from menu within m_strumenti
+end type
+type m_fin_gest_libero9 from menu within m_strumenti
+end type
+type m_strumenti from menu within m_toolbar_libx
+m_fin_gest_libero1 m_fin_gest_libero1
+m_fin_gest_libero2 m_fin_gest_libero2
+m_fin_gest_libero3 m_fin_gest_libero3
+m_fin_gest_libero4 m_fin_gest_libero4
+m_fin_gest_libero5 m_fin_gest_libero5
+m_fin_gest_libero6 m_fin_gest_libero6
+m_fin_gest_libero7 m_fin_gest_libero7
+m_fin_gest_libero8 m_fin_gest_libero8
+m_fin_gest_libero9 m_fin_gest_libero9
+end type
+global type m_toolbar_libx from menu
+m_finestra m_finestra
+m_strumenti m_strumenti
+end type
+end forward
+
+global type m_toolbar_libx from menu
+m_finestra m_finestra
+m_strumenti m_strumenti
+end type
+global m_toolbar_libx m_toolbar_libx
+
+type variables
+
+end variables
+
+forward prototypes
+public subroutine reset_menu_strumenti ()
+end prototypes
+
+public subroutine reset_menu_strumenti ();//
+//--- Resetta barra strumenti
+		m_strumenti.m_fin_gest_libero1.visible = false
+		m_strumenti.m_fin_gest_libero1.enabled = false
+		m_strumenti.m_fin_gest_libero1.toolbaritemVisible = false
+		m_strumenti.m_fin_gest_libero2.visible = false
+		m_strumenti.m_fin_gest_libero2.enabled = false
+		m_strumenti.m_fin_gest_libero2.toolbaritemVisible = false
+		m_strumenti.m_fin_gest_libero3.visible = false
+		m_strumenti.m_fin_gest_libero3.enabled = false
+		m_strumenti.m_fin_gest_libero3.toolbaritemVisible = false
+		m_strumenti.m_fin_gest_libero4.visible = false
+		m_strumenti.m_fin_gest_libero4.enabled = false
+		m_strumenti.m_fin_gest_libero4.toolbaritemVisible = false
+		m_strumenti.m_fin_gest_libero5.visible = false
+		m_strumenti.m_fin_gest_libero5.enabled = false
+		m_strumenti.m_fin_gest_libero5.toolbaritemVisible = false
+		m_strumenti.m_fin_gest_libero6.visible = false
+		m_strumenti.m_fin_gest_libero6.enabled = false
+		m_strumenti.m_fin_gest_libero6.toolbaritemVisible = false
+		m_strumenti.m_fin_gest_libero7.visible = false
+		m_strumenti.m_fin_gest_libero7.enabled = false
+		m_strumenti.m_fin_gest_libero7.toolbaritemVisible = false
+		m_strumenti.m_fin_gest_libero8.visible = false
+		m_strumenti.m_fin_gest_libero8.enabled = false
+		m_strumenti.m_fin_gest_libero8.toolbaritemVisible = false
+		m_strumenti.m_fin_gest_libero9.visible = false
+		m_strumenti.m_fin_gest_libero9.enabled = false
+		m_strumenti.m_fin_gest_libero9.toolbaritemVisible = false
+	
+end subroutine
+
+on m_toolbar_libx.create
+m_toolbar_libx=this
+call super::create
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = -9
+this.weight = 400
+this.facename = "Verdana"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.toolbargradient = true
+this.bitmapgradient = true
+this.m_finestra=create m_finestra
+this.m_strumenti=create m_strumenti
+this.Item[UpperBound(this.Item)+1]=this.m_finestra
+this.Item[UpperBound(this.Item)+1]=this.m_strumenti
+end on
+
+on m_toolbar_libx.destroy
+call super::destroy
+destroy(this.m_finestra)
+destroy(this.m_strumenti)
+end on
+
+type m_finestra from menu within m_toolbar_libx
+m_chiudifinestra m_chiudifinestra
+end type
+
+on m_finestra.create
+call super::create
+this.text = "Finestra"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = -9
+this.weight = 400
+this.facename = "Verdana"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.toolbargradient = true
+this.bitmapgradient = true
+this.m_chiudifinestra=create m_chiudifinestra
+this.Item[UpperBound(this.Item)+1]=this.m_chiudifinestra
+end on
+
+on m_finestra.destroy
+call super::destroy
+destroy(this.m_chiudifinestra)
+end on
+
+type m_chiudifinestra from menu within m_finestra
+end type
+
+on m_chiudifinestra.create
+call super::create
+this.text = "Chiudi"
+this.toolbaritemname = "exit!"
+this.toolbaritemtext = "Esci, Chiudi funzione"
+this.toolbaritemorder = 150
+this.toolbaritemspace = 1
+this.menuimage = "exit!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = -9
+this.weight = 400
+this.facename = "Verdana"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_chiudifinestra.destroy
+call super::destroy
+end on
+
+type m_strumenti from menu within m_toolbar_libx
+m_fin_gest_libero1 m_fin_gest_libero1
+m_fin_gest_libero2 m_fin_gest_libero2
+m_fin_gest_libero3 m_fin_gest_libero3
+m_fin_gest_libero4 m_fin_gest_libero4
+m_fin_gest_libero5 m_fin_gest_libero5
+m_fin_gest_libero6 m_fin_gest_libero6
+m_fin_gest_libero7 m_fin_gest_libero7
+m_fin_gest_libero8 m_fin_gest_libero8
+m_fin_gest_libero9 m_fin_gest_libero9
+end type
+
+on m_strumenti.create
+call super::create
+this.visible = false
+this.text = "Op&zioni"
+this.microhelp = "Funzioni particolari del pannello attivo"
+this.toolbaritemvisible = false
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = -9
+this.weight = 400
+this.facename = "Verdana"
+this.menutitletext = " tool"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.toolbargradient = true
+this.bitmapgradient = true
+this.m_fin_gest_libero1=create m_fin_gest_libero1
+this.m_fin_gest_libero2=create m_fin_gest_libero2
+this.m_fin_gest_libero3=create m_fin_gest_libero3
+this.m_fin_gest_libero4=create m_fin_gest_libero4
+this.m_fin_gest_libero5=create m_fin_gest_libero5
+this.m_fin_gest_libero6=create m_fin_gest_libero6
+this.m_fin_gest_libero7=create m_fin_gest_libero7
+this.m_fin_gest_libero8=create m_fin_gest_libero8
+this.m_fin_gest_libero9=create m_fin_gest_libero9
+this.Item[UpperBound(this.Item)+1]=this.m_fin_gest_libero1
+this.Item[UpperBound(this.Item)+1]=this.m_fin_gest_libero2
+this.Item[UpperBound(this.Item)+1]=this.m_fin_gest_libero3
+this.Item[UpperBound(this.Item)+1]=this.m_fin_gest_libero4
+this.Item[UpperBound(this.Item)+1]=this.m_fin_gest_libero5
+this.Item[UpperBound(this.Item)+1]=this.m_fin_gest_libero6
+this.Item[UpperBound(this.Item)+1]=this.m_fin_gest_libero7
+this.Item[UpperBound(this.Item)+1]=this.m_fin_gest_libero8
+this.Item[UpperBound(this.Item)+1]=this.m_fin_gest_libero9
+end on
+
+on m_strumenti.destroy
+call super::destroy
+destroy(this.m_fin_gest_libero1)
+destroy(this.m_fin_gest_libero2)
+destroy(this.m_fin_gest_libero3)
+destroy(this.m_fin_gest_libero4)
+destroy(this.m_fin_gest_libero5)
+destroy(this.m_fin_gest_libero6)
+destroy(this.m_fin_gest_libero7)
+destroy(this.m_fin_gest_libero8)
+destroy(this.m_fin_gest_libero9)
+end on
+
+type m_fin_gest_libero1 from menu within m_strumenti
+end type
+
+event clicked;//
+//w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+//kw_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(kguo_g.kgw_attiva) THEN
+	if kguo_g.kgw_attiva.event ue_menu (KKG_FLAG_RICHIESTA.LIBERO1) < 0 then
+		messagebox("Operazione non eseguita", "Funzione non Abilitata")
+	end if
+
+end if
+
+end event
+
+on m_fin_gest_libero1.create
+call super::create
+this.tag = "[Alt+1]"
+this.visible = false
+this.text = "Alt+1"
+this.enabled = false
+this.shortcut = 561
+this.toolbaritemvisible = false
+this.toolbaritemorder = 10
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = -9
+this.weight = 400
+this.facename = "Verdana"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.toolbaranimation = true
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_fin_gest_libero1.destroy
+call super::destroy
+end on
+
+type m_fin_gest_libero2 from menu within m_strumenti
+end type
+
+event clicked;//
+//w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+//kw_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(kguo_g.kgw_attiva) THEN
+	if kguo_g.kgw_attiva.event ue_menu(KKG_FLAG_RICHIESTA.LIBERO2) < 0 then
+		messagebox("Operazione non eseguita", "Funzione non Abilitata")
+	end if
+end if
+
+end event
+
+on m_fin_gest_libero2.create
+call super::create
+this.tag = "[Alt+2]"
+this.visible = false
+this.text = "Alt+2"
+this.enabled = false
+this.shortcut = 562
+this.toolbaritemvisible = false
+this.toolbaritemorder = 15
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = -9
+this.weight = 400
+this.facename = "Verdana"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.toolbaranimation = true
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_fin_gest_libero2.destroy
+call super::destroy
+end on
+
+type m_fin_gest_libero3 from menu within m_strumenti
+end type
+
+event clicked;//
+//w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+//kw_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(kguo_g.kgw_attiva) THEN
+	if kguo_g.kgw_attiva.event ue_menu(KKG_FLAG_RICHIESTA.LIBERO3) < 0 then
+		messagebox("Operazione non eseguita", "Funzione non Abilitata")
+	end if
+end if
+
+end event
+
+on m_fin_gest_libero3.create
+call super::create
+this.tag = "[Alt+3]"
+this.visible = false
+this.text = "Alt+3"
+this.enabled = false
+this.shortcut = 563
+this.toolbaritemvisible = false
+this.toolbaritemorder = 20
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = -9
+this.weight = 400
+this.facename = "Verdana"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.toolbaranimation = true
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_fin_gest_libero3.destroy
+call super::destroy
+end on
+
+type m_fin_gest_libero4 from menu within m_strumenti
+end type
+
+event clicked;//
+//w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+//kw_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(kguo_g.kgw_attiva) THEN
+	if kguo_g.kgw_attiva.event ue_menu(KKG_FLAG_RICHIESTA.LIBERO4) < 0 then
+		messagebox("Operazione non eseguita", "Funzione non Abilitata")
+	end if
+end if
+
+end event
+
+on m_fin_gest_libero4.create
+call super::create
+this.tag = "[Alt+4]"
+this.visible = false
+this.text = "Alt+4"
+this.enabled = false
+this.shortcut = 564
+this.toolbaritemvisible = false
+this.toolbaritemorder = 25
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = -9
+this.weight = 400
+this.facename = "Verdana"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.toolbaranimation = true
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_fin_gest_libero4.destroy
+call super::destroy
+end on
+
+type m_fin_gest_libero5 from menu within m_strumenti
+end type
+
+event clicked;//
+//w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+//kw_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(kguo_g.kgw_attiva) THEN
+	if kguo_g.kgw_attiva.event ue_menu(KKG_FLAG_RICHIESTA.LIBERO5) < 0 then
+		messagebox("Operazione non eseguita", "Funzione non Abilitata")
+	end if
+
+end if
+
+end event
+
+on m_fin_gest_libero5.create
+call super::create
+this.tag = "[Alt+5]"
+this.visible = false
+this.text = "Alt+5"
+this.enabled = false
+this.shortcut = 565
+this.toolbaritemvisible = false
+this.toolbaritemorder = 30
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = -9
+this.weight = 400
+this.facename = "Verdana"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.toolbaranimation = true
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_fin_gest_libero5.destroy
+call super::destroy
+end on
+
+type m_fin_gest_libero6 from menu within m_strumenti
+end type
+
+event clicked;//
+//w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+//kw_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(kguo_g.kgw_attiva) THEN
+	if kguo_g.kgw_attiva.event ue_menu(KKG_FLAG_RICHIESTA.LIBERO6) < 0 then
+		messagebox("Operazione non eseguita", "Funzione non Abilitata")
+	end if
+
+end if
+
+end event
+
+on m_fin_gest_libero6.create
+call super::create
+this.tag = "[Alt+6]"
+this.visible = false
+this.text = "Alt+6"
+this.enabled = false
+this.shortcut = 566
+this.toolbaritemvisible = false
+this.toolbaritemorder = 35
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = -9
+this.weight = 400
+this.facename = "Verdana"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.toolbaranimation = true
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_fin_gest_libero6.destroy
+call super::destroy
+end on
+
+type m_fin_gest_libero7 from menucascade within m_strumenti
+libero1 libero1
+libero2 libero2
+libero3 libero3
+libero4 libero4
+libero5 libero5
+end type
+
+on m_fin_gest_libero7.create
+call super::create
+this.visible = false
+this.text = "libero"
+this.enabled = false
+this.toolbaritemvisible = false
+this.toolbaritemorder = 40
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = -9
+this.weight = 400
+this.facename = "Verdana"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.toolbaranimation = true
+this.toolbargradient = true
+this.bitmapgradient = true
+this.libero1=create libero1
+this.libero2=create libero2
+this.libero3=create libero3
+this.libero4=create libero4
+this.libero5=create libero5
+this.Item[UpperBound(this.Item)+1]=this.libero1
+this.Item[UpperBound(this.Item)+1]=this.libero2
+this.Item[UpperBound(this.Item)+1]=this.libero3
+this.Item[UpperBound(this.Item)+1]=this.libero4
+this.Item[UpperBound(this.Item)+1]=this.libero5
+end on
+
+on m_fin_gest_libero7.destroy
+call super::destroy
+destroy(this.libero1)
+destroy(this.libero2)
+destroy(this.libero3)
+destroy(this.libero4)
+destroy(this.libero5)
+end on
+
+type libero1 from menu within m_fin_gest_libero7
+end type
+
+event clicked;//
+//w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+//kw_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(kguo_g.kgw_attiva) THEN
+	if kguo_g.kgw_attiva.event ue_menu(KKG_FLAG_RICHIESTA.LIBERO71) < 0 then
+		messagebox("Operazione non eseguita", "Funzione non Abilitata")
+	end if
+
+end if
+
+end event
+
+on libero1.create
+call super::create
+this.visible = false
+this.enabled = false
+this.toolbaritemvisible = false
+this.toolbaritemorder = 40
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = -9
+this.weight = 400
+this.facename = "Verdana"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.toolbaranimation = true
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on libero1.destroy
+call super::destroy
+end on
+
+type libero2 from menu within m_fin_gest_libero7
+end type
+
+event clicked;//
+//w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+//kw_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(kguo_g.kgw_attiva) THEN
+	if kguo_g.kgw_attiva.event ue_menu(KKG_FLAG_RICHIESTA.LIBERO72) < 0 then
+		messagebox("Operazione non eseguita", "Funzione non Abilitata")
+	end if
+
+end if
+
+end event
+
+on libero2.create
+call super::create
+this.visible = false
+this.enabled = false
+this.toolbaritemvisible = false
+this.toolbaritemorder = 40
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = -9
+this.weight = 400
+this.facename = "Verdana"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.toolbaranimation = true
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on libero2.destroy
+call super::destroy
+end on
+
+type libero3 from menu within m_fin_gest_libero7
+end type
+
+event clicked;//
+//w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+//kw_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(kguo_g.kgw_attiva) THEN
+	if kguo_g.kgw_attiva.event ue_menu(KKG_FLAG_RICHIESTA.LIBERO73) < 0 then
+		messagebox("Operazione non eseguita", "Funzione non Abilitata")
+	end if
+
+end if
+
+end event
+
+on libero3.create
+call super::create
+this.visible = false
+this.enabled = false
+this.toolbaritemvisible = false
+this.toolbaritemorder = 40
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = -9
+this.weight = 400
+this.facename = "Verdana"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.toolbaranimation = true
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on libero3.destroy
+call super::destroy
+end on
+
+type libero4 from menu within m_fin_gest_libero7
+end type
+
+event clicked;//
+//w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+//kw_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(kguo_g.kgw_attiva) THEN
+	if kguo_g.kgw_attiva.event ue_menu(KKG_FLAG_RICHIESTA.LIBERO74) < 0 then
+		messagebox("Operazione non eseguita", "Funzione non Abilitata")
+	end if
+
+end if
+
+end event
+
+on libero4.create
+call super::create
+this.visible = false
+this.enabled = false
+this.toolbaritemvisible = false
+this.toolbaritemorder = 40
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = -9
+this.weight = 400
+this.facename = "Verdana"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.toolbaranimation = true
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on libero4.destroy
+call super::destroy
+end on
+
+type libero5 from menu within m_fin_gest_libero7
+end type
+
+event clicked;//
+//w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+//kw_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(kguo_g.kgw_attiva) THEN
+	if kguo_g.kgw_attiva.event ue_menu(KKG_FLAG_RICHIESTA.LIBERO75) < 0 then
+		messagebox("Operazione non eseguita", "Funzione non Abilitata")
+	end if
+
+end if
+
+end event
+
+on libero5.create
+call super::create
+this.visible = false
+this.enabled = false
+this.toolbaritemvisible = false
+this.toolbaritemorder = 40
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = -9
+this.weight = 400
+this.facename = "Verdana"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.toolbaranimation = true
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on libero5.destroy
+call super::destroy
+end on
+
+type m_fin_gest_libero8 from menu within m_strumenti
+end type
+
+on m_fin_gest_libero8.create
+call super::create
+this.tag = "[Alt+8]"
+this.visible = false
+this.text = "Alt+8"
+this.enabled = false
+this.shortcut = 568
+this.toolbaritemvisible = false
+this.toolbaritemorder = 45
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = -9
+this.weight = 400
+this.facename = "Verdana"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.toolbaranimation = true
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_fin_gest_libero8.destroy
+call super::destroy
+end on
+
+event clicked;//
+//w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+//kw_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(kguo_g.kgw_attiva) THEN
+	if kguo_g.kgw_attiva.event ue_menu(KKG_FLAG_RICHIESTA.LIBERO8) < 0 then
+		messagebox("Operazione non eseguita", "Funzione non Abilitata")
+	end if
+
+end if
+
+end event
+
+type m_fin_gest_libero9 from menu within m_strumenti
+end type
+
+on m_fin_gest_libero9.create
+call super::create
+this.tag = "[Alt+9]"
+this.visible = false
+this.text = "Alt+9"
+this.enabled = false
+this.shortcut = 569
+this.toolbaritemvisible = false
+this.toolbaritemorder = 50
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = -9
+this.weight = 400
+this.facename = "Verdana"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.toolbaranimation = true
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_fin_gest_libero9.destroy
+call super::destroy
+end on
+
+event clicked;//
+//w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+//kw_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(kguo_g.kgw_attiva) THEN
+	if kguo_g.kgw_attiva.event ue_menu(KKG_FLAG_RICHIESTA.LIBERO9) < 0 then
+		messagebox("Operazione non eseguita", "Funzione non Abilitata")
+	end if
+
+end if
+
+end event
+

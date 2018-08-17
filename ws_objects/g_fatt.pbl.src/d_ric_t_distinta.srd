@@ -1,0 +1,15 @@
+﻿$PBExportHeader$d_ric_t_distinta.srd
+release 6;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no grid.lines=0 )
+header(height=72 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=76 color="536870912" )
+table(column=(type=char(1) updatewhereclause=yes name=dist dbname="dist" values="Rimessa Diretta	0/R.I.B.A.	2/Bonifico	3/M.A.V.	4/Altro	Altro/" )
+ retrieve="select distinct RIC.DIST 
+   from RIC
+   order by DIST " )
+column(band=detail id=1 alignment="2" tabsequence=32766 border="5" color="0" x="9" y="4" height="64" width="169" format="[general]"  name=dist edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Courier New" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="2" background.color="15780518" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="5" color="0" x="187" y="4" height="64" width="626" format="[general]" ddlb.limit=0 ddlb.allowedit=no ddlb.case=any  font.face="Courier New" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="2" background.color="15780518" )
+text(band=foreground alignment="2" text="Tipo Distinta"border="6" color="0" x="9" y="4" height="60" width="800"  name=dist_t  resizeable=1  slideup=allabove  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" font.italic="1" background.mode="1" background.color="553648127" )
+htmltable(border="1" cellpadding="0" cellspacing="0" generatecss="no" nowrap="yes")

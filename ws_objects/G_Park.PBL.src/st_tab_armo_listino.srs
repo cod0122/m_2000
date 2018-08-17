@@ -1,0 +1,15 @@
+﻿$PBExportHeader$st_tab_armo_listino.srs
+global type st_tab_armo_listino from structure
+	st_tab_g_0		st_tab_g_0
+	long		id_armo_listino
+	long		id_armo
+	string		id_listino_link_pregruppo		descriptor "comment" = " "
+	date		data_attivazione
+	string		tipo_listino		descriptor "comment" = "T=a valore (a corpo); U=a unità (a collo)"
+	integer		colli		descriptor "comment" = "colli totali da fatturare"
+	integer		colli_fatt		descriptor "comment" = "colli già fatturati"
+	double		prezzo
+	datetime		x_datins
+	string		x_utente
+end type
+

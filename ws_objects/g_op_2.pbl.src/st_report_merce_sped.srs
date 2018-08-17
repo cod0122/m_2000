@@ -1,0 +1,8 @@
+﻿$PBExportHeader$st_report_merce_sped.srs
+global type st_report_merce_sped from structure
+	date		k_data_da
+	date		k_data_a
+	integer		k_clie_2		descriptor "comment" = "ricevente"
+	long		k_id_sped_da
+end type
+

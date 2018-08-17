@@ -1,0 +1,28 @@
+﻿$PBExportHeader$st_tab_meca_dosimbozza.srs
+global type st_tab_meca_dosimbozza from structure
+	st_tab_g_0		st_tab_g_0
+	long		id_meca_dosimbozza
+	long		id_meca
+	string		barcode_lav		descriptor "comment" = "barcode di trattamento"
+	string		barcode		descriptor "comment" = "barcode su cui applicare il barcode del dosimetro"
+	string		barcode_dosimetro		descriptor "comment" = "barcode esterno del desimetro applicato dalla casa fornitrice"
+	date		dosim_data
+	string		dosim_flg_tipo_dose		descriptor "comment" = "tipo di dose rilevata: M='minima',X= 'massima', A='altro'."
+	double		dosim_dose
+	integer		dosim_assorb
+	integer		dosim_spessore
+	double		dosim_rapp_a_s
+	string		dosim_lotto_dosim
+	integer		dosim_temperatura
+	integer		dosim_umidita
+	integer		dosim_esito
+	integer		dosim_note
+	integer		note
+	string		x_utente_dosim_lettura
+	datetime		x_data_dosim_lettura
+	string		x_utente_dosim_verifica
+	datetime		x_data_dosim_verifica
+	datetime		x_datins
+	string		x_utente
+end type
+

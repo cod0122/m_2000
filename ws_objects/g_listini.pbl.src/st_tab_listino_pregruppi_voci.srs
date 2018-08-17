@@ -1,0 +1,12 @@
+﻿$PBExportHeader$st_tab_listino_pregruppi_voci.srs
+global type st_tab_listino_pregruppi_voci from structure
+	st_tab_g_0		st_tab_g_0
+	long		id_listino_pregruppo_voce
+	long		id_listino_pregruppo
+	long		id_listino_voce
+	string		attivo		descriptor "comment" = "S=attivo; N=non attivo "
+	double		prezzo
+	datetime		x_datins
+	string		x_utente
+end type
+

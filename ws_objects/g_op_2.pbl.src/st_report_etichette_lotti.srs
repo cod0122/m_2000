@@ -1,0 +1,11 @@
+﻿$PBExportHeader$st_report_etichette_lotti.srs
+global type st_report_etichette_lotti from structure
+	integer		k_anno
+	long		k_num_da
+	long		k_num_a
+	long		k_clie_1		descriptor "comment" = "mandante"
+	long		k_id_meca_da
+	long		k_id_meca_a
+	integer		k_area_dawmf		descriptor "comment" = "1=accede al wmf x reperire l'area di ubicazione"
+end type
+

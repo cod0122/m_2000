@@ -1,0 +1,164 @@
+﻿$PBExportHeader$d_meca_elenco_convalide_old.srd
+release 9;
+datawindow(units=0 timer_interval=0 color=1073741824 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no grid.lines=0 )
+header(height=64 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=68 color="536870912" )
+detail(height=88 color="536870912" )
+table(column=(type=date updatewhereclause=yes name=data_int dbname="meca.data_int" )
+ column=(type=long updatewhereclause=yes name=num_int dbname="meca.num_int" )
+ column=(type=decimal(0) updatewhereclause=yes name=contratto dbname="meca.contratto" )
+ column=(type=char(12) updatewhereclause=yes name=mc_co dbname="contratti.mc_co" )
+ column=(type=char(12) updatewhereclause=yes name=sc_cf dbname="contratti.sc_cf" )
+ column=(type=char(12) updatewhereclause=yes name=sl_pt dbname="contratti.sl_pt" )
+ column=(type=char(50) updatewhereclause=yes name=descr dbname="contratti.descr" )
+ column=(type=long updatewhereclause=yes name=clie_1 dbname="meca.clie_1" )
+ column=(type=char(30) updatewhereclause=yes name=rag_soc_10 dbname="clienti.rag_soc_10" )
+ column=(type=long updatewhereclause=yes name=clie_3 dbname="meca.clie_3" )
+ column=(type=char(30) updatewhereclause=yes name=rag_soc_10_1 dbname="clienti.rag_soc_10" )
+ column=(type=char(10) updatewhereclause=yes name=num_bolla_in dbname="meca.num_bolla_in" )
+ column=(type=date updatewhereclause=yes name=data_bolla_in dbname="meca.data_bolla_in" )
+ column=(type=long updatewhereclause=yes name=dosim_assorb dbname="meca_dosim.dosim_assorb" )
+ column=(type=long updatewhereclause=yes name=dosim_spessore dbname="meca_dosim.dosim_spessore" )
+ column=(type=decimal(2) updatewhereclause=yes name=rapp_a_s dbname="meca_dosim.dosim_rapp_a_s" )
+ column=(type=char(16) updatewhereclause=yes name=dosim_lotto_dosim dbname="meca_dosim.dosim_lotto_dosim" )
+ column=(type=date updatewhereclause=yes name=dosim_data dbname="meca_dosim.dosim_data" )
+ column=(type=char(1) updatewhereclause=yes name=err_lav_ok dbname="meca.err_lav_ok" )
+ column=(type=char(255) updatewhereclause=yes name=note_lav_ok dbname="meca.note_lav_ok" )
+ column=(type=datetime updatewhereclause=yes name=x_datins dbname="meca.x_datins" )
+ column=(type=char(12) updatewhereclause=yes name=x_utente dbname="meca.x_utente" )
+ column=(type=long updatewhereclause=yes name=colli_2 dbname="armo.colli_2" )
+ column=(type=long updatewhereclause=yes name=colli_trattati dbname="colli_trattati" )
+ column=(type=long updatewhereclause=yes name=colli_groupage dbname="colli_groupage" )
+ retrieve="    SELECT distinct
+         meca.data_int,   
+         meca.num_int,   
+         meca.contratto,   
+         contratti.mc_co,   
+         contratti.sc_cf,   
+         contratti.sl_pt,   
+         contratti.descr,   
+         meca.clie_1,   
+         clienti_a.rag_soc_10,   
+         meca.clie_3,   
+         clienti_b.rag_soc_10,   
+         meca.num_bolla_in,   
+         meca.data_bolla_in,
+         meca_dosim.dosim_assorb,   
+         meca_dosim.dosim_spessore,   
+         meca_dosim.dosim_rapp_a_s,   
+         meca_dosim.dosim_lotto_dosim,   
+         meca_dosim.dosim_data,   
+         meca.err_lav_ok,   
+         meca.note_lav_ok,   
+         meca.x_datins,   
+         meca.x_utente,
+         armo.colli_2,
+         sum(colli_trattati) as colli_trattati,
+         sum(colli_groupage) as colli_groupage 
+  
+    FROM  ((((meca 
+			 INNER JOIN armo 
+          ON meca.id = armo.id_meca) 
+			 INNER JOIN artr 
+          ON artr.id_armo = artr.id_armo) 
+			 LEFT OUTER JOIN clienti 
+          clienti_a ON meca.clie_1 = clienti_a.codice) 
+          LEFT OUTER JOIN clienti 
+          clienti_b ON meca.clie_3 = clienti_b.codice) 
+          LEFT OUTER JOIN meca_dosim 
+          ON meca.id = meca_dosim.id_meca 
+          LEFT OUTER JOIN contratti 
+          ON meca.contratto = contratti.codice 
+   WHERE  meca.data_int >= :k_data_int 
+         and artr.data_fin > date('01.01.1900')   
+	      and (meca.err_lav_ok = :k_err_lav_ok or (:k_err_lav_ok = ' ' and meca.err_lav_ok is null))
+         and ( meca.clie_1 = :k_clie_1  OR  
+           :k_clie_1 = 0 )   
+         and ( meca.clie_3 = :k_clie_3  OR  
+           :k_clie_3 = 0 ) 
+group by
+         meca.data_int,   
+         meca.num_int,   
+         meca.contratto,   
+         contratti.mc_co,   
+         contratti.sc_cf,   
+         contratti.sl_pt,   
+         contratti.descr,   
+         meca.clie_1,   
+         clienti_a.rag_soc_10,   
+         meca.clie_3,   
+         clienti_b.rag_soc_10,   
+         meca.num_bolla_in,   
+         meca.data_bolla_in,
+         meca_dosim.dosim_assorb,   
+         meca_dosim.dosim_spessore,   
+         meca_dosim.dosim_rapp_a_s,   
+         meca_dosim.dosim_lotto_dosim,   
+         meca_dosim.dosim_data,   
+         meca.err_lav_ok,   
+         meca.note_lav_ok,   
+         meca.x_datins,   
+         meca.x_utente,
+         armo.colli_2
+          
+ORDER BY meca.data_int DESC,   
+         meca.num_int DESC   
+  
+" arguments=(("k_data_int", date),("k_clie_1", number),("k_clie_3", number),("k_err_lav_ok", string)) )
+text(band=header alignment="2" text="Data" border="0" color="33554432" x="9" y="8" height="56" width="247" html.valueishtml="0"  name=data_int_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="134217738" )
+text(band=header alignment="2" text="nominativo" border="0" color="33554432" x="4526" y="8" height="56" width="741" html.valueishtml="0"  name=rag_soc_10_t_1_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="134217738" )
+text(band=header alignment="1" text="Bolla " border="0" color="33554432" x="5275" y="8" height="56" width="279" html.valueishtml="0"  name=num_bolla_in_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="134217738" )
+text(band=header alignment="2" text="Cliente" border="0" color="33554432" x="4325" y="8" height="56" width="192" html.valueishtml="0"  name=clie_3_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="134217738" )
+text(band=header alignment="2" text="Mc Co" border="0" color="33554432" x="1317" y="8" height="56" width="320" html.valueishtml="0"  name=mc_co_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="134217738" )
+text(band=header alignment="2" text="Sc Cf" border="0" color="33554432" x="1646" y="8" height="56" width="325" html.valueishtml="0"  name=sc_cf_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="134217738" )
+text(band=header alignment="2" text="Sl Pt" border="0" color="33554432" x="1979" y="8" height="56" width="325" html.valueishtml="0"  name=sl_pt_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="134217738" )
+text(band=header alignment="2" text="Mand." border="0" color="33554432" x="3314" y="8" height="56" width="215" html.valueishtml="0"  name=clie_1_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="134217738" )
+text(band=header alignment="2" text="Nominativo" border="0" color="33554432" x="3538" y="8" height="56" width="777" html.valueishtml="0"  name=rag_soc_10_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="134217738" )
+text(band=header alignment="0" text=" Mandante" border="0" color="33554432" x="5563" y="8" height="56" width="366" html.valueishtml="0"  name=data_bolla_in_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="134217738" )
+text(band=header alignment="2" text="ASB" border="0" color="33554432" x="6258" y="8" height="56" width="192" html.valueishtml="0"  name=dosim_assorb_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="134217738" )
+text(band=header alignment="2" text="Spesso" border="0" color="33554432" x="6459" y="8" height="56" width="206" html.valueishtml="0"  name=dosim_spessore_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="134217738" )
+text(band=header alignment="2" text="Rapp A/S" border="0" color="33554432" x="6674" y="8" height="56" width="247" html.valueishtml="0"  name=dosim_rapp_a_s_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="134217738" )
+text(band=header alignment="2" text="Lotto-Dosim." border="0" color="33554432" x="6930" y="8" height="56" width="425" html.valueishtml="0"  name=dosim_lotto_dosim_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="134217738" )
+text(band=header alignment="2" text="Err." border="0" color="33554432" x="7365" y="8" height="56" width="133" html.valueishtml="0"  name=err_lav_ok_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="134217738" )
+text(band=header alignment="0" text="Convalidato" border="0" color="33554432" x="5938" y="8" height="56" width="311" html.valueishtml="0"  name=dosim_data_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="134217738" )
+text(band=header alignment="2" text="Note" border="0" color="33554432" x="7506" y="8" height="56" width="2185" html.valueishtml="0"  name=note_lav_ok_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="134217738" )
+text(band=header alignment="2" text="Aggiornato" border="0" color="33554432" x="9701" y="8" height="56" width="407" html.valueishtml="0"  name=x_datins_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" font.italic="1" background.mode="2" background.color="134217738" )
+text(band=header alignment="2" text="Utente" border="0" color="33554432" x="10117" y="8" height="56" width="334" html.valueishtml="0"  name=x_utente_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" font.italic="1" background.mode="2" background.color="134217738" )
+text(band=header alignment="2" text="Descrizione" border="0" color="33554432" x="2313" y="8" height="56" width="992" html.valueishtml="0"  name=descr_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="134217738" )
+text(band=header alignment="2" text="Numero" border="0" color="33554432" x="265" y="8" height="56" width="229" html.valueishtml="0"  name=num_int_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="134217738" )
+text(band=header alignment="2" text="Contratto" border="0" color="33554432" x="1065" y="8" height="56" width="242" html.valueishtml="0"  name=contratto_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="134217738" )
+text(band=header alignment="1" text="Entrati " border="0" color="33554432" x="503" y="8" height="56" width="192" html.valueishtml="0"  name=colli_2_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="134217738" )
+text(band=header alignment="1" text="Lav. " border="0" color="33554432" x="704" y="8" height="56" width="165" html.valueishtml="0"  name=colli_trattati_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="134217738" )
+text(band=header alignment="1" text="Group." border="0" color="33554432" x="878" y="8" height="56" width="178" html.valueishtml="0"  name=colli_groupage_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="134217738" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="0" color="33554432" x="9" y="8" height="68" width="247" format=" dd/mm/yy" html.valueishtml="0"  name=data_int visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="1" tabsequence=32766 border="0" color="33554432" x="3314" y="8" height="68" width="215" format="[general] " html.valueishtml="0"  name=clie_1 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=9 alignment="0" tabsequence=32766 border="0" color="33554432" x="3538" y="8" height="68" width="777" format=" [general]" html.valueishtml="0"  name=rag_soc_10 visible="1" edit.limit=30 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=10 alignment="1" tabsequence=32766 border="0" color="33554432" x="4325" y="8" height="68" width="192" format="[general] " html.valueishtml="0"  name=clie_3 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=11 alignment="0" tabsequence=32766 border="0" color="33554432" x="4526" y="8" height="68" width="741" format=" [general]" html.valueishtml="0"  name=rag_soc_10_1 visible="1" edit.limit=30 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=12 alignment="0" tabsequence=32766 border="0" color="33554432" x="5275" y="8" height="68" width="279" format=" [general]" html.valueishtml="0"  name=num_bolla_in visible="1" edit.limit=10 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="0" color="33554432" x="1317" y="8" height="68" width="320" format=" [general]" html.valueishtml="0"  name=mc_co visible="1" edit.limit=12 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="0" tabsequence=32766 border="0" color="33554432" x="1646" y="8" height="68" width="325" format=" [general]" html.valueishtml="0"  name=sc_cf visible="1" edit.limit=12 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="0" tabsequence=32766 border="0" color="33554432" x="1979" y="8" height="68" width="325" format=" [general]" html.valueishtml="0"  name=sl_pt visible="1" edit.limit=12 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=13 alignment="0" tabsequence=32766 border="0" color="33554432" x="5563" y="8" height="68" width="366" format=" [general]" html.valueishtml="0"  name=data_bolla_in visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=14 alignment="1" tabsequence=32766 border="0" color="33554432" x="6258" y="8" height="68" width="192" format="[General] " html.valueishtml="0"  name=dosim_assorb visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=15 alignment="1" tabsequence=32766 border="0" color="33554432" x="6459" y="8" height="68" width="206" format="[General] " html.valueishtml="0"  name=dosim_spessore visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=16 alignment="1" tabsequence=32766 border="0" color="33554432" x="6674" y="8" height="68" width="247" format="[General] " html.valueishtml="0"  name=rapp_a_s visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=17 alignment="0" tabsequence=32766 border="0" color="33554432" x="6930" y="8" height="68" width="425" format=" [general]" html.valueishtml="0"  name=dosim_lotto_dosim visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=19 alignment="0" tabsequence=32766 border="0" color="33554432" x="7365" y="8" height="68" width="133" format=" [general]" html.valueishtml="0"  name=err_lav_ok visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=18 alignment="0" tabsequence=32766 border="0" color="33554432" x="5938" y="8" height="68" width="311" format=" dd/mm/yyyy" html.valueishtml="0"  name=dosim_data visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=20 alignment="0" tabsequence=32766 border="0" color="33554432" x="7506" y="8" height="68" width="2185" format=" [general]" html.valueishtml="0"  name=note_lav_ok visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=21 alignment="0" tabsequence=32766 border="0" color="33554432" x="9701" y="8" height="68" width="407" format=" [shortdate] [time]" html.valueishtml="0"  name=x_datins visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" font.italic="1" background.mode="1" background.color="536870912" )
+column(band=detail id=22 alignment="0" tabsequence=32766 border="0" color="33554432" x="10117" y="8" height="68" width="334" format=" [general]" html.valueishtml="0"  name=x_utente visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" font.italic="1" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="0" tabsequence=32766 border="0" color="33554432" x="2313" y="8" height="68" width="992" format=" [general]" html.valueishtml="0"  name=descr visible="1" edit.limit=50 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=2 alignment="1" tabsequence=32766 border="0" color="33554432" x="265" y="8" height="68" width="229" format="[general] " html.valueishtml="0"  name=num_int visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=23 alignment="0" tabsequence=32766 border="0" color="33554432" x="503" y="8" height="68" width="192" format="##### " html.valueishtml="0"  name=colli_2 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="1" tabsequence=32766 border="0" color="33554432" x="1065" y="8" height="68" width="242" format="[general]  " html.valueishtml="0"  name=contratto visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=24 alignment="1" tabsequence=32766 border="0" color="33554432" x="704" y="8" height="68" width="165" format="##### " html.valueishtml="0"  name=colli_trattati visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=25 alignment="1" tabsequence=32766 border="0" color="33554432" x="878" y="8" height="68" width="178" format="##### " html.valueishtml="0"  name=colli_groupage visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=footer alignment="0" expression="'Presenti:' + string(count  (#1 for all), ~"###,###0~")"border="0" color="128" x="2313" y="0" height="60" width="992" format="[GENERAL]" html.valueishtml="0"  name=compute_2 visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )

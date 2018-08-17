@@ -1,0 +1,8 @@
+﻿$PBExportHeader$st_tab_cap.srs
+global type st_tab_cap from structure
+	st_tab_g_0		st_tab_g_0
+	string		cap
+	string		prov
+	string		localita
+end type
+

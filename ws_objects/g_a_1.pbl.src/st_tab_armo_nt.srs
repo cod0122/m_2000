@@ -1,0 +1,7 @@
+﻿$PBExportHeader$st_tab_armo_nt.srs
+global type st_tab_armo_nt from structure
+	st_tab_g_0		st_tab_g_0		descriptor "comment" = "standard"
+	long		id_armo
+	string		note[10]		descriptor "comment" = "10 note varie"
+end type
+

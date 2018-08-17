@@ -1,0 +1,13 @@
+﻿$PBExportHeader$st_profilestring_ini.srs
+global type st_profilestring_ini from structure
+	string		utente
+	string		file
+	string		titolo
+	string		nome
+	string		valore
+	string		operazione
+	string		path
+	string		nome_file
+	string		esito
+end type
+

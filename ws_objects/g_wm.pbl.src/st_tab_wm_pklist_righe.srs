@@ -1,0 +1,26 @@
+﻿$PBExportHeader$st_tab_wm_pklist_righe.srs
+global type st_tab_wm_pklist_righe from structure
+	st_tab_g_0		st_tab_g_0		descriptor "comment" = "standard"
+	long		id_wm_pklist_riga		descriptor "comment" = "id di questa tabella TESTATA_PACKING_LIST_DETTAGLIO_RIGHE mandante "
+	long		id_wm_pklist		descriptor "comment" = "id tabella TESTATA_PACKING_LIST mandante "
+	string		stato		descriptor "comment" = "stato 1=appena caricata, 4=importato nel Riferimento, 9=chiuso, C=cancellato "
+	string		areamag		descriptor "comment" = "area di magazzino"
+	string		idart_clie		descriptor "comment" = "codice articolo del cliente"
+	string		idlotto_clie		descriptor "comment" = "identificativo del lotto per il cliente"
+	integer		qtapezzi_pallet		descriptor "comment" = "qta' totale pezzi/sacchi nel pallet"
+	string		idpezzo_clie		descriptor "comment" = "identificativo del pezzo per il cliente"
+	string		wm_barcode		descriptor "comment" = "codice Etichetta WM generata da JOB3"
+	string		barcode		descriptor "comment" = "codice Etichetta Gammarad (di trattamento)"
+	long		id_meca		descriptor "comment" = "id Lotto di entrata (testata)"
+	long		id_armo		descriptor "comment" = "id Lotto di entrata (righe)"
+	integer		gruppo		descriptor "comment" = "codice gruppo articolo"
+	integer		colli		descriptor "comment" = "colli  di questa riga (di solito uguala a 1)"
+	string		eliminato		descriptor "comment" = "S=riga cancellata "
+	string		insped		descriptor "comment" = "S=riga in spedizione (caricata sul camion)"
+	string		sped		descriptor "comment" = "S=riga spedita (in bolla e stampata)"
+	datetime		x_datins_elim		descriptor "comment" = "data cancellazione"
+	string		x_utente_elim		descriptor "comment" = "utente di cancellazione"
+	datetime		x_datins		descriptor "comment" = "data ultimo agg"
+	string		x_utente		descriptor "comment" = "utente ultimo agg"
+end type
+

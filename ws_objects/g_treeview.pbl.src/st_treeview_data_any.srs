@@ -1,0 +1,30 @@
+﻿$PBExportHeader$st_treeview_data_any.srs
+global type st_treeview_data_any from structure
+	st_tab_barcode		st_tab_barcode
+	st_tab_meca		st_tab_meca
+	st_tab_clienti		st_tab_clienti
+	st_tab_sl_pt		st_tab_sl_pt
+	st_tab_armo		st_tab_armo
+	st_tab_contratti		st_tab_contratti
+	st_tab_pl_barcode		st_tab_pl_barcode
+	st_tab_treeview		st_tab_treeview
+	st_tab_prodotti		st_tab_prodotti
+	st_tab_sped		st_tab_sped
+	st_tab_arsp		st_tab_arsp
+	st_tab_arfa		st_tab_arfa
+	st_tab_certif		st_tab_certif
+	st_tab_pagam		st_tab_pagam
+	st_tab_iva		st_tab_iva
+	st_tab_artr		st_tab_artr
+	st_tab_gru		st_tab_gru
+	st_tab_sr_utenti		st_tab_sr_utenti
+	st_tab_wm_pklist_righe		st_tab_wm_pklist_righe
+	st_tab_wm_pklist		st_tab_wm_pklist
+	st_tab_wm_receiptgammarad		st_tab_wm_receiptgammarad
+	st_wm_pkl_web		st_wm_pkl_web		descriptor "comment" = "di puo' togliere da qui completato il passaggio a E-ONE"
+	st_wm_pkl_file		st_wm_pkl_file		descriptor "comment" = "nuovo contenitore file pkl (web-xmp e lineare-txt)"
+	st_tab_meca_qtna		st_tab_meca_qtna
+	st_treeview_file		st_treeview_file
+	long		contati
+end type
+

@@ -1,0 +1,15 @@
+﻿$PBExportHeader$st_treeview_file.srs
+global type st_treeview_file from structure
+	st_tab_g_0		st_tab_g_0		descriptor "comment" = "standard"
+	string		tipo		descriptor "comment" = "f=file, c=cartella"
+	string		nome		descriptor "comment" = "nome file"
+	string		path		descriptor "comment" = "path"
+	string		data		descriptor "comment" = "data"
+	long		size		descriptor "comment" = "dimensione file"
+	string		dato1		descriptor "comment" = "dato generico"
+	string		dato2		descriptor "comment" = "dato generico"
+	string		dato3		descriptor "comment" = "dato generico"
+	string		dato4		descriptor "comment" = "dato generico"
+	string		dato5		descriptor "comment" = "dato generico"
+end type
+

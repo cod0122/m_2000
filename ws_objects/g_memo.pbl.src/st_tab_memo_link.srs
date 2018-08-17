@@ -1,0 +1,18 @@
+﻿$PBExportHeader$st_tab_memo_link.srs
+global type st_tab_memo_link from structure
+	st_tab_g_0		st_tab_g_0
+	long		id_memo_link
+	long		id_memo		descriptor "comment" = "collegamento al memo"
+	string		tipo_memo_link		descriptor "comment" = "DOC,XLS,PDF,. .."
+	string		link		descriptor "comment" = "path"
+	string		nome		descriptor "comment" = "nome del file con l'estensione"
+	string		titolo		descriptor "comment" = "titolo del documento"
+	datetime		dataora_ins		descriptor "comment" = "data e ora primo inserimento"
+	string		utente_ins		descriptor "comment" = "utente che ha caricato le note"
+	string		memo_link_load		descriptor "comment" = "S=memo caricato nel BLOB; N=non caricato"
+	long		memo_link_lenunzip		descriptor "comment" = "len del file originale"
+	blob		memo_link		descriptor "comment" = "BLOB con all'interno il documento"
+	datetime		x_datins
+	string		x_utente
+end type
+

@@ -1,0 +1,69 @@
+﻿$PBExportHeader$d_clienti_2.srd
+release 8;
+datawindow(units=0 timer_interval=0 color=12632256 processing=0 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 97 print.margin.bottom = 97 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=1184 color="536870912" )
+table(column=(type=long updatewhereclause=yes name=codice dbname="clienti.codice" )
+ column=(type=char(30) updatewhereclause=yes name=rag_soc_20 dbname="clienti.rag_soc_20" )
+ column=(type=char(30) updatewhereclause=yes name=rag_soc_21 dbname="clienti.rag_soc_21" )
+ column=(type=char(30) updatewhereclause=yes name=indi_2 dbname="clienti.indi_2" )
+ column=(type=char(5) updatewhereclause=yes name=cap_2 dbname="clienti.cap_2" )
+ column=(type=char(30) updatewhereclause=yes name=loc_2 dbname="clienti.loc_2" )
+ column=(type=char(2) updatewhereclause=yes name=prov_2 dbname="clienti.prov_2" )
+ column=(type=char(30) update=yes updatewhereclause=yes name=rag_soc_1_c dbname="ind_comm.rag_soc_1_c" )
+ column=(type=char(30) update=yes updatewhereclause=yes name=rag_soc_2_c dbname="ind_comm.rag_soc_2_c" )
+ column=(type=char(30) update=yes updatewhereclause=yes name=indi_c dbname="ind_comm.indi_c" )
+ column=(type=char(5) update=yes updatewhereclause=yes name=cap_c dbname="ind_comm.cap_c" )
+ column=(type=char(30) update=yes updatewhereclause=yes name=loc_c dbname="ind_comm.loc_c" )
+ column=(type=char(2) update=yes updatewhereclause=yes name=prov_c dbname="ind_comm.prov_c" )
+ column=(type=long update=yes updatewhereclause=yes key=yes name=clie_c dbname="ind_comm.clie_c" )
+ retrieve="  SELECT  clienti.codice ,
+          clienti.rag_soc_20 ,
+          clienti.rag_soc_21 ,
+          clienti.indi_2 ,
+          clienti.cap_2 ,
+          clienti.loc_2 ,
+          clienti.prov_2 ,
+          ind_comm.rag_soc_1_c,
+          ind_comm.rag_soc_2_c,
+          ind_comm.indi_c ,
+          ind_comm.cap_c ,
+          ind_comm.loc_c ,
+          ind_comm.prov_c,
+          ind_comm.clie_c
+        FROM (clienti left outer join ind_comm on
+              clienti.codice = ind_comm.clie_c)      
+        WHERE ( clienti.codice = :k_id_cliente )   " update="ind_comm" updatewhere=0 updatekeyinplace=no arguments=(("k_id_cliente", number)) )
+rectangle(band=header x="1454" y="0" height="600" width="2505"  name=r_1 visible="1" brush.hatch="7" brush.color="553648127" pen.style="0" pen.width="5" pen.color="33554432"  background.mode="2" background.color="0" )
+rectangle(band=detail x="32" y="624" height="496" width="2683"  name=r_3 visible="1" brush.hatch="7" brush.color="553648127" pen.style="0" pen.width="5" pen.color="0"  background.mode="2" background.color="0" )
+rectangle(band=detail x="32" y="104" height="436" width="2683"  name=r_2 visible="1" brush.hatch="7" brush.color="553648127" pen.style="0" pen.width="5" pen.color="0"  background.mode="2" background.color="0" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="5" color="8388608" x="2519" y="20" height="60" width="174" format="[general]" html.valueishtml="0"  name=codice visible="1" edit.limit=0 edit.case=any edit.format="#####" edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+text(band=detail alignment="1" text="Codice" border="0" color="0" x="2318" y="16" height="60" width="178" html.valueishtml="0"  name=clienti_id_cliente_t visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=detail alignment="2" text="Indirizzo Spedizione" border="6" color="0" x="82" y="72" height="60" width="544" html.valueishtml="0"  name=t_1 visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" font.italic="1" background.mode="2" background.color="8421376" )
+text(band=detail alignment="1" text="Ragione sociale:" border="0" color="0" x="59" y="180" height="60" width="434" html.valueishtml="0"  name=t_2 visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=detail alignment="1" text="Indirizzo:" border="0" color="0" x="265" y="352" height="60" width="229" html.valueishtml="0"  name=clienti_indirizzo_t visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=detail alignment="1" text="Cap:" border="0" color="0" x="2231" y="352" height="60" width="114" html.valueishtml="0"  name=clienti_cap_t visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=detail alignment="1" text="Localita'" border="0" color="0" x="274" y="440" height="60" width="219" html.valueishtml="0"  name=clienti_localita_t visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=detail alignment="1" text="Prov:" border="0" color="0" x="2213" y="440" height="60" width="133" html.valueishtml="0"  name=clienti_prov_t visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=detail alignment="2" text="Indirizzo Commerciale" border="6" color="0" x="110" y="588" height="60" width="603" html.valueishtml="0"  name=t_3 visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" font.italic="1" background.mode="2" background.color="15780518" )
+text(band=detail alignment="1" text="Ragione sociale:" border="0" color="0" x="69" y="700" height="60" width="425" html.valueishtml="0"  name=clienti_c_fiscale_t visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=detail alignment="1" text="Indirizzo:" border="0" color="0" x="265" y="908" height="60" width="229" html.valueishtml="0"  name=t_4 visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=detail alignment="1" text="Cap:" border="0" color="0" x="2231" y="908" height="60" width="114" html.valueishtml="0"  name=t_5 visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=detail alignment="1" text="Localita'" border="0" color="0" x="274" y="996" height="60" width="219" html.valueishtml="0"  name=t_6 visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=detail alignment="1" text="Prov:" border="0" color="0" x="2213" y="996" height="60" width="133" html.valueishtml="0"  name=t_7 visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=14 alignment="0" tabsequence=32766 border="0" color="8388608" x="827" y="596" height="56" width="297" format="[general]" html.valueishtml="0"  name=clie_c visible="0" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+column(band=detail id=13 alignment="0" tabsequence=120 border="5" color="0" x="2377" y="996" height="56" width="123" format="[general]" html.valueishtml="0"  name=prov_c visible="1" edit.limit=2 edit.case=upper edit.focusrectangle=no edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=7 alignment="0" tabsequence=60 border="5" color="0" x="2377" y="440" height="56" width="146" format="" html.valueishtml="0"  name=prov_2 visible="1" edit.limit=2 edit.case=upper edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=11 alignment="0" tabsequence=100 border="5" color="0" x="2377" y="908" height="56" width="229" format="[general]" html.valueishtml="0"  name=cap_c visible="1" edit.limit=5 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=5 alignment="0" tabsequence=40 border="5" color="0" x="2377" y="352" height="56" width="219" format="" html.valueishtml="0"  name=cap_2 visible="1" edit.limit=5 edit.case=upper edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=2 alignment="0" tabsequence=10 border="5" color="0" x="517" y="180" height="56" width="1618" format="[general]" html.valueishtml="0"  name=rag_soc_20 visible="1" edit.limit=30 edit.case=upper edit.focusrectangle=no edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=3 alignment="0" tabsequence=20 border="5" color="0" x="517" y="268" height="56" width="1618" format="[general]" html.valueishtml="0"  name=rag_soc_21 visible="1" edit.limit=30 edit.case=upper edit.focusrectangle=no edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=4 alignment="0" tabsequence=30 border="5" color="0" x="517" y="352" height="56" width="1618" format="[general]" html.valueishtml="0"  name=indi_2 visible="1" edit.limit=30 edit.case=upper edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=6 alignment="0" tabsequence=50 border="5" color="0" x="517" y="440" height="56" width="1618" format="[general]" html.valueishtml="0"  name=loc_2 visible="1" edit.limit=30 edit.case=upper edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=8 alignment="0" tabsequence=70 border="5" color="0" x="517" y="700" height="56" width="1618" format="[general]" html.valueishtml="0"  name=rag_soc_1_c visible="1" edit.limit=30 edit.case=upper edit.focusrectangle=no edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=9 alignment="0" tabsequence=80 border="5" color="0" x="517" y="784" height="56" width="1618" format="[general]" html.valueishtml="0"  name=rag_soc_2_c visible="1" edit.limit=30 edit.case=upper edit.focusrectangle=no edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=10 alignment="0" tabsequence=90 border="5" color="0" x="517" y="908" height="56" width="1618" format="[general]" html.valueishtml="0"  name=indi_c visible="1" edit.limit=30 edit.case=upper edit.focusrectangle=no edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=12 alignment="0" tabsequence=110 border="5" color="0" x="517" y="996" height="56" width="1618" format="[general]" html.valueishtml="0"  name=loc_c visible="1" edit.limit=30 edit.case=upper edit.focusrectangle=no edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )

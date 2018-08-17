@@ -1,0 +1,10 @@
+﻿$PBExportHeader$st_memo.srs
+global type st_memo from structure
+	st_tab_memo		st_tab_memo
+	st_tab_memo_link		st_tab_memo_link[]		descriptor "comment" = "array con gli allegati"
+	st_tab_clienti_memo		st_tab_clienti_memo
+	st_tab_meca_memo		st_tab_meca_memo
+	st_tab_sl_pt_memo		st_tab_sl_pt_memo
+	st_tab_memo_utenti		st_tab_memo_utenti
+end type
+

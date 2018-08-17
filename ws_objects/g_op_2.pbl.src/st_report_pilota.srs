@@ -1,0 +1,8 @@
+﻿$PBExportHeader$st_report_pilota.srs
+global type st_report_pilota from structure
+	long		row
+	datetime		dataora_lav_prev_fin
+	datetime		dataora_lav_prev_fin_min
+	datetime		dataora_lav_prev_fin_max
+end type
+

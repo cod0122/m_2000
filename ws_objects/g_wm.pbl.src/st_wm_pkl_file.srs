@@ -1,0 +1,23 @@
+﻿$PBExportHeader$st_wm_pkl_file.srs
+global type st_wm_pkl_file from structure
+	st_tab_g_0		st_tab_g_0		descriptor "comment" = "standard"
+	string		nome_file		descriptor "comment" = "solo il nome file da importare"
+	string		path_file		descriptor "comment" = "solo il path"
+	string		data_invio		descriptor "comment" = "data di invio da Web del flusso"
+	string		ora_invio		descriptor "comment" = "ora di invio da Web del flusso"
+	string		idpkl		descriptor "comment" = "id del Paking List prodotto su web / identifica il txt"
+	string		tipo_invio		descriptor "comment" = "tipo di invio NULLA=WEB; FTP=fatto dal cliente e inviato via ftp"
+	string		nrddt		descriptor "comment" = "numero d.d.t. del cliente"
+	string		dtddt		descriptor "comment" = "data del d.d.t cliente"
+	integer		colliddt		descriptor "comment" = "colli totali ddt cliente"
+	long		id_cliente		descriptor "comment" = "id_cliente che ha prodotto il pkl (se ZERO ovvero ADMIN, allora vale Mandante)"
+	string		mandante		descriptor "comment" = "mandante nel formato: id_cliente o Codice Fiscale o partita IVA"
+	string		ricevente		descriptor "comment" = "ricevente nel formato: id_cliente o Codice Fiscale o partita IVA"
+	string		fattturato		descriptor "comment" = "a cui fatturare nel formato: id_cliente o Codice Fiscale o partita IVA"
+	string		idlotto		descriptor "comment" = "id lotto cliente"
+	string		externalpalletcode		descriptor "comment" = "barcode cliente"
+	string		id_contratto		descriptor "comment" = "contratto CO"
+	string		mc_co		descriptor "comment" = "contratto commerciale"
+	string		sc_cf		descriptor "comment" = "capitolato"
+end type
+

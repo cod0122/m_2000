@@ -1,0 +1,11 @@
+﻿$PBExportHeader$st_tab_web_folder.srs
+global type st_tab_web_folder from structure
+	st_tab_g_0		st_tab_g_0
+	long		id_web_folder
+	long		id_web_ruolo
+	string		descr
+	string		foldercod
+	datetime		x_datins
+	string		x_utente
+end type
+

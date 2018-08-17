@@ -1,0 +1,23 @@
+﻿$PBExportHeader$st_tab_f5548014.srs
+global type st_tab_f5548014 from structure
+	st_tab_g_0		st_tab_g_0
+	string		xxx		descriptor "comment" = "tabella generica di scambio dati lotto per codice Work Order"
+	long		osdoco		descriptor "comment" = "codice Work order"
+	string		osev01		descriptor "comment" = "stato: 1-start Load (ingresso impianto primo pallet), 2-End load/start process (ingresso impianto ultimo pallet), 3-End process/start unload (uscita primo pallet), 4-End Unload/start (uscita ultimo pallet), 5-End collect data and QT update (dosimetria)~r~n"
+	string		osa801		descriptor "comment" = "data formato: DD/MM/YY    ??????    - GMT !!!   "
+	long		osdee		descriptor "comment" = "data formato E-ONE: data formato 1 + anno (di 2) + giorni inzio anno 116193=11/7/2016  - GMT !!!"
+	long		oswwaet		descriptor "comment" = "Ora in formato testo HHMMSS    - GMT !!!"
+	string		os55gs25a		descriptor "comment" = "riempire solo per stato = 5   -  Dose minima (stringa con punto decimale)"
+	string		os55gs25b		descriptor "comment" = "riempire solo per stato = 5   -  Dose massima (stringa con punto decimale)"
+	string		os55gs25c		descriptor "comment" = "riempire solo per stato = 5   -  CYC (ciclo) ????  (stringa con punto decimale)"
+	string		osedsp		descriptor "comment" = "Flag di conferma operazione"
+	string		osdl011		descriptor "comment" = "Descrizione di un eventuale errore di processo della ASN"
+	string		osuser		descriptor "comment" = "Codice utente E1"
+	string		ospid		descriptor "comment" = "Program id"
+	string		osjobn		descriptor "comment" = "Job number"
+	decimal { 0 }		osupmj		descriptor "comment" = "Date updated"
+	long		ostday		descriptor "comment" = "Time updated"
+	decimal{2}		ossetl		descriptor "comment" = "Number of passes "
+	string		osmmcu		descriptor "comment" = "Work center"
+end type
+

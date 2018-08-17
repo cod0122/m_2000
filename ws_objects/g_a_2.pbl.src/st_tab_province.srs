@@ -1,0 +1,8 @@
+﻿$PBExportHeader$st_tab_province.srs
+global type st_tab_province from structure
+	st_tab_g_0		st_tab_g_0
+	string		sigla
+	string		prov
+	string		regione
+end type
+

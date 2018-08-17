@@ -1,0 +1,12 @@
+﻿$PBExportHeader$st_fattura_stampa.srs
+global type st_fattura_stampa from structure
+	st_tab_arfa		kst_tab_arfa
+	st_tab_clienti		kst_tab_clienti
+	st_tab_prodotti		kst_tab_prodotti
+	st_tab_pagam		kst_tab_pagam
+	st_tab_armo		kst_tab_armo
+	st_tab_armo_prezzi		kst_tab_armo_prezzi
+	st_tab_listino_voci		kst_tab_listino_voci
+	st_tab_contratti		kst_tab_contratti
+end type
+

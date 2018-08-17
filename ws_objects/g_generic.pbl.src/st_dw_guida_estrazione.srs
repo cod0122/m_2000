@@ -1,0 +1,8 @@
+﻿$PBExportHeader$st_dw_guida_estrazione.srs
+global type st_dw_guida_estrazione from structure
+	string		input		descriptor "comment" = "testo di input originale"
+	string		output		descriptor "comment" = "testo di output"
+	long		id_meca
+	long		id_cliente
+end type
+

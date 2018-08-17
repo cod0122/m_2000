@@ -1,0 +1,53 @@
+﻿$PBExportHeader$d_ricevute.srd
+release 6;
+datawindow(units=0 timer_interval=0 color=12632256 processing=0 print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=1024 color="536870912" )
+table(column=(type=datetime update=yes updatewhereclause=yes key=yes name=ric_scad dbname="scad" )
+ column=(type=long update=yes updatewhereclause=yes key=yes name=ric_num_fatt dbname="num_fatt" )
+ column=(type=long update=yes updatewhereclause=yes key=yes name=ric_clie dbname="clie" )
+ column=(type=char(30) updatewhereclause=yes name=clienti_rag_soc_10_1 dbname="rag_soc_10" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=ric_dist dbname="dist" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=ric_tipo dbname="tipo" )
+ column=(type=number update=yes updatewhereclause=yes name=ric_rata dbname="rata" )
+ column=(type=number update=yes updatewhereclause=yes name=ric_importo dbname="importo" )
+ column=(type=datetime update=yes updatewhereclause=yes name=ric_data_st dbname="data_st" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=ric_flag_st dbname="flag_st" values="Presentata	N/Presentata	 " )
+ column=(type=datetime update=yes updatewhereclause=yes key=yes name=ric_data_fatt dbname="data_fatt" )
+ retrieve="  SELECT ric.scad,   
+         ric.num_fatt,   
+         ric.clie,   
+         clienti.rag_soc_10,   
+         ric.dist,   
+         ric.tipo,   
+         ric.rata,   
+         ric.importo,   
+         ric.data_st,   
+         ric.flag_st,  
+         ric.data_fatt   
+    FROM {oj ric  LEFT OUTER JOIN clienti  ON ric.clie = clienti.codice}   
+    where scad = :k_scad 
+          and num_fatt = :k_num_fatt
+          and data_fatt = :k_data_fatt
+          and clie = :k_clie
+" update="ric" updatewhere=0 updatekeyinplace=no arguments=(("k_scad", date),("k_num_fatt", number),("k_data_fatt", date),("k_clie", number)) )
+text(band=detail alignment="1" text="Importo Fattura:"border="0" color="0" x="1170" y="792" height="64" width="617"  name=ric_importo_t  font.face="Courier New" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="1" tabsequence=80 border="5" color="0" x="1810" y="792" height="64" width="539" format="###,###,###.###"  name=ric_importo edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Courier New" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=10 alignment="0" tabsequence=100 border="0" color="0" x="1321" y="912" height="64" width="594" format="[general]"  name=ric_flag_st checkbox.text="Presentata" checkbox.on="N" checkbox.off=" " checkbox.scale=no checkbox.threed=yes  font.face="Courier New" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+column(band=detail id=1 alignment="2" tabsequence=10 border="5" color="255" x="585" y="68" height="64" width="320" format="dd/mm/yy"  name=ric_scad edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Courier New" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="15780518" )
+column(band=detail id=2 alignment="0" tabsequence=40 border="5" color="0" x="585" y="340" height="64" width="443" format="[general]"  name=ric_num_fatt dddw.name=d_arfa_l_tot dddw.displaycolumn=arfa_num_fatt dddw.datacolumn=arfa_num_fatt dddw.percentwidth=400 dddw.lines=0 dddw.limit=0 dddw.allowedit=no dddw.useasborder=yes dddw.case=any dddw.hsplitscroll=yes dddw.hscrollbar=yes dddw.vscrollbar=yes  font.face="Courier New" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=5 alignment="0" tabsequence=50 border="5" color="0" x="585" y="504" height="64" width="311" format="[general]"  name=ric_dist dddw.name=d_ric_t_distinta dddw.displaycolumn=dist dddw.datacolumn=dist dddw.percentwidth=100 dddw.lines=0 dddw.limit=0 dddw.allowedit=yes dddw.useasborder=yes dddw.case=any dddw.vscrollbar=yes  font.face="Courier New" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=6 alignment="0" tabsequence=60 border="5" color="0" x="585" y="620" height="64" width="1769" format="[general]"  name=ric_tipo dddw.name=d_banche_l dddw.displaycolumn=descrizione dddw.datacolumn=codice dddw.percentwidth=150 dddw.lines=0 dddw.limit=0 dddw.allowedit=no dddw.useasborder=yes dddw.case=any dddw.hsplitscroll=yes dddw.hscrollbar=yes dddw.vscrollbar=yes  font.face="Courier New" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=7 alignment="1" tabsequence=70 border="5" color="0" x="585" y="792" height="64" width="494" format="###,###,###.###"  name=ric_rata edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Courier New" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=9 alignment="2" tabsequence=90 border="5" color="0" x="585" y="912" height="64" width="411" format="dd/mm/yy"  name=ric_data_st edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Courier New" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=detail alignment="1" text="Scadenza:"border="0" color="0" x="165" y="68" height="64" width="402"  name=ric_scad_t  font.face="Courier New" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=detail alignment="1" text="Cliente:"border="0" color="0" x="160" y="216" height="64" width="407"  name=ric_clie_t  font.face="Courier New" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=detail alignment="1" text="Fattura:"border="0" color="0" x="197" y="340" height="64" width="370"  name=ric_num_fatt_t  font.face="Courier New" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=detail alignment="1" text="Tipo Distinta:"border="0" color="0" x="41" y="504" height="64" width="526"  name=ric_dist_t  font.face="Courier New" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=detail alignment="1" text="Banca:"border="0" color="0" x="160" y="620" height="64" width="407"  name=ric_tipo_t  font.face="Courier New" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=detail alignment="1" text="Rata:"border="0" color="0" x="160" y="792" height="64" width="407"  name=ric_rata_t  font.face="Courier New" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=detail alignment="1" text="Data Stampa:"border="0" color="0" x="69" y="912" height="64" width="498"  name=ric_data_st_t  font.face="Courier New" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="0" tabsequence=20 border="5" color="0" x="585" y="216" height="64" width="1454" format="[general]"  name=clienti_rag_soc_10 dddw.name=d_clienti_l dddw.displaycolumn=rag_soc_1 dddw.datacolumn=rag_soc_1 dddw.percentwidth=170 dddw.lines=0 dddw.limit=0 dddw.allowedit=yes dddw.useasborder=yes dddw.case=upper dddw.hsplitscroll=yes dddw.hscrollbar=yes dddw.vscrollbar=yes  font.face="Courier New" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=3 alignment="0" tabsequence=30 border="5" color="0" x="2103" y="220" height="60" width="187" format="#####"  name=ric_clie edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.displayonly=yes  font.face="Courier New" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="0" background.mode="2" background.color="12632256" )
+htmltable(border="1" cellpadding="0" cellspacing="0" generatecss="no" nowrap="yes")

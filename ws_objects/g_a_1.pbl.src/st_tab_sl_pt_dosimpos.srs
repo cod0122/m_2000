@@ -1,0 +1,18 @@
+﻿$PBExportHeader$st_tab_sl_pt_dosimpos.srs
+global type st_tab_sl_pt_dosimpos from structure
+	st_tab_g_0		st_tab_g_0
+	long		id_sl_pt_dosimpos		descriptor "comment" = "semplicemente x avere una chiave univoca"
+	string		cod_sl_pt
+	integer		seq		descriptor "comment" = "sequenza del dosimetro sul pallet"
+	long		id_dosimpos		descriptor "comment" = "ID tabella posizione dosimetro"
+	string		dosim_flg_tipo_dose		descriptor "comment" = "flag tipo dose MININO/MASSIMO/ALTRO"
+	string		descr		descriptor "comment" = "prima riga note posizione dosimetro su barcode"
+	string		descr1		descriptor "comment" = "seconda riga note "
+	string		dosim_tipo		descriptor "comment" = "R=RED, A=AMBER"
+	integer		posxcm		descriptor "comment" = "posizione X in cm "
+	integer		posycm		descriptor "comment" = "posizione y in cm"
+	integer		poszcm		descriptor "comment" = "posizione z in cm"
+	datetime		x_datins
+	string		x_utente
+end type
+

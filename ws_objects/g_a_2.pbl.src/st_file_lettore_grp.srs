@@ -1,0 +1,6 @@
+﻿$PBExportHeader$st_file_lettore_grp.srs
+global type st_file_lettore_grp from structure
+	string		nome_file
+	string		path_file
+end type
+

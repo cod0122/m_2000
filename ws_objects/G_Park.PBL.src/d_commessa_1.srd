@@ -1,0 +1,83 @@
+﻿$PBExportHeader$d_commessa_1.srd
+release 5;
+datawindow(units=0 timer_interval=0 color=10789024 processing=0 print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 97 print.margin.bottom = 97 print.paper.source = 0 print.paper.size = 0 print.prompt=no )
+header(height=1 color="-1" )
+summary(height=1 color="-1" )
+footer(height=1 color="-1" )
+detail(height=1249 color="-1" )
+table(column=(type=decimal(0) updatewhereclause=yes name=id_commessa dbname="id_commessa" )
+ column=(type=date updatewhereclause=yes name=anno dbname="data" )
+ column=(type=char(30) updatewhereclause=yes name=titolo dbname="titolo" )
+ column=(type=decimal(0) updatewhereclause=yes name=id_cliente dbname="id_cliente" )
+ column=(type=decimal(0) updatewhereclause=yes name=id_contatto dbname="id_contatto" initial="0" )
+ column=(type=char(25) updatewhereclause=yes name=t_lavori_descrizione dbname="descrizione" )
+ column=(type=char(40) updatewhereclause=yes name=divisioni_descrizione dbname="descrizione" )
+ column=(type=decimal(0) updatewhereclause=yes name=id_cliente_d dbname="id_cliente_d" )
+ column=(type=decimal(0) updatewhereclause=yes name=id_cliente_b dbname="id_cliente_b" )
+ column=(type=char(25) updatewhereclause=yes name=contatti_tel_num dbname="tel_num" )
+ column=(type=char(25) updatewhereclause=yes name=contatti_fax_num dbname="fax_num" )
+ column=(type=char(1) updatewhereclause=yes name=stato dbname="stato" values="Creazione	0/Operativa	4/Conclusa	8/" )
+ column=(type=decimal(0) updatewhereclause=yes name=nro_commessa dbname="nro_commessa" )
+ column=(type=char(50) updatewhereclause=yes name=contatti_rag_soc_1 dbname="rag_soc_1" )
+ column=(type=char(35) updatewhereclause=yes name=clienti_a_rag_soc_1 dbname="rag_soc_1" )
+ column=(type=char(35) updatewhereclause=yes name=localita dbname="localita" )
+ column=(type=char(35) updatewhereclause=yes name=clienti_b_rag_soc_1 dbname="rag_soc_1" )
+ column=(type=char(35) updatewhereclause=yes name=clienti_c_rag_soc_1 dbname="rag_soc_1" )
+ retrieve="  SELECT commesse.id_commessa,   
+         commesse.data,   
+         commesse.titolo,   
+         commesse.id_cliente,   
+         commesse.id_contatto,   
+         t_lavori.descrizione,   
+         divisioni.descrizione,   
+         commesse.id_cliente_d,   
+         commesse.id_cliente_b,   
+         contatti.tel_num,   
+         contatti.fax_num,   
+         commesse.stato,   
+         commesse.nro_commessa,   
+         contatti.rag_soc_1,   
+         clienti_a.rag_soc_1,   
+         clienti_a.localita,   
+         clienti_b.rag_soc_1,   
+         clienti_c.rag_soc_1  
+    FROM (((((( commesse  LEFT OUTER JOIN contatti  ON 
+			commesse.id_contatto = contatti.id_contatto) 
+			LEFT OUTER JOIN clienti as clienti_a ON 
+			commesse.id_cliente = clienti_a.id_cliente )   
+			LEFT OUTER JOIN clienti as clienti_b ON 
+			commesse.id_cliente_d = clienti_b.id_cliente )   
+			LEFT OUTER JOIN clienti as clienti_c ON 
+			commesse.id_cliente_b = clienti_c.id_cliente )   
+			LEFT OUTER JOIN t_lavori ON 
+			commesse.id_t_lavoro = t_lavori.id_t_lavoro )   
+			LEFT OUTER JOIN divisioni ON 
+			commesse.id_divisione = divisioni.id_divisione )   
+   WHERE ( commesse.id_commessa = :k_id_commessa )    
+
+" arguments=(("k_id_commessa", number)) )
+text(band=detail alignment="1" text="Numero:"border="0" color="0" x="33" y="24" height="65" width="247"  name=commesse_id_commessa_t  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="10789024" )
+text(band=detail alignment="0" text="Anno:"border="0" color="0" x="316" y="24" height="65" width="170"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="10789024" )
+text(band=detail alignment="1" text="Data:"border="0" color="0" x="554" y="24" height="65" width="151"  name=commesse_data_t  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="10789024" )
+text(band=detail alignment="1" text="Titolo:"border="0" color="0" x="892" y="24" height="65" width="183"  name=commesse_titolo_t  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="10789024" )
+text(band=detail alignment="1" text="Tipo lavoro:"border="0" color="0" x="42" y="260" height="65" width="348"  name=commesse_id_t_lavoro_t  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="10789024" )
+text(band=detail alignment="1" text="Divisione:"border="0" color="0" x="1276" y="260" height="65" width="284"  name=commesse_id_divisione_t  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="10789024" )
+text(band=detail alignment="1" text="Resp. Commerciale:"border="0" color="0" x="46" y="452" height="65" width="586"  name=commesse_id_cliente_d_t  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="10789024" )
+text(band=detail alignment="1" text="Resp. Budget:"border="0" color="0" x="229" y="560" height="65" width="403"  name=commesse_id_cliente_b_t  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="10789024" )
+text(band=detail alignment="1" text="Cliente:"border="0" color="0" x="46" y="772" height="65" width="225"  name=commesse_id_cliente_t  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="10789024" )
+text(band=detail alignment="1" text="Stato:"border="0" color="8388608" x="2341" y="1068" height="65" width="170"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="10789024" )
+column(band=detail id=13 alignment="2" tabsequence=10 border="5" color="0" x="33" y="92" height="65" width="247" format="[General]"  name=nro_commessa edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=2 alignment="2" tabsequence=20 border="5" color="0" x="316" y="92" height="65" width="170" format="yy"  name=anno editmask.mask="yy" editmask.focusrectangle=no  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=2 alignment="2" tabsequence=32766 border="5" color="0" x="554" y="92" height="65" width="279" format="[general]"  name=commesse_data edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="5" color="0" x="887" y="92" height="65" width="1719" format="[general]"  name=titolo edit.limit=30 edit.case=upper edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+column(band=detail id=6 alignment="0" tabsequence=32766 border="5" color="0" x="412" y="260" height="65" width="773" format="[general]"  name=t_lavori_descrizione edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+column(band=detail id=7 alignment="0" tabsequence=32766 border="5" color="0" x="1573" y="260" height="65" width="1111" format="[general]"  name=divisioni_descrizione edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+column(band=detail id=17 alignment="0" tabsequence=32766 border="5" color="0" x="659" y="452" height="65" width="1194" format="[general]"  name=clienti_b_rag_soc_1 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.displayonly=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+column(band=detail id=18 alignment="0" tabsequence=32766 border="5" color="0" x="659" y="560" height="65" width="1194" format="[general]"  name=clienti_c_rag_soc_1 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.displayonly=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+column(band=detail id=15 alignment="0" tabsequence=32766 border="5" color="0" x="298" y="768" height="65" width="1089" format="[general]"  name=clienti_a_rag_soc_1 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.displayonly=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+column(band=detail id=16 alignment="0" tabsequence=32766 border="5" color="0" x="1431" y="768" height="65" width="1075" format="[general]"  name=localita edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+column(band=detail id=12 alignment="2" tabsequence=32766 border="5" color="8388608" x="2108" y="1132" height="65" width="403" format="[general]"  name=stato ddlb.limit=0 ddlb.allowedit=no ddlb.case=any  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+text(band=detail alignment="1" text="Contatto:"border="0" color="0" x="10" y="868" height="65" width="261"  name=commesse_id_contatto_t  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="10789024" )
+column(band=detail id=14 alignment="0" tabsequence=32766 border="5" color="0" x="298" y="868" height="65" width="1089" format="[general]"  name=contatti_rag_soc_1 edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+column(band=detail id=10 alignment="0" tabsequence=32766 border="5" color="0" x="1431" y="868" height="65" width="513" format="[general]"  name=contatti_tel_num edit.limit=25 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+column(band=detail id=11 alignment="0" tabsequence=32766 border="5" color="0" x="1994" y="868" height="65" width="513" format="[general]"  name=contatti_fax_num edit.limit=25 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )

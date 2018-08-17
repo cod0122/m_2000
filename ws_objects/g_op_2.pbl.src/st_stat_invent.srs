@@ -1,0 +1,24 @@
+﻿$PBExportHeader$st_stat_invent.srs
+$PBExportComments$x w_stat_produz
+global type st_stat_invent from structure
+	long		id_cliente
+	integer		id_gruppo
+	date		data_da
+	date		data_a
+	double		dose
+	string		dose_str
+	string		no_dose		descriptor "comment" = "S=solo dose ZERO, N=dose > zero; T=tutto"
+	integer		magazzino
+	string		tipo_data
+	string		utente
+	long		id_meca_da
+	long		id_meca_a
+	string		data_estrazione_stat
+	integer		gruppo_flag
+	string		flag_fatturati		descriptor "comment" = "spazio o T=tutti;S=fatturati;N=non fatturati"
+	boolean		flag_trattati		descriptor "comment" = "true=estrae trattati;false=estrae non trattati"
+	boolean		flag_check_spediti		descriptor "comment" = "true=estrae controlando anche le spedizioni; false=scarta la tabella delle spedizioni"
+	boolean		flag_lotto_chiuso		descriptor "comment" = "true=esclude dal conteggio i Lotti CHIUSI"
+	integer		stat_tab		descriptor "comment" = "numero del tab (o del report x distinguere il nome della view)"
+end type
+

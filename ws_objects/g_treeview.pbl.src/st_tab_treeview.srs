@@ -1,0 +1,22 @@
+﻿$PBExportHeader$st_tab_treeview.srs
+global type st_tab_treeview from structure
+	string		tipo_menu		descriptor "comment" = "A=lette, altri non vengono letti"
+	string		id		descriptor "comment" = "codice univoco"
+	string		livello		descriptor "comment" = "livello menu, 01 x quelli nel root"
+	string		sequenza		descriptor "comment" = "ordine di visualizz. voci x lo stesso livello"
+	string		tipo_voce		descriptor "comment" = "M=x ora la sola"
+	string		voce		descriptor "comment" = "voce da visualizzare"
+	string		id_padre		descriptor "comment" = "id del padre, x costruire elenco autom.delle voci; manca quando voce visual.da piu' parti"
+	string		funzione		descriptor "comment" = "ID successivo da 'lanciare' (se id_padre) allora è uguale al ID"
+	boolean		presenza_figli		descriptor "comment" = "segnala la presenza di figli per il codice funzione indicato"
+	string		descrizione_tipo		descriptor "comment" = "descrizione"
+	string		descrizione
+	string		descrizione_ulteriore
+	integer		pic_open		descriptor "comment" = "rif.alla tab rif.alla tab treeview_icone"
+	integer		pic_close		descriptor "comment" = "rif.alla tab treeview_icone"
+	integer		pic_list		descriptor "comment" = "rif.alla tab treeview_icone"
+	string		id_programma		descriptor "comment" = "id x controllo sicurezza"
+	string		open_programma		descriptor "comment" = "rif alla tab menu_window"
+	string		nome_oggetto		descriptor "comment" = "rif alla tab menu_window_oggetti"
+end type
+

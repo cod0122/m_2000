@@ -1,0 +1,933 @@
+﻿$PBExportHeader$m_main_w_g_tab0.srm
+forward
+global type m_main_w_g_tab0 from m_main
+end type
+end forward
+
+global type m_main_w_g_tab0 from m_main
+end type
+global m_main_w_g_tab0 m_main_w_g_tab0
+
+on m_main_w_g_tab0.create
+m_main_w_g_tab0=this
+call super::create
+end on
+
+on m_main_w_g_tab0.destroy
+call super::destroy
+end on
+
+type m_file from m_main`m_file within m_main_w_g_tab0
+end type
+
+on m_file.create
+call super::create
+end on
+
+on m_file.destroy
+call super::destroy
+end on
+
+type m_setupstampante from m_main`m_setupstampante within m_file
+end type
+
+on m_setupstampante.create
+call super::create
+end on
+
+on m_setupstampante.destroy
+call super::destroy
+end on
+
+type m_f_chiudodb from m_main`m_f_chiudodb within m_file
+end type
+
+on m_f_chiudodb.create
+call super::create
+end on
+
+on m_f_chiudodb.destroy
+call super::destroy
+end on
+
+type m_file_t2 from m_main`m_file_t2 within m_file
+end type
+
+on m_file_t2.create
+call super::create
+end on
+
+on m_file_t2.destroy
+call super::destroy
+end on
+
+type m_f_salvaarchivi from m_main`m_f_salvaarchivi within m_file
+end type
+
+on m_f_salvaarchivi.create
+call super::create
+end on
+
+on m_f_salvaarchivi.destroy
+call super::destroy
+end on
+
+type m_ripristinaarch from m_main`m_ripristinaarch within m_file
+end type
+
+on m_ripristinaarch.create
+call super::create
+end on
+
+on m_ripristinaarch.destroy
+call super::destroy
+end on
+
+type m_-2 from m_main`m_-2 within m_file
+end type
+
+on m_-2.create
+call super::create
+end on
+
+on m_-2.destroy
+call super::destroy
+end on
+
+type m_utility from m_main`m_utility within m_file
+end type
+
+on m_utility.create
+call super::create
+end on
+
+on m_utility.destroy
+call super::destroy
+end on
+
+type m_password from m_main`m_password within m_utility
+end type
+
+on m_password.create
+call super::create
+end on
+
+on m_password.destroy
+call super::destroy
+end on
+
+type m_f_u_-1 from m_main`m_f_u_-1 within m_utility
+end type
+
+on m_f_u_-1.create
+call super::create
+end on
+
+on m_f_u_-1.destroy
+call super::destroy
+end on
+
+type m_popolat_contr from m_main`m_popolat_contr within m_utility
+end type
+
+on m_popolat_contr.create
+call super::create
+end on
+
+on m_popolat_contr.destroy
+call super::destroy
+end on
+
+type m_popoladaaccess from m_main`m_popoladaaccess within m_utility
+end type
+
+on m_popoladaaccess.create
+call super::create
+end on
+
+on m_popoladaaccess.destroy
+call super::destroy
+end on
+
+type m_popolalistinodaaccess from m_main`m_popolalistinodaaccess within m_utility
+end type
+
+on m_popolalistinodaaccess.create
+call super::create
+end on
+
+on m_popolalistinodaaccess.destroy
+call super::destroy
+end on
+
+type m_provabarcode from m_main`m_provabarcode within m_utility
+end type
+
+on m_provabarcode.create
+call super::create
+end on
+
+on m_provabarcode.destroy
+call super::destroy
+end on
+
+type m_-3 from m_main`m_-3 within m_file
+end type
+
+on m_-3.create
+call super::create
+end on
+
+on m_-3.destroy
+call super::destroy
+end on
+
+type m_uscita from m_main`m_uscita within m_file
+end type
+
+on m_uscita.create
+call super::create
+end on
+
+on m_uscita.destroy
+call super::destroy
+end on
+
+type m_magazzino from m_main`m_magazzino within m_main_w_g_tab0
+end type
+
+on m_magazzino.create
+call super::create
+end on
+
+on m_magazzino.destroy
+call super::destroy
+end on
+
+type m_magazzino_gestione from m_main`m_magazzino_gestione within m_magazzino
+end type
+
+on m_magazzino_gestione.create
+call super::create
+end on
+
+on m_magazzino_gestione.destroy
+call super::destroy
+end on
+
+type m_scadenzario from m_main`m_scadenzario within m_magazzino
+end type
+
+on m_scadenzario.create
+call super::create
+end on
+
+on m_scadenzario.destroy
+call super::destroy
+end on
+
+type m_lista_movimenti from m_main`m_lista_movimenti within m_magazzino
+end type
+
+on m_lista_movimenti.create
+call super::create
+end on
+
+on m_lista_movimenti.destroy
+call super::destroy
+end on
+
+type m_interrogazioni from m_main`m_interrogazioni within m_magazzino
+end type
+
+on m_interrogazioni.create
+call super::create
+end on
+
+on m_interrogazioni.destroy
+call super::destroy
+end on
+
+type m_lavorazione from m_main`m_lavorazione within m_interrogazioni
+end type
+
+on m_lavorazione.create
+call super::create
+end on
+
+on m_lavorazione.destroy
+call super::destroy
+end on
+
+type m_stat from m_main`m_stat within m_main_w_g_tab0
+end type
+
+on m_stat.create
+call super::create
+end on
+
+on m_stat.destroy
+call super::destroy
+end on
+
+type m_st_costi from m_main`m_st_costi within m_stat
+end type
+
+on m_st_costi.create
+call super::create
+end on
+
+on m_st_costi.destroy
+call super::destroy
+end on
+
+type m_st_costi_collaboratore from m_main`m_st_costi_collaboratore within m_stat
+end type
+
+on m_st_costi_collaboratore.create
+call super::create
+end on
+
+on m_st_costi_collaboratore.destroy
+call super::destroy
+end on
+
+type m_archivi from m_main`m_archivi within m_main_w_g_tab0
+end type
+
+on m_archivi.create
+call super::create
+end on
+
+on m_archivi.destroy
+call super::destroy
+end on
+
+type m_anagrafiche from m_main`m_anagrafiche within m_archivi
+end type
+
+on m_anagrafiche.create
+call super::create
+end on
+
+on m_anagrafiche.destroy
+call super::destroy
+end on
+
+type m_lista_anag from m_main`m_lista_anag within m_anagrafiche
+end type
+
+on m_lista_anag.create
+call super::create
+end on
+
+on m_lista_anag.destroy
+call super::destroy
+end on
+
+type m_lista_mandanti from m_main`m_lista_mandanti within m_anagrafiche
+end type
+
+on m_lista_mandanti.create
+call super::create
+end on
+
+on m_lista_mandanti.destroy
+call super::destroy
+end on
+
+type m_lista_riceventi from m_main`m_lista_riceventi within m_anagrafiche
+end type
+
+on m_lista_riceventi.create
+call super::create
+end on
+
+on m_lista_riceventi.destroy
+call super::destroy
+end on
+
+type m_lista_fatturati from m_main`m_lista_fatturati within m_anagrafiche
+end type
+
+on m_lista_fatturati.create
+call super::create
+end on
+
+on m_lista_fatturati.destroy
+call super::destroy
+end on
+
+type m_anag_carica from m_main`m_anag_carica within m_anagrafiche
+end type
+
+on m_anag_carica.create
+call super::create
+end on
+
+on m_anag_carica.destroy
+call super::destroy
+end on
+
+type m_articoli from m_main`m_articoli within m_archivi
+end type
+
+on m_articoli.create
+call super::create
+end on
+
+on m_articoli.destroy
+call super::destroy
+end on
+
+type m_a_t1 from m_main`m_a_t1 within m_archivi
+end type
+
+on m_a_t1.create
+call super::create
+end on
+
+on m_a_t1.destroy
+call super::destroy
+end on
+
+type m_listino from m_main`m_listino within m_archivi
+end type
+
+on m_listino.create
+call super::create
+end on
+
+on m_listino.destroy
+call super::destroy
+end on
+
+type m_capitolati from m_main`m_capitolati within m_archivi
+end type
+
+on m_capitolati.create
+call super::create
+end on
+
+on m_capitolati.destroy
+call super::destroy
+end on
+
+type m_contratti from m_main`m_contratti within m_archivi
+end type
+
+on m_contratti.create
+call super::create
+end on
+
+on m_contratti.destroy
+call super::destroy
+end on
+
+type m_sl_pt from m_main`m_sl_pt within m_archivi
+end type
+
+on m_sl_pt.create
+call super::create
+end on
+
+on m_sl_pt.destroy
+call super::destroy
+end on
+
+type m_a_t2 from m_main`m_a_t2 within m_archivi
+end type
+
+on m_a_t2.create
+call super::create
+end on
+
+on m_a_t2.destroy
+call super::destroy
+end on
+
+type m_ausiliari0 from m_main`m_ausiliari0 within m_archivi
+end type
+
+on m_ausiliari0.create
+call super::create
+end on
+
+on m_ausiliari0.destroy
+call super::destroy
+end on
+
+type m_ausiliari from m_main`m_ausiliari within m_ausiliari0
+end type
+
+on m_ausiliari.create
+call super::create
+end on
+
+on m_ausiliari.destroy
+call super::destroy
+end on
+
+type m_visualizza from m_main`m_visualizza within m_ausiliari
+end type
+
+on m_visualizza.create
+call super::create
+end on
+
+on m_visualizza.destroy
+call super::destroy
+end on
+
+type m_modifica from m_main`m_modifica within m_ausiliari
+end type
+
+on m_modifica.create
+call super::create
+end on
+
+on m_modifica.destroy
+call super::destroy
+end on
+
+type m_inserisci from m_main`m_inserisci within m_ausiliari
+end type
+
+on m_inserisci.create
+call super::create
+end on
+
+on m_inserisci.destroy
+call super::destroy
+end on
+
+type m_ausiliari_1 from m_main`m_ausiliari_1 within m_ausiliari0
+end type
+
+on m_ausiliari_1.create
+call super::create
+end on
+
+on m_ausiliari_1.destroy
+call super::destroy
+end on
+
+type m_ausiliari_1_visualizza from m_main`m_ausiliari_1_visualizza within m_ausiliari_1
+end type
+
+on m_ausiliari_1_visualizza.create
+call super::create
+end on
+
+on m_ausiliari_1_visualizza.destroy
+call super::destroy
+end on
+
+type m_ausiliari_1_modifica from m_main`m_ausiliari_1_modifica within m_ausiliari_1
+end type
+
+on m_ausiliari_1_modifica.create
+call super::create
+end on
+
+on m_ausiliari_1_modifica.destroy
+call super::destroy
+end on
+
+type m_ausiliari_1_inserimento from m_main`m_ausiliari_1_inserimento within m_ausiliari_1
+end type
+
+on m_ausiliari_1_inserimento.create
+call super::create
+end on
+
+on m_ausiliari_1_inserimento.destroy
+call super::destroy
+end on
+
+type m_a_azienda from m_main`m_a_azienda within m_archivi
+end type
+
+on m_a_azienda.create
+call super::create
+end on
+
+on m_a_azienda.destroy
+call super::destroy
+end on
+
+type m_a_propieta from m_main`m_a_propieta within m_archivi
+end type
+
+on m_a_propieta.create
+call super::create
+end on
+
+on m_a_propieta.destroy
+call super::destroy
+end on
+
+type m_- from m_main`m_- within m_archivi
+end type
+
+on m_-.create
+call super::create
+end on
+
+on m_-.destroy
+call super::destroy
+end on
+
+type m_codabarre from m_main`m_codabarre within m_archivi
+end type
+
+on m_codabarre.create
+call super::create
+end on
+
+on m_codabarre.destroy
+call super::destroy
+end on
+
+type m_finestra from m_main`m_finestra within m_main_w_g_tab0
+end type
+
+on m_finestra.create
+call super::create
+this.visible = true
+end on
+
+on m_finestra.destroy
+call super::destroy
+end on
+
+type m_gestione from m_main`m_gestione within m_finestra
+end type
+
+on m_gestione.create
+call super::create
+this.enabled = false
+end on
+
+on m_gestione.destroy
+call super::destroy
+end on
+
+type m_fin_conferma from m_main`m_fin_conferma within m_gestione
+end type
+
+on m_fin_conferma.create
+call super::create
+this.toolbaritemspace = 1
+end on
+
+on m_fin_conferma.destroy
+call super::destroy
+end on
+
+type m_fin_visualizza from m_main`m_fin_visualizza within m_gestione
+end type
+
+on m_fin_visualizza.create
+call super::create
+this.toolbaritemname = "Preview!"
+this.toolbaritemtext = "Visualizza Dati"
+this.toolbaritemorder = 13
+end on
+
+on m_fin_visualizza.destroy
+call super::destroy
+end on
+
+type m_fin_modifica from m_main`m_fin_modifica within m_gestione
+end type
+
+on m_fin_modifica.create
+call super::create
+this.toolbaritemname = "open!"
+this.toolbaritemtext = "Modifica Dati"
+this.toolbaritemorder = 14
+end on
+
+on m_fin_modifica.destroy
+call super::destroy
+end on
+
+type m_fin_inserimento from m_main`m_fin_inserimento within m_gestione
+end type
+
+on m_fin_inserimento.create
+call super::create
+this.toolbaritemname = "New!"
+this.toolbaritemtext = "Inserisci Dati"
+this.toolbaritemorder = 15
+end on
+
+on m_fin_inserimento.destroy
+call super::destroy
+end on
+
+type m_fin-12 from m_main`m_fin-12 within m_gestione
+end type
+
+on m_fin-12.create
+call super::create
+end on
+
+on m_fin-12.destroy
+call super::destroy
+end on
+
+type m_fin_elimina from m_main`m_fin_elimina within m_gestione
+end type
+
+on m_fin_elimina.create
+call super::create
+end on
+
+on m_fin_elimina.destroy
+call super::destroy
+end on
+
+type m_fin-13 from m_main`m_fin-13 within m_gestione
+end type
+
+on m_fin-13.create
+call super::create
+end on
+
+on m_fin-13.destroy
+call super::destroy
+end on
+
+type m_fin_gest_libero1 from m_main`m_fin_gest_libero1 within m_gestione
+end type
+
+on m_fin_gest_libero1.create
+call super::create
+end on
+
+on m_fin_gest_libero1.destroy
+call super::destroy
+end on
+
+type m_fin_gest_libero2 from m_main`m_fin_gest_libero2 within m_gestione
+end type
+
+on m_fin_gest_libero2.create
+call super::create
+end on
+
+on m_fin_gest_libero2.destroy
+call super::destroy
+end on
+
+type m_fin_gest_libero3 from m_main`m_fin_gest_libero3 within m_gestione
+end type
+
+on m_fin_gest_libero3.create
+call super::create
+end on
+
+on m_fin_gest_libero3.destroy
+call super::destroy
+end on
+
+type m_fin_gest_libero4 from m_main`m_fin_gest_libero4 within m_gestione
+end type
+
+on m_fin_gest_libero4.create
+call super::create
+end on
+
+on m_fin_gest_libero4.destroy
+call super::destroy
+end on
+
+type m_fin-11 from m_main`m_fin-11 within m_finestra
+end type
+
+on m_fin-11.create
+call super::create
+end on
+
+on m_fin-11.destroy
+call super::destroy
+end on
+
+type m_fin_cerca from m_main`m_fin_cerca within m_finestra
+end type
+
+on m_fin_cerca.create
+call super::create
+end on
+
+on m_fin_cerca.destroy
+call super::destroy
+end on
+
+type m_fin_cercaancora from m_main`m_fin_cercaancora within m_finestra
+end type
+
+on m_fin_cercaancora.create
+call super::create
+end on
+
+on m_fin_cercaancora.destroy
+call super::destroy
+end on
+
+type m_fin-1 from m_main`m_fin-1 within m_finestra
+end type
+
+on m_fin-1.create
+call super::create
+end on
+
+on m_fin-1.destroy
+call super::destroy
+end on
+
+type m_fin_filtra from m_main`m_fin_filtra within m_finestra
+end type
+
+on m_fin_filtra.create
+call super::create
+end on
+
+on m_fin_filtra.destroy
+call super::destroy
+end on
+
+type m_fin_stampa from m_main`m_fin_stampa within m_finestra
+end type
+
+on m_fin_stampa.create
+call super::create
+end on
+
+on m_fin_stampa.destroy
+call super::destroy
+end on
+
+type m_fin-3 from m_main`m_fin-3 within m_finestra
+end type
+
+on m_fin-3.create
+call super::create
+end on
+
+on m_fin-3.destroy
+call super::destroy
+end on
+
+type m_aggiornalista from m_main`m_aggiornalista within m_finestra
+end type
+
+on m_aggiornalista.create
+call super::create
+end on
+
+on m_aggiornalista.destroy
+call super::destroy
+end on
+
+type m_riordinalista from m_main`m_riordinalista within m_finestra
+end type
+
+on m_riordinalista.create
+call super::create
+end on
+
+on m_riordinalista.destroy
+call super::destroy
+end on
+
+type m_fin-2 from m_main`m_fin-2 within m_finestra
+end type
+
+on m_fin-2.create
+call super::create
+end on
+
+on m_fin-2.destroy
+call super::destroy
+end on
+
+type m_fin_ritornaesc from m_main`m_fin_ritornaesc within m_finestra
+end type
+
+on m_fin_ritornaesc.create
+call super::create
+end on
+
+on m_fin_ritornaesc.destroy
+call super::destroy
+end on
+
+type m_fin-4 from m_main`m_fin-4 within m_finestra
+end type
+
+on m_fin-4.create
+call super::create
+end on
+
+on m_fin-4.destroy
+call super::destroy
+end on
+
+type m_fin_toolbar from m_main`m_fin_toolbar within m_finestra
+end type
+
+on m_fin_toolbar.create
+call super::create
+end on
+
+on m_fin_toolbar.destroy
+call super::destroy
+end on
+
+type m_disponi from m_main`m_disponi within m_finestra
+end type
+
+on m_disponi.create
+call super::create
+end on
+
+on m_disponi.destroy
+call super::destroy
+end on
+
+type m_cascata from m_main`m_cascata within m_disponi
+end type
+
+on m_cascata.create
+call super::create
+end on
+
+on m_cascata.destroy
+call super::destroy
+end on
+
+type m_orizzontale from m_main`m_orizzontale within m_disponi
+end type
+
+on m_orizzontale.create
+call super::create
+end on
+
+on m_orizzontale.destroy
+call super::destroy
+end on
+
+type m_verticale from m_main`m_verticale within m_disponi
+end type
+
+on m_verticale.create
+call super::create
+end on
+
+on m_verticale.destroy
+call super::destroy
+end on
+

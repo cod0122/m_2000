@@ -1,0 +1,55 @@
+﻿$PBExportHeader$d_contratti_old.srd
+release 6;
+datawindow(units=0 timer_interval=0 color=12632256 processing=0 print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=996 color="536870912" )
+table(column=(type=char(12) update=yes updatewhereclause=yes key=yes name=codice dbname="contratti.codice" )
+ column=(type=long update=yes updatewhereclause=yes name=id_clie dbname="contratti.id_clie" )
+ column=(type=long update=yes updatewhereclause=yes name=tipo dbname="contratti.tipo" values="Capitolato	1/Conf. d'Ordine	2/Altro	3/" )
+ column=(type=datetime update=yes updatewhereclause=yes name=data dbname="contratti.data" )
+ column=(type=number update=yes updatewhereclause=yes name=dose dbname="contratti.dose" )
+ column=(type=char(50) update=yes updatewhereclause=yes name=descr dbname="contratti.descr" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=cert_st_dose_min dbname="contratti.cert_st_dose_min" values="Dose Minima	S/Dose Minima	N" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=cert_st_dose_max dbname="contratti.cert_st_dose_max" values="Dose Massima	S/Dose Massima	N" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=cert_st_data_ini dbname="contratti.cert_st_data_ini" values="Data Inizio Trattamento	S/Data Inizio Trattamento	N" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=cert_st_data_fin dbname="contratti.cert_st_data_fin" values="Data Fine Trattamento	S/Data Fine Trattamento	N" )
+ column=(type=datetime update=yes updatewhereclause=yes name=x_datins dbname="contratti.x_datins" )
+ column=(type=char(12) update=yes updatewhereclause=yes name=x_utente dbname="contratti.x_utente" )
+ retrieve="  SELECT contratti.codice,   
+         contratti.id_clie,   
+         contratti.tipo,   
+         contratti.data,   
+         contratti.dose,   
+         contratti.descr,   
+         contratti.cert_st_dose_min,   
+         contratti.cert_st_dose_max,   
+         contratti.cert_st_data_ini,   
+         contratti.cert_st_data_fin,
+         contratti.x_datins,
+         contratti.x_utente  
+    FROM contratti   
+    where contratti.codice = :k_codice
+" update="contratti" updatewhere=0 updatekeyinplace=no arguments=(("k_codice", string)) )
+text(band=detail alignment="1" text="Ricevente:"border="0" color="0" x="265" y="32" height="64" width="315"  name=id_clie_t  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=detail alignment="1" text="Codice Contratto:"border="0" color="0" x="78" y="136" height="64" width="503"  name=cod_sl_pt_t  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=1 alignment="0" tabsequence=20 border="5" color="0" x="603" y="136" height="64" width="315" format="[general]"  name=codice edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=detail alignment="1" text="Data:"border="0" color="0" x="1120" y="136" height="64" width="155"  name=data_capitolato_t  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=detail alignment="1" text="Descrizione:"border="0" color="0" x="206" y="344" height="64" width="375"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="0" tabsequence=50 border="5" color="0" x="603" y="344" height="64" width="1353" format="[general]"  name=descr edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=detail alignment="1" text="Dose:"border="0" color="0" x="407" y="448" height="64" width="174"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="1" tabsequence=60 border="5" color="0" x="603" y="448" height="64" width="265" format="###0.00"  name=dose edit.limit=0 edit.case=any edit.format="####.##" edit.focusrectangle=no edit.autoselect=no  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+groupbox(band=detail text="Stampa sul Certificato di Trattamento:"border="2" color="0" x="238" y="536" height="296" width="1431"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+column(band=detail id=7 alignment="0" tabsequence=70 border="0" color="0" x="338" y="632" height="64" width="480" format="[general]"  name=cert_st_dose_min checkbox.text="Dose Minima" checkbox.on="S" checkbox.off="N" checkbox.scale=no checkbox.threed=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+column(band=detail id=9 alignment="0" tabsequence=90 border="0" color="0" x="901" y="632" height="64" width="727" format="[general]"  name=cert_st_data_ini checkbox.text="Data Inizio Trattamento" checkbox.on="S" checkbox.off="N" checkbox.scale=no checkbox.threed=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+column(band=detail id=8 alignment="0" tabsequence=80 border="0" color="0" x="338" y="736" height="64" width="517" format="[general]"  name=cert_st_dose_max checkbox.text="Dose Massima" checkbox.on="S" checkbox.off="N" checkbox.scale=no checkbox.threed=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+column(band=detail id=10 alignment="0" tabsequence=100 border="0" color="0" x="901" y="736" height="64" width="713" format="[general]"  name=cert_st_data_fin checkbox.text="Data Fine Trattamento" checkbox.on="S" checkbox.off="N" checkbox.scale=no checkbox.threed=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+text(band=detail alignment="1" text="Aggiornato:"border="0" color="0" x="247" y="892" height="64" width="334"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=detail alignment="1" text="Tipo:"border="0" color="0" x="434" y="240" height="64" width="146"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="0" tabsequence=40 border="0" color="0" x="603" y="240" height="64" width="1426" format="[general]"  name=tipo radiobuttons.columns=3 radiobuttons.scale=no radiobuttons.threed=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+column(band=detail id=4 alignment="2" tabsequence=30 border="5" color="0" x="1298" y="136" height="64" width="297" format="[shortdate] [time]"  name=data editmask.mask="dd/mm/yyyy" editmask.focusrectangle=no  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=2 alignment="0" tabsequence=10 border="5" color="0" x="608" y="32" height="64" width="1010" format="[general]"  name=id_clie dddw.name=d_clienti_ricev_l dddw.displaycolumn=rag_soc_1 dddw.datacolumn=id_cliente dddw.percentwidth=150 dddw.lines=0 dddw.limit=0 dddw.allowedit=no dddw.useasborder=no dddw.case=any dddw.hscrollbar=yes dddw.vscrollbar=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=2 alignment="2" tabsequence=32766 border="5" color="8388608" x="1673" y="32" height="64" width="242" format="[general]" edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+column(band=detail id=11 alignment="0" tabsequence=32766 border="5" color="0" x="603" y="892" height="64" width="544" format="[shortdate] [time]"  name=x_datins edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+column(band=detail id=12 alignment="0" tabsequence=32766 border="5" color="0" x="1189" y="892" height="64" width="347" format="[general]"  name=x_utente edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+htmltable(border="1" cellpadding="0" cellspacing="0" generatecss="no" nowrap="yes")

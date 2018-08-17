@@ -1,0 +1,8 @@
+﻿$PBExportHeader$st_tab_caus.srs
+global type st_tab_caus from structure
+	st_tab_g_0		st_tab_g_0
+	string		codice
+	string		des		descriptor "comment" = "descrizione in stampa dul ddt"
+	string		ddt_st_num_data_in		descriptor "comment" = "N=evita la stampa nel ddt dei dati bolla mittente"
+end type
+

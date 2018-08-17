@@ -1,0 +1,95 @@
+﻿$PBExportHeader$d_stat_inventario_x_cliente.srd
+release 10.5;
+datawindow(units=0 timer_interval=0 color=1073741824 processing=8 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 40 print.margin.right = 40 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes print.preview.outline=yes hidegrayline=yes )
+header(height=84 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=76 color="536870912" )
+detail(height=76 color="536870912" )
+table(column=(type=long updatewhereclause=yes name=cliente dbname="vx_info_stat_inv2.clie_3" )
+ column=(type=char(74) updatewhereclause=yes name=fatturato dbname="fatturato" )
+ column=(type=char(74) updatewhereclause=yes name=ricevente dbname="ricevente" )
+ column=(type=char(74) updatewhereclause=yes name=mandante dbname="mandante" )
+ column=(type=number updatewhereclause=yes name=colli_da_sped dbname="colli_da_sped" )
+ column=(type=number updatewhereclause=yes name=colli_lav dbname="colli_lav" )
+ column=(type=number updatewhereclause=yes name=colli_fatt dbname="colli_fatt" )
+ column=(type=number updatewhereclause=yes name=vx_info_stat_inv2_m_cubi dbname="m_cubi" )
+ column=(type=number updatewhereclause=yes name=vx_info_stat_inv2_pedane dbname="pedane" )
+ column=(type=number updatewhereclause=yes name=vx_info_stat_inv2_importo dbname="importo" )
+ column=(type=number updatewhereclause=yes name=colli_entrati dbname="colli_entrati" )
+ column=(type=number updatewhereclause=yes name=id_meca dbname="id_meca" )
+ column=(type=number updatewhereclause=yes name=num_int dbname="num_int" )
+ column=(type=date updatewhereclause=yes name=data_int dbname="data_int" )
+ retrieve="        SELECT  r.clie_3 as clie_3,
+			trim(c.rag_soc_10)  || ' (' || r.clie_3 ||  ') ' as fatturato,   
+			trim(b.rag_soc_10)  || ' (' || r.clie_2 ||  ') ' as ricevente,   
+			trim(a.rag_soc_10)  || ' (' || r.clie_1 ||  ') ' as mandante,   
+         (r.colli_da_sped) as colli_da_sped,  
+		(r.colli_lav) as colli_lav,
+		(r.colli_fatt) as colli_fatt,
+         (r.m_cubi) as m_cubi,   
+         (r.pedane) as pedane,
+         (r.importo) as importo,
+         (r.colli_2) as colli_entrati,
+			r.id_meca,
+			r.num_int,
+			r.data_int
+    FROM vx_info_stat_inv2 r   
+                LEFT OUTER JOIN clienti as a ON 
+         r.clie_1 = a.codice   
+                LEFT OUTER JOIN clienti as b ON 
+         r.clie_2 = b.codice   
+                LEFT OUTER JOIN clienti as c ON 
+         r.clie_3 = c.codice   
+     where colli_da_sped > 0 and 
+               ( :k_tipo_query = 4  
+				or (:k_tipo_query = 5 and ( r.colli_fatt = 0 or r.colli_fatt is null or r.colli_lav > r.colli_fatt) )
+                   or (:k_tipo_query = 6 and (r.colli_fatt) > 0)  )
+--     group by r.clie_1, r.clie_2, r.clie_3 ,c.rag_soc_10, b.rag_soc_10, a.rag_soc_10
+	  
+" arguments=(("k_tipo_query", number))  sort="fatturato A ricevente A mandante A data_int D num_int D " )
+group(level=1 header.height=84 trailer.height=0 by=("cliente" ) header.color="536870912" trailer.color="536870912" )
+group(level=2 header.height=76 trailer.height=0 by=("ricevente" , "mandante" ) header.color="536870912" trailer.color="536870912" )
+text(band=header alignment="1" text=" Cliente" border="0" color="33554432" x="78" y="16" height="64" width="224" html.valueishtml="0"  name=fatturato_t visible="1"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="1" text="Riferimento " border="0" color="33554432" x="402" y="16" height="64" width="411" html.valueishtml="0"  name=num_int_t visible="1"  font.face="Tahoma" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" font.italic="1" background.mode="1" background.color="536870912" )
+text(band=header alignment="1" text="entrati" border="0" color="33554432" x="1682" y="16" height="64" width="219" html.valueishtml="0"  name=colli_entrati_t visible="1"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="1" text=" giacenza" border="0" color="33554432" x="1893" y="16" height="64" width="283" html.valueishtml="0"  name=k_colli_t visible="1"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="1" text=" Mt.Cubi" border="0" color="33554432" x="2190" y="16" height="60" width="279" html.valueishtml="0"  name=k_m_cubi_t visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="1" text=" Pedane" border="0" color="33554432" x="2478" y="16" height="60" width="247" html.valueishtml="0"  name=k_pedane_t visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="1" text=" Valore €" border="0" color="33554432" x="2734" y="16" height="60" width="434" html.valueishtml="0"  name=k_importo_t visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=header.1 id=1 alignment="1" tabsequence=32766 border="0" color="16711680" x="110" y="4" height="76" width="210" format="[General] " html.valueishtml="0"  name=cliente pointer="HyperLink!" visible="1" edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Tahoma" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" font.underline="1" background.mode="1" background.color="536870912" )
+column(band=header.1 id=2 alignment="0" tabsequence=32766 border="0" color="33554432" x="334" y="4" height="76" width="1294" format=" [General] " html.valueishtml="0"  name=fatturato visible="1" edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Tahoma" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=header.1 alignment="1" expression="sum( colli_entrati for group 1 ) "border="0" color="0" x="1637" y="4" height="76" width="265" format="###,###,### " html.valueishtml="0"  name=k_colli_entrati_gru visible="1"  font.face="Tahoma" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=header.1 alignment="1" expression="sum( k_m_cubi for group 1 )"border="0" color="0" x="2190" y="4" height="76" width="279" format="###,###,###,##0.00 ~tif (   k_m_cubi_tot > 0, '###,###,##0.00 ', '# ')" html.valueishtml="0"  name=k_m_cubi_gru visible="1"  font.face="Tahoma" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=header.1 alignment="1" expression="sum( k_pedane for group 1) "border="0" color="0" x="2478" y="4" height="76" width="247" format="###,###,###,##0.00 ~tif (    k_pedane_tot > 0, '###,###,##0.00 ', '# ')" html.valueishtml="0"  name=k_pedane_gru visible="1"  font.face="Tahoma" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=header.1 alignment="1" expression="sum(  k_importo for group 1) "border="0" color="0" x="2734" y="4" height="76" width="434" format="###,###,###,##0.00 " html.valueishtml="0"  name=k_importo_gru visible="1"  font.face="Tahoma" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=header.1 alignment="1" expression="sum( k_colli for group 1 ) "border="0" color="0" x="1915" y="4" height="76" width="261" format="###,###,### " html.valueishtml="0"  name=k_colli_gru visible="1"  font.face="Tahoma" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header.2 alignment="1" text=" Ricevente:" border="0" color="33554432" x="210" y="4" height="64" width="325" html.valueishtml="0"  name=ricevente_t visible="1"  font.face="Tahoma" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" font.italic="1" background.mode="1" background.color="536870912" )
+column(band=header.2 id=3 alignment="0" tabsequence=32766 border="0" color="33554432" x="549" y="4" height="64" width="1344" format=" [General] " html.valueishtml="0"  name=ricevente visible="1" edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Tahoma" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=header.2 id=4 alignment="0" tabsequence=32766 border="0" color="33554432" x="2245" y="4" height="64" width="1184" format=" [General] " html.valueishtml="0"  name=mandante visible="1" edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Tahoma" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header.2 alignment="0" text=" Mandante" border="0" color="33554432" x="1925" y="4" height="64" width="306" html.valueishtml="0"  name=mandante_t visible="1"  font.face="Tahoma" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" font.italic="1" background.mode="1" background.color="536870912" )
+column(band=detail id=11 alignment="1" tabsequence=32766 border="0" color="33554432" x="1646" y="4" height="64" width="256" format="###,###,### " html.valueishtml="0"  name=colli_entrati visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no  font.face="Tahoma" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression="vx_info_stat_inv2_m_cubi  "border="0" color="33554432" x="2190" y="4" height="64" width="279" format="~tif (   k_m_cubi > 0, '###,###,##0.00 ', '# ')" html.valueishtml="0"  name=k_m_cubi visible="1"  font.face="Tahoma" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression="vx_info_stat_inv2_pedane "border="0" color="33554432" x="2478" y="4" height="64" width="247" format="[GENERAL]~tif (    k_pedane > 0, '###,###,##0.00 ', '# ')" html.valueishtml="0"  name=k_pedane visible="1"  font.face="Tahoma" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression="vx_info_stat_inv2_importo "border="0" color="33554432" x="2734" y="4" height="64" width="434" format="###,###,###,##0.00 " html.valueishtml="0"  name=k_importo visible="1"  font.face="Tahoma" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression="colli_da_sped "border="0" color="33554432" x="1915" y="4" height="64" width="261" format="###,###,### " html.valueishtml="0"  name=k_colli visible="1"  font.face="Tahoma" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=11 alignment="2" tabsequence=32766 border="0" color="33554432" x="1349" y="4" height="64" width="261" format="[general]" html.valueishtml="0"  name=id_meca visible="0" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no  font.face="Tahoma" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=13 alignment="0" tabsequence=32766 border="0" color="0" x="352" y="4" height="64" width="256" format="[general]" html.valueishtml="0"  name=num_int visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no  font.face="Tahoma" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="1073741824" )
+column(band=detail id=14 alignment="2" tabsequence=32766 border="0" color="33554432" x="626" y="4" height="64" width="379" format="[general]" html.valueishtml="0"  name=data_int visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no  font.face="Tahoma" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=footer alignment="1" expression="'nr.:' + string(count  (  fatturato for all), ~" ###,###0~")"border="0" color="128" x="9" y="8" height="64" width="210" format="[GENERAL]" html.valueishtml="0"  name=compute_5 visible="1"  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=footer alignment="1" expression="sum( colli_entrati for all) "border="0" color="128" x="1632" y="8" height="64" width="270" format="###,###,### " html.valueishtml="0"  name=k_colli_entrati_tot visible="1"  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=footer alignment="1" expression="sum( k_m_cubi for all )"border="0" color="128" x="2190" y="8" height="64" width="279" format="###,###,###,##0.00 ~tif (   k_m_cubi_tot > 0, '###,###,##0.00 ', '# ')" html.valueishtml="0"  name=k_m_cubi_tot visible="1"  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=footer alignment="1" expression="sum( k_pedane for all) "border="0" color="128" x="2478" y="8" height="64" width="247" format="###,###,###,##0.00 ~tif (    k_pedane_tot > 0, '###,###,##0.00 ', '# ')" html.valueishtml="0"  name=k_pedane_tot visible="1"  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=footer alignment="1" expression="sum(  k_importo for all) "border="0" color="128" x="2734" y="8" height="64" width="434" format="###,###,###,##0.00 " html.valueishtml="0"  name=k_importo_tot visible="1"  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=footer alignment="1" expression="sum( k_colli for all) "border="0" color="128" x="1915" y="8" height="64" width="261" format="###,###,### " html.valueishtml="0"  name=k_colli_tot visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" pagingmethod=0 generatedddwframes="1" )
+xhtmlgen() cssgen(sessionspecific="0" )
+xmlgen(inline="0" )
+xsltgen()
+jsgen()
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+export.xhtml()
+tree(type=1 showconnectlines=yes showleafnodeconnectLines=yes  indent=128 showtreenodeicon=no defaultexpandtolevel=1 stateiconalignmode=0 selectnodebymouse=yes rtollayout=no 
+) 

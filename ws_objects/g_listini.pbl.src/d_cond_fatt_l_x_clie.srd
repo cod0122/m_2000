@@ -1,0 +1,43 @@
+﻿$PBExportHeader$d_cond_fatt_l_x_clie.srd
+release 11;
+datawindow(units=0 timer_interval=0 color=16777215 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes print.preview.outline=yes hidegrayline=no showbackcoloronxp=no grid.lines=0 selected.mouse=no )
+header(height=80 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=76 color="536870912" )
+table(column=(type=long update=yes updatewhereclause=yes key=yes identity=yes name=id dbname="cond_fatt.id" dbalias=".id" initial="0" )
+ column=(type=char(80) update=yes updatewhereclause=yes name=descr dbname="descr" )
+ column=(type=char(20) update=yes updatewhereclause=yes name=ipotesi_1 dbname="ipotesi_1" values="Q.tà colli lotto	collixrif/Mandante codice	clie1/Totale fatturato	fattgen/" )
+ column=(type=char(20) update=yes updatewhereclause=yes name=ipotesi_2 dbname="ipotesi_2" values="Q.tà colli lotto	collixrif/Mandante codice	clie1/Totale fatturato	fattgen/" )
+ column=(type=char(20) update=yes updatewhereclause=yes name=ipotesi_3 dbname="ipotesi_3" values="Q.tà colli lotto	collixrif/Mandante codice	clie1/Totale fatturato	fattgen/" )
+ retrieve="  SELECT cond_fatt.id,   
+         trim(cond_fatt.descr) descr,  
+         trim(cond_fatt.ipotesi_1) + ' ' + trim(cond_fatt.segno_1)  + ' ' + cond_fatt.valore_1 as ipotesi_1 ,   
+         trim(cond_fatt.ipotesi_2) + ' ' + trim(cond_fatt.segno_2)  + ' ' + cond_fatt.valore_2  as ipotesi_2 ,   
+         trim(cond_fatt.ipotesi_3) + ' ' + trim(cond_fatt.segno_3)  + ' ' + cond_fatt.valore_3  as ipotesi_3  
+    FROM cond_fatt   
+ where 
+  cond_fatt.cod_cli = :k_codice
+order by          cond_fatt.id
+ " update="cond_fatt" updatewhere=1 updatekeyinplace=no arguments=(("k_codice", number)) )
+text(band=header alignment="0" text="Id" border="0" color="0" x="14" y="8" height="64" width="133" html.valueishtml="0"  name=id_t visible="1"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="31326173" )
+text(band=header alignment="0" text=" Ipotesi 2" border="0" color="0" x="2409" y="8" height="64" width="722" html.valueishtml="0"  name=ipotesi_2_t visible="1"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="31326173" )
+text(band=header alignment="0" text=" Ipotesi 3" border="0" color="0" x="3150" y="8" height="64" width="681" html.valueishtml="0"  name=ipotesi_3_t visible="1"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="31326173" )
+text(band=header alignment="0" text=" Ipotesi 1" border="0" color="0" x="1600" y="8" height="64" width="791" html.valueishtml="0"  name=ipotesi_1_t visible="1"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="31326173" )
+text(band=header alignment="0" text=" Descrizione" border="0" color="0" x="155" y="8" height="64" width="1426" html.valueishtml="0"  name=descr_t visible="1"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="31326173" )
+column(band=detail id=4 alignment="0" tabsequence=50 border="0" color="33554432" x="2409" y="0" height="72" width="722" format=" [general]" html.valueishtml="0"  name=ipotesi_2 visible="1" ddlb.limit=0 ddlb.allowedit=no ddlb.case=any  font.face="Tahoma" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=5 alignment="0" tabsequence=80 border="0" color="33554432" x="3150" y="0" height="72" width="681" format=" [general]" html.valueishtml="0"  name=ipotesi_3 visible="1" ddlb.limit=0 ddlb.allowedit=no ddlb.case=any  font.face="Tahoma" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=3 alignment="0" tabsequence=20 border="0" color="33554432" x="1600" y="0" height="72" width="791" format=" [general]" html.valueishtml="0"  name=ipotesi_1 visible="1" ddlb.limit=0 ddlb.allowedit=no ddlb.case=any  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="553648127" )
+column(band=detail id=1 alignment="1" tabsequence=32766 border="0" color="128" x="14" y="0" height="72" width="133" format="#### " html.valueishtml="0"  name=id visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Tahoma" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="31449055" )
+column(band=detail id=2 alignment="0" tabsequence=90 border="0" color="33554432" x="160" y="0" height="72" width="1422" format=" [General]" html.valueishtml="0"  name=descr visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.useellipsis=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="553648127" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" pagingmethod=0 generatedddwframes="1" )
+xhtmlgen() cssgen(sessionspecific="0" )
+xmlgen(inline="0" )
+xsltgen()
+jsgen()
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+export.xhtml()
+ 

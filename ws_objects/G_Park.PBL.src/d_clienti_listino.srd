@@ -1,0 +1,96 @@
+﻿$PBExportHeader$d_clienti_listino.srd
+release 6;
+datawindow(units=0 timer_interval=0 color=33554431 processing=1 print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 97 print.margin.bottom = 97 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no grid.lines=0 )
+header(height=124 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=64 color="536870912" )
+detail(height=72 color="536870912" )
+table(column=(type=long updatewhereclause=yes name=listino_cod_cli dbname="cod_cli" )
+ column=(type=char(30) updatewhereclause=yes name=rag_soc_10 dbname="rag_soc_10" )
+ column=(type=char(12) updatewhereclause=yes name=listino_cod_art dbname="cod_art" )
+ column=(type=char(40) updatewhereclause=yes name=prodotti_des dbname="des" )
+ column=(type=long updatewhereclause=yes name=prodotti_gruppo dbname="gruppo" )
+ column=(type=long updatewhereclause=yes name=contratto dbname="contratto" )
+ column=(type=char(12) updatewhereclause=yes name=cod_sl_pt dbname="cod_sl_pt" )
+ column=(type=number updatewhereclause=yes name=listino_dose dbname="dose" )
+ column=(type=long updatewhereclause=yes name=listino_magazzino dbname="magazzino" )
+ column=(type=long updatewhereclause=yes name=listino_mis_x dbname="mis_x" )
+ column=(type=long updatewhereclause=yes name=listino_mis_y dbname="mis_y" )
+ column=(type=long updatewhereclause=yes name=listino_mis_z dbname="mis_z" )
+ column=(type=long updatewhereclause=yes name=listino_occup_ped dbname="occup_ped" )
+ column=(type=number updatewhereclause=yes name=listino_peso_kg dbname="peso_kg" )
+ column=(type=char(1) updatewhereclause=yes name=listino_campione dbname="campione" )
+ column=(type=char(1) updatewhereclause=yes name=listino_tipo dbname="tipo" values="a Peso (kg)	P/a Collo	C/a Pedana	B/a Metro Cubo	M/" )
+ column=(type=long updatewhereclause=yes name=listino_prezzo dbname="prezzo" )
+ column=(type=char(1) updatewhereclause=yes name=listino_attivo dbname="attivo" values="	S/	N" )
+ retrieve="  SELECT listino.cod_cli,
+         clienti.rag_soc_10,   
+         listino.cod_art,   
+         prodotti.des,   
+         prodotti.gruppo,
+         listino.contratto,   
+         listino.cod_sl_pt,   
+         listino.dose,   
+         listino.magazzino,   
+         listino.mis_x,   
+         listino.mis_y,   
+         listino.mis_z,   
+         listino.occup_ped,   
+         listino.peso_kg,   
+         listino.campione,   
+         listino.tipo,   
+         listino.prezzo,  
+         listino.attivo
+    FROM (listino  LEFT OUTER JOIN prodotti ON 
+			 (listino.magazzino = prodotti.magazzino 
+           or prodotti.magazzino = 0)
+			 and listino.cod_art = prodotti.codice) 
+          left outer join clienti on 
+          listino.cod_cli = clienti.codice 
+	 where (listino.cod_cli = :k_id_cliente or
+			 :k_id_cliente = 0) and
+	 	    (listino.cod_art = :k_cod_art or
+			 :k_cod_art = '*') 
+    order by  listino.cod_art, listino.cod_cli, listino.contratto
+ 
+" arguments=(("k_id_cliente", number),("k_cod_art", string)) )
+text(band=header alignment="2" text="Descrizione"border="0" color="0" x="279" y="8" height="56" width="882"  name=prodotti_des_t  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Cliente"border="0" color="0" x="1170" y="8" height="56" width="197"  name=listino_cod_cli_t  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Peso 
+Kg"border="0" color="0" x="3607" y="8" height="112" width="155"  name=listino_peso_kg_t  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="C."border="0" color="0" x="3771" y="8" height="56" width="78"  name=listino_campione_t  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Prezzo"border="0" color="0" x="3858" y="8" height="56" width="325"  name=listino_prezzo_t  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Tipo"border="0" color="0" x="4192" y="8" height="56" width="270"  name=listino_tipo_t  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Gr"border="0" color="0" x="2478" y="8" height="56" width="73"  name=prodotti_gruppo_t  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Dose"border="0" color="0" x="2560" y="8" height="56" width="206"  name=listino_dose_t  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="M"border="0" color="0" x="2775" y="8" height="56" width="69"  name=listino_magazzino_t  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="% Occ.
+Pedana"border="0" color="0" x="3410" y="8" height="112" width="187"  name=listino_occup_ped_t  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Largh."border="0" color="0" x="2853" y="8" height="56" width="187"  name=listino_mis_z_t  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Lungh"border="0" color="0" x="3049" y="8" height="56" width="174"  name=listino_mis_x_t  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Alt."border="0" color="0" x="3232" y="8" height="56" width="169"  name=listino_mis_y_t  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Ragione Sociale"border="0" color="0" x="1376" y="8" height="56" width="681"  name=rag_soc_10_t  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Piano di
+Trattam."border="0" color="0" x="2066" y="8" height="112" width="233"  name=cod_sl_pt_t  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Contr."border="0" color="0" x="2309" y="8" height="56" width="160"  name=contratto_t  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Articolo"border="0" color="0" x="9" y="8" height="56" width="261"  name=listino_cod_art_t  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=footer alignment="0" expression="'N. ' + string(count(listino_cod_art), ~"##,###~")"border="0" color="8388736" x="9" y="4" height="56" width="261" format="[general]"  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="33554431" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="0" color="0" x="9" y="4" height="64" width="261" format="[general]"  name=listino_cod_art edit.limit=12 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0"font.strikethrough="0~tif(  listino_attivo = ~"N~", 1, 0 )"  background.mode="0" background.color="33554431~tif(  listino_attivo = ~"N~", rgb(225,225,225), rgb(255,255,255) )" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="0" color="0" x="283" y="4" height="64" width="878" format="[general]"  name=prodotti_des edit.limit=40 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0"font.strikethrough="0~tif(  listino_attivo = ~"N~", 1, 0 )"  background.mode="0" background.color="33554431~tif(  listino_attivo = ~"N~", rgb(225,225,225), rgb(255,255,255) )" )
+column(band=detail id=1 alignment="1" tabsequence=32766 border="0" color="0" x="1175" y="4" height="64" width="192" format="####0"  name=listino_cod_cli edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0"font.strikethrough="0~tif(  listino_attivo = ~"N~", 1, 0 )"  background.mode="2" background.color="33554431" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="0" x="1381" y="4" height="64" width="677" format="[general]"  name=rag_soc_10 edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0"font.strikethrough="0~tif(  listino_attivo = ~"N~", 1, 0 )"  background.mode="2" background.color="33554431" )
+column(band=detail id=7 alignment="2" tabsequence=32766 border="0" color="0" x="2066" y="4" height="64" width="233" format="[general]"  name=cod_sl_pt edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0"font.strikethrough="0~tif(  listino_attivo = ~"N~", 1, 0 )"  background.mode="2" background.color="33554431" )
+column(band=detail id=6 alignment="2" tabsequence=32766 border="0" color="0" x="2309" y="4" height="64" width="160" format="#####"  name=contratto edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0"font.strikethrough="0~tif(  listino_attivo = ~"N~", 1, 0 )"  background.mode="2" background.color="33554431" )
+column(band=detail id=5 alignment="2" tabsequence=32766 border="0" color="0" x="2478" y="4" height="64" width="73" format="[general]"  name=prodotti_gruppo edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0"font.strikethrough="0~tif(  listino_attivo = ~"N~", 1, 0 )"  background.mode="2" background.color="33554431" )
+column(band=detail id=8 alignment="1" tabsequence=32766 border="0" color="0" x="2560" y="4" height="64" width="206" format="####0.00"  name=listino_dose edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0"font.strikethrough="0~tif(  listino_attivo = ~"N~", 1, 0 )"  background.mode="2" background.color="33554431" )
+column(band=detail id=9 alignment="2" tabsequence=32766 border="0" color="0" x="2775" y="4" height="64" width="69" format="[general]"  name=listino_magazzino edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0"font.strikethrough="0~tif(  listino_attivo = ~"N~", 1, 0 )"  background.mode="2" background.color="33554431" )
+column(band=detail id=12 alignment="2" tabsequence=32766 border="0" color="0" x="2853" y="4" height="64" width="187" format="[general]"  name=listino_mis_z edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0"font.strikethrough="0~tif(  listino_attivo = ~"N~", 1, 0 )"  background.mode="2" background.color="33554431" )
+column(band=detail id=10 alignment="2" tabsequence=32766 border="0" color="0" x="3049" y="4" height="64" width="174" format="#####"  name=listino_mis_x edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0"font.strikethrough="0~tif(  listino_attivo = ~"N~", 1, 0 )"  background.mode="2" background.color="33554431" )
+column(band=detail id=11 alignment="2" tabsequence=32766 border="0" color="0" x="3232" y="4" height="64" width="169" format="[general]"  name=listino_mis_y edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0"font.strikethrough="0~tif(  listino_attivo = ~"N~", 1, 0 )"  background.mode="2" background.color="33554431" )
+column(band=detail id=13 alignment="1" tabsequence=32766 border="0" color="0" x="3410" y="4" height="64" width="187" format="##0"  name=listino_occup_ped edit.limit=0 edit.case=any edit.format="###" edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0"font.strikethrough="0~tif(  listino_attivo = ~"N~", 1, 0 )"  background.mode="2" background.color="33554431" )
+column(band=detail id=14 alignment="1" tabsequence=32766 border="0" color="0" x="3607" y="4" height="64" width="155" format="######.##"  name=listino_peso_kg edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0"font.strikethrough="0~tif(  listino_attivo = ~"N~", 1, 0 )"  background.mode="2" background.color="33554431" )
+column(band=detail id=15 alignment="2" tabsequence=32766 border="0" color="0" x="3771" y="4" height="64" width="78" format="[general]"  name=listino_campione edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0"font.strikethrough="0~tif(  listino_attivo = ~"N~", 1, 0 )"  background.mode="2" background.color="33554431" )
+column(band=detail id=17 alignment="1" tabsequence=32766 border="0" color="0" x="3858" y="4" height="64" width="325" format="###,###,###,###"  name=listino_prezzo edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0"font.strikethrough="0~tif(  listino_attivo = ~"N~", 1, 0 )"  background.mode="2" background.color="33554431" )
+column(band=detail id=16 alignment="0" tabsequence=32766 border="0" color="0" x="4192" y="4" height="64" width="270" format=""  name=listino_tipo ddlb.limit=0 ddlb.allowedit=no ddlb.case=any  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0"font.strikethrough="0~tif(  listino_attivo = ~"N~", 1, 0 )"  background.mode="2" background.color="33554431" )
+
+sparse(names="listino_cod_art	prodotti_des	listino_cod_cli	rag_soc_10")htmltable(border="1" cellpadding="0" cellspacing="0" generatecss="no" nowrap="yes")

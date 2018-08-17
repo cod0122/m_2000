@@ -1,0 +1,18 @@
+﻿$PBExportHeader$st_tab_listino_voci.srs
+global type st_tab_listino_voci from structure
+	st_tab_g_0		st_tab_g_0
+	long		id_listino_voce
+	string		descr
+	string		descr_xctr		descriptor "comment" = "descrizione su contratti"
+	string		descr_xctr_eng		descriptor "comment" = "descrizione su contratti in inglese"
+	string		attivo		descriptor "comment" = "S=attivo; N=non attivo "
+	string		um		descriptor "comment" = "unità di misura: A=assente; C=colli; P=pedane; T=metri; O=ore...."
+	string		id_listino_voci_categ
+	string		tipo_listino		descriptor "comment" = "I=a valore (a corpo); C=a q.tà (a collo)"
+	string		tipo_calcolo		descriptor "comment" = "quando applica il costo: M=mensilmente (generato ogni inizio mese); E=caricato in entrata; U=caricato in uscita; S=a spot (una volta);"
+	string		differito		descriptor "comment" = "S=in quiescenza applicato solo su richiesta operatore; N=applicato subito"
+	string		aperto		descriptor "comment" = "S=l'operatore puo' aggiungerne altre righe di questo costo; N=non aggiungibile"
+	datetime		x_datins
+	string		x_utente
+end type
+

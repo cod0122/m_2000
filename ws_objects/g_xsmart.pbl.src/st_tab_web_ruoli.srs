@@ -1,0 +1,13 @@
+﻿$PBExportHeader$st_tab_web_ruoli.srs
+global type st_tab_web_ruoli from structure
+	st_tab_g_0		st_tab_g_0
+	long		id_web_ruolo
+	string		descr_it
+	string		descr_en
+	string		flag_pl
+	string		flag_rt
+	string		flag_ad
+	datetime		x_datins
+	string		x_utente
+end type
+

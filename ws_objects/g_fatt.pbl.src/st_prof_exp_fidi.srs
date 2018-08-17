@@ -1,0 +1,9 @@
+﻿$PBExportHeader$st_prof_exp_fidi.srs
+global type st_prof_exp_fidi from structure
+	long		id_cliente		descriptor "comment" = "cliente da estrarre (se ZERO estrae TUTTO)"
+	date		data_int_da		descriptor "comment" = "data di inizio estrazione"
+	string		nome_file		descriptor "comment" = "nome path+file da esportare"
+	string		profis		descriptor "comment" = "*=tutti, altro valore x solo le fatture non esportate "
+	integer		aggiorna		descriptor "comment" = "1=aggiorna tabella PROFIS"
+end type
+

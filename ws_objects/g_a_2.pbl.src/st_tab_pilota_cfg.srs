@@ -1,0 +1,26 @@
+﻿$PBExportHeader$st_tab_pilota_cfg.srs
+global type st_tab_pilota_cfg from structure
+	st_tab_g_0		st_tab_g_0
+	integer		codice
+	string		path_temp
+	integer		tipo_richiesta
+	string		path_pilota_out
+	string		file_richieste
+	string		file_richieste_figli
+	string		flag_genera_file_figli
+	integer		timeout_file_rich_ss
+	string		path_pilota_inp
+	string		file_esiti
+	string		path_file_pl_barcode
+	string		ultimo_nome_file_pl_barcode
+	long		ultimo_progressivo_richiesta
+	string		cfg_dbms
+	string		cfg_autocommit
+	string		cfg_dbparm
+	string		cfg_dbms_alt
+	string		cfg_autocommit_alt
+	string		cfg_dbparm_alt
+	string		blocca_richieste
+	string		cfg_dbms_scelta
+end type
+

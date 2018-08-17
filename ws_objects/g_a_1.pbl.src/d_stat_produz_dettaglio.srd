@@ -1,0 +1,195 @@
+﻿$PBExportHeader$d_stat_produz_dettaglio.srd
+release 11.5;
+datawindow(units=0 timer_interval=0 color=1073741824 brushmode=0 transparency=0 gradient.angle=0 gradient.color=8421504 gradient.focus=0 gradient.repetition.count=0 gradient.repetition.length=100 gradient.repetition.mode=0 gradient.scale=100 gradient.spread=100 gradient.transparency=0 picture.blur=0 picture.clip.bottom=0 picture.clip.left=0 picture.clip.right=0 picture.clip.top=0 picture.mode=0 picture.scale.x=100 picture.scale.y=100 picture.transparency=0 processing=9 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes print.background=no print.preview.background=no print.preview.outline=yes hidegrayline=yes showbackcoloronxp=yes picture.file="" row.resize=1 grid.lines=0 selected.mouse=no )
+header(height=136 color="536870912" transparency="0" gradient.color="8421504" gradient.transparency="0" gradient.angle="0" brushmode="0" gradient.repetition.mode="0" gradient.repetition.count="0" gradient.repetition.length="100" gradient.focus="0" gradient.scale="100" gradient.spread="100" )
+summary(height=0 color="536870912" transparency="0" gradient.color="8421504" gradient.transparency="0" gradient.angle="0" brushmode="0" gradient.repetition.mode="0" gradient.repetition.count="0" gradient.repetition.length="100" gradient.focus="0" gradient.scale="100" gradient.spread="100" )
+footer(height=0 color="536870912" transparency="0" gradient.color="8421504" gradient.transparency="0" gradient.angle="0" brushmode="0" gradient.repetition.mode="0" gradient.repetition.count="0" gradient.repetition.length="100" gradient.focus="0" gradient.scale="100" gradient.spread="100" )
+detail(height=112 color="536870912" transparency="0" gradient.color="8421504" gradient.transparency="0" gradient.angle="0" brushmode="0" gradient.repetition.mode="0" gradient.repetition.count="0" gradient.repetition.length="100" gradient.focus="0" gradient.scale="100" gradient.spread="100" height.autosize=yes )
+table(column=(type=char(18) updatewhereclause=yes name=operazione dbname="operazione" )
+ column=(type=long updatewhereclause=yes name=id_armo dbname="armo.id_armo" )
+ column=(type=long updatewhereclause=yes name=id_meca dbname="armo.id_meca" )
+ column=(type=char(92) updatewhereclause=yes name=num_int dbname="numero" )
+ column=(type=date updatewhereclause=yes name=armo_data dbname="armo.data" )
+ column=(type=char(269) updatewhereclause=yes name=armo_des_1 dbname="des_1" )
+ column=(type=decimal(0) updatewhereclause=yes name=armo_colli dbname="armo.colli" )
+ column=(type=decimal(2) updatewhereclause=yes name=armo_pedane dbname="armo.pedane" )
+ column=(type=char(560) updatewhereclause=yes name=meca_cliente dbname="cliente" )
+ retrieve="SELECT '1 Entrata' as operazione,  
+		armo.id_armo as id_armo,
+		armo.id_meca as id_meca,
+         CONVERT(varchar, armo.num_int) + '     (id=' + CONVERT(varchar, armo.id_meca) + ') '  as numero,    
+         armo.data_int as data,   
+        ' art: ' +  trim(armo.art) + ';  sl-pt: ' + COALESCE((trim(armo.cod_sl_pt)), 'nessuno') + ';  dose: ' + CONVERT(varchar,COALESCE(armo.dose, 0))
+         + ';   ' + CONVERT(varchar,COALESCE(armo.larg_2,0)) + ' x ' +  CONVERT(varchar,COALESCE(armo.lung_2,0)) + ' x ' +  CONVERT(varchar,COALESCE(armo.alt_2,0))
+         + ';  mag.: ' +  CONVERT(varchar,COALESCE(armo.magazzino,0))  + ' ' as des_1,
+         armo.colli_2 as colli,
+		armo.pedane as pedane,
+         'mand.: ' + CONVERT(varchar, meca.clie_1) + ' ' + trim(clienti_a.rag_soc_10) + ';  (id Lotto=' + CONVERT(varchar, id_meca) + ')  ' as cliente
+
+   from armo left outer join meca on 
+        armo.id_meca = meca.id
+                LEFT OUTER JOIN clienti as clienti_a ON 
+         meca.clie_1 = clienti_a.codice   
+   where    
+        armo.id_meca = :k_id_meca
+
+union all
+	select 
+         '2 Pianificazione',  
+         artr.id_armo,
+         armo.id_meca,
+         CONVERT(varchar, artr.num_certif)  + '  ' ,
+         max(artr.data_fin),
+         'p.l. ' + CONVERT(varchar, artr.pl_barcode) + 
+         '; dosimetria rilevata il '  +  CONVERT(varchar, meca_dosim.dosim_data) + ',  a dose ' +  CONVERT(varchar,meca_dosim.dosim_dose) + ' ',
+         sum(artr.colli_trattati),
+         0,
+          trim(meca.note_lav_ok)
+   from armo inner join artr on 
+        armo.id_armo = artr.id_armo
+             left outer join meca on 
+        armo.id_meca = meca.id
+             left outer join meca_dosim on 
+        meca.id = meca_dosim.id_meca
+   where    
+        armo.id_meca = :k_id_meca
+    group by 
+         artr.id_armo,
+         armo.id_meca,
+         artr.num_certif,
+         artr.pl_barcode,
+  		meca_dosim.dosim_data,
+		meca_dosim.dosim_dose,
+		meca.note_lav_ok
+union all
+	select 
+         '3 Trattamento',  
+         barcode.id_armo,
+         barcode.id_meca,
+         ' ',
+         max(barcode.data_lav_fin),
+		'max giri effettuati:  Fila 1= ' + CONVERT(varchar, max(barcode.lav_fila_1)) +  '+'+  CONVERT(varchar, max(barcode.lav_fila_1p)) 
+         + ',   Fila 2= ' + CONVERT(varchar, max(barcode.lav_fila_2)) + '+' + CONVERT(varchar, max(barcode.lav_fila_2p)) + '.     Per il dettaglio consultare i singoli pallet (barcode).',
+         count(*),
+         0,
+         ' '
+   from barcode
+   where    
+        barcode.id_meca = :k_id_meca and barcode.data_lav_fin > convert(date, '01.01.1900')
+    group by 
+         barcode.id_armo,
+         barcode.id_meca
+
+union all
+	select 
+         '4 Attestato',  
+         certif.id,
+         certif.id_meca,
+         CONVERT(varchar, certif.num_certif) + '     (id=' + CONVERT(varchar, certif.id) + ')  ',
+         certif.data,
+         COALESCE(('stampato il ' + CONVERT(varchar, DAY(certif.data_stampa)) + '/' + CONVERT(varchar, MONTH(certif.data_stampa)) 
+            + '/' + CONVERT(varchar, YEAR(certif.data_stampa)) + ', dose min: ' + CONVERT(varchar, certif.dose_min) + ' e max:' + CONVERT(varchar, certif.dose_max)), 'da stampare') + ' ',
+         certif.colli,
+         0,
+         trim(certif.note) + ' '
+   from certif
+   where    
+        certif.id_meca = :k_id_meca
+
+union all
+	select 
+         '5 Spedizione',  
+         arsp.id_armo,
+         armo.id_meca,
+         arsp.num_bolla_out + ' ',
+         arsp.data_bolla_out,
+         COALESCE(('ritirato il ' +  CONVERT(varchar, DAY(sped.data_rit)) + '/' + CONVERT(varchar, MONTH(sped.data_rit)) + '/' + CONVERT(varchar, YEAR(sped.data_rit))),'da ritirare') + ' ',
+         sum(arsp.colli),
+         0,
+         'sped. a ' + CONVERT(varchar, sped.clie_2) + ' ' + COALESCE(trim(sped.rag_soc_1),'') + ' ' +  COALESCE(trim(sped.rag_soc_2), '')
+   from arsp left outer join sped on 
+        arsp.num_bolla_out = sped.num_bolla_out
+        and arsp.data_bolla_out = sped.data_bolla_out 
+   			 left outer join armo on 
+        arsp.id_armo = armo.id_armo
+   where    
+        armo.id_meca = :k_id_meca
+    group by 
+         arsp.id_armo,
+         armo.id_meca,
+         arsp.num_bolla_out,
+         arsp.data_bolla_out,
+         sped.data_rit,
+         sped.clie_2, sped.rag_soc_1, sped.rag_soc_2
+
+union all
+	select 
+         '6 Fattura/N.C./...',  
+         arfa.id_armo,
+         armo.id_meca,
+         CONVERT(varchar, arfa.num_fatt) + ' ',
+         arfa.data_fatt,
+         'totale Importo ' + CONVERT(varchar, sum(prezzo_t)) + ';   tipo-documento: ' + max(arfa.tipo_doc) + ' ',
+         sum(arfa.colli),
+         0,
+         'cliente: ' + CONVERT(varchar, arfa_testa.id_cliente) + '  ' + COALESCE(arfa_testa.rag_soc_1, '') + ' ' 
+   from armo inner join arfa on armo.id_armo = arfa.id_armo
+                     inner join arfa_testa on arfa.id_fattura = arfa_testa.id_fattura 
+   where    
+        armo.id_meca = :k_id_meca 
+    group by     
+         arfa.id_armo,
+         armo.id_meca,
+         arfa.num_fatt,
+         arfa.data_fatt,
+         arfa_testa.id_cliente, 
+         arfa_testa.rag_soc_1
+--    group by 1, 2, 3, 4, 5,8, 9
+
+
+" arguments=(("k_id_meca", number))  sort="operazione A armo_data A riga A " )
+group(level=1 header.height=92 header.height.autosize=yes trailer.height=0 by=("operazione" ) header.color="33550576" header.transparency="0" header.gradient.color="8421504" header.gradient.transparency="0" header.gradient.angle="0" header.brushmode="0" header.gradient.repetition.mode="0" header.gradient.repetition.count="0" header.gradient.repetition.length="100" header.gradient.focus="0" header.gradient.scale="100" header.gradient.spread="100" trailer.color="536870912" trailer.transparency="0" trailer.gradient.color="8421504" trailer.gradient.transparency="0" trailer.gradient.angle="0" trailer.brushmode="0" trailer.gradient.repetition.mode="0" trailer.gradient.repetition.count="0" trailer.gradient.repetition.length="100" trailer.gradient.focus="0" trailer.gradient.scale="100" trailer.gradient.spread="100" )
+text(band=header alignment="0" text=" Fase
+" border="0" color="0" x="9" y="8" height="128" width="800" html.valueishtml="0"  name=armo_numero_t visible="1"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="33550576" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0" )
+text(band=header alignment="0" text=" id
+" border="0" color="0" x="1161" y="8" height="128" width="78" html.valueishtml="0"  name=k_id_armo_t visible="1"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="33550576" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0" )
+text(band=header alignment="0" text=" descrizione
+ " border="0" color="0" x="1248" y="8" height="128" width="960" html.valueishtml="0"  name=armo_des_1_t visible="1"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="33550576" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0" )
+text(band=header alignment="0" text=" anagrafica
+" border="0" color="0" x="2578" y="8" height="128" width="754" html.valueishtml="0"  name=meca_cliente_t visible="1"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="33550576" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0" )
+text(band=header alignment="0" text=" colli
+" border="0" color="0" x="2217" y="8" height="128" width="160" html.valueishtml="0"  name=armo_colli_t visible="1"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="33550576" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0" )
+text(band=header alignment="0" text=" occ.
+ ped." border="0" color="0" x="2386" y="8" height="128" width="183" html.valueishtml="0"  name=armo_pedane_t visible="1"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="33550576" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0" )
+text(band=header alignment="0" text=" Id Lotto
+" border="0" color="0" x="3342" y="8" height="128" width="174" html.valueishtml="0"  name=armo_id_meca_t visible="0"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="33550576" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0" )
+text(band=header alignment="0" text=" Data
+" border="0" color="0" x="818" y="8" height="128" width="334" html.valueishtml="0"  name=armo_data_t visible="1"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="33550576" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0" )
+column(band=header.1 id=1 alignment="0" tabsequence=32766 border="0" color="8388608" x="256" y="16" height="64" width="553" format="[general]" html.valueishtml="0"  name=operazione visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="0" color="33554432" x="3342" y="0" height="92" width="174" format="[general]" html.valueishtml="0"  name=id_meca visible="0" height.autosize=yes edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0" )
+column(band=detail id=7 alignment="1" tabsequence=32766 border="0" color="33554432~tcase(  left(operazione,1)  when '1' then  rgb( 52, 2, 200)  when '2' then  rgb( 227, 100, 122 ) when '3' then  rgb( 196, 34, 64)  when '4'  then   rgb( 128, 0, 128)  when '5'  then  rgb( 119 , 0 , 0 )  when '6'  then   rgb( 0 , 113 , 0 ) else  rgb( 0 , 0 , 0 )    )
+" x="2217" y="0" height="92" width="160" format="##### " html.valueishtml="0"  name=armo_colli visible="1" height.autosize=yes edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.autohscroll=yes edit.displayonly=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0" )
+column(band=detail id=8 alignment="1" tabsequence=32766 border="0" color="33554432~tcase(  left(operazione,1)  when '1' then  rgb( 52, 2, 200)  when '2' then  rgb( 227, 100, 122 ) when '3' then  rgb( 196, 34, 64)  when '4'  then   rgb( 128, 0, 128)  when '5'  then  rgb( 119 , 0 , 0 )  when '6'  then   rgb( 0 , 113 , 0 ) else  rgb( 0 , 0 , 0 )    )
+" x="2386" y="0" height="92" width="183" format="###,### ~tif (     armo_pedane > 0, '###,###,##0.0 ', '# ')" html.valueishtml="0"  name=armo_pedane visible="1" height.autosize=yes edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.autohscroll=yes edit.displayonly=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0" )
+compute(band=detail alignment="2" expression="if ( operazione = '4 Attestato' , '*', right(string( id_armo ), 1))"border="0" color="8421504" x="1161" y="0" height="92" width="78" format="([GENERAL])" html.valueishtml="0"  name=riga visible="1"  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="1" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.tip="identifica la riga; (*)=tutte le righe" tooltip.transparency="0" transparency="0"  height.autosize=yes)
+column(band=detail id=4 alignment="2" tabsequence=32766 border="0" color="33554432~tcase(  left(operazione,1)  when '1' then  rgb( 52, 2, 200)  when '2' then  rgb( 227, 100, 122 ) when '3' then  rgb( 196, 34, 64)  when '4'  then   rgb( 128, 0, 128)  when '5'  then  rgb( 119 , 0 , 0 )  when '6'  then   rgb( 0 , 113 , 0 ) else  rgb( 0 , 0 , 0 )    )
+" x="357" y="0" height="92" width="453" format="[general]" html.valueishtml="0"  name=num_int visible="1" height.autosize=yes edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.autohscroll=yes edit.displayonly=yes  font.face="Arial" font.height="-10" font.weight="400~tif ( left(operazione,1)  = '1',1,0  )"  font.family="2" font.pitch="2" font.charset="0"font.underline="0~tif ( left(operazione,1)  = '1',1,0  )"  background.mode="1" background.color="536870912" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0" )
+column(band=detail id=5 alignment="0" tabsequence=32766 border="0" color="33554432~tcase(  left(operazione,1)  when '1' then  rgb( 52, 2, 200)  when '2' then  rgb( 227, 100, 122 ) when '3' then  rgb( 196, 34, 64)  when '4'  then   rgb( 128, 0, 128)  when '5'  then  rgb( 119 , 0 , 0 )  when '6'  then   rgb( 0 , 113 , 0 ) else  rgb( 0 , 0 , 0 )    )
+" x="818" y="0" height="92" width="334" format=" dd.mm.yy" html.valueishtml="0"  name=armo_data visible="1" height.autosize=yes edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.displayonly=yes  font.face="Arial" font.height="-10" font.weight="400~tif ( left(operazione,1)  = '1',1,0  )"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0" )
+column(band=detail id=6 alignment="0" tabsequence=32766 border="0" color="33554432~tcase(  left(operazione,1)  when '1' then  rgb( 52, 2, 200)  when '2' then  rgb( 227, 100, 122 ) when '3' then  rgb( 196, 34, 64)  when '4'  then   rgb( 128, 0, 128)  when '5'  then  rgb( 119 , 0 , 0 )  when '6'  then   rgb( 0 , 113 , 0 ) else  rgb( 0 , 0 , 0 )    )
+" x="1248" y="0" height="92" width="960" format=" [general]" html.valueishtml="0"  name=armo_des_1 visible="1" height.autosize=yes edit.limit=45 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.autohscroll=yes edit.displayonly=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0" )
+column(band=detail id=9 alignment="0" tabsequence=32766 border="0" color="33554432~tcase(  left(operazione,1)  when '1' then  rgb( 52, 2, 200)  when '2' then  rgb( 227, 100, 122 ) when '3' then  rgb( 196, 34, 64)  when '4'  then   rgb( 128, 0, 128)  when '5'  then  rgb( 119 , 0 , 0 )  when '6'  then   rgb( 0 , 113 , 0 ) else  rgb( 0 , 0 , 0 )    )
+" x="2578" y="0" height="92" width="754" format=" [general]" html.valueishtml="0"  name=meca_cliente visible="1" height.autosize=yes edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.autohscroll=yes edit.displayonly=yes edit.useellipsis=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" pagingmethod=0 generatedddwframes="1" )
+xhtmlgen() cssgen(sessionspecific="0" )
+xmlgen(inline="0" )
+xsltgen()
+jsgen()
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+export.xhtml()
+tree(type=1 showconnectlines=yes showleafnodeconnectLines=yes  indent=100 showtreenodeicon=yes defaultexpandtolevel=1 stateiconalignmode=0 selectnodebymouse=yes rtollayout=no 
+level=(expandedtreenodeiconname="C:\gammarad\pb_gmmrd11\ICONE\cartella_open.ico" collapsedtreenodeIconname="C:\gammarad\pb_gmmrd11\ICONE\cartella.ico" expandedtreenodeicontranscolor="553648127" collapsedtreenodeicontranscolor="553648127" )
+)

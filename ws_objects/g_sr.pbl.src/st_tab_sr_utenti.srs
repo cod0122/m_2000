@@ -1,0 +1,22 @@
+﻿$PBExportHeader$st_tab_sr_utenti.srs
+global type st_tab_sr_utenti from structure
+	long		id
+	string		codice
+	string		nome
+	string		descrizione
+	string		autenticazione		descriptor "comment" = "tipo di autenticazione M=M2000/W=Active Directory di Windows/X=entrambi"
+	string		password
+	string		password_crypt
+	string		stato
+	string		dlgs196_chk_sintax
+	integer		scade_dopo_gg
+	integer		tentativi_max
+	integer		tentativi_ko
+	integer		inutilizzo_gg_disa
+	string		inutilizzo_sblocco
+	date		dt_ultimo_accesso
+	date		dt_ultima_modifica
+	datetime		x_datins
+	string		x_utente
+end type
+

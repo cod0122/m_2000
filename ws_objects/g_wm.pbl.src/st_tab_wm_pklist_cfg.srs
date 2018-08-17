@@ -1,0 +1,27 @@
+﻿$PBExportHeader$st_tab_wm_pklist_cfg.srs
+global type st_tab_wm_pklist_cfg from structure
+	st_tab_g_0		st_tab_g_0
+	integer		codice		descriptor "comment" = "codice (1=default)"
+	string		cartella_pkl_da_web		descriptor "comment" = "cartella in cui ci sono i file xml di Packing-list prodotte via Web"
+	string		cartella_pkl_da_txt		descriptor "comment" = "cartella in cui ci sono i file in formato lineare di Packing-list prodotte dal cliente"
+	string		blocca_importa		descriptor "comment" = "blocca le importazioni, 'M' = IMPORTA PKL DA M2000"
+	string		file_esiti		descriptor "comment" = "file del log delle importazioni"
+	string		ultimo_idimportazione		descriptor "comment" = "ultimo id importato dalla tabella esterna"
+	string		cfg_dbms		descriptor "comment" = "configurazione DB del WM"
+	string		cfg_autocommit		descriptor "comment" = "configurazione DB del WM"
+	string		cfg_dbparm		descriptor "comment" = "configurazione DB del WM"
+	string		cfg_servername		descriptor "comment" = "configurazione DB del WM - Nome del Server"
+	string		cfg_utente		descriptor "comment" = "configurazione DB del WM "
+	string		cfg_pwd		descriptor "comment" = "configurazione DB del WM "
+	string		cfg_dbms_alt		descriptor "comment" = "configurazione alternativa DB del WM "
+	string		cfg_autocommit_alt		descriptor "comment" = "configurazione alternativa DB del WM "
+	string		cfg_dbparm_alt		descriptor "comment" = "configurazione alternativa DB del WM "
+	string		cfg_servername_alt		descriptor "comment" = "configurazione alternativa DB del WM - Nome del Server"
+	string		cfg_utente_alt		descriptor "comment" = "configurazione alternativa DB del WM "
+	string		cfg_pwd_alt		descriptor "comment" = "configurazione alternativa DB del WM "
+	string		cfg_dbms_scelta		descriptor "comment" = "scelta della configurazione 1 = la prima, 2=quella alternativa "
+	datetime		importazione_ts_ini		descriptor "comment" = "inizio importazione se > data_zero è in esecuzione"
+	datetime		x_datins		descriptor "comment" = "ultimo aggiornamento "
+	string		x_utente		descriptor "comment" = "ultimo aggiornamento "
+end type
+

@@ -1,0 +1,16 @@
+﻿$PBExportHeader$st_tab_imptime.srs
+global type st_tab_imptime from structure
+	st_tab_g_0		st_tab_g_0
+	long		id_imptime
+	string		attivo		descriptor "comment" = "S=record attivo"
+	string		impianto		descriptor "comment" = "codice impianto (x ora solo uno il '2') "
+	integer		tminute		descriptor "comment" = "n. minuti impiegati per un giro di irraggiamento "
+	integer		tsecond		descriptor "comment" = "n. secondi impiegati per un giro di irraggiamento "
+	integer		fila_1_tcoeff		descriptor "comment" = "coeff di moltiplica del tempo x fila 1 "
+	integer		fila_2_tcoeff		descriptor "comment" = "coeff di moltiplica del tempo x fila 2 "
+	date		data_ini		descriptor "comment" = "data inizio validità di questi dati "
+	date		data_fin		descriptor "comment" = "data fine validità di questi dati "
+	datetime		x_datins
+	string		x_utente
+end type
+

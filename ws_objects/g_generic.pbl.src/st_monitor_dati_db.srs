@@ -1,0 +1,12 @@
+﻿$PBExportHeader$st_monitor_dati_db.srs
+global type st_monitor_dati_db from structure
+	date		data_inizio		descriptor "comment" = "data di inzio estrazione"
+	date		data_fine		descriptor "comment" = "data di fine estrazione"
+	boolean		check_entrate
+	boolean		esito_check_entrate
+	boolean		check_ddt
+	boolean		esito_check_ddt
+	boolean		check_fatture
+	boolean		esito_check_fatture
+end type
+

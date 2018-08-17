@@ -1,0 +1,18 @@
+﻿$PBExportHeader$st_sv_eventi_sked.srs
+global type st_sv_eventi_sked from structure
+	long		id
+	long		id_sv_skedula
+	string		stato
+	string		attendi_fine
+	datetime		run_datetime		descriptor "comment" = "giorno e ora di lancio dell'evento"
+	date		run_giorno
+	string		run_ora
+	datetime		run_giorno_start
+	datetime		run_giorno_stop
+	string		esito
+	string		id_menu_window
+	string		cmd_dos
+	datetime		x_datins
+	string		x_utente
+end type
+

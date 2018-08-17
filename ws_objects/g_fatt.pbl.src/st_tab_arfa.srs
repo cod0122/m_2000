@@ -1,0 +1,61 @@
+﻿$PBExportHeader$st_tab_arfa.srs
+global type st_tab_arfa from structure
+	st_tab_g_0		st_tab_g_0
+	long		id_fattura
+	long		id_arfa		descriptor "comment" = "id della Riga"
+	long		num_fatt
+	date		data_fatt
+	integer		nriga		descriptor "comment" = "numero di riga nella fattura"
+	long		id_arfa_v		descriptor "comment" = "obsoleto"
+	long		num_bolla_out
+	date		data_bolla_out
+	long		clie_3
+	string		tipo_riga		descriptor "comment" = "A=riga articolo; V=riga varia senza ID_ARMO"
+	integer		iva
+	decimal { 2 }		prezzo_u
+	decimal { 2 }		prezzo_t
+	string		tipo_doc		descriptor "comment" = "FT=fattura, NC=nota di credito, PF=fattura proforma"
+	string		stampa		descriptor "comment" = "S=stampata, F=da non stampare, N=da stampare"
+	datetime		data_stampa		descriptor "comment" = "data di stampa della fattura"
+	integer		colli		descriptor "comment" = "colli in scarico dal magazzino"
+	integer		colli_out		descriptor "comment" = "colli in stampa in fattura"
+	double		peso_kg_out
+	long		id_armo
+	long		id_armo_prezzo		descriptor "comment" = "id della tabella prezzi della riga Lotto "
+	long		id_arsp		descriptor "comment" = "id riga bolla di spedizione "
+	long		id_listino		descriptor "comment" = "id listino x identificare il prezzo"
+	string		tipo_l		descriptor "comment" = "tipo prezzo di listino "
+	integer		cod_pag
+	string		art		descriptor "comment" = "codice articolo x riga varia"
+	string		des		descriptor "comment" = "descrizione articolo o commento x riga varia"
+	integer		id_arfa_se_nc		descriptor "comment" = "quando documento Nota di Credito allora c'e' l'ID della riga di FT originale "
+	string		comm		descriptor "comment" = "obsoleto ex-commento in ARFA_V"
+	decimal { 2 }		spese_inc		descriptor "comment" = "importo spese incasso "
+	string		note_int_1		descriptor "comment" = "note interne non stampate"
+	string		note_int_2		descriptor "comment" = "note interne non stampate"
+	string		note_1		descriptor "comment" = "note in stampa piede ft"
+	string		note_2		descriptor "comment" = "note in stampa piede ft"
+	string		note_3		descriptor "comment" = "note in stampa piede ft"
+	string		note_4		descriptor "comment" = "note in stampa piede ft"
+	string		note_5		descriptor "comment" = "note in stampa piede ft"
+	string		note_normative		descriptor "comment" = "note riservate alle normative sui bolli, esenzioni ..."
+	string		rag_soc_1		descriptor "comment" = "nome intest. fatt riga 1"
+	string		rag_soc_2		descriptor "comment" = "nome intest. fatt riga 2"
+	string		indi		descriptor "comment" = "indirizzo: strada a cui inviare la fattura"
+	string		loc		descriptor "comment" = "indirizzo: citta a cui inviare la fatt."
+	string		prov		descriptor "comment" = "indirizzo: provincia a cui inviare la fattura"
+	string		cap		descriptor "comment" = "indirizzo: cap a cui inviare la fattura"
+	string		id_nazione		descriptor "comment" = "indirizzo: nazione a cui inviare la fattura"
+	string		modo_stampa		descriptor "comment" = "S=solo stampa cartacea; E=stampa digitale"
+	string		modo_email		descriptor "comment" = "A=invia solo avviso; F=invia lettera con allegata la fattura; N=non invia nulla"
+	string		email_invio		descriptor "comment" = "quale indirizzo e-mail inviare 1,2,3"
+	string		file_prodotto		descriptor "comment" = "path + file del documento prodotto"
+	long		id_email_invio		descriptor "comment" = "id della tabella EMAIL_INVIO"
+	long		id_docprod		descriptor "comment" = "id della tabella DOCPROD (esportazione documenti)"
+	string		form_di_stampa		descriptor "comment" = "nome del dw di stampa"
+	string		stampa_tradotta		descriptor "comment" = "traduzione in lingua della stampa: 'IT'=italiano, 'EN'=inglese ...."
+	long		contratto		descriptor "comment" = "id contratto di Conferma Ordine"
+	datetime		x_datins
+	string		x_utente
+end type
+

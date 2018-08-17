@@ -1,0 +1,6 @@
+﻿$PBExportHeader$st_showhelp.srs
+global type st_showhelp from structure
+	string		id_help		descriptor "comment" = "identifica il codice per reperire la parola chiave"
+	integer		cmd		descriptor "comment" = "tipo di comando (esempio keyword = ricerca parola chiave )"
+end type
+

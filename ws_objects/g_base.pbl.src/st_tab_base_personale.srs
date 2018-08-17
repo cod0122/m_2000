@@ -1,0 +1,14 @@
+﻿$PBExportHeader$st_tab_base_personale.srs
+global type st_tab_base_personale from structure
+	string		nome
+	string		finestra_inizio
+	string		font_alt
+	string		flag_salva_liste
+	string		e_mail
+	string		tel
+	string		titolo_main
+	string		flag_suoni
+	string		stcert1		descriptor "comment" = "attestati stampante pagina 1"
+	string		stcert2		descriptor "comment" = "attestati stampante pagine allegate"
+end type
+

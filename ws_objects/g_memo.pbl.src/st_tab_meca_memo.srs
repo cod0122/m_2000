@@ -1,0 +1,12 @@
+﻿$PBExportHeader$st_tab_meca_memo.srs
+global type st_tab_meca_memo from structure
+	st_tab_g_0		st_tab_g_0
+	long		id_meca_memo
+	string		tipo_sv		descriptor "comment" = "collegato alla tabella SR_SETTORI con il codice"
+	long		id_memo
+	long		id_meca
+	string		allarme		descriptor "comment" = "avvisa durante operazione ad es di DDT la presenza del memo"
+	datetime		x_datins
+	string		x_utente
+end type
+

@@ -1,0 +1,13 @@
+﻿$PBExportHeader$st_tab_armo_prezzi_v.srs
+global type st_tab_armo_prezzi_v from structure
+	st_tab_g_0		st_tab_g_0
+	long		id_armo_prezzo_v
+	long		id_armo_prezzo
+	string		descr		descriptor "comment" = "descrizione libera dell'operatore che carica la voce"
+	string		segno		descriptor "comment" = "+= carica di tot 'colli' il prezzo riga; - = sottrae tot colli"
+	string		stato		descriptor "comment" = "stato riga: 1=da Fatturare;2=da NON Fatturato (in questo caso non produce nulla)"
+	integer		colli		descriptor "comment" = "numero 'colli' o ore o quant'altro... "
+	datetime		x_datins
+	string		x_utente
+end type
+

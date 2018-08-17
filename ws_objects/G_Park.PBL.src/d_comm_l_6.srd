@@ -1,0 +1,65 @@
+﻿$PBExportHeader$d_comm_l_6.srd
+release 5;
+datawindow(units=0 timer_interval=0 color=16777215 processing=1 print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 97 print.margin.bottom = 97 print.paper.source = 0 print.paper.size = 0 print.prompt=no grid.lines=0 )
+header(height=69 color="-1" )
+summary(height=1 color="-1" )
+footer(height=61 color="-1" )
+detail(height=69 color="-1" )
+table(column=(type=decimal(0) updatewhereclause=yes name=nro_commessa dbname="nro_commessa" )
+ column=(type=date updatewhereclause=yes name=data dbname="data" )
+ column=(type=char(35) updatewhereclause=yes name=clienti_rag_soc_1 dbname="rag_soc_1" )
+ column=(type=char(35) updatewhereclause=yes name=clienti_localita dbname="localita" )
+ column=(type=char(30) updatewhereclause=yes name=titolo dbname="titolo" )
+ column=(type=char(25) updatewhereclause=yes name=descrizione_l dbname="descrizione" )
+ column=(type=char(40) updatewhereclause=yes name=descrizione_d dbname="descrizione" )
+ column=(type=decimal(3) updatewhereclause=yes name=importo_prev dbname="importo_prev" )
+ column=(type=decimal(0) updatewhereclause=yes name=id_commessa dbname="id_commessa" )
+ retrieve="  SELECT ~"commesse~".~"nro_commessa~",   
+         ~"commesse~".~"data~",   
+         ~"clienti~".~"rag_soc_1~",   
+         ~"clienti~".~"localita~",   
+         ~"commesse~".~"titolo~",   
+         ~"t_lavori~".~"descrizione~",   
+         ~"divisioni~".~"descrizione~",   
+         ~"commesse~".~"importo_prev~",   
+         ~"commesse~".~"id_commessa~"  
+    FROM (((~"commesse~"  LEFT OUTER JOIN ~"clienti~"  ON
+			 ~"commesse~".~"id_cliente~" = ~"clienti~".~"id_cliente~") 
+			left outer join ~"t_lavori~" on
+			~"commesse~".~"id_t_lavoro~" = ~"t_lavori~".~"id_t_lavoro~")
+			left outer join ~"divisioni~" on
+			~"commesse~".~"id_divisione~" = ~"divisioni~".~"id_divisione~")
+   WHERE 
+         ((:k_stato = 'A' and  
+          (~"commesse~".~"stato~" = '0' OR  
+           ~"commesse~".~"stato~" = '1' OR  
+           ~"commesse~".~"stato~" = '2' OR  
+           ~"commesse~".~"stato~" = '3')) OR  
+         (:k_stato = 'O' and  
+          (~"commesse~".~"stato~" = '4' OR  
+           ~"commesse~".~"stato~" = '5' OR  
+           ~"commesse~".~"stato~" = '6' OR  
+           ~"commesse~".~"stato~" = '7')) OR  
+         (:k_stato = 'C' and  
+          (~"commesse~".~"stato~" = '8' OR  
+           ~"commesse~".~"stato~" = '9'))
+			 OR  
+         :k_stato = '*') and   
+         (year(~"commesse~".~"data~") = :k_anno OR  
+         :k_anno = 9999)   
+ORDER BY    
+         ~"commesse~".~"nro_commessa~" DESC   
+" arguments=(("k_stato", string),("k_anno", number)) )
+text(band=header alignment="2" text="N.ro"border="0" color="0" x="10" y="8" height="57" width="179"  name=nro_commessa_t  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Cliente"border="0" color="0" x="202" y="8" height="57" width="814"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=1 alignment="2" tabsequence=32766 border="0" color="0" x="10" y="4" height="61" width="179" format="[general]"  name=nro_commessa edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="0" color="0" x="202" y="4" height="61" width="814" format="[general]"  name=clienti_rag_soc_1 edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=footer alignment="0" expression="'n.' + count(nro_commessa for all)"border="0" color="8388736" x="10" y="4" height="57" width="179" format="[general]"  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Titolo"border="0" color="0" x="1025" y="8" height="57" width="851"  name=titolo_t  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Tipo lavoro"border="0" color="0" x="1884" y="8" height="57" width="613"  name=descrizione_l_t  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Divisione"border="0" color="0" x="2506" y="8" height="57" width="915"  name=descrizione_d_t  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="0" tabsequence=32766 border="0" color="0" x="1025" y="4" height="61" width="851" format="[general]"  name=titolo edit.limit=30 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="0" tabsequence=0 border="0" color="0" x="1889" y="4" height="61" width="609"  name=descrizione_l  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="0" tabsequence=0 border="0" color="0" x="2510" y="4" height="61" width="910"  name=descrizione_d  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Data"border="0" color="0" x="3429" y="8" height="57" width="275"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=2 alignment="2" tabsequence=0 border="0" color="0" x="3434" y="4" height="61" width="270" format="dd/mm/yy"  name=data  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )

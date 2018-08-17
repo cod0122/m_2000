@@ -1,0 +1,6 @@
+﻿$PBExportHeader$st_meca_chiudi.srs
+global type st_meca_chiudi from structure
+	string		k_simulazione		descriptor "comment" = "S=non registrare, SOLO SIMULAZIONE"
+	boolean		k_tutto		descriptor "comment" = "true = chiude tutto l'elenco"
+end type
+

@@ -1,0 +1,98 @@
+﻿$PBExportHeader$d_tab_treeview_l.srd
+release 10.5;
+datawindow(units=0 timer_interval=0 color=16777215 processing=9 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes print.preview.outline=yes hidegrayline=yes grid.lines=0 )
+header(height=72 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=68 color="536870912" )
+table(column=(type=char(1) updatewhereclause=yes name=tipo_menu dbname="treeview.tipo_menu" )
+ column=(type=char(24) updatewhereclause=yes name=id dbname="treeview.id" )
+ column=(type=char(20) updatewhereclause=yes name=descrizione_tipo dbname="treeview.descrizione_tipo" )
+ column=(type=char(40) updatewhereclause=yes name=descrizione dbname="treeview.descrizione" )
+ column=(type=char(3) updatewhereclause=yes name=livello dbname="treeview.livello" )
+ column=(type=char(3) updatewhereclause=yes name=sequenza dbname="treeview.sequenza" )
+ column=(type=char(1) updatewhereclause=yes name=tipo_voce dbname="treeview.tipo_voce" )
+ column=(type=char(40) updatewhereclause=yes name=voce dbname="treeview.voce" )
+ column=(type=char(24) updatewhereclause=yes name=id_padre dbname="treeview.id_padre" )
+ column=(type=char(24) updatewhereclause=yes name=funzione dbname="treeview.funzione" )
+ column=(type=number updatewhereclause=yes name=pic_open dbname="treeview.pic_open" )
+ column=(type=char(100) updatewhereclause=yes name=treeview_icone_nome dbname="treeview_icone.nome" )
+ column=(type=number updatewhereclause=yes name=pic_close dbname="treeview.pic_close" )
+ column=(type=char(100) updatewhereclause=yes name=treeview_icone_nome dbname="treeview_icone.nome" )
+ column=(type=number updatewhereclause=yes name=pic_list dbname="treeview.pic_list" )
+ column=(type=char(100) updatewhereclause=yes name=treeview_icone_nome dbname="treeview_icone.nome" )
+ column=(type=char(24) updatewhereclause=yes name=id_programma dbname="treeview.id_programma" )
+ column=(type=char(24) updatewhereclause=yes name=open_programma dbname="treeview.open_programma" )
+ retrieve="  SELECT treeview.tipo_menu,   
+         treeview.id,   
+         treeview.descrizione_tipo,   
+         treeview.descrizione,   
+         treeview.livello,   
+         treeview.sequenza,   
+         treeview.tipo_voce,   
+         treeview.voce,   
+         treeview.id_padre,   
+         treeview.funzione,   
+         treeview.pic_open,   
+         treeview_icone_a.nome,   
+         treeview.pic_close,   
+         treeview_icone_b.nome,   
+         treeview.pic_list,   
+         treeview_icone_c.nome,   
+         treeview.id_programma,   
+         treeview.open_programma  
+    FROM  treeview LEFT OUTER JOIN treeview_icone 
+                             treeview_icone_c ON treeview.pic_close = treeview_icone_c.progressivo 
+                            LEFT OUTER JOIN treeview_icone 
+                             treeview_icone_a ON treeview.pic_open = treeview_icone_a.progressivo 
+                            LEFT OUTER JOIN treeview_icone 
+                            treeview_icone_b ON treeview.pic_list = treeview_icone_b.progressivo
+"  sort="tipo_menu A livello A id_padre A sequenza A " )
+group(level=1 header.height=76 trailer.height=0 by=("tipo_menu" ) header.color="536870912" trailer.color="536870912" )
+group(level=2 header.height=56 trailer.height=0 by=("livello" ) header.color="536870912" trailer.color="536870912" )
+group(level=3 header.height=56 trailer.height=0 by=("id_padre" ) header.color="536870912" trailer.color="536870912" )
+text(band=header alignment="2" text="Id" border="0" color="33554432" x="9" y="4" height="64" width="1134" html.valueishtml="0"  name=id_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="0" text="Descrizione Tipo" border="0" color="33554432" x="1152" y="4" height="64" width="329" html.valueishtml="0"  name=descrizione_tipo_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="0" text="Descrizione" border="0" color="33554432" x="1490" y="4" height="64" width="823" html.valueishtml="0"  name=descrizione_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="0" text="Sequenza" border="0" color="33554432" x="2322" y="4" height="64" width="87" html.valueishtml="0"  name=sequenza_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="0" text="Tipo Voce" border="0" color="33554432" x="2418" y="4" height="64" width="123" html.valueishtml="0"  name=tipo_voce_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="0" text="Voce" border="0" color="33554432" x="2551" y="4" height="64" width="768" html.valueishtml="0"  name=voce_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="0" text="Funzione" border="0" color="33554432" x="3328" y="4" height="64" width="603" html.valueishtml="0"  name=funzione_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="0" text="Pic Open" border="0" color="33554432" x="3941" y="4" height="64" width="110" html.valueishtml="0"  name=pic_open_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="0" text="Pic Close" border="0" color="33554432" x="4795" y="4" height="64" width="110" html.valueishtml="0"  name=pic_close_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="0" text="Pic List" border="0" color="33554432" x="5463" y="4" height="64" width="96" html.valueishtml="0"  name=pic_list_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="0" text="Id Programma" border="0" color="33554432" x="6144" y="4" height="64" width="512" html.valueishtml="0"  name=id_programma_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="0" text="Open Programma" border="0" color="33554432" x="6665" y="4" height="64" width="503" html.valueishtml="0"  name=open_programma_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="0" text="Treeview Icone Nome" border="0" color="0" x="4059" y="4" height="64" width="727" html.valueishtml="0"  name=treeview_icone_nome_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="1073741824" )
+text(band=header alignment="0" text="Treeview Icone Nome" border="0" color="33554432" x="4914" y="4" height="64" width="539" html.valueishtml="0"  name=treeview_icone_nome_1_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="0" text="Treeview Icone Nome" border="0" color="33554432" x="5568" y="4" height="64" width="567" html.valueishtml="0"  name=treeview_icone_nome_2_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=header.1 id=1 alignment="0" tabsequence=32766 border="0" color="33554432" x="155" y="4" height="68" width="987" format="[general]" html.valueishtml="0"  name=tipo_menu visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=header.2 id=5 alignment="0" tabsequence=32766 border="0" color="33554432" x="238" y="0" height="56" width="905" format="[general]" html.valueishtml="0"  name=livello visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=header.3 id=9 alignment="0" tabsequence=32766 border="0" color="0" x="315" y="0" height="52" width="827" format="[general]" html.valueishtml="0"  name=id_padre visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no  font.face="Tahoma" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="1073741824" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="33554432" x="398" y="4" height="60" width="745" format="[general]" html.valueishtml="0"  name=id visible="1" edit.limit=24 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="0" color="33554432" x="1152" y="4" height="60" width="329" format="[general]" html.valueishtml="0"  name=descrizione_tipo visible="1" edit.limit=20 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="0" color="33554432" x="1490" y="4" height="60" width="823" format="[general]" html.valueishtml="0"  name=descrizione visible="1" edit.limit=40 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="0" tabsequence=32766 border="0" color="33554432" x="2322" y="4" height="60" width="87" format="[general]" html.valueishtml="0"  name=sequenza visible="1" edit.limit=3 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="0" tabsequence=32766 border="0" color="33554432" x="2418" y="4" height="60" width="123" format="[general]" html.valueishtml="0"  name=tipo_voce visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="0" tabsequence=32766 border="0" color="33554432" x="2551" y="4" height="60" width="768" format="[general]" html.valueishtml="0"  name=voce visible="1" edit.limit=40 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=10 alignment="0" tabsequence=32766 border="0" color="33554432" x="3328" y="4" height="60" width="603" format="[general]" html.valueishtml="0"  name=funzione visible="1" edit.limit=24 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=17 alignment="0" tabsequence=32766 border="0" color="33554432" x="6144" y="4" height="60" width="512" format="[general]" html.valueishtml="0"  name=id_programma visible="1" edit.limit=24 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=18 alignment="0" tabsequence=32766 border="0" color="33554432" x="6665" y="4" height="60" width="503" format="[general]" html.valueishtml="0"  name=open_programma visible="1" edit.limit=24 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=11 alignment="1" tabsequence=32766 border="0" color="33554432" x="3941" y="4" height="60" width="110" format="[general]" html.valueishtml="0"  name=pic_open visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=12 alignment="0" tabsequence=32766 border="0" color="33554432" x="4059" y="4" height="60" width="727" format="[general]" html.valueishtml="0"  name=treeview_icone_nome visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=13 alignment="1" tabsequence=32766 border="0" color="33554432" x="4795" y="4" height="60" width="110" format="[general]" html.valueishtml="0"  name=pic_close visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=12 alignment="0" tabsequence=32766 border="0" color="33554432" x="4914" y="4" height="60" width="539" format="[general]" html.valueishtml="0"  name=treeview_icone_nome_1 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=15 alignment="1" tabsequence=32766 border="0" color="33554432" x="5463" y="4" height="60" width="96" format="[general]" html.valueishtml="0"  name=pic_list visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=12 alignment="0" tabsequence=32766 border="0" color="33554432" x="5568" y="4" height="60" width="567" format="[general]" html.valueishtml="0"  name=treeview_icone_nome_2 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" pagingmethod=0 generatedddwframes="1" )
+xhtmlgen() cssgen(sessionspecific="0" )
+xmlgen(inline="0" )
+xsltgen()
+jsgen()
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+export.xhtml()
+tree(type=1 showconnectlines=yes showleafnodeconnectLines=yes  indent=80 showtreenodeicon=no defaultexpandtolevel=1 stateiconalignmode=0 selectnodebymouse=yes rtollayout=no 
+) 

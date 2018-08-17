@@ -1,0 +1,14 @@
+﻿$PBExportHeader$st_tab_meca_causali.srs
+global type st_tab_meca_causali from structure
+	st_tab_g_0		st_tab_g_0
+	long		id_meca_causale
+	string		descrizione
+	long		clie_1		descriptor "comment" = "mandante imposto in automatico"
+	string		art		descriptor "comment" = "articolo imposto in automatico"
+	integer		cod_blk		descriptor "comment" = "codice blocco imposto in automatico"
+	string		rich_autorizz		descriptor "comment" = "lotto sottoposto a verifica prima di renderlo disponibile"
+	string		flag_ddt_si		descriptor "comment" = "S=lotto da spedire subito senza trattamento"
+	datetime		x_datins
+	string		x_utente
+end type
+

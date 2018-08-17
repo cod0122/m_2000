@@ -1,0 +1,6 @@
+﻿$PBExportHeader$st_w_docking.srs
+global type st_w_docking from structure
+	string		k_type[]
+	string		k_name[]
+end type
+

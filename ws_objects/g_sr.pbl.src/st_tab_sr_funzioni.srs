@@ -1,0 +1,12 @@
+﻿$PBExportHeader$st_tab_sr_funzioni.srs
+global type st_tab_sr_funzioni from structure
+	long		contatore
+	long		id
+	string		nome
+	string		descrizione
+	string		id_programma
+	string		funzioni
+	datetime		x_datins
+	string		x_utente
+end type
+

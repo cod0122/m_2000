@@ -1,0 +1,39 @@
+﻿$PBExportHeader$d_clicicli.srd
+release 6;
+datawindow(units=0 timer_interval=0 color=12632256 processing=0 print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=744 color="536870912" )
+table(column=(type=long update=yes updatewhereclause=yes name=clie_2 dbname="clicicli.clie_2" )
+ column=(type=long update=yes updatewhereclause=yes name=clie_1 dbname="clicicli.clie_1" )
+ column=(type=char(12) update=yes updatewhereclause=yes name=art dbname="clicicli.art" )
+ column=(type=real update=yes updatewhereclause=yes name=dose dbname="clicicli.dose" )
+ column=(type=long update=yes updatewhereclause=yes name=fila_1 dbname="clicicli.fila_1" )
+ column=(type=long update=yes updatewhereclause=yes name=fila_2 dbname="clicicli.fila_2" )
+ column=(type=long update=yes updatewhereclause=yes key=yes name=codice dbname="clicicli.codice" )
+ retrieve="  SELECT 
+         clicicli.clie_2,   
+         clicicli.clie_1,   
+         clicicli.art,   
+         clicicli.dose,   
+         clicicli.fila_1,  
+         clicicli.fila_2,
+			clicicli.codice  
+    FROM clicicli 
+	where clicicli.codice = :k_codice  
+" update="clicicli" updatewhere=1 updatekeyinplace=no arguments=(("k_codice", number)) )
+text(band=detail alignment="1" text="Codice:"border="0" color="0" x="288" y="68" height="64" width="201"  name=codice_t  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="0" tabsequence=32766 border="5" color="8388736" x="526" y="64" height="76" width="329" format="#####"  name=codice edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12639424" )
+text(band=detail alignment="1" text="Ricevente:"border="0" color="0" x="174" y="200" height="64" width="315"  name=clie_2_t  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=detail alignment="1" text="Mandante:"border="0" color="0" x="178" y="336" height="64" width="311"  name=clie_1_t  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="0" tabsequence=40 border="5" color="0" x="1783" y="468" height="76" width="329" format="####0.0"  name=dose edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=detail alignment="1" text="Prodotto:"border="0" color="0" x="224" y="472" height="64" width="265"  name=art_t  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=detail alignment="1" text="Dose:"border="0" color="0" x="1545" y="472" height="64" width="201"  name=dose_t  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="0" tabsequence=50 border="5" color="0" x="526" y="608" height="76" width="329" format="###"  name=fila_1 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=6 alignment="0" tabsequence=60 border="5" color="0" x="1390" y="608" height="76" width="329" format="###"  name=fila_2 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=detail alignment="1" text="Giri Fila 1:"border="0" color="0" x="183" y="616" height="64" width="306"  name=fila_1_t  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=detail alignment="1" text="Giri Fila 2:"border="0" color="0" x="1047" y="616" height="64" width="306"  name=fila_2_t  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=1 alignment="0" tabsequence=10 border="5" color="0" x="526" y="196" height="76" width="1083" format="[general]"  name=clie_2 dddw.name=d_clienti_l dddw.displaycolumn=rag_soc_1 dddw.datacolumn=id_cliente dddw.percentwidth=150 dddw.lines=0 dddw.limit=0 dddw.allowedit=no dddw.useasborder=no dddw.case=any dddw.hsplitscroll=yes dddw.hscrollbar=yes dddw.vscrollbar=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=2 alignment="0" tabsequence=20 border="5" color="0" x="526" y="336" height="76" width="1083" format="[general]"  name=clie_1 dddw.name=d_clienti_l dddw.displaycolumn=rag_soc_1 dddw.datacolumn=id_cliente dddw.percentwidth=150 dddw.lines=0 dddw.limit=0 dddw.allowedit=no dddw.useasborder=no dddw.case=any dddw.hscrollbar=yes dddw.vscrollbar=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=3 alignment="0" tabsequence=30 border="5" color="0" x="526" y="468" height="76" width="846" format="[general]"  name=art dddw.name=d_prod_l dddw.displaycolumn=des dddw.datacolumn=codice dddw.percentwidth=150 dddw.lines=0 dddw.limit=0 dddw.allowedit=no dddw.useasborder=no dddw.case=any dddw.hscrollbar=yes dddw.vscrollbar=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+htmltable(border="1" cellpadding="0" cellspacing="0" generatecss="no" nowrap="yes")

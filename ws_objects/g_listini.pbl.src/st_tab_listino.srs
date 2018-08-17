@@ -1,0 +1,35 @@
+﻿$PBExportHeader$st_tab_listino.srs
+global type st_tab_listino from structure
+	st_tab_g_0		st_tab_g_0
+	long		id
+	long		id_parent		descriptor "comment" = "id listino da cui e' stato duplicato"
+	long		cod_cli
+	string		cod_art
+	decimal { 1 }		dose
+	decimal { 2 }		prezzo
+	decimal { 2 }		prezzo_2
+	decimal { 2 }		prezzo_3
+	string		attiva_listino_pregruppi
+	long		id_cond_fatt_1
+	long		id_cond_fatt_2
+	long		id_cond_fatt_3
+	string		tipo		descriptor "comment" = "C=a collo; I=a corpo"
+	string		campione
+	long		mis_x
+	long		mis_y
+	long		mis_z
+	integer		occup_ped
+	string		travaso
+	double		peso_kg
+	integer		magazzino
+	double		m_cubi_f
+	string		attivo
+	long		contratto
+	datetime		contratto_co_data_ins		descriptor "comment" = "data+ora di creazione di questo da Contratto Commerciale"
+	long		id_contratto_co		descriptor "comment" = "id del contratto Commerciale"
+	long		id_esito_operazioni		descriptor "comment" = "id dell'esito dell'operazione"
+	string		e1litm		descriptor "comment" = "E1 customer item (abbinato a contratto/capitolato)"
+	datetime		x_datins
+	string		x_utente
+end type
+

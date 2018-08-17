@@ -1,0 +1,8 @@
+﻿$PBExportHeader$st_report_regart50.srs
+global type st_report_regart50 from structure
+	date		k_data_da
+	date		k_data_a
+	integer		k_nrpagina		descriptor "comment" = "numero pagina "
+	integer		k_nrprotocollo		descriptor "comment" = "numero protocollo "
+end type
+

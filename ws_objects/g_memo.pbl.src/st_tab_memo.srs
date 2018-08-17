@@ -1,0 +1,16 @@
+﻿$PBExportHeader$st_tab_memo.srs
+global type st_tab_memo from structure
+	st_tab_g_0		st_tab_g_0
+	long		id_memo
+	string		tipo_memo		descriptor "comment" = "RTF, .."
+	string		tipo_sv		descriptor "comment" = "MKT=marketing..."
+	integer		permessi		descriptor "comment" = "permesso per il settore indicato nel tipo_sv:  0=nessuno, 2=solo lettura, 4=anche in modifica; 9=controllo completo "
+	string		titolo		descriptor "comment" = "titolo del documento"
+	string		note		descriptor "comment" = "note varie"
+	datetime		dataora_ins		descriptor "comment" = "data e ora primo inserimento"
+	string		utente_ins		descriptor "comment" = "utente che ha caricato le note"
+	blob		memo		descriptor "comment" = "BLOB con all'interno un testo RTF o altro"
+	datetime		x_datins
+	string		x_utente
+end type
+

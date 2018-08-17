@@ -1,0 +1,55 @@
+﻿$PBExportHeader$st_int_artr.srs
+global type st_int_artr from structure
+	string		utente
+	date		upd_data_fin
+	date		upd_data_ok
+	string		barcode
+	integer		impianto
+	string		lavorazione
+	string		m_r_f
+	long		clie_1
+	long		clie_2
+	long		clie_3
+	string		certificato_st
+	string		num_bolla_in
+	long		num_bolla_out
+	long		num_fatt
+	long		id_meca_ini
+	long		id_meca_fin
+	long		anno_bolla_in
+	double		dose
+	date		data_da
+	date		data_a
+	date		data_ini
+	date		data_ini_1
+	date		data_fin
+	date		data_fin_1
+	date		certificato_dt_st_ini
+	date		certificato_dt_st_fin
+	date		dosim_data_i
+	date		dosim_data_f
+	string		err_lav_ok
+	long		num_certif
+	string		groupage
+	integer		anno
+	integer		num_int
+	integer		no_dose
+	integer		flag_report		descriptor "comment" = "per il Report 7: 0=normale; 1=conta griri; 2=riep.mensile. "
+	boolean		meca_blk		descriptor "comment" = "se a 'S' allora TRUE e quindi estrae i Lotti che hanno avuto NON CONFORME (tab MECA_BLK) in entrata"
+	string		art		descriptor "comment" = "cod. articolo"
+	string		stato		descriptor "comment" = "stato presente in ARMO_PREZZI.STATO (0=tutto)"
+	long		id_meca_causale		descriptor "comment" = "causale di entrata lotto "
+	string		ricerca		descriptor "comment" = "x il report 18 - cerca memo"
+	string		ricerca_rid		descriptor "comment" = "x il report 18 - cerca memo contiene il valore senza i %"
+	string		settore		descriptor "comment" = "x il report 18 - cerca memo"
+	string		x_utente		descriptor "comment" = "codice utente "
+	string		mc_co		descriptor "comment" = "codice contratto CO"
+	long		contratto		descriptor "comment" = "id contratto"
+	long		id_meca		descriptor "comment" = "di lotto "
+	string		sc_cf		descriptor "comment" = "codice capitolato di fornitura"
+	integer		gru		descriptor "comment" = "codice gruppo"
+	integer		gru_flag		descriptor "comment" = "tipo estrazione 2=tutti i gruppi"
+	integer		gru_attiva		descriptor "comment" = "flag x attivare/disattivare estrazione dati gruppo"
+	string		non_entrati		descriptor "comment" = "S=estrae lotti senza la data_ent"
+end type
+

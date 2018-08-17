@@ -1,0 +1,61 @@
+﻿$PBExportHeader$d_pl_barcode_l.srd
+release 8;
+datawindow(units=0 timer_interval=0 color=1073741824 processing=1 HTMLDW=no print.documentname="" print.orientation = 1 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no grid.lines=0 )
+header(height=64 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=64 color="536870912" )
+detail(height=72 color="536870912" )
+table(column=(type=long update=yes updatewhereclause=yes key=yes name=codice dbname="pl_barcode.codice" )
+ column=(type=char(1) updatewhereclause=yes name=tipo dbname="pl_barcode.tipo" values="	G/	0" )
+ column=(type=date update=yes updatewhereclause=yes name=data dbname="pl_barcode.data" )
+ column=(type=date update=yes updatewhereclause=yes name=data_sosp dbname="pl_barcode.data_sosp" )
+ column=(type=date update=yes updatewhereclause=yes name=data_chiuso dbname="pl_barcode.data_chiuso" )
+ column=(type=char(40) update=yes updatewhereclause=yes name=note_1 dbname="pl_barcode.note_1" )
+ column=(type=char(40) update=yes updatewhereclause=yes name=note_2 dbname="pl_barcode.note_2" )
+ column=(type=char(255) update=yes updatewhereclause=yes name=path_file_pilota dbname="pl_barcode.path_file_pilota" )
+ column=(type=datetime update=yes updatewhereclause=yes name=x_datins dbname="pl_barcode.x_datins" )
+ column=(type=char(12) update=yes updatewhereclause=yes name=x_utente dbname="pl_barcode.x_utente" )
+ retrieve="  SELECT pl_barcode.codice,   
+         pl_barcode.tipo,   
+         pl_barcode.data,   
+         pl_barcode.data_sosp,   
+         pl_barcode.data_chiuso,   
+         pl_barcode.note_1,   
+         pl_barcode.note_2,   
+         pl_barcode.path_file_pilota,   
+         pl_barcode.x_datins,   
+         pl_barcode.x_utente  
+    FROM pl_barcode  
+   WHERE  pl_barcode.data >= :k_data  AND 
+          ( :k_operazione = 'tutti'  or   
+            ( (pl_barcode.data_chiuso = date(0) or pl_barcode.data_chiuso is null) AND  :k_operazione = 'aperti' ) OR  
+            ( pl_barcode.data_chiuso >= date(0)  AND  :k_operazione = 'chiusi' ) OR  
+            ( pl_barcode.data_sosp >= date(0)    AND  :k_operazione = 'sospesi' ) OR  
+            ((pl_barcode.data_chiuso is null  OR  pl_barcode.data_chiuso = date(0)) AND
+             (pl_barcode.data_sosp is null    OR  pl_barcode.data_sosp = date(0)) AND  
+              :k_operazione = 'aperti' )    
+           )           
+order by pl_barcode.data_chiuso, pl_barcode.data, pl_barcode.codice " update="pl_barcode" updatewhere=1 updatekeyinplace=no arguments=(("k_data", date),("k_operazione", string)) )
+column(band=detail id=1 alignment="1" tabsequence=32766 border="0" color="8388608" x="9" y="4" height="64" width="146" format="[general] " html.valueishtml="0"  name=codice visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0 edit.displayonly=yes  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="0" background.color="536870912~tif(    data_chiuso > date(~"01.01.1900~"), rgb(210,210,210),rgb(255,255,255))" )
+column(band=detail id=6 alignment="0" tabsequence=32766 border="0" color="8388608" x="1115" y="4" height="64" width="960" format="[general]" html.valueishtml="0"  name=note_1 visible="1" edit.limit=40 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0 edit.displayonly=yes  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="0" background.color="536870912~tif(    data_chiuso > date(~"01.01.1900~"), rgb(210,210,210),rgb(255,255,255))" )
+column(band=detail id=7 alignment="0" tabsequence=32766 border="0" color="8388608" x="2085" y="4" height="64" width="1015" format="[general]" html.valueishtml="0"  name=note_2 visible="1" edit.limit=40 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0 edit.displayonly=yes  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="0" background.color="536870912~tif(    data_chiuso > date(~"01.01.1900~"), rgb(210,210,210),rgb(255,255,255))" )
+column(band=detail id=8 alignment="0" tabsequence=32766 border="0" color="8388608" x="3109" y="4" height="64" width="2898" format="[general]" html.valueishtml="0"  name=path_file_pilota visible="1" edit.limit=255 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0 edit.displayonly=yes  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="0" background.color="536870912~tif(    data_chiuso > date(~"01.01.1900~"), rgb(210,210,210),rgb(255,255,255))" )
+column(band=detail id=9 alignment="0" tabsequence=32766 border="0" color="8388608" x="6016" y="4" height="64" width="603" format="[shortdate] [time]" html.valueishtml="0"  name=x_datins visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0 edit.displayonly=yes  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="0" background.color="536870912~tif(    data_chiuso > date(~"01.01.1900~"), rgb(210,210,210),rgb(255,255,255))" )
+column(band=detail id=10 alignment="0" tabsequence=32766 border="0" color="8388608" x="6629" y="4" height="64" width="311" format="[general]" html.valueishtml="0"  name=x_utente visible="1" edit.limit=12 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0 edit.displayonly=yes  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="0" background.color="536870912~tif(    data_chiuso > date(~"01.01.1900~"), rgb(210,210,210),rgb(255,255,255))" )
+column(band=detail id=4 alignment="2" tabsequence=32766 border="0" color="8388608" x="585" y="4" height="64" width="265" format="d/m/yy" html.valueishtml="0"  name=data_sosp visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0 edit.displayonly=yes  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="0" background.color="536870912~tif(    data_chiuso > date(~"01.01.1900~"), rgb(210,210,210),rgb(255,255,255))" )
+column(band=detail id=5 alignment="2" tabsequence=32766 border="0" color="8388608" x="859" y="4" height="64" width="247" format="d/m/yy" html.valueishtml="0"  name=data_chiuso visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0 edit.displayonly=yes  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="0" background.color="553648127~tif(    data_chiuso > date(~"01.01.1900~"), rgb(210,210,210),rgb(255,255,255))" )
+compute(band=footer alignment="0" expression="'Presenti:'+string(count( codice  for all distinct), ~"###,###,##0~")"border="0" color="128" x="1115" y="0" height="64" width="960" format="[GENERAL]" html.valueishtml="0"  name=compute_1 visible="1"  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" font.italic="1" background.mode="2" background.color="1073741824" )
+text(band=header alignment="2" text="Cod." border="0" color="8388608" x="9" y="8" height="56" width="146" html.valueishtml="0"  name=codice_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+text(band=header alignment="2" text="Sospeso" border="0" color="8388608" x="585" y="8" height="56" width="265" html.valueishtml="0"  name=data_sosp_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+text(band=header alignment="2" text="Chiuso" border="0" color="8388608" x="859" y="8" height="56" width="247" html.valueishtml="0"  name=data_chiuso_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+text(band=header alignment="2" text="Note" border="0" color="8388608" x="1115" y="8" height="56" width="960" html.valueishtml="0"  name=note_1_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+text(band=header alignment="2" text="Note" border="0" color="8388608" x="2085" y="8" height="56" width="1015" html.valueishtml="0"  name=note_2_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+text(band=header alignment="2" text="File pilota" border="0" color="8388608" x="3109" y="8" height="56" width="2898" html.valueishtml="0"  name=path_file_pilota_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+text(band=header alignment="2" text="Aggiornato" border="0" color="8388608" x="6016" y="8" height="56" width="603" html.valueishtml="0"  name=x_datins_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+text(band=header alignment="2" text="Utente" border="0" color="8388608" x="6629" y="8" height="56" width="311" html.valueishtml="0"  name=x_utente_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+text(band=header alignment="2" text="Data" border="0" color="8388608" x="165" y="8" height="56" width="251" html.valueishtml="0"  name=data_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+text(band=header alignment="2" text="Group" border="0" color="8388608" x="425" y="8" height="56" width="155" html.valueishtml="0"  name=tipo_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+column(band=detail id=3 alignment="2" tabsequence=32766 border="0" color="8388608" x="165" y="4" height="64" width="251" format="d/m/yy" html.valueishtml="0"  name=data visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0 edit.displayonly=yes  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="0" background.color="536870912~tif(    data_chiuso > date(~"01.01.1900~"), rgb(210,210,210),rgb(255,255,255))" )
+column(band=detail id=2 alignment="2" tabsequence=0 border="0" color="8388608" x="430" y="4" height="64" width="151" html.valueishtml="0"  name=tipo visible="1" checkbox.text="" checkbox.on="G" checkbox.off="0" checkbox.scale=no checkbox.threed=yes  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="0" background.color="536870912~tif(    data_chiuso > date(~"01.01.1900~"), rgb(210,210,210),rgb(255,255,255))" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )

@@ -1,0 +1,11 @@
+﻿$PBExportHeader$st_tab_email_funzioni.srs
+global type st_tab_email_funzioni from structure
+	st_tab_g_0		st_tab_g_0
+	long		id_email_funzione
+	long		id_email
+	string		sr_settore
+	string		cod_funzione		descriptor "comment" = "fissato da programma es. FTAV=fat+avv, FTAL=fatt+all, MTPR=mat pronto"
+	datetime		x_datins
+	string		x_utente
+end type
+

@@ -1,0 +1,21 @@
+﻿$PBExportHeader$st_tab_dosimetrie.srs
+global type st_tab_dosimetrie from structure
+	st_tab_g_0		st_tab_g_0
+	long		id
+	string		attivo
+	string		dosim_tipo		descriptor "comment" = "A=AMBER, R=RED, X=ALTRO"
+	double		dose
+	string		lotto_dosim
+	double		coeff_a_s
+	date		data
+	string		note
+	string		esito
+	integer		dosim_assorb
+	integer		dosim_spessore
+	double		dosim_rapp_a_s
+	string		dosim_lotto_dosim
+	string		cert_forza_stampa
+	datetime		x_datins
+	string		x_utente
+end type
+

@@ -1,0 +1,7 @@
+﻿$PBExportHeader$st_tab_sr_settori.srs
+global type st_tab_sr_settori from structure
+	st_tab_g_0		st_tab_g_0
+	string		sr_settore
+	string		descr
+end type
+

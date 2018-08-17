@@ -1,0 +1,11 @@
+﻿$PBExportHeader$st_tab_sl_pt_memo.srs
+global type st_tab_sl_pt_memo from structure
+	st_tab_g_0		st_tab_g_0
+	long		id_sl_pt_memo
+	string		tipo_sv		descriptor "comment" = "collegato alla tabella SR_SETTORI con il codice"
+	long		id_memo
+	string		cod_sl_pt
+	datetime		x_datins
+	string		x_utente
+end type
+

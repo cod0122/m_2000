@@ -1,0 +1,9 @@
+﻿$PBExportHeader$st_txt_pilota_answer.srs
+global type st_txt_pilota_answer from structure
+	integer		progressivo_richiesta
+	integer		codice_richiesta
+	string		risultato
+	integer		codice_errore
+	string		file_path
+end type
+

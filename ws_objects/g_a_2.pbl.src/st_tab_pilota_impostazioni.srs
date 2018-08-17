@@ -1,0 +1,13 @@
+﻿$PBExportHeader$st_tab_pilota_impostazioni.srs
+global type st_tab_pilota_impostazioni from structure
+	integer		num_intouchable
+	integer		num_intoccabili_fila1
+	integer		num_intoccabili_fila2
+	integer		tre_num_intouchable
+	integer		station_timeout
+	string		loc_directory
+	string		path_scambio
+	integer		coda_minima
+	string		ip_macchina
+end type
+

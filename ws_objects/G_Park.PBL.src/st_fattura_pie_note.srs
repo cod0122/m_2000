@@ -1,0 +1,9 @@
+﻿$PBExportHeader$st_fattura_pie_note.srs
+global type st_fattura_pie_note from structure
+	string		note_1
+	string		note_2
+	string		note_3
+	string		note_4
+	string		note_5
+end type
+

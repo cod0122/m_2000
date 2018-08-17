@@ -1,0 +1,28 @@
+﻿$PBExportHeader$st_tab_clienti_mkt.srs
+global type st_tab_clienti_mkt from structure
+	st_tab_g_0		st_tab_g_0
+	long		id_cliente
+	string		tipo_rapporto		descriptor "comment" = "indicazione se M=mandante o R=ricevente o F=fatturato o combin. es: MRF"
+	string		qualifica		descriptor "comment" = "descr della qualifica"
+	long		id_cliente_link		descriptor "comment" = "cliente collegato"
+	string		altra_sede		descriptor "comment" = "altro indirizzo"
+	string		cod_atecori		descriptor "comment" = "codice atecori"
+	long		id_contatto_1		descriptor "comment" = "codice contatto "
+	string		contatto_1_qualif		descriptor "comment" = "qualifica"
+	long		id_contatto_2
+	string		contatto_2_qualif
+	long		id_contatto_3
+	string		contatto_3_qualif
+	long		id_contatto_4
+	string		contatto_4_qualif
+	long		id_contatto_5
+	string		contatto_5_qualif
+	string		note_attivita		descriptor "comment" = "note attivita'"
+	string		note_prodotti		descriptor "comment" = "note articoli"
+	long		gruppo		descriptor "comment" = "codice gruppo"
+	string		doc_esporta		descriptor "comment" = "S=esporta documenti (soprattutto x il WEB); N=non esportare "
+	string		doc_esporta_prefpath		descriptor "comment" = "breve prefisso da mettere nel path di esportazione se manca mette il codice cliente"
+	datetime		x_datins
+	string		x_utente
+end type
+

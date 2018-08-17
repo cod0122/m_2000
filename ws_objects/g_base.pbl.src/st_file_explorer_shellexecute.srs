@@ -1,0 +1,19 @@
+﻿$PBExportHeader$st_file_explorer_shellexecute.srs
+global type st_file_explorer_shellexecute from structure
+	long		cbsize
+	long		fmask
+	long		hwnd
+	string		lpverb
+	string		lpfile
+	ulong		lpparameters
+	string		lpdirectory
+	long		nshow
+	long		hinstapp
+	long		lpidlist
+	string		lpclass
+	long		hkeyclass
+	long		dwhotkey
+	long		hicon
+	long		hprocess
+end type
+

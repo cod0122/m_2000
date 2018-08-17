@@ -1,0 +1,21 @@
+﻿$PBExportHeader$st_stat_fatt.srs
+global type st_stat_fatt from structure
+	long		k_id_cliente
+	string		k_regione
+	string		k_codice_prec
+	double		k_dose
+	integer		k_id_gruppo
+	string		k_gru_des
+	integer		k_magazzino
+	string		k_scelta
+	string		k_totale
+	string		k_no_dose
+	string		k_no_gruppo
+	date		k_data_da
+	date		k_data_a
+	string		k_art
+	string		k_art_des
+	string		k_id_clie_classe		descriptor "comment" = "classe del cliente"
+	string		k_classe_punteggio		descriptor "comment" = "punteggio legato alla classe"
+end type
+

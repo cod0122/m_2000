@@ -1,0 +1,9 @@
+﻿$PBExportHeader$st_tab_listino_voci_categ.srs
+global type st_tab_listino_voci_categ from structure
+	st_tab_g_0		st_tab_g_0
+	string		id_listino_voci_categ
+	string		descr
+	datetime		x_datins
+	string		x_utente
+end type
+

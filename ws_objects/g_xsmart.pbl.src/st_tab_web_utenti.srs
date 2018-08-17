@@ -1,0 +1,25 @@
+﻿$PBExportHeader$st_tab_web_utenti.srs
+global type st_tab_web_utenti from structure
+	st_tab_g_0		st_tab_g_0
+	long		idutente		descriptor "comment" = "codice utente WEB"
+	string		username
+	string		password
+	string		stato
+	string		statoweb		descriptor "comment" = "1=da pubblicare; 3=non pubblicare/aggiornare il web; 7=pubblicato"
+	datetime		datainserimento
+	long		idcliente		descriptor "comment" = "codice cliente di anagrafe M2000"
+	string		ragionesociale
+	string		indirizzo
+	string		cap
+	string		localita
+	string		provincia
+	string		nazione
+	string		note
+	string		email
+	string		email1
+	string		email2
+	long		id_web_ruolo
+	datetime		x_datins
+	string		x_utente
+end type
+

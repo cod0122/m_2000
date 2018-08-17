@@ -1,0 +1,77 @@
+﻿$PBExportHeader$d_contratti.srd
+release 6;
+datawindow(units=0 timer_interval=0 color=12632256 processing=0 print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=1012 color="536870912" )
+table(column=(type=char(12) update=yes updatewhereclause=yes name=mc_co dbname="mc_co" )
+ column=(type=long update=yes updatewhereclause=yes key=yes name=codice dbname="codice" )
+ column=(type=char(12) update=yes updatewhereclause=yes name=sc_cf dbname="sc_cf" )
+ column=(type=char(0) update=yes updatewhereclause=yes name=sl_pt dbname="sl_pt" )
+ column=(type=datetime update=yes updatewhereclause=yes name=data dbname="data" )
+ column=(type=datetime update=yes updatewhereclause=yes name=data_scad dbname="data_scad" )
+ column=(type=long update=yes updatewhereclause=yes name=cod_cli dbname="cod_cli" )
+ column=(type=char(30) updatewhereclause=yes name=rag_soc_10 dbname="rag_soc_10" )
+ column=(type=char(50) update=yes updatewhereclause=yes name=descr dbname="descr" )
+ column=(type=char(50) updatewhereclause=yes name=sc_cf_descr dbname="descr" )
+ column=(type=char(50) updatewhereclause=yes name=sl_pt_descr dbname="descr" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=cert_st_dose_min dbname="cert_st_dose_min" values="Dose Minima	S/Dose Minima	N" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=cert_st_dose_max dbname="cert_st_dose_max" values="Dose Massima	S/Dose Massima	N" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=cert_st_data_ini dbname="cert_st_data_ini" values="Data Inizio Trattamento	S/Data Inizio Trattamento	N" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=cert_st_data_fin dbname="cert_st_data_fin" values="Data Fine Trattamento	S/Data Fine Trattamento	N" )
+ column=(type=datetime update=yes updatewhereclause=yes name=x_datins dbname="x_datins" )
+ column=(type=char(12) update=yes updatewhereclause=yes name=x_utente dbname="x_utente" )
+ retrieve="  SELECT
+         contratti.mc_co,
+         contratti.codice,
+         contratti.sc_cf,         
+         contratti.sl_pt,         
+         contratti.data,   
+         contratti.data_scad,   
+         contratti.cod_cli, 
+         clienti.rag_soc_10,        
+         contratti.descr,   
+         sl_pt.descr,
+         sc_cf.descr,
+         contratti.cert_st_dose_min,   
+         contratti.cert_st_dose_max,   
+         contratti.cert_st_data_ini,   
+         contratti.cert_st_data_fin,
+         contratti.x_datins,
+         contratti.x_utente  
+    FROM ((contratti left outer join clienti on
+         contratti.cod_cli = clienti.codice)
+         left outer join sl_pt on 
+         contratti.sl_pt = sl_pt.cod_sl_pt)
+         left outer join sc_cf on 
+         contratti.sc_cf = sc_cf.codice
+    where contratti.codice = :k_codice
+" update="contratti" updatewhere=0 updatekeyinplace=yes arguments=(("k_codice", number)) )
+text(band=detail alignment="0" text="Conferma d'Ordine (MC-CO):"border="0" color="0" x="64" y="128" height="60" width="754"  name=mc_co_t  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=1 alignment="0" tabsequence=30 border="5" color="32768" x="846" y="128" height="64" width="416" format="[general]"  name=mc_co edit.limit=12 edit.case=upper edit.focusrectangle=no edit.autoselect=yes edit.nilisnull=yes  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=detail alignment="1" text="Cliente MC-CO:"border="0" color="0" x="407" y="216" height="60" width="411"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="0" tabsequence=40 border="5" color="0" x="846" y="216" height="64" width="1435" format="[general]"  name=rag_soc_10 dddw.name=d_clienti_l dddw.displaycolumn=rag_soc_1 dddw.datacolumn=rag_soc_1 dddw.percentwidth=200 dddw.lines=0 dddw.limit=0 dddw.allowedit=yes dddw.useasborder=no dddw.case=upper dddw.nilisnull=yes dddw.hsplitscroll=yes dddw.hscrollbar=yes dddw.vscrollbar=yes  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=7 alignment="1" tabsequence=32766 border="5" color="0" x="2322" y="216" height="64" width="160" format="####0"  name=cod_cli edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+text(band=detail alignment="0" text="Descrizione:"border="0" color="0" x="494" y="304" height="60" width="325"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=9 alignment="0" tabsequence=50 border="5" color="0" x="846" y="304" height="64" width="1705" format="[general]"  name=descr edit.limit=50 edit.case=any edit.focusrectangle=no edit.autoselect=yes  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=detail alignment="0" text="Aggiornato:"border="0" color="0" x="73" y="920" height="44" width="334"  font.face="Arial" font.height="-7" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=16 alignment="0" tabsequence=32766 border="5" color="0" x="389" y="920" height="44" width="544" format="[shortdate] [time]"  name=x_datins edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-7" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+column(band=detail id=17 alignment="0" tabsequence=32766 border="5" color="0" x="974" y="920" height="44" width="347" format="[general]"  name=x_utente edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-7" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+groupbox(band=detail text="Stampa sul Certificato di Trattamento:"border="2" color="0" x="238" y="596" height="296" width="1431"  name=st_cornice  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+column(band=detail id=12 alignment="0" tabsequence=80 border="0" color="0" x="338" y="692" height="64" width="480" format="[general]"  name=cert_st_dose_min checkbox.text="Dose Minima" checkbox.on="S" checkbox.off="N" checkbox.scale=no checkbox.threed=yes  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+column(band=detail id=14 alignment="0" tabsequence=100 border="0" color="0" x="901" y="692" height="64" width="727" format="[general]"  name=cert_st_data_ini checkbox.text="Data Inizio Trattamento" checkbox.on="S" checkbox.off="N" checkbox.scale=no checkbox.threed=yes  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+column(band=detail id=13 alignment="0" tabsequence=90 border="0" color="0" x="338" y="796" height="64" width="517" format="[general]"  name=cert_st_dose_max checkbox.text="Dose Massima" checkbox.on="S" checkbox.off="N" checkbox.scale=no checkbox.threed=yes  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+column(band=detail id=15 alignment="0" tabsequence=110 border="0" color="0" x="901" y="796" height="64" width="713" format="[general]"  name=cert_st_data_fin checkbox.text="Data Fine Trattamento" checkbox.on="S" checkbox.off="N" checkbox.scale=no checkbox.threed=yes  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+text(band=detail alignment="0" text="Codice interno:"border="0" color="0" x="69" y="20" height="60" width="443"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=2 alignment="1" tabsequence=32766 border="5" color="8388608" x="530" y="20" height="60" width="183" format="#####"  name=codice edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+text(band=detail alignment="0" text="Decorrenza:"border="0" color="0" x="841" y="20" height="60" width="361"  name=data_capitolato_t  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="2" tabsequence=10 border="5" color="0" x="1179" y="20" height="64" width="357" format="dd/mm/yyyy"  name=data editmask.mask="dd/mm/yyyy" editmask.focusrectangle=no  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=detail alignment="0" text="Scadenza:"border="0" color="0" x="1650" y="20" height="60" width="311"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="2" tabsequence=20 border="5" color="0" x="1947" y="20" height="64" width="357" format="[shortdate]"  name=data_scad editmask.mask="dd/mm/yyyy" editmask.focusrectangle=no  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=detail alignment="1" text="Piano di Trattam. (SL-PT):"border="0" color="0" x="55" y="508" height="60" width="686"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="0" tabsequence=70 border="5" color="0" x="768" y="508" height="64" width="416" format="[general]"  name=sl_pt dddw.name=d_sl_pt_l dddw.displaycolumn=cod_sl_pt dddw.datacolumn=cod_sl_pt dddw.percentwidth=500 dddw.lines=0 dddw.limit=0 dddw.allowedit=yes dddw.useasborder=no dddw.case=any dddw.hsplitscroll=yes dddw.hscrollbar=yes dddw.vscrollbar=yes  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=detail alignment="1" text="Capit. di Fornitura (SC-CF):"border="0" color="0" x="55" y="412" height="60" width="686"  name=sc_cf_t  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="0" tabsequence=60 border="5" color="0" x="768" y="412" height="64" width="416" format="[general]"  name=sc_cf dddw.name=d_sc_cf_l dddw.displaycolumn=codice dddw.datacolumn=codice dddw.percentwidth=500 dddw.lines=0 dddw.limit=0 dddw.allowedit=yes dddw.useasborder=no dddw.case=any dddw.hsplitscroll=yes dddw.hscrollbar=yes dddw.vscrollbar=yes  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=10 alignment="0" tabsequence=32766 border="5" color="0" x="1225" y="412" height="64" width="1353" format="[general]"  name=sc_cf_descr edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+column(band=detail id=11 alignment="0" tabsequence=32766 border="5" color="0" x="1225" y="508" height="64" width="1353" format="[general]"  name=sl_pt_descr edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+htmltable(border="1" cellpadding="0" cellspacing="0" generatecss="no" nowrap="yes")

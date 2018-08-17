@@ -1,0 +1,8 @@
+﻿$PBExportHeader$st_tab_f4101.srs
+global type st_tab_f4101 from structure
+	st_tab_g_0		st_tab_g_0
+	string		xxx		descriptor "comment" = "tabella dati barcode"
+	string		imlitm		descriptor "comment" = "codice Listino E1"
+	string		imprpt7		descriptor "comment" = "Tipo contratto: 'DEPOT' = Conto deposito"
+end type
+

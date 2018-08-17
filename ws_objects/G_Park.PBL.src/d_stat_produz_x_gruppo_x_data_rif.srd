@@ -1,0 +1,96 @@
+﻿$PBExportHeader$d_stat_produz_x_gruppo_x_data_rif.srd
+release 9;
+datawindow(units=3 timer_interval=0 color=1073741824 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 238 print.margin.right = 238 print.margin.top = 635 print.margin.bottom = 635 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no grid.lines=0 )
+header(height=1058 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=952 color="536870912" )
+detail(height=555 color="536870912" )
+table(column=(type=decimal(0) updatewhereclause=yes name=s_armo_gruppo dbname="s_armo.gruppo" )
+ column=(type=char(40) updatewhereclause=yes name=gru_des dbname="gru.des" )
+ column=(type=decimal(0) updatewhereclause=yes name=colli_2 dbname="colli_2" )
+ column=(type=decimal(2) updatewhereclause=yes name=m_cubi dbname="m_cubi" )
+ column=(type=number updatewhereclause=yes name=giri_f1_pl dbname="giri_f1_pl" )
+ column=(type=number updatewhereclause=yes name=giri_f1_lav dbname="giri_f1_lav" )
+ column=(type=number updatewhereclause=yes name=giri_f2_pl dbname="giri_f2_pl" )
+ column=(type=number updatewhereclause=yes name=giri_f2_lav dbname="giri_f2_lav" )
+ column=(type=decimal(2) updatewhereclause=yes name=pedane dbname="pedane" )
+ column=(type=decimal(2) updatewhereclause=yes name=imp_fatt dbname="vx_info_stat_imp1.imp_fatt" )
+ column=(type=decimal(2) updatewhereclause=yes name=imp_da_fatt dbname="vx_info_stat_imp1.imp_da_fatt" )
+ retrieve="  SELECT s_armo.gruppo,   
+         gru.des,   
+         sum(s_artr.colli_trattati) as colli_2,   
+         sum(s_artr.m_cubi) as m_cubi,   
+         sum(s_artr.giri_f1_pl) / 2 as giri_f1_pl,   
+         sum(s_artr.giri_f1_lav) / 2 as giri_f1_lav,   
+         sum(s_artr.giri_f2_pl) / 2 as giri_f2_pl,   
+         sum(s_artr.giri_f2_lav) / 2 as giri_f2_lav,   
+         sum(s_artr.pedane) as pedane,  
+         i.imp_fatt as imp_fatt,
+         i.imp_da_fatt as imp_da_fatt  
+    FROM s_armo
+                INNER JOIN s_artr ON 
+         s_armo.id_meca = s_artr.id_meca
+                LEFT OUTER JOIN vx_info_stat_imp1 as i ON 
+         s_armo.gruppo = i.gruppo   
+                LEFT OUTER JOIN gru ON 
+         s_armo.gruppo = gru.codice   
+    where 
+		   s_armo.data_int between :k_data_da and :k_data_a
+			and (:k_id_cliente = 0 or s_armo.clie_3 = :k_id_cliente) 
+			and (:k_id_gruppo = 0 or s_armo.gruppo = :k_id_gruppo )     
+			and ( (:k_no_dose = 'S' and s_armo.dose = 0)  
+			  or (:k_no_dose = 'N' and (:k_dose = 0 or s_armo.dose = :k_dose) and s_armo.dose > 0)
+         )  
+			and (:k_magazzino = 9 or s_armo.magazzino = :k_magazzino )  
+
+    group by    
+         s_armo.gruppo,  
+         gru.des,
+         i.imp_fatt,
+         i.imp_da_fatt  
+
+" arguments=(("k_id_gruppo", number),("k_id_cliente", number),("k_dose", number),("k_data_da", date),("k_data_a", date),("k_no_dose", string),("k_magazzino", number))  sort="s_armo_gruppo A " )
+text(band=header alignment="0" text=" Gruppo" border="0" color="33554432" x="52" y="132" height="396" width="1164" html.valueishtml="0"  name=s_armo_gruppo_t visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="0" text=" Mt.Cubi" border="0" color="33554432" x="7567" y="132" height="396" width="1508" html.valueishtml="0"  name=m_cubi_t visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="0" text=" Giri Fila 1
+ Pianif." border="0" color="33554432" x="9128" y="132" height="793" width="1481" html.valueishtml="0"  name=giri_f1_pl_t visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="0" text=" Giri Fila 1
+ Reali" border="0" color="33554432" x="10662" y="132" height="793" width="1481" html.valueishtml="0"  name=giri_f1_lav_t visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="0" text=" Giri Fila 2
+ Pianif." border="0" color="33554432" x="12197" y="132" height="793" width="1481" html.valueishtml="0"  name=giri_f2_pl_t visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="0" text=" Giri Fila 2
+ Reali" border="0" color="33554432" x="13731" y="132" height="793" width="1508" html.valueishtml="0"  name=giri_f2_lav_t visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="0" text=" Colli" border="0" color="33554432" x="6376" y="132" height="396" width="1137" html.valueishtml="0"  name=colli_2_t visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="0" text=" Descrizione" border="0" color="33554432" x="1270" y="132" height="396" width="5053" html.valueishtml="0"  name=gru_des_t visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="0" text="Pedane" border="0" color="33554432" x="15292" y="132" height="396" width="1137" html.valueishtml="0"  name=pedane_t visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="0" text=" Importo
+ Fatturato" border="0" color="33554432" x="16483" y="132" height="793" width="1799" html.valueishtml="0"  name=imp_fatt_t visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="0" text=" Importo da
+  Fatturare" border="0" color="33554432" x="18335" y="132" height="793" width="1772" html.valueishtml="0"  name=imp_da_fatt_t visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="1" tabsequence=32766 border="0" color="33554432" x="7567" y="53" height="502" width="1508" format="#,###,##0.00 ~tif (  m_cubi > 0, '###,###,##0.00 ', '# ')" html.valueishtml="0"  name=m_cubi visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="1" tabsequence=32766 border="0" color="33554432" x="6376" y="53" height="502" width="1137" format="###,###,### " html.valueishtml="0"  name=colli_2 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=9 alignment="1" tabsequence=32766 border="0" color="33554432" x="15292" y="53" height="502" width="1137" format="###,###,##0.00 ~tif (   pedane > 0, '###,###,##0.0 ', '# ')" html.valueishtml="0"  name=pedane visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=10 alignment="1" tabsequence=32766 border="0" color="33554432" x="16483" y="53" height="502" width="1799" format="###,###,##0.00 ~tif (  imp_fatt > 0, '###,###,##0.00 ',  '# ')" html.valueishtml="0"  name=imp_fatt visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=11 alignment="1" tabsequence=32766 border="0" color="33554432" x="18335" y="53" height="502" width="1772" format="###,###,##0.00 ~tif ( imp_da_fatt > 0, '###,###,##0.00 ', '# ')" html.valueishtml="0"  name=imp_da_fatt visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="1" tabsequence=32766 border="0" color="33554432" x="9128" y="53" height="502" width="1481" format="###,###,### ~tif (     giri_f1_pl > 0, '###,###,##0.0 ', '# ')" html.valueishtml="0"  name=giri_f1_pl visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="1" tabsequence=32766 border="0" color="33554432" x="10662" y="53" height="502" width="1481" format="###,###,### ~tif (    giri_f1_lav > 0, '###,###,##0.0 ', '# ')" html.valueishtml="0"  name=giri_f1_lav visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="1" tabsequence=32766 border="0" color="33554432" x="12197" y="53" height="502" width="1481" format="###,###,### ~tif (    giri_f2_pl > 0, '###,###,##0.0 ', '# ')" html.valueishtml="0"  name=giri_f2_pl visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="1" tabsequence=32766 border="0" color="33554432" x="13731" y="53" height="502" width="1508" format="###,###,### ~tif (    giri_f2_lav > 0, '###,###,##0.0 ', '# ')" html.valueishtml="0"  name=giri_f2_lav visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="33554432" x="1270" y="53" height="502" width="5053" format=" [General]" html.valueishtml="0"  name=gru_des visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=1 alignment="1" tabsequence=32766 border="0" color="16711680" x="52" y="53" height="502" width="1164" format="[General] " html.valueishtml="0"  name=s_armo_gruppo pointer="HyperLink!" visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" font.underline="1" background.mode="1" background.color="536870912" )
+compute(band=footer alignment="1" expression="sum(imp_da_fatt for all)"border="0" color="128" x="18335" y="27" height="423" width="1772" format="###,###,##0.00 " html.valueishtml="0"  name=compute_11 visible="1"  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=footer alignment="1" expression="sum(imp_fatt for all) + sum(  imp_da_fatt for all)"border="0" color="128" x="18335" y="503" height="423" width="1772" format="###,###,##0.00 " html.valueishtml="0"  name=compute_9 visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=footer alignment="1" expression="sum(giri_f2_lav for all)"border="0" color="128" x="13731" y="27" height="423" width="1508" format="###,###,##0.0 " html.valueishtml="0"  name=compute_7 visible="1"  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=footer alignment="1" expression="sum(pedane for all)"border="0" color="128" x="15292" y="27" height="423" width="1137" format="#,###,##0.0 " html.valueishtml="0"  name=compute_10 visible="1"  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=footer alignment="1" expression="sum(imp_fatt for all)"border="0" color="128" x="16483" y="27" height="423" width="1799" format="###,###,##0.00 " html.valueishtml="0"  name=compute_2 visible="1"  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=footer alignment="1" expression="sum(m_cubi for all)"border="0" color="128" x="7567" y="27" height="423" width="1508" format="#,###,##0.00 " html.valueishtml="0"  name=compute_4 visible="1"  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=footer alignment="1" expression="sum(giri_f1_pl for all)"border="0" color="128" x="9128" y="27" height="423" width="1481" format="###,###,##0.0 " html.valueishtml="0"  name=compute_5 visible="1"  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=footer alignment="1" expression="sum(giri_f2_pl for all)"border="0" color="128" x="12197" y="27" height="423" width="1481" format="###,###,##0.0 " html.valueishtml="0"  name=compute_6 visible="1"  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=footer alignment="1" expression="sum(giri_f1_lav for all)"border="0" color="128" x="10662" y="27" height="423" width="1481" format="###,###,##0.0 " html.valueishtml="0"  name=compute_8 visible="1"  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=footer alignment="1" expression="sum(colli_2 for all)"border="0" color="128" x="6376" y="27" height="423" width="1137" format="###,###,##0 " html.valueishtml="0"  name=compute_3 visible="1"  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=footer alignment="0" expression="'nr.:' + string(count  (#1 for all), ~" ###,###0~")"border="0" color="128" x="52" y="27" height="423" width="1164" format="[GENERAL]" html.valueishtml="0"  name=compute_12 visible="1"  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )

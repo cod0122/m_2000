@@ -1,0 +1,6 @@
+﻿$PBExportHeader$st_listini_cambio_stato.srs
+global type st_listini_cambio_stato from structure
+	integer		stato		descriptor "comment" = "0=Annulla Listini fino all data; 1=Ripristina Listini dalla data"
+	date		data_scad		descriptor "comment" = "data limite"
+end type
+

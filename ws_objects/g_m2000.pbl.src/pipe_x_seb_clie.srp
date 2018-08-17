@@ -1,0 +1,37 @@
+﻿$PBExportHeader$pipe_x_seb_clie.srp
+PIPELINE(source_connect=db_gammarad_province,destination_connect=pkl_gammarad_at1,type=replace,commit=100,errors=100,keyname="cli_x_web_1_x")
+SOURCE(name="cli_x_web_1/cli_x_web_2",COLUMN(type=varchar,name="expr1000",dbtype="VARCHAR(255)",nulls_allowed=yes)
+ COLUMN(type=varchar,name="cli_x_web_1.password",dbtype="VARCHAR(255)",nulls_allowed=yes)
+ COLUMN(type=varchar,name="cli_x_web_2.email",dbtype="VARCHAR(255)",nulls_allowed=yes)
+ COLUMN(type=long,name="cli_x_web_1.id_cliente",dbtype="INTEGER",key=yes,nulls_allowed=yes)
+ COLUMN(type=varchar,name="cli_x_web_1.rag_soc_1",dbtype="VARCHAR(255)",nulls_allowed=yes)
+ COLUMN(type=varchar,name="cli_x_web_2.via",dbtype="VARCHAR(255)",nulls_allowed=yes)
+ COLUMN(type=varchar,name="cli_x_web_2.cap",dbtype="VARCHAR(255)",nulls_allowed=yes)
+ COLUMN(type=varchar,name="cli_x_web_1.localita",dbtype="VARCHAR(255)",nulls_allowed=yes)
+ COLUMN(type=varchar,name="cli_x_web_1.prov",dbtype="VARCHAR(255)",nulls_allowed=yes)
+ COLUMN(type=varchar,name="cli_x_web_1.id_nazione_1",dbtype="VARCHAR(255)",nulls_allowed=yes)
+ COLUMN(type=varchar,name="cli_x_web_1.regione",dbtype="VARCHAR(255)",nulls_allowed=yes))
+RETRIEVE(statement="SELECT left(cli_x_web_1.userid,15),   
+         cli_x_web_1.password,   
+         cli_x_web_2.email,   
+         cli_x_web_1.id_cliente,   
+         cli_x_web_1.rag_soc_1,   
+         cli_x_web_2.via,   
+         cli_x_web_2.cap,   
+         cli_x_web_1.localita,   
+         cli_x_web_1.prov,   
+         cli_x_web_1.id_nazione_1,   
+         cli_x_web_1.regione  
+    FROM {oj cli_x_web_1 LEFT OUTER JOIN cli_x_web_2 ON cli_x_web_1.id_cliente = cli_x_web_2.id_cliente}   
+")
+DESTINATION(name="cli_x_web_1",COLUMN(type=varchar,name="username",dbtype="VARCHAR(15)",nulls_allowed=yes)
+ COLUMN(type=varchar,name="password",dbtype="VARCHAR(255)",nulls_allowed=yes)
+ COLUMN(type=varchar,name="email",dbtype="VARCHAR(40)",nulls_allowed=yes)
+ COLUMN(type=varchar,name="idcliente",dbtype="varchar(5)",key=yes,nulls_allowed=yes)
+ COLUMN(type=varchar,name="ragionesociale",dbtype="VARCHAR(255)",nulls_allowed=yes)
+ COLUMN(type=varchar,name="indirizzo",dbtype="VARCHAR(255)",nulls_allowed=yes)
+ COLUMN(type=varchar,name="cap",dbtype="VARCHAR(10)",nulls_allowed=yes)
+ COLUMN(type=varchar,name="localita",dbtype="VARCHAR(50)",nulls_allowed=yes)
+ COLUMN(type=varchar,name="provincia",dbtype="VARCHAR(2)",nulls_allowed=yes)
+ COLUMN(type=varchar,name="nazione",dbtype="VARCHAR(2)",nulls_allowed=yes)
+ COLUMN(type=varchar,name="note",dbtype="VARCHAR(255)",nulls_allowed=yes))

@@ -1,0 +1,31 @@
+﻿$PBExportHeader$st_fattura_totali.srs
+global type st_fattura_totali from structure
+	integer		cod_1
+	integer		cod_2
+	integer		cod_3
+	integer		cod_4
+	integer		cod_5
+	decimal{2}		imponibile_1
+	decimal{2}		imponibile_2
+	decimal{2}		imponibile_3
+	decimal{2}		imponibile_4
+	decimal{2}		imponibile_5
+	decimal{2}		imposta_1
+	decimal{2}		imposta_2
+	decimal{2}		imposta_3
+	decimal{2}		imposta_4
+	decimal{2}		imposta_5
+	decimal{2}		iva_1
+	decimal{2}		iva_2
+	decimal{2}		iva_3
+	decimal{2}		iva_4
+	decimal{2}		iva_5
+	string		iva_des_1
+	string		iva_des_2
+	string		iva_des_3
+	string		iva_des_4
+	string		iva_des_5
+	decimal{2}		totale
+	decimal{2}		imp_splitpayment		descriptor "comment" = "importo IVA da scorporare dal totale in base allae norme SPLIT-PAYMENT"
+end type
+

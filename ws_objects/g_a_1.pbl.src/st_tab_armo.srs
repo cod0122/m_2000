@@ -1,0 +1,36 @@
+﻿$PBExportHeader$st_tab_armo.srs
+global type st_tab_armo from structure
+	st_tab_g_0		st_tab_g_0
+	long		contati
+	st_tab_armo_nt		st_tab_armo_nt
+	long		id_armo
+	long		id_meca
+	long		num_int
+	date		data_int
+	long		id_listino
+	string		art
+	double		dose
+	string		cod_sl_pt
+	long		larg_1
+	long		lung_1
+	long		alt_1
+	string		travaso
+	long		larg_2
+	long		lung_2
+	long		alt_2
+	integer		colli_1
+	integer		colli_2
+	integer		colli_fatt
+	double		m_cubi
+	string		campione
+	double		peso_kg
+	integer		magazzino		descriptor "comment" = "1=mat.di consumo;2=da trattare;4=c.to deposito;6=studio sviluppo"
+	string		note_1
+	string		note_2
+	string		note_3
+	double		pedane
+	integer		stato
+	datetime		x_datins
+	string		x_utente
+end type
+

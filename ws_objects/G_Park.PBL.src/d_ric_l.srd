@@ -1,0 +1,119 @@
+﻿$PBExportHeader$d_ric_l.srd
+release 6;
+datawindow(units=0 timer_interval=0 color=33554431 processing=1 print.documentname="" print.orientation = 1 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no grid.lines=0 )
+header(height=56 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=60 color="536870912" )
+detail(height=64 color="536870912" )
+table(column=(type=char(1) updatewhereclause=yes name=tipo dbname="tipo" )
+ column=(type=char(1) updatewhereclause=yes name=dist dbname="dist" )
+ column=(type=datetime updatewhereclause=yes name=scad dbname="scad" )
+ column=(type=datetime updatewhereclause=yes name=data_fatt dbname="data_fatt" )
+ column=(type=long updatewhereclause=yes name=num_fatt dbname="num_fatt" )
+ column=(type=number updatewhereclause=yes name=importo dbname="importo" )
+ column=(type=number updatewhereclause=yes name=rata dbname="rata" )
+ column=(type=long updatewhereclause=yes name=clie dbname="clie" )
+ column=(type=char(30) updatewhereclause=yes name=rag_soc_10 dbname="rag_soc_10" )
+ column=(type=char(30) updatewhereclause=yes name=indi_1 dbname="indi_1" )
+ column=(type=char(30) updatewhereclause=yes name=loc_1 dbname="loc_1" )
+ column=(type=char(2) updatewhereclause=yes name=prov_1 dbname="prov_1" )
+ column=(type=char(5) updatewhereclause=yes name=cap_1 dbname="cap_1" )
+ column=(type=char(16) updatewhereclause=yes name=p_iva dbname="p_iva" )
+ column=(type=char(30) updatewhereclause=yes name=banca dbname="banca" )
+ column=(type=long updatewhereclause=yes name=cli_abi dbname="cli_abi" )
+ column=(type=long updatewhereclause=yes name=cli_cab dbname="cli_cab" )
+ column=(type=char(1) updatewhereclause=yes name=tipo_banca dbname="tipo_banca" )
+ column=(type=char(100) updatewhereclause=yes name=descrizione dbname="descrizione" )
+ column=(type=long updatewhereclause=yes name=abi dbname="abi" )
+ column=(type=long updatewhereclause=yes name=cab dbname="cab" )
+ column=(type=char(12) updatewhereclause=yes name=conto dbname="conto" )
+ column=(type=char(1) updatewhereclause=yes name=flag_st dbname="flag_st" values="Presentata	S/" )
+ column=(type=datetime updatewhereclause=yes name=data_st dbname="data_st" )
+ retrieve="SELECT 
+		ric.tipo, 
+		ric.dist, 
+		ric.scad, 
+		ric.data_fatt, 
+		ric.num_fatt, 
+		ric.importo, 
+		ric.rata, 
+		ric.clie, 
+		clienti.rag_soc_10, 
+		clienti.indi_1, 
+		clienti.loc_1, 
+		clienti.prov_1, 
+		clienti.cap_1,
+		clienti.p_iva,
+		clienti.banca,
+		clienti.abi as cli_abi,
+		clienti.cab as cli_cab,
+      clienti.tipo_banca,
+      banche.descrizione,
+      banche.abi,
+      banche.cab,
+      banche.conto, 
+		ric.flag_st,
+		ric.data_st 
+	FROM (ric LEFT JOIN clienti ON ric.clie = clienti.codice)
+	      LEFT JOIN banche ON ric.tipo = banche.codice
+   where (ric.tipo = :k_tipo or :k_tipo = '*')
+         and (ric.dist = :k_dist or :k_dist = '*')
+         and (ric.scad >= :k_scad_da and ric.scad <= :k_scad_a)
+         and (ric.clie = :k_clie or :k_clie = 0)
+         and (ric.data_st = :k_data_st or :k_data_st_null = 'S')
+         and (ric.flag_st = :k_flag_st or :k_flag_st = '*')
+	order by 
+			ric.tipo, 
+			ric.dist, 
+			ric.scad, 
+			clienti.rag_soc_10, 
+			ric.data_fatt, 
+			ric.num_fatt" arguments=(("k_tipo", string),("k_dist", string),("k_scad_da", date),("k_scad_a", date),("k_clie", number),("k_flag_st", string),("k_data_st", date),("k_data_st_null", string)) )
+group(level=1 header.height=0 trailer.height=64 by=("tipo" ) header.color="536870912" trailer.color="536870912" )
+group(level=2 header.height=0 trailer.height=76 by=("tipo" , "dist" ) header.color="536870912" trailer.color="536870912" )
+group(level=3 header.height=0 trailer.height=64 by=("tipo" , "dist" , "scad" ) header.color="536870912" trailer.color="536870912" )
+text(band=header alignment="2" text="D."border="0" color="0" x="768" y="0" height="56" width="105"  name=dist_t  font.face="Courier New" font.height="-8" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="2" background.color="1090519039" )
+text(band=header alignment="2" text="Scadenza"border="0" color="0" x="882" y="0" height="56" width="270"  name=scad_t  font.face="Courier New" font.height="-8" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="2" background.color="1090519039" )
+text(band=header alignment="2" text="Fattura"border="0" color="0" x="1161" y="0" height="56" width="229"  font.face="Courier New" font.height="-8" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="2" background.color="1090519039" )
+text(band=header alignment="2" text="in Data"border="0" color="0" x="1399" y="0" height="56" width="279"  name=data_fatt_t  font.face="Courier New" font.height="-8" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="2" background.color="1090519039" )
+text(band=header alignment="2" text="Importo"border="0" color="0" x="1687" y="0" height="56" width="411"  name=importo_t  font.face="Courier New" font.height="-8" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="2" background.color="1090519039" )
+text(band=header alignment="2" text="Rata"border="0" color="0" x="2107" y="0" height="56" width="398"  name=rata_t  font.face="Courier New" font.height="-8" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="2" background.color="1090519039" )
+text(band=header alignment="2" text="Località"border="0" color="0" x="3598" y="0" height="56" width="722"  name=loc_1_t  font.face="Courier New" font.height="-8" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="2" background.color="1090519039" )
+text(band=header alignment="2" text="Pr."border="0" color="0" x="4329" y="0" height="56" width="110"  name=prov_1_t  font.face="Courier New" font.height="-8" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="2" background.color="1090519039" )
+text(band=header alignment="2" text="CAP"border="0" color="0" x="4448" y="0" height="56" width="160"  name=cap_1_t  font.face="Courier New" font.height="-8" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="2" background.color="1090519039" )
+text(band=header alignment="2" text="Presentata"border="0" color="0" x="4617" y="0" height="56" width="338"  name=flag_st_t  font.face="Courier New" font.height="-8" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="2" background.color="1090519039" )
+text(band=header alignment="2" text="Data Pres."border="0" color="0" x="4965" y="0" height="56" width="315"  name=data_st_t  font.face="Courier New" font.height="-8" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="2" background.color="1090519039" )
+text(band=header alignment="2" text="Partita IVA "border="0" color="0" x="5289" y="0" height="56" width="503"  name=p_iva_t  font.face="Courier New" font.height="-8" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="2" background.color="1090519039" )
+column(band=detail id=1 alignment="2" tabsequence=32766 border="0" color="0" x="9" y="0" height="60" width="123" format="[general]"  name=tipo edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Courier New" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=19 alignment="0" tabsequence=32766 border="0" color="0" x="142" y="0" height="60" width="617" format="[general]"  name=descrizione edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Courier New" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=2 alignment="2" tabsequence=32766 border="0" color="0" x="768" y="0" height="60" width="105" format="[general]"  name=dist edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Courier New" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="2" tabsequence=32766 border="0" color="0" x="882" y="0" height="60" width="270" format="dd-mm-yy"  name=scad edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Courier New" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="1" tabsequence=32766 border="0" color="0" x="1161" y="0" height="60" width="229" format="#,###,##0"  name=num_fatt edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Courier New" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="0" background.mode="2" background.color="33554431" )
+column(band=detail id=4 alignment="2" tabsequence=32766 border="0" color="0" x="1399" y="0" height="60" width="279" format="dd-mm-yy"  name=data_fatt edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Courier New" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="1" tabsequence=32766 border="0" color="0" x="1687" y="0" height="60" width="411" format="###,###,###,##0"  name=importo edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Courier New" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="1" tabsequence=32766 border="0" color="0" x="2107" y="0" height="60" width="398" format="###,###,###,##0"  name=rata edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Courier New" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="1" tabsequence=32766 border="0" color="0" x="2514" y="0" height="60" width="178" format="#####"  name=clie edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Courier New" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=9 alignment="0" tabsequence=32766 border="0" color="0" x="2702" y="0" height="60" width="887" format="[general]"  name=rag_soc_10 edit.limit=30 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Courier New" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=11 alignment="0" tabsequence=32766 border="0" color="0" x="3598" y="0" height="60" width="722" format="[general]"  name=loc_1 edit.limit=30 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Courier New" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=12 alignment="2" tabsequence=32766 border="0" color="0" x="4329" y="0" height="60" width="110" format="[general]"  name=prov_1 edit.limit=2 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Courier New" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=13 alignment="2" tabsequence=32766 border="0" color="0" x="4448" y="0" height="60" width="160" format=""  name=cap_1 edit.limit=5 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Courier New" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=23 alignment="0" tabsequence=32766 border="0" color="0" x="4617" y="0" height="60" width="338" format="[general]"  name=flag_st ddlb.limit=0 ddlb.allowedit=no ddlb.case=any  font.face="Courier New" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=24 alignment="2" tabsequence=32766 border="0" color="0" x="4965" y="0" height="60" width="315" format="dd-mm-yy"  name=data_st edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Courier New" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=14 alignment="2" tabsequence=32766 border="0" color="0" x="5289" y="0" height="60" width="503" format="[general]"  name=p_iva edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no  font.face="Courier New" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=15 alignment="0" tabsequence=32766 border="0" color="0" x="5801" y="0" height="60" width="1024" format="[general]"  name=banca edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Courier New" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=16 alignment="2" tabsequence=32766 border="0" color="0" x="6834" y="0" height="60" width="242" format="#####"  name=cli_abi edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Courier New" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=17 alignment="2" tabsequence=32766 border="0" color="0" x="7086" y="0" height="60" width="242" format="#####"  name=cli_cab edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Courier New" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=trailer.3 alignment="1" expression="sum(importo for group 3)"border="0" color="8388608" x="1687" y="0" height="64" width="411" format="###,###,###,##0"  font.face="Courier New" font.height="-8" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=trailer.3 alignment="1" expression="sum(rata for group 3)"border="0" color="8388608" x="2107" y="0" height="64" width="398" format="###,###,###,##0"  font.face="Courier New" font.height="-8" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=trailer.2 alignment="1" expression="sum(importo for group 2)"border="0" color="8388608" x="1687" y="0" height="76" width="411" format="###,###,###,##0"  font.face="Courier New" font.height="-8" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=trailer.2 alignment="1" expression="sum(rata for group 2)"border="0" color="8388608" x="2107" y="0" height="76" width="398" format="###,###,###,##0"  font.face="Courier New" font.height="-8" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=trailer.1 alignment="1" expression="sum(importo for group 1 distinct num_fatt)"border="0" color="8388608" x="1687" y="0" height="64" width="411" format="###,###,###,##0"  font.face="Courier New" font.height="-8" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=trailer.1 alignment="1" expression="sum(rata for group 1)"border="0" color="8388608" x="2107" y="0" height="64" width="398" format="###,###,###,##0"  font.face="Courier New" font.height="-8" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=footer alignment="1" expression="sum(importo for all distinct num_fatt)"border="0" color="8388608" x="1687" y="0" height="64" width="411" format="###,###,###,##0"  font.face="Courier New" font.height="-8" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=footer alignment="1" expression="sum(rata for all)"border="0" color="8388608" x="2107" y="0" height="64" width="398" format="###,###,###,##0"  font.face="Courier New" font.height="-8" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=footer alignment="0" expression="'Presenti : ' + count(   scad for all ) "border="0" color="8388736" x="142" y="0" height="56" width="617" format="[general]"  font.face="Courier New" font.height="-8" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=foreground alignment="2" text="Banca di Presentazione"border="0" color="0" x="9" y="0" height="56" width="745"  name=tipo_t  resizeable=1  font.face="Courier New" font.height="-8" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="2" background.color="1090519039" )
+text(band=foreground alignment="2" text="Cliente"border="0" color="0" x="2514" y="0" height="56" width="1070"  name=clie_t  font.face="Courier New" font.height="-8" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="2" background.color="1090519039" )
+text(band=foreground alignment="2" text="Banca cliente"border="0" color="0" x="5806" y="0" height="56" width="1522"  name=cliente_abi_t  font.face="Courier New" font.height="-8" font.weight="700"  font.family="1" font.pitch="1" font.charset="0" background.mode="2" background.color="1090519039" )
+
+sparse(names="tipo	descrizione")htmltable(border="1" cellpadding="0" cellspacing="0" generatecss="no" nowrap="yes")

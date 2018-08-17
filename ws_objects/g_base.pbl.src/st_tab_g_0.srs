@@ -1,0 +1,8 @@
+﻿$PBExportHeader$st_tab_g_0.srs
+global type st_tab_g_0 from structure
+	string		esegui_commit
+	long		contati
+	long		id		descriptor "comment" = "numerico utile per passaggio valori id delle tabelle"
+	string		idx		descriptor "comment" = "id alfanumerico generico utile per passaggio valori"
+end type
+

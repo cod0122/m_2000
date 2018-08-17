@@ -1,0 +1,10 @@
+﻿$PBExportHeader$st_tab_meca_ptmerce.srs
+global type st_tab_meca_ptmerce from structure
+	st_tab_g_0		st_tab_g_0
+	long		id_meca
+	datetime		dtins		descriptor "comment" = "data e ora di insert della riga"
+	long		id_email_invio		descriptor "comment" = "id invio email"
+	datetime		x_datins
+	string		x_utente
+end type
+

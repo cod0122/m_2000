@@ -1,0 +1,499 @@
+﻿$PBExportHeader$m_popup_g.srm
+forward
+global type m_popup_g from menu
+end type
+type m_lib_1 from menu within m_popup_g
+end type
+type m_lib_1 from menu within m_popup_g
+end type
+type m_t_lib_1 from menu within m_popup_g
+end type
+type m_t_lib_1 from menu within m_popup_g
+end type
+type m_lib_2 from menu within m_popup_g
+end type
+type m_lib_2 from menu within m_popup_g
+end type
+type m_t_lib_2 from menu within m_popup_g
+end type
+type m_t_lib_2 from menu within m_popup_g
+end type
+type m_lib_3 from menu within m_popup_g
+end type
+type m_lib_3 from menu within m_popup_g
+end type
+type m_t_lib_3 from menu within m_popup_g
+end type
+type m_t_lib_3 from menu within m_popup_g
+end type
+type m_lib_4 from menu within m_popup_g
+end type
+type m_lib_4 from menu within m_popup_g
+end type
+type m_t_lib_4 from menu within m_popup_g
+end type
+type m_t_lib_4 from menu within m_popup_g
+end type
+type m_lib_5 from menu within m_popup_g
+end type
+type m_lib_5 from menu within m_popup_g
+end type
+type m_t_lib_5 from menu within m_popup_g
+end type
+type m_t_lib_5 from menu within m_popup_g
+end type
+type m_lib_6 from menu within m_popup_g
+end type
+type m_lib_6 from menu within m_popup_g
+end type
+type m_t_lib_6 from menu within m_popup_g
+end type
+type m_t_lib_6 from menu within m_popup_g
+end type
+type m_lib_7 from menu within m_popup_g
+end type
+type m_lib_7 from menu within m_popup_g
+end type
+type m_t_lib_7 from menu within m_popup_g
+end type
+type m_t_lib_7 from menu within m_popup_g
+end type
+type m_lib_8 from menu within m_popup_g
+end type
+type m_lib_8 from menu within m_popup_g
+end type
+type m_t_lib_8 from menu within m_popup_g
+end type
+type m_t_lib_8 from menu within m_popup_g
+end type
+type m_lib_9 from menu within m_popup_g
+end type
+type m_lib_9 from menu within m_popup_g
+end type
+type m_t_lib_9 from menu within m_popup_g
+end type
+type m_t_lib_9 from menu within m_popup_g
+end type
+type m_lib_10 from menu within m_popup_g
+end type
+type m_lib_10 from menu within m_popup_g
+end type
+end forward
+
+global type m_popup_g from menu
+m_lib_1 m_lib_1
+m_t_lib_1 m_t_lib_1
+m_lib_2 m_lib_2
+m_t_lib_2 m_t_lib_2
+m_lib_3 m_lib_3
+m_t_lib_3 m_t_lib_3
+m_lib_4 m_lib_4
+m_t_lib_4 m_t_lib_4
+m_lib_5 m_lib_5
+m_t_lib_5 m_t_lib_5
+m_lib_6 m_lib_6
+m_t_lib_6 m_t_lib_6
+m_lib_7 m_lib_7
+m_t_lib_7 m_t_lib_7
+m_lib_8 m_lib_8
+m_t_lib_8 m_t_lib_8
+m_lib_9 m_lib_9
+m_t_lib_9 m_t_lib_9
+m_lib_10 m_lib_10
+end type
+global m_popup_g m_popup_g
+
+on m_popup_g.create
+m_popup_g=this
+this.m_lib_1=create m_lib_1
+this.m_t_lib_1=create m_t_lib_1
+this.m_lib_2=create m_lib_2
+this.m_t_lib_2=create m_t_lib_2
+this.m_lib_3=create m_lib_3
+this.m_t_lib_3=create m_t_lib_3
+this.m_lib_4=create m_lib_4
+this.m_t_lib_4=create m_t_lib_4
+this.m_lib_5=create m_lib_5
+this.m_t_lib_5=create m_t_lib_5
+this.m_lib_6=create m_lib_6
+this.m_t_lib_6=create m_t_lib_6
+this.m_lib_7=create m_lib_7
+this.m_t_lib_7=create m_t_lib_7
+this.m_lib_8=create m_lib_8
+this.m_t_lib_8=create m_t_lib_8
+this.m_lib_9=create m_lib_9
+this.m_t_lib_9=create m_t_lib_9
+this.m_lib_10=create m_lib_10
+this.Item[]={this.m_lib_1, &
+this.m_t_lib_1, &
+this.m_lib_2, &
+this.m_t_lib_2, &
+this.m_lib_3, &
+this.m_t_lib_3, &
+this.m_lib_4, &
+this.m_t_lib_4, &
+this.m_lib_5, &
+this.m_t_lib_5, &
+this.m_lib_6, &
+this.m_t_lib_6, &
+this.m_lib_7, &
+this.m_t_lib_7, &
+this.m_lib_8, &
+this.m_t_lib_8, &
+this.m_lib_9, &
+this.m_t_lib_9, &
+this.m_lib_10}
+end on
+
+on m_popup_g.destroy
+destroy(this.m_lib_1)
+destroy(this.m_t_lib_1)
+destroy(this.m_lib_2)
+destroy(this.m_t_lib_2)
+destroy(this.m_lib_3)
+destroy(this.m_t_lib_3)
+destroy(this.m_lib_4)
+destroy(this.m_t_lib_4)
+destroy(this.m_lib_5)
+destroy(this.m_t_lib_5)
+destroy(this.m_lib_6)
+destroy(this.m_t_lib_6)
+destroy(this.m_lib_7)
+destroy(this.m_t_lib_7)
+destroy(this.m_lib_8)
+destroy(this.m_t_lib_8)
+destroy(this.m_lib_9)
+destroy(this.m_t_lib_9)
+destroy(this.m_lib_10)
+end on
+
+type m_lib_1 from menu within m_popup_g
+end type
+
+on clicked;//
+window  k_w_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = "l1"
+end if
+
+end on
+
+on m_lib_1.create
+this.Text="Libero 1"
+this.Microhelp="Pone tutti i consumi uguali al primo"
+this.Visible=false
+end on
+
+on m_lib_1.destroy
+end on
+
+type m_t_lib_1 from menu within m_popup_g
+end type
+
+on m_t_lib_1.create
+this.Text="-"
+this.Visible=false
+end on
+
+on m_t_lib_1.destroy
+end on
+
+type m_lib_2 from menu within m_popup_g
+end type
+
+on clicked;//
+window  k_w_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = "l2"
+end if
+
+end on
+
+on m_lib_2.create
+this.Text="libero 2"
+this.Visible=false
+end on
+
+on m_lib_2.destroy
+end on
+
+type m_t_lib_2 from menu within m_popup_g
+end type
+
+on m_t_lib_2.create
+this.Text="-"
+this.Visible=false
+end on
+
+on m_t_lib_2.destroy
+end on
+
+type m_lib_3 from menu within m_popup_g
+end type
+
+on clicked;//
+window  k_w_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = "l3"
+end if
+
+end on
+
+on m_lib_3.create
+this.Text="libero 3"
+this.Visible=false
+end on
+
+on m_lib_3.destroy
+end on
+
+type m_t_lib_3 from menu within m_popup_g
+end type
+
+on m_t_lib_3.create
+this.Text="-"
+this.Visible=false
+end on
+
+on m_t_lib_3.destroy
+end on
+
+type m_lib_4 from menu within m_popup_g
+end type
+
+on clicked;//
+window  k_w_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = "l4"
+end if
+
+end on
+
+on m_lib_4.create
+this.Text="libero 4"
+this.Visible=false
+end on
+
+on m_lib_4.destroy
+end on
+
+type m_t_lib_4 from menu within m_popup_g
+end type
+
+on m_t_lib_4.create
+this.Text="-"
+this.Visible=false
+end on
+
+on m_t_lib_4.destroy
+end on
+
+type m_lib_5 from menu within m_popup_g
+end type
+
+on clicked;//
+window  k_w_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = "l5"
+end if
+
+end on
+
+on m_lib_5.create
+this.Text="libero 5"
+this.Visible=false
+end on
+
+on m_lib_5.destroy
+end on
+
+type m_t_lib_5 from menu within m_popup_g
+end type
+
+on m_t_lib_5.create
+this.Text="-"
+this.Visible=false
+end on
+
+on m_t_lib_5.destroy
+end on
+
+type m_lib_6 from menu within m_popup_g
+end type
+
+on clicked;//
+window  k_w_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = "l6"
+end if
+
+end on
+
+on m_lib_6.create
+this.Text="libero 6"
+this.Visible=false
+end on
+
+on m_lib_6.destroy
+end on
+
+type m_t_lib_6 from menu within m_popup_g
+end type
+
+on m_t_lib_6.create
+this.Text="-"
+this.Visible=false
+end on
+
+on m_t_lib_6.destroy
+end on
+
+type m_lib_7 from menu within m_popup_g
+end type
+
+on clicked;//
+window  k_w_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = "l7"
+end if
+
+end on
+
+on m_lib_7.create
+this.Text="libero 7"
+this.Visible=false
+end on
+
+on m_lib_7.destroy
+end on
+
+type m_t_lib_7 from menu within m_popup_g
+end type
+
+on m_t_lib_7.create
+this.Text="-"
+this.Visible=false
+end on
+
+on m_t_lib_7.destroy
+end on
+
+type m_lib_8 from menu within m_popup_g
+end type
+
+on clicked;//
+window  k_w_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = "l8"
+end if
+
+end on
+
+on m_lib_8.create
+this.Text="libero 8"
+this.Visible=false
+end on
+
+on m_lib_8.destroy
+end on
+
+type m_t_lib_8 from menu within m_popup_g
+end type
+
+on m_t_lib_8.create
+this.Text="-"
+this.Visible=false
+end on
+
+on m_t_lib_8.destroy
+end on
+
+type m_lib_9 from menu within m_popup_g
+end type
+
+on clicked;//
+window  k_w_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = "l9"
+end if
+
+end on
+
+on m_lib_9.create
+this.Text="libero 9"
+this.Visible=false
+end on
+
+on m_lib_9.destroy
+end on
+
+type m_t_lib_9 from menu within m_popup_g
+end type
+
+on m_t_lib_9.create
+this.Text="-"
+this.Visible=false
+end on
+
+on m_t_lib_9.destroy
+end on
+
+type m_lib_10 from menu within m_popup_g
+end type
+
+on clicked;//
+window  k_w_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = "l10"
+end if
+
+end on
+
+on m_lib_10.create
+this.Text="libero 10"
+this.Visible=false
+end on
+
+on m_lib_10.destroy
+end on
+

@@ -1,0 +1,22 @@
+﻿$PBExportHeader$s_powerfilter_parms.srs
+$PBExportComments$structure for passing multiple powerfilter parameters between windows
+global type s_powerfilter_parms from structure
+	string		parm1		descriptor "comment" = "filter1"
+	string		parm2		descriptor "comment" = "parm1"
+	string		parm3		descriptor "comment" = "filter2"
+	string		parm4		descriptor "comment" = "parm2"
+	string		parm5		descriptor "comment" = "and/or"
+	string		parm6		descriptor "comment" = "Column Title"
+	datastore		parm7		descriptor "comment" = "datastore"
+	string		parm8		descriptor "comment" = "OK/Cancel"
+	boolean		parm9		descriptor "comment" = "Match Case true/false"
+	string		parm10		descriptor "comment" = "Column Type"
+	string		parm11		descriptor "comment" = "column format"
+	string		parm12		descriptor "comment" = "displaytext1"
+	string		parm13		descriptor "comment" = "displaytext2"
+	integer		parm14		descriptor "comment" = "language"
+	long		parm15		descriptor "comment" = "backcolor"
+	string		parm16		descriptor "comment" = "fontface"
+	string		parm17		descriptor "comment" = "fontcolor"
+end type
+

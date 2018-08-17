@@ -1,0 +1,8 @@
+﻿$PBExportHeader$st_tab_menu_window_anteprima.srs
+global type st_tab_menu_window_anteprima from structure
+	long		id
+	string		anteprima		descriptor "comment" = "nome della dw di anteprima"
+	string		id_menu_window
+	string		nome_id_tabella		descriptor "comment" = "nome id del campo di tabella"
+end type
+

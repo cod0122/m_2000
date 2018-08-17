@@ -1,0 +1,103 @@
+﻿$PBExportHeader$st_tab_base.srs
+global type st_tab_base from structure
+	st_tab_g_0		st_tab_g_0
+	st_tab_base_personale		st_tab_base_personale
+	string		key
+	string		key1
+	string		id
+	integer		anno		descriptor "comment" = "anno di esercizio"
+	string		rag_soc_1
+	string		rag_soc_2
+	string		p_iva
+	string		cf		descriptor "comment" = "codice fiscale"
+	string		indi
+	string		loc
+	string		cap
+	string		prov
+	string		rea_ufficio
+	string		rea_numero
+	decimal { 2 }		capitale_sociale
+	string		socio_unico		descriptor "comment" = "SU la società è a socio unico - SM la società NON è a socio unico."
+	string		stato_liquidazione		descriptor "comment" = "LS la società è in stato di liquidazione - LN la società NON è in stato di liquidazione"
+	string		e_mail		descriptor "comment" = "indirizzo e-mail ufficiale dell'azienda"
+	string		ind_web		descriptor "comment" = "indirizzo web  ufficiale dell'azienda"
+	long		num_int
+	date		data_int
+	long		num_bolla
+	date		data_bolla
+	long		num_certif
+	long		num_bolla_stamp
+	date		data_bolla_stamp
+	long		num_fatt
+	date		data_fatt
+	long		num_fatt_stamp
+	date		data_fatt_stamp
+	string		stamp_bo
+	string		stamp_cert
+	string		stamp_cert2		descriptor "comment" = "ex stamp_ft  utilizzato ora per stampante attestati allegati"
+	string		stamp_pdf
+	long		num_scarico
+	long		mis_x
+	long		mis_y
+	long		mis_z
+	real		peso_max
+	string		path_ordo
+	long		ult_id_armo
+	long		barcode_progr_man
+	long		barcode_progr
+	string		barcode_modulo
+	date		barcode_dt_no_lav
+	string		fgrp_out_path		descriptor "comment" = "path dove la Procedura piglia i groupage"
+	string		dir_report_pilota		descriptor "comment" = "path report generati dal PILOTA"
+	date		fpilota_out_dt_dal
+	integer		valid_t_dose_min
+	date		data_stat
+	string		ora_stat
+	string		last_version
+	string		update_last_vers
+	string		id_base
+	double		fatt_bolli_lim_stampa
+	string		fatt_bolli_note
+	string		fatt_banca
+	double		fatt_impon_minimo
+	integer		art50_anno		descriptor "comment" = "registro movimenti articolo 50: anno competenza"
+	integer		art50_mese		descriptor "comment" = "registro movimenti articolo 50: ultimo mese in Registro"
+	integer		art50_ult_nrpagina		descriptor "comment" = "registro movimenti articolo 50: ultimo num. di pagina registrato"
+	integer		art50_ult_nrprot		descriptor "comment" = "registro movimenti articolo 50: ultimo num. di protocollo registrato"
+	string		art50_nazioni_gruppo		descriptor "comment" = "registro movimenti articolo 50: nazioni da mettere nel registro (codice Gruppo in tab nazioni)"
+	string		art50_id_nazione_esclusa		descriptor "comment" = "registro movimenti articolo 50: id nazione da escludere (dovrebbe essere IT=ITALIA)"
+	string		smtp_server		descriptor "comment" = "nome server smtp"
+	string		smtp_port		descriptor "comment" = "numero della porta del server smtp"
+	string		smtp_autorizz_rich		descriptor "comment" = "flag S/N se server richiede user e pwd"
+	string		smtp_user		descriptor "comment" = "nome utente"
+	string		smtp_pwd		descriptor "comment" = "password"
+	string		smtp_logfile		descriptor "comment" = "flag S/N per attivare il log"
+	string		dir_fatt		descriptor "comment" = "cartella dove salvare le fatture in pdf e inviarle via email"
+	string		dir_ddt		descriptor "comment" = "cartella dove salvare i ddt in pdf e inviarle via email"
+	string		doc_root		descriptor "comment" = "path radice assoluto dove salvare tutti i doc della procedura"
+	long		id_email_lettera_fattura		descriptor "comment" = "email con lettera da inviare al cliente"
+	long		id_email_lettera_avviso		descriptor "comment" = "email con avviso da inviare al cliente"
+	string		fatt_comunicazione		descriptor "comment" = "comunicazione da mettere a piede fattura"
+	string		fatt_comunicazione_attiva		descriptor "comment" = "1=espone la Comunicazione in FT/NC; "
+	string		dosimetro_ult_barcode		descriptor "comment" = "ultimo codice per il dosimetro caricato - utile quando genero il nuovo"
+	long		dosimetro_id_armo		descriptor "comment" = "id da scaricare a magazzino quando si fanno i dosimetri - NON ATTIVO"
+	string		dosimetro_barcode_mask		descriptor "comment" = "maskera i primi 3 char del barcode al posto del codice cliente"
+	string		esolver_expanag_dir		descriptor "comment" = "cartella del file in cui esportare le Anagrafiche x ESOLVER (contabilita)"
+	string		esolver_expanag_nome		descriptor "comment" = "nome file in cui esportare le Anagrafiche x ESOLVER (contabilita)"
+	string		esolver_fidi_dir		descriptor "comment" = "cartella del file per iput/output dati FIDO da/per ESOLVER (contabilita)"
+	string		esolver_inpfidi_nome		descriptor "comment" = "nome file in esportare importi non fatturati x fare i FIDO x ESOLVER (contabilita)"
+	string		esolver_expfidi_nome		descriptor "comment" = "nome file da cui importare i clienti fuori FIDO da ESOLVER (contabilita)"
+	long		esolver_fidi_id_meca_causale		descriptor "comment" = "id_meca_causale x i clienti fuori fido"
+	string		ddt_qtna_note		descriptor "comment" = "dicitura spedizione lotti in quaratena (in bolla di uscita)"
+	string		ddt_blk_lotti_senza_attestato		descriptor "comment" = "'1'=consente di spedire Lotti parzialmente Trattati solo se in Quarantena"
+	long		sv_call_vettore_id_listino		descriptor "comment" = "id del listino da applicare a costo CHIAMATA VETTORE messo sul DDT "
+	string		e1_enabled		descriptor "comment" = "E-ONE:  S = abilita la comunicazione con il sistema E-ONE (no WMF/BARCODE/DDT/FATTURE)"
+	integer		e1dtlav_allineagg		descriptor "comment" = "E-ONE: numero giorni da risalire per fare l'allineamento tra le tabelle M2000 e E1 sui dati di lavorazione (F5548014)"
+	integer		utc_fuso		descriptor "comment" = "fuso orario rispetto al GMT (ITALIA +1)"
+	string		oralegale_on		descriptor "comment" = "S = attiva controllo ora legale"
+	date		oralegale_start		descriptor "comment" = "inizio ora legale"
+	date		oralegale_end		descriptor "comment" = "fine ora legale"
+	datetime		x_datins
+	string		x_utente
+end type
+

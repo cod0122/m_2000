@@ -1,0 +1,7 @@
+﻿$PBExportHeader$st_uf_docpath.srs
+global type st_uf_docpath from structure
+	string		k_path_interno		descriptor "comment" = "path completo x i documenti uso Interno"
+	string		k_path_esterno		descriptor "comment" = "path completo x i documenti uso Esterno"
+	string		k_path_documentale		descriptor "comment" = "path completo x i documenti uso Documentale"
+end type
+

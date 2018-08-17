@@ -1,0 +1,11 @@
+﻿$PBExportHeader$st_time_zone_information.srs
+global type st_time_zone_information from structure
+	longlong		bias
+	integer		standardname[31]
+	st_systemtime		standarddate
+	longlong		standardbias
+	integer		daylightname[31]
+	st_systemtime		daylightdate
+	longlong		daylightbias
+end type
+

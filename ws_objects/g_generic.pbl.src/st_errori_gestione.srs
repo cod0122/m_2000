@@ -1,0 +1,10 @@
+﻿$PBExportHeader$st_errori_gestione.srs
+global type st_errori_gestione from structure
+	string		nome_oggetto
+	long		sqldbcode
+	string		sqlerrtext
+	string		sqlsyntax
+	kuo_sqlca_db_0		sqlca
+	string		esito		descriptor "comment" = "vedi kkg_esito.ok / ko / db_ko ...."
+end type
+

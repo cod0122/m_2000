@@ -1,0 +1,8 @@
+﻿$PBExportHeader$st_tab_doctipo.srs
+global type st_tab_doctipo from structure
+	st_tab_g_0		st_tab_g_0
+	long		id_doctipo
+	string		descr
+	string		tipo		descriptor "comment" = "A=sttestati; B=bolle;F=fatture;X=contr_co;Y=contr_rs"
+end type
+

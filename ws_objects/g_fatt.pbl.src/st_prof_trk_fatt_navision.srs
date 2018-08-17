@@ -1,0 +1,22 @@
+﻿$PBExportHeader$st_prof_trk_fatt_navision.srs
+global type st_prof_trk_fatt_navision from structure
+	string		company		descriptor "comment" = "Navision Company Name len=10 - fisso a '27'"
+	string		xxx_id_cliente		descriptor "comment" = "GL Entry. Customer No. len=10 - Cliente "
+	string		tes_tipo_doc		descriptor "comment" = "GL Entry. Document Type  len=11 - tipo documento: Invoice/Credit Memo)"
+	string		xxx_reg_nr		descriptor "comment" = "GL Entry. Document No. len=10 - Numero di Fattura"
+	integer		line_number		descriptor "comment" = "numero di riga nel documento len=6"
+	string		tes_reg_dt		descriptor "comment" = "GL Entry. Posting Date formato=DDMMYYYY - Data Fattura"
+	string		par_scadenza_dt		descriptor "comment" = "Cust. Ledger Entry. Due Date  formato=DDMMYYYY - Data scadenza"
+	string		divisa		descriptor "comment" = "Cust. Ledger Entry. Currency Code len=3 - Codice divisa documento (EUR)"
+	string		conto		descriptor "comment" = "G/L Account No. len=10 - Codice conto mastro+sottoconto"
+	string		cost_center		descriptor "comment" = "Analytical Ledger Entry. 'Dimension 1' len=2 - nulla"
+	string		dim3		descriptor "comment" = "Analytical Ledger Entry. 'Dimension 3' len=5 - nulla"
+	string		dim4		descriptor "comment" = "Analytical Ledger Entry. 'Dimension 4' len=3 - nulla"
+	string		importovaluta		descriptor "comment" = "GL Entry. Foreign Amount format=99999999.99 len=12 - Importo in valuta"
+	string		importo		descriptor "comment" = "GL Entry.Domestic Amount format=99999999.99 len=12 - Importo in Valuta locale"
+	string		iva_importovaluta		descriptor "comment" = "GL Entry.VAT Foreign Amount format=99999999.99 len=12 - Importo IVA in valuta"
+	string		iva_importo		descriptor "comment" = "GL Entry.VAT Domestic Amount format=99999999.99 len=12 - Importo in Valuta IVA locale"
+	string		ivacodice		descriptor "comment" = "VAT Bus. Posting Group + VAT Prod. Posting Group len=20 - Mettiamo solo il Codice IVA"
+	long		id_fattura		descriptor "comment" = "utile internamente"
+end type
+

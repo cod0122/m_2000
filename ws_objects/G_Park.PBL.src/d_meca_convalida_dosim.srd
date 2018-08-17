@@ -1,0 +1,62 @@
+﻿$PBExportHeader$d_meca_convalida_dosim.srd
+release 8;
+datawindow(units=0 timer_interval=0 color=134217747 processing=0 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=1456 color="536870912" )
+table(column=(type=date update=yes updatewhereclause=yes name=data_lav_ok dbname="meca.data_lav_ok" )
+ column=(type=char(16) update=yes updatewhereclause=yes name=dosim_lotto_dosim dbname="meca.dosim_lotto_dosim" )
+ column=(type=long update=yes updatewhereclause=yes key=yes name=num_int dbname="meca.num_int" )
+ column=(type=date update=yes updatewhereclause=yes key=yes name=data_int dbname="meca.data_int" )
+ column=(type=long update=yes updatewhereclause=yes name=dosim_assorb dbname="meca.dosim_assorb" )
+ column=(type=long update=yes updatewhereclause=yes name=dosim_spessore dbname="meca.dosim_spessore" )
+ column=(type=decimal(2) update=yes updatewhereclause=yes name=dosim_rapp_a_s dbname="meca.dosim_rapp_a_s" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=err_lav_ok dbname="meca.err_lav_ok" values="Rilevate Anomalie	10/Rilevate Anomalie	S" )
+ column=(type=char(255) update=yes updatewhereclause=yes name=note_lav_ok dbname="meca.note_lav_ok" )
+ column=(type=datetime update=yes updatewhereclause=yes name=x_datins dbname="meca.x_datins" )
+ column=(type=char(12) update=yes updatewhereclause=yes name=x_utente dbname="meca.x_utente" )
+ retrieve="  SELECT meca.data_lav_ok,   
+         meca.dosim_lotto_dosim,   
+         meca.num_int,   
+         meca.data_int,   
+         meca.dosim_assorb,   
+         meca.dosim_spessore,   
+         meca.dosim_rapp_a_s,   
+         meca.err_lav_ok,   
+         meca.note_lav_ok,   
+         meca.x_datins,   
+         meca.x_utente  
+    FROM meca   
+	where num_int = :k_num_int
+         and year(data_int) = :k_anno
+" update="meca" updatewhere=1 updatekeyinplace=no arguments=(("k_num_int", number),("k_anno", number)) )
+text(band=detail alignment="1" text="Data Convalida:" border="0" color="33554432" x="64" y="112" height="60" width="576" html.valueishtml="0"  name=data_lav_ok_t visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=1 alignment="2" tabsequence=10 border="5" color="33554432" x="658" y="112" height="60" width="329" format="dd/mm/yy" html.valueishtml="0"  name=data_lav_ok visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="1" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=2 alignment="0" tabsequence=20 border="5" color="33554432" x="1755" y="112" height="60" width="695" format="[general]" html.valueishtml="0"  name=dosim_lotto_dosim visible="1" edit.limit=16 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="1" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=detail alignment="1" text="Esito:" border="0" color="33554432" x="114" y="984" height="60" width="160" html.valueishtml="0"  name=err_lav_ok_t visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="0" tabsequence=80 border="0" color="33554432" x="119" y="860" height="60" width="571" format="[general]" html.valueishtml="0"  name=err_lav_ok pointer="" visible="1" checkbox.text="Rilevate Anomalie" checkbox.on="10" checkbox.off="S" checkbox.scale=no checkbox.threed=yes  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="1" font.charset="0" background.mode="2" background.color="134217747" )
+column(band=detail id=9 alignment="0" tabsequence=32766 border="5" color="128" x="306" y="988" height="56" width="2331" format="[general]" html.valueishtml="0"  name=note_lav_ok visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="1" font.charset="0" font.italic="1" background.mode="2" background.color="67108864" )
+text(band=detail alignment="0" text="Utente:" border="0" color="8388608" x="1390" y="1240" height="52" width="178" html.valueishtml="0"  name=x_utente_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" font.italic="1" background.mode="1" background.color="536870912" )
+column(band=detail id=11 alignment="0" tabsequence=100 border="5" color="8388608" x="1586" y="1240" height="60" width="343" format="[general]" html.valueishtml="0"  name=x_utente visible="1" edit.limit=12 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="1" font.charset="0" font.italic="1" background.mode="2" background.color="67108864" )
+column(band=detail id=10 alignment="0" tabsequence=90 border="5" color="8388608" x="1943" y="1240" height="60" width="480" format="[shortdate] [time]" html.valueishtml="0"  name=x_datins visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="1" font.charset="0" font.italic="1" background.mode="2" background.color="67108864" )
+text(band=detail alignment="1" text="Lotto Dosimetrico:" border="0" color="33554432" x="1161" y="112" height="60" width="576" html.valueishtml="0"  name=b_lotto_dosim pointer="HyperLink!" visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" font.italic="1" font.underline="1" background.mode="1" background.color="536870912" )
+text(band=detail alignment="1" text="Anno:" border="0" color="33554432" x="1083" y="304" height="60" width="183" html.valueishtml="0"  name=data_int_t visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=detail alignment="1" text="Riferimento:" border="0" color="33554432" x="64" y="304" height="60" width="576" html.valueishtml="0"  name=b_meca pointer="HyperLink!" visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" font.italic="1" font.underline="1" background.mode="1" background.color="536870912" )
+text(band=detail alignment="1" text="(" border="0" color="33554432" x="1486" y="304" height="60" width="50" html.valueishtml="0"  name=t_1 visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=detail alignment="0" text=")" border="0" color="33554432" x="1952" y="304" height="60" width="87" html.valueishtml="0"  name=t_2 visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="5" color="33554432" x="1559" y="304" height="60" width="366" format="dd/mm/yyyy" html.valueishtml="0"  name=data_int_1 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="134217747" )
+column(band=detail id=3 alignment="0" tabsequence=30 border="5" color="33554432" x="658" y="304" height="60" width="384" format="#####" html.valueishtml="0"  name=num_int visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="1" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=4 alignment="2" tabsequence=40 border="5" color="33554432" x="1280" y="304" height="60" width="169" format="yyyy" html.valueishtml="0"  name=data_int visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="1" font.charset="0" background.mode="2" background.color="16777215" )
+line(band=detail x1="1362" y1="556" x2="1362" y2="652"  name=l_3 visible="1" pen.style="0" pen.width="5" pen.color="0"  background.mode="2" background.color="1073741824" )
+line(band=detail x1="1367" y1="600" x2="1504" y2="600"  name=l_4 visible="1" pen.style="0" pen.width="5" pen.color="0"  background.mode="2" background.color="1073741824" )
+line(band=detail x1="1184" y1="556" x2="1362" y2="556"  name=l_1 visible="1" pen.style="0" pen.width="5" pen.color="0"  background.mode="2" background.color="1073741824" )
+line(band=detail x1="1184" y1="648" x2="1362" y2="648"  name=l_2 visible="1" pen.style="0" pen.width="5" pen.color="0"  background.mode="2" background.color="1073741824" )
+text(band=detail alignment="1" text="Indice di Assorbanza ABS:" border="0" color="33554432" x="78" y="528" height="60" width="731" html.valueishtml="0"  name=dosim_assorb_t visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=detail alignment="1" text="Spessore nicron:" border="0" color="33554432" x="238" y="616" height="60" width="576" html.valueishtml="0"  name=dosim_spessore_t visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="0" tabsequence=50 border="5" color="33554432" x="832" y="528" height="60" width="325" format="###" html.valueishtml="0"  name=dosim_assorb visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="1" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=6 alignment="0" tabsequence=60 border="5" color="33554432" x="832" y="616" height="60" width="325" format="###" html.valueishtml="0"  name=dosim_spessore visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="1" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=detail alignment="0" text="Rapporto A/S" border="0" color="33554432" x="1943" y="572" height="60" width="338" html.valueishtml="0"  name=dosim_rapp_a_s_t visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="2" tabsequence=70 border="5" color="134217730" x="1527" y="572" height="60" width="398" format="####0.00" html.valueishtml="0"  name=dosim_rapp_a_s visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="1" font.charset="0" background.mode="2" background.color="134217747" )
+button(band=detail text="Convalida"filename=""action="0" border="1" color="128" x="2350" y="544" height="120" width="283" vtextalign="0" htextalign="0"  name=b_ok visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="67108864" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )

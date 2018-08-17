@@ -1,0 +1,16 @@
+﻿$PBExportHeader$st_tab_artr.srs
+global type st_tab_artr from structure
+	st_tab_g_0		st_tab_g_0
+	long		id_armo
+	date		data_in
+	date		data_fin
+	date		data_st
+	integer		colli
+	long		num_certif
+	integer		pl_barcode
+	integer		colli_trattati
+	integer		colli_groupage
+	datetime		x_datins
+	string		x_utente
+end type
+

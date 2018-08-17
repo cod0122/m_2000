@@ -1,0 +1,16 @@
+﻿$PBExportHeader$st_sv_skedula.srs
+global type st_sv_skedula from structure
+	long		id
+	string		orario
+	string		orario_fine
+	integer		rilancia_dopo_mm
+	string		flag_run_giorni
+	string		id_menu_window
+	string		flag_cmd_dos
+	string		cmd_dos_path
+	string		cmd_dos_run
+	string		stato
+	string		attendi_fine
+	string		flag_lavora_disconnesso		descriptor "comment" = "1=lancia i lavori disconnettendosi al DB, al termine rifa' Connessione"
+end type
+

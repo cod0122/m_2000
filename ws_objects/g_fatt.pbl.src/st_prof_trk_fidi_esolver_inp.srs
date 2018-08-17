@@ -1,0 +1,5 @@
+﻿$PBExportHeader$st_prof_trk_fidi_esolver_inp.srs
+global type st_prof_trk_fidi_esolver_inp from structure
+	string		id_cliente		descriptor "comment" = "codice Cliente FUORI FIDO"
+end type
+

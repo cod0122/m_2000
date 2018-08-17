@@ -1,0 +1,21 @@
+﻿$PBExportHeader$st_tab_e1_wo_f5548014.srs
+global type st_tab_e1_wo_f5548014 from structure
+	st_tab_g_0		st_tab_g_0
+	string		xxx		descriptor "comment" = "tabella generica di scambio dati lotto per codice Work Order in database interno"
+	long		id_e1_wo_f5548014
+	long		wo_osdoco		descriptor "comment" = "codice Work order"
+	string		flag_osev01		descriptor "comment" = "stato: 1-start Load (ingresso impianto primo pallet), 2-End load/start process (ingresso impianto ultimo pallet), 3-End process/start unload (uscita primo pallet), 4-End Unload/start (uscita ultimo pallet), 5-End collect data and QT update (dosimetria)~r~n"
+	string		data_osa801		descriptor "comment" = "NON USARE data formato: MMDDYYYY   ???????     - GMT !!!"
+	long		data_osdee		descriptor "comment" = "data formato 1 + anno (di 2) + giorni inzio anno 116193=11/7/2016 (formato E1)  - GMT !!!"
+	long		ora_oswwaet		descriptor "comment" = "Ora in formato testo HHMMSS    - GMT !!!"
+	string		dosemin_os55gs25a		descriptor "comment" = "riempire solo per stato = 5   -  Dose minima (stringa con punto decimale)"
+	string		dosemax_os55gs25b		descriptor "comment" = "riempire solo per stato = 5   -  Dose massima (stringa con punto decimale)"
+	string		ciclo_os55gs25c		descriptor "comment" = "riempire solo per stato = 5   -  CYC (ciclo) ????  (stringa con punto decimale)"
+	string		osuser		descriptor "comment" = "utente da trasmettere a E1 (codice utente M2000)"
+	datetime		e1updts		descriptor "comment" = "timestamp di aggiornamento su E1 - sono non valorizzato è ancora da inviare a E1"
+	decimal { 2 }		ngiri_ossetl		descriptor "comment" = "Numero di giri totale compresi di permuta"
+	string		tcicli_osmmcu		descriptor "comment" = "Tipo CILCI (27002=fila 1 (A)/27005=fila 2 (B)/27006=misti (C))"
+	datetime		x_datins
+	string		x_utente
+end type
+

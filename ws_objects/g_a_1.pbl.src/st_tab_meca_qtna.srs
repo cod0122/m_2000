@@ -1,0 +1,17 @@
+﻿$PBExportHeader$st_tab_meca_qtna.srs
+global type st_tab_meca_qtna from structure
+	st_tab_g_0		st_tab_g_0
+	long		id_meca_qtna		descriptor "comment" = "ID quarantena "
+	long		id_meca
+	datetime		x_data_inizio
+	string		x_utente_inizio
+	datetime		x_data_fine
+	string		x_utente_fine
+	datetime		x_data_riapri
+	string		x_utente_riapri
+	string		note
+	string		stampa_ddt_dicitura		descriptor "comment" = "S=stampa dicitura messa su tab base_fatt tra le righe del ddt;N=non stampa"
+	datetime		x_datins
+	string		x_utente
+end type
+

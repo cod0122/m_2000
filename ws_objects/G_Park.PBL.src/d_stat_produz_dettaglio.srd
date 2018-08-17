@@ -1,0 +1,202 @@
+﻿$PBExportHeader$d_stat_produz_dettaglio.srd
+release 8;
+datawindow(units=0 timer_interval=0 color=1073741824 processing=1 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no grid.lines=0 )
+header(height=144 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=92 color="536870912" )
+table(column=(type=char(12) updatewhereclause=yes name=operazione dbname="operazione" )
+ column=(type=long updatewhereclause=yes name=armo_id_armo dbname="armo.id_armo" )
+ column=(type=long updatewhereclause=yes name=armo_id_meca dbname="armo.id_meca" )
+ column=(type=long updatewhereclause=yes name=armo_magazzino dbname="armo.magazzino" )
+ column=(type=decimal(0) updatewhereclause=yes name=armo_numero dbname="armo.numero" )
+ column=(type=date updatewhereclause=yes name=armo_data dbname="armo.data" )
+ column=(type=char(52) updatewhereclause=yes name=armo_des_1 dbname="armo.des_1" )
+ column=(type=decimal(0) updatewhereclause=yes name=armo_colli dbname="armo.colli" )
+ column=(type=decimal(2) updatewhereclause=yes name=armo_pedane dbname="armo.pedane" )
+ column=(type=date updatewhereclause=yes name=meca_convalidato dbname="meca.convalidato" )
+ column=(type=char(254) updatewhereclause=yes name=meca_cliente dbname="cliente" )
+ retrieve="select 
+         '1-Entrata' as operazione,  
+			armo.id_armo as id_armo,
+			armo.id_meca as id_meca,
+         armo.magazzino as magazzino,   
+         armo.num_int as numero,   
+         armo.data_int as data,   
+         armo.art as des_1,
+         armo.colli_2 as colli,
+			armo.pedane as pedane,
+         meca.data_lav_ok as convalidato,
+         meca.clie_1 || clienti_a.rag_soc_10 as cliente
+
+   from armo left outer join meca on 
+        armo.id_meca = meca.id
+                LEFT OUTER JOIN clienti as clienti_a ON 
+         meca.clie_1 = clienti_a.codice   
+   where    
+        armo.id_meca in
+	  (SELECT distinct s_armo.id_meca   
+   	 FROM s_armo LEFT OUTER JOIN s_arsp ON 
+      	   s_armo.id_meca = s_arsp.id_meca 
+    	where s_armo.data_int between :k_data_da and :k_data_a 
+      	   and (:k_inventario = 'N' or (s_arsp.data_rit is null or s_arsp.data_rit <= date(0)))
+				and (:k_id_cliente = 0 or s_armo.clie_3 = :k_id_cliente) 
+				and (:k_id_gruppo = 0 or s_armo.gruppo = :k_id_gruppo )     
+				and ( (:k_no_dose = 'S' and s_armo.dose = 0)  
+				  or (:k_no_dose = 'N' and (:k_dose = 0 or s_armo.dose = :k_dose))
+        	 		)  
+				and (:k_magazzino = 9 or s_armo.magazzino = :k_magazzino )  )
+union all
+	select 
+         '2-Trattam.',  
+         artr.id_armo,
+         armo.id_meca,
+			0,
+         artr.num_certif,
+         max(artr.data_fin),
+         'p.l. ' || artr.pl_barcode,
+         sum(artr.colli_trattati) + sum(artr.colli_groupage),
+         0,
+         date(0),
+         ' '
+   from armo left outer join artr on 
+        armo.id_armo = artr.id_armo
+   where    
+        armo.id_meca in
+	  (SELECT distinct s_armo.id_meca   
+   	 FROM s_armo LEFT OUTER JOIN s_arsp ON 
+      	   s_armo.id_meca = s_arsp.id_meca 
+    	where s_armo.data_int between :k_data_da and :k_data_a 
+      	   and (:k_inventario = 'N' or (s_arsp.data_rit is null or s_arsp.data_rit <= date(0)))
+				and (:k_id_cliente = 0 or s_armo.clie_3 = :k_id_cliente) 
+				and (:k_id_gruppo = 0 or s_armo.gruppo = :k_id_gruppo )     
+				and ( (:k_no_dose = 'S' and s_armo.dose = 0)  
+				  or (:k_no_dose = 'N' and (:k_dose = 0 or s_armo.dose = :k_dose))
+        	 		)  
+				and (:k_magazzino = 9 or s_armo.magazzino = :k_magazzino )  )
+    group by 1, 2, 3, 4, 5, 7, 9, 10 , 11
+
+union all
+	select 
+         '3-Attestato',  
+         certif.id,
+         certif.id_meca,
+			0,
+         certif.num_certif,
+         certif.data,
+         'stampato il ' || certif.data_stampa,
+         certif.colli,
+         0,
+         date(0),
+         certif.note
+   from certif
+   where    
+        certif.id_meca in
+	  (SELECT distinct s_armo.id_meca   
+   	 FROM s_armo LEFT OUTER JOIN s_arsp ON 
+      	   s_armo.id_meca = s_arsp.id_meca 
+    	where s_armo.data_int between :k_data_da and :k_data_a 
+      	   and (:k_inventario = 'N' or (s_arsp.data_rit is null or s_arsp.data_rit <= date(0)))
+				and (:k_id_cliente = 0 or s_armo.clie_3 = :k_id_cliente) 
+				and (:k_id_gruppo = 0 or s_armo.gruppo = :k_id_gruppo )     
+				and ( (:k_no_dose = 'S' and s_armo.dose = 0)  
+				  or (:k_no_dose = 'N' and (:k_dose = 0 or s_armo.dose = :k_dose))
+        	 		)  
+				and (:k_magazzino = 9 or s_armo.magazzino = :k_magazzino )  )
+
+union all
+	select 
+         '4-Spedizione',  
+         arsp.id_armo,
+         armo.id_meca,
+			0,
+         arsp.num_bolla_out,
+         arsp.data_bolla_out,
+         ' ',
+         arsp.colli,
+         0,
+         date(0),
+         'sped. a ' || sped.clie_2 || ' ' || clienti_b.rag_soc_10 
+   from arsp left outer join sped on 
+        arsp.num_bolla_out = sped.num_bolla_out
+        and arsp.data_bolla_out = sped.data_bolla_out 
+             LEFT OUTER JOIN clienti as clienti_b ON 
+         sped.clie_2 = clienti_b.codice   
+   			 left outer join armo on 
+        arsp.id_armo = armo.id_armo
+   where    
+        armo.id_meca in
+	  (SELECT distinct s_armo.id_meca   
+   	 FROM s_armo LEFT OUTER JOIN s_arsp ON 
+      	   s_armo.id_meca = s_arsp.id_meca 
+    	where s_armo.data_int between :k_data_da and :k_data_a 
+      	   and (:k_inventario = 'N' or (s_arsp.data_rit is null or s_arsp.data_rit <= date(0)))
+				and (:k_id_cliente = 0 or s_armo.clie_3 = :k_id_cliente) 
+				and (:k_id_gruppo = 0 or s_armo.gruppo = :k_id_gruppo )     
+				and ( (:k_no_dose = 'S' and s_armo.dose = 0)  
+				  or (:k_no_dose = 'N' and (:k_dose = 0 or s_armo.dose = :k_dose))
+        	 		)  
+				and (:k_magazzino = 9 or s_armo.magazzino = :k_magazzino )  )
+
+union all
+	select 
+         '5-Fattura',  
+         arfa.id_armo,
+         armo.id_meca,
+			0,
+         arfa.num_fatt,
+         arfa.data_fatt,
+         'importo ' || prezzo_t,
+         arfa.colli,
+         0,
+         date(0),
+         'fatt. a ' || arfa.clie_3 || ' ' || clienti_c.rag_soc_10 
+   from arfa LEFT OUTER JOIN clienti as clienti_c ON 
+         arfa.clie_3 = clienti_c.codice   
+   			 left outer join armo on 
+        arfa.id_armo = armo.id_armo
+   where    
+        armo.id_meca in
+	  (SELECT distinct s_armo.id_meca   
+   	 FROM s_armo LEFT OUTER JOIN s_arsp ON 
+      	   s_armo.id_meca = s_arsp.id_meca 
+    	where s_armo.data_int between :k_data_da and :k_data_a 
+      	   and (:k_inventario = 'N' or (s_arsp.data_rit is null or s_arsp.data_rit <= date(0)))
+				and (:k_id_cliente = 0 or s_armo.clie_3 = :k_id_cliente) 
+				and (:k_id_gruppo = 0 or s_armo.gruppo = :k_id_gruppo )     
+				and ( (:k_no_dose = 'S' and s_armo.dose = 0)  
+				  or (:k_no_dose = 'N' and (:k_dose = 0 or s_armo.dose = :k_dose))
+        	 		)  
+				and (:k_magazzino = 9 or s_armo.magazzino = :k_magazzino )  )
+
+
+" arguments=(("k_id_gruppo", number),("k_id_cliente", number),("k_dose", number),("k_data_da", date),("k_data_a", date),("k_no_dose", string),("k_magazzino", number),("k_inventario", string))  sort="armo_id_meca A operazione A armo_id_armo A " )
+column(band=detail id=11 alignment="0" tabsequence=32766 border="0" color="33554432" x="2702" y="8" height="76" width="837" format=" [general]" html.valueishtml="0"  name=meca_cliente visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="0" color="33554432" x="9" y="8" height="76" width="361" format=" [general]" html.valueishtml="0"  name=operazione visible="1" edit.limit=8 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="1" tabsequence=32766 border="0" color="33554432" x="384" y="8" height="76" width="82" format=" #" html.valueishtml="0"  name=armo_magazzino visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="1" tabsequence=32766 border="0" color="33554432" x="475" y="8" height="76" width="329" format="###,### " html.valueishtml="0"  name=armo_numero visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="0" tabsequence=32766 border="0" color="33554432" x="814" y="8" height="76" width="302" format=" dd.mm.yy" html.valueishtml="0"  name=armo_data visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="0" tabsequence=32766 border="0" color="33554432" x="1125" y="8" height="76" width="809" format=" [general]" html.valueishtml="0"  name=armo_des_1 visible="1" edit.limit=45 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="1" tabsequence=32766 border="0" color="33554432" x="1943" y="8" height="76" width="174" format="[general] " html.valueishtml="0"  name=armo_colli visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=9 alignment="1" tabsequence=32766 border="0" color="33554432" x="2126" y="8" height="76" width="242" format="###,### " html.valueishtml="0"  name=armo_pedane visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=10 alignment="0" tabsequence=32766 border="0" color="33554432" x="2377" y="8" height="76" width="311" format=" dd.mm.yy" html.valueishtml="0"  name=meca_convalidato visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="0" text=" documento
+ " border="0" color="33554432" x="9" y="8" height="128" width="361" html.valueishtml="0"  name=operazione_t visible="1"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="134217747" )
+text(band=header alignment="0" text=" M
+ " border="0" color="33554432" x="384" y="8" height="128" width="82" html.valueishtml="0"  name=armo_magazzino_t visible="1"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="134217747" )
+text(band=header alignment="0" text=" numero
+ " border="0" color="33554432" x="475" y="8" height="128" width="329" html.valueishtml="0"  name=armo_numero_t visible="1"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="134217747" )
+text(band=header alignment="0" text=" data
+" border="0" color="33554432" x="814" y="8" height="128" width="302" html.valueishtml="0"  name=armo_data_t visible="1"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="134217747" )
+text(band=header alignment="0" text=" descrizione
+ " border="0" color="33554432" x="1125" y="8" height="128" width="809" html.valueishtml="0"  name=armo_des_1_t visible="1"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="134217747" )
+text(band=header alignment="0" text=" Convalid.
+ il" border="0" color="33554432" x="2377" y="8" height="128" width="311" html.valueishtml="0"  name=meca_convalidato_t visible="1"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="134217747" )
+text(band=header alignment="0" text=" anagrafica
+" border="0" color="33554432" x="2702" y="8" height="128" width="837" html.valueishtml="0"  name=meca_cliente_t visible="1"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="134217747" )
+text(band=header alignment="0" text=" colli
+" border="0" color="33554432" x="1943" y="8" height="128" width="174" html.valueishtml="0"  name=armo_colli_t visible="1"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="134217747" )
+text(band=header alignment="0" text=" Pedane
+ " border="0" color="33554432" x="2126" y="8" height="128" width="242" html.valueishtml="0"  name=armo_pedane_t visible="1"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="134217747" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )

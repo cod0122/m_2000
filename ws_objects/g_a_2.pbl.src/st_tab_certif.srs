@@ -1,0 +1,30 @@
+﻿$PBExportHeader$st_tab_certif.srs
+global type st_tab_certif from structure
+	st_tab_g_0		st_tab_g_0
+	long		id
+	long		num_certif
+	date		data
+	date		data_stampa
+	time		ora_stampa		descriptor "comment" = "ora di stampa"
+	long		id_meca
+	long		id_docprod		descriptor "comment" = "id in tabella documenti esportati (archiviati in pdf) "
+	integer		clie_2
+	integer		colli
+	double		dose
+	double		dose_min
+	double		dose_max
+	date		lav_data_ini
+	date		lav_data_fin
+	string		st_dose_min
+	string		st_dose_max
+	string		st_data_ini
+	string		st_data_fin
+	string		st_dati_bolla_in
+	string		note
+	string		note_1
+	string		note_2
+	string		form_di_stampa
+	datetime		x_datins
+	string		x_utente
+end type
+

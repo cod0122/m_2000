@@ -1,0 +1,14 @@
+﻿$PBExportHeader$st_tab_dosimpos.srs
+global type st_tab_dosimpos from structure
+	st_tab_g_0		st_tab_g_0
+	long		id_dosimpos
+	character		codice		descriptor "comment" = "codice da passare al PILOTA"
+	string		descr		descriptor "comment" = "prima riga note posizione dosimetro su barcode"
+	string		descr1		descriptor "comment" = "seconda riga note "
+	integer		posxcm		descriptor "comment" = "distanza orizzontale in cm dal lato sinistro"
+	integer		posycm		descriptor "comment" = "distanza verticale in cm dal lato basso"
+	integer		poszcm		descriptor "comment" = "profondità in cm"
+	datetime		x_datins
+	string		x_utente
+end type
+

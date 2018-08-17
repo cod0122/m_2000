@@ -1,0 +1,17 @@
+﻿$PBExportHeader$st_tab_pilota_cmd.srs
+global type st_tab_pilota_cmd from structure
+	st_tab_g_0		st_tab_g_0
+	integer		num_rich
+	datetime		data_ins
+	integer		tipo
+	integer		pl_barcode_codice
+	string		path
+	string		pfile		descriptor "comment" = "in informix era solo 'file'"
+	string		stato
+	string		utente
+	string		prima_del_barcode
+	string		path_file_pl_barcode
+	datetime		data_inizio
+	datetime		data_fine
+end type
+

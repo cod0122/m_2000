@@ -1,0 +1,34 @@
+﻿$PBExportHeader$fg_messagebox.srf
+global type fg_messagebox from function_object
+end type
+
+forward prototypes
+global function integer fg_messagebox (string k_titolo, string k_msg, any k_icona, any k_button, integer k_default)
+end prototypes
+
+global function integer fg_messagebox (string k_titolo, string k_msg, any k_icona, any k_button, integer k_default);//
+//--- La messagebox di sistema viene chiamata solo da qua
+//
+pointer kpointer_orig
+integer k_rc
+
+if isnull(k_titolo) then k_icona =  Information! 
+if isnull(k_msg) then k_icona =  Information! 
+if isnull(k_icona) then k_icona =  Information! 
+if isnull(k_default) then k_default = 1
+
+beep(1)
+kpointer_orig = setpointer (arrow!)
+
+if isnull(k_button) then 
+	k_rc = messagebox(k_titolo, k_msg, k_icona)
+else
+	k_rc = messagebox(k_titolo, k_msg, k_icona, k_button, k_default)
+end if
+
+setpointer (kpointer_orig)
+
+return k_rc
+
+end function
+

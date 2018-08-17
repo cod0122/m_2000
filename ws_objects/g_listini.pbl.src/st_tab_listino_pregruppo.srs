@@ -1,0 +1,10 @@
+﻿$PBExportHeader$st_tab_listino_pregruppo.srs
+global type st_tab_listino_pregruppo from structure
+	st_tab_g_0		st_tab_g_0
+	long		id_listino_pregruppo
+	string		descr
+	string		id_listino_pregruppo_link		descriptor "comment" = "possibilità di associare un altro gruppo di prezzi a questo"
+	datetime		x_datins
+	string		x_utente
+end type
+

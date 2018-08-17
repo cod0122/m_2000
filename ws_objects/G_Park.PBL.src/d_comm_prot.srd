@@ -1,0 +1,45 @@
+﻿$PBExportHeader$d_comm_prot.srd
+release 5;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 97 print.margin.bottom = 97 print.paper.source = 0 print.paper.size = 0 print.prompt=no grid.lines=0 )
+header(height=73 color="-1" )
+summary(height=1 color="-1" )
+footer(height=65 color="-1" )
+detail(height=73 color="-1" )
+table(column=(type=char(15) updatewhereclause=yes name=tipo dbname="protocolli.tipo" )
+ column=(type=char(10) updatewhereclause=yes name=nro_protocollo dbname="protocolli.nro_protocollo" )
+ column=(type=datetime updatewhereclause=yes name=data dbname="protocolli.data" )
+ column=(type=char(30) updatewhereclause=yes name=descrizione dbname="protocolli.descrizione" )
+ column=(type=long update=yes updatewhereclause=yes name=id_commessa dbname="protocolli.id_commessa" values="	0/	0" )
+ column=(type=long updatewhereclause=yes key=yes name=id_protocollo dbname="protocolli.id_protocollo" values="	1/	0" )
+ column=(type=char(35) updatewhereclause=yes name=clienti_rag_soc_1 dbname="clienti.rag_soc_1" )
+ retrieve="	  SELECT ~"protocolli~".~"tipo~",   
+				~"protocolli~".~"nro_protocollo~",   
+				~"protocolli~".~"data~",   
+				~"protocolli~".~"descrizione~",   
+				~"protocolli~".~"id_commessa~",   
+				~"protocolli~".~"id_protocollo~",   
+				~"clienti~".~"rag_soc_1~"  
+		 FROM {oj ~"protocolli~"  LEFT OUTER JOIN ~"clienti~"  ON 
+             ~"protocolli~".~"id_cliente_d~" = ~"clienti~".~"id_cliente~"}  
+		WHERE (~"protocolli~".~"id_cliente~" = :k_id_cliente ) AND  
+				(~"protocolli~".~"id_commessa~" = :k_id_commessa  OR
+  				 (:k_altri = 1 and  
+				  (~"protocolli~".~"id_commessa~" = 0 OR  
+				   ~"protocolli~".~"id_commessa~" is null)))
+	ORDER BY ~"protocolli~".~"id_commessa~" DESC,   
+				~"protocolli~".~"data~" DESC,   
+				~"protocolli~".~"nro_protocollo~" DESC   
+" update="protocolli" updatewhere=0 updatekeyinplace=no arguments=(("k_id_commessa", number),("k_id_cliente", number),("k_altri", number)) )
+text(band=header alignment="2" text="Protocollo"border="0" color="0" x="101" y="8" height="61" width="289"  name=nro_protocollo_t  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Data"border="0" color="0" x="398" y="8" height="61" width="316"  name=data_t  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Descrizione"border="0" color="0" x="1089" y="8" height="61" width="1093"  name=descrizione_t  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Redatto da"border="0" color="0" x="2190" y="8" height="61" width="1372"  name=clienti_rag_soc_1_t  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Tipo"border="0" color="0" x="723" y="8" height="61" width="357"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="OK"border="0" color="0" x="10" y="8" height="57" width="83"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=2 alignment="2" tabsequence=32766 border="0" color="0" x="101" y="4" height="65" width="289" format="[general]"  name=nro_protocollo edit.limit=10 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="2" tabsequence=32766 border="0" color="0" x="398" y="4" height="65" width="316" format="[general]"  name=data edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="0" color="0" x="723" y="4" height="65" width="357" format="[general]"  name=tipo edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="0" color="0" x="1089" y="4" height="65" width="1093" format="[general]"  name=descrizione edit.limit=30 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="0" tabsequence=32766 border="0" color="0" x="2190" y="4" height="65" width="1372" format="[general]"  name=clienti_rag_soc_1 edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="2" tabsequence=10 border="0" color="0" x="10" y="12" height="61" width="83" format="[general]"  name=id_commessa checkbox.text="" checkbox.on="0" checkbox.off="0" checkbox.scale=no checkbox.threed=yes  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=footer alignment="0" expression="'n.'+count(nro_protocollo for all)"border="0" color="8388736" x="101" y="4" height="57" width="289" format="[general]"  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="553648127" )

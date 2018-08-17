@@ -1,0 +1,16 @@
+﻿$PBExportHeader$st_log_msg_xml.srs
+global type st_log_msg_xml from structure
+	string		i_id		descriptor "comment" = "istanza id"
+	string		i_data		descriptor "comment" = "istanza data ora"
+	string		i_m2000		descriptor "comment" = "release di M2000"
+	string		m_tipo		descriptor "comment" = "W=waning/A=allert"
+	string		nomepc
+	string		u_id		descriptor "comment" = "utente id"
+	string		utente
+	string		segnalazione
+	string		oggetto		descriptor "comment" = "nome oggetto visuale"
+	string		esito
+	string		e_cod		descriptor "comment" = "codice esito"
+	string		s_sqlcode		descriptor "comment" = "attributo di segnalazione"
+end type
+

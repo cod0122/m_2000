@@ -1,0 +1,11 @@
+﻿$PBExportHeader$st_esito.srs
+global type st_esito from structure
+	string		esito
+	long		sqlcode
+	string		sqlerrtext
+	st_tab_g_0		st_tab_g_0
+	string		nome_oggetto
+	boolean		scrivi_log
+	string		descrizione		descriptor "comment" = "descrizione del tipo esito"
+end type
+

@@ -1,0 +1,10 @@
+﻿$PBExportHeader$st_tab_iva.srs
+global type st_tab_iva from structure
+	integer		codice
+	string		des
+	integer		aliq
+	string		fatt_norme_bolli		descriptor "comment" = "S=espone in fattura le norme sui bolli quando supera l'importo messo in tab AZIENDA (BASE_FATT)"
+	string		f_splitpayment		descriptor "comment" = "S=applica lo SPLIT PAYMENT: Come chiarito dall’Agenzia delle Entrate, nella circolare 9 febbraio 2015, n. 1E, il meccanismo si applica alle cessioni di beni e alle prestazioni di servizi effettuate nel territorio dello Stato, nei confronti delle PA"
+	string		natura		descriptor "comment" = "N1 escluse ex art.15; N2 non soggette; N3 non imponibili; N4 esenti; N5 regime; del margine; N6 inversione contabile (reverse charge);"
+end type
+

@@ -1,0 +1,12 @@
+﻿$PBExportHeader$st_tab_pilota_queue.srs
+global type st_tab_pilota_queue from structure
+	string		barcode
+	long		ordine
+	string		posizione
+	integer		ciclifila1
+	integer		ciclifila1p
+	integer		ciclifila2
+	integer		ciclifila2p
+	string		nn
+end type
+

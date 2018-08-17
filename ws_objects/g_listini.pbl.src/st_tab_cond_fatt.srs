@@ -1,0 +1,17 @@
+﻿$PBExportHeader$st_tab_cond_fatt.srs
+global type st_tab_cond_fatt from structure
+	st_tab_g_0		st_tab_g_0
+	long		id
+	long 		cod_cli
+	string		descr
+	string		ipotesi_1
+	string		segno_1
+	string		valore_1
+	string		ipotesi_2
+	string		segno_2
+	string		valore_2
+	string		ipotesi_3
+	string		segno_3
+	string		valore_3
+end type
+

@@ -1,0 +1,43 @@
+﻿$PBExportHeader$d_cbarre_l.srd
+release 6;
+datawindow(units=0 timer_interval=0 color=16777215 processing=1 print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no grid.lines=0 )
+header(height=56 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=60 color="536870912" )
+detail(height=68 color="536870912" )
+table(column=(type=long update=yes updatewhereclause=yes name=num_int dbname="cbarre.num_int" )
+ column=(type=datetime update=yes updatewhereclause=yes name=data_int dbname="cbarre.data_int" )
+ column=(type=char(13) update=yes updatewhereclause=yes key=yes name=c_barre dbname="cbarre.c_barre" )
+ column=(type=datetime updatewhereclause=yes name=data dbname="cbarre.data" )
+ column=(type=char(13) update=yes updatewhereclause=yes name=c_barre_lav dbname="cbarre.c_barre_lav" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=stato dbname="cbarre.stato" values="Disattivato	0/Da Trattare	1/In Lavorazione	4/Trattato	7/" )
+ retrieve="  SELECT cbarre.num_int,   
+         cbarre.data_int,   
+         cbarre.c_barre,   
+         cbarre.data,   
+         cbarre.c_barre_lav,   
+         cbarre.stato  
+    FROM cbarre   
+    where (num_int = :k_num_int or
+           :k_num_int = 0)
+          and (year(data_int) = year(:k_data_int) 
+               or :k_data_int is null)
+    order by 
+         cbarre.num_int,   
+         cbarre.data_int,   
+         cbarre.c_barre 
+ " update="cbarre" updatewhere=1 updatekeyinplace=no arguments=(("k_num_int", number),("k_data_int", date)) )
+compute(band=footer alignment="0" expression="'Presenti : ' + count(  c_barre for all ) "border="0" color="8388736" x="9" y="0" height="64" width="343" format="[general]"  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=header alignment="2" text="Stato"border="0" color="0" x="1746" y="4" height="56" width="352"  name=stato_t  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="10789024" )
+text(band=header alignment="2" text="Riferimento"border="0" color="0" x="9" y="4" height="56" width="343"  name=num_int_t  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="10789024" )
+text(band=header alignment="2" text="Data rif."border="0" color="0" x="361" y="4" height="56" width="306"  name=data_int_t  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="10789024" )
+text(band=header alignment="2" text="Cod. Barre"border="0" color="0" x="677" y="4" height="56" width="366"  name=c_barre_t  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="10789024" )
+text(band=header alignment="2" text="Data"border="0" color="0" x="1051" y="4" height="56" width="320"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="10789024" )
+text(band=header alignment="2" text="Lavoraz"border="0" color="0" x="1381" y="4" height="56" width="357"  name=c_barre_lav_t  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="10789024" )
+column(band=detail id=1 alignment="1" tabsequence=32766 border="0" color="0" x="9" y="0" height="64" width="343" format="[general]"  name=num_int edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=2 alignment="2" tabsequence=32766 border="0" color="0" x="361" y="0" height="64" width="306" format="[shortdate] "  name=data_int edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="2" tabsequence=32766 border="0" color="0" x="677" y="0" height="64" width="366" format="[general]"  name=c_barre edit.limit=13 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="2" tabsequence=32766 border="0" color="0" x="1051" y="0" height="64" width="320" format="dd-mm-yy"  name=data edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="2" tabsequence=32766 border="0" color="0" x="1381" y="0" height="64" width="357" format="[general]"  name=c_barre_lav edit.limit=13 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="2" tabsequence=32766 border="0" color="0" x="1746" y="0" height="64" width="352" format="[general]"  name=stato ddlb.limit=0 ddlb.allowedit=no ddlb.case=any  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+htmltable(border="1" cellpadding="0" cellspacing="0" generatecss="no" nowrap="yes")

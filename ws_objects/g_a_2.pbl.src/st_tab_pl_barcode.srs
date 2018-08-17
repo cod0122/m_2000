@@ -1,0 +1,18 @@
+﻿$PBExportHeader$st_tab_pl_barcode.srs
+global type st_tab_pl_barcode from structure
+	st_tab_g_0		st_tab_g_0
+	long		codice
+	date		data
+	string		note_1
+	string		note_2
+	date		data_chiuso
+	date		data_sosp
+	string		path_file_pilota
+	string		stato
+	string		priorita
+	string		prima_del_barcode
+	long		pilota_cmd_num_rich		descriptor "comment" = "numero richiesta registrata in tab PILOTA_CMD"
+	datetime		x_datins
+	string		x_utente
+end type
+

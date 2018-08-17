@@ -1,0 +1,15 @@
+﻿$PBExportHeader$st_clienti_esenzione_iva.srs
+global type st_clienti_esenzione_iva from structure
+	string		esito		descriptor "comment" = "0=ESENTE,1=NO Esente,2=esenzione scaduta,3=superato importo max"
+	long		id_cliente
+	long		id_fattura
+	date		data_fatt
+	integer		iva		descriptor "comment" = "codice IVA"
+	double		importo_t		descriptor "comment" = "imponibile della fattura "
+	date		iva_valida_dal		descriptor "comment" = "validita' dell'esenzione"
+	date		iva_valida_al		descriptor "comment" = "validita' dell'esenzione"
+	double		iva_esente_imp_max		descriptor "comment" = "Importo Totale fatture x periodo massimo oltre il quale scade l'esenzione "
+	double		iva_esente_imp_min_x_fatt		descriptor "comment" = "Importo minimo fattura da cui scatta l'esenzione"
+	double		importo		descriptor "comment" = "tot fatturato con esenzione"
+end type
+

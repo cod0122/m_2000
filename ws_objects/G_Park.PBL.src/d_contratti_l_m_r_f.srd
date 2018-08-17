@@ -1,0 +1,83 @@
+﻿$PBExportHeader$d_contratti_l_m_r_f.srd
+release 6;
+datawindow(units=0 timer_interval=0 color=16777215 processing=1 print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no grid.lines=0 )
+header(height=68 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=52 color="536870912" )
+detail(height=64 color="536870912" )
+table(column=(type=long updatewhereclause=yes name=codice dbname="codice" )
+ column=(type=char(12) updatewhereclause=yes name=mc_co dbname="mc_co" )
+ column=(type=datetime updatewhereclause=yes name=data dbname="data" )
+ column=(type=datetime updatewhereclause=yes name=data_scad dbname="data_scad" )
+ column=(type=char(30) updatewhereclause=yes name=rag_soc_10 dbname="rag_soc_10" )
+ column=(type=long updatewhereclause=yes name=cod_cli dbname="cod_cli" )
+ column=(type=char(12) updatewhereclause=yes name=sc_cf dbname="sc_cf" )
+ column=(type=char(12) updatewhereclause=yes name=sl_pt dbname="sl_pt" )
+ column=(type=char(50) updatewhereclause=yes name=descr dbname="descr" )
+ column=(type=char(1) updatewhereclause=yes name=cert_st_dose_min dbname="cert_st_dose_min" values="No	 /No	N/In Certificato	S/" )
+ column=(type=char(1) updatewhereclause=yes name=cert_st_dose_max dbname="cert_st_dose_max" values="No	 /No	N/In Certificato	S/" )
+ column=(type=char(1) updatewhereclause=yes name=cert_st_data_ini dbname="cert_st_data_ini" values="No	 /No	N/In Certificato	S/" )
+ column=(type=char(1) updatewhereclause=yes name=cert_st_data_fin dbname="cert_st_data_fin" values="No	 /No	N/In Certificato	S/" )
+ retrieve="  SELECT distinct
+         contratti.codice,   
+         contratti.mc_co,   
+         contratti.data,   
+         contratti.data_scad,   
+         clienti.rag_soc_10,
+         contratti.cod_cli,   
+         contratti.sc_cf,   
+         contratti.sl_pt,   
+         contratti.descr,   
+         contratti.cert_st_dose_min,   
+         contratti.cert_st_dose_max,   
+         contratti.cert_st_data_ini,   
+         contratti.cert_st_data_fin 
+    from contratti left outer join clienti on 
+         contratti.cod_cli = clienti.codice 
+    where (contratti.mc_co = :k_mc_co or :k_mc_co = '*')
+          and
+          (contratti.cod_cli = :k_id_clie or :k_id_clie = 0 or
+           exists 
+          	(select clie_1
+            	 from m_r_f
+             	where (m_r_f.clie_1 = :k_id_clie  
+						  or m_r_f.clie_2 = :k_id_clie  
+						  or m_r_f.clie_3 = :k_id_clie)  
+                   and 
+                   (m_r_f.clie_1 = contratti.cod_cli
+                    or m_r_f.clie_2 = contratti.cod_cli 
+                    or m_r_f.clie_3 = contratti.cod_cli)
+           	)
+			 )
+              
+    order by clienti.rag_soc_10, contratti.mc_co
+
+          " arguments=(("k_id_clie", number),("k_mc_co", string)) )
+text(band=header alignment="2" text="MC-CO"border="0" color="0" x="155" y="8" height="56" width="306"  name=mc_co_t  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+text(band=header alignment="2" text="Cod."border="0" color="0" x="9" y="8" height="56" width="137"  name=codice_t  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="0" color="0" x="9" y="4" height="56" width="137" format="#####"  name=codice edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="SC-CF"border="0" color="0" x="471" y="8" height="56" width="311"  name=sc_cf_t  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+text(band=header alignment="2" text="SL-PT"border="0" color="0" x="791" y="8" height="56" width="302"  name=sl_pt_t  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+text(band=header alignment="2" text="Decorrenza"border="0" color="0" x="1097" y="8" height="56" width="306"  name=data_t  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+text(band=header alignment="2" text="Scadenza"border="0" color="0" x="1413" y="8" height="56" width="334"  name=data_scad_t  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+text(band=header alignment="2" text="Cliente"border="0" color="0" x="1751" y="8" height="56" width="201"  name=cod_cli_t  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+text(band=header alignment="2" text="Ragione Sociale"border="0" color="0" x="1961" y="8" height="56" width="800"  name=rag_soc_10_t  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+text(band=header alignment="2" text="Descrizione"border="0" color="0" x="2770" y="8" height="56" width="846"  name=descr_t  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+text(band=header alignment="2" text="St.Dose min"border="0" color="0" x="3625" y="8" height="56" width="297"  name=cert_st_dose_min_t  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+text(band=header alignment="2" text="St.Dose Max"border="0" color="0" x="3931" y="8" height="56" width="302"  name=cert_st_dose_max_t  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+text(band=header alignment="2" text="St.Data Ini"border="0" color="0" x="4242" y="8" height="56" width="283"  name=cert_st_data_ini_t  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+text(band=header alignment="2" text="St.Data Fin"border="0" color="0" x="4535" y="8" height="56" width="297"  name=cert_st_data_fin_t  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+column(band=detail id=6 alignment="1" tabsequence=32766 border="0" color="0" x="1751" y="4" height="56" width="201" format="[general]"  name=cod_cli edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=9 alignment="0" tabsequence=32766 border="0" color="0" x="2770" y="4" height="56" width="846" format="[general]"  name=descr edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=10 alignment="2" tabsequence=32766 border="0" color="0" x="3625" y="4" height="56" width="297" format="[general]"  name=cert_st_dose_min ddlb.limit=0 ddlb.allowedit=no ddlb.case=any  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=11 alignment="2" tabsequence=32766 border="0" color="0" x="3931" y="4" height="56" width="302" format="[general]"  name=cert_st_dose_max ddlb.limit=0 ddlb.allowedit=no ddlb.case=any  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=12 alignment="2" tabsequence=32766 border="0" color="0" x="4242" y="4" height="56" width="283" format="[general]"  name=cert_st_data_ini ddlb.limit=0 ddlb.allowedit=no ddlb.case=any  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=13 alignment="2" tabsequence=32766 border="0" color="0" x="4535" y="4" height="56" width="297" format="[general]"  name=cert_st_data_fin ddlb.limit=0 ddlb.allowedit=no ddlb.case=any  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=2 alignment="2" tabsequence=32766 border="0" color="0" x="155" y="4" height="56" width="306" format="[general]"  name=mc_co edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="2" tabsequence=32766 border="0" color="0" x="471" y="4" height="56" width="311" format="[general]"  name=sc_cf edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=8 alignment="2" tabsequence=0 border="0" color="0" x="795" y="4" height="56" width="297"  name=sl_pt  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=3 alignment="2" tabsequence=32766 border="0" color="0" x="1097" y="4" height="56" width="306" format="dd-mm-yy"  name=data edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=4 alignment="2" tabsequence=0 border="0" color="0" x="1417" y="4" height="56" width="329" format="[shortdate]"  name=data_scad edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=5 alignment="0" tabsequence=32766 border="0" color="0" x="1961" y="4" height="56" width="800" format="[general]"  name=rag_soc_10 edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+compute(band=footer alignment="0" expression="  'Presenti : ' + count(     mc_co for all )  "border="0" color="8388736" x="1961" y="0" height="56" width="800" format="[general]"  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+htmltable(border="1" cellpadding="0" cellspacing="0" generatecss="no" nowrap="yes")

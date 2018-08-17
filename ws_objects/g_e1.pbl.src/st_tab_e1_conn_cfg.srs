@@ -1,0 +1,23 @@
+﻿$PBExportHeader$st_tab_e1_conn_cfg.srs
+global type st_tab_e1_conn_cfg from structure
+	st_tab_g_0		st_tab_g_0
+	integer		codice		descriptor "comment" = "codice (1=default)"
+	string		blocca_conn		descriptor "comment" = "blocca le connessione S=blocca"
+	string		schema_nome		descriptor "comment" = "nome dello schema che va anteposto al nome tabella 'PRODDTA'"
+	string		cfg_dbms		descriptor "comment" = "configurazione DB E-ONE"
+	string		cfg_autocommit		descriptor "comment" = "configurazione DB E-ONE"
+	string		cfg_dbparm		descriptor "comment" = "configurazione DB E-ONE"
+	string		cfg_servername		descriptor "comment" = "configurazione DB E-ONE - Nome del Server"
+	string		cfg_utente		descriptor "comment" = "configurazione DB E-ONE"
+	string		cfg_pwd		descriptor "comment" = "configurazione DB E-ONE"
+	string		cfg_dbms_alt		descriptor "comment" = "configurazione alternativa DB E-ONE"
+	string		cfg_autocommit_alt		descriptor "comment" = "configurazione alternativa DB E-ONE"
+	string		cfg_dbparm_alt		descriptor "comment" = "configurazione alternativa DB E-ONE"
+	string		cfg_servername_alt		descriptor "comment" = "configurazione alternativa DB E-ONE - Nome del Server"
+	string		cfg_utente_alt		descriptor "comment" = "configurazione alternativa DB E-ONE"
+	string		cfg_pwd_alt		descriptor "comment" = "configurazione alternativa DB E-ONE"
+	string		cfg_dbms_scelta		descriptor "comment" = "scelta della configurazione 1 = la prima, 2=quella alternativa "
+	datetime		x_datins		descriptor "comment" = "ultimo aggiornamento "
+	string		x_utente		descriptor "comment" = "ultimo aggiornamento "
+end type
+

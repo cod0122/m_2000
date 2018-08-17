@@ -1,0 +1,8 @@
+﻿$PBExportHeader$st_wm_pklist.srs
+global type st_wm_pklist from structure
+	st_tab_wm_pklist		st_tab_wm_pklist		descriptor "comment" = "testata del Packing-List Mandante"
+	st_tab_wm_pklist_righe		st_tab_wm_pklist_righe[]		descriptor "comment" = "righe del Packing-List"
+	st_tab_wm_pklist_cfg		st_tab_wm_pklist_cfg		descriptor "comment" = "configurazione scambio file con il WM"
+	st_wm_pkl_web		st_wm_pkl_web		descriptor "comment" = "campi del pkl web"
+end type
+

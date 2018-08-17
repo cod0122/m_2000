@@ -1,0 +1,6 @@
+﻿$PBExportHeader$st_web.srs
+global type st_web from structure
+	string		email		descriptor "comment" = "indirizzo e-mail"
+	string		url		descriptor "comment" = "indirizzo URL"
+end type
+

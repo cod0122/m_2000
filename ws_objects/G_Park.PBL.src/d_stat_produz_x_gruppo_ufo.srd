@@ -1,0 +1,92 @@
+﻿$PBExportHeader$d_stat_produz_x_gruppo_ufo.srd
+release 9;
+datawindow(units=3 timer_interval=0 color=1073741824 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 238 print.margin.right = 238 print.margin.top = 635 print.margin.bottom = 635 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no grid.lines=0 )
+header(height=1084 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=978 color="536870912" )
+detail(height=555 color="536870912" )
+table(column=(type=long updatewhereclause=yes name=gruppo dbname="vx_mast2_stat_artr.gruppo" )
+ column=(type=char(40) updatewhereclause=yes name=gru_des dbname="gru.des" )
+ column=(type=long updatewhereclause=yes name=colli_trattati dbname="colli_trattati" )
+ column=(type=decimal(4) updatewhereclause=yes name=m_cubi dbname="m_cubi" )
+ column=(type=decimal(2) updatewhereclause=yes name=giri_f1_pl dbname="giri_f1_pl" )
+ column=(type=decimal(2) updatewhereclause=yes name=giri_f1_lav dbname="giri_f1_lav" )
+ column=(type=decimal(2) updatewhereclause=yes name=giri_f2_pl dbname="giri_f2_pl" )
+ column=(type=decimal(2) updatewhereclause=yes name=giri_f2_lav dbname="giri_f2_lav" )
+ column=(type=decimal(2) updatewhereclause=yes name=pedane dbname="pedane" )
+ column=(type=decimal(4) updatewhereclause=yes name=imp_periodo dbname="imp_periodo" )
+ column=(type=decimal(4) updatewhereclause=yes name=imp_fatt dbname="imp_fatt" )
+ column=(type=decimal(4) updatewhereclause=yes name=imp_da_fatt dbname="imp_da_fatt" )
+ column=(type=decimal(0) updatewhereclause=yes name=colli_fatt dbname="colli_fatt" )
+ column=(type=decimal(0) updatewhereclause=yes name=colli_da_fatt dbname="colli_da_fatt" )
+ retrieve="  SELECT a.gruppo as gruppo,   
+         gru.des,   
+         (a.colli_trattati) as colli_trattati,   
+         (a.m_cubi) as m_cubi,   
+         (a.giri_f1_pl) as giri_f1_pl,   
+         (a.giri_f1_lav) as giri_f1_lav,   
+         (a.giri_f2_pl)  as giri_f2_pl,   
+         (a.giri_f2_lav) as giri_f2_lav,   
+         (a.pedane) as pedane,  
+         sum(i.imp_x_collo * i.colli_periodo )  as imp_periodo,
+         sum(i.imp_x_collo * i.colli_fatt)           as imp_fatt,
+         sum(i.imp_x_collo * i.colli_da_fatt)        as imp_da_fatt, 
+         sum(i.colli_fatt)       as colli_fatt,
+         sum(i.colli_da_fatt)      as colli_da_fatt 
+    FROM vx_MAST2_stat_artr as a    
+                LEFT OUTER JOIN vx_MAST2_stat_imp1 as i ON 
+         a.gruppo = i.gruppo   
+                LEFT OUTER JOIN gru ON 
+         a.gruppo = gru.codice   
+group by 1,2,3,4,5,6,7,8,9
+"  sort="gruppo A " )
+text(band=header alignment="0" text=" Prezzo M.
+ a giro
+ " border="0" color="33554432" x="23415" y="132" height="793" width="1561" html.valueishtml="0"  name=prezzo_medio_t visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="0" text=" Gruppo" border="0" color="33554432" x="52" y="132" height="793" width="1164" html.valueishtml="0"  name=a_gruppo_t visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="0" text=" Mt.Cubi" border="0" color="33554432" x="9260" y="132" height="793" width="1772" html.valueishtml="0"  name=m_cubi_t visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="0" text=" Descrizione" border="0" color="33554432" x="1270" y="132" height="793" width="5053" html.valueishtml="0"  name=gru_des_t visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="0" text=" Giri Fila 1
+ Reali" border="0" color="33554432" x="11086" y="132" height="793" width="1772" html.valueishtml="0"  name=giri_f1_lav_t visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="0" text=" Giri Fila 2
+ Reali" border="0" color="33554432" x="12911" y="132" height="793" width="1746" html.valueishtml="0"  name=giri_f2_lav_t visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="0" text=" Colli" border="0" color="33554432" x="6376" y="132" height="396" width="1243" html.valueishtml="0"  name=colli_trattati_t visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="0" text=" Pedane" border="0" color="33554432" x="7672" y="132" height="423" width="1534" html.valueishtml="0"  name=pedane_t visible="1"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="0" text=" Importo
+ Periodo" border="0" color="33554432" x="14710" y="132" height="793" width="2487" html.valueishtml="0"  name=imp_periodo_t visible="1"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="0" text=" Importo
+ Fatturato" border="0" color="33554432" x="17250" y="132" height="793" width="2196" html.valueishtml="0"  name=imp_fatt_t visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="0" text=" Importo da
+ Fatturare" border="0" color="33554432" x="19499" y="132" height="793" width="2248" html.valueishtml="0"  name=imp_da_fatt_t visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="0" text=" Colli da 
+ Fatturare" border="0" color="33554432" x="21801" y="132" height="793" width="1561" html.valueishtml="0"  name=colli_da_fatt_t visible="1"  font.face="Arial" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="1" tabsequence=32766 border="0" color="33554432" x="9260" y="53" height="502" width="1772" format="#,###,##0.00 ~tif (  m_cubi > 0, '###,###,##0.00 ', '# ')" html.valueishtml="0"  name=m_cubi visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="1" tabsequence=32766 border="0" color="33554432" x="11086" y="53" height="502" width="1772" format="###,###,### ~tif (    giri_f1_lav > 0, '###,###,##0.0 ', '# ')" html.valueishtml="0"  name=giri_f1_lav visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="33554432" x="1270" y="53" height="502" width="5053" format=" [General]" html.valueishtml="0"  name=gru_des visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=1 alignment="1" tabsequence=32766 border="0" color="16711680" x="52" y="53" height="502" width="1164" format="[General] " html.valueishtml="0"  name=gruppo pointer="HyperLink!" visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" font.underline="1" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="1" tabsequence=32766 border="0" color="33554432" x="6376" y="53" height="502" width="1243" format="###,###,### " html.valueishtml="0"  name=colli_trattati visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=9 alignment="1" tabsequence=32766 border="0" color="33554432" x="7672" y="53" height="502" width="1534" format="~tif (   pedane > 0, '###,###,##0.00 ', '# ')" html.valueishtml="0"  name=pedane visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="1" tabsequence=32766 border="0" color="33554432" x="12911" y="53" height="502" width="1746" format="###,###,### ~tif (    giri_f2_lav > 0, '###,###,##0.0 ', '# ')" html.valueishtml="0"  name=giri_f2_lav visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=10 alignment="1" tabsequence=32766 border="0" color="33554432" x="14710" y="53" height="502" width="2487" format="~tif (   imp_periodo > 0, '###,###,##0.00 ',  '# ')" html.valueishtml="0"  name=imp_periodo visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=11 alignment="1" tabsequence=32766 border="0" color="33554432" x="17250" y="53" height="502" width="2196" format="###,###,##0.00 ~tif (  imp_fatt > 0, '###,###,##0.00 ',  '# ')" html.valueishtml="0"  name=imp_fatt visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=12 alignment="1" tabsequence=32766 border="0" color="33554432" x="19499" y="53" height="502" width="2248" format="###,###,##0.00 ~tif ( imp_da_fatt > 0, '###,###,##0.00 ', '# ')" html.valueishtml="0"  name=imp_da_fatt visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=14 alignment="1" tabsequence=32766 border="0" color="33554432" x="21801" y="53" height="502" width="1561" format="~tif (  colli_da_fatt > 0, '###,###,##0 ', '# ')" html.valueishtml="0"  name=colli_da_fatt visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression="(  imp_periodo ) / (giri_f1_lav + giri_f2_lav )"border="0" color="33554432" x="23415" y="53" height="502" width="1561" format="[GENERAL]~tif (  ( ( imp_fatt + imp_da_fatt) > 0) and somma_giri  > 0, '###,###,##0.00 ', '# ')" html.valueishtml="0"  name=prezzo_medio visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=summary alignment="1" expression="sum( imp_periodo for all)"border="0" color="128" x="12911" y="370" height="370" width="1746" format="###,###,##0.00 " html.valueishtml="0"  name=compute_10 visible="1"  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=footer alignment="0" expression="'nr.:' + string(count  (#1 for all), ~" #,###0~") + ~" ~""border="0" color="128" x="52" y="26" height="423" width="1164" format="[GENERAL]" html.valueishtml="0"  name=compute_12 visible="1"  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=footer alignment="1" expression="sum(imp_fatt for all)"border="0" color="128" x="17250" y="26" height="423" width="2196" format="###,###,##0.00 " html.valueishtml="0"  name=compute_2 visible="1"  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=footer alignment="1" expression="sum(m_cubi for all)"border="0" color="128" x="9260" y="26" height="423" width="1772" format="#,###,##0.00 " html.valueishtml="0"  name=compute_4 visible="1"  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=footer alignment="1" expression="sum(colli_trattati for all)"border="0" color="128" x="6376" y="26" height="423" width="1243" format="###,###,##0 " html.valueishtml="0"  name=compute_3 visible="1"  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=footer alignment="1" expression=" sum( pedane  for all)"border="0" color="128" x="7672" y="26" height="423" width="1534" format="#,###,##0.0 " html.valueishtml="0"  name=compute_1 visible="1"  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=footer alignment="1" expression="sum(imp_fatt for all) + sum(  imp_da_fatt for all)"border="0" color="128" x="19499" y="502" height="423" width="2248" format="###,###,##0.00 " html.valueishtml="0"  name=compute_9 visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=footer alignment="1" expression="sum(imp_da_fatt for all)"border="0" color="128" x="19499" y="26" height="423" width="2248" format="###,###,##0.00 " html.valueishtml="0"  name=compute_11 visible="1"  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=footer alignment="1" expression="sum(   colli_da_fatt for all)"border="0" color="128" x="21801" y="26" height="423" width="1561" format="[GENERAL]" html.valueishtml="0"  name=compute_5 visible="1"  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=footer alignment="1" expression="/*  (sum( imp_fatt for all)  + sum(imp_da_fatt for all)) / sum(somma_giri  for all) */"border="0" color="128" x="23415" y="26" height="423" width="1561" format="###,###,##0.00 " html.valueishtml="0"  name=compute_6 visible="1"  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=footer alignment="1" expression="sum(giri_f1_lav for all)"border="0" color="128" x="11086" y="26" height="423" width="1772" format="###,###,##0.0 " html.valueishtml="0"  name=compute_8 visible="1"  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=footer alignment="1" expression="sum(giri_f2_lav for all)"border="0" color="128" x="12911" y="26" height="423" width="1746" format="###,###,##0.0 " html.valueishtml="0"  name=compute_7 visible="1"  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=footer alignment="1" expression="sum( imp_periodo for all)"border="0" color="128" x="14710" y="26" height="370" width="2487" format="###,###,##0.00 " html.valueishtml="0"  name=compute_13 visible="1"  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )

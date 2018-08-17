@@ -1,0 +1,7 @@
+﻿$PBExportHeader$st_web_pubblica.srs
+global type st_web_pubblica from structure
+	boolean		k_aggiorna_web_utenti		descriptor "comment" = "TRUE=Dopo pubblicazione Utenti in tab esterna  aggiorna la tabella web_utenti"
+	boolean		k_pubblica_web_ruoli		descriptor "comment" = "TRUE=carica anche al tabella RUOLI"
+	boolean		k_pubblica_web_folder		descriptor "comment" = "TRUE=carica anche tabella FOLDER"
+end type
+

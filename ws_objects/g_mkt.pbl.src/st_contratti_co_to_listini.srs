@@ -1,0 +1,7 @@
+﻿$PBExportHeader$st_contratti_co_to_listini.srs
+global type st_contratti_co_to_listini from structure
+	string		k_simulazione		descriptor "comment" = "S=non registrare, SOLO SIMULAZIONE"
+	string		k_subito_in_vigore		descriptor "comment" = "S=Listino subito in vigore altrimenti la metto DA ATTIVARE"
+	string		k_occup_pedana_precisa		descriptor "comment" = "S=mette il calcolo preciso, N=arrotonda i calcoli in modo da fare solo 10%, 50%, 100%"
+end type
+

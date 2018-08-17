@@ -1,0 +1,15 @@
+﻿$PBExportHeader$st_tab_pilota_pallet.srs
+global type st_tab_pilota_pallet from structure
+	st_tab_g_0		st_tab_g_0
+	string		pallet_code
+	datetime		data_entrata
+	datetime		data_uscita
+	string		posizione
+	string		f1avp
+	string		f2avp
+	string		f1app
+	string		f2app
+	integer		fase
+	integer		bilancella
+end type
+

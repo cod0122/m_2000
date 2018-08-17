@@ -1,0 +1,7 @@
+﻿$PBExportHeader$st_tab_docpathtipo.srs
+global type st_tab_docpathtipo from structure
+	st_tab_g_0		st_tab_g_0
+	long		id_doctipo
+	long		id_docpath
+end type
+

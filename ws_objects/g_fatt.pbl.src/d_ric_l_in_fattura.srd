@@ -1,0 +1,48 @@
+﻿$PBExportHeader$d_ric_l_in_fattura.srd
+release 11;
+datawindow(units=0 timer_interval=0 color=16777215 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes print.preview.outline=yes hidegrayline=no showbackcoloronxp=no grid.lines=0 )
+header(height=68 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=68 color="536870912" )
+table(column=(type=date updatewhereclause=yes name=scad dbname="ric.scad" )
+ column=(type=decimal(2) updatewhereclause=yes name=rata dbname="ric.rata" )
+ column=(type=char(1) updatewhereclause=yes name=dist dbname="ric.dist" values=" Rimessa Diretta	0/ R.I.B.A.	2/ Bonifico	3/ M.A.V.	4/ Altro	/" )
+ column=(type=char(1) updatewhereclause=yes name=tipo dbname="ric.tipo" )
+ column=(type=date updatewhereclause=yes name=data_st dbname="ric.data_st" )
+ column=(type=char(100) updatewhereclause=yes name=banche_descrizione dbname="banche.descrizione" )
+ column=(type=long updatewhereclause=yes identity=yes name=id_ric dbname="ric.id" )
+ retrieve="  SELECT ric.scad,   
+         ric.rata,   
+         ric.dist,   
+         ric.tipo,   
+         ric.data_st,   
+         banche.descrizione,   
+         ric.id  
+    FROM ric LEFT OUTER JOIN banche ON ric.tipo = banche.codice  
+   WHERE ( ric.num_fatt = :k_num_fatt ) AND  
+         ( ric.data_fatt = :k_data_fatt )    
+" arguments=(("k_num_fatt", number),("k_data_fatt", date)) )
+text(band=header alignment="0" text=" Scadenza" border="0" color="8421504" x="14" y="8" height="56" width="297" html.valueishtml="0"  name=scad_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="32435950" )
+text(band=header alignment="0" text=" rata" border="0" color="8421504" x="325" y="8" height="56" width="329" html.valueishtml="0"  name=rata_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="32435950" )
+text(band=header alignment="0" text=" tipo distinta" border="0" color="8421504" x="667" y="8" height="56" width="480" html.valueishtml="0"  name=dist_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="32435950" )
+text(band=header alignment="0" text=" presentata" border="0" color="8421504" x="1166" y="8" height="56" width="329" html.valueishtml="0"  name=data_st_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="32435950" )
+text(band=header alignment="0" text=" banca" border="0" color="8421504" x="1504" y="8" height="56" width="887" html.valueishtml="0"  name=banche_descrizione_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="32435950" )
+text(band=header alignment="0" text=" id" border="0" color="8421504" x="2400" y="8" height="52" width="201" html.valueishtml="0"  name=ric_id_t visible="1"  font.face="Tahoma" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="32435950" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="0" color="33554432" x="14" y="4" height="60" width="297" format=" dd/mm/yy" html.valueishtml="0"  name=scad visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=2 alignment="1" tabsequence=32766 border="0" color="33554432" x="325" y="4" height="60" width="329" format="###,###,##0.00 " html.valueishtml="0"  name=rata visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="0" color="33554432" x="667" y="4" height="60" width="480" format="[general]" html.valueishtml="0"  name=dist visible="1" ddlb.limit=0 ddlb.allowedit=no ddlb.case=any  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="0" tabsequence=32766 border="0" color="33554432" x="1166" y="4" height="60" width="329" format=" dd/mm/yy" html.valueishtml="0"  name=data_st visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="0" tabsequence=32766 border="0" color="33554432" x="1509" y="4" height="60" width="882" format="[general]" html.valueishtml="0"  name=banche_descrizione visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="1" tabsequence=32766 border="0" color="33554432" x="2405" y="4" height="60" width="197" format="[General] " html.valueishtml="0"  name=id_ric visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" pagingmethod=0 generatedddwframes="1" )
+xhtmlgen() cssgen(sessionspecific="0" )
+xmlgen(inline="0" )
+xsltgen()
+jsgen()
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+export.xhtml()
+ 

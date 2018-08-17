@@ -1,0 +1,109 @@
+﻿$PBExportHeader$d_sl_pt_l.srd
+release 9;
+datawindow(units=0 timer_interval=0 color=16777215 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 1 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no grid.lines=0 )
+header(height=76 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=64 color="536870912" )
+detail(height=64 color="536870912" )
+table(column=(type=char(12) update=yes updatewhereclause=yes name=cod_sl_pt dbname="cod_sl_pt" )
+ column=(type=char(30) updatewhereclause=yes name=rag_soc_10 dbname="rag_soc_10" )
+ column=(type=long updatewhereclause=yes name=contratti_codice dbname="codice" )
+ column=(type=char(50) update=yes updatewhereclause=yes name=descr dbname="descr" )
+ column=(type=char(81) update=yes updatewhereclause=yes name=fila_1 dbname="fila_1" )
+ column=(type=char(81) update=yes updatewhereclause=yes name=fila_2 dbname="fila_2" )
+ column=(type=char(20) updatewhereclause=yes name=densita dbname="densita" )
+ column=(type=decimal(2) updatewhereclause=yes name=dose_min dbname="dose_min" )
+ column=(type=decimal(2) updatewhereclause=yes name=dose_max dbname="dose_max" )
+ column=(type=char(80) updatewhereclause=yes name=composizione dbname="composizione" )
+ column=(type=char(20) updatewhereclause=yes name=peso dbname="peso" )
+ column=(type=char(1) updatewhereclause=yes name=routine dbname="routine" values="	S/	N" )
+ column=(type=char(80) updatewhereclause=yes name=dosimetrie_spec dbname="dosimetrie_spec" )
+ column=(type=long updatewhereclause=yes name=sl_pt_magazzino dbname="magazzino" )
+ column=(type=decimal(2) updatewhereclause=yes name=sl_pt_dose dbname="dose" )
+ column=(type=long updatewhereclause=yes name=codice_cliente dbname="codice" )
+ column=(type=char(12) updatewhereclause=yes name=mc_co dbname="mc_co" )
+ column=(type=char(12) updatewhereclause=yes name=sc_cf dbname="sc_cf" )
+ column=(type=date updatewhereclause=yes name=data_scad dbname="data_scad" )
+ column=(type=char(1) updatewhereclause=yes name=attivo dbname="attivo" )
+ retrieve=" SELECT distinct
+		   sl_pt.cod_sl_pt,
+         clienti.rag_soc_10,
+         contratti.codice,
+         sl_pt.descr,   
+         sl_pt.fila_1 || '+' || sl_pt.fila_1p as fila_1,   
+         sl_pt.fila_2 || '+' || sl_pt.fila_2p as fila_2,  
+         sl_pt.densita,   
+         sl_pt.dose_min,   
+         sl_pt.dose_max,   
+         sl_pt.composizione,   
+         sl_pt.peso,   
+         sl_pt.routine,   
+         sl_pt.dosimetrie_spec,
+         sl_pt.magazzino,
+         sl_pt.dose,
+         clienti.codice ,
+         contratti.mc_co,
+         contratti.sc_cf,   
+         contratti.data_scad,
+         listino.attivo   
+    FROM (sl_pt left outer join contratti on 
+          sl_pt.cod_sl_pt = contratti.sl_pt)   
+          left outer join clienti on 
+          contratti.cod_cli = clienti.codice
+          left outer join listino on 
+          contratti.codice = listino.contratto
+    where sl_pt.cod_sl_pt like :k_cod_sl_pt
+    order by sl_pt.cod_sl_pt
+
+
+
+ " arguments=(("k_cod_sl_pt", string)) )
+text(band=header alignment="0" text=" Cliente" border="0" color="0" x="9" y="12" height="56" width="210" html.valueishtml="0"  name=codice_cliente_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="65535" )
+text(band=header alignment="0" text=" Ragione sociale" border="0" color="0" x="229" y="12" height="56" width="681" html.valueishtml="0"  name=rag_soc_10_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="65535" )
+text(band=header alignment="0" text=" Descrizione" border="0" color="0" x="1243" y="12" height="56" width="878" html.valueishtml="0"  name=descr_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="65535" )
+text(band=header alignment="0" text=" MC-CO" border="0" color="0" x="2661" y="12" height="56" width="411" html.valueishtml="0"  name=mc_co_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="65535" )
+text(band=header alignment="0" text=" SC-CF" border="0" color="0" x="3081" y="12" height="56" width="251" html.valueishtml="0"  name=sc_cf_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="65535" )
+text(band=header alignment="0" text=" Fila 1" border="0" color="0" x="3342" y="12" height="56" width="187" html.valueishtml="0"  name=fila_1_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="65535" )
+text(band=header alignment="0" text=" Fila 2" border="0" color="0" x="3538" y="12" height="56" width="169" html.valueishtml="0"  name=fila_2_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="65535" )
+text(band=header alignment="0" text="Densita" border="0" color="0" x="3927" y="12" height="56" width="334" html.valueishtml="0"  name=densita_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="65535" )
+text(band=header alignment="0" text=" Dose Min" border="0" color="0" x="4270" y="12" height="56" width="325" html.valueishtml="0"  name=dose_min_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="65535" )
+text(band=header alignment="0" text=" Dose Max" border="0" color="0" x="4603" y="12" height="56" width="329" html.valueishtml="0"  name=dose_max_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="65535" )
+text(band=header alignment="0" text=" Composizione" border="0" color="0" x="4942" y="12" height="56" width="1230" html.valueishtml="0"  name=composizione_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="65535" )
+text(band=header alignment="0" text=" Peso" border="0" color="0" x="6181" y="12" height="56" width="270" html.valueishtml="0"  name=peso_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="65535" )
+text(band=header alignment="0" text="Rout." border="0" color="0" x="6459" y="12" height="56" width="119" html.valueishtml="0"  name=routine_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="65535" )
+text(band=header alignment="0" text=" Dose" border="0" color="0" x="3717" y="12" height="56" width="201" html.valueishtml="0"  name=sl_pt_dose_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="65535" )
+text(band=header alignment="0" text=" Codice" border="0" color="0" x="919" y="12" height="56" width="238" html.valueishtml="0"  name=cod_sl_pt_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="65535" )
+text(band=header alignment="0" text=" M" border="0" color="0" x="1166" y="12" height="56" width="69" html.valueishtml="0"  name=sl_pt_magazzino_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="65535" )
+text(band=header alignment="0" text=" Contratto" border="0" color="0" x="2130" y="12" height="56" width="265" html.valueishtml="0"  name=contratti_codice_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="65535" )
+text(band=header alignment="0" text=" Scade il" border="0" color="0" x="2405" y="12" height="56" width="247" html.valueishtml="0"  name=data_scad_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="65535" )
+column(band=detail id=5 alignment="1" tabsequence=32766 border="0" color="0" x="3342" y="4" height="56" width="187" format="@@@@@@@ " html.valueishtml="0"  name=fila_1 visible="1~tif ( trim(fila_1) = ~"0+0~", 0, 1)" edit.limit=0 edit.case=any edit.format="###" edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="0" color="0" x="919" y="4" height="56" width="238" format="  [general]" html.valueishtml="0"  name=cod_sl_pt visible="1" edit.limit=12 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0"font.strikethrough="0~tif(  attivo = ~"N~", 1, 0 )"  background.mode="2" background.color="65535" )
+column(band=detail id=6 alignment="1" tabsequence=32766 border="0" color="0" x="3538" y="4" height="56" width="169" format="@@@@@@@ " html.valueishtml="0"  name=fila_2 visible="1~tif ( trim(fila_2) = ~"0+0~", 0, 1)" edit.limit=0 edit.case=any edit.format="###" edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="0" tabsequence=32766 border="0" color="0" x="3927" y="8" height="56" width="334" format="[general]" html.valueishtml="0"  name=densita visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="0" tabsequence=32766 border="0" color="0" x="4270" y="4" height="56" width="325" format="[general]" html.valueishtml="0"  name=dose_min visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=9 alignment="0" tabsequence=32766 border="0" color="0" x="4603" y="4" height="56" width="329" format="[general]" html.valueishtml="0"  name=dose_max visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=10 alignment="0" tabsequence=32766 border="0" color="0" x="4942" y="4" height="56" width="1230" format="[general]" html.valueishtml="0"  name=composizione visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=11 alignment="0" tabsequence=32766 border="0" color="0" x="6181" y="4" height="56" width="270" format="[general]" html.valueishtml="0"  name=peso visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=12 alignment="0" tabsequence=32766 border="0" color="0" x="6459" y="4" height="56" width="119" format="[general]" html.valueishtml="0"  name=routine visible="1" checkbox.text="" checkbox.on="S" checkbox.off="N" checkbox.scale=no checkbox.threed=no  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=15 alignment="1" tabsequence=32766 border="0" color="0" x="3717" y="4" height="56" width="201" format="[general]" html.valueishtml="0"  name=sl_pt_dose visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="0" color="0" x="1243" y="4" height="56" width="878" format="[general]" html.valueishtml="0"  name=descr visible="1" edit.limit=50 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=14 alignment="2" tabsequence=32766 border="0" color="0" x="1166" y="4" height="56" width="69" format="#" html.valueishtml="0"  name=sl_pt_magazzino visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="0" x="229" y="4" height="56" width="681" format="[general]" html.valueishtml="0"  name=rag_soc_10 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=16 alignment="1" tabsequence=32766 border="0" color="0" x="9" y="4" height="56" width="210" format="#####  " html.valueishtml="0"  name=codice_cliente visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="1" tabsequence=32766 border="0" color="0" x="2130" y="4" height="56" width="265" format="#####  " html.valueishtml="0"  name=contratti_codice visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0"font.strikethrough="0~tif( data_scad < today(),1, 0)"  background.mode="1" background.color="536870912" )
+column(band=detail id=19 alignment="0" tabsequence=32766 border="0" color="0" x="2405" y="4" height="56" width="247" format="  dd.mm.yy" html.valueishtml="0"  name=data_scad visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0"font.strikethrough="0~tif( data_scad < today(),1, 0)"  background.mode="1" background.color="536870912" )
+column(band=detail id=17 alignment="0" tabsequence=32766 border="0" color="0" x="2661" y="4" height="56" width="411" format=" [general]" html.valueishtml="0"  name=mc_co visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0"font.strikethrough="0~tif( data_scad < today(),1, 0)"  background.mode="1" background.color="536870912" )
+column(band=detail id=18 alignment="0" tabsequence=32766 border="0" color="0" x="3081" y="4" height="56" width="251" format=" [general]" html.valueishtml="0"  name=sc_cf visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0"font.strikethrough="0~tif( data_scad < today(),1, 0)"  background.mode="1" background.color="536870912" )
+compute(band=footer alignment="0" expression="'Presenti : ' + count(   descr for all ) "border="0" color="8388736" x="1243" y="0" height="64" width="878" format="[general]" html.valueishtml="0"  name=compute_1 visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text=" Dosimetrie Speciali" border="0" color="0" x="6587" y="12" height="56" width="1833" html.valueishtml="0"  name=dosimetrie_spec_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="65535" )
+text(band=header alignment="0" text=" A." border="0" color="0" x="8430" y="12" height="56" width="101" html.valueishtml="0"  name=attivo_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="65535" )
+text(band=header alignment="0" text=" Scadenza" border="0" color="0" x="8539" y="12" height="56" width="375" html.valueishtml="0"  name=data_scad_1_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="65535" )
+column(band=detail id=13 alignment="0" tabsequence=32766 border="0" color="0" x="6587" y="4" height="56" width="1833" format="[general]" html.valueishtml="0"  name=dosimetrie_spec visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=20 alignment="0" tabsequence=32766 border="0" color="0" x="8430" y="4" height="56" width="101" format="[general]" html.valueishtml="0"  name=attivo visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=19 alignment="0" tabsequence=32766 border="0" color="0" x="8539" y="4" height="56" width="375" format="[general]" html.valueishtml="0"  name=data_scad_1 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+
+sparse(names="rag_soc_10")htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )

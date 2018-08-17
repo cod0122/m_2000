@@ -1,0 +1,50 @@
+﻿$PBExportHeader$d_sr_prof_funz_l.srd
+release 8;
+datawindow(units=0 timer_interval=0 color=1073741824 processing=1 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no grid.lines=0 )
+header(height=80 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=60 color="536870912" )
+detail(height=80 color="536870912" )
+table(column=(type=long update=yes updatewhereclause=yes name=id dbname="sr_profili.id" )
+ column=(type=char(16) update=yes updatewhereclause=yes name=nome dbname="sr_profili.nome" )
+ column=(type=char(80) update=yes updatewhereclause=yes name=descrizione dbname="sr_profili.descrizione" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=stato dbname="sr_profili.stato" values="Attivo	0/Disattivato	1/Sospeso	2/" )
+ column=(type=char(16) updatewhereclause=yes name=sr_funzioni_nome dbname="sr_funzioni.nome" )
+ column=(type=datetime updatewhereclause=yes name=sr_prof_funz_x_datins dbname="sr_prof_funz.x_datins" )
+ column=(type=char(12) updatewhereclause=yes name=sr_prof_funz_x_utente dbname="sr_prof_funz.x_utente" )
+ column=(type=long updatewhereclause=yes name=sr_prof_funz_id dbname="sr_prof_funz.id" )
+ retrieve="  SELECT sr_profili.id,   
+         sr_profili.nome,   
+         sr_profili.descrizione,   
+         sr_profili.stato,   
+         sr_funzioni.nome,   
+         sr_prof_funz.x_datins,   
+         sr_prof_funz.x_utente,  
+         sr_prof_funz.id  
+    FROM sr_prof_funz LEFT OUTER JOIN sr_profili ON 
+         sr_prof_funz.id_profili = sr_profili.id 
+                      LEFT OUTER JOIN sr_funzioni ON 
+         sr_prof_funz.id = sr_funzioni.id
+   WHERE ( sr_prof_funz.id_profili = :k_id_prof ) OR  
+         ( :k_id_prof = 0 )   
+ORDER BY sr_profili.nome ASC   
+" arguments=(("k_id_prof", number)) )
+compute(band=footer alignment="0" expression="'Contati ' + string(count(id for all))"border="0" color="128" x="960" y="0" height="64" width="1865" format="[GENERAL]" html.valueishtml="0"  name=compute_1 visible="1"  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="0" tabsequence=32766 border="0" color="33554432" x="9" y="4" height="68" width="425" format="[general]" html.valueishtml="0"  name=sr_funzioni_nome visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0"font.strikethrough="0~tif ( stato <> ~"0~", 1,0)"  background.mode="1" background.color="536870912" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="33554432" x="585" y="4" height="68" width="366" format=" [general]" html.valueishtml="0"  name=nome visible="1" edit.limit=16 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0"font.strikethrough="0~tif ( stato <> ~"0~", 1,0)"  background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="0" color="33554432" x="960" y="4" height="68" width="1865" format="[general]" html.valueishtml="0"  name=descrizione visible="1" edit.limit=80 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0"font.strikethrough="0~tif ( stato <> ~"0~", 1,0)"  background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="0" color="33554432" x="2834" y="4" height="68" width="398" format="[general]" html.valueishtml="0"  name=stato visible="1" ddlb.limit=0 ddlb.allowedit=no ddlb.case=any ddlb.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0"font.strikethrough="0~tif ( stato <> ~"0~", 1,0)"  background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="0" tabsequence=32766 border="0" color="33554432" x="3241" y="4" height="68" width="722" format=" [shortdate] [time]" html.valueishtml="0"  name=sr_prof_funz_x_datins visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0"font.strikethrough="0~tif ( stato <> ~"0~", 1,0)"  background.mode="1" background.color="536870912" )
+column(band=detail id=1 alignment="1" tabsequence=32766 border="0" color="33554432" x="443" y="4" height="68" width="133" format="  [general]" html.valueishtml="0"  name=id visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0"font.strikethrough="0~tif ( stato <> ~"0~", 1,0)"  background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="0" tabsequence=32766 border="0" color="33554432" x="3973" y="4" height="68" width="338" format=" [general]" html.valueishtml="0"  name=sr_prof_funz_x_utente visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0"font.strikethrough="0~tif ( stato <> ~"0~", 1,0)"  background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="1" tabsequence=32766 border="0" color="33554432" x="4320" y="4" height="68" width="178" format="[general]" html.valueishtml="0"  name=sr_prof_funz_id visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0"font.strikethrough="0~tif ( stato <> ~"0~", 1,0)"  background.mode="1" background.color="536870912" )
+text(band=header alignment="0" text="  Funzione" border="6" color="33554432" x="9" y="12" height="64" width="425" html.valueishtml="0"  name=sr_funzioni_nome_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="67108864" )
+text(band=header alignment="0" text="  Nome" border="6" color="33554432" x="585" y="12" height="64" width="366" html.valueishtml="0"  name=nome_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="67108864" )
+text(band=header alignment="0" text="  Descrizione" border="6" color="33554432" x="960" y="12" height="64" width="1865" html.valueishtml="0"  name=descrizione_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="67108864" )
+text(band=header alignment="0" text="  Stato" border="6" color="33554432" x="2834" y="12" height="64" width="398" html.valueishtml="0"  name=stato_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="67108864" )
+text(band=header alignment="0" text="  Aggiornato" border="6" color="33554432" x="3241" y="12" height="64" width="722" html.valueishtml="0"  name=sr_prof_funz_x_datins_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="67108864" )
+text(band=header alignment="0" text="  Id" border="6" color="33554432" x="443" y="12" height="64" width="133" html.valueishtml="0"  name=id_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="67108864" )
+text(band=header alignment="0" text="  da utente" border="6" color="33554432" x="3973" y="12" height="64" width="338" html.valueishtml="0"  name=sr_prof_funz_x_utente_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="67108864" )
+text(band=header alignment="0" text="  Id" border="6" color="33554432" x="4320" y="12" height="64" width="178" html.valueishtml="0"  name=sr_prof_funz_id_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="67108864" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )

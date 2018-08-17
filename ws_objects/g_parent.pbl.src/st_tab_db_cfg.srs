@@ -1,0 +1,14 @@
+﻿$PBExportHeader$st_tab_db_cfg.srs
+global type st_tab_db_cfg from structure
+	st_tab_g_0		st_tab_g_0
+	string		codice		descriptor "comment" = "identifica la connessione es. ~"DATIXWEB~" x la conn al db mySql da riversare su web"
+	string		cfg_dbms
+	string		cfg_autocommit
+	string		cfg_dbparm
+	string		cfg_dbms_alt
+	string		cfg_autocommit_alt
+	string		cfg_dbparm_alt
+	string		blocca_connessione		descriptor "comment" = "~"1~" = blocca la connessione a questo db"
+	string		cfg_dbms_scelta
+end type
+

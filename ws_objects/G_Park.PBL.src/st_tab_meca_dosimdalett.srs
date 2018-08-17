@@ -1,0 +1,27 @@
+﻿$PBExportHeader$st_tab_meca_dosimdalett.srs
+global type st_tab_meca_dosimdalett from structure
+	st_tab_g_0		st_tab_g_0
+	long		id_meca_dosimdalett
+	long		id_meca
+	string		barcode		descriptor "comment" = "barcode sul quale e' applicato il dosimetro"
+	string		barcode_dosimetro		descriptor "comment" = "barcode speciale del dosimetro (applicato dalla casa fornitrice)"
+	date		dosim_data
+	character		dosim_flg_tipo_dose		descriptor "comment" = "B=dose minima; A=dose massima; N=non indicato "
+	double		dosim_dose
+	integer		dosim_assorb
+	integer		dosim_spessore
+	double		dosim_rapp_a_s
+	string		dosim_lotto_dosim
+	integer		dosim_temperatura
+	integer		dosim_umidita
+	string		dosim_esito		descriptor "comment" = "esito verifica dosimetrica: E=KO lettura iniziale; K=KO da aut; A=da autorizzare; 2=OK completo; B=KO bloccato; 1=KO Sbloccato"
+	string		dosim_note		descriptor "comment" = "note verifica dosimetrica "
+	string		note		descriptor "comment" = "note varie"
+	datetime		x_data_dosim_lettura
+	string		x_utente_dosim_lettura
+	datetime		x_data_dosim_verifica
+	string		x_utente_dosim_verifica
+	datetime		x_datins
+	string		x_utente
+end type
+

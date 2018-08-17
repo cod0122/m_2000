@@ -1,0 +1,14 @@
+﻿$PBExportHeader$st_tab_f4211.srs
+global type st_tab_f4211 from structure
+	st_tab_g_0		st_tab_g_0
+	string		xxx		descriptor "comment" = "tabella dati lotto per Conto deposito, barcode da NON trattare"
+	long		sddoco		descriptor "comment" = "codice Sales Order (anche definito: rorn)"
+	string		sdir05		descriptor "comment" = "ID (MECA) Riferimento Lotto M2000 (APID)"
+	long		sdan8		descriptor "comment" = "Codice cliente"
+	long		sddrqj		descriptor "comment" = "data formato E-ONE: data formato 1 + anno (di 2) + giorni inzio anno 116193=11/7/2016  - GMT !!!"
+	string		sdlitm		descriptor "comment" = "codice Listino E1"
+	string		sdlotn		descriptor "comment" = "Barcode prodotto da E1"
+	string		sdir01		descriptor "comment" = "Customer pallet ID (barcode cliente di pkl)"
+	string		sdir02		descriptor "comment" = "codice PackingList (_lot)"
+end type
+

@@ -1,0 +1,14 @@
+﻿$PBExportHeader$st_prof_trk_fidi_esolver.srs
+global type st_prof_trk_fidi_esolver from structure
+	string		tipo_record		descriptor "comment" = "TES=REC PRINCIPALE/RIG"
+	string		tes_reg_dt		descriptor "comment" = "formato=AAMMGG - Data  se vuoto esolver assume il giorno dell'importazione"
+	string		xxx_reg_nr		descriptor "comment" = "numero registrazione (obblig) - ID del Riferimento Lotto"
+	string		tes_id_cliente		descriptor "comment" = "Cliente/fornitore: codice (obblig)"
+	string		tes_valuta		descriptor "comment" = "Codice valuta documento (x noi sempre EUR)"
+	string		tes_cambio		descriptor "comment" = "Cambio (facoltativo o mettere 1)"
+	string		rig_tipo_riga		descriptor "comment" = "in realta' mettere il conto+s.conto es. 611 + 00007 ovvero 61100007"
+	string		rig_importovaluta		descriptor "comment" = "Importo in valuta"
+	string		rig_ivacodice		descriptor "comment" = "Codice IVA in altro sistema"
+	string		rig_importo_udc		descriptor "comment" = "Importo"
+end type
+

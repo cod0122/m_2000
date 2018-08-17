@@ -1,0 +1,10 @@
+﻿$PBExportHeader$st_tab_clie_settori.srs
+global type st_tab_clie_settori from structure
+	st_tab_g_0		st_tab_g_0
+	string		id_clie_settore
+	string		descr
+	string		descr_eng
+	datetime		x_datins
+	string		x_utente
+end type
+

@@ -1,0 +1,13 @@
+﻿$PBExportHeader$st_tab_prodotti.srs
+global type st_tab_prodotti from structure
+	st_tab_g_0		st_tab_g_0
+	string		codice
+	string		des		descriptor "comment" = "descrizione generica usata x bolle e fatture"
+	string		des_mkt		descriptor "comment" = "descrizione dettagliata usata x gli statistici"
+	integer		gruppo
+	integer		iva
+	integer		magazzino
+	string		attivo
+	string		normative
+end type
+

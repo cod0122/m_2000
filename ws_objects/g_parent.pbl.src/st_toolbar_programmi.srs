@@ -1,0 +1,11 @@
+﻿$PBExportHeader$st_toolbar_programmi.srs
+global type st_toolbar_programmi from structure
+	boolean		metodo_aggiungi_voce
+	boolean		metodo_cancella_voce
+	boolean		metodo_attiva_voce
+	boolean		metodo_nascondi_toolbar
+	string		titolo
+	longlong		handle
+	integer		posizione_tab
+end type
+

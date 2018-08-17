@@ -1,0 +1,14 @@
+﻿$PBExportHeader$st_treeview_data.srs
+global type st_treeview_data from structure
+	string		label
+	string		oggetto_padre		descriptor "comment" = "campo ID della tabella menu_window"
+	string		oggetto		descriptor "comment" = "campo FUNZIONE della tabella menu_window"
+	string		oggetto_listview
+	integer		pic_list
+	any		struttura
+	long		handle
+	long		handle_padre
+	boolean		flag		descriptor "comment" = "campo da utilizzare x personalizzazioni varie"
+	long		item		descriptor "comment" = "posizione del focus nel listview (nr di item)"
+end type
+

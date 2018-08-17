@@ -1,0 +1,125 @@
+﻿$PBExportHeader$d_clienti_fatt_l.srd
+release 11;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 97 print.margin.bottom = 97 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes print.preview.outline=yes hidegrayline=no showbackcoloronxp=no grid.lines=0 )
+header(height=140 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=80 color="536870912" )
+detail(height=80 color="536870912" )
+table(column=(type=long updatewhereclause=yes name=num_fatt dbname="num_fatt" )
+ column=(type=date updatewhereclause=yes name=data_fatt dbname="data_fatt" )
+ column=(type=long updatewhereclause=yes name=num_int dbname="num_int" )
+ column=(type=date updatewhereclause=yes name=data_int dbname="data_int" )
+ column=(type=long updatewhereclause=yes name=magazzino dbname="magazzino" )
+ column=(type=decimal(0) updatewhereclause=yes name=gruppo dbname="gruppo" )
+ column=(type=char(40) updatewhereclause=yes name=des dbname="des" )
+ column=(type=decimal(2) updatewhereclause=yes name=dose dbname="dose" )
+ column=(type=decimal(0) updatewhereclause=yes name=colli_2 dbname="colli_2" )
+ column=(type=decimal(2) updatewhereclause=yes name=m_cubi dbname="m_cubi" )
+ column=(type=decimal(2) updatewhereclause=yes name=prezzo_t dbname="prezzo_t" )
+ column=(type=decimal(0) updatewhereclause=yes name=colli dbname="colli" )
+ column=(type=decimal(2) updatewhereclause=yes name=cub_tot dbname="cub_tot" )
+ column=(type=number updatewhereclause=yes name=prezzo_medio dbname="prezzo_medio" )
+ column=(type=char(30) updatewhereclause=yes name=m_rag_soc_10 dbname="rag_soc_10" )
+ column=(type=char(30) updatewhereclause=yes name=r_rag_soc_10 dbname="rag_soc_10" )
+ column=(type=char(30) updatewhereclause=yes name=f_rag_soc_10 dbname="rag_soc_10" )
+ retrieve="  SELECT 
+			s_arfa.num_fatt,   
+         s_arfa.data_fatt,   
+			s_arfa.num_int,   
+         s_arfa.data_int,   
+         s_arfa.magazzino,   
+         s_arfa.gruppo,   
+         gru.des,   
+         s_arfa.dose,   
+         s_armo.colli_2,   
+         s_armo.m_cubi,   
+         s_arfa.prezzo_t,   
+         s_arfa.colli,   
+         s_arfa.cub_tot,
+	case when s_arfa.cub_tot > 0 then  (s_arfa.prezzo_t / s_arfa.cub_tot) 
+            when s_arfa.cub_tot = 0 then s_arfa.prezzo_t
+            else  s_arfa.prezzo_t
+	end prezzo_medio,       
+			c1.rag_soc_10,
+			c2.rag_soc_10,
+			c3.rag_soc_10
+    FROM (((((s_arfa
+	         inner join clienti c1 on
+					s_arfa.clie_1 = c1.codice )
+	          inner join clienti c2 on
+					s_arfa.clie_2 = c2.codice )
+	          inner join clienti c3 on
+					s_arfa.clie_3 = c3.codice )
+	          left outer join gru on
+					s_arfa.gruppo = gru.codice )
+	          inner join s_armo on
+					s_arfa.num_int =  s_armo.num_int and
+					s_arfa.data_int =  s_armo.data_int and
+					s_arfa.magazzino =  s_armo.magazzino and
+					s_arfa.gruppo =  s_armo.gruppo and
+					s_arfa.dose =  s_armo.dose and
+					s_arfa.gruppo =  s_armo.gruppo 
+				)
+   WHERE 
+         ( ( s_arfa.clie_1 = :k_id_cliente ) OR  
+         ( s_arfa.clie_2 = :k_id_cliente ) OR  
+         ( s_arfa.clie_3 = :k_id_cliente ) )   
+ORDER BY s_arfa.data_int desc,   
+         s_arfa.num_int desc   
+" arguments=(("k_id_cliente", number)) )
+group(level=1 header.height=0 trailer.height=0 by=("num_int" , "data_int" , "magazzino" , "gruppo" , "dose" ) header.color="536870912" trailer.color="536870912" )
+text(band=header alignment="2" text="N. Rifer." border="0" color="0" x="9" y="76" height="56" width="233" html.valueishtml="0"  name=num_int_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Data" border="0" color="0" x="251" y="76" height="56" width="270" html.valueishtml="0"  name=data_int_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Colli" border="0" color="0" x="841" y="76" height="56" width="146" html.valueishtml="0"  name=colli_2_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="M. Cubi" border="0" color="0" x="997" y="76" height="56" width="187" html.valueishtml="0"  name=m_cubi_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Fattura" border="0" color="0" x="1193" y="76" height="56" width="206" html.valueishtml="0"  name=num_fatt_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Data" border="0" color="0" x="1408" y="76" height="56" width="270" html.valueishtml="0"  name=data_fatt_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Gr." border="0" color="0" x="1687" y="76" height="56" width="151" html.valueishtml="0"  name=gruppo_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Descrizione" border="0" color="0" x="1847" y="76" height="56" width="878" html.valueishtml="0"  name=des_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Importo" border="0" color="0" x="2734" y="76" height="56" width="421" html.valueishtml="0"  name=prezzo_t_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Colli" border="0" color="0" x="3163" y="76" height="56" width="128" html.valueishtml="0"  name=t_1 visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="M cubi" border="0" color="0" x="3301" y="76" height="56" width="192" html.valueishtml="0"  name=cub_tot_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Pr. medio" border="0" color="0" x="3502" y="76" height="56" width="279" html.valueishtml="0"  name=prezzo_medio_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mandante" border="0" color="0" x="3790" y="76" height="56" width="923" html.valueishtml="0"  name=m_rag_soc_10_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Ricevente" border="0" color="0" x="4722" y="76" height="56" width="905" html.valueishtml="0"  name=r_rag_soc_10_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Fatturato" border="0" color="0" x="5637" y="76" height="56" width="933" html.valueishtml="0"  name=f_rag_soc_10_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="M" border="0" color="0" x="530" y="76" height="56" width="73" html.valueishtml="0"  name=magazzino_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Dose" border="0" color="0" x="613" y="76" height="56" width="219" html.valueishtml="0"  name=dose_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="1" tabsequence=10 border="5" color="0" x="9" y="4" height="64" width="233" format="###,#### " html.valueishtml="0"  name=num_int visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+compute(band=detail alignment="2" expression="0"border="0" color="12632256" x="6578" y="4" height="64" width="219" format="[general]" html.valueishtml="0"  name=compute_1 visible="1"  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+column(band=detail id=7 alignment="0" tabsequence=32766 border="5" color="0" x="1847" y="4" height="64" width="878" format=" [general]" html.valueishtml="0"  name=des visible="1" edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=1 alignment="1" tabsequence=32766 border="5" color="0" x="1193" y="4" height="64" width="206" format="[general] " html.valueishtml="0"  name=num_fatt visible="1" edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=5 alignment="2" tabsequence=30 border="5" color="0" x="530" y="4" height="64" width="73" format="[general]" html.valueishtml="0"  name=magazzino visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=4 alignment="2" tabsequence=20 border="5" color="0" x="251" y="4" height="64" width="270" format="dd/mm/yy" html.valueishtml="0"  name=data_int visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=2 alignment="2" tabsequence=32766 border="5" color="0" x="1408" y="4" height="64" width="270" format="[general]" html.valueishtml="0"  name=data_fatt visible="1" edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=6 alignment="0" tabsequence=32766 border="5" color="0" x="1687" y="4" height="64" width="151" format=" [general]" html.valueishtml="0"  name=gruppo visible="1" edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=11 alignment="1" tabsequence=32766 border="5" color="0" x="2734" y="4" height="64" width="421" format="###,###,###,##0.00 " html.valueishtml="0"  name=prezzo_t visible="1" edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=14 alignment="1" tabsequence=32766 border="5" color="0" x="3502" y="4" height="64" width="279" format="###,###,###,##0.00 " html.valueishtml="0"  name=prezzo_medio visible="1" edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=12 alignment="1" tabsequence=32766 border="5" color="0" x="3163" y="4" height="64" width="128" format="###,###,###,##0 " html.valueishtml="0"  name=colli visible="1" edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=13 alignment="1" tabsequence=32766 border="5" color="0" x="3301" y="4" height="64" width="192" format="###,###,###,##0.00 " html.valueishtml="0"  name=cub_tot visible="1" edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=8 alignment="1" tabsequence=40 border="5" color="0" x="613" y="4" height="64" width="219" format="[general] " html.valueishtml="0"  name=dose visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=10 alignment="1" tabsequence=32766 border="5" color="0" x="997" y="4" height="64" width="187" format="###,###.## " html.valueishtml="0"  name=m_cubi visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=9 alignment="1" tabsequence=32766 border="5" color="0" x="841" y="4" height="64" width="146" format="#,### " html.valueishtml="0"  name=colli_2 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=17 alignment="0" tabsequence=32766 border="5" color="0" x="5637" y="4" height="64" width="933" format=" [general]" html.valueishtml="0"  name=f_rag_soc_10 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=16 alignment="0" tabsequence=32766 border="5" color="0" x="4722" y="4" height="64" width="905" format=" [general]" html.valueishtml="0"  name=r_rag_soc_10 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=15 alignment="0" tabsequence=32766 border="5" color="0" x="3790" y="4" height="64" width="923" format=" [general]" html.valueishtml="0"  name=m_rag_soc_10 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+compute(band=trailer.1 alignment="2" expression="colli_2 "border="0" color="0" x="841" y="8" height="64" width="146" format="#,###" html.valueishtml="0"  name=k_colli_armo visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+compute(band=trailer.1 alignment="2" expression="m_cubi"border="0" color="0" x="997" y="4" height="64" width="187" format="#,###.##" html.valueishtml="0"  name=k_m_cubi_armo visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+compute(band=footer alignment="2" expression="'N.' + string(count(num_int), ~"#,###~")"border="5" color="128" x="251" y="4" height="56" width="270" format="[general]" html.valueishtml="0"  name=compute_2 visible="1"  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+compute(band=footer alignment="1" expression="sum(prezzo_t for all)"border="5" color="128" x="2734" y="4" height="56" width="421" format="###,###,###,###" html.valueishtml="0"  name=compute_6 visible="1"  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+compute(band=footer alignment="1" expression="sum(cub_tot for all)"border="5" color="128" x="3301" y="8" height="56" width="192" format="#,###.##" html.valueishtml="0"  name=compute_5 visible="1"  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+compute(band=footer alignment="1" expression="sum(k_m_cubi_armo for all)"border="5" color="128" x="997" y="4" height="56" width="187" format="#,###.##" html.valueishtml="0"  name=compute_4 visible="1"  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+compute(band=footer alignment="1" expression="sum(k_colli_armo for all)"border="5" color="128" x="841" y="4" height="56" width="146" format="#,###" html.valueishtml="0"  name=compute_3 visible="1"  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+text(band=foreground alignment="2" text="Dati Entrata" border="0" color="0" x="5" y="8" height="56" width="1175" html.valueishtml="0"  name=t_2 visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=foreground alignment="2" text="Dati Fattura" border="0" color="0" x="2734" y="4" height="56" width="1051" html.valueishtml="0"  name=t_3 visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" pagingmethod=0 generatedddwframes="1" )
+xhtmlgen() cssgen(sessionspecific="0" )
+xmlgen(inline="0" )
+xsltgen()
+jsgen()
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+export.xhtml()
+ 

@@ -1,0 +1,9 @@
+﻿$PBExportHeader$st_stampante.srs
+global type st_stampante from structure
+	string		trova
+	string		stringa
+	string		nome
+	string		driver
+	string		porta
+end type
+

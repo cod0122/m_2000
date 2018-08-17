@@ -1,0 +1,16 @@
+﻿$PBExportHeader$st_get_e1barcode.srs
+global type st_get_e1barcode from structure
+	string		xxx		descriptor "comment" = "tre tabelle F4801_ADT,  F3111_ADT,  F4108_adt  che servono per recuperare i codici barcode di E1"
+	long		doco		descriptor "comment" = "codice Work order"
+	long		rorn		descriptor "comment" = "codice Sales Order (vedi sddoco su F4211)"
+	long		an8		descriptor "comment" = "E1_Cust_number = codice cliente"
+	long		drqj		descriptor "comment" = "E1_Req_date DDMMYYYY"
+	string		cpil		descriptor "comment" = "E1_Cust_item  = codice contratto E1"
+	string		lotn		descriptor "comment" = "E1_lot_number = barcode E1"
+	string		lot1		descriptor "comment" = "CUST_pallet_lot = codice del packing list"
+	string		lot2		descriptor "comment" = "CUST_pallet_it = barcode pallet sulla packing list"
+	string		apid		descriptor "comment" = "codice ASN (ID_MECA)"
+	string		srst		descriptor "comment" = "Stato del ASN"
+	string		mcu		descriptor "comment" = "codice azienda per E1 definito fiso per exGammarad a 270 (campo alfa di 12 allineato a destra!!!)"
+end type
+

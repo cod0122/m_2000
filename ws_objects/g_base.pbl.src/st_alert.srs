@@ -1,0 +1,9 @@
+﻿$PBExportHeader$st_alert.srs
+global type st_alert from structure
+	string		allarme		descriptor "comment" = "tipo di allarme"
+	string		descr		descriptor "comment" = "descrizione dell'allarme da visualizzare"
+	datastore		d_alert		descriptor "comment" = "datastore notifica"
+	integer		numero		descriptor "comment" = "numero di allarmi per riga"
+	st_memo		st_memo
+end type
+

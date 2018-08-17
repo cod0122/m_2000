@@ -1,0 +1,11 @@
+﻿$PBExportHeader$st_tab_meca_reportpilota.srs
+global type st_tab_meca_reportpilota from structure
+	st_tab_g_0		st_tab_g_0
+	long		id_meca
+	string		nomereportorig		descriptor "comment" = "nome del file pdf generato dal pilota con i dati dei barcode trattati"
+	string		nomereport		descriptor "comment" = "nome file pdf importato e assegnato dalla procedura"
+	string		pathreport		descriptor "comment" = "suffisso path del report (la root è configurata nella tabella docpath)"
+	datetime		x_datins
+	string		x_utente
+end type
+

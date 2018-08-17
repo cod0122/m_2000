@@ -1,0 +1,21 @@
+﻿$PBExportHeader$st_tab_armo_prezzi.srs
+global type st_tab_armo_prezzi from structure
+	st_tab_g_0		st_tab_g_0
+	long		id_armo_prezzo
+	long		id_armo
+	long		id_listino_link_pregruppo
+	long		id_listino_voce
+	datetime		x_carico_dt		descriptor "comment" = "data di caricato questo prezzo"
+	string		x_carico_utente		descriptor "comment" = "utente che ha caricato questo prezzo"
+	double		prezzo
+	string		tipo_listino		descriptor "comment" = "T=a valore (a corpo); U=a unità (a collo)"
+	string		tipo_calcolo		descriptor "comment" = "quando applica il costo: M=mensilmente (generato ogni inizio mese); E=caricato in entrata; U=caricato in uscita; S=a spot (una volta);"
+	string		nrmese		descriptor "comment" = "Numero mese in cui elaborare (0 o NULL=tutti)"
+	string		stato		descriptor "comment" = "stato applicazione: 6=da Fatturare;8=Fatturato;4=in attesa di evento;2=potenziale"
+	integer		item_dafatt		descriptor "comment" = "colli da Fatturare"
+	integer		item_fatt		descriptor "comment" = "colli Fatturati"
+	integer		item_nofatt		descriptor "comment" = "colli da NON fatturare"
+	datetime		x_datins
+	string		x_utente
+end type
+

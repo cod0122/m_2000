@@ -1,0 +1,7388 @@
+﻿$PBExportHeader$m_main.srm
+$PBExportComments$Menu Principale
+forward
+global type m_main from menu
+end type
+type m_file from menu within m_main
+end type
+type m_setupstampante from menu within m_file
+end type
+type m_f_chiudodb from menu within m_file
+end type
+type m_-2 from menu within m_file
+end type
+type m_proprieta from menu within m_file
+end type
+type m_procedura from menu within m_proprieta
+end type
+type m_personale from menu within m_proprieta
+end type
+type m_proprieta from menu within m_file
+m_procedura m_procedura
+m_personale m_personale
+end type
+type m_utility from menu within m_file
+end type
+type m_password from menu within m_utility
+end type
+type m_cambiautente from menu within m_utility
+end type
+type m_aggiornaprogrammi from menu within m_utility
+end type
+type m_ottimizzadb from menu within m_utility
+end type
+type m_statistichegenerico from menu within m_ottimizzadb
+end type
+type m_statisticheindici from menu within m_ottimizzadb
+end type
+type m_ottimizzadb from menu within m_utility
+m_statistichegenerico m_statistichegenerico
+m_statisticheindici m_statisticheindici
+end type
+type m_f_u_-1 from menu within m_utility
+end type
+type m_rinnovalicenzant from menu within m_utility
+end type
+type m_popolat_contr from menu within m_utility
+end type
+type m_popoladaaccess from menu within m_utility
+end type
+type m_popolalistinodaaccess from menu within m_utility
+end type
+type m_esportapassword from menu within m_utility
+end type
+type m_importapassword from menu within m_utility
+end type
+type m_utility from menu within m_file
+m_password m_password
+m_cambiautente m_cambiautente
+m_aggiornaprogrammi m_aggiornaprogrammi
+m_ottimizzadb m_ottimizzadb
+m_f_u_-1 m_f_u_-1
+m_rinnovalicenzant m_rinnovalicenzant
+m_popolat_contr m_popolat_contr
+m_popoladaaccess m_popoladaaccess
+m_popolalistinodaaccess m_popolalistinodaaccess
+m_esportapassword m_esportapassword
+m_importapassword m_importapassword
+end type
+type m_-3 from menu within m_file
+end type
+type m_mostrabarrastrumenti from menu within m_file
+end type
+type m_mostrabarradelleapplicazioni from menu within m_file
+end type
+type m_-6 from menu within m_file
+end type
+type m_uscita from menu within m_file
+end type
+type m_file from menu within m_main
+m_setupstampante m_setupstampante
+m_f_chiudodb m_f_chiudodb
+m_-2 m_-2
+m_proprieta m_proprieta
+m_utility m_utility
+m_-3 m_-3
+m_mostrabarrastrumenti m_mostrabarrastrumenti
+m_mostrabarradelleapplicazioni m_mostrabarradelleapplicazioni
+m_-6 m_-6
+m_uscita m_uscita
+end type
+type m_magazzino from menu within m_main
+end type
+type m_mag_navigatore from menu within m_magazzino
+end type
+type m_interrogazioni from menu within m_magazzino
+end type
+type m_movimenti from menu within m_interrogazioni
+end type
+type m_lavorazione from menu within m_interrogazioni
+end type
+type m_interrogazioni from menu within m_magazzino
+m_movimenti m_movimenti
+m_lavorazione m_lavorazione
+end type
+type m_-4 from menu within m_magazzino
+end type
+type m_pianidilavorazione from menu within m_magazzino
+end type
+type m_convalidalavorazioni from menu within m_magazzino
+end type
+type m_convalidalavorazioni1 from menu within m_convalidalavorazioni
+end type
+type m_convalidalavorazioni2 from menu within m_convalidalavorazioni
+end type
+type m_convalidalavorazioni3 from menu within m_convalidalavorazioni
+end type
+type m_convalidalavorazioni from menu within m_magazzino
+m_convalidalavorazioni1 m_convalidalavorazioni1
+m_convalidalavorazioni2 m_convalidalavorazioni2
+m_convalidalavorazioni3 m_convalidalavorazioni3
+end type
+type m_attestati from menu within m_magazzino
+end type
+type m_-1 from menu within m_magazzino
+end type
+type m_fatture from menu within m_magazzino
+end type
+type m_stampafatture from menu within m_magazzino
+end type
+type m_scadenzario from menu within m_magazzino
+end type
+type m_-0 from menu within m_magazzino
+end type
+type m_barcodemanuale from menu within m_magazzino
+end type
+type m_-5 from menu within m_magazzino
+end type
+type m_inviapianoalpilota from menu within m_magazzino
+end type
+type m_importalavorazioni from menu within m_magazzino
+end type
+type m_modificaprogrammazione from menu within m_magazzino
+end type
+type m_magazzino from menu within m_main
+m_mag_navigatore m_mag_navigatore
+m_interrogazioni m_interrogazioni
+m_-4 m_-4
+m_pianidilavorazione m_pianidilavorazione
+m_convalidalavorazioni m_convalidalavorazioni
+m_attestati m_attestati
+m_-1 m_-1
+m_fatture m_fatture
+m_stampafatture m_stampafatture
+m_scadenzario m_scadenzario
+m_-0 m_-0
+m_barcodemanuale m_barcodemanuale
+m_-5 m_-5
+m_inviapianoalpilota m_inviapianoalpilota
+m_importalavorazioni m_importalavorazioni
+m_modificaprogrammazione m_modificaprogrammazione
+end type
+type m_stat from menucascade within m_main
+end type
+type m_st_fatt from menu within m_stat
+end type
+type m_st_produz from menu within m_stat
+end type
+type m_stat from menucascade within m_main
+m_st_fatt m_st_fatt
+m_st_produz m_st_produz
+end type
+type m_archivi from menu within m_main
+end type
+type m_anagrafiche from menu within m_archivi
+end type
+type m_lista_anag from menu within m_anagrafiche
+end type
+type m_lista_mandanti from menu within m_anagrafiche
+end type
+type m_lista_riceventi from menu within m_anagrafiche
+end type
+type m_lista_fatturati from menu within m_anagrafiche
+end type
+type m_anagrafiche from menu within m_archivi
+m_lista_anag m_lista_anag
+m_lista_mandanti m_lista_mandanti
+m_lista_riceventi m_lista_riceventi
+m_lista_fatturati m_lista_fatturati
+end type
+type m_articoli from menu within m_archivi
+end type
+type m_a_t1 from menu within m_archivi
+end type
+type m_listino from menu within m_archivi
+end type
+type m_capitolati from menu within m_archivi
+end type
+type m_contratti from menu within m_archivi
+end type
+type m_sl_pt from menu within m_archivi
+end type
+type m_a_t2 from menu within m_archivi
+end type
+type m_pilota from menu within m_archivi
+end type
+type m_vettori from menu within m_archivi
+end type
+type m_ausiliari0 from menu within m_archivi
+end type
+type m_ausiliari from menu within m_ausiliari0
+end type
+type m_visualizza from menu within m_ausiliari
+end type
+type m_modifica from menu within m_ausiliari
+end type
+type m_inserisci from menu within m_ausiliari
+end type
+type m_ausiliari from menu within m_ausiliari0
+m_visualizza m_visualizza
+m_modifica m_modifica
+m_inserisci m_inserisci
+end type
+type m_ausiliari_1 from menu within m_ausiliari0
+end type
+type m_ausiliari_1_visualizza from menu within m_ausiliari_1
+end type
+type m_ausiliari_1_modifica from menu within m_ausiliari_1
+end type
+type m_ausiliari_1_inserisci from menu within m_ausiliari_1
+end type
+type m_ausiliari_1 from menu within m_ausiliari0
+m_ausiliari_1_visualizza m_ausiliari_1_visualizza
+m_ausiliari_1_modifica m_ausiliari_1_modifica
+m_ausiliari_1_inserisci m_ausiliari_1_inserisci
+end type
+type m_ausiliari0 from menu within m_archivi
+m_ausiliari m_ausiliari
+m_ausiliari_1 m_ausiliari_1
+end type
+type m_profis from menu within m_archivi
+end type
+type m_sicurezza from menu within m_archivi
+end type
+type m_- from menu within m_archivi
+end type
+type m_opf from menu within m_archivi
+end type
+type m_opf_gestione from menu within m_opf
+end type
+type m_opf_elenco from menu within m_opf
+end type
+type m_opf_gestore_eventi from menu within m_opf
+end type
+type m_opf from menu within m_archivi
+m_opf_gestione m_opf_gestione
+m_opf_elenco m_opf_elenco
+m_opf_gestore_eventi m_opf_gestore_eventi
+end type
+type m_codabarre from menu within m_archivi
+end type
+type m_archivi from menu within m_main
+m_anagrafiche m_anagrafiche
+m_articoli m_articoli
+m_a_t1 m_a_t1
+m_listino m_listino
+m_capitolati m_capitolati
+m_contratti m_contratti
+m_sl_pt m_sl_pt
+m_a_t2 m_a_t2
+m_pilota m_pilota
+m_vettori m_vettori
+m_ausiliari0 m_ausiliari0
+m_profis m_profis
+m_sicurezza m_sicurezza
+m_- m_-
+m_opf m_opf
+m_codabarre m_codabarre
+end type
+type m_finestra from menu within m_main
+end type
+type m_gestione from menu within m_finestra
+end type
+type m_fin_conferma from menu within m_gestione
+end type
+type m_fin_visualizza from menu within m_gestione
+end type
+type m_fin_modifica from menu within m_gestione
+end type
+type m_fin_inserimento from menu within m_gestione
+end type
+type m_fin-12 from menu within m_gestione
+end type
+type m_fin_elimina from menu within m_gestione
+end type
+type m_gestione from menu within m_finestra
+m_fin_conferma m_fin_conferma
+m_fin_visualizza m_fin_visualizza
+m_fin_modifica m_fin_modifica
+m_fin_inserimento m_fin_inserimento
+m_fin-12 m_fin-12
+m_fin_elimina m_fin_elimina
+end type
+type m_fin-11 from menu within m_finestra
+end type
+type m_trova from menucascade within m_finestra
+end type
+type m_fin_cerca from menu within m_trova
+end type
+type m_fin_cercaancora from menu within m_trova
+end type
+type m_fin_ordina from menu within m_trova
+end type
+type m_fin_filtra from menu within m_trova
+end type
+type m_trova from menucascade within m_finestra
+m_fin_cerca m_fin_cerca
+m_fin_cercaancora m_fin_cercaancora
+m_fin_ordina m_fin_ordina
+m_fin_filtra m_fin_filtra
+end type
+type m_fin_stampa from menu within m_finestra
+end type
+type m_fin-3 from menu within m_finestra
+end type
+type m_aggiornalista from menu within m_finestra
+end type
+type m_fin-2 from menu within m_finestra
+end type
+type m_riordinalista from menu within m_finestra
+end type
+type m_fin-4 from menu within m_finestra
+end type
+type m_fin_dettaglio from menu within m_finestra
+end type
+type m_layout_predefinito from menu within m_finestra
+end type
+type m_disponi from menucascade within m_finestra
+end type
+type m_adatta from menu within m_disponi
+end type
+type m_cascata from menu within m_disponi
+end type
+type m_orizzontale from menu within m_disponi
+end type
+type m_verticale from menu within m_disponi
+end type
+type m_disponi from menucascade within m_finestra
+m_adatta m_adatta
+m_cascata m_cascata
+m_orizzontale m_orizzontale
+m_verticale m_verticale
+end type
+type m_chiudifinestra from menu within m_finestra
+end type
+type m_finestra from menu within m_main
+m_gestione m_gestione
+m_fin-11 m_fin-11
+m_trova m_trova
+m_fin_stampa m_fin_stampa
+m_fin-3 m_fin-3
+m_aggiornalista m_aggiornalista
+m_fin-2 m_fin-2
+m_riordinalista m_riordinalista
+m_fin-4 m_fin-4
+m_fin_dettaglio m_fin_dettaglio
+m_layout_predefinito m_layout_predefinito
+m_disponi m_disponi
+m_chiudifinestra m_chiudifinestra
+end type
+type m_strumenti from menu within m_main
+end type
+type m_fin_gest_libero1 from menu within m_strumenti
+end type
+type m_fin_gest_libero2 from menu within m_strumenti
+end type
+type m_fin_gest_libero3 from menu within m_strumenti
+end type
+type m_fin_gest_libero4 from menu within m_strumenti
+end type
+type m_fin_gest_libero5 from menu within m_strumenti
+end type
+type m_fin_gest_libero6 from menu within m_strumenti
+end type
+type m_fin_gest_libero7 from menucascade within m_strumenti
+end type
+type libero1 from menu within m_fin_gest_libero7
+end type
+type libero2 from menu within m_fin_gest_libero7
+end type
+type libero3 from menu within m_fin_gest_libero7
+end type
+type libero4 from menu within m_fin_gest_libero7
+end type
+type m_fin_gest_libero7 from menucascade within m_strumenti
+libero1 libero1
+libero2 libero2
+libero3 libero3
+libero4 libero4
+end type
+type m_fin_gest_libero8 from menu within m_strumenti
+end type
+type m_strumenti from menu within m_main
+m_fin_gest_libero1 m_fin_gest_libero1
+m_fin_gest_libero2 m_fin_gest_libero2
+m_fin_gest_libero3 m_fin_gest_libero3
+m_fin_gest_libero4 m_fin_gest_libero4
+m_fin_gest_libero5 m_fin_gest_libero5
+m_fin_gest_libero6 m_fin_gest_libero6
+m_fin_gest_libero7 m_fin_gest_libero7
+m_fin_gest_libero8 m_fin_gest_libero8
+end type
+type m_help from menu within m_main
+end type
+type m_chk_update from menu within m_help
+end type
+type m_about from menu within m_help
+end type
+type m_help from menu within m_main
+m_chk_update m_chk_update
+m_about m_about
+end type
+global type m_main from menu
+m_file m_file
+m_magazzino m_magazzino
+m_stat m_stat
+m_archivi m_archivi
+m_finestra m_finestra
+m_strumenti m_strumenti
+m_help m_help
+end type
+end forward
+
+global type m_main from menu
+m_file m_file
+m_magazzino m_magazzino
+m_stat m_stat
+m_archivi m_archivi
+m_finestra m_finestra
+m_strumenti m_strumenti
+m_help m_help
+end type
+global m_main m_main
+
+type variables
+
+end variables
+
+on m_main.create
+m_main=this
+call super::create
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+this.m_file=create m_file
+this.m_magazzino=create m_magazzino
+this.m_stat=create m_stat
+this.m_archivi=create m_archivi
+this.m_finestra=create m_finestra
+this.m_strumenti=create m_strumenti
+this.m_help=create m_help
+this.Item[UpperBound(this.Item)+1]=this.m_file
+this.Item[UpperBound(this.Item)+1]=this.m_magazzino
+this.Item[UpperBound(this.Item)+1]=this.m_stat
+this.Item[UpperBound(this.Item)+1]=this.m_archivi
+this.Item[UpperBound(this.Item)+1]=this.m_finestra
+this.Item[UpperBound(this.Item)+1]=this.m_strumenti
+this.Item[UpperBound(this.Item)+1]=this.m_help
+end on
+
+on m_main.destroy
+call super::destroy
+destroy(this.m_file)
+destroy(this.m_magazzino)
+destroy(this.m_stat)
+destroy(this.m_archivi)
+destroy(this.m_finestra)
+destroy(this.m_strumenti)
+destroy(this.m_help)
+end on
+
+type m_file from menu within m_main
+m_setupstampante m_setupstampante
+m_f_chiudodb m_f_chiudodb
+m_-2 m_-2
+m_proprieta m_proprieta
+m_utility m_utility
+m_-3 m_-3
+m_mostrabarrastrumenti m_mostrabarrastrumenti
+m_mostrabarradelleapplicazioni m_mostrabarradelleapplicazioni
+m_-6 m_-6
+m_uscita m_uscita
+end type
+
+on m_file.create
+call super::create
+this.tag = "5"
+this.text = "M&2000"
+this.microhelp = "Proprietà della Procedura"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.menutitletext = "     M2000"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+this.m_setupstampante=create m_setupstampante
+this.m_f_chiudodb=create m_f_chiudodb
+this.m_-2=create m_-2
+this.m_proprieta=create m_proprieta
+this.m_utility=create m_utility
+this.m_-3=create m_-3
+this.m_mostrabarrastrumenti=create m_mostrabarrastrumenti
+this.m_mostrabarradelleapplicazioni=create m_mostrabarradelleapplicazioni
+this.m_-6=create m_-6
+this.m_uscita=create m_uscita
+this.Item[UpperBound(this.Item)+1]=this.m_setupstampante
+this.Item[UpperBound(this.Item)+1]=this.m_f_chiudodb
+this.Item[UpperBound(this.Item)+1]=this.m_-2
+this.Item[UpperBound(this.Item)+1]=this.m_proprieta
+this.Item[UpperBound(this.Item)+1]=this.m_utility
+this.Item[UpperBound(this.Item)+1]=this.m_-3
+this.Item[UpperBound(this.Item)+1]=this.m_mostrabarrastrumenti
+this.Item[UpperBound(this.Item)+1]=this.m_mostrabarradelleapplicazioni
+this.Item[UpperBound(this.Item)+1]=this.m_-6
+this.Item[UpperBound(this.Item)+1]=this.m_uscita
+end on
+
+on m_file.destroy
+call super::destroy
+destroy(this.m_setupstampante)
+destroy(this.m_f_chiudodb)
+destroy(this.m_-2)
+destroy(this.m_proprieta)
+destroy(this.m_utility)
+destroy(this.m_-3)
+destroy(this.m_mostrabarrastrumenti)
+destroy(this.m_mostrabarradelleapplicazioni)
+destroy(this.m_-6)
+destroy(this.m_uscita)
+end on
+
+type m_setupstampante from menu within m_file
+end type
+
+on clicked;//
+printsetup()
+end on
+
+on m_setupstampante.create
+call super::create
+this.text = "Se&tup stampante"
+this.microhelp = "Definizione dei vari parametri della stampante"
+this.menuimage = "Print!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_setupstampante.destroy
+call super::destroy
+end on
+
+type m_f_chiudodb from menu within m_file
+event u_constructor pbm_constructor
+end type
+
+event u_constructor;//
+this.text = 'CIAO'
+end event
+
+on clicked;//
+//=== Chiudo tutte le windows children
+boolean bValid
+window wSheet
+
+wSheet = w_main.GetFirstSheet()
+IF IsValid(wSheet) THEN
+	close(wSheet)
+	DO
+		wSheet = w_main.GetFirstSheet()
+		bValid = IsValid (wSheet)
+		IF bValid THEN close(wSheet)
+	LOOP WHILE bValid
+END IF
+
+
+
+end on
+
+on m_f_chiudodb.create
+call super::create
+this.text = "&Chiudi tutto"
+this.microhelp = "Ripristino le videate alla situazione iniziale, chiudendo tutte le windows aperte"
+this.menuimage = "Custom080!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_f_chiudodb.destroy
+call super::destroy
+end on
+
+type m_-2 from menu within m_file
+end type
+
+on m_-2.create
+call super::create
+this.visible = false
+this.text = "-"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_-2.destroy
+call super::destroy
+end on
+
+type m_proprieta from menu within m_file
+m_procedura m_procedura
+m_personale m_personale
+end type
+
+on m_proprieta.create
+call super::create
+this.text = "Proprietà"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+this.m_procedura=create m_procedura
+this.m_personale=create m_personale
+this.Item[UpperBound(this.Item)+1]=this.m_procedura
+this.Item[UpperBound(this.Item)+1]=this.m_personale
+end on
+
+on m_proprieta.destroy
+call super::destroy
+destroy(this.m_procedura)
+destroy(this.m_personale)
+end on
+
+type m_procedura from menu within m_proprieta
+end type
+
+on m_procedura.create
+call super::create
+this.tag = "az"
+this.text = "Procedura"
+this.microhelp = "Dati generali di base per gestire la Procedura"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_procedura.destroy
+call super::destroy
+end on
+
+event clicked;//
+//
+kuf_menu_window kuf1_menu_window
+
+//=== Parametri : 
+//=== struttura st_open_w
+//=== dati particolare programma
+//
+//=== Si potrebbero passare:
+//=== key1=codice sl_pt;
+st_open_w k_st_open_w
+
+K_st_open_w.id_programma = "az"
+K_st_open_w.flag_primo_giro = "S"
+K_st_open_w.flag_modalita = kkg_flag_modalita_modifica
+K_st_open_w.flag_adatta_win = KK_ADATTA_WIN_NO
+K_st_open_w.flag_leggi_dw = " "
+K_st_open_w.key1 = " "
+K_st_open_w.key2 = " "
+K_st_open_w.key3 = " "
+K_st_open_w.key4 = " "
+K_st_open_w.flag_where = " "
+
+kuf1_menu_window = create kuf_menu_window 
+kuf1_menu_window.open_w_tabelle(k_st_open_w)
+destroy kuf1_menu_window
+
+
+end event
+
+type m_personale from menu within m_proprieta
+end type
+
+event clicked;//
+//
+kuf_menu_window kuf1_menu_window
+
+//=== Parametri : 
+//=== struttura st_open_w
+//=== dati particolare programma
+//
+//=== Si potrebbero passare:
+//=== key1=codice sl_pt;
+st_open_w k_st_open_w
+
+K_st_open_w.id_programma = "azp"
+K_st_open_w.flag_primo_giro = "S"
+K_st_open_w.flag_modalita = kkg_flag_modalita_modifica
+K_st_open_w.flag_adatta_win = KK_ADATTA_WIN_NO
+K_st_open_w.flag_leggi_dw = " "
+K_st_open_w.key1 = " "
+K_st_open_w.key2 = " "
+K_st_open_w.key3 = " "
+K_st_open_w.key4 = " "
+K_st_open_w.flag_where = " "
+
+kuf1_menu_window = create kuf_menu_window 
+kuf1_menu_window.open_w_tabelle(k_st_open_w)
+destroy kuf1_menu_window
+
+
+end event
+
+on m_personale.create
+call super::create
+this.tag = "azp"
+this.text = "Personale"
+this.microhelp = "Dati configurazione per personalizzare M2000"
+this.menuimage = "Properties!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_personale.destroy
+call super::destroy
+end on
+
+type m_utility from menu within m_file
+m_password m_password
+m_cambiautente m_cambiautente
+m_aggiornaprogrammi m_aggiornaprogrammi
+m_ottimizzadb m_ottimizzadb
+m_f_u_-1 m_f_u_-1
+m_rinnovalicenzant m_rinnovalicenzant
+m_popolat_contr m_popolat_contr
+m_popoladaaccess m_popoladaaccess
+m_popolalistinodaaccess m_popolalistinodaaccess
+m_esportapassword m_esportapassword
+m_importapassword m_importapassword
+end type
+
+on m_utility.create
+call super::create
+this.tag = "5"
+this.text = "Utility"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.menutitletext = "utilita~' "
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+this.m_password=create m_password
+this.m_cambiautente=create m_cambiautente
+this.m_aggiornaprogrammi=create m_aggiornaprogrammi
+this.m_ottimizzadb=create m_ottimizzadb
+this.m_f_u_-1=create m_f_u_-1
+this.m_rinnovalicenzant=create m_rinnovalicenzant
+this.m_popolat_contr=create m_popolat_contr
+this.m_popoladaaccess=create m_popoladaaccess
+this.m_popolalistinodaaccess=create m_popolalistinodaaccess
+this.m_esportapassword=create m_esportapassword
+this.m_importapassword=create m_importapassword
+this.Item[UpperBound(this.Item)+1]=this.m_password
+this.Item[UpperBound(this.Item)+1]=this.m_cambiautente
+this.Item[UpperBound(this.Item)+1]=this.m_aggiornaprogrammi
+this.Item[UpperBound(this.Item)+1]=this.m_ottimizzadb
+this.Item[UpperBound(this.Item)+1]=this.m_f_u_-1
+this.Item[UpperBound(this.Item)+1]=this.m_rinnovalicenzant
+this.Item[UpperBound(this.Item)+1]=this.m_popolat_contr
+this.Item[UpperBound(this.Item)+1]=this.m_popoladaaccess
+this.Item[UpperBound(this.Item)+1]=this.m_popolalistinodaaccess
+this.Item[UpperBound(this.Item)+1]=this.m_esportapassword
+this.Item[UpperBound(this.Item)+1]=this.m_importapassword
+end on
+
+on m_utility.destroy
+call super::destroy
+destroy(this.m_password)
+destroy(this.m_cambiautente)
+destroy(this.m_aggiornaprogrammi)
+destroy(this.m_ottimizzadb)
+destroy(this.m_f_u_-1)
+destroy(this.m_rinnovalicenzant)
+destroy(this.m_popolat_contr)
+destroy(this.m_popoladaaccess)
+destroy(this.m_popolalistinodaaccess)
+destroy(this.m_esportapassword)
+destroy(this.m_importapassword)
+end on
+
+type m_password from menu within m_utility
+end type
+
+event clicked;//=== Lancia il Logo iniziale
+//open (w_about)
+//
+st_open_w kst_open_w
+kuf_menu_window kuf1_menu_window
+
+
+
+//===
+//=== Menu Treeview
+//===
+	kst_open_w.id_programma = kkg_id_programma_sr_change_pwd
+	kst_open_w.flag_primo_giro = "S"
+	kst_open_w.flag_modalita = kkg_flag_modalita_modifica
+	kst_open_w.flag_adatta_win = KK_ADATTA_WIN
+	kst_open_w.flag_leggi_dw = " "
+	kst_open_w.flag_cerca_in_lista = " "
+	kst_open_w.key1 = string(kg_pwd)
+	kst_open_w.key2 = " "
+	kst_open_w.key3 = " "
+	kst_open_w.key4 = " " 
+
+	
+	kuf1_menu_window = create kuf_menu_window 
+	kuf1_menu_window.open_w_tabelle(kst_open_w)
+	destroy kuf1_menu_window
+
+
+							
+							
+
+
+
+end event
+
+on m_password.create
+call super::create
+this.tag = "about"
+this.text = "Cambia Password"
+this.microhelp = "Modifica la Password di accesso alla Procedura "
+this.menuimage = "Custom016!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_password.destroy
+call super::destroy
+end on
+
+type m_cambiautente from menu within m_utility
+end type
+
+event clicked;//=== Lancia il Logo iniziale
+//open (w_about)
+//
+st_open_w kst_open_w
+kuf_menu_window kuf1_menu_window
+
+
+
+//===
+//=== Menu Treeview
+//===
+kst_open_w.id_programma = "about"
+kst_open_w.flag_primo_giro = "S"
+kst_open_w.flag_modalita = kkg_flag_modalita_interrogazione
+kst_open_w.flag_adatta_win = kk_adatta_win_no
+kst_open_w.flag_leggi_dw = "N"
+kst_open_w.flag_cerca_in_lista = "0"
+kst_open_w.key1 = " " 
+kst_open_w.flag_where = " "
+
+							
+kuf1_menu_window = create kuf_menu_window 
+kuf1_menu_window.open_w_tabelle(kst_open_w)
+destroy kuf1_menu_window
+
+
+
+end event
+
+on m_cambiautente.create
+call super::create
+this.text = "Cambia Utente"
+this.microhelp = "Riconnessione Utente"
+this.menuimage = "UserObject1!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_cambiautente.destroy
+call super::destroy
+end on
+
+type m_aggiornaprogrammi from menu within m_utility
+end type
+
+event clicked;//
+kuf_utility kuf1_utility
+
+
+	if not isnull(kuf1_data_base.prendi_win_la_ultima()) then
+		messagebox ("Aggiornamento Procedura M2000", "Prima di procedere occorre chiudere tutte le 'funzioni' aperte", &
+						information!)
+	
+	else
+		if messagebox ("Procedura M2000", "Vuoi eseguire l'aggiornamento dei programmi?", &
+						 question!, YesNo!, 2) = 1 then
+
+			kuf1_utility = create kuf_utility			 
+			kuf1_utility.u_aggiorna_procedura()			
+			destroy kuf1_utility
+			
+		end if
+	end if
+end event
+
+on m_aggiornaprogrammi.create
+call super::create
+this.tag = "about"
+this.text = "Aggiorna Programmi"
+this.menuimage = "Custom044!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_aggiornaprogrammi.destroy
+call super::destroy
+end on
+
+type m_ottimizzadb from menu within m_utility
+m_statistichegenerico m_statistichegenerico
+m_statisticheindici m_statisticheindici
+end type
+
+on m_ottimizzadb.create
+call super::create
+this.text = "Ottimizza DB"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+this.m_statistichegenerico=create m_statistichegenerico
+this.m_statisticheindici=create m_statisticheindici
+this.Item[UpperBound(this.Item)+1]=this.m_statistichegenerico
+this.Item[UpperBound(this.Item)+1]=this.m_statisticheindici
+end on
+
+on m_ottimizzadb.destroy
+call super::destroy
+destroy(this.m_statistichegenerico)
+destroy(this.m_statisticheindici)
+end on
+
+type m_statistichegenerico from menu within m_ottimizzadb
+end type
+
+event clicked;//
+pointer kpointer_orig
+
+
+kpointer_orig = setpointer(hourglass!)
+update statistics; 
+update statistics for procedure;
+commit;
+setpointer(kpointer_orig)
+
+end event
+
+on m_statistichegenerico.create
+call super::create
+this.text = "Statistiche generico"
+this.microhelp = "comando di ~'Update Statistics~'"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_statistichegenerico.destroy
+call super::destroy
+end on
+
+type m_statisticheindici from menu within m_ottimizzadb
+end type
+
+event clicked;//
+pointer kpointer_orig
+
+kpointer_orig = setpointer(hourglass!)
+
+sqlca.genidxstats()
+if sqlca.sqlcode < 0 then
+//	uo_exception kuo_exception
+//	kuo_exception = create uo_exception
+//	kuo_exception.setmessage("Errore, codice " + string(sqlca.sqldbcode)+ ", msg: " + trim(sqlca.sqlerrtext))
+//	destroy kuo_exception
+	messagebox("Generazione Statistici Indici",&
+	"Operazione in errore, codice " + string(sqlca.sqldbcode)+ ", msg: " + trim(sqlca.sqlerrtext), stopsign!)
+else
+	messagebox("Generazione Statistici Indici","Operazione Conclusa Correttamente")
+end if
+
+setpointer(kpointer_orig)
+
+end event
+
+on m_statisticheindici.create
+call super::create
+this.text = "Statistiche Indici"
+this.microhelp = "lancio Procedure su DB di aggiornamento Capi indicizzati"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_statisticheindici.destroy
+call super::destroy
+end on
+
+type m_f_u_-1 from menu within m_utility
+end type
+
+on m_f_u_-1.create
+call super::create
+this.text = "-"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_f_u_-1.destroy
+call super::destroy
+end on
+
+type m_rinnovalicenzant from menu within m_utility
+end type
+
+event clicked;//=== Lancia il Logo iniziale
+//open (w_about)
+//
+st_open_w kst_open_w
+kuf_menu_window kuf1_menu_window
+
+
+
+//===
+//=== Menu Treeview
+//===
+kst_open_w.id_programma = kkg_id_programma_nt_licenza
+kst_open_w.flag_primo_giro = "S"
+kst_open_w.flag_modalita = kkg_flag_modalita_modifica
+kst_open_w.flag_adatta_win = kk_adatta_win_no
+kst_open_w.flag_leggi_dw = "N"
+kst_open_w.flag_cerca_in_lista = "0"
+kst_open_w.key1 = " " 
+kst_open_w.flag_where = " "
+
+							
+kuf1_menu_window = create kuf_menu_window 
+kuf1_menu_window.open_w_tabelle(kst_open_w)
+destroy kuf1_menu_window
+
+
+
+end event
+
+on m_rinnovalicenzant.create
+call super::create
+this.text = "Rinnova Licenza NT"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_rinnovalicenzant.destroy
+call super::destroy
+end on
+
+type m_popolat_contr from menu within m_utility
+end type
+
+event clicked;//
+kuf_utility  kuf1_utility
+
+kuf1_utility = create kuf_utility
+		
+kuf1_utility.ext_popola_id_meca() 
+
+destroy kuf1_utility
+ 
+ 
+end event
+
+on m_popolat_contr.create
+call super::create
+this.tag = "master"
+this.text = "Popola ID_MECA"
+this.microhelp = "Aggiorna tab.ARMO da MECA"
+this.toolbaritemvisible = false
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_popolat_contr.destroy
+call super::destroy
+end on
+
+type m_popoladaaccess from menu within m_utility
+end type
+
+event clicked;//
+kuf_fatt  kuf1_fatt
+
+kuf1_fatt = create kuf_fatt
+		
+
+if messagebox("Crea View delle Fattura", &
+	              "Genera la view per interrogazione / stampa Fatture~n~r" + &
+	              " ", &
+						exclamation!, yesno!, 1) = 2 then
+
+	MessageBox("Elaborazione non eseguita", &
+		           "Elaborazione Interrotta dall'utente", &
+						StopSign!)
+else
+
+	try
+		kuf1_fatt.crea_view() 
+		kuf1_fatt.crea_view_arfa_riga() 
+		MessageBox("Fine elaborazione", "Elaborazione terminata correttamente.")
+	catch (uo_exception kuo_exception)
+		kuo_exception.messaggio_utente()		
+	end try
+	
+end if
+
+
+destroy kuf1_fatt
+ 
+
+end event
+
+on m_popoladaaccess.create
+call super::create
+this.tag = "master"
+this.text = "Crea View Fatture"
+this.microhelp = "Crea la View per interrogare / stampare le Fatture"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_popoladaaccess.destroy
+call super::destroy
+end on
+
+type m_popolalistinodaaccess from menu within m_utility
+end type
+
+event clicked;//
+kuf_utility  kuf1_utility
+
+kuf1_utility = create kuf_utility
+		
+kuf1_utility.ext_sistema_artr( )
+
+destroy kuf1_utility
+ 
+
+end event
+
+on m_popolalistinodaaccess.create
+call super::create
+this.tag = "master"
+this.text = "Sistema ARTR"
+this.microhelp = "Popola il  campo serial ID della RIC, operazione di aggiornamento, non pericolosa"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_popolalistinodaaccess.destroy
+call super::destroy
+end on
+
+type m_esportapassword from menu within m_utility
+end type
+
+event clicked;//
+
+kuf_menu_window kuf1_menu_window
+kuf_sicurezza  kuf1_sicurezza 
+st_esito kst_esito
+
+kuf1_sicurezza  = create kuf_sicurezza 
+		
+kst_esito = kuf1_sicurezza.u_esporta_password( )
+
+destroy kuf1_sicurezza 
+
+messagebox ("Operazione Terminata", "Esportate " + trim(kst_esito.SQLErrText) + " password.")
+
+
+//
+//messagebox ("Immissione t_armo_1", kst_esito.sqlerrtext)
+//
+//	k_sql = "drop temp TABLE  t_armo_1 " 
+//	EXECUTE IMMEDIATE :k_sql using sqlca;
+//	
+//	k_sql = " CREATE  TABLE  informix.t_armo_1 " + &
+//	"	(num_int INTEGER , data_int DATE , " + &
+//	"	colli_2 DECIMAL(5,0) , m_cubi DECIMAL(6,2) , " + &
+//	"	peso_kg DECIMAL(8,2) , colli_fatt DECIMAL(5,0) , " + &
+//	"	magazzino SMALLINT , pedane DECIMAL(5,2) ) " 
+//	EXECUTE IMMEDIATE :k_sql using sqlca;
+//	
+//	k_sql = "CREATE INDEX t_armo_1_idx1 ON informix.t_armo_1 (data_int , num_int ) " 
+//	EXECUTE IMMEDIATE :k_sql using sqlca;
+//	
+//	k_sql = + &
+//	"insert into t_armo_1 (magazzino, num_int,data_int,colli_2,m_cubi,peso_kg,colli_fatt,pedane)  " + &
+//	"select magazzino, num_int, data_int, sum(colli_2), sum(m_cubi), sum(peso_kg), sum(colli_fatt), sum(pedane) " + &
+//	"from armo  group by magazzino, num_int, data_int "
+//	EXECUTE IMMEDIATE :k_sql using sqlca;
+//
+//
+//
+//
+//=== Parametri : 
+//=== struttura st_open_w
+//=== dati particolare programma
+//
+//=== Si potrebbero passare:
+//=== key= vedi sotto
+//	st_open_w k_st_open_w
+//
+//	K_st_open_w.id_programma = "stb"
+//	K_st_open_w.flag_primo_giro = "S"
+//	K_st_open_w.flag_modalita = " "
+//	K_st_open_w.flag_adatta_win = KK_ADATTA_WIN
+//	K_st_open_w.flag_leggi_dw = " "
+//	K_st_open_w.flag_cerca_in_lista = " "
+//	K_st_open_w.key1 = " " // cod cliente
+//	K_st_open_w.key2 = " " // cod articolo 
+//	K_st_open_w.key3 = " " // dose
+//	K_st_open_w.key4 = " " // misure imballo
+//	K_st_open_w.key5 = " " // misure imballo
+//	K_st_open_w.key6 = " " // misure imballo
+//	K_st_open_w.flag_where = " "
+//	
+//	kuf1_menu_window = create kuf_menu_window 
+//	kuf1_menu_window.open_w_tabelle(k_st_open_w)
+//	destroy kuf1_menu_window
+// 
+
+end event
+
+on m_esportapassword.create
+call super::create
+this.tag = "srpassword"
+this.text = "Esporta Password"
+this.enabled = false
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_esportapassword.destroy
+call super::destroy
+end on
+
+type m_importapassword from menu within m_utility
+end type
+
+event clicked;//
+kuf_menu_window kuf1_menu_window
+kuf_sicurezza  kuf1_sicurezza 
+st_esito kst_esito
+
+
+if messagebox ("Operazione DISTRUTTIVA", "Vuoi ricoprire le Password di TUTTI gli UTENTI della Procedura?", &
+						 question!, YesNo!, 2) = 1 then
+
+	
+	kuf1_sicurezza  = create kuf_sicurezza 
+			
+	kst_esito = kuf1_sicurezza.u_importa_password( )
+	
+	destroy kuf1_sicurezza 
+	
+	if len(trim(kst_esito.SQLErrText))> 0 then
+		messagebox ("Operazione Terminata", "Importare " + trim(kst_esito.SQLErrText) + " password.")
+	else
+		messagebox ("Operazione Terminata", "Nessuna password importata.")
+	end if
+	
+
+end if
+end event
+
+on m_importapassword.create
+call super::create
+this.tag = "srpassword"
+this.text = "Importa Password"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_importapassword.destroy
+call super::destroy
+end on
+
+type m_-3 from menu within m_file
+end type
+
+on m_-3.create
+call super::create
+this.text = "-"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_-3.destroy
+call super::destroy
+end on
+
+type m_mostrabarrastrumenti from menu within m_file
+event create ( )
+event destroy ( )
+end type
+
+on m_mostrabarrastrumenti.create
+call super::create
+this.text = "Mostra Barra Strumenti"
+this.menuimage = "Menu!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_mostrabarrastrumenti.destroy
+call super::destroy
+end on
+
+event clicked;//
+window wSheet
+
+	wSheet = w_main.GetActiveSheet( )
+	IF IsValid(wSheet) THEN
+		this.checked = true
+		wSheet.settoolbar(1,true)
+	else
+		w_main.settoolbar(1,true)
+	end if
+
+end event
+
+type m_mostrabarradelleapplicazioni from menu within m_file
+event create ( )
+event destroy ( )
+end type
+
+on m_mostrabarradelleapplicazioni.create
+call super::create
+this.tag = "to"
+this.text = "Mostra Barra delle Applicazioni"
+this.microhelp = "Mostra le ~'barre~' a icone delle funzioni  della procedua"
+this.toolbaritemvisible = false
+this.toolbaritemname = "menu!"
+this.toolbaritemtext = "Mostra le Toolbar"
+this.toolbaritemorder = 50
+this.toolbaritemspace = 1
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_mostrabarradelleapplicazioni.destroy
+call super::destroy
+end on
+
+event clicked;//
+window kwindow 
+kuf_utility kuf1_utility
+
+	w_toolbar_programmi.visible = true
+//			kuf1_utility = create kuf_utility
+//			kuf1_utility.u_toolbar_Restore(parentwindow)
+//			destroy kuf1_utility
+
+end event
+
+type m_-6 from menu within m_file
+event create ( )
+event destroy ( )
+end type
+
+on m_-6.create
+call super::create
+this.text = "-"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_-6.destroy
+call super::destroy
+end on
+
+type m_uscita from menu within m_file
+end type
+
+on clicked;close(w_main)
+end on
+
+on m_uscita.create
+call super::create
+this.text = "&Uscita"
+this.microhelp = "Fine Lavoro"
+this.menuitemtype = menuitemtypeexit!
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_uscita.destroy
+call super::destroy
+end on
+
+type m_magazzino from menu within m_main
+m_mag_navigatore m_mag_navigatore
+m_interrogazioni m_interrogazioni
+m_-4 m_-4
+m_pianidilavorazione m_pianidilavorazione
+m_convalidalavorazioni m_convalidalavorazioni
+m_attestati m_attestati
+m_-1 m_-1
+m_fatture m_fatture
+m_stampafatture m_stampafatture
+m_scadenzario m_scadenzario
+m_-0 m_-0
+m_barcodemanuale m_barcodemanuale
+m_-5 m_-5
+m_inviapianoalpilota m_inviapianoalpilota
+m_importalavorazioni m_importalavorazioni
+m_modificaprogrammazione m_modificaprogrammazione
+end type
+
+on m_magazzino.create
+call super::create
+this.tag = "5"
+this.text = "&Magazzino"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.menutitletext = "    Magazzino"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.menuanimation = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+this.m_mag_navigatore=create m_mag_navigatore
+this.m_interrogazioni=create m_interrogazioni
+this.m_-4=create m_-4
+this.m_pianidilavorazione=create m_pianidilavorazione
+this.m_convalidalavorazioni=create m_convalidalavorazioni
+this.m_attestati=create m_attestati
+this.m_-1=create m_-1
+this.m_fatture=create m_fatture
+this.m_stampafatture=create m_stampafatture
+this.m_scadenzario=create m_scadenzario
+this.m_-0=create m_-0
+this.m_barcodemanuale=create m_barcodemanuale
+this.m_-5=create m_-5
+this.m_inviapianoalpilota=create m_inviapianoalpilota
+this.m_importalavorazioni=create m_importalavorazioni
+this.m_modificaprogrammazione=create m_modificaprogrammazione
+this.Item[UpperBound(this.Item)+1]=this.m_mag_navigatore
+this.Item[UpperBound(this.Item)+1]=this.m_interrogazioni
+this.Item[UpperBound(this.Item)+1]=this.m_-4
+this.Item[UpperBound(this.Item)+1]=this.m_pianidilavorazione
+this.Item[UpperBound(this.Item)+1]=this.m_convalidalavorazioni
+this.Item[UpperBound(this.Item)+1]=this.m_attestati
+this.Item[UpperBound(this.Item)+1]=this.m_-1
+this.Item[UpperBound(this.Item)+1]=this.m_fatture
+this.Item[UpperBound(this.Item)+1]=this.m_stampafatture
+this.Item[UpperBound(this.Item)+1]=this.m_scadenzario
+this.Item[UpperBound(this.Item)+1]=this.m_-0
+this.Item[UpperBound(this.Item)+1]=this.m_barcodemanuale
+this.Item[UpperBound(this.Item)+1]=this.m_-5
+this.Item[UpperBound(this.Item)+1]=this.m_inviapianoalpilota
+this.Item[UpperBound(this.Item)+1]=this.m_importalavorazioni
+this.Item[UpperBound(this.Item)+1]=this.m_modificaprogrammazione
+end on
+
+on m_magazzino.destroy
+call super::destroy
+destroy(this.m_mag_navigatore)
+destroy(this.m_interrogazioni)
+destroy(this.m_-4)
+destroy(this.m_pianidilavorazione)
+destroy(this.m_convalidalavorazioni)
+destroy(this.m_attestati)
+destroy(this.m_-1)
+destroy(this.m_fatture)
+destroy(this.m_stampafatture)
+destroy(this.m_scadenzario)
+destroy(this.m_-0)
+destroy(this.m_barcodemanuale)
+destroy(this.m_-5)
+destroy(this.m_inviapianoalpilota)
+destroy(this.m_importalavorazioni)
+destroy(this.m_modificaprogrammazione)
+end on
+
+type m_mag_navigatore from menu within m_magazzino
+end type
+
+event clicked;//
+date k_data
+st_open_w k_st_open_w
+st_tab_base k_st_tab_base
+kuf_base kuf1_base
+kuf_menu_window kuf1_menu_window
+
+
+kuf1_base = create kuf_base
+if kuf1_base.dammi_rec(k_st_tab_base) = 0 then
+	k_data = k_st_tab_base.data_int
+else
+	k_data = today()
+end if
+destroy kuf1_base
+
+
+//===
+//=== Menu Treeview
+//===
+K_st_open_w.id_programma = "treeview"
+K_st_open_w.flag_primo_giro = "S"
+K_st_open_w.flag_modalita = kkg_flag_modalita_f_navigatore
+K_st_open_w.flag_adatta_win = KK_ADATTA_WIN
+K_st_open_w.flag_leggi_dw = "N"
+K_st_open_w.flag_cerca_in_lista = "0"
+K_st_open_w.key1 = " " // x ora nulla
+K_st_open_w.flag_where = " "
+							
+kuf1_menu_window = create kuf_menu_window 
+kuf1_menu_window.open_w_tabelle(k_st_open_w)
+destroy kuf1_menu_window
+
+
+end event
+
+on m_mag_navigatore.create
+call super::create
+this.tag = "treeview"
+this.text = "Esplora Magazzino "
+this.microhelp = "Naviga nei dati di Magazzino"
+this.toolbaritemname = "treeview!"
+this.toolbaritemtext = "Naviga, Navigazione dati magazzino"
+this.toolbaritemorder = 1
+this.menuimage = "treeview!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_mag_navigatore.destroy
+call super::destroy
+end on
+
+type m_interrogazioni from menu within m_magazzino
+m_movimenti m_movimenti
+m_lavorazione m_lavorazione
+end type
+
+on m_interrogazioni.create
+call super::create
+this.tag = "3"
+this.text = "Interrogazioni"
+this.microhelp = "Interrogazioni Magazzino"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+this.m_movimenti=create m_movimenti
+this.m_lavorazione=create m_lavorazione
+this.Item[UpperBound(this.Item)+1]=this.m_movimenti
+this.Item[UpperBound(this.Item)+1]=this.m_lavorazione
+end on
+
+on m_interrogazioni.destroy
+call super::destroy
+destroy(this.m_movimenti)
+destroy(this.m_lavorazione)
+end on
+
+type m_movimenti from menu within m_interrogazioni
+end type
+
+event clicked;//
+//
+kuf_menu_window kuf1_menu_window
+
+
+//=== Parametri : 
+//=== struttura st_open_w
+//=== dati particolare programma
+//
+//=== Si potrebbero passare:
+//=== key= vedi sotto
+	st_open_w k_st_open_w
+
+	K_st_open_w.id_programma = "movl"
+	K_st_open_w.flag_primo_giro = "S"
+	K_st_open_w.flag_modalita = kkg_flag_modalita_elenco
+	K_st_open_w.flag_adatta_win = KK_ADATTA_WIN
+	K_st_open_w.flag_leggi_dw = " "
+	K_st_open_w.flag_cerca_in_lista = " "
+	K_st_open_w.key1 = "0" // cod mandante
+	K_st_open_w.key2 = "0" // cod ricevente 
+	K_st_open_w.key3 = "0" // dose
+	K_st_open_w.key4 = string(RelativeDate ( today(), -31))//, "dd/mm/yyyy") // data inizio
+	K_st_open_w.key5 = string(today()) //, "dd/mm/yyyy") // data fine
+	K_st_open_w.key6 = " " // 
+	K_st_open_w.flag_where = " "
+
+	
+	kuf1_menu_window = create kuf_menu_window 
+	kuf1_menu_window.open_w_tabelle(k_st_open_w)
+	destroy kuf1_menu_window
+								
+
+end event
+
+on m_movimenti.create
+call super::create
+this.tag = "movl"
+this.text = "Movimenti"
+this.microhelp = "Entrate/Uscite di magazzino "
+this.toolbaritemvisible = false
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_movimenti.destroy
+call super::destroy
+end on
+
+type m_lavorazione from menu within m_interrogazioni
+end type
+
+event clicked;//
+string k_anno
+date k_data
+st_open_w k_st_open_w
+kuf_menu_window kuf1_menu_window
+
+//kuf_base kuf1_base
+
+
+//kuf1_base = create kuf_base
+//k_anno = mid(kuf1_base.prendi_dato_base("anno"), 2) + space(4)
+//destroy kuf1_base
+
+//
+//=== Situazione Lavorazioni (scelta (2)+ mandante(10) + libero (10)
+//===				KK_ADATTA_WIN=adatta dim. wind.(1) + 
+//===          libero-standard-futuri (26) + libero personalizzazioni
+//===          stato lavorazione (N/I/F)+data inizio+data fine lav+cliente 1 e 2+dose+data da+data a
+k_data = date(0)
+
+K_st_open_w.id_programma = "int_1"
+K_st_open_w.flag_primo_giro = "S"
+K_st_open_w.flag_modalita = kkg_flag_modalita_interrogazione
+K_st_open_w.flag_adatta_win = KK_ADATTA_WIN
+K_st_open_w.flag_leggi_dw = "N"
+K_st_open_w.flag_cerca_in_lista = "1"
+K_st_open_w.key1 = "0000000000" //mandante
+K_st_open_w.key2 = "*" // stato lavorazione (N/I/F)
+K_st_open_w.key3 = string(k_data,"dd/mm/yyyy")  //data inizio lav
+K_st_open_w.key4 = string(k_data,"dd/mm/yyyy")  //data fine lav
+K_st_open_w.key5 = "0000000000"  //cliente mand
+K_st_open_w.key5 = "0000000000"  //cliente ricev
+K_st_open_w.key5 = "0000000000"  //dose
+K_st_open_w.key4 = string(k_data,"dd/mm/yyyy")  //data da 
+K_st_open_w.key4 = string(k_data,"dd/mm/yyyy")  //data a 
+K_st_open_w.flag_where = " "
+							
+kuf1_menu_window = create kuf_menu_window 
+kuf1_menu_window.open_w_tabelle(k_st_open_w)
+destroy kuf1_menu_window
+
+
+end event
+
+on m_lavorazione.create
+call super::create
+this.tag = "int_1"
+this.text = "Magazzino~tCtrl+M"
+this.shortcut = 333
+this.microhelp = "Interroga Magazzino"
+this.toolbaritemname = "library!"
+this.toolbaritemtext = "Interroga, Interroga Magazzino"
+this.toolbaritemorder = 4
+this.menuimage = "library!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_lavorazione.destroy
+call super::destroy
+end on
+
+type m_-4 from menu within m_magazzino
+end type
+
+on m_-4.create
+call super::create
+this.text = "-"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_-4.destroy
+call super::destroy
+end on
+
+type m_pianidilavorazione from menu within m_magazzino
+end type
+
+event clicked;//
+date k_data
+string k_dataoggi
+st_open_w k_st_open_w
+st_tab_base k_st_tab_base
+kuf_base kuf1_base
+kuf_menu_window kuf1_menu_window
+
+
+kuf1_base = create kuf_base
+k_dataoggi = kuf1_base.prendi_dato_base("dataoggi") 
+if LeftA(k_dataoggi, 1) = "0" then
+	k_data = date(MidA(k_dataoggi, 2))
+else
+	k_data = today()
+end if
+
+destroy kuf1_base
+
+
+//
+//=== Parametri : 
+//=== struttura st_open_w
+//=== dati particolare programma
+//
+//=== Si potrebbero passare:
+//=== key= vedi sotto
+
+	K_st_open_w.id_programma = "pl_barcode_l"
+	K_st_open_w.flag_primo_giro = "S"
+	K_st_open_w.flag_modalita = kkg_flag_modalita_elenco
+	K_st_open_w.flag_adatta_win = KK_ADATTA_WIN
+	K_st_open_w.flag_leggi_dw = " "
+	K_st_open_w.flag_cerca_in_lista = " "
+	K_st_open_w.key1 = string( RelativeDate ( k_data, -365), "yyyy/mm/dd")   // data di inizio 
+	K_st_open_w.key2 = "tutti" // operazione
+	K_st_open_w.key3 = " " // 
+	K_st_open_w.key4 = " " // 
+	K_st_open_w.key5 = " " // 
+	K_st_open_w.key6 = " " // 
+	K_st_open_w.flag_where = " "
+	
+	kuf1_menu_window = create kuf_menu_window 
+	kuf1_menu_window.open_w_tabelle(k_st_open_w)
+	destroy kuf1_menu_window
+								
+
+end event
+
+on m_pianidilavorazione.create
+call super::create
+this.tag = "pl_barcode_l"
+this.text = "Piani di Lavorazione~tCtrl+L"
+this.shortcut = 332
+this.microhelp = "Elenco P.L. inseriti"
+this.toolbaritemname = "structure!"
+this.toolbaritemtext = "Pianifica, Pianificazione Lavorazione"
+this.toolbaritemorder = 3
+this.menuimage = "structure!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_pianidilavorazione.destroy
+call super::destroy
+end on
+
+type m_convalidalavorazioni from menu within m_magazzino
+m_convalidalavorazioni1 m_convalidalavorazioni1
+m_convalidalavorazioni2 m_convalidalavorazioni2
+m_convalidalavorazioni3 m_convalidalavorazioni3
+end type
+
+on m_convalidalavorazioni.create
+call super::create
+this.text = "Convalida Lavorazioni"
+this.microhelp = "Convalida Dosimetrica Trattamento Riferimenti"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.menutitletext = "Convalida"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+this.m_convalidalavorazioni1=create m_convalidalavorazioni1
+this.m_convalidalavorazioni2=create m_convalidalavorazioni2
+this.m_convalidalavorazioni3=create m_convalidalavorazioni3
+this.Item[UpperBound(this.Item)+1]=this.m_convalidalavorazioni1
+this.Item[UpperBound(this.Item)+1]=this.m_convalidalavorazioni2
+this.Item[UpperBound(this.Item)+1]=this.m_convalidalavorazioni3
+end on
+
+on m_convalidalavorazioni.destroy
+call super::destroy
+destroy(this.m_convalidalavorazioni1)
+destroy(this.m_convalidalavorazioni2)
+destroy(this.m_convalidalavorazioni3)
+end on
+
+type m_convalidalavorazioni1 from menu within m_convalidalavorazioni
+end type
+
+event clicked;//
+date k_data
+st_open_w k_st_open_w
+st_tab_base k_st_tab_base
+kuf_base kuf1_base
+kuf_menu_window kuf1_menu_window
+kuf_armo kuf1_armo
+
+
+//===
+//=== Situazione Scadenzario
+//===
+K_st_open_w.id_programma = kkg_id_programma_dosimetria
+K_st_open_w.flag_primo_giro = "S"
+K_st_open_w.flag_modalita = kkg_flag_modalita_modifica
+K_st_open_w.flag_adatta_win = KK_ADATTA_WIN
+K_st_open_w.flag_leggi_dw = "N"
+K_st_open_w.flag_cerca_in_lista = "1"
+K_st_open_w.key1 = " " // 
+K_st_open_w.key2 = " " // 
+K_st_open_w.key3 = kuf1_armo.ki_err_lav_ok_da_conv 
+K_st_open_w.key4 = " "
+K_st_open_w.key5 = " " 
+K_st_open_w.flag_where = " "
+							
+kuf1_menu_window = create kuf_menu_window 
+kuf1_menu_window.open_w_tabelle(k_st_open_w)
+destroy kuf1_menu_window
+
+
+end event
+
+on m_convalidalavorazioni1.create
+call super::create
+this.tag = "convalida"
+this.text = "Prima Lettura"
+this.microhelp = "Prima Lettura Dosimetri "
+this.menuimage = "DeclareVariable!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_convalidalavorazioni1.destroy
+call super::destroy
+end on
+
+type m_convalidalavorazioni2 from menu within m_convalidalavorazioni
+end type
+
+event clicked;//
+date k_data
+st_open_w k_st_open_w
+st_tab_base k_st_tab_base
+kuf_base kuf1_base
+kuf_menu_window kuf1_menu_window
+kuf_armo kuf1_armo
+
+
+//===
+//=== Situazione Scadenzario
+//===
+K_st_open_w.id_programma = kkg_id_programma_dosimetria_da_autorizzare
+K_st_open_w.flag_primo_giro = "S"
+K_st_open_w.flag_modalita = kkg_flag_modalita_modifica
+K_st_open_w.flag_adatta_win = KK_ADATTA_WIN
+K_st_open_w.flag_leggi_dw = "N"
+K_st_open_w.flag_cerca_in_lista = "1"
+K_st_open_w.key1 = " " // 
+K_st_open_w.key2 = " " // 
+K_st_open_w.key3 = kuf1_armo.ki_err_lav_ok_conv_ko_da_aut 
+K_st_open_w.key4 = " "
+K_st_open_w.key5 = " " 
+K_st_open_w.flag_where = " "
+							
+kuf1_menu_window = create kuf_menu_window 
+kuf1_menu_window.open_w_tabelle(k_st_open_w)
+destroy kuf1_menu_window
+
+
+end event
+
+on m_convalidalavorazioni2.create
+call super::create
+this.tag = "convalida"
+this.text = "Seconda Lettura (Anomalie)"
+this.microhelp = "Verifica delle anomalie di prima lettura dei dosimetri "
+this.menuimage = "setVariable!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_convalidalavorazioni2.destroy
+call super::destroy
+end on
+
+type m_convalidalavorazioni3 from menu within m_convalidalavorazioni
+end type
+
+event clicked;//
+date k_data
+st_open_w k_st_open_w
+st_tab_base k_st_tab_base
+kuf_base kuf1_base
+kuf_menu_window kuf1_menu_window
+kuf_armo kuf1_armo
+
+
+//===
+//=== Situazione Scadenzario
+//===
+K_st_open_w.id_programma = kkg_id_programma_dosimetria_da_sbloccare
+K_st_open_w.flag_primo_giro = "S"
+K_st_open_w.flag_modalita = kkg_flag_modalita_modifica
+K_st_open_w.flag_adatta_win = KK_ADATTA_WIN
+K_st_open_w.flag_leggi_dw = "N"
+K_st_open_w.flag_cerca_in_lista = "1"
+K_st_open_w.key1 = " " // 
+K_st_open_w.key2 = " " // 
+K_st_open_w.key3 = kuf1_armo.ki_err_lav_ok_conv_ko_bloc 
+K_st_open_w.key4 = " "
+K_st_open_w.key5 = " " 
+K_st_open_w.flag_where = " "
+							
+kuf1_menu_window = create kuf_menu_window 
+kuf1_menu_window.open_w_tabelle(k_st_open_w)
+destroy kuf1_menu_window
+
+
+end event
+
+on m_convalidalavorazioni3.create
+call super::create
+this.tag = "convalida"
+this.text = "Anomalie da Rilasciare"
+this.microhelp = "Sblocco dosimetrie con Anomalia  "
+this.menuimage = "Debug!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_convalidalavorazioni3.destroy
+call super::destroy
+end on
+
+type m_attestati from menu within m_magazzino
+end type
+
+event clicked;//
+date k_data
+string k_dataoggi
+st_open_w k_st_open_w
+st_tab_base k_st_tab_base
+kuf_base kuf1_base
+kuf_menu_window kuf1_menu_window
+
+
+kuf1_base = create kuf_base
+k_dataoggi = kuf1_base.prendi_dato_base("dataoggi") 
+if LeftA(k_dataoggi, 1) = "0" then
+	k_data = date(MidA(k_dataoggi, 2))
+else
+	k_data = today()
+end if
+
+destroy kuf1_base
+
+
+//
+//=== Parametri : 
+//=== struttura st_open_w
+//=== dati particolare programma
+//
+//=== Si potrebbero passare:
+//=== key= vedi sotto
+
+	K_st_open_w.id_programma = "attestati_l"
+	K_st_open_w.flag_primo_giro = "S"
+	K_st_open_w.flag_modalita = kkg_flag_modalita_elenco
+	K_st_open_w.flag_adatta_win = KK_ADATTA_WIN
+	K_st_open_w.flag_leggi_dw = " "
+	K_st_open_w.flag_cerca_in_lista = " "
+	K_st_open_w.key1 = string( RelativeDate ( k_data, -90), "yyyy/mm/dd")   // data di inizio 
+	K_st_open_w.key2 = string( k_data)   // data di fine
+	K_st_open_w.key3 = "0" // num certif
+	K_st_open_w.key4 = "0" // clie_2
+	K_st_open_w.key5 = "0" // id armo
+	K_st_open_w.key6 = " " // 
+	K_st_open_w.key7 = " " // 
+	K_st_open_w.flag_where = " "
+	
+	kuf1_menu_window = create kuf_menu_window 
+	kuf1_menu_window.open_w_tabelle(k_st_open_w)
+	destroy kuf1_menu_window
+								
+
+end event
+
+on m_attestati.create
+call super::create
+this.tag = "attestati_l"
+this.text = "Attestati"
+this.microhelp = "Certificazione Trattamenti"
+this.menuimage = "ScriptYes!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_attestati.destroy
+call super::destroy
+end on
+
+type m_-1 from menu within m_magazzino
+end type
+
+on m_-1.create
+call super::create
+this.text = "-"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_-1.destroy
+call super::destroy
+end on
+
+type m_fatture from menu within m_magazzino
+end type
+
+event clicked;//
+//
+kuf_menu_window kuf1_menu_window
+
+//
+//=== Parametri : 
+//=== struttura st_open_w
+//=== dati particolare programma
+//
+//=== Si potrebbero passare:
+//=== key= vedi sotto
+	st_open_w k_st_open_w
+
+	K_st_open_w.id_programma = kkg_id_programma_fatture_elenco
+	K_st_open_w.flag_primo_giro = "S"
+	K_st_open_w.flag_modalita = kkg_flag_modalita_elenco
+	K_st_open_w.flag_adatta_win = KK_ADATTA_WIN
+	K_st_open_w.flag_leggi_dw = " "
+	K_st_open_w.flag_cerca_in_lista = " "
+	K_st_open_w.key1 = "0" // cliente
+	K_st_open_w.key2 = " " // data inizio periodo
+	K_st_open_w.key3 = " " // data fine periodo 
+	K_st_open_w.key4 = " " // 
+	K_st_open_w.key5 = " " // 
+	K_st_open_w.key6 = " " // 
+	K_st_open_w.flag_where = " "
+	
+	kuf1_menu_window = create kuf_menu_window 
+	kuf1_menu_window.open_w_tabelle(k_st_open_w)
+	destroy kuf1_menu_window
+								
+
+end event
+
+on m_fatture.create
+call super::create
+this.tag = "fatture"
+this.text = "Fatture"
+this.microhelp = "Elenco Fatture"
+this.toolbaritemvisible = false
+this.menuimage = "c:\gammarad\pb_gmmrd11\icone\fattura8x8.gif"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_fatture.destroy
+call super::destroy
+end on
+
+type m_stampafatture from menu within m_magazzino
+end type
+
+event clicked;//
+date k_data
+st_open_w k_st_open_w
+st_tab_base k_st_tab_base
+kuf_base kuf1_base
+kuf_menu_window kuf1_menu_window
+
+
+
+//===
+//=== Stampa Nuove Fatture e Note di credito
+//===
+K_st_open_w.id_programma = kkg_id_programma_fatture_stampa
+K_st_open_w.flag_primo_giro = "S"
+K_st_open_w.flag_modalita = kkg_flag_modalita_stampa
+K_st_open_w.flag_adatta_win = KK_ADATTA_WIN_NO
+K_st_open_w.flag_leggi_dw = "N"
+K_st_open_w.flag_cerca_in_lista = "0"
+K_st_open_w.key1 = " " // 
+K_st_open_w.key2 = " " // 
+K_st_open_w.key3 = " " 
+K_st_open_w.key4 = " "
+K_st_open_w.key5 = " " 
+K_st_open_w.flag_where = " "
+							
+kuf1_menu_window = create kuf_menu_window 
+kuf1_menu_window.open_w_tabelle(k_st_open_w)
+destroy kuf1_menu_window
+
+
+end event
+
+on m_stampafatture.create
+call super::create
+this.tag = "fatt_new_st"
+this.text = "Stampa Fatture e N.C.~tCtrl+F"
+this.shortcut = 326
+this.microhelp = "Stampa nuove fatture / note di credito"
+this.menuimage = "C:\GAMMARAD\PB_GMMRD11\ICONE\printer16x16.gif"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_stampafatture.destroy
+call super::destroy
+end on
+
+type m_scadenzario from menu within m_magazzino
+end type
+
+event clicked;//
+date k_data
+st_open_w k_st_open_w
+st_tab_base k_st_tab_base
+kuf_base kuf1_base
+kuf_menu_window kuf1_menu_window
+
+
+kuf1_base = create kuf_base
+if kuf1_base.dammi_rec(k_st_tab_base) = 0 then
+	k_data = k_st_tab_base.data_int
+else
+	k_data = today()
+end if
+destroy kuf1_base
+
+
+//===
+//=== Situazione Scadenzario
+//===
+K_st_open_w.id_programma = "ricevute_sk"
+K_st_open_w.flag_primo_giro = "S"
+K_st_open_w.flag_modalita = kkg_flag_modalita_interrogazione
+K_st_open_w.flag_adatta_win = KK_ADATTA_WIN
+K_st_open_w.flag_leggi_dw = "N"
+K_st_open_w.flag_cerca_in_lista = "1"
+K_st_open_w.key1 = "*" // tipo
+K_st_open_w.key2 = "*" // stato lavorazione (N/I/F)
+K_st_open_w.key3 = string(k_data, "dd/mm/yy") //data inizio scadenze
+K_st_open_w.key4 = string(relativedate(k_data, 60), "dd/mm/yy")  //data fine scadenze
+K_st_open_w.key5 = "00000"  //cliente fatturato
+K_st_open_w.flag_where = " "
+							
+kuf1_menu_window = create kuf_menu_window 
+kuf1_menu_window.open_w_tabelle(k_st_open_w)
+destroy kuf1_menu_window
+
+
+end event
+
+on m_scadenzario.create
+call super::create
+this.tag = "ricevute_sk"
+this.text = "Scadenzario"
+this.microhelp = "Archivio scadenzario fatture emesse"
+this.menuimage = "Custom037!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_scadenzario.destroy
+call super::destroy
+end on
+
+type m_-0 from menu within m_magazzino
+end type
+
+on m_-0.create
+call super::create
+this.text = "-"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_-0.destroy
+call super::destroy
+end on
+
+type m_barcodemanuale from menu within m_magazzino
+end type
+
+event clicked;//
+date k_data
+st_open_w k_st_open_w
+st_tab_base k_st_tab_base
+kuf_base kuf1_base
+kuf_menu_window kuf1_menu_window
+
+
+kuf1_base = create kuf_base
+if kuf1_base.dammi_rec(k_st_tab_base) = 0 then
+	k_data = k_st_tab_base.data_int
+else
+	k_data = today()
+end if
+destroy kuf1_base
+
+
+//===
+//=== Situazione Scadenzario
+//===
+K_st_open_w.id_programma = "barcode_m"
+K_st_open_w.flag_primo_giro = "S"
+K_st_open_w.flag_modalita = kkg_flag_modalita_inserimento
+K_st_open_w.flag_adatta_win = KK_ADATTA_WIN
+K_st_open_w.flag_leggi_dw = "N"
+K_st_open_w.flag_cerca_in_lista = "1"
+K_st_open_w.key1 = " " // 
+K_st_open_w.key2 = " " // 
+K_st_open_w.key3 = " " 
+K_st_open_w.key4 = " "
+K_st_open_w.key5 = " " 
+K_st_open_w.flag_where = " "
+							
+kuf1_menu_window = create kuf_menu_window 
+kuf1_menu_window.open_w_tabelle(k_st_open_w)
+destroy kuf1_menu_window
+
+
+end event
+
+on m_barcodemanuale.create
+call super::create
+this.tag = "barcode_m"
+this.text = "Barcode manuale"
+this.microhelp = "Stampa etichetta ~'barcode manuale~'"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_barcodemanuale.destroy
+call super::destroy
+end on
+
+type m_-5 from menu within m_magazzino
+end type
+
+on m_-5.create
+call super::create
+this.text = "-"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_-5.destroy
+call super::destroy
+end on
+
+type m_inviapianoalpilota from menu within m_magazzino
+end type
+
+event clicked;//
+kuf_pilota_cmd kuf1_pilota_cmd
+
+		
+//--- apre la connessione al DB PILOTA
+try
+	kuf1_pilota_cmd = create kuf_pilota_cmd
+
+	if messagebox ("Genera File Piano di Lavorazione", &
+						"L'operazione non e' distruttiva~n~r" &
+						+ "Il file di Pianificazione sara' prodotto solo se:~n~r" &
+						+"     1-l'ultima Richiesta e' gia' stata esitata positivamente~n~r" &
+						+"     2-almeno un Piano di Lavoro nello stato di 'Chiuso' (ovvero ancora da Inviare)~n~r" &
+						+" ~n~r" &
+						+ "Vuoi proseguire con l'operazione?" &
+						 ,question!, YesNo!, 2) = 1 then
+
+		if kuf1_pilota_cmd.job_pianificazione_lavorazioni() then
+			kuf1_pilota_cmd.get_pilota_cfg()
+			messagebox ("Genera File Piano di Lavorazione", &
+					"L'operazione e' conclusa correttamente.~n~r" &
+					+ "E' stato generato il file con il Piano di Lavoro nella cartella:~n~r" &
+					+ kuf1_pilota_cmd.kist_tab_pilota_cfg.path_file_pl_barcode &
+					+ kuf1_pilota_cmd.kist_tab_pilota_cfg.ultimo_nome_file_pl_barcode &
+					 ,Information!) 
+		else
+			messagebox ("Genera File Piano di Lavorazione", &
+					"Operazione conclusa.~n~rNessun Piano Inviato al Pilota, per uno dei seguenti motivi:~n~r" &
+						+ "   1-Nessun Piano nello stato di Chiuso~n~r" &
+						+ "   2-Piano non ancora esitato dal Pilota e ancora valido (non scaduto)~n~r" &
+						+" ~n~r" &
+					 ,Information!) 
+		end if
+	
+	end if
+	
+catch (uo_exception kuo_exception)
+	kuo_exception.messaggio_utente()
+
+finally
+	destroy kuf1_pilota_cmd
+
+end try
+
+end event
+
+on m_inviapianoalpilota.create
+call super::create
+this.tag = "pilota_exp_p"
+this.text = "Invia Piano al Pilota (NP) "
+this.microhelp = "Crea il file di scambio da Piano di Lavorazione Chiuso per il Pilota"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_inviapianoalpilota.destroy
+call super::destroy
+end on
+
+type m_importalavorazioni from menu within m_magazzino
+end type
+
+event clicked;//
+int k_importati=0
+kuf_pl_barcode kuf1_pl_barcode
+
+		
+//--- apre la connessione al DB PILOTA
+try
+	kuf1_pl_barcode = create kuf_pl_barcode
+
+	if messagebox ("Importa Barcode Trattati", &
+						"L'operazione AGGIORNA gli Archivi!!~n~r" &
+						+ "Saranno importati i dati di lavorazione dal NUOVO Pilota." &
+						+" ~n~r" &
+						+ "Vuoi proseguire con l'operazione?" &
+						 ,question!, YesNo!, 2) = 1 then
+
+		k_importati = kuf1_pl_barcode.importa_trattati_pilota("0") 
+		if k_importati > 0 then
+			messagebox ("Importa Barcode Trattati", &
+					"L'operazione e' conclusa correttamente.~n~r" &
+					+ "Sono stati importati dal Pilota i dati per "  &
+					+ string(k_importati) &
+					+ " Barcode. " &
+					 ,Information!) 
+		else
+			messagebox ("Importa Barcode Trattati", &
+					"Operazione conclusa.~n~rNessun dato importato dal Pilota.~n~r" &
+						+ "Nessun Barcode ha concluso il Trattamento~n~r" &
+						+" ~n~r" &
+					 ,Information!) 
+		end if
+	
+	end if
+	
+catch (uo_exception kuo_exception)
+	kuo_exception.messaggio_utente()
+
+finally
+	destroy kuf1_pl_barcode
+
+end try
+
+end event
+
+on m_importalavorazioni.create
+call super::create
+this.tag = "pilota_imp_p"
+this.text = "Importa Lavorazioni NP"
+this.microhelp = "Importa i dati di Trattamento dalle Tabelle del Nuovo Pilota"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_importalavorazioni.destroy
+call super::destroy
+end on
+
+type m_modificaprogrammazione from menu within m_magazzino
+end type
+
+event clicked;//
+date k_data
+st_open_w k_st_open_w
+st_tab_base k_st_tab_base
+kuf_base kuf1_base
+kuf_menu_window kuf1_menu_window
+
+
+
+//===
+//=== Situazione Scadenzario
+//===
+K_st_open_w.id_programma = kkg_id_programma_pilota_programmazione
+K_st_open_w.flag_primo_giro = "S"
+K_st_open_w.flag_modalita = kkg_flag_modalita_modifica
+K_st_open_w.flag_adatta_win = KK_ADATTA_WIN
+K_st_open_w.flag_leggi_dw = "N"
+K_st_open_w.flag_cerca_in_lista = "1"
+K_st_open_w.key1 = " " // 
+K_st_open_w.key2 = " " // 
+K_st_open_w.key3 = " " 
+K_st_open_w.key4 = " "
+K_st_open_w.key5 = " " 
+K_st_open_w.flag_where = " "
+							
+kuf1_menu_window = create kuf_menu_window 
+kuf1_menu_window.open_w_tabelle(k_st_open_w)
+destroy kuf1_menu_window
+
+
+end event
+
+on m_modificaprogrammazione.create
+call super::create
+this.tag = "pilota_prg"
+this.text = "Modifica Programmazione"
+this.microhelp = "Modifica la coda di Pianificazione Impianto gia~' inviata al Pilota"
+this.menuimage = "UserObject!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_modificaprogrammazione.destroy
+call super::destroy
+end on
+
+type m_stat from menucascade within m_main
+m_st_fatt m_st_fatt
+m_st_produz m_st_produz
+end type
+
+on m_stat.create
+call super::create
+this.tag = "2"
+this.text = "&Statistiche"
+this.toolbaritemorder = 7
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.menutitletext = " stat."
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.menuanimation = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+this.m_st_fatt=create m_st_fatt
+this.m_st_produz=create m_st_produz
+this.Item[UpperBound(this.Item)+1]=this.m_st_fatt
+this.Item[UpperBound(this.Item)+1]=this.m_st_produz
+end on
+
+on m_stat.destroy
+call super::destroy
+destroy(this.m_st_fatt)
+destroy(this.m_st_produz)
+end on
+
+type m_st_fatt from menu within m_stat
+end type
+
+event clicked;//
+string k_anno="0000"
+st_open_w k_st_open_w
+kuf_base kuf1_base
+kuf_menu_window kuf1_menu_window
+
+	
+	kuf1_base = create kuf_base
+	k_anno = trim(MidA(kuf1_base.prendi_dato_base("anno"),2))
+	destroy kuf1_base
+	
+//=== 2 scelta 
+//=== 10 id_cliente + 4 anno + 06 liberi + S=ridim windows + dalla 50 : 10 id_cliente 
+//=== 10 dose + 10 id_gruppo + 10 data_da_fattura + 10 data_a_fattura
+K_st_open_w.id_programma = "skc"
+K_st_open_w.flag_primo_giro = "S"
+K_st_open_w.flag_modalita = kkg_flag_modalita_interrogazione
+K_st_open_w.flag_adatta_win = KK_ADATTA_WIN
+K_st_open_w.flag_leggi_dw = "N"
+K_st_open_w.flag_cerca_in_lista = "1"
+K_st_open_w.key1 = "0000000000" //cliente
+K_st_open_w.key2 = "0000000000" // dose
+K_st_open_w.key3 = "0000000000"  //gruppo
+K_st_open_w.key4 = "01/01/" + k_anno  //data da
+K_st_open_w.key5 = "31/12/" + k_anno //data a
+K_st_open_w.key6 = " "  
+K_st_open_w.key7 = " " 
+K_st_open_w.flag_where = " "
+							
+kuf1_menu_window = create kuf_menu_window 
+kuf1_menu_window.open_w_tabelle(k_st_open_w)
+destroy kuf1_menu_window
+
+		
+end event
+
+on m_st_fatt.create
+call super::create
+this.tag = "skc"
+this.text = "Fatturato/ABC"
+this.microhelp = "Statistici sul Fatturato e Classifiche ABC "
+this.toolbaritemname = "graph1!"
+this.toolbaritemtext = "Stat.Fatt, Statistico Fatturato"
+this.toolbaritemorder = 7
+this.menuimage = "graph1!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_st_fatt.destroy
+call super::destroy
+end on
+
+type m_st_produz from menu within m_stat
+end type
+
+event clicked;//
+string k_anno="0000"
+st_open_w k_st_open_w
+kuf_base kuf1_base
+kuf_menu_window kuf1_menu_window
+
+	
+	kuf1_base = create kuf_base
+	k_anno = trim(MidA(kuf1_base.prendi_dato_base("anno"),2))
+	destroy kuf1_base
+	
+//=== 2 scelta 
+//=== 10 id_cliente + 4 anno + 06 liberi + S=ridim windows + dalla 50 : 10 id_cliente 
+//=== 10 dose + 10 id_gruppo + 10 data_da_fattura + 10 data_a_fattura
+K_st_open_w.id_programma = kkg_id_programma_stat_produz
+K_st_open_w.flag_primo_giro = "S"
+K_st_open_w.flag_modalita = kkg_flag_modalita_interrogazione
+K_st_open_w.flag_adatta_win = KK_ADATTA_WIN
+K_st_open_w.flag_leggi_dw = "N"
+K_st_open_w.flag_cerca_in_lista = "1"
+K_st_open_w.key1 = "0000000000" //cliente
+K_st_open_w.key2 = "0000000000" // dose
+K_st_open_w.key3 = "0000000000"  //gruppo
+K_st_open_w.key4 = "01/01/" + k_anno  //data da
+K_st_open_w.key5 = "31/12/" + k_anno //data a
+K_st_open_w.key6 = " "  
+K_st_open_w.key7 = " " 
+K_st_open_w.flag_where = " "
+							
+kuf1_menu_window = create kuf_menu_window 
+kuf1_menu_window.open_w_tabelle(k_st_open_w)
+destroy kuf1_menu_window
+
+		
+end event
+
+on m_st_produz.create
+call super::create
+this.tag = "stat_produz"
+this.text = "Produzione/Inventario"
+this.microhelp = "Statistici sulla Merce entrata a magazzino, estrazione Inventario per periodo "
+this.toolbaritemname = "graph2!"
+this.toolbaritemtext = "Stat.Prod,Statistico Produzione"
+this.toolbaritemorder = 7
+this.menuimage = "graph2!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_st_produz.destroy
+call super::destroy
+end on
+
+type m_archivi from menu within m_main
+m_anagrafiche m_anagrafiche
+m_articoli m_articoli
+m_a_t1 m_a_t1
+m_listino m_listino
+m_capitolati m_capitolati
+m_contratti m_contratti
+m_sl_pt m_sl_pt
+m_a_t2 m_a_t2
+m_pilota m_pilota
+m_vettori m_vettori
+m_ausiliari0 m_ausiliari0
+m_profis m_profis
+m_sicurezza m_sicurezza
+m_- m_-
+m_opf m_opf
+m_codabarre m_codabarre
+end type
+
+on m_archivi.create
+call super::create
+this.tag = "5"
+this.text = "Arc&hivi"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.menutitletext = "   Archivi Magazzino"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+this.m_anagrafiche=create m_anagrafiche
+this.m_articoli=create m_articoli
+this.m_a_t1=create m_a_t1
+this.m_listino=create m_listino
+this.m_capitolati=create m_capitolati
+this.m_contratti=create m_contratti
+this.m_sl_pt=create m_sl_pt
+this.m_a_t2=create m_a_t2
+this.m_pilota=create m_pilota
+this.m_vettori=create m_vettori
+this.m_ausiliari0=create m_ausiliari0
+this.m_profis=create m_profis
+this.m_sicurezza=create m_sicurezza
+this.m_-=create m_-
+this.m_opf=create m_opf
+this.m_codabarre=create m_codabarre
+this.Item[UpperBound(this.Item)+1]=this.m_anagrafiche
+this.Item[UpperBound(this.Item)+1]=this.m_articoli
+this.Item[UpperBound(this.Item)+1]=this.m_a_t1
+this.Item[UpperBound(this.Item)+1]=this.m_listino
+this.Item[UpperBound(this.Item)+1]=this.m_capitolati
+this.Item[UpperBound(this.Item)+1]=this.m_contratti
+this.Item[UpperBound(this.Item)+1]=this.m_sl_pt
+this.Item[UpperBound(this.Item)+1]=this.m_a_t2
+this.Item[UpperBound(this.Item)+1]=this.m_pilota
+this.Item[UpperBound(this.Item)+1]=this.m_vettori
+this.Item[UpperBound(this.Item)+1]=this.m_ausiliari0
+this.Item[UpperBound(this.Item)+1]=this.m_profis
+this.Item[UpperBound(this.Item)+1]=this.m_sicurezza
+this.Item[UpperBound(this.Item)+1]=this.m_-
+this.Item[UpperBound(this.Item)+1]=this.m_opf
+this.Item[UpperBound(this.Item)+1]=this.m_codabarre
+end on
+
+on m_archivi.destroy
+call super::destroy
+destroy(this.m_anagrafiche)
+destroy(this.m_articoli)
+destroy(this.m_a_t1)
+destroy(this.m_listino)
+destroy(this.m_capitolati)
+destroy(this.m_contratti)
+destroy(this.m_sl_pt)
+destroy(this.m_a_t2)
+destroy(this.m_pilota)
+destroy(this.m_vettori)
+destroy(this.m_ausiliari0)
+destroy(this.m_profis)
+destroy(this.m_sicurezza)
+destroy(this.m_-)
+destroy(this.m_opf)
+destroy(this.m_codabarre)
+end on
+
+type m_anagrafiche from menu within m_archivi
+m_lista_anag m_lista_anag
+m_lista_mandanti m_lista_mandanti
+m_lista_riceventi m_lista_riceventi
+m_lista_fatturati m_lista_fatturati
+end type
+
+on m_anagrafiche.create
+call super::create
+this.tag = "cll"
+this.text = "Anagrafiche"
+this.microhelp = "Gestione Anagrafiche clienti/colaboratori/fornitori"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.menutitletext = " anag."
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+this.m_lista_anag=create m_lista_anag
+this.m_lista_mandanti=create m_lista_mandanti
+this.m_lista_riceventi=create m_lista_riceventi
+this.m_lista_fatturati=create m_lista_fatturati
+this.Item[UpperBound(this.Item)+1]=this.m_lista_anag
+this.Item[UpperBound(this.Item)+1]=this.m_lista_mandanti
+this.Item[UpperBound(this.Item)+1]=this.m_lista_riceventi
+this.Item[UpperBound(this.Item)+1]=this.m_lista_fatturati
+end on
+
+on m_anagrafiche.destroy
+call super::destroy
+destroy(this.m_lista_anag)
+destroy(this.m_lista_mandanti)
+destroy(this.m_lista_riceventi)
+destroy(this.m_lista_fatturati)
+end on
+
+type m_lista_anag from menu within m_anagrafiche
+end type
+
+event clicked;//
+kuf_menu_window kuf1_menu_window
+
+//=== Parametri : 
+//=== struttura st_open_w
+//=== dati particolare programma
+//
+//=== Si potrebbero passare:
+//=== key1=rag.soc.;key2=tipo cliente: *=tutti; 1/2/3=Mandanti/Ricev/Fattrati
+st_open_w k_st_open_w
+
+K_st_open_w.id_programma = "cll"
+K_st_open_w.flag_primo_giro = "S"
+K_st_open_w.flag_modalita = kkg_flag_modalita_elenco
+K_st_open_w.flag_adatta_win = KK_ADATTA_WIN
+
+K_st_open_w.flag_leggi_dw = "N"
+K_st_open_w.flag_cerca_in_lista = "1"
+K_st_open_w.key1 = " "
+K_st_open_w.key2 = "*"
+K_st_open_w.key3 = " "
+K_st_open_w.key4 = " "
+K_st_open_w.flag_where = " "
+
+kuf1_menu_window = create kuf_menu_window 
+kuf1_menu_window.open_w_tabelle(k_st_open_w)
+destroy kuf1_menu_window
+
+
+end event
+
+on m_lista_anag.create
+call super::create
+this.tag = "cll"
+this.text = "Lista generale~tCtrl+N"
+this.shortcut = 334
+this.microhelp = "Lista di tutte le anagrafiche clienti (Mandanti/Riceventi/Fatturati)"
+this.toolbaritemname = "picture!"
+this.toolbaritemtext = "Clienti, Elenco Anagrafiche"
+this.toolbaritemorder = 1
+this.menuimage = "picture!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_lista_anag.destroy
+call super::destroy
+end on
+
+type m_lista_mandanti from menu within m_anagrafiche
+end type
+
+on m_lista_mandanti.create
+call super::create
+this.tag = "cll"
+this.text = "Lista Mandanti"
+this.microhelp = "Lista Mandanti"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+event clicked;//
+//
+kuf_menu_window kuf1_menu_window
+
+
+//=== Parametri : 
+//=== struttura st_open_w
+//=== dati particolare programma
+//
+//=== Si potrebbero passare:
+//=== key1=rag.soc.;key2=tipo cliente: *=tutti; 1/2/3=Mandanti/Ricev/Fattrati
+st_open_w k_st_open_w
+
+K_st_open_w.id_programma = "cll"
+K_st_open_w.flag_primo_giro = "S"
+K_st_open_w.flag_modalita = kkg_flag_modalita_elenco
+K_st_open_w.flag_adatta_win = KK_ADATTA_WIN
+K_st_open_w.flag_leggi_dw = "N"
+K_st_open_w.flag_cerca_in_lista = "1"
+K_st_open_w.key1 = " "
+K_st_open_w.key2 = "1"
+K_st_open_w.key3 = " "
+K_st_open_w.key4 = " "
+K_st_open_w.flag_where = " "
+
+kuf1_menu_window = create kuf_menu_window 
+kuf1_menu_window.open_w_tabelle(k_st_open_w)
+destroy kuf1_menu_window
+
+
+end event
+
+on m_lista_mandanti.destroy
+call super::destroy
+end on
+
+type m_lista_riceventi from menu within m_anagrafiche
+end type
+
+event clicked;//
+//
+kuf_menu_window kuf1_menu_window
+
+//=== Parametri : 
+//=== struttura st_open_w
+//=== dati particolare programma
+//
+//=== Si potrebbero passare:
+//=== key1=rag.soc.;key2=tipo cliente: *=tutti; 1/2/3=Mandanti/Ricev/Fattrati
+st_open_w k_st_open_w
+
+K_st_open_w.id_programma = "cll"
+K_st_open_w.flag_primo_giro = "S"
+K_st_open_w.flag_modalita = kkg_flag_modalita_elenco
+K_st_open_w.flag_adatta_win = KK_ADATTA_WIN
+K_st_open_w.flag_leggi_dw = "N"
+K_st_open_w.flag_cerca_in_lista = "1"
+K_st_open_w.key1 = " "
+K_st_open_w.key2 = "2"
+K_st_open_w.key3 = " "
+K_st_open_w.key4 = " "
+K_st_open_w.flag_where = " "
+
+kuf1_menu_window = create kuf_menu_window 
+kuf1_menu_window.open_w_tabelle(k_st_open_w)
+destroy kuf1_menu_window
+
+
+end event
+
+on m_lista_riceventi.create
+call super::create
+this.tag = "cll"
+this.text = "Lista Riceventi"
+this.microhelp = "Lista Riceventi"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_lista_riceventi.destroy
+call super::destroy
+end on
+
+type m_lista_fatturati from menu within m_anagrafiche
+end type
+
+event clicked;//
+//
+kuf_menu_window kuf1_menu_window
+
+//=== Parametri : 
+//=== struttura st_open_w
+//=== dati particolare programma
+//
+//=== Si potrebbero passare:
+//=== key1=rag.soc.;key2=tipo cliente: *=tutti; 1/2/3=Mandanti/Ricev/Fattrati
+st_open_w k_st_open_w
+
+K_st_open_w.id_programma = "cll"
+K_st_open_w.flag_primo_giro = "S"
+K_st_open_w.flag_modalita = kkg_flag_modalita_elenco
+K_st_open_w.flag_adatta_win = KK_ADATTA_WIN
+K_st_open_w.flag_leggi_dw = "N"
+K_st_open_w.flag_cerca_in_lista = "1"
+K_st_open_w.key1 = " "
+K_st_open_w.key2 = "3"
+K_st_open_w.key3 = " "
+K_st_open_w.key4 = " "
+K_st_open_w.flag_where = " "
+
+kuf1_menu_window = create kuf_menu_window 
+kuf1_menu_window.open_w_tabelle(k_st_open_w)
+destroy kuf1_menu_window
+
+
+end event
+
+on m_lista_fatturati.create
+call super::create
+this.tag = "cll"
+this.text = "Lista Fatturati"
+this.microhelp = "Lista anagrafiche a cui vengono imputate le fatture"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_lista_fatturati.destroy
+call super::destroy
+end on
+
+type m_articoli from menu within m_archivi
+end type
+
+event clicked;//
+kuf_menu_window kuf1_menu_window
+
+
+//=== Parametri : 
+//=== struttura st_open_w
+//=== dati particolare programma
+//
+//=== Si potrebbero passare:
+//=== key1=codice IVA;key2=cod.pagamento;key3=cod gruppi;key4=cod causali;
+st_open_w k_st_open_w
+
+K_st_open_w.id_programma = "prl"
+K_st_open_w.flag_primo_giro = "S"
+K_st_open_w.flag_modalita = kkg_flag_modalita_elenco
+K_st_open_w.flag_adatta_win = KK_ADATTA_WIN
+K_st_open_w.flag_leggi_dw = "N"
+K_st_open_w.key1 = " "
+K_st_open_w.key2 = " "
+K_st_open_w.key3 = " "
+K_st_open_w.key4 = " "
+K_st_open_w.flag_where = " "
+
+kuf1_menu_window = create kuf_menu_window 
+kuf1_menu_window.open_w_tabelle(k_st_open_w)
+destroy kuf1_menu_window
+
+
+
+end event
+
+on m_articoli.create
+call super::create
+this.tag = "prl"
+this.text = "Prodotti~tCtrl+R"
+this.shortcut = 338
+this.microhelp = "Gestione Archivio Prodotti"
+this.menuimage = "UserObject!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_articoli.destroy
+call super::destroy
+end on
+
+type m_a_t1 from menu within m_archivi
+end type
+
+on m_a_t1.create
+call super::create
+this.tag = "2"
+this.text = "-"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_a_t1.destroy
+call super::destroy
+end on
+
+type m_listino from menu within m_archivi
+end type
+
+event clicked;//
+//
+kuf_menu_window kuf1_menu_window
+
+//
+//=== Parametri : 
+//=== struttura st_open_w
+//=== dati particolare programma
+//
+//=== Si potrebbero passare:
+//=== key= vedi sotto
+	st_open_w k_st_open_w
+
+	K_st_open_w.id_programma = "listino_l"
+	K_st_open_w.flag_primo_giro = "S"
+	K_st_open_w.flag_modalita = kkg_flag_modalita_elenco
+	K_st_open_w.flag_adatta_win = KK_ADATTA_WIN
+	K_st_open_w.flag_leggi_dw = " "
+	K_st_open_w.flag_cerca_in_lista = " "
+	K_st_open_w.key1 = " " // cod cliente
+	K_st_open_w.key2 = " " // cod articolo 
+	K_st_open_w.key3 = " " // dose
+	K_st_open_w.key4 = " " // misure imballo
+	K_st_open_w.key5 = " " // misure imballo
+	K_st_open_w.key6 = " " // misure imballo
+	K_st_open_w.flag_where = " "
+	
+	kuf1_menu_window = create kuf_menu_window 
+	kuf1_menu_window.open_w_tabelle(k_st_open_w)
+	destroy kuf1_menu_window
+								
+
+end event
+
+on m_listino.create
+call super::create
+this.tag = "listino_l"
+this.text = "Listini"
+this.microhelp = "Listini Prezzi Clienti"
+this.toolbaritemname = "formatdollar!"
+this.toolbaritemtext = "Listini"
+this.toolbaritemorder = 1
+this.menuimage = "formatdollar!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_listino.destroy
+call super::destroy
+end on
+
+type m_capitolati from menu within m_archivi
+end type
+
+event clicked;//
+//
+kuf_menu_window kuf1_menu_window
+
+
+//=== Parametri : 
+//=== struttura st_open_w
+//=== dati particolare programma
+//
+//=== Si potrebbero passare:
+//=== key1= 
+st_open_w k_st_open_w
+
+K_st_open_w.id_programma = "sc_cf"
+K_st_open_w.flag_primo_giro = "S"
+K_st_open_w.flag_modalita = kkg_flag_modalita_elenco
+K_st_open_w.flag_adatta_win = KK_ADATTA_WIN
+K_st_open_w.flag_leggi_dw = "N"
+K_st_open_w.key1 = " "
+K_st_open_w.key2 = " "
+K_st_open_w.key3 = " "
+K_st_open_w.key4 = " "
+K_st_open_w.flag_where = " "
+
+kuf1_menu_window = create kuf_menu_window 
+kuf1_menu_window.open_w_tabelle(k_st_open_w)
+destroy kuf1_menu_window
+
+
+end event
+
+on m_capitolati.create
+call super::create
+this.tag = "sc_cf"
+this.text = "Capitolati "
+this.microhelp = "SC-CF Capitolati di Fornitura"
+this.menuimage = "CreateRuntime!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_capitolati.destroy
+call super::destroy
+end on
+
+type m_contratti from menu within m_archivi
+end type
+
+event clicked;//
+//
+kuf_menu_window kuf1_menu_window
+
+
+//=== Parametri : 
+//=== struttura st_open_w
+//=== dati particolare programma
+//
+//=== Si potrebbero passare:
+//=== key1=codice cliente;key2=tipo contratto;
+st_open_w k_st_open_w
+
+K_st_open_w.id_programma = "ct"
+K_st_open_w.flag_primo_giro = "S"
+K_st_open_w.flag_modalita = kkg_flag_modalita_elenco
+K_st_open_w.flag_adatta_win = KK_ADATTA_WIN //_NO
+K_st_open_w.flag_leggi_dw = "N"
+K_st_open_w.key1 = " "
+K_st_open_w.key2 = " "
+K_st_open_w.key3 = " "
+K_st_open_w.key4 = " "
+K_st_open_w.flag_where = " "
+
+kuf1_menu_window = create kuf_menu_window 
+kuf1_menu_window.open_w_tabelle(k_st_open_w)
+destroy kuf1_menu_window
+
+
+end event
+
+on m_contratti.create
+call super::create
+this.tag = "ct"
+this.text = "Contratti"
+this.microhelp = "Contratti del cliente Ricevente"
+this.toolbaritemname = "custom004!"
+this.toolbaritemtext = "Contr."
+this.toolbaritemorder = 2
+this.menuimage = "Custom004!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_contratti.destroy
+call super::destroy
+end on
+
+type m_sl_pt from menu within m_archivi
+end type
+
+event clicked;//
+//
+kuf_menu_window kuf1_menu_window
+
+
+//=== Parametri : 
+//=== struttura st_open_w
+//=== dati particolare programma
+//
+//=== Si potrebbero passare:
+//=== key1=codice sl_pt;
+st_open_w k_st_open_w
+
+K_st_open_w.id_programma = "ptl"
+K_st_open_w.flag_primo_giro = "S"
+K_st_open_w.flag_modalita = kkg_flag_modalita_elenco
+K_st_open_w.flag_adatta_win = KK_ADATTA_WIN
+K_st_open_w.flag_leggi_dw = " "
+K_st_open_w.key1 = " "
+K_st_open_w.key2 = " "
+K_st_open_w.key3 = " "
+K_st_open_w.key4 = " "
+K_st_open_w.flag_where = " "
+
+kuf1_menu_window = create kuf_menu_window 
+kuf1_menu_window.open_w_tabelle(k_st_open_w)
+destroy kuf1_menu_window
+
+
+end event
+
+on m_sl_pt.create
+call super::create
+this.tag = "ptl"
+this.text = "SL-PT"
+this.microhelp = "Piani di Trattamento"
+this.toolbaritemvisible = false
+this.menuimage = "CreateTable!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_sl_pt.destroy
+call super::destroy
+end on
+
+type m_a_t2 from menu within m_archivi
+end type
+
+on m_a_t2.create
+call super::create
+this.text = "-"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_a_t2.destroy
+call super::destroy
+end on
+
+type m_pilota from menu within m_archivi
+end type
+
+event clicked;//
+//
+kuf_menu_window kuf1_menu_window
+
+
+//=== Parametri : 
+//=== struttura st_open_w
+//=== dati particolare programma
+//
+//=== Si potrebbero passare:
+//=== key1=codice sl_pt;
+st_open_w k_st_open_w
+
+K_st_open_w.id_programma = kkg_id_programma_pilota_proprieta
+K_st_open_w.flag_primo_giro = "S"
+K_st_open_w.flag_modalita = kkg_flag_modalita_modifica
+K_st_open_w.flag_adatta_win = KK_ADATTA_WIN
+K_st_open_w.flag_leggi_dw = " "
+K_st_open_w.key1 = " "
+K_st_open_w.key2 = " "
+K_st_open_w.key3 = " "
+K_st_open_w.key4 = " "
+K_st_open_w.flag_where = " "
+
+kuf1_menu_window = create kuf_menu_window 
+kuf1_menu_window.open_w_tabelle(k_st_open_w)
+destroy kuf1_menu_window
+
+
+end event
+
+on m_pilota.create
+call super::create
+this.tag = "pilota_p"
+this.text = "Pilota"
+this.microhelp = "Proprieta Pilota"
+this.menuimage = "Custom076!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_pilota.destroy
+call super::destroy
+end on
+
+type m_vettori from menu within m_archivi
+end type
+
+event clicked;//
+//
+kuf_menu_window kuf1_menu_window
+
+
+//=== Parametri : 
+//=== struttura st_open_w
+//=== dati particolare programma
+//
+//=== Si potrebbero passare:
+//=== key1=codice sl_pt;
+st_open_w k_st_open_w
+
+K_st_open_w.id_programma = kkg_id_programma_sped_vettori
+K_st_open_w.flag_primo_giro = "S"
+K_st_open_w.flag_modalita = kkg_flag_modalita_elenco
+K_st_open_w.flag_adatta_win = KK_ADATTA_WIN
+K_st_open_w.flag_leggi_dw = " "
+K_st_open_w.key1 = " "
+K_st_open_w.key2 = " "
+K_st_open_w.key3 = " "
+K_st_open_w.key4 = " "
+K_st_open_w.flag_where = " "
+
+kuf1_menu_window = create kuf_menu_window 
+kuf1_menu_window.open_w_tabelle(k_st_open_w)
+destroy kuf1_menu_window
+
+
+end event
+
+on m_vettori.create
+call super::create
+this.tag = "sped_vettori"
+this.text = "Vettori"
+this.microhelp = "Gestione archivio Spedizionieri"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_vettori.destroy
+call super::destroy
+end on
+
+type m_ausiliari0 from menu within m_archivi
+m_ausiliari m_ausiliari
+m_ausiliari_1 m_ausiliari_1
+end type
+
+on m_ausiliari0.create
+call super::create
+this.tag = "2"
+this.text = "Ausiliari"
+this.microhelp = "Tabelle ausiliarie Magazzino"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.menutitletext = " A"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+this.m_ausiliari=create m_ausiliari
+this.m_ausiliari_1=create m_ausiliari_1
+this.Item[UpperBound(this.Item)+1]=this.m_ausiliari
+this.Item[UpperBound(this.Item)+1]=this.m_ausiliari_1
+end on
+
+on m_ausiliari0.destroy
+call super::destroy
+destroy(this.m_ausiliari)
+destroy(this.m_ausiliari_1)
+end on
+
+type m_ausiliari from menu within m_ausiliari0
+m_visualizza m_visualizza
+m_modifica m_modifica
+m_inserisci m_inserisci
+end type
+
+on m_ausiliari.create
+call super::create
+this.tag = "au"
+this.text = "Ausiliari 1"
+this.microhelp = "Tabelle ausiliarie (IVA, cod.Gruppo, Misure,....)"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.menutitletext = "A1"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+this.m_visualizza=create m_visualizza
+this.m_modifica=create m_modifica
+this.m_inserisci=create m_inserisci
+this.Item[UpperBound(this.Item)+1]=this.m_visualizza
+this.Item[UpperBound(this.Item)+1]=this.m_modifica
+this.Item[UpperBound(this.Item)+1]=this.m_inserisci
+end on
+
+on m_ausiliari.destroy
+call super::destroy
+destroy(this.m_visualizza)
+destroy(this.m_modifica)
+destroy(this.m_inserisci)
+end on
+
+type m_visualizza from menu within m_ausiliari
+end type
+
+event clicked;//
+//
+kuf_menu_window kuf1_menu_window
+
+//=== Parametri : 
+//=== struttura st_open_w
+//=== dati particolare programma
+//
+//=== Si potrebbero passare:
+//=== key1=
+st_open_w k_st_open_w
+
+K_st_open_w.id_programma = "au"
+K_st_open_w.flag_primo_giro = "S"
+K_st_open_w.flag_modalita = kkg_flag_modalita_visualizzazione
+K_st_open_w.flag_adatta_win = kk_adatta_win
+K_st_open_w.flag_leggi_dw = " "
+K_st_open_w.key1 = " "
+K_st_open_w.key2 = " "
+K_st_open_w.key3 = " "
+K_st_open_w.key4 = " "
+K_st_open_w.flag_where = " "
+
+kuf1_menu_window = create kuf_menu_window 
+kuf1_menu_window.open_w_tabelle(k_st_open_w)
+destroy kuf1_menu_window
+
+
+end event
+
+on m_visualizza.create
+call super::create
+this.tag = "au"
+this.text = "Visualizza~tCtrl+U"
+this.shortcut = 341
+this.microhelp = "Tabelle ausiliarie: Visualizzazione"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_visualizza.destroy
+call super::destroy
+end on
+
+type m_modifica from menu within m_ausiliari
+end type
+
+event clicked;//
+//
+kuf_menu_window kuf1_menu_window
+
+//=== Parametri : 
+//=== struttura st_open_w
+//=== dati particolare programma
+//
+//=== Si potrebbero passare:
+//=== key1=
+st_open_w k_st_open_w
+
+K_st_open_w.id_programma = "au"
+K_st_open_w.flag_primo_giro = "S"
+K_st_open_w.flag_modalita = kkg_flag_modalita_modifica
+K_st_open_w.flag_adatta_win = kk_adatta_win
+K_st_open_w.flag_leggi_dw = " "
+K_st_open_w.key1 = " "
+K_st_open_w.key2 = " "
+K_st_open_w.key3 = " "
+K_st_open_w.key4 = " "
+K_st_open_w.flag_where = " "
+
+kuf1_menu_window = create kuf_menu_window 
+kuf1_menu_window.open_w_tabelle(k_st_open_w)
+destroy kuf1_menu_window
+
+
+end event
+
+on m_modifica.create
+call super::create
+this.tag = "au"
+this.text = "Modifica"
+this.microhelp = "Tabelle ausiliarie: Modifica/Cancellazione"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_modifica.destroy
+call super::destroy
+end on
+
+type m_inserisci from menu within m_ausiliari
+end type
+
+event clicked;//
+//
+kuf_menu_window kuf1_menu_window
+
+//=== Parametri : 
+//=== struttura st_open_w
+//=== dati particolare programma
+//
+//=== Si potrebbero passare:
+//=== key1=
+st_open_w k_st_open_w
+
+K_st_open_w.id_programma = "au"
+K_st_open_w.flag_primo_giro = "S"
+K_st_open_w.flag_modalita = kkg_flag_modalita_inserimento
+K_st_open_w.flag_adatta_win = kk_adatta_win
+K_st_open_w.flag_leggi_dw = " "
+K_st_open_w.key1 = " "
+K_st_open_w.key2 = " "
+K_st_open_w.key3 = " "
+K_st_open_w.key4 = " "
+K_st_open_w.flag_where = " "
+
+kuf1_menu_window = create kuf_menu_window 
+kuf1_menu_window.open_w_tabelle(k_st_open_w)
+destroy kuf1_menu_window
+
+
+end event
+
+on m_inserisci.create
+call super::create
+this.tag = "au"
+this.text = "Inserisci"
+this.microhelp = "Tabelle ausiliarie: Inserimento nuovo codice"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_inserisci.destroy
+call super::destroy
+end on
+
+type m_ausiliari_1 from menu within m_ausiliari0
+m_ausiliari_1_visualizza m_ausiliari_1_visualizza
+m_ausiliari_1_modifica m_ausiliari_1_modifica
+m_ausiliari_1_inserisci m_ausiliari_1_inserisci
+end type
+
+on m_ausiliari_1.create
+call super::create
+this.tag = "au1"
+this.text = "Ausiliari 2"
+this.microhelp = "Tabelle ausiliarie (Banche,....)"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.menutitletext = " A2"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+this.m_ausiliari_1_visualizza=create m_ausiliari_1_visualizza
+this.m_ausiliari_1_modifica=create m_ausiliari_1_modifica
+this.m_ausiliari_1_inserisci=create m_ausiliari_1_inserisci
+this.Item[UpperBound(this.Item)+1]=this.m_ausiliari_1_visualizza
+this.Item[UpperBound(this.Item)+1]=this.m_ausiliari_1_modifica
+this.Item[UpperBound(this.Item)+1]=this.m_ausiliari_1_inserisci
+end on
+
+on m_ausiliari_1.destroy
+call super::destroy
+destroy(this.m_ausiliari_1_visualizza)
+destroy(this.m_ausiliari_1_modifica)
+destroy(this.m_ausiliari_1_inserisci)
+end on
+
+type m_ausiliari_1_visualizza from menu within m_ausiliari_1
+end type
+
+event clicked;//
+//
+kuf_menu_window kuf1_menu_window
+
+//=== Parametri : 
+//=== struttura st_open_w
+//=== dati particolare programma
+//
+//=== Si potrebbero passare:
+//=== key1=
+st_open_w k_st_open_w
+
+K_st_open_w.id_programma = "au1"
+K_st_open_w.flag_primo_giro = "S"
+K_st_open_w.flag_modalita = kkg_flag_modalita_visualizzazione
+K_st_open_w.flag_adatta_win = kk_adatta_win
+K_st_open_w.flag_leggi_dw = " "
+K_st_open_w.key1 = " "
+K_st_open_w.key2 = " "
+K_st_open_w.key3 = " "
+K_st_open_w.key4 = " "
+K_st_open_w.flag_where = " "
+
+kuf1_menu_window = create kuf_menu_window 
+kuf1_menu_window.open_w_tabelle(k_st_open_w)
+destroy kuf1_menu_window
+
+
+end event
+
+on m_ausiliari_1_visualizza.create
+call super::create
+this.tag = "au1"
+this.text = "Visualizza"
+this.microhelp = "Tabelle ausiliarie: Visualizzazione"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_ausiliari_1_visualizza.destroy
+call super::destroy
+end on
+
+type m_ausiliari_1_modifica from menu within m_ausiliari_1
+end type
+
+event clicked;//
+//
+kuf_menu_window kuf1_menu_window
+
+//=== Parametri : 
+//=== struttura st_open_w
+//=== dati particolare programma
+//
+//=== Si potrebbero passare:
+//=== key1=
+st_open_w k_st_open_w
+
+K_st_open_w.id_programma = "au1"
+K_st_open_w.flag_primo_giro = "S"
+K_st_open_w.flag_modalita = kkg_flag_modalita_modifica
+K_st_open_w.flag_adatta_win = kk_adatta_win
+K_st_open_w.flag_leggi_dw = " "
+K_st_open_w.key1 = " "
+K_st_open_w.key2 = " "
+K_st_open_w.key3 = " "
+K_st_open_w.key4 = " "
+K_st_open_w.flag_where = " "
+
+kuf1_menu_window = create kuf_menu_window 
+kuf1_menu_window.open_w_tabelle(k_st_open_w)
+destroy kuf1_menu_window
+
+
+end event
+
+on m_ausiliari_1_modifica.create
+call super::create
+this.tag = "au1"
+this.text = "Modifica"
+this.microhelp = "Tabelle ausiliarie: Modifica / Cancellazione"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_ausiliari_1_modifica.destroy
+call super::destroy
+end on
+
+type m_ausiliari_1_inserisci from menu within m_ausiliari_1
+end type
+
+event clicked;//
+//
+kuf_menu_window kuf1_menu_window
+
+//=== Parametri : 
+//=== struttura st_open_w
+//=== dati particolare programma
+//
+//=== Si potrebbero passare:
+//=== key1=
+st_open_w k_st_open_w
+
+K_st_open_w.id_programma = "au1"
+K_st_open_w.flag_primo_giro = "S"
+K_st_open_w.flag_modalita = kkg_flag_modalita_inserimento
+K_st_open_w.flag_adatta_win = kk_adatta_win
+K_st_open_w.flag_leggi_dw = " "
+K_st_open_w.key1 = " "
+K_st_open_w.key2 = " "
+K_st_open_w.key3 = " "
+K_st_open_w.key4 = " "
+K_st_open_w.flag_where = " "
+
+kuf1_menu_window = create kuf_menu_window 
+kuf1_menu_window.open_w_tabelle(k_st_open_w)
+destroy kuf1_menu_window
+
+
+end event
+
+on m_ausiliari_1_inserisci.create
+call super::create
+this.tag = "au1"
+this.text = "Inserimento"
+this.microhelp = "Tabelle ausiliarie: Inserimento nuovo codice"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_ausiliari_1_inserisci.destroy
+call super::destroy
+end on
+
+type m_profis from menu within m_archivi
+end type
+
+event clicked;//
+//
+kuf_menu_window kuf1_menu_window
+
+
+//=== Parametri : 
+//=== struttura st_open_w
+//=== dati particolare programma
+//
+//=== Si potrebbero passare:
+//=== key1=codice sl_pt;
+st_open_w k_st_open_w
+
+K_st_open_w.id_programma = kkg_id_programma_profis_l
+K_st_open_w.flag_primo_giro = "S"
+K_st_open_w.flag_modalita = kkg_flag_modalita_elenco
+K_st_open_w.flag_adatta_win = KK_ADATTA_WIN
+K_st_open_w.flag_leggi_dw = " "
+K_st_open_w.key1 = " "
+K_st_open_w.key2 = " "
+K_st_open_w.key3 = " "
+K_st_open_w.key4 = " "
+K_st_open_w.flag_where = " "
+
+kuf1_menu_window = create kuf_menu_window 
+kuf1_menu_window.open_w_tabelle(k_st_open_w)
+destroy kuf1_menu_window
+
+
+end event
+
+on m_profis.create
+call super::create
+this.tag = "profis_l"
+this.text = "Profis"
+this.microhelp = "elenco righe x il PROFIS"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_profis.destroy
+call super::destroy
+end on
+
+type m_sicurezza from menu within m_archivi
+event clicked ( )
+end type
+
+event clicked;//
+//
+kuf_menu_window kuf1_menu_window
+
+
+//=== Parametri : 
+//=== struttura st_open_w
+//=== dati particolare programma
+//
+//=== Si potrebbero passare:
+//=== key1=  ;
+st_open_w k_st_open_w
+
+K_st_open_w.id_programma = "sr"
+K_st_open_w.flag_primo_giro = "S"
+K_st_open_w.flag_modalita = kkg_flag_modalita_elenco
+K_st_open_w.flag_adatta_win = KK_ADATTA_WIN
+K_st_open_w.flag_leggi_dw = " "
+K_st_open_w.key1 = " "
+K_st_open_w.key2 = " "
+K_st_open_w.key3 = " "
+K_st_open_w.key4 = " "
+K_st_open_w.flag_where = " "
+
+kuf1_menu_window = create kuf_menu_window 
+kuf1_menu_window.open_w_tabelle(k_st_open_w)
+destroy kuf1_menu_window
+
+
+end event
+
+on m_sicurezza.create
+call super::create
+this.tag = "sr"
+this.text = "Sicurezza"
+this.microhelp = "Utenti / Profili / Funzioni"
+this.menuimage = "UserObject5!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_sicurezza.destroy
+call super::destroy
+end on
+
+type m_- from menu within m_archivi
+end type
+
+on m_-.create
+call super::create
+this.text = "-"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_-.destroy
+call super::destroy
+end on
+
+type m_opf from menu within m_archivi
+m_opf_gestione m_opf_gestione
+m_opf_elenco m_opf_elenco
+m_opf_gestore_eventi m_opf_gestore_eventi
+end type
+
+on m_opf.create
+call super::create
+this.tag = "sv_sked"
+this.text = "Operazioni Pianificate"
+this.microhelp = "Operazioni da eseguire in automatico"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.menutitletext = " O. P."
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+this.m_opf_gestione=create m_opf_gestione
+this.m_opf_elenco=create m_opf_elenco
+this.m_opf_gestore_eventi=create m_opf_gestore_eventi
+this.Item[UpperBound(this.Item)+1]=this.m_opf_gestione
+this.Item[UpperBound(this.Item)+1]=this.m_opf_elenco
+this.Item[UpperBound(this.Item)+1]=this.m_opf_gestore_eventi
+end on
+
+on m_opf.destroy
+call super::destroy
+destroy(this.m_opf_gestione)
+destroy(this.m_opf_elenco)
+destroy(this.m_opf_gestore_eventi)
+end on
+
+type m_opf_gestione from menu within m_opf
+end type
+
+event clicked;//
+//
+kuf_menu_window kuf1_menu_window
+
+//=== Parametri : 
+//=== struttura st_open_w
+//=== 
+st_open_w k_st_open_w
+
+K_st_open_w.id_programma = kkg_id_programma_sv_sked_oper_g
+K_st_open_w.flag_primo_giro = "S"
+K_st_open_w.flag_modalita = kkg_flag_modalita_elenco
+K_st_open_w.flag_adatta_win = KK_ADATTA_WIN
+K_st_open_w.flag_leggi_dw = "N"
+k_st_open_w.flag_cerca_in_lista = " "
+
+kuf1_menu_window = create kuf_menu_window 
+kuf1_menu_window.open_w_tabelle(k_st_open_w)
+destroy kuf1_menu_window
+
+
+end event
+
+on m_opf_gestione.create
+call super::create
+this.tag = "svsked_g"
+this.text = "Gestione"
+this.microhelp = "Aggiungi, modifica, cancella operazioni da eseguire in automatico"
+this.menuimage = "AddWatch!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_opf_gestione.destroy
+call super::destroy
+end on
+
+type m_opf_elenco from menu within m_opf
+end type
+
+event clicked;//
+//
+kuf_menu_window kuf1_menu_window
+
+//=== Parametri : 
+//=== struttura st_open_w
+//=== 
+st_open_w k_st_open_w
+
+K_st_open_w.id_programma = kkg_id_programma_sv_sked_oper_v
+K_st_open_w.flag_primo_giro = "S"
+K_st_open_w.flag_modalita = kkg_flag_modalita_elenco
+K_st_open_w.flag_adatta_win = KK_ADATTA_WIN
+K_st_open_w.flag_leggi_dw = "N"
+k_st_open_w.flag_cerca_in_lista = " "
+
+kuf1_menu_window = create kuf_menu_window 
+kuf1_menu_window.open_w_tabelle(k_st_open_w)
+destroy kuf1_menu_window
+
+
+end event
+
+on m_opf_elenco.create
+call super::create
+this.tag = "svsked_v"
+this.text = "Elenco"
+this.microhelp = "Aggiungi, modifica, cancella operazioni da eseguire in automatico"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_opf_elenco.destroy
+call super::destroy
+end on
+
+type m_opf_gestore_eventi from menu within m_opf
+end type
+
+event clicked;//
+//
+kuf_menu_window kuf1_menu_window
+
+//=== Parametri : 
+//=== struttura st_open_w
+//=== 
+st_open_w k_st_open_w
+
+K_st_open_w.id_programma = kkg_id_programma_sv_sked_oper_log
+K_st_open_w.flag_primo_giro = "S"
+K_st_open_w.flag_modalita = kkg_flag_modalita_elenco
+K_st_open_w.flag_adatta_win = KK_ADATTA_WIN
+K_st_open_w.flag_leggi_dw = "N"
+k_st_open_w.flag_cerca_in_lista = " "
+
+kuf1_menu_window = create kuf_menu_window 
+kuf1_menu_window.open_w_tabelle(k_st_open_w)
+destroy kuf1_menu_window
+
+
+end event
+
+on m_opf_gestore_eventi.create
+call super::create
+this.tag = "svsked_log"
+this.text = "Schedulatore"
+this.microhelp = "lancia automaticamente gli eventi schedulati"
+this.menuimage = "Run!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_opf_gestore_eventi.destroy
+call super::destroy
+end on
+
+type m_codabarre from menu within m_archivi
+end type
+
+event clicked;//
+//
+kuf_menu_window kuf1_menu_window
+
+//=== Parametri : 
+//=== struttura st_open_w
+//=== dati particolare programma
+//
+//=== Si potrebbero passare:
+//=== key1=codice sl_pt;
+st_open_w k_st_open_w
+
+K_st_open_w.id_programma = "cb"
+K_st_open_w.flag_primo_giro = "S"
+K_st_open_w.flag_modalita = kkg_flag_modalita_inserimento
+K_st_open_w.flag_adatta_win = KK_ADATTA_WIN_NO
+K_st_open_w.flag_leggi_dw = " "
+k_st_open_w.flag_cerca_in_lista = "1"
+K_st_open_w.key1 = "0"       // numero interno
+K_st_open_w.key2 = " "       // data interno
+K_st_open_w.key3 = " "
+K_st_open_w.key4 = " "
+K_st_open_w.flag_where = " "
+
+kuf1_menu_window = create kuf_menu_window 
+kuf1_menu_window.open_w_tabelle(k_st_open_w)
+destroy kuf1_menu_window
+
+
+end event
+
+on m_codabarre.create
+call super::create
+this.tag = "cb"
+this.visible = false
+this.text = "Cod. a Barre"
+this.enabled = false
+this.microhelp = "Codici a barre, situazione lavorazioni"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_codabarre.destroy
+call super::destroy
+end on
+
+type m_finestra from menu within m_main
+m_gestione m_gestione
+m_fin-11 m_fin-11
+m_trova m_trova
+m_fin_stampa m_fin_stampa
+m_fin-3 m_fin-3
+m_aggiornalista m_aggiornalista
+m_fin-2 m_fin-2
+m_riordinalista m_riordinalista
+m_fin-4 m_fin-4
+m_fin_dettaglio m_fin_dettaglio
+m_layout_predefinito m_layout_predefinito
+m_disponi m_disponi
+m_chiudifinestra m_chiudifinestra
+end type
+
+on m_finestra.create
+call super::create
+this.text = "&Finestra"
+this.microhelp = "Esegue operazioni nella finestra in cui si sta operando "
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.menutitletext = "     Strumenti della Finestra"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+this.m_gestione=create m_gestione
+this.m_fin-11=create m_fin-11
+this.m_trova=create m_trova
+this.m_fin_stampa=create m_fin_stampa
+this.m_fin-3=create m_fin-3
+this.m_aggiornalista=create m_aggiornalista
+this.m_fin-2=create m_fin-2
+this.m_riordinalista=create m_riordinalista
+this.m_fin-4=create m_fin-4
+this.m_fin_dettaglio=create m_fin_dettaglio
+this.m_layout_predefinito=create m_layout_predefinito
+this.m_disponi=create m_disponi
+this.m_chiudifinestra=create m_chiudifinestra
+this.Item[UpperBound(this.Item)+1]=this.m_gestione
+this.Item[UpperBound(this.Item)+1]=this.m_fin-11
+this.Item[UpperBound(this.Item)+1]=this.m_trova
+this.Item[UpperBound(this.Item)+1]=this.m_fin_stampa
+this.Item[UpperBound(this.Item)+1]=this.m_fin-3
+this.Item[UpperBound(this.Item)+1]=this.m_aggiornalista
+this.Item[UpperBound(this.Item)+1]=this.m_fin-2
+this.Item[UpperBound(this.Item)+1]=this.m_riordinalista
+this.Item[UpperBound(this.Item)+1]=this.m_fin-4
+this.Item[UpperBound(this.Item)+1]=this.m_fin_dettaglio
+this.Item[UpperBound(this.Item)+1]=this.m_layout_predefinito
+this.Item[UpperBound(this.Item)+1]=this.m_disponi
+this.Item[UpperBound(this.Item)+1]=this.m_chiudifinestra
+end on
+
+on m_finestra.destroy
+call super::destroy
+destroy(this.m_gestione)
+destroy(this.m_fin-11)
+destroy(this.m_trova)
+destroy(this.m_fin_stampa)
+destroy(this.m_fin-3)
+destroy(this.m_aggiornalista)
+destroy(this.m_fin-2)
+destroy(this.m_riordinalista)
+destroy(this.m_fin-4)
+destroy(this.m_fin_dettaglio)
+destroy(this.m_layout_predefinito)
+destroy(this.m_disponi)
+destroy(this.m_chiudifinestra)
+end on
+
+type m_gestione from menu within m_finestra
+m_fin_conferma m_fin_conferma
+m_fin_visualizza m_fin_visualizza
+m_fin_modifica m_fin_modifica
+m_fin_inserimento m_fin_inserimento
+m_fin-12 m_fin-12
+m_fin_elimina m_fin_elimina
+end type
+
+on m_gestione.create
+call super::create
+this.text = "Gestione"
+this.enabled = false
+this.microhelp = "Operazioni di Inserimento/Modifica/Cancellazione/Conferma"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.menutitletext = " in Archivio"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+this.m_fin_conferma=create m_fin_conferma
+this.m_fin_visualizza=create m_fin_visualizza
+this.m_fin_modifica=create m_fin_modifica
+this.m_fin_inserimento=create m_fin_inserimento
+this.m_fin-12=create m_fin-12
+this.m_fin_elimina=create m_fin_elimina
+this.Item[UpperBound(this.Item)+1]=this.m_fin_conferma
+this.Item[UpperBound(this.Item)+1]=this.m_fin_visualizza
+this.Item[UpperBound(this.Item)+1]=this.m_fin_modifica
+this.Item[UpperBound(this.Item)+1]=this.m_fin_inserimento
+this.Item[UpperBound(this.Item)+1]=this.m_fin-12
+this.Item[UpperBound(this.Item)+1]=this.m_fin_elimina
+end on
+
+on m_gestione.destroy
+call super::destroy
+destroy(this.m_fin_conferma)
+destroy(this.m_fin_visualizza)
+destroy(this.m_fin_modifica)
+destroy(this.m_fin_inserimento)
+destroy(this.m_fin-12)
+destroy(this.m_fin_elimina)
+end on
+
+type m_fin_conferma from menu within m_gestione
+end type
+
+event clicked;//
+//=== Stampa i dati della finestra
+w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = KKG_FLAG_RICHIESTA_CONFERMA
+	if k_w_attiva.triggerevent("ue_menu") < 0 then
+		messagebox("Operazione non eseguita", "Funzione di Conferma non Abilitata")
+	end if
+end if
+
+end event
+
+on m_fin_conferma.create
+call super::create
+this.tag = "co"
+this.text = "Salva dati in archivio~tF10"
+this.enabled = false
+this.shortcut = 121
+this.microhelp = "Registra ii dati in archivio operazione definitiva"
+this.toolbaritemname = "save!"
+this.toolbaritemtext = "Salva,Registra i dati in archivio"
+this.toolbaritemorder = 13
+this.toolbaritemspace = 1
+this.menuimage = "save!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_fin_conferma.destroy
+call super::destroy
+end on
+
+type m_fin_visualizza from menu within m_gestione
+end type
+
+on m_fin_visualizza.create
+call super::create
+this.text = "Visualizza~tF2"
+this.enabled = false
+this.shortcut = 113
+this.microhelp = "Apri in modalità Visualizzazione dati"
+this.toolbaritemname = "preview!"
+this.toolbaritemtext = "Visualizza"
+this.toolbaritemorder = 13
+this.toolbaritemspace = 1
+this.menuimage = "Preview!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+event clicked;//
+//=== Stampa i dati della finestra
+w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = KKG_FLAG_RICHIESTA_VISUALIZZAZIONE
+	if k_w_attiva.triggerevent("ue_menu") < 0 then
+		messagebox("Operazione non eseguita", "Funzione di Modifica non Abilitata")
+	end if
+end if
+
+end event
+
+on m_fin_visualizza.destroy
+call super::destroy
+end on
+
+type m_fin_modifica from menu within m_gestione
+end type
+
+event clicked;//
+//=== Stampa i dati della finestra
+w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = KKG_FLAG_RICHIESTA_MODIFICA
+	if k_w_attiva.triggerevent("ue_menu") < 0 then
+		messagebox("Operazione non eseguita", "Funzione di Modifica non Abilitata")
+	end if
+end if
+
+end event
+
+on m_fin_modifica.create
+call super::create
+this.tag = "mo"
+this.text = "Modifica~tCtrl+F2"
+this.enabled = false
+this.shortcut = 369
+this.microhelp = "Apri in modalità Modifica per aggiornare i dati"
+this.toolbaritemname = "DosEdit5!"
+this.toolbaritemtext = "Modifica"
+this.toolbaritemorder = 13
+this.menuimage = "DosEdit5!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_fin_modifica.destroy
+call super::destroy
+end on
+
+type m_fin_inserimento from menu within m_gestione
+end type
+
+event clicked;//
+//=== Stampa i dati della finestra
+w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = KKG_FLAG_RICHIESTA_INSERIMENTO
+	if k_w_attiva.triggerevent("ue_menu") < 0 then
+		messagebox("Operazione non eseguita", "Funzione di Inserimento non Abilitata")
+	end if
+end if
+
+end event
+
+on m_fin_inserimento.create
+call super::create
+this.tag = "in"
+this.text = "Nuovo~tF4"
+this.enabled = false
+this.shortcut = 115
+this.microhelp = "Apri per Inserire nuovi dati"
+this.toolbaritemname = "new!"
+this.toolbaritemtext = "Nuovo"
+this.toolbaritemorder = 13
+this.menuimage = "New!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_fin_inserimento.destroy
+call super::destroy
+end on
+
+type m_fin-12 from menu within m_gestione
+end type
+
+on m_fin-12.create
+call super::create
+this.text = "-"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_fin-12.destroy
+call super::destroy
+end on
+
+type m_fin_elimina from menu within m_gestione
+end type
+
+event clicked;//
+//=== Stampa i dati della finestra
+w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = KKG_FLAG_RICHIESTA_CANCELLAZIONE
+	if k_w_attiva.triggerevent("ue_menu") < 0 then
+		messagebox("Operazione non eseguita", "Funzione di Cancellazione non Abilitata")
+	end if
+end if
+
+end event
+
+on m_fin_elimina.create
+call super::create
+this.tag = "el"
+this.text = "Elimina~tF6"
+this.enabled = false
+this.shortcut = 117
+this.microhelp = "Cancella i dati in archivio"
+this.toolbaritemname = "custom021!"
+this.toolbaritemtext = "Elimina"
+this.toolbaritemorder = 13
+this.menuimage = "custom021!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_fin_elimina.destroy
+call super::destroy
+end on
+
+type m_fin-11 from menu within m_finestra
+end type
+
+on m_fin-11.create
+call super::create
+this.text = "-"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_fin-11.destroy
+call super::destroy
+end on
+
+type m_trova from menucascade within m_finestra
+m_fin_cerca m_fin_cerca
+m_fin_cercaancora m_fin_cercaancora
+m_fin_ordina m_fin_ordina
+m_fin_filtra m_fin_filtra
+end type
+
+on m_trova.create
+call super::create
+this.text = "Trova, Ordina, Filtra"
+this.enabled = false
+this.toolbaritemorder = 10
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+this.m_fin_cerca=create m_fin_cerca
+this.m_fin_cercaancora=create m_fin_cercaancora
+this.m_fin_ordina=create m_fin_ordina
+this.m_fin_filtra=create m_fin_filtra
+this.Item[UpperBound(this.Item)+1]=this.m_fin_cerca
+this.Item[UpperBound(this.Item)+1]=this.m_fin_cercaancora
+this.Item[UpperBound(this.Item)+1]=this.m_fin_ordina
+this.Item[UpperBound(this.Item)+1]=this.m_fin_filtra
+end on
+
+on m_trova.destroy
+call super::destroy
+destroy(this.m_fin_cerca)
+destroy(this.m_fin_cercaancora)
+destroy(this.m_fin_ordina)
+destroy(this.m_fin_filtra)
+end on
+
+type m_fin_cerca from menu within m_trova
+end type
+
+event clicked;//
+//=== Stampa i dati della finestra
+w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = KKG_FLAG_RICHIESTA_TROVA
+	if k_w_attiva.triggerevent("ue_menu") < 0 then
+		messagebox("Operazione non eseguita", "Funzione di Ricerca non Abilitata")
+	end if
+end if
+
+end event
+
+on m_fin_cerca.create
+call super::create
+this.tag = "ce"
+this.text = "Trova~tF3"
+this.shortcut = 114
+this.microhelp = "Ricerca di un dato nella lista"
+this.toolbaritemname = "find!"
+this.toolbaritemtext = "Trova"
+this.toolbaritemorder = 10
+this.menuimage = "Find!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_fin_cerca.destroy
+call super::destroy
+end on
+
+type m_fin_cercaancora from menu within m_trova
+end type
+
+event clicked;//
+//=== Stampa i dati della finestra
+w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = KKG_FLAG_RICHIESTA_TROVA_ANCORA
+	if k_w_attiva.triggerevent("ue_menu") < 0 then
+		messagebox("Operazione non eseguita", "Funzione di Ricerca non Abilitata")
+	end if
+end if
+
+end event
+
+on m_fin_cercaancora.create
+call super::create
+this.tag = "cn"
+this.text = "Trova ancora...~tCtrl+F3"
+this.enabled = false
+this.shortcut = 370
+this.microhelp = "Continua la ricerca nella lista"
+this.toolbaritemname = "findnext!"
+this.toolbaritemtext = "Trova+,Trova successivo"
+this.toolbaritemorder = 10
+this.menuimage = "findnext!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_fin_cercaancora.destroy
+call super::destroy
+end on
+
+type m_fin_ordina from menu within m_trova
+end type
+
+event clicked;//
+//=== Stampa i dati della finestra
+w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = KKG_FLAG_RICHIESTA_SORT
+	if k_w_attiva.triggerevent("ue_menu") < 0 then
+		messagebox("Operazione non eseguita", "Funzione di 'Ordinamento Personalizzato' non Abilitata")
+	end if
+end if
+
+end event
+
+on m_fin_ordina.create
+call super::create
+this.tag = "or"
+this.text = "Ordina dati in elenco"
+this.enabled = false
+this.microhelp = "scegli come ordinare l~'elenco"
+this.toolbaritemname = "sort!"
+this.toolbaritemtext = "ordina"
+this.toolbaritemorder = 11
+this.menuimage = "sort!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_fin_ordina.destroy
+call super::destroy
+end on
+
+type m_fin_filtra from menu within m_trova
+end type
+
+event clicked;//
+//=== Stampa i dati della finestra
+w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = KKG_FLAG_RICHIESTA_FILTRO
+	if k_w_attiva.triggerevent("ue_menu") < 0 then
+		messagebox("Operazione non eseguita", "Funzione di Filtro non Abilitata")
+	end if
+end if
+
+end event
+
+on m_fin_filtra.create
+call super::create
+this.tag = "fi"
+this.text = "Filtra righe in elenco~tAlt+F3"
+this.enabled = false
+this.shortcut = 626
+this.microhelp = "Permette di togliere dalla lista le righe che non intaressano   "
+this.toolbaritemname = "custom096!"
+this.toolbaritemtext = "Filtra,Filtra in elenco"
+this.toolbaritemorder = 11
+this.menuimage = "custom096!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_fin_filtra.destroy
+call super::destroy
+end on
+
+type m_fin_stampa from menu within m_finestra
+end type
+
+event clicked;//
+//=== Stampa i dati della finestra
+w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = KKG_FLAG_RICHIESTA_STAMPA
+	if k_w_attiva.triggerevent("ue_menu") < 0 then
+		messagebox("Operazione non eseguita", "Funzione di Stampa non Abilitata")
+	end if
+end if
+
+end event
+
+on m_fin_stampa.create
+call super::create
+this.tag = "st"
+this.text = "Stampa~tF9"
+this.enabled = false
+this.shortcut = 120
+this.toolbaritemname = "print!"
+this.toolbaritemtext = "Stampa"
+this.toolbaritemorder = 11
+this.menuimage = "print!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_fin_stampa.destroy
+call super::destroy
+end on
+
+type m_fin-3 from menu within m_finestra
+end type
+
+on m_fin-3.create
+call super::create
+this.text = "-"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_fin-3.destroy
+call super::destroy
+end on
+
+type m_aggiornalista from menu within m_finestra
+end type
+
+event clicked;//
+//=== Stampa i dati della finestra
+w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = KKG_FLAG_RICHIESTA_REFRESH
+	if k_w_attiva.triggerevent("ue_menu") < 0 then
+		messagebox("Operazione non eseguita", "Funzione di Ricerca non Abilitata")
+	end if
+end if
+
+end event
+
+on m_aggiornalista.create
+call super::create
+this.tag = "ag"
+this.text = "Aggiorna elenco~tF11"
+this.enabled = false
+this.shortcut = 122
+this.microhelp = "Ricostruisce la Lista coi dati aggiornati rileggendo la Base Dati "
+this.toolbaritemname = "regenerate5!"
+this.toolbaritemtext = "Aggiorna,Aggiorna Elenco"
+this.toolbaritemorder = 12
+this.menuimage = "Regenerate5!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_aggiornalista.destroy
+call super::destroy
+end on
+
+type m_fin-2 from menu within m_finestra
+end type
+
+on m_fin-2.create
+call super::create
+this.visible = false
+this.text = "-"
+this.enabled = false
+this.toolbaritemvisible = false
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_fin-2.destroy
+call super::destroy
+end on
+
+type m_riordinalista from menu within m_finestra
+event clicked ( )
+end type
+
+event clicked;//
+//=== Stampa i dati della finestra
+w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = "ol"
+	if k_w_attiva.triggerevent("ue_menu") < 0 then
+		messagebox("Operazione non eseguita", "Funzione di Riordino non Abilitata")
+	end if
+end if
+
+end event
+
+on m_riordinalista.create
+call super::create
+this.visible = false
+this.text = "Riordina elenco"
+this.enabled = false
+this.microhelp = "Ripristina l~'ordine originale della Lista, non rilegge la Base Dati"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_riordinalista.destroy
+call super::destroy
+end on
+
+type m_fin-4 from menu within m_finestra
+end type
+
+on m_fin-4.create
+call super::create
+this.text = "-"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_fin-4.destroy
+call super::destroy
+end on
+
+type m_fin_dettaglio from menu within m_finestra
+end type
+
+event clicked;//
+//=== Stampa i dati della finestra
+w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = KKG_FLAG_RICHIESTA_MOSTRA_NASCONDI_DW_DETT
+	if k_w_attiva.triggerevent("ue_menu") < 0 then
+		messagebox("Operazione non eseguita", "Funzione di Ricerca non Abilitata")
+	end if
+end if
+
+end event
+
+on m_fin_dettaglio.create
+call super::create
+this.tag = "dd"
+this.text = "Mostra/Nascondi dettaglio"
+this.enabled = false
+this.microhelp = "Mostra / Nasconde il dettaglio dati"
+this.toolbaritemvisible = false
+this.toolbaritemname = "autosizeheight!"
+this.toolbaritemtext = "Dett.,Dettaglio Si/No"
+this.toolbaritemorder = 50
+this.menuimage = "autosizeheight!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_fin_dettaglio.destroy
+call super::destroy
+end on
+
+type m_layout_predefinito from menu within m_finestra
+end type
+
+event clicked;//
+w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = KKG_FLAG_RICHIESTA_VISUALIZZ_PREDEFINITA
+	if k_w_attiva.triggerevent("ue_menu") < 0 then
+		messagebox("Operazione non eseguita", "Funzione di 'Ripristino visualizzazione predefinita' non Abilitata")
+	end if
+end if
+
+
+
+//
+end event
+
+on m_layout_predefinito.create
+call super::create
+this.tag = "vp"
+this.text = "Visualizzazione predefinita "
+this.enabled = false
+this.microhelp = "Ripristina il look prdedefinito della finestra"
+this.toolbaritemvisible = false
+this.toolbaritemname = "custom081!"
+this.toolbaritemtext = "Std,Visualizzazione Standard"
+this.toolbaritemorder = 50
+this.toolbaritemspace = 1
+this.menuimage = "custom081!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_layout_predefinito.destroy
+call super::destroy
+end on
+
+type m_disponi from menucascade within m_finestra
+m_adatta m_adatta
+m_cascata m_cascata
+m_orizzontale m_orizzontale
+m_verticale m_verticale
+end type
+
+on m_disponi.create
+call super::create
+this.text = "Disponi finestre"
+this.enabled = false
+this.microhelp = "Dispone le Finestre Aperte (non quelle a icona)"
+this.toolbaritemorder = 30
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.menutitletext = "disponi"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+this.m_adatta=create m_adatta
+this.m_cascata=create m_cascata
+this.m_orizzontale=create m_orizzontale
+this.m_verticale=create m_verticale
+this.Item[UpperBound(this.Item)+1]=this.m_adatta
+this.Item[UpperBound(this.Item)+1]=this.m_cascata
+this.Item[UpperBound(this.Item)+1]=this.m_orizzontale
+this.Item[UpperBound(this.Item)+1]=this.m_verticale
+end on
+
+on m_disponi.destroy
+call super::destroy
+destroy(this.m_adatta)
+destroy(this.m_cascata)
+destroy(this.m_orizzontale)
+destroy(this.m_verticale)
+end on
+
+type m_adatta from menu within m_disponi
+end type
+
+event clicked;//
+//=== Apro tutte le windows children
+window wSheet
+kuf_utility kuf1_utility
+
+
+
+wSheet = w_main.GetFirstSheet()
+IF IsValid(wSheet) THEN
+	
+	kuf1_utility = create kuf_utility
+	kuf1_utility.u_windows_adatta_size(wSheet)
+	destroy kuf1_utility
+	
+end if
+
+
+end event
+
+on m_adatta.create
+call super::create
+this.text = "Adatta~tCtrl+A"
+this.shortcut = 321
+this.microhelp = "Ridimensiona la Finestra attiva"
+this.toolbaritemname = "sizeboth!"
+this.toolbaritemtext = "Adatta"
+this.toolbaritemorder = 30
+this.toolbaritemspace = 2
+this.menuimage = "sizeboth!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_adatta.destroy
+call super::destroy
+end on
+
+type m_cascata from menu within m_disponi
+end type
+
+event clicked;//
+//=== Apro tutte le windows children
+boolean bValid
+window wSheet
+
+//wSheet = w_main.GetFirstSheet()
+//IF IsValid(wSheet) THEN
+//	wSheet.windowstate = normal!
+//	DO
+//		wSheet = w_main.GetNextSheet(wSheet)
+//		bValid = IsValid (wSheet)
+//
+//		IF bValid THEN 		wSheet.windowstate = normal!
+//
+//	LOOP WHILE bValid
+//END IF
+
+w_main.ArrangeSheets(cascade!)
+
+
+end event
+
+on m_cascata.create
+call super::create
+this.tag = "cs"
+this.text = "Cascata"
+this.microhelp = "Dispone le Finestre Aperte a cascata"
+this.toolbaritemname = "cascade!"
+this.toolbaritemtext = "cascata, disponi a cascata"
+this.toolbaritemorder = 30
+this.menuimage = "cascade!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_cascata.destroy
+call super::destroy
+end on
+
+type m_orizzontale from menu within m_disponi
+end type
+
+event clicked;////
+////=== Apro tutte le windows children
+//boolean bValid
+//window wSheet
+//
+//wSheet = w_main.GetFirstSheet()
+//DO
+//
+//	IF bValid THEN
+//		if wSheet.windowstate <> minimized! then
+//			wSheet.windowstate = normal!
+//		end if
+//	end if
+//
+//	wSheet = w_main.GetNextSheet(wSheet)
+//	bValid = IsValid (wSheet)
+//
+//LOOP WHILE bValid
+//
+w_main.ArrangeSheets(tilehorizontal!)
+
+//w_main.ArrangeSheets(tile!)
+//
+
+end event
+
+on m_orizzontale.create
+call super::create
+this.tag = "or"
+this.text = "Orizzontale"
+this.microhelp = "Dispone le Finestre Aperte in orizzontale"
+this.toolbaritemname = "horizontal!"
+this.toolbaritemtext = "orizz., disponi in orizzontale"
+this.toolbaritemorder = 35
+this.menuimage = "horizontal!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_orizzontale.destroy
+call super::destroy
+end on
+
+type m_verticale from menu within m_disponi
+end type
+
+event clicked;//
+w_main.ArrangeSheets(tile!)
+end event
+
+on m_verticale.create
+call super::create
+this.text = "Verticale"
+this.microhelp = "Dispone le Finestre Aperte in verticale"
+this.toolbaritemname = "tile!"
+this.toolbaritemtext = "vert., disponi n verticale"
+this.toolbaritemorder = 40
+this.menuimage = "tile!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_verticale.destroy
+call super::destroy
+end on
+
+type m_chiudifinestra from menu within m_finestra
+event clicked ( )
+end type
+
+event clicked;//
+//=== Stampa i dati della finestra
+w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = KKG_FLAG_RICHIESTA_ESCI
+	if k_w_attiva.triggerevent("ue_menu") < 0 then
+		messagebox("Operazione non eseguita", "Funzione di Ritorna non Abilitata")
+	end if
+end if
+
+end event
+
+on m_chiudifinestra.create
+call super::create
+this.tag = "ri"
+this.text = "&Chiudi Finestra~tCtrl+F10"
+this.enabled = false
+this.shortcut = 377
+this.microhelp = "Chiude funzione attiva"
+this.toolbaritemname = "exit!"
+this.toolbaritemtext = "Chiude"
+this.toolbaritemorder = 15
+this.toolbaritemspace = 1
+this.menuitemtype = menuitemtypeexit!
+this.menuimage = "exit!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_chiudifinestra.destroy
+call super::destroy
+end on
+
+type m_strumenti from menu within m_main
+m_fin_gest_libero1 m_fin_gest_libero1
+m_fin_gest_libero2 m_fin_gest_libero2
+m_fin_gest_libero3 m_fin_gest_libero3
+m_fin_gest_libero4 m_fin_gest_libero4
+m_fin_gest_libero5 m_fin_gest_libero5
+m_fin_gest_libero6 m_fin_gest_libero6
+m_fin_gest_libero7 m_fin_gest_libero7
+m_fin_gest_libero8 m_fin_gest_libero8
+end type
+
+on m_strumenti.create
+call super::create
+this.visible = false
+this.text = "Strumenti"
+this.enabled = false
+this.microhelp = "Funzioni particolari"
+this.toolbaritemvisible = false
+this.toolbaritembarindex = 2
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.menutitletext = "   Utilità"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+this.m_fin_gest_libero1=create m_fin_gest_libero1
+this.m_fin_gest_libero2=create m_fin_gest_libero2
+this.m_fin_gest_libero3=create m_fin_gest_libero3
+this.m_fin_gest_libero4=create m_fin_gest_libero4
+this.m_fin_gest_libero5=create m_fin_gest_libero5
+this.m_fin_gest_libero6=create m_fin_gest_libero6
+this.m_fin_gest_libero7=create m_fin_gest_libero7
+this.m_fin_gest_libero8=create m_fin_gest_libero8
+this.Item[UpperBound(this.Item)+1]=this.m_fin_gest_libero1
+this.Item[UpperBound(this.Item)+1]=this.m_fin_gest_libero2
+this.Item[UpperBound(this.Item)+1]=this.m_fin_gest_libero3
+this.Item[UpperBound(this.Item)+1]=this.m_fin_gest_libero4
+this.Item[UpperBound(this.Item)+1]=this.m_fin_gest_libero5
+this.Item[UpperBound(this.Item)+1]=this.m_fin_gest_libero6
+this.Item[UpperBound(this.Item)+1]=this.m_fin_gest_libero7
+this.Item[UpperBound(this.Item)+1]=this.m_fin_gest_libero8
+end on
+
+on m_strumenti.destroy
+call super::destroy
+destroy(this.m_fin_gest_libero1)
+destroy(this.m_fin_gest_libero2)
+destroy(this.m_fin_gest_libero3)
+destroy(this.m_fin_gest_libero4)
+destroy(this.m_fin_gest_libero5)
+destroy(this.m_fin_gest_libero6)
+destroy(this.m_fin_gest_libero7)
+destroy(this.m_fin_gest_libero8)
+end on
+
+type m_fin_gest_libero1 from menu within m_strumenti
+end type
+
+event clicked;//
+w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = KKG_FLAG_RICHIESTA_LIBERO1
+	if k_w_attiva.triggerevent("ue_menu") < 0 then
+		messagebox("Operazione non eseguita", "Funzione non Abilitata")
+	end if
+
+end if
+
+end event
+
+on m_fin_gest_libero1.create
+call super::create
+this.visible = false
+this.text = "libero"
+this.enabled = false
+this.toolbaritemvisible = false
+this.toolbaritembarindex = 2
+this.toolbaritemorder = 10
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_fin_gest_libero1.destroy
+call super::destroy
+end on
+
+type m_fin_gest_libero2 from menu within m_strumenti
+end type
+
+event clicked;//
+w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = KKG_FLAG_RICHIESTA_LIBERO2
+	if k_w_attiva.triggerevent("ue_menu") < 0 then
+		messagebox("Operazione non eseguita", "Funzione non Abilitata")
+	end if
+end if
+
+end event
+
+on m_fin_gest_libero2.create
+call super::create
+this.visible = false
+this.text = "libero"
+this.enabled = false
+this.toolbaritemvisible = false
+this.toolbaritembarindex = 2
+this.toolbaritemorder = 15
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_fin_gest_libero2.destroy
+call super::destroy
+end on
+
+type m_fin_gest_libero3 from menu within m_strumenti
+end type
+
+event clicked;//
+w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = KKG_FLAG_RICHIESTA_LIBERO3
+	if k_w_attiva.triggerevent("ue_menu") < 0 then
+		messagebox("Operazione non eseguita", "Funzione non Abilitata")
+	end if
+end if
+
+end event
+
+on m_fin_gest_libero3.create
+call super::create
+this.visible = false
+this.text = "libero"
+this.enabled = false
+this.toolbaritemvisible = false
+this.toolbaritembarindex = 2
+this.toolbaritemorder = 20
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_fin_gest_libero3.destroy
+call super::destroy
+end on
+
+type m_fin_gest_libero4 from menu within m_strumenti
+end type
+
+event clicked;//
+w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = KKG_FLAG_RICHIESTA_LIBERO4
+	if k_w_attiva.triggerevent("ue_menu") < 0 then
+		messagebox("Operazione non eseguita", "Funzione non Abilitata")
+	end if
+end if
+
+end event
+
+on m_fin_gest_libero4.create
+call super::create
+this.visible = false
+this.text = "libero"
+this.enabled = false
+this.toolbaritemvisible = false
+this.toolbaritembarindex = 2
+this.toolbaritemorder = 25
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_fin_gest_libero4.destroy
+call super::destroy
+end on
+
+type m_fin_gest_libero5 from menu within m_strumenti
+end type
+
+event clicked;//
+w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = KKG_FLAG_RICHIESTA_LIBERO5
+	if k_w_attiva.triggerevent("ue_menu") < 0 then
+		messagebox("Operazione non eseguita", "Funzione non Abilitata")
+	end if
+
+end if
+
+end event
+
+on m_fin_gest_libero5.create
+call super::create
+this.visible = false
+this.text = "libero"
+this.enabled = false
+this.toolbaritemvisible = false
+this.toolbaritembarindex = 2
+this.toolbaritemorder = 30
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_fin_gest_libero5.destroy
+call super::destroy
+end on
+
+type m_fin_gest_libero6 from menu within m_strumenti
+end type
+
+event clicked;//
+w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = KKG_FLAG_RICHIESTA_LIBERO6
+	if k_w_attiva.triggerevent("ue_menu") < 0 then
+		messagebox("Operazione non eseguita", "Funzione non Abilitata")
+	end if
+
+end if
+
+end event
+
+on m_fin_gest_libero6.create
+call super::create
+this.visible = false
+this.text = "libero"
+this.enabled = false
+this.toolbaritemvisible = false
+this.toolbaritembarindex = 2
+this.toolbaritemorder = 35
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_fin_gest_libero6.destroy
+call super::destroy
+end on
+
+type m_fin_gest_libero7 from menucascade within m_strumenti
+libero1 libero1
+libero2 libero2
+libero3 libero3
+libero4 libero4
+end type
+
+on m_fin_gest_libero7.create
+call super::create
+this.visible = false
+this.text = "libero"
+this.enabled = false
+this.toolbaritemvisible = false
+this.toolbaritembarindex = 2
+this.toolbaritemorder = 40
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+this.libero1=create libero1
+this.libero2=create libero2
+this.libero3=create libero3
+this.libero4=create libero4
+this.Item[UpperBound(this.Item)+1]=this.libero1
+this.Item[UpperBound(this.Item)+1]=this.libero2
+this.Item[UpperBound(this.Item)+1]=this.libero3
+this.Item[UpperBound(this.Item)+1]=this.libero4
+end on
+
+on m_fin_gest_libero7.destroy
+call super::destroy
+destroy(this.libero1)
+destroy(this.libero2)
+destroy(this.libero3)
+destroy(this.libero4)
+end on
+
+type libero1 from menu within m_fin_gest_libero7
+end type
+
+event clicked;//
+w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = KKG_FLAG_RICHIESTA_LIBERO71
+	if k_w_attiva.triggerevent("ue_menu") < 0 then
+		messagebox("Operazione non eseguita", "Funzione non Abilitata")
+	end if
+
+end if
+
+end event
+
+on libero1.create
+call super::create
+this.visible = false
+this.text = "libero"
+this.enabled = false
+this.toolbaritembarindex = 2
+this.toolbaritemorder = 40
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on libero1.destroy
+call super::destroy
+end on
+
+type libero2 from menu within m_fin_gest_libero7
+end type
+
+event clicked;//
+w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = KKG_FLAG_RICHIESTA_LIBERO72
+	if k_w_attiva.triggerevent("ue_menu") < 0 then
+		messagebox("Operazione non eseguita", "Funzione non Abilitata")
+	end if
+
+end if
+
+end event
+
+on libero2.create
+call super::create
+this.visible = false
+this.text = "libero"
+this.enabled = false
+this.toolbaritembarindex = 2
+this.toolbaritemorder = 40
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on libero2.destroy
+call super::destroy
+end on
+
+type libero3 from menu within m_fin_gest_libero7
+end type
+
+event clicked;//
+w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = KKG_FLAG_RICHIESTA_LIBERO73
+	if k_w_attiva.triggerevent("ue_menu") < 0 then
+		messagebox("Operazione non eseguita", "Funzione non Abilitata")
+	end if
+
+end if
+
+end event
+
+on libero3.create
+call super::create
+this.visible = false
+this.text = "libero"
+this.enabled = false
+this.toolbaritembarindex = 2
+this.toolbaritemorder = 40
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on libero3.destroy
+call super::destroy
+end on
+
+type libero4 from menu within m_fin_gest_libero7
+end type
+
+event clicked;//
+w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = KKG_FLAG_RICHIESTA_LIBERO74
+	if k_w_attiva.triggerevent("ue_menu") < 0 then
+		messagebox("Operazione non eseguita", "Funzione non Abilitata")
+	end if
+
+end if
+
+end event
+
+on libero4.create
+call super::create
+this.visible = false
+this.text = "libero"
+this.enabled = false
+this.toolbaritembarindex = 2
+this.toolbaritemorder = 40
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on libero4.destroy
+call super::destroy
+end on
+
+type m_fin_gest_libero8 from menu within m_strumenti
+end type
+
+on m_fin_gest_libero8.create
+call super::create
+this.visible = false
+this.text = "libero"
+this.enabled = false
+this.toolbaritemvisible = false
+this.toolbaritembarindex = 2
+this.toolbaritemorder = 45
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_fin_gest_libero8.destroy
+call super::destroy
+end on
+
+event clicked;//
+w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = KKG_FLAG_RICHIESTA_LIBERO8
+	if k_w_attiva.triggerevent("ue_menu") < 0 then
+		messagebox("Operazione non eseguita", "Funzione non Abilitata")
+	end if
+
+end if
+
+end event
+
+type m_help from menu within m_main
+m_chk_update m_chk_update
+m_about m_about
+end type
+
+on m_help.create
+call super::create
+this.text = "&Help"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.menutitletext = "H"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+this.m_chk_update=create m_chk_update
+this.m_about=create m_about
+this.Item[UpperBound(this.Item)+1]=this.m_chk_update
+this.Item[UpperBound(this.Item)+1]=this.m_about
+end on
+
+on m_help.destroy
+call super::destroy
+destroy(this.m_chk_update)
+destroy(this.m_about)
+end on
+
+type m_chk_update from menu within m_help
+end type
+
+event clicked;//
+//--- check esistenza nuovi aggiornamenti
+//
+kuf_base kuf1_base
+kuf_utility kuf1_utility
+
+kuf1_base = create kuf_base 
+	try
+		if kuf1_base.if_update_proced_disponibile() then
+			if messagebox("Trovata una nuova Versione sul Server","Vuoi aggiornare ora i programmi",&
+				question!,yesno!,2) = 1 then
+				
+				kuf1_utility = create kuf_utility			 
+				kuf1_utility.u_aggiorna_procedura()			
+				destroy kuf1_utility
+			end if
+		else
+			messagebox("Versione aggiornata","I programmi sono gia' aggiornati")
+		end if
+	catch (uo_exception kuo1_exception)
+		kuo1_exception.messaggio_utente()
+	end try
+		 
+
+end event
+
+on m_chk_update.create
+call super::create
+this.text = "Controlla aggiornamenti"
+this.microhelp = "Verifica se ci sono nuovi aggiornamenti"
+this.menuimage = "Custom044!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_chk_update.destroy
+call super::destroy
+end on
+
+type m_about from menu within m_help
+end type
+
+event clicked;//=== Lancia il Logo iniziale
+//open (w_about)
+//
+st_open_w kst_open_w
+kuf_menu_window kuf1_menu_window
+
+
+
+//===
+//=== Menu Treeview
+//===
+kst_open_w.id_programma = "about"
+kst_open_w.flag_primo_giro = "S"
+kst_open_w.flag_modalita = kkg_flag_modalita_visualizzazione
+kst_open_w.flag_adatta_win = kk_adatta_win_no
+kst_open_w.flag_leggi_dw = "N"
+kst_open_w.flag_cerca_in_lista = "0"
+kst_open_w.key1 = " " 
+kst_open_w.flag_where = " "
+
+							
+kuf1_menu_window = create kuf_menu_window 
+kuf1_menu_window.open_w_tabelle(kst_open_w)
+destroy kuf1_menu_window
+
+
+
+end event
+
+on m_about.create
+call super::create
+this.text = "About"
+this.menuitemtype = menuitemtypeabout!
+this.menuimage = "Help!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 8388608
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_about.destroy
+call super::destroy
+end on
+

@@ -1,0 +1,9 @@
+﻿$PBExportHeader$st_tab_nazioni.srs
+global type st_tab_nazioni from structure
+	st_tab_g_0		st_tab_g_0
+	string		id_nazione
+	string		nome
+	string		area
+	string		gruppo
+end type
+

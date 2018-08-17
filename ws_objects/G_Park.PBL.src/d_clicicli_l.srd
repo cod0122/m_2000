@@ -1,0 +1,56 @@
+﻿$PBExportHeader$d_clicicli_l.srd
+release 6;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no grid.lines=0 )
+header(height=72 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=64 color="536870912" )
+detail(height=84 color="536870912" )
+table(column=(type=long updatewhereclause=yes name=clicicli_clie_2 dbname="clicicli.clie_2" )
+ column=(type=long updatewhereclause=yes name=clicicli_clie_1 dbname="clicicli.clie_1" )
+ column=(type=char(30) updatewhereclause=yes name=clienti_rag_soc_10 dbname="clienti.rag_soc_10" )
+ column=(type=char(2) updatewhereclause=yes name=clienti_prov_1 dbname="clienti.prov_1" )
+ column=(type=char(12) updatewhereclause=yes name=clicicli_art dbname="clicicli.art" )
+ column=(type=real updatewhereclause=yes name=clicicli_dose dbname="clicicli.dose" )
+ column=(type=long updatewhereclause=yes name=clicicli_fila_1 dbname="clicicli.fila_1" )
+ column=(type=long updatewhereclause=yes name=clicicli_fila_2 dbname="clicicli.fila_2" )
+ column=(type=long updatewhereclause=yes name=clicicli_codice dbname="clicicli.codice" )
+ retrieve="  SELECT clicicli.clie_2,   
+         clicicli.clie_1,   
+         clienti_b.rag_soc_10,   
+         clienti_b.prov_1,   
+         clicicli.art,   
+         clicicli.dose,   
+         clicicli.fila_1,   
+         clicicli.fila_2,   
+         clicicli.codice  
+    FROM clicicli,   
+         clienti clienti_b  
+   WHERE 
+         ( clicicli.clie_1 = clienti_b.codice ) and  
+         (clicicli.clie_1 = :k_clie_1 OR  
+         :k_clie_1 = 0) AND  
+         (clicicli.clie_2 = :k_clie_2 OR  
+         :k_clie_2 = 0)   
+ORDER BY clicicli.clie_2 ASC   ;
+
+" arguments=(("k_clie_1", number),("k_clie_2", number)) )
+text(band=header alignment="2" text="ragione sociale"border="0" color="0" x="640" y="8" height="64" width="850"  name=clienti_rag_soc_10_t  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="32768" )
+text(band=header alignment="2" text="prov"border="0" color="0" x="1499" y="8" height="64" width="146"  name=clienti_prov_1_t  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="32768" )
+text(band=header alignment="2" text="Prodotto"border="0" color="0" x="1655" y="8" height="64" width="357"  name=clicicli_art_t  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="32768" )
+text(band=header alignment="2" text="Dose"border="0" color="0" x="2021" y="8" height="64" width="283"  name=clicicli_dose_t  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="32768" )
+text(band=header alignment="2" text="Fila 1"border="0" color="0" x="2313" y="8" height="64" width="224"  name=clicicli_fila_1_t  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="32768" )
+text(band=header alignment="2" text="Fila 2"border="0" color="0" x="2546" y="8" height="64" width="219"  name=clicicli_fila_2_t  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="32768" )
+text(band=header alignment="2" text="Codice"border="0" color="0" x="2775" y="8" height="64" width="288"  name=clicicli_codice_t  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="32768" )
+text(band=header alignment="2" text="Ricevente"border="0" color="0" x="9" y="8" height="64" width="315"  name=clicicli_clie_2_t  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="32768" )
+text(band=header alignment="2" text="Mandante"border="0" color="0" x="334" y="8" height="64" width="297"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="32768" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="0" color="0" x="640" y="4" height="76" width="850" format="[general]"  name=clienti_rag_soc_10 edit.limit=30 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=4 alignment="2" tabsequence=32766 border="0" color="0" x="1499" y="4" height="76" width="146" format="[general]"  name=clienti_prov_1 edit.limit=2 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=5 alignment="0" tabsequence=32766 border="0" color="0" x="1655" y="4" height="76" width="357" format="[general]"  name=clicicli_art edit.limit=12 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=6 alignment="2" tabsequence=32766 border="0" color="0" x="2021" y="4" height="76" width="283" format="####0.0"  name=clicicli_dose edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=7 alignment="2" tabsequence=32766 border="0" color="0" x="2313" y="4" height="76" width="224" format="###"  name=clicicli_fila_1 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=8 alignment="2" tabsequence=32766 border="0" color="0" x="2546" y="4" height="76" width="219" format="###"  name=clicicli_fila_2 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=9 alignment="2" tabsequence=32766 border="0" color="0" x="2775" y="4" height="76" width="288" format="#####"  name=clicicli_codice edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="0" color="0" x="9" y="4" height="76" width="315" format="#####"  name=clicicli_clie_2 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="0" x="334" y="4" height="76" width="297" format="#####"  name=clicicli_clie_1 edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+compute(band=footer alignment="0" expression="'Presenti : ' + count(   clicicli_clie_2 for all ) "border="0" color="8388736" x="640" y="4" height="56" width="850"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+htmltable(border="1" cellpadding="0" cellspacing="0" generatecss="no" nowrap="yes")

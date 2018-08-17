@@ -1,0 +1,7 @@
+﻿$PBExportHeader$st_tab_sped_vettori.srs
+global type st_tab_sped_vettori from structure
+	integer		id
+	string		rag_soc_1
+	string		rag_soc_2
+end type
+

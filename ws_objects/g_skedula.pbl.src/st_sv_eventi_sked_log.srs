@@ -1,0 +1,7 @@
+﻿$PBExportHeader$st_sv_eventi_sked_log.srs
+global type st_sv_eventi_sked_log from structure
+	date		log_data
+	time		log_ora
+	string		log_testo
+end type
+

@@ -1,0 +1,15 @@
+﻿$PBExportHeader$st_txt_pilota_cmd.srs
+global type st_txt_pilota_cmd from structure
+	integer		progressivo_richiesta
+	integer		progressivo_richiesta_padre
+	integer		progressivo_richiesta_filgli
+	integer		codice_richiesta
+	string		path_fl_pilota
+	string		prima_del_barcode
+	string		utente
+	datetime		data_inizio
+	datetime		data_fine
+	string		file_richieste_path
+	string		file_richieste_nome
+end type
+

@@ -1,0 +1,6 @@
+﻿$PBExportHeader$st_uo_exception.srs
+global type st_uo_exception from structure
+	string		tipo
+	string		message
+end type
+

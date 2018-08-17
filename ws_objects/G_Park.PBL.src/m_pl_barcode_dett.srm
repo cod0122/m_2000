@@ -1,0 +1,268 @@
+﻿$PBExportHeader$m_pl_barcode_dett.srm
+forward
+global type m_pl_barcode_dett from menu
+end type
+type m_barcode from menu within m_pl_barcode_dett
+end type
+type m_file from menu within m_pl_barcode_dett
+end type
+type m_aggiungi from menu within m_pl_barcode_dett
+end type
+type m_togli from menu within m_pl_barcode_dett
+end type
+type m_chiudi from menu within m_pl_barcode_dett
+end type
+type m_pilota from menu within m_pl_barcode_dett
+end type
+global type m_pl_barcode_dett from menu
+m_barcode m_barcode
+m_file m_file
+m_aggiungi m_aggiungi
+m_togli m_togli
+m_chiudi m_chiudi
+m_pilota m_pilota
+end type
+end forward
+
+global type m_pl_barcode_dett from menu
+m_barcode m_barcode
+m_file m_file
+m_aggiungi m_aggiungi
+m_togli m_togli
+m_chiudi m_chiudi
+m_pilota m_pilota
+end type
+global m_pl_barcode_dett m_pl_barcode_dett
+
+on m_pl_barcode_dett.create
+m_pl_barcode_dett=this
+call super::create
+this.text = "m_pl_barcode_dett"
+this.m_barcode=create m_barcode
+this.m_file=create m_file
+this.m_aggiungi=create m_aggiungi
+this.m_togli=create m_togli
+this.m_chiudi=create m_chiudi
+this.m_pilota=create m_pilota
+this.Item[UpperBound(this.Item)+1]=this.m_barcode
+this.Item[UpperBound(this.Item)+1]=this.m_file
+this.Item[UpperBound(this.Item)+1]=this.m_aggiungi
+this.Item[UpperBound(this.Item)+1]=this.m_togli
+this.Item[UpperBound(this.Item)+1]=this.m_chiudi
+this.Item[UpperBound(this.Item)+1]=this.m_pilota
+end on
+
+on m_pl_barcode_dett.destroy
+call super::destroy
+destroy(this.m_barcode)
+destroy(this.m_file)
+destroy(this.m_aggiungi)
+destroy(this.m_togli)
+destroy(this.m_chiudi)
+destroy(this.m_pilota)
+end on
+
+type m_barcode from menu within m_pl_barcode_dett
+end type
+
+event clicked;//
+//=== Stampa i dati della finestra
+window  k_w_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = "pl_barcode"
+	if k_w_attiva.triggerevent("ue_menu") < 0 then
+		messagebox("Operazione non eseguita", "Funzione di Ricerca non Abilitata")
+	end if
+end if
+
+end event
+
+on m_barcode.create
+call super::create
+this.text = "barcode~tB"
+this.shortcut = 66
+this.toolbaritemname = "C:\GAMMARAD\PB_GMMRD\ICONE\barcode.BMP"
+this.toolbaritemtext = "Dettaglio Barcode (B)"
+this.toolbaritembarindex = 2
+this.toolbaritemorder = 8
+end on
+
+on m_barcode.destroy
+call super::destroy
+end on
+
+type m_file from menu within m_pl_barcode_dett
+end type
+
+on m_file.create
+call super::create
+this.text = "modifica riferimento~tF"
+this.shortcut = 70
+this.microhelp = "Modifica cicli del Riferimento   (F)"
+this.toolbaritemname = "AppRectangle!"
+this.toolbaritemtext = "Modifica cicli del Riferimento   (F)"
+this.toolbaritembarindex = 2
+this.toolbaritemorder = 9
+end on
+
+on m_file.destroy
+call super::destroy
+end on
+
+event clicked;//
+//=== Stampa i dati della finestra
+window  k_w_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = "pl_file"
+	if k_w_attiva.triggerevent("ue_menu") < 0 then
+		messagebox("Operazione non eseguita", "Funzione di Ricerca non Abilitata")
+	end if
+end if
+
+end event
+
+type m_aggiungi from menu within m_pl_barcode_dett
+end type
+
+on m_aggiungi.create
+call super::create
+this.text = "Aggiungi~tCtrl+A"
+this.shortcut = 321
+this.microhelp = "Aggiungi Barcode   (+)"
+this.toolbaritemname = "Insert5!"
+this.toolbaritemtext = "Aggiungi Barcode   (CTRL+A)"
+this.toolbaritembarindex = 2
+this.toolbaritemorder = 10
+end on
+
+on m_aggiungi.destroy
+call super::destroy
+end on
+
+event clicked;//
+//=== Stampa i dati della finestra
+window  k_w_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = "pl_aggiungi"
+	if k_w_attiva.triggerevent("ue_menu") < 0 then
+		messagebox("Operazione non eseguita", "Funzione di Ricerca non Abilitata")
+	end if
+end if
+
+end event
+
+type m_togli from menu within m_pl_barcode_dett
+end type
+
+on m_togli.create
+call super::create
+this.text = "Togli~tCtrl+T"
+this.shortcut = 340
+this.microhelp = "Togli Barcode  (-)"
+this.toolbaritemname = "DeleteRow!"
+this.toolbaritemtext = "Togli Barcode  (CTRL+T)"
+this.toolbaritembarindex = 2
+this.toolbaritemorder = 15
+end on
+
+on m_togli.destroy
+call super::destroy
+end on
+
+event clicked;//
+//=== Stampa i dati della finestra
+window  k_w_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = "pl_togli"
+	if k_w_attiva.triggerevent("ue_menu") < 0 then
+		messagebox("Operazione non eseguita", "Funzione di Ricerca non Abilitata")
+	end if
+end if
+
+end event
+
+type m_chiudi from menu within m_pl_barcode_dett
+end type
+
+on m_chiudi.create
+call super::create
+this.text = "Chiudi P.L.  (K)~tK"
+this.shortcut = 75
+this.microhelp = "Chiudi Piano di Lavorazione"
+this.toolbaritemname = "Custom016!"
+this.toolbaritemtext = "Chiudi P.L.  (K)"
+this.toolbaritembarindex = 2
+this.toolbaritemorder = 18
+end on
+
+on m_chiudi.destroy
+call super::destroy
+end on
+
+event clicked;//
+//=== Stampa i dati della finestra
+window  k_w_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = "pl_chiudi"
+	if k_w_attiva.triggerevent("ue_menu") < 0 then
+		messagebox("Operazione non eseguita", "Funzione di Ricerca non Abilitata")
+	end if
+end if
+
+end event
+
+type m_pilota from menu within m_pl_barcode_dett
+end type
+
+on m_pilota.create
+call super::create
+this.text = "Crea File~tCtrl+P"
+this.shortcut = 336
+this.microhelp = "Genera file x il Pilota   (*)"
+this.toolbaritemname = "CreateLibrary!"
+this.toolbaritemtext = "Genera file x il Pilota   (CTRL+P)"
+this.toolbaritembarindex = 2
+this.toolbaritemorder = 20
+this.toolbaritemspace = 2
+end on
+
+on m_pilota.destroy
+call super::destroy
+end on
+
+event clicked;//
+//=== Stampa i dati della finestra
+window  k_w_attiva
+
+//=== Prende la window attiva in quel momento
+k_w_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(k_w_attiva) THEN
+	k_w_attiva.tag = "pl_pilota"
+	if k_w_attiva.triggerevent("ue_menu") < 0 then
+		messagebox("Operazione non eseguita", "Funzione di Ricerca non Abilitata")
+	end if
+end if
+
+end event
+

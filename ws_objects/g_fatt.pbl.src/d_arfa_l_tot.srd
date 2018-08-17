@@ -1,0 +1,52 @@
+﻿$PBExportHeader$d_arfa_l_tot.srd
+release 10.5;
+datawindow(units=0 timer_interval=0 color=16777215 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes print.preview.outline=yes hidegrayline=no grid.lines=0 )
+header(height=124 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=64 color="536870912" )
+detail(height=68 color="536870912" )
+table(column=(type=date updatewhereclause=yes name=arfa_data_fatt dbname="arfa.data_fatt" dbalias=".data_fatt" )
+ column=(type=long updatewhereclause=yes name=arfa_num_fatt dbname="arfa.num_fatt" dbalias=".num_fatt" )
+ column=(type=decimal(2) updatewhereclause=yes name=importo dbname="importo" )
+ column=(type=long updatewhereclause=yes name=arfa_clie_3 dbname="arfa.clie_3" dbalias=".clie_3" )
+ column=(type=char(30) updatewhereclause=yes name=clienti_rag_soc_10 dbname="clienti.rag_soc_10" dbalias=".rag_soc_10" )
+ column=(type=decimal(0) updatewhereclause=yes name=arfa_cod_pag dbname="arfa.cod_pag" dbalias=".cod_pag" )
+ retrieve="  SELECT arfa.data_fatt,   
+         arfa.num_fatt,   
+         sum(arfa.prezzo_t) as importo,   
+         arfa.clie_3,   
+         clienti.rag_soc_10,   
+         arfa.cod_pag   
+    FROM  arfa  LEFT OUTER JOIN clienti  ON arfa.clie_3 = clienti.codice 
+    where (clie_3 = :k_clie or :k_clie = 0)
+          and data_fatt >= :k_data
+	 group by data_fatt, num_fatt, clie_3, rag_soc_10, arfa.cod_pag
+    order by clie_3, data_fatt desc, num_fatt desc" arguments=(("k_clie", number),("k_data", date)) )
+text(band=header alignment="2" text="Fattura
+data" border="0" color="0" x="9" y="8" height="112" width="306" html.valueishtml="0"  name=arfa_data_fatt_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Fattura
+numero" border="0" color="0" x="325" y="8" height="112" width="238" html.valueishtml="0"  name=arfa_num_fatt_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Importo" border="0" color="0" x="571" y="8" height="56" width="366" html.valueishtml="0"  name=cexpr1002_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Cliente" border="0" color="0" x="946" y="8" height="56" width="187" html.valueishtml="0"  name=arfa_clie_3_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Ragione Sociale" border="0" color="0" x="1143" y="8" height="56" width="983" html.valueishtml="0"  name=clienti_rag_soc_10_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Codice
+pagam." border="0" color="0" x="2135" y="8" height="112" width="206" html.valueishtml="0"  name=arfa_cod_pag_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=1 alignment="2" tabsequence=32766 border="0" color="0" x="9" y="0" height="68" width="306" format="[shortdate]" html.valueishtml="0"  name=arfa_data_fatt visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=2 alignment="2" tabsequence=32766 border="0" color="0" x="325" y="0" height="68" width="238" format="##,###,###0" html.valueishtml="0"  name=arfa_num_fatt visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="1" tabsequence=32766 border="0" color="0" x="571" y="0" height="68" width="366" format="###,###,###,##0.00" html.valueishtml="0"  name=importo visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="2" tabsequence=32766 border="0" color="0" x="946" y="0" height="68" width="187" format="####0" html.valueishtml="0"  name=arfa_clie_3 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="0" tabsequence=32766 border="0" color="0" x="1143" y="0" height="68" width="983" format="[general]" html.valueishtml="0"  name=clienti_rag_soc_10 visible="1" edit.limit=30 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="2" tabsequence=32766 border="0" color="0" x="2135" y="0" height="68" width="206" format="#####" html.valueishtml="0"  name=arfa_cod_pag visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=footer alignment="0" expression="'Presenti:'+string(count(arfa_data_fatt for all), ~"###,###,##0~")"border="0" color="8388736" x="1143" y="0" height="56" width="983" format="[general]" html.valueishtml="0"  name=compute_1 visible="1"  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="33554431" )
+compute(band=footer alignment="1" expression="sum(importo for all)"border="0" color="0" x="571" y="4" height="56" width="366" format="###,###,###,##0.00" html.valueishtml="0"  name=compute_2 visible="1"  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" pagingmethod=0 generatedddwframes="1" )
+xhtmlgen() cssgen(sessionspecific="0" )
+xmlgen(inline="0" )
+xsltgen()
+jsgen()
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+export.xhtml()
+ 

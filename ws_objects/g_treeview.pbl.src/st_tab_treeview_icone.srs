@@ -1,0 +1,8 @@
+﻿$PBExportHeader$st_tab_treeview_icone.srs
+global type st_tab_treeview_icone from structure
+	string		tipo
+	integer		progressivo
+	string		tipo_nome
+	string		nome
+end type
+

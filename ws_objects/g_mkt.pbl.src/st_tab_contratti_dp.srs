@@ -1,0 +1,67 @@
+﻿$PBExportHeader$st_tab_contratti_dp.srs
+global type st_tab_contratti_dp from structure
+	st_tab_g_0		st_tab_g_0
+	long		contati
+	long		id_contratto_dp
+	string		attivo		descriptor "comment" = "S=si; N=non attivo"
+	integer		anno
+	integer		magazzino		descriptor "comment" = "vedi variabile kkg_magazzino. (di solito = 4)"
+	date		offerta_data
+	string		offerta_validita
+	string		stato		descriptor "comment" = "'1'=nuovo, '3'=stampato, '5'=accettato"
+	string		stampa_tradotta		descriptor "comment" = "'IT'=italiano, 'EN'=inglese"
+	date		data_stampa
+	date		data_inizio
+	date		data_fine
+	string		oggetto
+	string		id_clie_settore
+	integer		gruppo
+	long		id_cliente
+	long		id_docprod
+	string		nome_contatto
+	string		unita_misura
+	integer		mis_x_1
+	integer		mis_y_1
+	integer		mis_z_1
+	double		peso_max_kg
+	integer		qta_anno
+	integer		qta_max_disponibile
+	string		altre_condizioni
+	integer		id_listino_pregruppo
+	integer		id_listino_voce_1
+	integer		id_listino_voce_2
+	integer		id_listino_voce_3
+	integer		id_listino_voce_4
+	integer		id_listino_voce_5
+	integer		id_listino_voce_6
+	integer		id_listino_voce_7
+	integer		id_listino_voce_8
+	integer		id_listino_voce_9
+	double		voce_prezzo_1
+	double		voce_prezzo_2
+	double		voce_prezzo_3
+	double		voce_prezzo_4
+	double		voce_prezzo_5
+	double		voce_prezzo_6
+	double		voce_prezzo_7
+	double		voce_prezzo_8
+	double		voce_prezzo_9
+	double		dose
+	string		note
+	string		consegna_des
+	double		gest_doc_prezzo		descriptor "comment" = " Gest. documentale"
+	string		gest_doc_des
+	integer		iva
+	integer		cod_pag
+	string		banca
+	integer		abi
+	integer		cab
+	string		fattura_da
+	string		art		descriptor "comment" = "codice articolo (non in stampa)"
+	string		note_interne		descriptor "comment" = "note non interne (non in stampa)"
+	datetime		esito_operazioni_ts_operazione		descriptor "comment" = "timestamp dell'esito nella tabella esito-operazioni"
+	string		form_di_stampa		descriptor "comment" = "nome del DW sul quale e' stato stampato stampa"
+	datetime		x_datins
+	string		x_utente
+end type
+

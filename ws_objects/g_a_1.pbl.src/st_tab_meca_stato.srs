@@ -1,0 +1,10 @@
+﻿$PBExportHeader$st_tab_meca_stato.srs
+global type st_tab_meca_stato from structure
+	st_tab_g_0		st_tab_g_0
+	long		codice
+	string		descrizione
+	long		rgb_r
+	long		rgb_g
+	long		rgb_b
+end type
+

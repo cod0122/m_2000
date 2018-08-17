@@ -1,0 +1,201 @@
+﻿$PBExportHeader$d_armo_l_3.srd
+release 8;
+datawindow(units=0 timer_interval=0 color=1090519039 processing=1 HTMLDW=no print.documentname="" print.orientation = 1 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=yes row.resize=1 grid.lines=0 )
+header(height=64 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=60 color="536870912" )
+detail(height=72 color="536870912"  height.autosize=yes)
+table(column=(type=long updatewhereclause=yes name=vx_info_armo1_magazzino dbname="vx_info_armo1.magazzino" )
+ column=(type=long updatewhereclause=yes name=num_int dbname="vx_info_armo1.num_int" )
+ column=(type=date updatewhereclause=yes name=data_int dbname="vx_info_armo1.data_int" )
+ column=(type=long updatewhereclause=yes name=clie_1 dbname="meca.clie_1" )
+ column=(type=char(30) updatewhereclause=yes name=rag_soc_1 dbname="clienti.rag_soc_1" )
+ column=(type=long updatewhereclause=yes name=clie_2 dbname="meca.clie_2" )
+ column=(type=char(30) updatewhereclause=yes name=rag_soc_2 dbname="clienti.rag_soc_2" )
+ column=(type=long updatewhereclause=yes name=clie_3 dbname="meca.clie_3" )
+ column=(type=char(30) updatewhereclause=yes name=rag_soc_3 dbname="clienti.rag_soc_3" )
+ column=(type=date updatewhereclause=yes name=meca_dosim_data dbname="meca_dosim.dosim_data" )
+ column=(type=char(1) updatewhereclause=yes name=meca_err_lav_ok dbname="meca.err_lav_ok" values="	0/	1" )
+ column=(type=char(10) updatewhereclause=yes name=meca_num_bolla_in dbname="meca.num_bolla_in" )
+ column=(type=date updatewhereclause=yes name=meca_data_bolla_in dbname="meca.data_bolla_in" )
+ column=(type=long updatewhereclause=yes name=meca_dosim_assorb dbname="meca_dosim.dosim_assorb" )
+ column=(type=long updatewhereclause=yes name=meca_dosim_spessore dbname="meca_dosim.dosim_spessore" )
+ column=(type=decimal(2) updatewhereclause=yes name=meca_dosim_rapp_a_s dbname="meca_dosim.dosim_rapp_a_s" )
+ column=(type=decimal(2) updatewhereclause=yes name=meca_dosim_dose dbname="meca_dosim.dosim_dose" )
+ column=(type=decimal(0) updatewhereclause=yes name=colli_2 dbname="vx_info_armo1.colli_2" )
+ column=(type=decimal(2) updatewhereclause=yes name=vx_info_armo1_pedane dbname="vx_info_armo1.pedane" )
+ column=(type=decimal(2) updatewhereclause=yes name=vx_info_armo1_m_cubi dbname="vx_info_armo1.m_cubi" )
+ column=(type=decimal(2) updatewhereclause=yes name=vx_info_armo1_peso_kg dbname="vx_info_armo1.peso_kg" )
+ column=(type=decimal(0) updatewhereclause=yes name=vx_info_cert1_num_certif dbname="vx_info_cert1.num_certif" )
+ column=(type=date updatewhereclause=yes name=vx_info_cert1_data_st dbname="vx_info_cert1.data_st" )
+ column=(type=decimal(0) updatewhereclause=yes name=giri dbname="giri" )
+ column=(type=decimal(0) updatewhereclause=yes name=k_colli_in_lav dbname="k_colli_in_lav" )
+ column=(type=decimal(0) updatewhereclause=yes name=k_colli_trattati dbname="k_colli_trattati" )
+ column=(type=decimal(0) updatewhereclause=yes name=k_colli_groupage dbname="k_colli_groupage" )
+ retrieve="  SELECT  distinct
+         vx_info_armo1.magazzino,   
+         vx_info_armo1.num_int,   
+         vx_info_armo1.data_int,   
+         meca.clie_1,   
+         clienti_a.rag_soc_10 as rag_soc_1,   
+         meca.clie_2,   
+         clienti_b.rag_soc_10 as rag_soc_2,   
+         meca.clie_3,   
+         clienti_c.rag_soc_10 as rag_soc_3,   
+         meca_dosim.dosim_data,
+         meca.err_lav_ok,
+         meca.num_bolla_in,
+         meca.data_bolla_in,
+         meca_dosim.dosim_assorb,
+         meca_dosim.dosim_spessore,
+         meca_dosim.dosim_rapp_a_s,
+         meca_dosim.dosim_dose,
+         vx_info_armo1.colli_2,
+			vx_info_armo1.pedane,
+         vx_info_armo1.m_cubi,
+         vx_info_armo1.peso_kg,
+         vx_info_cert1.num_certif,
+			vx_info_cert1.data_st,
+         ((vx_info_brcd1.fila_1) + (vx_info_brcd1.fila_2)) as giri,
+         sum(vx_info_artr1.colli) as k_colli_in_lav,
+         sum(vx_info_artr1.colli_trattati) as k_colli_trattati,
+         sum(vx_info_artr1.colli_groupage) as k_colli_groupage
+    FROM (((((((
+         meca LEFT OUTER JOIN clienti as clienti_a 
+         ON meca.clie_1 = clienti_a.codice)
+               LEFT OUTER JOIN clienti as clienti_b 
+         ON meca.clie_2 = clienti_b.codice)
+               LEFT OUTER JOIN clienti as clienti_c 
+         ON meca.clie_3 = clienti_c.codice)
+               left outer JOIN meca_dosim
+         ON meca.id = meca_dosim.id_meca )
+                    inner JOIN vx_info_armo1
+         ON meca.id = vx_info_armo1.id_meca )
+               left outer  JOIN vx_info_brcd1  
+         ON meca.id = vx_info_brcd1.id_meca ) 
+					left outer JOIN vx_info_artr1 
+         ON meca.id = vx_info_artr1.id_meca )
+					left outer JOIN vx_info_cert1 
+         ON meca.id = vx_info_cert1.id_meca 
+    WHERE 
+             (meca.id between :k_id_meca_ini and :k_id_meca_fin )  
+         and (:k_clie_1 = 0 or meca.clie_1 = :k_clie_1 )  
+         and (:k_clie_2 = 0 or meca.clie_2 = :k_clie_2 )  
+         and (:k_clie_3 = 0 or meca.clie_3 = :k_clie_3 )  
+         and (meca_dosim.dosim_data between :k_dosim_data_i and :k_dosim_data_f )   
+         and (:k_err_lav_ok = '0' or meca.err_lav_ok = :k_err_lav_ok )
+			and (:k_anno_bolla_in = 0 or year(meca.data_bolla_in) = :k_anno_bolla_in)
+			and (meca.num_bolla_in like :k_num_bolla_in)
+			and (vx_info_artr1.data_in between :k_data_in and :k_data_in_1)
+			and (vx_info_artr1.data_fin between :k_data_fin and :k_data_fin_1)
+			and (vx_info_artr1.data_st between :k_data_st_i and :k_data_st_f)
+         and (:k_trattamento = '*' 
+           or ( (:k_trattamento = 'I' or :k_trattamento = 'F' or :k_trattamento = 'N') 
+                and vx_info_brcd1.num_int = meca.num_int and vx_info_brcd1.data_int = meca.data_int )  
+           or (:k_trattamento = 'C' 
+                and meca_dosim.dosim_data > date('01.01.1900')) 
+           or (:k_trattamento = 'CE' 
+                and meca.err_lav_ok = '1')
+             )
+			and (:k_impianto = 0 or vx_info_armo1.magazzino = :k_impianto )  
+         and (:k_certificato_st = '*' 
+           or (:k_certificato_st = 'S' and vx_info_cert1.data_st > date(0))
+           or (:k_certificato_st = 'N' and (vx_info_cert1.data_st = date(0) or vx_info_cert1.data_st is null) )
+             ) 
+         and (:k_groupage = '*' 
+           or (:k_groupage = 'S' and vx_info_artr1.colli_groupage > 0)
+           or (:k_groupage = 'N' and vx_info_artr1.colli > 0) 
+             ) 
+
+   group by 
+         vx_info_armo1.magazzino,   
+         vx_info_armo1.num_int,   
+         vx_info_armo1.data_int,   
+         meca.clie_1,   
+         clienti_a.rag_soc_10,   
+         meca.clie_2,   
+         clienti_b.rag_soc_10,   
+         meca.clie_3,   
+         clienti_c.rag_soc_10,   
+         meca_dosim.dosim_data,
+         meca.err_lav_ok,
+         meca.num_bolla_in,
+         meca.data_bolla_in,
+         meca_dosim.dosim_assorb,
+         meca_dosim.dosim_spessore,
+         meca_dosim.dosim_rapp_a_s,
+         meca_dosim.dosim_dose,
+         vx_info_armo1.colli_2,
+			vx_info_armo1.pedane,
+         vx_info_armo1.m_cubi,
+         vx_info_armo1.peso_kg,
+         vx_info_cert1.num_certif,
+			vx_info_cert1.data_st,
+         vx_info_brcd1.fila_1, 
+         vx_info_brcd1.fila_2
+    
+   order by vx_info_armo1.data_int desc, vx_info_armo1.num_int desc
+
+
+
+" arguments=(("k_impianto", number),("k_id_meca_ini", number),("k_id_meca_fin", number),("k_trattamento", string),("k_data_in", date),("k_data_in_1", date),("k_data_fin", date),("k_data_fin_1", date),("k_data_st_i", date),("k_data_st_f", date),("k_clie_1", number),("k_clie_2", number),("k_clie_3", number),("k_groupage", string),("k_dosim_data_i", date),("k_dosim_data_f", date),("k_err_lav_ok", string),("k_num_bolla_in", string),("k_anno_bolla_in", number),("k_certificato_st", string)) )
+text(band=header alignment="2" text="Group" border="0" color="0" x="1330" y="8" height="56" width="178" html.valueishtml="0"  name=k_colli_groupage_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="80269524" )
+text(band=header alignment="2" text="Stato" border="0" color="0" x="9" y="8" height="56" width="261" html.valueishtml="0"  name=k_stato_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="80269524" )
+text(band=header alignment="2" text="Num.Rif" border="0" color="0" x="283" y="8" height="56" width="197" html.valueishtml="0"  name=num_int_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="80269524" )
+text(band=header alignment="2" text="In lav." border="0" color="0" x="905" y="8" height="56" width="178" html.valueishtml="0"  name=k_colli_in_lav_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="80269524" )
+text(band=header alignment="2" text="Entrati" border="0" color="0" x="731" y="8" height="56" width="165" html.valueishtml="0"  name=colli_2_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="80269524" )
+text(band=header alignment="2" text="Tratt." border="0" color="0" x="1093" y="8" height="56" width="229" html.valueishtml="0"  name=artr_colli_trattati_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="80269524" )
+text(band=header alignment="2" text="Data Rif." border="0" color="0" x="489" y="8" height="56" width="233" html.valueishtml="0"  name=data_int_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="80269524" )
+text(band=header alignment="2" text="Giri" border="0" color="0" x="1518" y="8" height="56" width="151" html.valueishtml="0"  name=giri_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="80269524" )
+text(band=header alignment="2" text="Mandante" border="0" color="0" x="2670" y="8" height="56" width="416" html.valueishtml="0"  name=rag_soc_1_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="80269524" )
+text(band=header alignment="2" text="Cod." border="0" color="0" x="3095" y="8" height="56" width="123" html.valueishtml="0"  name=clie_2_t visible="1"  resizeable=1  moveable=1  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="80269524" )
+text(band=header alignment="2" text="Ricevente" border="0" color="0" x="3227" y="8" height="56" width="448" html.valueishtml="0"  name=rag_soc_2_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="80269524" )
+text(band=header alignment="2" text="Cod." border="0" color="0" x="3685" y="8" height="56" width="133" html.valueishtml="0"  name=clie_3_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="80269524" )
+text(band=header alignment="2" text="Cod." border="0" color="0" x="2537" y="8" height="56" width="123" html.valueishtml="0"  name=clie_1_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="80269524" )
+text(band=header alignment="2" text="Fatturato" border="0" color="0" x="3826" y="8" height="56" width="507" html.valueishtml="0"  name=rag_soc_3_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="80269524" )
+text(band=header alignment="2" text="Certif." border="0" color="0" x="2043" y="8" height="56" width="224" html.valueishtml="0"  name=vx_info_cert1_num_certif_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="80269524" )
+text(band=header alignment="2" text="Stampato" border="0" color="0" x="2277" y="8" height="56" width="251" html.valueishtml="0"  name=vx_info_cert1_data_st_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="80269524" )
+text(band=header alignment="2" text="Convalid." border="0" color="0" x="1678" y="8" height="56" width="265" html.valueishtml="0"  name=meca_dosim_data_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="80269524" )
+text(band=header alignment="2" text="Ok" border="0" color="0" x="1952" y="8" height="56" width="82" html.valueishtml="0"  name=meca_err_lav_ok_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="80269524" )
+text(band=header alignment="2" text="Bolla Mandante" border="0" color="0" x="4343" y="8" height="56" width="398" html.valueishtml="0"  name=meca_num_bolla_in_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="80269524" )
+text(band=header alignment="2" text="del" border="0" color="0" x="4750" y="8" height="56" width="229" html.valueishtml="0"  name=meca_data_bolla_in_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="80269524" )
+text(band=header alignment="2" text="ASB" border="0" color="0" x="4987" y="8" height="56" width="219" html.valueishtml="0"  name=meca_dosim_assorb_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="80269524" )
+text(band=header alignment="2" text="Dose Lav." border="0" color="0" x="5742" y="8" height="56" width="247" html.valueishtml="0"  name=meca_dosim_dose_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="80269524" )
+text(band=header alignment="2" text="Spess." border="0" color="0" x="5216" y="8" height="56" width="251" html.valueishtml="0"  name=meca_dosim_spessore_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="80269524" )
+text(band=header alignment="2" text="Rapp A/S" border="0" color="0" x="5477" y="8" height="56" width="256" html.valueishtml="0"  name=meca_dosim_rapp_a_s_t visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="80269524" )
+compute(band=detail alignment="0" expression="if (  ( if( isnull( k_colli_trattati ) , 0, k_colli_trattati  ) + if( isnull( k_colli_in_lav ) , 0, k_colli_in_lav )  + if( isnull( k_colli_groupage ) , 0, k_colli_groupage ) ) > 0,  ( if ((   if( isnull( k_colli_trattati ) , 0, k_colli_trattati  )  )  =  colli_2  and   ( isnull(  k_colli_in_lav ) or  k_colli_in_lav = 0 ),  ~"Chiuso~" ,  ( if ((   if( isnull( k_colli_trattati ) , 0, k_colli_trattati  )  +  if( isnull(  k_colli_in_lav ) , 0,  k_colli_in_lav ) )  >  colli_2 ,  ~"ERRORE~" , ~"In lav~")) )) , ~"Da lav.~")"border="0" color="8388608~t if (( if( isnull( k_colli_trattati ) , 0, k_colli_trattati  ) +  if( isnull(  k_colli_in_lav ) , 0,  k_colli_in_lav ))  >  colli_2 , RGB(255,0,0) , RGB(0,0,160)  )" x="9" y="4" height="64" width="261" format="[GENERAL]" html.valueishtml="0"  name=k_stato visible="1"  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=2 alignment="2" tabsequence=32766 border="0" color="8388608" x="283" y="4" height="64" width="197" format="####0" html.valueishtml="0"  name=num_int visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=5 alignment="0" tabsequence=32766 border="0" color="8388608" x="2670" y="4" height="64" width="416" format="[general]" html.valueishtml="0"  name=rag_soc_1 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=6 alignment="1" tabsequence=32766 border="0" color="8388608" x="3095" y="4" height="64" width="123" format="##### " html.valueishtml="0"  name=clie_2 visible="1"  resizeable=1  moveable=1 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=7 alignment="0" tabsequence=32766 border="0" color="8388608" x="3227" y="4" height="64" width="448" format="[general]" html.valueishtml="0"  name=rag_soc_2 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=8 alignment="1" tabsequence=32766 border="0" color="8388608" x="3685" y="4" height="64" width="133" format="##### " html.valueishtml="0"  name=clie_3 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=4 alignment="1" tabsequence=32766 border="0" color="8388608" x="2537" y="4" height="64" width="123" format="##### " html.valueishtml="0"  name=clie_1 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+compute(band=detail alignment="2" expression="if ( isnull ( k_colli_groupage ) , 0, k_colli_groupage )"border="0" color="8388608" x="1330" y="4" height="64" width="178" format="###,###" html.valueishtml="0"  name=k_colli_groupage visible="1"  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+compute(band=detail alignment="2" expression="if ( isnull ( k_colli_in_lav ) , 0, k_colli_in_lav )"border="0" color="8388608" x="905" y="4" height="64" width="178" format="###,###" html.valueishtml="0"  name=k_colli_in_lav visible="1"  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=18 alignment="2" tabsequence=32766 border="0" color="8388608" x="731" y="4" height="64" width="165" format="###,##0" html.valueishtml="0"  name=colli_2 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+compute(band=detail alignment="2" expression="if ( isnull ( k_colli_trattati ) , 0, k_colli_trattati - (if ( isnull ( k_colli_groupage ) , 0, k_colli_groupage ) ))"border="0" color="8388608" x="1093" y="4" height="64" width="229" format="###,###" html.valueishtml="0"  name=k_colli_trattati visible="1"  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=9 alignment="0" tabsequence=32766 border="0" color="8388608" x="3826" y="4" height="64" width="507" format="[general]" html.valueishtml="0"  name=rag_soc_3 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=12 alignment="0" tabsequence=32766 border="0" color="8388608" x="4343" y="4" height="64" width="398" format="[general]" html.valueishtml="0"  name=meca_num_bolla_in visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=3 alignment="2" tabsequence=32766 border="0" color="8388608" x="489" y="4" height="64" width="233" format="dd/mm/yy" html.valueishtml="0"  name=data_int visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=22 alignment="1" tabsequence=32766 border="0" color="8388608" x="2043" y="4" height="64" width="224" format="#,###,###" html.valueishtml="0"  name=vx_info_cert1_num_certif visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=23 alignment="2" tabsequence=32766 border="0" color="8388608" x="2277" y="4" height="64" width="251" format="dd/mm/yy" html.valueishtml="0"  name=vx_info_cert1_data_st visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=24 alignment="1" tabsequence=32766 border="0" color="8388608" x="1518" y="4" height="64" width="151" format="#### " html.valueishtml="0"  name=giri visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=10 alignment="2" tabsequence=32766 border="0" color="8388608" x="1678" y="4" height="64" width="265" format="dd/mm/yy" html.valueishtml="0"  name=meca_dosim_data visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=11 alignment="2" tabsequence=32766 border="0" color="8388608" x="1952" y="4" height="64" width="82" format="[general]" html.valueishtml="0"  name=meca_err_lav_ok visible="1" checkbox.text="" checkbox.on="0" checkbox.off="1" checkbox.scale=no checkbox.threed=no  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=13 alignment="2" tabsequence=32766 border="0" color="8388608" x="4750" y="4" height="64" width="229" format="dd/mm/yy" html.valueishtml="0"  name=meca_data_bolla_in visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=14 alignment="1" tabsequence=32766 border="0" color="8388608" x="4987" y="4" height="64" width="219" format="##,###" html.valueishtml="0"  name=meca_dosim_assorb visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=15 alignment="1" tabsequence=32766 border="0" color="8388608" x="5216" y="4" height="64" width="251" format="##,###" html.valueishtml="0"  name=meca_dosim_spessore visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=17 alignment="1" tabsequence=32766 border="0" color="8388608" x="5742" y="4" height="64" width="247" format="##,##0.00" html.valueishtml="0"  name=meca_dosim_dose visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=16 alignment="1" tabsequence=32766 border="0" color="8388608" x="5477" y="4" height="64" width="256" format="##,##0.00" html.valueishtml="0"  name=meca_dosim_rapp_a_s visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+compute(band=footer alignment="1" expression="string(sum(if ( isnull ( k_colli_groupage ) , 0, k_colli_groupage ) for all), ~"###,##0 ~")"border="0" color="8388736" x="1330" y="0" height="56" width="178" format="[GENERAL]" html.valueishtml="0"  name=k_colli_groupage_all visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+compute(band=footer alignment="1" expression="string(sum(giri for all), ~"###,##0 ~") "border="0" color="8388608" x="1518" y="0" height="56" width="151" format="[GENERAL]" html.valueishtml="0"  name=compute_9 visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+compute(band=footer alignment="1" expression="string( sum(if ( isnull ( k_colli_trattati ) , 0, k_colli_trattati  ) for all), ~"###,##0 ~")"border="0" color="8388736" x="1093" y="0" height="56" width="229" format="[GENERAL]" html.valueishtml="0"  name=k_colli_trattati_all visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+compute(band=footer alignment="1" expression="string(sum(if ( isnull ( k_colli_in_lav ) , 0, k_colli_in_lav ) for all) , ~"###,##0 ~")"border="0" color="8388736" x="905" y="0" height="56" width="178" format="[GENERAL]" html.valueishtml="0"  name=compute_4 visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+compute(band=footer alignment="1" expression="string(sum(if ( isnull (  colli_2  ) , 0,  colli_2 ) for all) , ~"###,##0 ~")"border="0" color="8388736" x="731" y="0" height="56" width="165" format="[GENERAL]" html.valueishtml="0"  name=compute_1 visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+compute(band=footer alignment="0" expression="'Presenti:'+string(count(num_int for all distinct), ~"###,###,##0~") "border="0" color="8388736" x="2670" y="0" height="56" width="416" format="" html.valueishtml="0"  name=compute_5 visible="1"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=footer alignment="0" expression="string(today(),~"dd/mm/yy~") + ' Pg.' + string(page(), '###0') +'.' + string( pageCount(), '###0')"border="0" color="0" x="3826" y="0" height="56" width="507" format="[GENERAL]" html.valueishtml="0"  name=compute_2 visible="1"  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=1 alignment="0" tabsequence=0 border="0" color="8388608" x="6002" y="0" height="56" width="14" html.valueishtml="0"  name=vx_info_armo1_magazzino visible="1"  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="Vx Info Armo1 Magazzino" border="0" color="0" x="5998" y="4" height="76" width="18" html.valueishtml="0"  name=t_1 visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="1073741824" )
+
+sparse(names="giri")htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )

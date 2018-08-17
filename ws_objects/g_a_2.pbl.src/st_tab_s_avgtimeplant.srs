@@ -1,0 +1,12 @@
+﻿$PBExportHeader$st_tab_s_avgtimeplant.srs
+global type st_tab_s_avgtimeplant from structure
+	long		id_avgtimeplant
+	long		annomese
+	integer		giri_f1
+	integer		giri_f1p
+	integer		giri_f2
+	integer		giri_f2p
+	long		time_io_minute
+	integer		contati
+end type
+

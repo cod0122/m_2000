@@ -1,0 +1,10 @@
+﻿$PBExportHeader$st_tab_clie_classi.srs
+global type st_tab_clie_classi from structure
+	st_tab_g_0		st_tab_g_0
+	string		id_clie_classe
+	string		descr
+	string		punteggio
+	datetime		x_datins
+	string		x_utente
+end type
+

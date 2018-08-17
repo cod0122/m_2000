@@ -1,0 +1,86 @@
+﻿$PBExportHeader$st_tab_contratti_co.srs
+global type st_tab_contratti_co from structure
+	st_tab_g_0		st_tab_g_0
+	long		contati
+	long		id_contratto_co
+	string		attivo		descriptor "comment" = "S=si; N=non attivo"
+	integer		anno
+	integer		magazzino		descriptor "comment" = "vedi variabile kkg_magazzino. (di solito = 2)"
+	date		offerta_data
+	string		offerta_validita
+	string		stato		descriptor "comment" = "'1'=nuovo, '3'=stampato, '5'=accettato"
+	string		stampa_tradotta		descriptor "comment" = "'IT'=italiano, 'EN'=inglese"
+	date		data_stampa
+	date		data_inizio
+	date		data_fine
+	string		oggetto
+	string		id_clie_settore
+	integer		gruppo
+	long		id_cliente
+	long		id_docprod
+	string		nome_contatto
+	string		unita_misura
+	integer		mis_x_1
+	integer		mis_y_1
+	integer		mis_z_1
+	string		qtax_1
+	integer		mis_x_2
+	integer		mis_y_2
+	integer		mis_z_2
+	string		qtax_2
+	double		peso_max_kg
+	double		peso_max_kg_2		descriptor "comment" = "II peso per la seconda eventuale misura"
+	double		dose
+	double		prezzo_1
+	double		prezzo_2
+	string		note_qtax
+	string		note_fatt
+	string		note
+	string		consegna_des
+	string		ritiro_des
+	string		contratti_des
+	string		reso_des
+	string		sk_dose_map_codice
+	string		sk_dose_map_des
+	double		gest_doc_prezzo		descriptor "comment" = " Gest. documentale"
+	string		gest_doc_des
+	double		dir_tecnico_prezzo		descriptor "comment" = "Gest. Prod. Farmac."
+	string		dir_tecnico_des
+	double		analisi_lab_prezzo		descriptor "comment" = "Gest. Controcampioni"
+	string		analisi_lab_des
+	double		dosim_agg_prezzo		descriptor "comment" = "Dosim. Aggiuntive"
+	string		dosim_agg_des
+	double		logistica_prezzo		descriptor "comment" = "Riconfezionamento"
+	string		logistica_des
+	double		stoccaggio_prezzo		descriptor "comment" = "Ritiro oltre tot gg"
+	string		stoccaggio_des
+	double		altro_prezzo
+	string		altro_des
+	integer		iva
+	integer		cod_pag
+	string		banca
+	integer		abi
+	integer		cab
+	string		fattura_da
+	string		altre_condizioni
+	string		art		descriptor "comment" = "codice articolo (non in stampa)"
+	string		note_interne		descriptor "comment" = "note non interne (non in stampa)"
+	datetime		esito_operazioni_ts_operazione		descriptor "comment" = "timestamp dell'esito nella tabella esito-operazioni"
+	long		id_sd_md		descriptor "comment" = "dose-mapping "
+	string		sc_cf_1		descriptor "comment" = "capitolato di fornitura 1"
+	integer		sc_cf_1_prezzo		descriptor "comment" = "applica prezzo: 1=cap.forn.1 prezzo 1; 2=cap.forn.1 prezzo2"
+	string		sc_cf_2		descriptor "comment" = "capitolato di fornitura 2"
+	integer		sc_cf_2_prezzo		descriptor "comment" = "applica prezzo: 1=cap.forn.2 prezzo 2; 2=cap.forn.2 prezzo2"
+	string		sc_cf_3		descriptor "comment" = "capitolato di fornitura 3"
+	integer		sc_cf_3_prezzo		descriptor "comment" = "applica prezzo: 1=cap.forn.1 prezzo 3; 2=cap.forn.3 prezzo2"
+	string		sc_cf_4		descriptor "comment" = "capitolato di fornitura 4"
+	integer		sc_cf_4_prezzo		descriptor "comment" = "applica prezzo: 1=cap.forn.1 prezzo 4; 2=cap.forn.4 prezzo2"
+	string		sc_cf_5		descriptor "comment" = "capitolato di fornitura 5"
+	integer		sc_cf_5_prezzo		descriptor "comment" = "applica prezzo: 1=cap.forn.1 prezzo 5; 3=cap.forn.6 prezzo2"
+	string		sc_cf_6		descriptor "comment" = "capitolato di fornitura 6"
+	integer		sc_cf_6_prezzo		descriptor "comment" = "applica prezzo: 1=cap.forn.1 prezzo 6; 3=cap.forn.6 prezzo2"
+	string		form_di_stampa		descriptor "comment" = "nome del DW sul quale e' stato stampato stampa"
+	datetime		x_datins
+	string		x_utente
+end type
+

@@ -1,0 +1,22 @@
+﻿$PBExportHeader$st_tab_menu_window.srs
+global type st_tab_menu_window from structure
+	string		id
+	string		window
+	integer		istanze
+	string		autorizza
+	string		autorizza_upd
+	string		min_w_prec
+	string		open_min_max_norm
+	string		salva_size
+	string		salva_controlli
+	string		descr
+	string		titolo
+	string		funzioni
+	string		sr_settore		descriptor "comment" = "settore prevalente x questa funzione"
+	string		msg_se_gia_open
+	string		batch		descriptor "comment" = "S=funzione eseguibile via batch (skedulatore)"
+	string		primopiano		descriptor "comment" = "S=window da aprire e mantenere in PRIMO PIANO, A=Affianca alla Window principale, N o nulla = normale"
+	string		nome_oggetto		descriptor "comment" = "ATTENZIONE: questo è nella tabella MENU_WINDOW_OGGETTI"
+	string		nome_id_tabella		descriptor "comment" = "su tabella menu_window_anteprima: nome del campo chiave univoca, primary key, della tabella principale coinvolta "
+end type
+

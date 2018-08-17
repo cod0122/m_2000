@@ -1,0 +1,6 @@
+﻿$PBExportHeader$st_filedatetime.srs
+global type st_filedatetime from structure
+	unsignedlong		ul_lowdatetime
+	unsignedlong		ul_highdatetime
+end type
+

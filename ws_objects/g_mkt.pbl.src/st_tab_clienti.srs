@@ -1,0 +1,58 @@
+﻿$PBExportHeader$st_tab_clienti.srs
+global type st_tab_clienti from structure
+	st_tab_g_0		st_tab_g_0
+	st_tab_ind_comm		kst_tab_ind_comm
+	st_tab_nazioni		kst_tab_nazioni
+	st_tab_clienti_fatt		kst_tab_clienti_fatt
+	st_tab_clienti_mkt		kst_tab_clienti_mkt
+	st_tab_clienti_web		kst_tab_clienti_web
+	long		contati
+	long		codice
+	string		stato
+	date		data_attivazione
+	string		tipo_mrf		descriptor "comment" = "campo non di tab. val: M/R/F/.... vedi kuf_clienti "
+	string		tipo
+	string		rag_soc_10
+	string		rag_soc_11
+	string		rag_soc_20
+	string		rag_soc_21
+	string		indi_1
+	string		cap_1
+	string		loc_1
+	string		prov_1
+	string		id_nazione_1
+	string		p_iva
+	string		cf
+	string		zona
+	string		indi_2
+	string		cap_2
+	string		loc_2
+	string		prov_2
+	string		id_nazione_2
+	string		fono
+	string		fax
+	long		cod_pag
+	string		tipo_banca
+	string		banca
+	long		abi
+	long		cab
+	long		iva
+	date		iva_valida_dal
+	date		iva_valida_al
+	double		iva_esente_imp_max
+	double		iva_esente_imp_min_x_fatt
+	integer		mese_es_1
+	integer		mese_es_2
+	string		cadenza_fattura		descriptor "comment" = "QM=meta e fine mese, M=meta mese, N=mai"
+	string		spe_inc
+	string		spe_bollo
+	string		id_clie_settore
+	string		id_clie_classe
+	long		id_meca_causale		descriptor "comment" = "Causale di Blocco Lotti - Ha la priorità sulle Causali impostate sui Contratti"
+	long		e1an		descriptor "comment" = "codice anagrafica da E1"
+	string		e1ancodrs		descriptor "comment" = "codice abbreviato della ragione sociale da E1"
+	string		pklbcodepref		descriptor "comment" = "prefisso codici barcode clienti del packing-list es. x goglio è 00 (codice internazionale = pallet)"
+	datetime		x_datins
+	string		x_utente
+end type
+

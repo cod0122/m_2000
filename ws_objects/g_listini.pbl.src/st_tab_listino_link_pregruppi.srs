@@ -1,0 +1,12 @@
+﻿$PBExportHeader$st_tab_listino_link_pregruppi.srs
+global type st_tab_listino_link_pregruppi from structure
+	st_tab_g_0		st_tab_g_0
+	long		id_listino_link_pregruppo
+	long		id_listino
+	long		id_listino_pregruppo
+	long		id_cond_fatt		descriptor "comment" = "codice eventuale condizione"
+	integer		cond_priorita		descriptor "comment" = "priorità di valutazione della condizione 1,2,3.... (1 valuta prima della 2 e così via)"
+	datetime		x_datins
+	string		x_utente
+end type
+

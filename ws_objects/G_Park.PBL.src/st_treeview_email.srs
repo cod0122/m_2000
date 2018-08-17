@@ -1,0 +1,11 @@
+﻿$PBExportHeader$st_treeview_email.srs
+global type st_treeview_email from structure
+	st_tab_g_0		st_tab_g_0		descriptor "comment" = "standard"
+	string		address		descriptor "comment" = "destinatario principale"
+	string		cc		descriptor "comment" = "destinatario in copia"
+	string		bcc		descriptor "comment" = "indirizzo nascosto"
+	string		subject		descriptor "comment" = "oggetto del msg"
+	string		txt		descriptor "comment" = "testo messaggio"
+	string		attach		descriptor "comment" = "allegato"
+end type
+

@@ -1,0 +1,16 @@
+﻿$PBExportHeader$st_tab_ind_comm.srs
+global type st_tab_ind_comm from structure
+	st_tab_g_0		st_tab_g_0
+	long		contati
+	long		clie_c
+	string		rag_soc_1_c
+	string		rag_soc_2_c
+	string		indi_c
+	string		cap_c
+	string		loc_c
+	string		prov_c
+	string		id_nazione_c
+	datetime		x_datins
+	string		x_utente
+end type
+

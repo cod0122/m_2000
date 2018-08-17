@@ -1,0 +1,9 @@
+﻿$PBExportHeader$st_e1_anteprima.srs
+global type st_e1_anteprima from structure
+	string		xxx		descriptor "comment" = "struttura per fare l'anterprima"
+	st_tab_g_0		st_tab_g_0		descriptor "comment" = "struct standard"
+	string		apid		descriptor "comment" = "id_meca conv in alphanumeric"
+	long		doco		descriptor "comment" = "Work Order (id per E1 del Lotto da trattare)"
+	long		rorn		descriptor "comment" = "Sales Order (id per E1 del Lotto da NON trattare)"
+end type
+

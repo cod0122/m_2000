@@ -1,0 +1,11 @@
+﻿$PBExportHeader$st_prof_exp_fatt.srs
+global type st_prof_exp_fatt from structure
+	date		data_fattura_da		descriptor "comment" = "inizio data fattura da esportare"
+	date		data_fattura_a		descriptor "comment" = "fine data fattura da esportare"
+	long		num_fattura_da		descriptor "comment" = "inizio num.fattura da esportare"
+	long		num_fattura_a		descriptor "comment" = "fine num.fattura da esportare"
+	string		nome_file		descriptor "comment" = "nome path+file da esportare"
+	string		profis		descriptor "comment" = "*=tutti, altro valore x solo le fatture non esportate "
+	integer		aggiorna		descriptor "comment" = "1=aggiorna tabella PROFIS"
+end type
+

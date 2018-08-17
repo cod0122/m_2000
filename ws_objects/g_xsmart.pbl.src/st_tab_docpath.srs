@@ -1,0 +1,13 @@
+﻿$PBExportHeader$st_tab_docpath.srs
+global type st_tab_docpath from structure
+	st_tab_g_0		st_tab_g_0
+	long		id_docpath
+	long		id_doctipo		descriptor "comment" = "identifica il tipo doc (bolle, fatture, attestati...)"
+	string		descr
+	string		path		descriptor "comment" = "cartella aggiunta alla base_dir.doc_root + interno/esterno  "
+	string		path_x_documentale		descriptor "comment" = "cartella  aggiunta alla base_dir.doc_root, servre per esportare i doc x la procedura documentale "
+	string		duplica		descriptor "comment" = "1=duplica i documenti nella cartella ~"esterni~""
+	datetime		x_datins
+	string		x_utente
+end type
+

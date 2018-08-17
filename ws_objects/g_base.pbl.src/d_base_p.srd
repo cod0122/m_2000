@@ -1,0 +1,77 @@
+﻿$PBExportHeader$d_base_p.srd
+release 8;
+datawindow(units=0 timer_interval=0 color=67108864 processing=0 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 97 print.margin.bottom = 97 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no )
+header(height=76 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=680 color="536870912" )
+table(column=(type=char(4) update=yes updatewhereclause=yes name=word_1 dbname="pass.word_1" )
+ column=(type=long update=yes updatewhereclause=yes name=priv_1 dbname="pass.priv_1" values="Abilitazione massima	1/Disab. modif. password	2/Abilita trattamento	3/Abilita entrate//uscite	4/Disabilita password	" )
+ column=(type=char(28) update=yes updatewhereclause=yes name=des_1 dbname="pass.des_1" )
+ column=(type=char(4) update=yes updatewhereclause=yes name=word_2 dbname="pass.word_2" )
+ column=(type=long update=yes updatewhereclause=yes name=priv_2 dbname="pass.priv_2" values="Abilitazione massima	1/Disab. modif. password	2/Abilita trattamento	3/Abilita entrate//uscite	4/Disabilita password	" )
+ column=(type=char(28) update=yes updatewhereclause=yes name=des_2 dbname="pass.des_2" )
+ column=(type=char(4) update=yes updatewhereclause=yes name=word_3 dbname="pass.word_3" )
+ column=(type=long update=yes updatewhereclause=yes name=priv_3 dbname="pass.priv_3" values="Abilitazione massima	1/Disab. modif. password	2/Abilita trattamento	3/Abilita entrate//uscite	4/Disabilita password	" )
+ column=(type=char(28) update=yes updatewhereclause=yes name=des_3 dbname="pass.des_3" )
+ column=(type=char(4) update=yes updatewhereclause=yes name=word_4 dbname="pass.word_4" )
+ column=(type=long update=yes updatewhereclause=yes name=priv_4 dbname="pass.priv_4" values="Abilitazione massima	1/Disab. modif. password	2/Abilita trattamento	3/Abilita entrate//uscite	4/Disabilita password	" )
+ column=(type=char(28) update=yes updatewhereclause=yes name=des_4 dbname="pass.des_4" )
+ column=(type=char(4) update=yes updatewhereclause=yes name=word_5 dbname="pass.word_5" )
+ column=(type=long update=yes updatewhereclause=yes name=priv_5 dbname="pass.priv_5" values="Abilitazione massima	1/Disab. modif. password	2/Abilita trattamento	3/Abilita entrate//uscite	4/Disabilita password	" )
+ column=(type=char(28) update=yes updatewhereclause=yes name=des_5 dbname="pass.des_5" )
+ column=(type=char(4) update=yes updatewhereclause=yes name=word_6 dbname="pass.word_6" )
+ column=(type=long update=yes updatewhereclause=yes name=priv_6 dbname="pass.priv_6" values="Abilitazione massima	1/Disab. modif. password	2/Abilita trattamento	3/Abilita entrate//uscite	4/Disabilita password	" )
+ column=(type=char(28) update=yes updatewhereclause=yes name=des_6 dbname="pass.des_6" )
+ column=(type=char(4) updatewhereclause=yes key=yes name=word_7 dbname="pass.word_7" )
+ column=(type=long updatewhereclause=yes key=yes name=priv_7 dbname="pass.priv_7" values="Abilitazione massima	1/Disab. modif. password	2/Abilita trattamento	3/Abilita entrate//uscite	4/Disabilita password	" )
+ column=(type=char(28) updatewhereclause=yes key=yes name=des_7 dbname="pass.des_7" )
+ retrieve="  SELECT pass.word_1,   
+         pass.priv_1,   
+         pass.des_1,   
+         pass.word_2,   
+         pass.priv_2,   
+         pass.des_2,   
+         pass.word_3,   
+         pass.priv_3,   
+         pass.des_3,   
+         pass.word_4,   
+         pass.priv_4,   
+         pass.des_4,   
+         pass.word_5,   
+         pass.priv_5,   
+         pass.des_5,   
+         pass.word_6,   
+         pass.priv_6,   
+         pass.des_6,   
+         pass.word_7,   
+         pass.priv_7,   
+         pass.des_7  
+    FROM pass   
+" update="pass" updatewhere=0 updatekeyinplace=no )
+text(band=header alignment="2" text="Password" border="6" color="128" x="18" y="4" height="64" width="279" html.valueishtml="0"  name=word_1_t visible="1"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="8421504" )
+text(band=header alignment="2" text="Privilegio" border="6" color="128" x="311" y="4" height="64" width="873" html.valueishtml="0"  name=priv_1_t visible="1"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="8421504" )
+text(band=header alignment="2" text="Descrizione" border="6" color="128" x="1202" y="4" height="64" width="1147" html.valueishtml="0"  name=des_1_t visible="1"  font.face="Arial" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="8421504" )
+column(band=detail id=4 alignment="0" tabsequence=40 border="5" color="8388736" x="14" y="96" height="76" width="279" format="[general]" html.valueishtml="0"  name=word_2 visible="1" edit.limit=4 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=7 alignment="0" tabsequence=70 border="5" color="8388736" x="14" y="188" height="76" width="279" format="[general]" html.valueishtml="0"  name=word_3 visible="1" edit.limit=4 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=13 alignment="0" tabsequence=130 border="5" color="8388736" x="14" y="372" height="76" width="279" format="[general]" html.valueishtml="0"  name=word_5 visible="1" edit.limit=4 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=16 alignment="0" tabsequence=160 border="5" color="8388736" x="14" y="460" height="76" width="279" format="[general]" html.valueishtml="0"  name=word_6 visible="1" edit.limit=4 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=10 alignment="0" tabsequence=100 border="5" color="8388736" x="14" y="280" height="76" width="279" format="[general]" html.valueishtml="0"  name=word_4 visible="1" edit.limit=4 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=1 alignment="0" tabsequence=10 border="5" color="8388736" x="14" y="4" height="76" width="279" format="[general]" html.valueishtml="0"  name=word_1 visible="1" edit.limit=4 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=12 alignment="0" tabsequence=120 border="5" color="8388736" x="1202" y="280" height="76" width="1147" format="[general]" html.valueishtml="0"  name=des_4 visible="1" edit.limit=28 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=15 alignment="0" tabsequence=150 border="5" color="8388736" x="1202" y="372" height="76" width="1147" format="[general]" html.valueishtml="0"  name=des_5 visible="1" edit.limit=28 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=18 alignment="0" tabsequence=180 border="5" color="8388736" x="1202" y="460" height="76" width="1147" format="[general]" html.valueishtml="0"  name=des_6 visible="1" edit.limit=28 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=3 alignment="0" tabsequence=30 border="5" color="8388736" x="1202" y="4" height="76" width="1147" format="[general]" html.valueishtml="0"  name=des_1 visible="1" edit.limit=28 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=6 alignment="0" tabsequence=60 border="5" color="8388736" x="1202" y="96" height="76" width="1147" format="[general]" html.valueishtml="0"  name=des_2 visible="1" edit.limit=28 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=9 alignment="0" tabsequence=90 border="5" color="8388736" x="1202" y="188" height="76" width="1147" format="[general]" html.valueishtml="0"  name=des_3 visible="1" edit.limit=28 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=14 alignment="0" tabsequence=140 border="5" color="8388736" x="311" y="372" height="76" width="873" format="[general]" html.valueishtml="0"  name=priv_5 visible="1" ddlb.limit=0 ddlb.allowedit=no ddlb.case=any ddlb.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=17 alignment="0" tabsequence=170 border="5" color="8388736" x="311" y="460" height="76" width="873" format="[general]" html.valueishtml="0"  name=priv_6 visible="1" ddlb.limit=0 ddlb.allowedit=no ddlb.case=any ddlb.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=2 alignment="0" tabsequence=20 border="5" color="8388736" x="311" y="4" height="76" width="873" format="[general]" html.valueishtml="0"  name=priv_1 visible="1" ddlb.limit=0 ddlb.allowedit=no ddlb.case=any ddlb.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=5 alignment="0" tabsequence=50 border="5" color="8388736" x="311" y="96" height="76" width="873" format="[general]" html.valueishtml="0"  name=priv_2 visible="1" ddlb.limit=0 ddlb.allowedit=no ddlb.case=any ddlb.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=8 alignment="0" tabsequence=80 border="5" color="8388736" x="311" y="188" height="76" width="873" format="[general]" html.valueishtml="0"  name=priv_3 visible="1" ddlb.limit=0 ddlb.allowedit=no ddlb.case=any ddlb.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=11 alignment="0" tabsequence=110 border="5" color="8388736" x="311" y="280" height="76" width="873" format="[general]" html.valueishtml="0"  name=priv_4 visible="1" ddlb.limit=0 ddlb.allowedit=no ddlb.case=any ddlb.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=19 alignment="0" tabsequence=32766 border="5" color="8388736" x="14" y="556" height="76" width="279" format="[general]" html.valueishtml="0"  name=word_7 visible="1" edit.limit=4 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="67108864" )
+column(band=detail id=21 alignment="0" tabsequence=32766 border="5" color="8388736" x="1202" y="556" height="76" width="1147" format="[general]" html.valueishtml="0"  name=des_7 visible="1" edit.limit=28 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="67108864" )
+column(band=detail id=20 alignment="0" tabsequence=32766 border="5" color="8388736" x="311" y="556" height="76" width="873" format="[general]" html.valueishtml="0"  name=priv_7 visible="1" ddlb.limit=0 ddlb.allowedit=no ddlb.case=any ddlb.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="67108864" )
+htmltable(border="0" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
