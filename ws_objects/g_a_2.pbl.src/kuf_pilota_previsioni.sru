@@ -56,6 +56,7 @@ private function long u_set_ds_pilota_pallet_in_lav () throws uo_exception
 private function datastore u_get_ds_barcode_queue () throws uo_exception
 public function string set_name_temptable_xlotto_prev ()
 private function long u_set_id_meca (ref datastore kds_1) throws uo_exception
+public function integer u_get_count_id_meca (ref datastore kds_1, long k_row)
 end prototypes
 
 public subroutine _readme ();//
@@ -480,7 +481,7 @@ private function long u_set_temptable_pilota_prev_lav () throws uo_exception;//
 //
 //
 long k_righe=0, k_riga=0
-int k_rc
+int k_rc, k_colli
 long k_rigainsert
 string k_tablename, k_campi
 string k_sql_orig, k_string, k_stringn
@@ -543,7 +544,8 @@ datastore kds_1
 			kds_1.setitem( k_rigainsert, "f2app", integer(kids_d_report_3_pilota_pallet_in_lav.getitemstring(k_riga, "f2app") ))
 			kds_1.setitem( k_rigainsert, "consegna_data", kids_d_report_3_pilota_pallet_in_lav.getitemdate(k_riga, "k_consegna_data") )
 			kds_1.setitem( k_rigainsert, "pilota_ordine", 0 )
-			kds_1.setitem( k_rigainsert, "colli_lav_ent", kids_d_report_3_pilota_pallet_in_lav.getitemstring(k_riga, "k_colli") )
+			k_colli = u_get_count_id_meca(kids_d_report_3_pilota_pallet_in_lav, k_riga)
+			kds_1.setitem( k_rigainsert, "colli_lav_ent", string(k_colli)) //kids_d_report_3_pilota_pallet_in_lav.getitemstring(k_riga, "k_colli") )
 			kds_1.setitem( k_rigainsert, "note", "" )
 			kds_1.setitem( k_rigainsert, "prev_dataora_lav_ini", kids_d_report_3_pilota_pallet_in_lav.getitemdatetime(k_riga, "k_dataora_lav_ini") )
 			kds_1.setitem( k_rigainsert, "prev_dataora_lav_fin", kids_d_report_3_pilota_pallet_in_lav.getitemdatetime(k_riga, "k_dataora_lav_prev_fin") )
@@ -567,7 +569,8 @@ datastore kds_1
 			kds_1.setitem( k_rigainsert, "f2app", integer(kids_d_report_2_pilota_queue_table.getitemnumber(k_riga, "f2app") ))
 			kds_1.setitem( k_rigainsert, "consegna_data", kids_d_report_2_pilota_queue_table.getitemdate(k_riga, "k_consegna_data") )
 			kds_1.setitem( k_rigainsert, "pilota_ordine", kids_d_report_2_pilota_queue_table.getitemnumber(k_riga, "ordine") )
-			kds_1.setitem( k_rigainsert, "colli_lav_ent", kids_d_report_2_pilota_queue_table.getitemstring(k_riga, "k_colli") )
+			k_colli = u_get_count_id_meca(kids_d_report_2_pilota_queue_table, k_riga)
+			kds_1.setitem( k_rigainsert, "colli_lav_ent", string(k_colli)) //kids_d_report_2_pilota_queue_table.getitemstring(k_riga, "k_colli") )
 			kds_1.setitem( k_rigainsert, "note", kids_d_report_2_pilota_queue_table.getitemstring(k_riga, "k_note_2") )
 			kds_1.setitem( k_rigainsert, "prev_dataora_lav_ini", kids_d_report_2_pilota_queue_table.getitemdatetime(k_riga, "k_dataora_lav_ini") )
 			kds_1.setitem( k_rigainsert, "prev_dataora_lav_fin", kids_d_report_2_pilota_queue_table.getitemdatetime(k_riga, "k_dataora_lav_prev_fin") )
@@ -996,6 +999,30 @@ st_tab_barcode kst_tab_barcode
 
 return k_righe
 	
+
+end function
+
+public function integer u_get_count_id_meca (ref datastore kds_1, long k_row);//			
+//			k_Describe = "Evaluate('sum(if(barcode = '" +kids_d_report_3_pilota_pallet_in_lav.getitemstring(k_riga, "barcode") +"', 1, 0) for all)', 1)"
+//			k_colli = Long(kids_d_report_3_pilota_pallet_in_lav.Describe(k_Describe))
+int k_found
+long k_row_find, k_row_count
+string k_search_expr
+
+
+k_row_find = 0
+k_row_count = kds_1.RowCount()
+k_search_expr = "id_meca=" + string(kds_1.getitemnumber(k_row, "id_meca")) + " "
+do while true
+       	k_row_find = kds_1.Find(k_search_expr, k_row_find + 1, k_row_count)
+		if k_row_find <= 0 then exit
+      
+		k_found ++
+		
+       	if k_row_find = k_row_count then exit // prevent eternal loop when last row satisfies search condition
+loop
+
+return k_found
 
 end function
 
