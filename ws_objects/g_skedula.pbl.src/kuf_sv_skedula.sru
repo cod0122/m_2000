@@ -351,7 +351,7 @@ date k_data
 time k_ora_attuale, k_run_ora, k_mezzanotte
 int k_giorno, k_num_gg, k_ora
 long k_secondi, k_eventi_insert=0
-string k_view, k_sql_w, k_sql
+string k_table, k_sql_w, k_sql
 time k_orario_fine
 pointer kpointer_1 
 kuf_base kuf1_base
@@ -396,11 +396,11 @@ try
 	k_ora_attuale = now()
 	
 //--- costruisco la tabella armo 
-	k_view = "sv_eventi_sked "
+	k_table = "sv_eventi_sked "
 	k_sql_w = " "
-	k_sql = + &
-	"CREATE TABLE " + trim(k_view) &
-	+ " (id int identity " &
+//	"CREATE TABLE " + trim(k_view) &
+	k_sql =  &
+	+ " id int identity " &
 	+ " ,id_sv_skedula  int " &
 	+ " ,run_datetime DATETIME" &
 	+ " ,run_giorno DATE, run_ora char(6) " &
@@ -412,8 +412,8 @@ try
 	+ " ,cmd_dos char (200) " &
 	+ " ,esito VARCHAR(255) " &
    + " ,x_datins DATETIME   " &
-	+ " ,x_utente CHAR(12) ) "
-	kguo_sqlca_db_magazzino.db_crea_table(k_view, k_sql)		
+	+ " ,x_utente CHAR(12)  "
+	kguo_sqlca_db_magazzino.db_crea_table(k_table, k_sql)		
 
 	open c_genera_eventi;
 	

@@ -13,13 +13,13 @@ table(column=(type=char(12) update=yes updatewhereclause=yes key=yes name=barcod
  column=(type=real update=yes updatewhereclause=yes name=fase dbname="pallet.Fase" )
  column=(type=real updatewhereclause=yes name=n_ordine dbname="pallet.N_ordine" )
  column=(type=datetime updatewhereclause=yes name=data_uscita dbname="pallet.data_uscita" )
- column=(type=char(1) updatewhereclause=yes name=k_consegna_data dbname="pallet.k_consegna_data" )
+ column=(type=date updatewhereclause=yes name=k_consegna_data dbname="pallet.k_consegna_data" )
  column=(type=decimal(0) updatewhereclause=yes name=num_int dbname="num_int" )
  column=(type=date updatewhereclause=yes name=data_int dbname="data_int" )
  column=(type=decimal(0) updatewhereclause=yes name=id_meca dbname="id_meca" )
  column=(type=decimal(0) updatewhereclause=yes name=k_clie_2 dbname="k_clie_2" )
- column=(type=char(1) updatewhereclause=yes name=k_rag_soc_10 dbname="pallet.k_rag_soc_10" )
- column=(type=char(1) updatewhereclause=yes name=k_colli dbname="pallet.k_colli" )
+ column=(type=char(80) updatewhereclause=yes name=k_rag_soc_10 dbname="pallet.k_rag_soc_10" )
+ column=(type=char(16) updatewhereclause=yes name=k_colli dbname="pallet.k_colli" )
  retrieve="  SELECT   
          pallet.Pallet_Code,   
          pallet.F1AVP,   
@@ -29,13 +29,13 @@ table(column=(type=char(12) update=yes updatewhereclause=yes key=yes name=barcod
          pallet.Fase  
         , pallet.N_ordine  
 		, pallet.data_uscita
-	   , ~" ~" as k_consegna_data
+	   , date(0) as k_consegna_data
 	   , 0 as num_int
 	   , date('01.01.1899') as data_int 
 	   , 0 as id_meca 
 	   , 0 as k_clie_2 
-	   , ~" ~" as k_rag_soc_10 
-	   , ~" ~" as k_colli
+	   , ' ' as k_rag_soc_10 
+	   , ' ' as k_colli
     FROM pallet   
 	where data_uscita > :k_data
 	order by pallet.Pallet_Code
@@ -73,7 +73,7 @@ column(band=detail id=5 alignment="1" tabsequence=32766 border="0" color="335544
 column(band=detail id=11 alignment="0" tabsequence=32766 border="0" color="33554432" x="1769" y="8" height="76" width="293" format=" dd.mm.yy" html.valueishtml="0"  name=data_int visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
 column(band=detail id=8 alignment="0" tabsequence=32766 border="0" color="33554432" x="2071" y="8" height="76" width="293" format=" dd.mm.yy" html.valueishtml="0"  name=data_uscita visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
 column(band=detail id=14 alignment="0" tabsequence=32766 border="0" color="0" x="549" y="8" height="76" width="672" format=" [General]" html.valueishtml="0"  name=k_rag_soc_10 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="1073741824" )
-column(band=detail id=9 alignment="0" tabsequence=32766 border="0" color="0" x="1230" y="8" height="76" width="320" format=" [General]" html.valueishtml="0"  name=k_consegna_data visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="1073741824" )
+column(band=detail id=9 alignment="0" tabsequence=32766 border="0" color="0" x="1230" y="8" height="76" width="320" format="dd mmm" html.valueishtml="0"  name=k_consegna_data visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="1073741824" )
 column(band=detail id=12 alignment="0" tabsequence=32766 border="0" color="33554432" x="3397" y="8" height="76" width="174" format="[general]" html.valueishtml="0"  name=id_meca visible="0" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
 column(band=detail id=15 alignment="1" tabsequence=32766 border="0" color="33554432" x="3095" y="8" height="76" width="293" format="[General] " html.valueishtml="0"  name=k_colli visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
 column(band=detail id=10 alignment="1" tabsequence=32766 border="0" color="134217856" x="1559" y="8" height="76" width="201" format="[General] " html.valueishtml="0"  name=num_int pointer="HyperLink!" visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="1073741824" )

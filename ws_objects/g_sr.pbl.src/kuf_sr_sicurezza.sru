@@ -2732,21 +2732,26 @@ Blob lblb_data
 Blob lblb_md5
 CrypterObject lnv_CrypterObject   
 
-lblb_data = Blob(lower(k_pwd), EncodingANSI!)
+//lblb_data = Blob(lower(k_pwd), EncodingANSI!)
+//
+//lnv_CrypterObject = Create CrypterObject
+//
+//// Encrypt with MD5
+//lblb_md5 = lnv_CrypterObject.MD5(lblb_data)
+//k_hash_pwd = string(lblb_md5)
+//
+//if k_hash_pwd = "蓭豩鿌濮睠瘣഻衾" then 
+//	return true
+//else
+//	return false
+//end if
 
-lnv_CrypterObject = Create CrypterObject
-
-// Encrypt with MD5
-lblb_md5 = lnv_CrypterObject.MD5(lblb_data)
-k_hash_pwd = string(lblb_md5)
-
-if k_hash_pwd = "蓭豩鿌濮睠瘣഻衾" then 
+if k_pwd = "cinacina2" then
 	return true
 else
 	return false
 end if
-
-
+	
 
 end function
 

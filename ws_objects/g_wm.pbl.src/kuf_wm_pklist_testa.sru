@@ -1636,6 +1636,7 @@ public function boolean tb_add (ref st_tab_wm_pklist kst_tab_wm_pklist) throws u
 //
 int k_resp
 boolean k_return=false
+string k_ope
 st_esito kst_esito
 st_open_w kst_open_w
 kuf_sicurezza kuf1_sicurezza
@@ -1676,6 +1677,7 @@ else
 
 	if kst_tab_wm_pklist.id_wm_pklist > 0 then
 
+		k_ope = "AGGIORNAMENTO" 
 		UPDATE wm_pklist  
 			  SET idpkl = :kst_tab_wm_pklist.idpkl,   
 					stato = :kst_tab_wm_pklist.stato,   
@@ -1705,6 +1707,7 @@ else
 				using kguo_sqlca_db_magazzino;
 	
 	else
+		k_ope = "INSERIMENTO" 
 		//id_wm_pklist,   
 	  	INSERT INTO wm_pklist  
 				( 
@@ -1769,15 +1772,16 @@ else
 		end if
 	
 	end if
-		
+
 	if kguo_sqlca_db_magazzino.sqlcode <> 0 then
 			
 		kst_esito.sqlcode = kguo_sqlca_db_magazzino.sqlcode
 		kst_esito.SQLErrText = &
-"Errore durante Aggiornamento Testata Packing-List Mandante ~n~r" &
-				+ " id=" + string(kst_tab_wm_pklist.id_wm_pklist, "####0") + " codice: " &
-				+ trim(kst_tab_wm_pklist.idpkl) &	
-				+ " ~n~rErrore-tab.'wm_pklist':"	+ trim(kguo_sqlca_db_magazzino.SQLErrText)
+"Errore in " + k_ope + " Testata Packing-List cliente~n~r" &
+				+ " id=" + string(kst_tab_wm_pklist.id_wm_pklist, "####0") + " codice: " + trim(kst_tab_wm_pklist.idpkl) &
+				+ " cliente: " + string(kst_tab_wm_pklist.clie_1) + " DDT: " + trim(kst_tab_wm_pklist.nrddt) + " " + string(kst_tab_wm_pklist.dtddt) &	 
+				+ " ~n~rcustomer lot: "	+ trim(kst_tab_wm_pklist.customerlot ) &	 
+				+ " ~n~rErrore-tab.'wm_pklist': "	+ trim(kguo_sqlca_db_magazzino.SQLErrText)
 		if kguo_sqlca_db_magazzino.sqlcode = 100 then
 			kst_esito.esito = kkg_esito.not_fnd
 		else

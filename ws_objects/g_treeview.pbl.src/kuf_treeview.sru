@@ -11750,9 +11750,10 @@ try
 	close kcursor_all;
 
 //---- Crea la Tabella effettivamente usata da M2000 x il NAVIGATORE	
-	k_ddl = "CREATE TABLE treeview_prod (tipo_menu CHAR(1), id CHAR(24) NOT NULL, presenza_figli CHAR(1) NOT NULL, descrizione_tipo CHAR(20), " &
+	//k_ddl = "CREATE TABLE treeview_prod (
+	k_ddl = "tipo_menu CHAR(1), id CHAR(24) NOT NULL, presenza_figli CHAR(1) NOT NULL, descrizione_tipo CHAR(20), " &
 	    + "descrizione CHAR(80), livello CHAR(3), sequenza CHAR(3), tipo_voce CHAR(1), voce CHAR(40), id_padre CHAR(24), funzione CHAR(24), " &
-		 + "pic_open FLOAT, pic_close FLOAT, pic_list FLOAT, id_programma CHAR(24), open_programma CHAR(24) , nome_oggetto CHAR(24) ) "
+		 + "pic_open FLOAT, pic_close FLOAT, pic_list FLOAT, id_programma CHAR(24), open_programma CHAR(24) , nome_oggetto CHAR(24)  "
 	kst_esito = kguo_sqlca_db_magazzino.db_crea_table( "treeview_prod", k_ddl)
 	
 //---- Riempie la Tabella effettivamente usata da M2000 x il NAVIGATORE	

@@ -25,6 +25,7 @@ st_int_artr kist_int_artr
 
 private kuf_utility kiuf_utility
 private kuf_report_pilota kiuf_report_pilota
+private kuf_pilota_previsioni kiuf_pilota_previsioni
 
 //--- variabile contenente la scelta del REPORT
 private int ki_scelta_report_generico = 0
@@ -1113,19 +1114,9 @@ private function long report_2_inizializza (uo_d_std_1 kdw_1);//
 //--- REPORT PROGRAMMAZIONE PILOTA
 //
 string k_scelta, k_codice_prec
-//string k_sql, k_sql_w, k_sql_orig, k_stringn, k_string
-//boolean k_errore=false
-//long k_ctr, k_rc, k_riga=0, k_colli, k_colli_tr
 long k_righe
-//date k_data
 datastore kds_1
-//datawindowchild kdwc_barcode
 kuf_utility kuf1_utility
-//kuf_base kuf1_base
-//st_tab_barcode kst_tab_barcode, kst_tab_barcode_figlio
-//st_tab_meca kst_tab_meca, kst_tab_meca_figlio, kst_tab_meca_app, kst_tab_meca_app_figlio
-//st_tab_clienti kst_tab_clienti, kst_tab_clienti_figlio
-//st_tab_armo kst_tab_armo
 	
 try
 
@@ -1148,184 +1139,28 @@ try
 	else
 		u_set_tabpage_picture(false)
 	end if
-	
+	 
 	if kdw_1.rowcount() = 0 or trim(k_codice_prec) =  "" then //<> k_codice_prec then
 
 		setpointer(kkg.pointer_attesa)
 		kdw_1.visible = false
 		
 		if not isvalid(kiuf_report_pilota) then kiuf_report_pilota = create kuf_report_pilota
-		kds_1 = kiuf_report_pilota.u_get_barcode_queue_all_data()
-		
-		kdw_1.dataobject = kds_1.dataobject
-		kdw_1.visible = true
-		kds_1.rowscopy(1, kds_1.rowcount(), primary!, kdw_1, 1, primary!)
-		
-		k_righe = kdw_1.rowcount()
+		if not isvalid(kiuf_pilota_previsioni) then kiuf_pilota_previsioni = create kuf_pilota_previsioni
 
+		kds_1 = kiuf_pilota_previsioni.get_ds_barcode_queue_prev( ) 
+		if kds_1.rowcount() > 0 then
+		
+			kiuf_report_pilota.set_ds_report_2_pilota_queue_prev(kds_1)
 
-//		kst_tab_meca_app.id = 0
-//		kst_tab_meca_app_figlio.id = 0
-//		
-//		kdw_1.visible = true
-//		kdw_1.dataobject = "d_report_2_pilota_queue_table" 
-//		k_rc = kdw_1.settrans(kguo_sqlca_db_pilota)  // conn/disconn in automatico ad ogni operaz
-//			
-//		k_righe = kdw_1.retrieve()
-//
-//		for k_riga = 1 to k_righe
-//
-////--- get dati barcode PADRE
-//			kst_tab_barcode.barcode = kdw_1.object.barcode[k_riga]
-//			select distinct
-//					barcode.id_meca
-//				into
-//					:kst_tab_meca.id
-//				from barcode
-//				where barcode.barcode = :kst_tab_barcode.barcode 
-//				using kguo_sqlca_db_magazzino;
-//
-//			if kst_tab_meca.id <> kst_tab_meca_app.id then
-//				kst_tab_meca_app.id = kst_tab_meca.id
-//			
-//				select distinct
-//							meca.clie_2
-//							,meca.num_int
-//							,meca.data_int
-//							,meca.area_mag
-//							,meca.consegna_data
-//							,clienti.rag_soc_10
-//					into
-//							:kst_tab_meca.clie_2
-//							,:kst_tab_meca.num_int
-//							,:kst_tab_meca.data_int
-//							,:kst_tab_meca.area_mag
-//							,:kst_tab_meca.consegna_data
-//							,:kst_tab_clienti.rag_soc_10
-//					from 
-//						  (barcode
-//							inner join meca on
-//							 barcode.id_meca = meca.id)
-//						 inner join clienti on
-//							 meca.clie_2 = clienti.codice 
-//					where barcode.barcode = :kst_tab_barcode.barcode 
-//					using kguo_sqlca_db_magazzino;
-//		
-//				if kguo_sqlca_db_magazzino.sqlcode = 0 then
-//
-//					select count(*)
-//							into :k_colli
-//							from barcode
-//							where barcode.id_meca = :kst_tab_meca.id
-//							using kguo_sqlca_db_magazzino;
-//					if isnull(k_colli) then k_colli = 0
-//					
-//					k_data = kkg.data_no
-//					select count(*)
-//							into :k_colli_tr
-//							from barcode
-//							where barcode.id_meca = :kst_tab_meca.id and barcode.data_lav_fin >  :k_data 
-//							using kguo_sqlca_db_magazzino;
-//					if isnull(k_colli_tr) then k_colli_tr = 0
-//				end if							
-//			end if
-//// convert(date,'01.01.1899')
-////--- get dati barcode figlio
-//			kst_tab_meca_figlio.clie_2 = 0
-//			kst_tab_barcode_figlio.barcode = trim(kdw_1.object.barcode_figlio[k_riga])
-//			if kst_tab_barcode_figlio.barcode > " " then
-//				select distinct
-//						barcode.id_meca
-//					into
-//						:kst_tab_meca_figlio.id
-//					from barcode
-//					where barcode.barcode = :kst_tab_barcode_figlio.barcode 
-//					using kguo_sqlca_db_magazzino;
-//	
-//	
-//				if kst_tab_meca_figlio.id <> kst_tab_meca_app_figlio.id then
-//					kst_tab_meca_app_figlio.id = kst_tab_meca_figlio.id
-//				
-//					select distinct
-//								meca.clie_2
-//								,clienti.rag_soc_10
-//						into
-//								:kst_tab_meca_figlio.clie_2
-//								,:kst_tab_clienti_figlio.rag_soc_10
-//						from 
-//							  meca inner join clienti on
-//								 meca.clie_2 = clienti.codice 
-//						where meca.id = :kst_tab_meca_figlio.id 
-//						using kguo_sqlca_db_magazzino;
-//			
-//					if kguo_sqlca_db_magazzino.sqlcode = 0 then
-//					else
-//						kst_tab_clienti_figlio.rag_soc_10 = trim(kguo_sqlca_db_magazzino.sqlerrtext)
-//					end if
-//				end if
-//			end if
-//			if trim(kst_tab_clienti_figlio.rag_soc_10) > " " then
-//			else
-//				kst_tab_clienti_figlio.rag_soc_10 = ""
-//			end if
-//			
-//			if kst_tab_meca.id > 0 then 
-//				
-////--- acchiappa le note dalle righe Riferimento
-//				select distinct
-//							max(armo.note_1)
-//							,max(armo.note_2)
-//							,max(armo.note_3)
-//					into
-//							:kst_tab_armo.note_1
-//							,:kst_tab_armo.note_2
-//							,:kst_tab_armo.note_3
-//					from armo
-//					where armo.id_meca = :kst_tab_meca.id 
-//					using kguo_sqlca_db_magazzino;
-//				
-//				if not isnull(kst_tab_meca.clie_2) then
-//					kdw_1.object.k_clie_2[k_riga] = kst_tab_meca.clie_2
-//				end if
-//				if not isnull(kst_tab_meca.id) then
-//					kdw_1.object.id_meca[k_riga] = kst_tab_meca.id
-//				end if
-//				if not isnull(kst_tab_meca.num_int) then
-//					kdw_1.object.num_int[k_riga] = kst_tab_meca.num_int
-//				end if
-//				if not isnull(kst_tab_meca.data_int) then
-//					kdw_1.object.data_int[k_riga] = kst_tab_meca.data_int
-//				end if
-//				if not isnull(kst_tab_meca.area_mag) then
-//					kdw_1.object.k_area_mag[k_riga] = kst_tab_meca.area_mag
-//				end if
-//				if not isnull(kst_tab_meca.consegna_data) then
-//					kdw_1.object.k_consegna_data[k_riga] = string(kst_tab_meca.consegna_data,"dd.mm.yy")
-//				end if
-//				if not isnull(kst_tab_clienti.rag_soc_10) then
-//					kdw_1.object.k_rag_soc_10[k_riga] = kst_tab_clienti.rag_soc_10
-//				end if
-//				if kst_tab_meca_figlio.clie_2 > 0 then
-//					kdw_1.object.k_rag_soc_figlio[k_riga] = kst_tab_clienti_figlio.rag_soc_10 + " (" + string(kst_tab_meca_figlio.clie_2,"#") + ")"
-//				end if
-//
-//				if trim(kst_tab_armo.note_1) > " " then
-//					kst_tab_armo.note_1 = trim(kst_tab_armo.note_1)
-//				else
-//					kst_tab_armo.note_1 = ""
-//				end if
-//				if trim(kst_tab_armo.note_2) > " " then
-//					kst_tab_armo.note_1 += " " + trim(kst_tab_armo.note_2)
-//				end if
-//				if trim(kst_tab_armo.note_1) > " " then
-//					kdw_1.object.k_note_2[k_riga] = trim(kst_tab_armo.note_1)
-//				end if
-//				
-//				kdw_1.object.k_colli[k_riga] = trim(string(k_colli_tr)) + " / " + trim(string(k_colli)) 
-//
-//			end if
-//			
-//		end for
+			kdw_1.dataobject = kds_1.dataobject
+			kdw_1.visible = true
+			kds_1.rowscopy(1, kds_1.rowcount(), primary!, kdw_1, 1, primary!)
+		
+			k_righe = kdw_1.rowcount()
+			
+		end if
+
 	end if
 
 catch (uo_exception kuo_exception)
@@ -1498,22 +1333,19 @@ datastore kds_1
 	if kdw_1.rowcount() = 0 or trim(k_codice_prec) =  "" then //<> k_codice_prec then
 
 		if not isvalid(kiuf_report_pilota) then kiuf_report_pilota = create kuf_report_pilota
+		if not isvalid(kiuf_pilota_previsioni) then kiuf_pilota_previsioni = create kuf_pilota_previsioni
+		
+		kds_1 = kiuf_pilota_previsioni.get_ds_barcode_in_lav_prev( ) 
+		if kds_1.rowcount() > 0 then
+		
+			kiuf_report_pilota.set_ds_report_3_pilota_pallet_in_lav(kds_1)
 
-////		k_rc = kdw_1.settransobject(kguo_sqlca_db_pilota)
-//		k_rc = kdw_1.settrans(kguo_sqlca_db_pilota)  // conn/disconn in automatico ad ogni operaz
-
-		kds_1 = kiuf_report_pilota.u_get_barcode_in_lav_all_data()
-		
-		kdw_1.dataobject = kds_1.dataobject // "d_report_3_pilota_pallet_in_lav" 
-		kdw_1.visible = true
-		kds_1.rowscopy(1, kds_1.rowcount(), primary!, kdw_1, 1, primary!)
-		
-		k_righe = kdw_1.rowcount()
-		
-//		if kdw_1.retrieve(date(0)) > 0 then
-//			k_righe = u_report_3_dw_set_altri_dati(kdw_1)    // aggiunge altri valori al dw
-//			u_report_3_dw_set_avgtimeplant(kdw_1)	 // aggiunge la previsione 
-//		end if
+			kdw_1.dataobject = kds_1.dataobject // "d_report_3_pilota_pallet_in_lav" 
+			kdw_1.visible = true
+			kds_1.rowscopy(1, kds_1.rowcount(), primary!, kdw_1, 1, primary!)
+			
+			k_righe = kdw_1.rowcount()
+		end if
 		
 	end if
 
@@ -7478,14 +7310,18 @@ try
 		kdw_1.visible = false
 		
 		if not isvalid(kiuf_report_pilota) then kiuf_report_pilota = create kuf_report_pilota
-		kds_1 = kiuf_report_pilota.u_get_prev_lav_x_lotto( )
+		if not isvalid(kiuf_pilota_previsioni) then kiuf_pilota_previsioni = create kuf_pilota_previsioni
 		
-		kdw_1.dataobject = kds_1.dataobject
-		kdw_1.visible = true
-		kds_1.rowscopy(1, kds_1.rowcount(), primary!, kdw_1, 1, primary!)
+		if kiuf_pilota_previsioni.get_tab_lav_x_lotto_prev( ) > 0 then
 		
-		k_righe = kdw_1.rowcount()
-
+			kds_1 = kiuf_report_pilota.set_ds_report_24_pilota_prev_lav( )
+			
+			kdw_1.dataobject = kds_1.dataobject
+			kdw_1.visible = true
+			kds_1.rowscopy(1, kds_1.rowcount(), primary!, kdw_1, 1, primary!)
+			
+			k_righe = kdw_1.rowcount()
+		end if
 	end if
 
 catch (uo_exception kuo_exception)
@@ -7564,6 +7400,8 @@ event close;call super::close;//
 u_dw_selezione_save( )
 
 if not isnull(kiuf_utility) then destroy kiuf_utility
+if not isnull(kiuf_report_pilota) then destroy kiuf_report_pilota
+if not isnull(kiuf_pilota_previsioni) then destroy kiuf_pilota_previsioni
 
 end event
 

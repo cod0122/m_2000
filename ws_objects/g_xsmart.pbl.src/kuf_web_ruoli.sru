@@ -160,66 +160,33 @@ private function boolean web_db_crea_tabella () throws uo_exception;//----------
 //----------------------------------------------------------------------------------------------------------------------------
 boolean k_return = false
 string k_sql
-st_esito kst_esito
-st_errori_gestione kst_errori_gestione
 
 
-kst_esito.esito = kkg_esito.ok
-kst_esito.sqlcode = 0
-kst_esito.SQLErrText = ""
-
+try
 
 	if not isvalid(kiuo_sqlca_db_xweb) then kiuo_sqlca_db_xweb = create kuo_sqlca_db_xweb
 
 //--- Cancello e ricreo la tabella
-	EXECUTE IMMEDIATE  "DROP TABLE IF EXISTS `ruoli`; " using kiuo_sqlca_db_xweb ;
-	commit using kiuo_sqlca_db_xweb;
 	
-k_sql = "  CREATE TABLE  `ruoli` (`idruolo` int(11) NOT NULL , " &
-+ "	  `descr_it` varchar(120) NOT NULL,  " &
-+ "	  `descr_en` varchar(120) NOT NULL,  " &
-+ "	  `flag_pl` char(1) NOT NULL DEFAULT '0',  " &
-+ "	  `flag_rt` char(1) NOT NULL DEFAULT '0',  " &
-+ "	  `flag_ad` char(1) NOT NULL DEFAULT '0',  " &
-+ "	  `x_datins` datetime DEFAULT NULL,  " &
-+ "	  `x_utente` char(12)  DEFAULT 'batch',  " &
-+ "	  PRIMARY KEY (`idruolo`) 	)     ENGINE=MyISAM DEFAULT CHARSET=latin1;  "  
-	EXECUTE IMMEDIATE :k_sql using kiuo_sqlca_db_xweb;
+	k_sql = " `idruolo` int(11) NOT NULL , " &
+	+ "	  `descr_it` varchar(120) NOT NULL,  " &
+	+ "	  `descr_en` varchar(120) NOT NULL,  " &
+	+ "	  `flag_pl` char(1) NOT NULL DEFAULT '0',  " &
+	+ "	  `flag_rt` char(1) NOT NULL DEFAULT '0',  " &
+	+ "	  `flag_ad` char(1) NOT NULL DEFAULT '0',  " &
+	+ "	  `x_datins` datetime DEFAULT NULL,  " &
+	+ "	  `x_utente` char(12)  DEFAULT 'batch',  " &
+	+ "	  PRIMARY KEY (`idruolo`)  "  
+	kiuo_sqlca_db_xweb.db_crea_table( "ruoli", k_sql )
 
-	kst_esito.sqlerrtext = "Generazione terminata correttamente "
-	if kiuo_sqlca_db_xweb.sqlcode <> 0 then
-		if kiuo_sqlca_db_xweb.sqlcode > 0 then
-//			kst_esito.esito = kkg_esito.db_wrn
-//			kst_esito.sqlcode = kiuo_sqlca_db_xweb.sqlcode
-//			kst_esito.sqlerrtext = "Anomalie durante generazione Tabella esterna Web Utenti.  Err.: " + trim(kiuo_sqlca_db_xweb.SQLErrText)
-		else
-			kst_esito.esito = kkg_esito.db_ko
-			kst_esito.sqlcode = kiuo_sqlca_db_xweb.sqlcode
-			kst_esito.sqlerrtext = "Generazione Tabella esterna Web Ruoli non riuscita: " + trim(kiuo_sqlca_db_xweb.SQLErrText)
-		end if
-		rollback using kiuo_sqlca_db_xweb;
-
-//--- scrive l'errore su LOG
-		kst_errori_gestione.nome_oggetto = this.classname()
-		kst_errori_gestione.sqlsyntax = trim(kst_esito.sqlerrtext)
-		kst_errori_gestione.sqlerrtext = trim(kiuo_sqlca_db_xweb.SQLErrText)
-		kst_errori_gestione.sqldbcode = kiuo_sqlca_db_xweb.sqlcode
-		kst_errori_gestione.sqlca = kiuo_sqlca_db_xweb
-		kGuf_data_base.errori_gestione(kst_errori_gestione)
-
-//--- Lancia EXCEPTION
-		if kst_esito.esito = kkg_esito.db_ko then
-			kguo_exception.inizializza( )
-			kguo_exception.set_esito(kst_esito)
-			throw kguo_exception
-		end if
-
-	else
-		commit using kiuo_sqlca_db_xweb;
-		
+catch (uo_exception kuo_exception)
+	throw kuo_exception
+	
+finally
 		k_return = TRUE
 		
-	end if
+end try
+
 
 
 return k_return

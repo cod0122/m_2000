@@ -1637,8 +1637,8 @@ finally
 
 	attiva_tasti()
 
-	tab_1.tabpage_12.dw_12.setredraw(true)
 	tab_1.tabpage_12.dw_12.VScrollBar = TRUE
+	tab_1.tabpage_12.dw_12.setredraw(true)
 	tab_1.tabpage_12.dw_12.setfocus()
 	setpointer(kkg.pointer_default)
 
@@ -4645,13 +4645,14 @@ end on
 
 type dw_12 from uo_d_std_1 within tabpage_12
 boolean visible = true
-integer x = 114
-integer y = 52
-integer width = 2555
-integer height = 976
+integer x = 50
+integer y = 36
+integer width = 2034
+integer height = 388
 integer taborder = 50
 boolean enabled = true
 string dataobject = "d_log_m2000"
+boolean livescroll = false
 boolean ki_link_standard_attivi = false
 boolean ki_button_standard_attivi = false
 boolean ki_colora_riga_aggiornata = false

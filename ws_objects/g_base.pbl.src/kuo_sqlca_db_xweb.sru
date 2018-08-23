@@ -63,77 +63,36 @@ public subroutine u_crea_schema () throws uo_exception;//-----------------------
 //----------------------------------------------------------------------------------------------------------------------------
 //boolean k_return = false
 string k_sql
-st_esito kst_esito
-st_errori_gestione kst_errori_gestione
 
 
-kst_esito.esito = kkg_esito.ok
-kst_esito.sqlcode = 0
-kst_esito.SQLErrText = ""
 
 
 	db_connetti( )
 
 //--- Cancello e ricreo la tabella
-	EXECUTE IMMEDIATE  "DROP TABLE IF EXISTS `utenti`; " using this ;
-	db_commit()
 	
-k_sql = "  CREATE TABLE  `utenti` (`idUtente` int(11) NOT NULL , " &
-+ "	  `Username` varchar(15) NOT NULL,  " &
-+ "	  `Password` varchar(255) NOT NULL DEFAULT '',  " &
-+ "	  `Email` varchar(40) NOT NULL DEFAULT '',  " &
-+ "	  `Stato` char(1) NOT NULL DEFAULT '1',  " &
-+ "	  `DataInserimento` varchar(80) NOT NULL,  " &
-+ "	  `idCliente` varchar(5) NOT NULL ,  " &
-+ "	  `RagioneSociale` varchar(255) NOT NULL,  " &
-+ "	  `Indirizzo` varchar(255) NOT NULL,  " &
-+ "	  `Cap` varchar(10) NOT NULL,  " &
-+ "	  `Localita` varchar(50) NOT NULL,  " &
-+ "	  `Provincia` varchar(2) NOT NULL,  " &
-+ "	  `Nazione` varchar(2) NOT NULL,  " &
-+ "	  `Note` text NOT NULL,  " &
-+ "	  `Email1` varchar(150) NOT NULL DEFAULT '',  " &
-+ "	  `Email2` varchar(150) NOT NULL DEFAULT '',  " &
-+ "	  `idruolo` int(10) unsigned DEFAULT NULL,  " &
-+ "	  PRIMARY KEY (`idUtente`) 	) ENGINE=MyISAM AUTO_INCREMENT=1028 DEFAULT CHARSET=latin1;  "  
-	EXECUTE IMMEDIATE :k_sql using this;
-//+ "	  `x_datins` datetime DEFAULT NULL,  " &
-//+ "	  `x_utente` char(12) DEFAULT 'batch',  " &
-
-	kst_esito.sqlerrtext = "Generazione terminata correttamente "
-	if this.sqlcode <> 0 then
-		if this.sqlcode > 0 then
-		else
-			kst_esito.esito = kkg_esito.db_ko
-			kst_esito.sqlcode = this.sqlcode
-			kst_esito.sqlerrtext = "Generazione Tabella esterna Web Utenti non riuscita: " + trim(this.SQLErrText)
-		end if
-		db_rollback( )
-
-//--- scrive l'errore su LOG
-		kst_errori_gestione.nome_oggetto = this.classname()
-		kst_errori_gestione.sqlsyntax = trim(kst_esito.sqlerrtext)
-		kst_errori_gestione.sqlerrtext = trim(this.SQLErrText)
-		kst_errori_gestione.sqldbcode = this.sqlcode
-		kst_errori_gestione.sqlca = this
-		kGuf_data_base.errori_gestione(kst_errori_gestione)
-
-//--- Lancia EXCEPTION
-		if kst_esito.esito = kkg_esito.db_ko then
-			kguo_exception.inizializza( )
-			kguo_exception.set_esito(kst_esito)
-			throw kguo_exception
-		end if
-
-	else
-		db_commit( )
-		
-//		k_return = TRUE
-		
-	end if
+k_sql = " `idUtente` int(11) NOT NULL , " &
+		+ "	  `Username` varchar(15) NOT NULL,  " &
+		+ "	  `Password` varchar(255) NOT NULL DEFAULT '',  " &
+		+ "	  `Email` varchar(40) NOT NULL DEFAULT '',  " &
+		+ "	  `Stato` char(1) NOT NULL DEFAULT '1',  " &
+		+ "	  `DataInserimento` varchar(80) NOT NULL,  " &
+		+ "	  `idCliente` varchar(5) NOT NULL ,  " &
+		+ "	  `RagioneSociale` varchar(255) NOT NULL,  " &
+		+ "	  `Indirizzo` varchar(255) NOT NULL,  " &
+		+ "	  `Cap` varchar(10) NOT NULL,  " &
+		+ "	  `Localita` varchar(50) NOT NULL,  " &
+		+ "	  `Provincia` varchar(2) NOT NULL,  " &
+		+ "	  `Nazione` varchar(2) NOT NULL,  " &
+		+ "	  `Note` text NOT NULL,  " &
+		+ "	  `Email1` varchar(150) NOT NULL DEFAULT '',  " &
+		+ "	  `Email2` varchar(150) NOT NULL DEFAULT '',  " &
+		+ "	  `idruolo` int(10) unsigned DEFAULT NULL,  " &
+		+ "	  PRIMARY KEY (`idUtente`) "
+	
+	db_crea_table( "utenti", k_sql )
 
 
-//return k_return
 end subroutine
 
 public function boolean if_connessione_bloccata () throws uo_exception;//
