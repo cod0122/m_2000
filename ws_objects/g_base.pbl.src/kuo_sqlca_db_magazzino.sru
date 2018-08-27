@@ -20,6 +20,7 @@ protected subroutine x_db_profilo () throws uo_exception
 public function boolean if_connesso_x ()
 public function boolean db_set_isolation_level () throws uo_exception
 public function st_esito db_crea_temp_table (string k_table, string k_campi, string k_select) throws uo_exception
+public function st_esito db_crea_temp_table_global (string k_table, string k_campi, string k_select) throws uo_exception
 end prototypes
 
 protected subroutine x_db_profilo () throws uo_exception;//
@@ -284,6 +285,33 @@ kst_esito.nome_oggetto = this.classname()
 		
 	end if
 
+
+return kst_esito
+end function
+
+public function st_esito db_crea_temp_table_global (string k_table, string k_campi, string k_select) throws uo_exception;//---------------------------------------------------------------------------------------------------------
+//--- 
+//--- CREA TEMP TABLE 
+//---
+//--- Par. input	: k_table = nome della tabella
+//---           			: k_campi = i campi della tabella
+//---           			: k_select = la query di carico della tabella
+//---
+//--- Ritorna st_esito : Vedi Standard
+//---   
+//---------------------------------------------------------------------------------------------------------
+st_esito kst_esito
+
+kst_esito.esito = kkg_esito.ok
+kst_esito.sqlcode = 0
+kst_esito.SQLErrText = ""
+kst_esito.nome_oggetto = this.classname()
+
+//--- il nome tabella in SQL SERVER inizia per # (visibilità locale) o ## (vsibilità globale)
+	k_table = "##" + trim(k_table) 
+
+	kst_esito = db_crea_temp_table(k_table, k_campi, k_select)
+	
 
 return kst_esito
 end function

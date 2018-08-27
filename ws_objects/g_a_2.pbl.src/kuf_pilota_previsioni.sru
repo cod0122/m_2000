@@ -1067,7 +1067,8 @@ datastore kds_out, kds_inp
  					 	 + ", dataora_lav_fin_min_prev datetime " &
 					 	 + ", dataora_lav_fin_max_prev datetime " &
 						 + ", avg_time_io_minute integer" 
-	   	kguo_sqlca_db_magazzino.db_crea_temp_table(ki_temptab_pilota_workqueue, k_campi, "")      
+	   	kguo_sqlca_db_magazzino.db_crea_temp_table_global(ki_temptab_pilota_workqueue, k_campi, "")      
+//	   	kguo_sqlca_db_magazzino.db_crea_temp_table(ki_temptab_pilota_workqueue, k_campi, "")      
 //	   	kguo_sqlca_db_magazzino.db_crea_table( ki_temptab_pilota_workqueue, k_campi)      
 				
 		kds_inp = CREATE datastore
@@ -1372,6 +1373,7 @@ datastore kds_inp, kds_out
 						 + ", f1app smallint " &
 						 + ", f2avp smallint " &
 						 + ", f2app smallint " &
+					 	+ " , fila tinyint " &
 					 	+ " , consegna_data date " & 	 
 					 	+ " , pilota_ordine int "  &
 					 	+ " , colli_lav_ent char(12) " & 
@@ -1381,11 +1383,12 @@ datastore kds_inp, kds_out
 					 	+ " , prev_dataora_lav_fin_min datetime " &
 					 	+ " , prev_dataora_lav_fin_max datetime " &
 						+ " , avg_time_io_minute int "  
+//	   	kguo_sqlca_db_magazzino.db_crea_temp_table_global(ki_temptab_pilota_prev_lav, k_campi, "")      
 	   	kguo_sqlca_db_magazzino.db_crea_temp_table(ki_temptab_pilota_prev_lav, k_campi, "")      
 //	   	kguo_sqlca_db_magazzino.db_crea_table( ki_temptab_pilota_prev_lav, k_campi)      
 				
 		kds_out = CREATE datastore
-		kds_out.dataobject = "ds_vx_mast_pilota_prev_lav"
+		kds_out.dataobject = "ds_pilota_xlotto_prev_lav"
 		k_rc = kds_out.SetTransObject (kguo_sqlca_db_magazzino)
 		kguf_data_base.u_set_ds_change_name_tab(kds_out, "vx_MAST_pilota_prev_lav", ki_temptab_pilota_prev_lav)
 				
@@ -1399,10 +1402,11 @@ datastore kds_inp, kds_out
 			k_rigainsert = kds_out.insertrow( 0 )
 			kds_out.setitem( k_rigainsert, "id_cliente", 0 )
 			kds_out.setitem( k_rigainsert, "id_meca", kds_inp.getitemnumber(k_riga, "id_meca") )
-			kds_out.setitem( k_rigainsert, "f1avp", kds_inp.getitemstring(k_riga, "f1avp") )
-			kds_out.setitem( k_rigainsert, "f1app", kds_inp.getitemstring(k_riga, "f1app") )
-			kds_out.setitem( k_rigainsert, "f2avp", kds_inp.getitemstring(k_riga, "f2avp") )
-			kds_out.setitem( k_rigainsert, "f2app", kds_inp.getitemstring(k_riga, "f2app") )
+			kds_out.setitem( k_rigainsert, "f1avp", kds_inp.getitemnumber(k_riga, "f1avp") )
+			kds_out.setitem( k_rigainsert, "f1app", kds_inp.getitemnumber(k_riga, "f1app") )
+			kds_out.setitem( k_rigainsert, "f2avp", kds_inp.getitemnumber(k_riga, "f2avp") )
+			kds_out.setitem( k_rigainsert, "f2app", kds_inp.getitemnumber(k_riga, "f2app") )
+			kds_out.setitem( k_rigainsert, "fila", kds_inp.getitemnumber(k_riga, "fila") )
 			kds_out.setitem( k_rigainsert, "pilota_ordine", kds_inp.getitemnumber(k_riga, "n_ordine") )
 			kds_out.setitem( k_rigainsert, "note", "" )
 			kds_out.setitem( k_rigainsert, "prev_dataora_lav_ini", kds_inp.getitemdatetime(k_riga, "dataora_lav_ini") )
