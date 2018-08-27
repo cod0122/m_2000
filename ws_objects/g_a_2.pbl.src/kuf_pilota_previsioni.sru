@@ -1067,8 +1067,8 @@ datastore kds_out, kds_inp
  					 	 + ", dataora_lav_fin_min_prev datetime " &
 					 	 + ", dataora_lav_fin_max_prev datetime " &
 						 + ", avg_time_io_minute integer" 
-	   	kguo_sqlca_db_magazzino.db_crea_temp_table_global(ki_temptab_pilota_workqueue, k_campi, "")      
-//	   	kguo_sqlca_db_magazzino.db_crea_temp_table(ki_temptab_pilota_workqueue, k_campi, "")      
+//	   	kguo_sqlca_db_magazzino.db_crea_temp_table_global(ki_temptab_pilota_workqueue, k_campi, "")      
+	   	kguo_sqlca_db_magazzino.db_crea_temp_table(ki_temptab_pilota_workqueue, k_campi, "")      
 //	   	kguo_sqlca_db_magazzino.db_crea_table( ki_temptab_pilota_workqueue, k_campi)      
 				
 		kds_inp = CREATE datastore
