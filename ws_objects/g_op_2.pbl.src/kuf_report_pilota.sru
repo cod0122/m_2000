@@ -409,16 +409,10 @@ try
 		k_sql_orig = kids_d_report_24_pilota_prev_lav.Object.DataWindow.Table.Select 
 
 		kuf1_pilota_previsioni = create kuf_pilota_previsioni
-		ki_temptab_pilota_prev_lav = kuf1_pilota_previsioni.set_name_temptable_xlotto_prev( )
+		ki_temptab_pilota_prev_lav = kuf1_pilota_previsioni.get_temptab_pilota_prev_lav( )
 		k_stringn = ki_temptab_pilota_prev_lav //string(kguo_utente.get_id_utente( ))
 		
-		k_string = "vx_MAST_pilota_prev_lav"
-		k_ctr = PosA(k_sql_orig, k_string, 1)
-		DO WHILE k_ctr > 0 and trim(k_string) <> trim(k_stringn)  
-			k_sql_orig = ReplaceA(k_sql_orig, k_ctr, LenA(k_string), (k_stringn))
-			k_ctr = PosA(k_sql_orig, k_string, k_ctr+LenA(k_string))
-		LOOP
-		kids_d_report_24_pilota_prev_lav.Object.DataWindow.Table.Select = k_sql_orig 
+		kguf_data_base.u_set_ds_change_name_tab(kids_d_report_24_pilota_prev_lav, "vx_MAST_pilota_prev_lav", ki_temptab_pilota_prev_lav)
 			
 		k_rc = kids_d_report_24_pilota_prev_lav.settransobject(kguo_sqlca_db_magazzino)
 		if k_rc < 0 then

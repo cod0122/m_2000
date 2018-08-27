@@ -14,6 +14,7 @@ public string ki_user
 public string ki_password
 
 end variables
+
 forward prototypes
 protected subroutine x_db_profilo () throws uo_exception
 public function boolean if_connesso_x ()

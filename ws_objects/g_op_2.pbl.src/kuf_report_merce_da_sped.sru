@@ -576,15 +576,7 @@ if kst_report_merce_da_sped.k_id_meca_da > 0 then
 	//--- estrae dati dal DB
 	
 	//--- Aggiorna SQL della 	kids_report_entrate_uscite
-	k_sql_orig = kids_report_merce_da_sped.Object.datawindow.Table.Select  
-	k_stringn = "vx_" + trim(kguo_utente.get_comp()) 
-	k_string = "vx_mast"
-	k_ctr = PosA(k_sql_orig, k_string, 1)
-	DO WHILE k_ctr > 0 and trim(k_string) <> trim(k_stringn)  
-		k_sql_orig = ReplaceA(k_sql_orig, k_ctr, LenA(k_string), (k_stringn))
-		k_ctr = PosA(k_sql_orig, k_string, k_ctr+LenA(k_string))
-	LOOP
-	kids_report_merce_da_sped.Object.datawindow.Table.Select = k_sql_orig
+	kguf_data_base.u_set_ds_change_name_tab(kids_report_merce_da_sped, "vx_mast",  "vx_" + trim(kguo_utente.get_comp()) )
 	
 	//--- Retrieve Datastore REPORT da restituire
 	k_return = kids_report_merce_da_sped.retrieve( kst_report_merce_da_sped.k_data_da,  kst_report_merce_da_sped.k_clie_2)
@@ -595,7 +587,7 @@ return k_return
 
 end function
 
-event constructor;call super::constructor;//
+event constructor;//
 kids_report_merce_da_sped = create datastore
 kids_report_merce_da_sped.dataobject = "d_merce_da_sped"
 kids_report_merce_da_sped.settransobject(sqlca)
@@ -612,7 +604,7 @@ TriggerEvent( this, "destructor" )
 call super::destroy
 end on
 
-event destructor;call super::destructor;//
+event destructor;//
 if not isnull(kids_report_merce_da_sped) then destroy kids_report_merce_da_sped
 
 

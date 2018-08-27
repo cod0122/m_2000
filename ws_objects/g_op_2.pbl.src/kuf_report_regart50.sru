@@ -1132,7 +1132,7 @@ uo_exception kuo_exception
 
 end subroutine
 
-event constructor;call super::constructor;//
+event constructor;//
 kids_report_entrate_uscite = create datastore
 kids_report_entrate_uscite.dataobject = "d_art50_entrate_uscite_l_nofatt"
 kids_report_entrate_uscite.settransobject(sqlca)
@@ -1151,13 +1151,15 @@ end event
 
 on kuf_report_regart50.create
 call super::create
+TriggerEvent( this, "constructor" )
 end on
 
 on kuf_report_regart50.destroy
+TriggerEvent( this, "destructor" )
 call super::destroy
 end on
 
-event destructor;call super::destructor;//
+event destructor;//
 if not isnull(kids_report_regart50) then destroy kids_report_regart50
 if not isnull(kids_report_entrate_uscite) then destroy kids_report_entrate_uscite
 if not isnull(kids_report_solo_uscite) then destroy kids_report_solo_uscite

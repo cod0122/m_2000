@@ -115,7 +115,7 @@ destroy kuf1_wm_receiptgammarad
 
 end subroutine
 
-event constructor;call super::constructor;//
+event constructor;//
 //--- dati da restituire - il Report 
 kids_report_etichette_lotti = create datastore
 kids_report_etichette_lotti.dataobject = "d_etichette_lotti_x2"
@@ -125,13 +125,15 @@ end event
 
 on kuf_report_etichette_lotti.create
 call super::create
+TriggerEvent( this, "constructor" )
 end on
 
 on kuf_report_etichette_lotti.destroy
+TriggerEvent( this, "destructor" )
 call super::destroy
 end on
 
-event destructor;call super::destructor;//
+event destructor;//
 if not isnull(kids_report_etichette_lotti) then destroy kids_report_etichette_lotti
 
 
