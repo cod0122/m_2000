@@ -5,9 +5,9 @@ header(height=120 color="536870912" transparency="0" gradient.color="8421504" gr
 summary(height=0 color="536870912" transparency="0" gradient.color="8421504" gradient.transparency="0" gradient.angle="0" brushmode="0" gradient.repetition.mode="0" gradient.repetition.count="0" gradient.repetition.length="100" gradient.focus="0" gradient.scale="100" gradient.spread="100" )
 footer(height=76 color="536870912" transparency="0" gradient.color="8421504" gradient.transparency="0" gradient.angle="0" brushmode="0" gradient.repetition.mode="0" gradient.repetition.count="0" gradient.repetition.length="100" gradient.focus="0" gradient.scale="100" gradient.spread="100" )
 detail(height=88 color="536870912" transparency="0" gradient.color="8421504" gradient.transparency="0" gradient.angle="0" brushmode="0" gradient.repetition.mode="0" gradient.repetition.count="0" gradient.repetition.length="100" gradient.focus="0" gradient.scale="100" gradient.spread="100" )
-table(column=(type=long update=yes updatewhereclause=yes name=ordine dbname="queue_table.Ordine" )
- column=(type=char(12) update=yes updatewhereclause=yes name=barcode dbname="queue_table.Barcode" )
- column=(type=char(4) update=yes updatewhereclause=yes name=posizione dbname="queue_table.Posizione" )
+table(column=(type=long update=yes updatewhereclause=yes name=ordine dbname=".Ordine" )
+ column=(type=char(12) update=yes updatewhereclause=yes name=barcode dbname=".Barcode" )
+ column=(type=char(4) update=yes updatewhereclause=yes name=posizione dbname=".Posizione" )
  column=(type=decimal(0) update=yes updatewhereclause=yes name=f1avp dbname="f1avp" )
  column=(type=decimal(0) update=yes updatewhereclause=yes name=f2avp dbname="f2avp" )
  column=(type=decimal(0) update=yes updatewhereclause=yes name=f1app dbname="f1app" )
@@ -22,43 +22,51 @@ table(column=(type=long update=yes updatewhereclause=yes name=ordine dbname="que
  column=(type=char(1) updatewhereclause=yes name=k_area_mag dbname="k_area_mag" )
  column=(type=char(1) updatewhereclause=yes name=k_rag_soc_10 dbname="k_rag_soc_10" )
  column=(type=char(1) updatewhereclause=yes name=k_colli dbname="k_colli" )
- column=(type=char(12) updatewhereclause=yes name=barcode_figlio dbname="groupage.barcode_figlio" )
- column=(type=number updatewhereclause=yes name=groupage_ordine_figlio dbname="groupage.ordine_figlio" )
- column=(type=char(45) updatewhereclause=yes name=groupage_lotto_figlio dbname="groupage.lotto_figlio" )
+ column=(type=char(12) updatewhereclause=yes name=barcode_figlio dbname=".barcode_figlio" )
+ column=(type=number updatewhereclause=yes name=groupage_ordine_figlio dbname=".ordine_figlio" )
+ column=(type=long updatewhereclause=yes name=groupage_lotto_figlio dbname=".lotto_figlio" )
  column=(type=char(1) updatewhereclause=yes name=k_rag_soc_figlio dbname="k_rag_soc_figlio" )
  column=(type=datetime updatewhereclause=yes name=k_dataora_lav_ini dbname="k_dataora_lav_ini" )
  column=(type=datetime updatewhereclause=yes name=k_dataora_lav_prev_fin dbname="k_dataora_lav_prev_fin" )
  column=(type=datetime updatewhereclause=yes name=k_dataora_lav_prev_fin_min dbname="k_dataora_lav_prev_fin_min" )
  column=(type=datetime updatewhereclause=yes name=k_dataora_lav_prev_fin_max dbname="k_dataora_lav_prev_fin_max" )
  column=(type=decimal(0) updatewhereclause=yes name=k_avg_time_io_minute dbname="k_avg_time_io_minute" )
- retrieve="SELECT  queue_table.Ordine ,
+ retrieve="SELECT  queue_table.n_Ordine as ordine,
            queue_table.Barcode ,
            queue_table.Posizione ,
-           cast(queue_table.CicliFila1 as decimal)  f1avp,
-           cast(queue_table.CicliFila2 as decimal)  f2avp,
-           cast(queue_table.CicliFila1p as decimal)  f1app,
-           cast(queue_table.CicliFila2p as decimal)  f2app
-	   , date(0)  as k_consegna_data
-	   , 0 as num_int
-	   , ' ' as k_note_1
-	   , ' ' as k_note_2
-	   , date(0) as data_int
-	   , 0 as id_meca
-	   , 0 as k_clie_2
-	   , ' ' as k_area_mag
-	   , ' ' as k_rag_soc_10
-	   , ' ' as k_colli 
-	   , groupage.pallet_figlio as barcode_figlio
-       , groupage.ordine_figlio as ordine_figlio
-       , groupage.lotto as lotto_figlio
-	   , ' ' as k_rag_soc_figlio
-     ,now() k_dataora_lav_ini
-     ,STR_TO_DATE('1900-01-01T00:00:00.000','%Y-%m-%dT%H:%i:%s.%f') k_dataora_lav_prev_fin
-     ,STR_TO_DATE('1900-01-01T00:00:00.000','%Y-%m-%dT%H:%i:%s.%f') k_dataora_lav_prev_fin_min
-     ,STR_TO_DATE('1900-01-01T00:00:00.000','%Y-%m-%dT%H:%i:%s.%f') k_dataora_lav_prev_fin_max
-	  , 0 as k_avg_time_io_minute 
-        FROM queue_table left outer join groupage
-                 on queue_table.Barcode = groupage.padre
+           queue_table.f1avp f1avp,
+           queue_table.f2avp f2avp,
+           queue_table.f1app f1app,
+           queue_table.f2app f2app
+	   , meca.consegna_data as k_consegna_data
+	   , meca.num_int as num_int
+	   , (select coalesce(trim(max(armo.note_1)), '')  from armo where armo.id_meca = meca.id  ) as k_note_1
+	   , (select concat(coalesce(trim(max(armo.note_1)), '')
+							,coalesce(trim(max(armo.note_2)), '' ) )  from armo	where armo.id_meca = meca.id  ) as k_note_2
+	   , meca.data_int as data_int
+	   , meca.id as id_meca
+	   , meca.clie_2 as k_clie_2
+	   , meca.area_mag as k_area_mag
+	   , clienti.rag_soc_10 as k_rag_soc_10
+	   , concat((select count(*) from barcode where barcode.id_meca = meca.id), ' . ', (select count(*) from barcode where barcode.id_meca = meca.id and barcode.data_lav_fin > '01.01.1990')) as k_colli 
+	   , queue_table.barcode_figlio as barcode_figlio
+       , queue_table.ordine_figlio as ordine_figlio
+       , queue_table.num_int_figlio as lotto_figlio
+	   ,  trim(clienti_figlio.rag_soc_10) as k_rag_soc_figlio
+       	, queue_table.dataora_lav_ini  as k_dataora_lav_ini
+     	, queue_table.dataora_lav_fin_prev k_dataora_lav_prev_fin
+     	, queue_table.dataora_lav_fin_min_prev k_dataora_lav_prev_fin_min
+     	, queue_table.dataora_lav_fin_max_prev k_dataora_lav_prev_fin_max
+	  	, queue_table.avg_time_io_minute as k_avg_time_io_minute 
+        FROM #vx_MAST_pilota_pallet_workqueue as queue_table left outer join barcode on queue_table.barcode = barcode.barcode  
+                                                   left outer join meca on barcode.id_meca = meca.id
+	                                              left outer join clienti on meca.clie_3 = clienti.codice 
+											 left outer join barcode as barcode_figlio on queue_table.barcode_figlio = barcode_figlio.barcode
+											 left outer join meca as meca_figlio on barcode_figlio.id_meca = meca_figlio.id
+	                                              left outer join clienti as clienti_figlio on  meca_figlio.clie_3 = clienti_figlio.codice	 
+		  
+		 -- left outer join groupage
+        --         on queue_table.Barcode = groupage.padre
 "  sort="ordine A " )
 text(band=header alignment="0" text=" Cod.
  Ric." border="0" color="8421504" x="5" y="4" height="120" width="187" html.valueishtml="0"  name=k_clie_2_t visible="1"  font.face="Verdana" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="32435950" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0" )
@@ -152,4 +160,3 @@ export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
 import.xml()
 export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" nativepdf.customsize=0 nativepdf.customorientation=0 nativepdf.pdfstandard=0 nativepdf.useprintspec=no )
 export.xhtml()
- 

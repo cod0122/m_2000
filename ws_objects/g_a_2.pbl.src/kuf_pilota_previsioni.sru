@@ -35,7 +35,6 @@ private kuf_utility kiuf_utility
 
 
 end variables
-
 forward prototypes
 public subroutine _readme ()
 private function long u_set_dataora_lav_prev_fin (ref datastore kds_1) throws uo_exception
@@ -47,8 +46,6 @@ public function st_tab_barcode u_get_st_tab_barcode_fila (datastore kds_1, long 
 private subroutine u_set_dataora_lav_prev_fin_upd (ref datastore kds_1, long k_riga) throws uo_exception
 private function long u_get_queue_lav_xfila_primariga (string k_fila) throws uo_exception
 private function long u_set_temptable_pilota_prev_lav () throws uo_exception
-public function datastore get_ds_barcode_in_lav_prev () throws uo_exception
-public function datastore get_ds_barcode_queue_prev () throws uo_exception
 public function long get_tab_lav_x_lotto_prev () throws uo_exception
 private function long u_set_tab_lav_x_lotto_prev () throws uo_exception
 private function string u_get_fila (st_tab_barcode kst_tab_barcode) throws uo_exception
@@ -59,13 +56,16 @@ private function datastore u_get_ds_barcode_queue () throws uo_exception
 private function long u_set_id_meca (ref datastore kds_1) throws uo_exception
 public function integer u_get_count_id_meca (ref datastore kds_1, long k_row)
 private function long u_set_temptable_pilota_workqueue () throws uo_exception
-private subroutine u_set_dataora_lav_prev_fin_x () throws uo_exception
 private function long u_set_ds_pilota_queue_data_prev_x () throws uo_exception
 private subroutine u_set_dataora_lav_prev_fin_1x (datastore kds_1, long k_riga) throws uo_exception
 private function long u_set_temptable_pilota_prev_lav_x () throws uo_exception
 public function string get_temptab_pilota_workqueue ()
 public function string get_temptab_pilota_prev_lav ()
 private function long u_set_ds_queue_lav_xfila_x (datastore kds_1) throws uo_exception
+private function datastore u_get_ds_pilota_workqueue () throws uo_exception
+private function long u_set_dataora_lav_prev_fin_x () throws uo_exception
+public function long get_ds_barcode_in_lav_prev () throws uo_exception
+public function long get_ds_barcode_queue_prev () throws uo_exception
 end prototypes
 
 public subroutine _readme ();//
@@ -605,64 +605,6 @@ return k_rigainsert
 
 end function
 
-public function datastore get_ds_barcode_in_lav_prev () throws uo_exception;//---
-//--- Popola ds con i barcode in lavorazione nel PILOTA e add all data from M2000
-//---
-//
-int k_rc
-long k_rows
-
-try 
-	
-	if u_set_ds_pilota_pallet_in_lav() > 0 then
-		
-//		u_set_id_meca(kids_d_report_3_pilota_pallet_in_lav)
-		u_set_dataora_lav_prev_fin(kids_d_report_3_pilota_pallet_in_lav)
-
-	end if
-
-
-catch (uo_exception kuo_exception)
-	throw kguo_exception
-	
-finally
-	
-end try
-
-return kids_d_report_3_pilota_pallet_in_lav
-end function
-
-public function datastore get_ds_barcode_queue_prev () throws uo_exception;//---
-//--- Popola il ds con i barcode in programmazione nel PILOTA 
-//---
-//
-int k_rc
-long k_rows
-
-try  
-	
-	u_get_ds_barcode_queue()
-	
-	if kids_d_report_2_pilota_queue_table.rowcount( ) > 0 then
-	
-//		u_set_id_meca(kids_d_report_2_pilota_queue_table)
-		//u_set_dati_barcode_figlio(kids_d_report_2_pilota_queue_table)
-		
-		u_set_ds_pilota_queue_data_prev()
-
-	end if
-
-
-catch (uo_exception kuo_exception)
-	throw kguo_exception
-	
-finally
-	
-end try
-
-return kids_d_report_2_pilota_queue_table
-end function
-
 public function long get_tab_lav_x_lotto_prev () throws uo_exception;//---
 //--- Popola temp tab con i barcode in lavoraz. e programmazione nel PILOTA e previsione di inizio e fine lav per Lotto
 //---
@@ -696,9 +638,6 @@ long k_righe=0
  	
 	try
 
-//--- popola tabella temp con i data ini e fin previsti ( tutto quello nel Pilota in Lav e  in Coda di Programmazione) 		
-		u_set_temptable_pilota_workqueue( )
-		
 		u_set_dataora_lav_prev_fin_x( )	  // imposta data fine lav per rec in lavorazione
 		
 		u_set_ds_pilota_queue_data_prev_x( )	  // imposta data fine lav per rec in programmazione
@@ -1119,62 +1058,6 @@ return k_rigainsert
 
 end function
 
-private subroutine u_set_dataora_lav_prev_fin_x () throws uo_exception;//
-//--------------------------------------------------------------------------------------
-//--- Aggiorna la data di fine lavorazione in tab 'previsioni' per 
-//--- i pallet in lavorazione (WORK)
-//---
-//--------------------------------------------------------------------------------------
-//
-//
-long k_riga, k_righe
-int k_rc
-datastore kds_1	
-	
-	try
-
-		kds_1 = CREATE datastore
-		kds_1.dataobject = "ds_pilota_previsioni_time"
-		k_rc = kds_1.SetTransObject (kguo_sqlca_db_magazzino)
-
-		kguf_data_base.u_set_ds_change_name_tab(kds_1, "vx_MAST_pilota_pallet_workqueue",  ki_temptab_pilota_workqueue)
-		
-		k_righe = kds_1.retrieve("WORK")  // estrae solo i pallet in lavorazione
-		
-		if k_righe < 1 then
-			
-			kguo_exception.inizializza( )
-			kguo_exception.kist_esito.esito = kguo_exception.kk_st_uo_exception_tipo_err_int
-			kguo_exception.kist_esito.sqlerrtext = "Il numero di righe estratte dalla tab. temp #" + ki_temptab_pilota_workqueue + " non può essere a zero!"
-			kguo_exception.kist_esito.nome_oggetto = this.classname( )
-			kguo_exception.scrivi_log( )
-			throw kguo_exception
-			
-		end if
-		
-		for k_riga = 1 to k_righe	
-			
-			u_set_dataora_lav_prev_fin_1x(kds_1, k_riga)  // imposta la data di fine lav prevista
-
-		end for
-
-		k_rc = kds_1.update() 
-		
-		kguo_sqlca_db_magazzino.db_commit( )
-
-	catch (uo_exception kuo_exception)
-		throw kuo_exception
-
-	finally
-
-	end try
-		
-
-//return k_righe
-	
-
-end subroutine
-
 private function long u_set_ds_pilota_queue_data_prev_x () throws uo_exception;//
 //----------------------------------------------------------------------------------------
 //--- Imposta data inizio-fine lavorazione presunte in tab 'previsioni 
@@ -1192,21 +1075,12 @@ datastore kds_work, kds_queue
 	
 	try
 
-		kds_work = CREATE datastore
-		kds_work.dataobject = "ds_pilota_previsioni_time"
-		k_rc = kds_work.SetTransObject (kguo_sqlca_db_magazzino)
-
-		kguf_data_base.u_set_ds_change_name_tab(kds_work, "vx_MAST_pilota_pallet_workqueue", ki_temptab_pilota_workqueue)
-		
+		kds_work = u_get_ds_pilota_workqueue( )
 		if  kds_work.retrieve("WORK")  > 0 then  // retrive dati in lav con data ini e fine prevista di Lav e data fine prevista   
 		
 			u_set_ds_queue_lav_xfila_x(kds_work)    // popola la CODA dei pallet x calcolo previsioni 
 		
-			kds_queue = CREATE datastore
-			kds_queue.dataobject = "ds_pilota_previsioni_time"
-			k_rc = kds_queue.SetTransObject (kguo_sqlca_db_magazzino)
-			kguf_data_base.u_set_ds_change_name_tab(kds_queue, "vx_MAST_pilota_pallet_workqueue", ki_temptab_pilota_workqueue)
-			
+			kds_queue = u_get_ds_pilota_workqueue( )
 			k_righe = kds_queue.retrieve("QUEUE") // nr totale dei pallet in coda di programmazione nel pilota
 
 			kds_queue.setsort( "n_ordine asc")
@@ -1501,6 +1375,171 @@ end try
 return k_row_insert
 
 
+end function
+
+private function datastore u_get_ds_pilota_workqueue () throws uo_exception;//
+//--------------------------------------------------------------------------------------
+//--- Aggiorna la data di fine lavorazione in tab 'previsioni' per 
+//--- i pallet in lavorazione (WORK)
+//---
+//--------------------------------------------------------------------------------------
+//
+//
+long k_riga, k_righe
+int k_rc
+datastore kds_1	
+	
+	try
+
+		kds_1 = CREATE datastore
+		kds_1.dataobject = "ds_pilota_workqueue_tmp"
+		k_rc = kds_1.SetTransObject (kguo_sqlca_db_magazzino)
+
+		kguf_data_base.u_set_ds_change_name_tab(kds_1, "vx_MAST_pilota_pallet_workqueue",  ki_temptab_pilota_workqueue)
+		
+		if kds_1.retrieve("WORK") < 1 then //verifica se la tabella temp esiste altrimenti la popola
+		
+//--- popola tabella temp con i data ini e fin previsti ( tutto quello nel Pilota in Lav e  in Coda di Programmazione) 		
+			k_righe = u_set_temptable_pilota_workqueue( )
+		
+		end if
+		
+		if k_righe < 1 then
+			
+			kguo_exception.inizializza( )
+			kguo_exception.kist_esito.esito = kguo_exception.kk_st_uo_exception_tipo_err_int
+			kguo_exception.kist_esito.sqlerrtext = "Il numero di righe estratte dalla tab. temp #" + ki_temptab_pilota_workqueue + " non può essere a zero!"
+			kguo_exception.kist_esito.nome_oggetto = this.classname( )
+			kguo_exception.scrivi_log( )
+			throw kguo_exception
+			
+		end if
+		
+	catch (uo_exception kuo_exception)
+		throw kuo_exception
+
+	finally
+
+	end try
+		
+
+return kds_1
+	
+
+end function
+
+private function long u_set_dataora_lav_prev_fin_x () throws uo_exception;//
+//--------------------------------------------------------------------------------------
+//--- Aggiorna la data di fine lavorazione in tab 'previsioni' per 
+//--- i pallet in lavorazione (WORK)
+//--- out: righe lavorate
+//--------------------------------------------------------------------------------------
+//
+//
+long k_riga, k_righe
+int k_rc
+datastore kds_1	
+	
+	
+	try
+
+		kds_1 = u_get_ds_pilota_workqueue( )
+		
+		k_righe = kds_1.retrieve("WORK")  // estrae solo i pallet in lavorazione
+		
+		if k_righe < 1 then
+			
+			kguo_exception.inizializza( )
+			kguo_exception.kist_esito.esito = kguo_exception.kk_st_uo_exception_tipo_err_int
+			kguo_exception.kist_esito.sqlerrtext = "Il numero di righe estratte dalla tab. temp #" + ki_temptab_pilota_workqueue + " non può essere a zero!"
+			kguo_exception.kist_esito.nome_oggetto = this.classname( )
+			kguo_exception.scrivi_log( )
+			throw kguo_exception
+			
+		end if
+		
+		for k_riga = 1 to k_righe	
+			
+			u_set_dataora_lav_prev_fin_1x(kds_1, k_riga)  // imposta la data di fine lav prevista
+
+		end for
+
+		k_rc = kds_1.update() 
+		
+		kguo_sqlca_db_magazzino.db_commit( )
+
+	catch (uo_exception kuo_exception)
+		throw kuo_exception
+
+	finally
+
+	end try
+		
+
+return k_righe
+	
+
+end function
+
+public function long get_ds_barcode_in_lav_prev () throws uo_exception;//---
+//--- Popola ds con i barcode in lavorazione nel PILOTA e add all data from M2000
+//---
+//
+int k_rc
+long k_rows
+
+try 
+	
+//	if u_set_ds_pilota_pallet_in_lav() > 0 then
+		
+//		u_set_id_meca(kids_d_report_3_pilota_pallet_in_lav)
+//		u_set_dataora_lav_prev_fin(kids_d_report_3_pilota_pallet_in_lav)
+		k_rows = u_set_dataora_lav_prev_fin_x( )	  // imposta data fine lav per rec in lavorazione
+
+//	end if
+
+
+catch (uo_exception kuo_exception)
+	throw kguo_exception
+	
+finally
+	
+end try
+
+return k_rows
+end function
+
+public function long get_ds_barcode_queue_prev () throws uo_exception;//---
+//--- Popola il ds con i barcode in programmazione nel PILOTA 
+//---
+//
+int k_rc
+long k_rows
+
+try  
+	
+//	u_get_ds_barcode_queue()
+	
+//	if kids_d_report_2_pilota_queue_table.rowcount( ) > 0 then
+	
+//		u_set_id_meca(kids_d_report_2_pilota_queue_table)
+		//u_set_dati_barcode_figlio(kids_d_report_2_pilota_queue_table)
+		
+//		u_set_ds_pilota_queue_data_prev()
+
+//	end if
+
+		k_rows = u_set_ds_pilota_queue_data_prev_x( )	  // imposta data fine lav per rec in programmazione
+
+
+catch (uo_exception kuo_exception)
+	throw kguo_exception
+	
+finally
+	
+end try
+
+return k_rows
 end function
 
 on kuf_pilota_previsioni.create
