@@ -1127,7 +1127,7 @@ try
 		k_codice_prec = kdw_1.tag
 	else
 		k_codice_prec = " "
-	end if
+	end if 
 	
 //--- salvo i parametri cosi come sono stati immessi
 	kuf1_utility = create kuf_utility
@@ -1145,22 +1145,15 @@ try
 		setpointer(kkg.pointer_attesa)
 		kdw_1.visible = false
 		
-		if not isvalid(kiuf_report_pilota) then kiuf_report_pilota = create kuf_report_pilota
 		if not isvalid(kiuf_pilota_previsioni) then kiuf_pilota_previsioni = create kuf_pilota_previsioni
 
 		k_righe = kiuf_pilota_previsioni.get_ds_barcode_queue_prev( ) 
 		if k_righe > 0 then
 		
-//			kiuf_report_pilota.set_ds_report_2_pilota_queue_prev()
-	
-//			kdw_1.dataobject = kds_1.dataobject
-//			kdw_1.visible = true
-//			kds_1.rowscopy(1, kds_1.rowcount(), primary!, kdw_1, 1, primary!)
-
 			kdw_1.dataobject = "d_report_2_pilota_queue_table"
 			kdw_1.visible = true
 			
-			kguf_data_base.u_set_ds_change_name_tab(kdw_1, "vx_MAST_pilota_pallet_workqueue", kiuf_pilota_previsioni.get_temptab_pilota_workqueue( ) )
+			kguf_data_base.u_set_ds_change_name_tab(kdw_1, "vx_MAST_pilota_pallet_workqueue" )
 			kdw_1.settransobject(kguo_sqlca_db_magazzino)
 		
 			k_righe = kdw_1.retrieve()
@@ -1335,23 +1328,20 @@ datastore kds_1
 		u_set_tabpage_picture(false)
 	end if
 	
-
+ 
 	if kdw_1.rowcount() = 0 or trim(k_codice_prec) =  "" then //<> k_codice_prec then
 
-		if not isvalid(kiuf_report_pilota) then kiuf_report_pilota = create kuf_report_pilota
 		if not isvalid(kiuf_pilota_previsioni) then kiuf_pilota_previsioni = create kuf_pilota_previsioni
 		
 		k_righe = kiuf_pilota_previsioni.get_ds_barcode_in_lav_prev( ) 
 		if k_righe > 0 then
 		
-//			kiuf_report_pilota.set_ds_report_3_pilota_pallet_in_lav(kds_1)
-//
 			kdw_1.dataobject = "d_report_3_pilota_pallet_in_lav" // kds_1.dataobject //  
 			kdw_1.visible = true
-//			kds_1.rowscopy(1, kds_1.rowcount(), primary!, kdw_1, 1, primary!)
 			
-			kguf_data_base.u_set_ds_change_name_tab(kdw_1, "vx_MAST_pilota_pallet_workqueue", kiuf_pilota_previsioni.get_temptab_pilota_workqueue( ) )
+			kguf_data_base.u_set_ds_change_name_tab(kdw_1, "vx_MAST_pilota_pallet_workqueue")
 			kdw_1.settransobject(kguo_sqlca_db_magazzino)
+
 			k_righe = kdw_1.retrieve()
 		end if
 		
@@ -7214,6 +7204,7 @@ try
 //if ki_scelta_report = ki_scelta_report_lotti_entrati then
 	kds_1 = create datastore
 	kds_1.dataobject = "d_report_23_runs_rtr_rts_help"
+	kguf_data_base.u_set_ds_change_name_tab(kds_1, "vx_mast2_report_23_runsrtrrts_help")
 	kds_1.settransobject(kguo_sqlca_db_magazzino)
 
 	if k_dw.rowcount() > 0 then
@@ -7410,7 +7401,7 @@ u_dw_selezione_save( )
 if not isnull(kiuf_utility) then destroy kiuf_utility
 if not isnull(kiuf_report_pilota) then destroy kiuf_report_pilota
 if not isnull(kiuf_pilota_previsioni) then destroy kiuf_pilota_previsioni
-
+ 
 end event
 
 event u_ricevi_da_elenco;call super::u_ricevi_da_elenco;//
@@ -8079,7 +8070,7 @@ end if
  ki_scelta_report_art_movim = this.additem(  "Articoli Movimentati", ki_scelta_report_pic_art_movim) //16
  ki_scelta_report_armo_Contratti = this.additem(  "Contratti Movimentati ", ki_scelta_report_pic_armo_Contratti) //21
  ki_scelta_report_LavxCapitolato = this.additem(  "Capitolati ", ki_scelta_report_pic_LavxCapitolato) //22
- ki_scelta_report_RunsRtrRts = this.additem(  "Runs RTR RTS ETS ", ki_scelta_report_pic_RunsRtrRts) //23
+ ki_scelta_report_RunsRtrRts = this.additem(  "Runs RTR RTS ETR ", ki_scelta_report_pic_RunsRtrRts) //23
  
  
 end event

@@ -117,8 +117,9 @@ public subroutine u_if_profile_base_exists () throws uo_exception
 public function st_esito u_open_confdb_ini (integer k_tipo)
 public function string get_nome_profile_base ()
 public function boolean u_if_run_dev_mode ()
-public subroutine u_set_ds_change_name_tab (ref datastore kds_1, string k_nome_orig, string k_nome_nuovo) throws uo_exception
-public subroutine u_set_ds_change_name_tab (ref datawindow kdw_1, string k_nome_orig, string k_nome_nuovo) throws uo_exception
+public function string u_change_nometab_xutente (string k_nome_tab) throws uo_exception
+public subroutine u_set_ds_change_name_tab (ref datastore kds_1, string k_nome_tab) throws uo_exception
+public subroutine u_set_ds_change_name_tab (ref datawindow kdw_1, string k_nome_tab) throws uo_exception
 end prototypes
 
 public function string db_commit ();//---
@@ -3522,10 +3523,56 @@ end if
 
 end function
 
-public subroutine u_set_ds_change_name_tab (ref datastore kds_1, string k_nome_orig, string k_nome_nuovo) throws uo_exception;//
+public function string u_change_nometab_xutente (string k_nome_tab) throws uo_exception;//
 //--------------------------------------------------------------------------------------
-//--- Cambia il nome della tabella nel ds
-//--- Inp: datastore, nome tab origine, nome tab nuovo
+//--- Cambia il nome della tabella da utente standard a utente vero
+//--- es.  vx_MAST_tabella_esempio ---> vx_0037_tabella_esempio
+//---     vx_ = prefisso del nome tabella quasi sempre fisso così
+//---     MAST = parte da cambiare x utente 37 
+//---     _tabella_esempio = suffisso del nome tabella
+//--- Inp: nome tab completa ex "vx_MAST_tabella_esempio"
+//--------------------------------------------------------------------------------------
+//
+//
+int k_rc, k_ctr1, k_ctr2
+string k_return
+	
+	try
+
+		k_ctr1 = pos(k_nome_tab, "_", 1)
+		if k_ctr1 > 0 then
+			k_ctr2 = pos(k_nome_tab, "_", k_ctr1 +1)
+			if k_ctr2 > 0 then
+				k_return =  left(k_nome_tab, k_ctr1)  + string(kguo_utente.get_id_utente( )) + mid(k_nome_tab, k_ctr2)
+			end if
+		end if
+		if k_ctr1 = 0 or k_ctr2 = 0 then 
+			kguo_exception.inizializza( )
+			kguo_exception.kist_esito.nome_oggetto = this.classname( )
+			kguo_exception.kist_esito.esito = kguo_exception.kk_st_uo_exception_tipo_err_int
+			kguo_exception.kist_esito.sqlerrtext = "Fallita normalizzazione nome tabella utente, nome passato: " + k_nome_tab
+			throw kguo_exception
+		end if
+
+	catch (uo_exception kuo_exception)
+		throw kuo_exception
+
+	finally
+
+	end try
+		
+return k_return 	
+
+end function
+
+public subroutine u_set_ds_change_name_tab (ref datastore kds_1, string k_nome_tab) throws uo_exception;//
+//--------------------------------------------------------------------------------------
+//--- Cambia il nome della tabella nel ds come da standard
+//--- es.  vx_MAST_tabella_esempio ---> vx_0001_tabella_esempio
+//---     vx_ = prefisso del nome tabella quasi sempre fisso così
+//---     MAST = parte da cambiare
+//---     _tabella_esempio = suffisso del nome tabella
+//--- Inp: datastore, nome tab completa ex "vx_MAST_tabella_esempio"
 //--------------------------------------------------------------------------------------
 //
 //
@@ -3534,9 +3581,10 @@ string k_sql_orig, k_string, k_stringn
 	
 	try
 
+		k_stringn = u_change_nometab_xutente(k_nome_tab)  // ritorna il nuovo nome tab x utente 
+		k_string =  k_nome_tab
+
 		k_sql_orig = kds_1.Object.DataWindow.Table.Select 
-		k_stringn = k_nome_nuovo	
-		k_string =  k_nome_orig
 		k_ctr = Pos(k_sql_orig, k_string, 1)
 		DO WHILE k_ctr > 0 and trim(k_string) <> trim(k_stringn)  
 			k_sql_orig = Replace(k_sql_orig, k_ctr, LenA(k_string), (k_stringn))
@@ -3564,10 +3612,13 @@ string k_sql_orig, k_string, k_stringn
 
 end subroutine
 
-public subroutine u_set_ds_change_name_tab (ref datawindow kdw_1, string k_nome_orig, string k_nome_nuovo) throws uo_exception;//
-//--------------------------------------------------------------------------------------
-//--- Cambia il nome della tabella nel dw
-//--- Inp: datastore, nome tab origine, nome tab nuovo
+public subroutine u_set_ds_change_name_tab (ref datawindow kdw_1, string k_nome_tab) throws uo_exception;//--------------------------------------------------------------------------------------
+//--- Cambia il nome della tabella nel ds come da standard
+//--- es.  vx_MAST_tabella_esempio ---> vx_0001_tabella_esempio
+//---     vx_ = prefisso del nome tabella quasi sempre fisso così
+//---     MAST = parte da cambiare
+//---     _tabella_esempio = suffisso del nome tabella
+//--- Inp: datastore, nome tab completa ex "vx_MAST_tabella_esempio"
 //--------------------------------------------------------------------------------------
 //
 //
@@ -3576,9 +3627,10 @@ string k_sql_orig, k_string, k_stringn
 	
 	try
 
+		k_stringn = u_change_nometab_xutente(k_nome_tab)  // ritorna il nuovo nome tab x utente 
+		k_string =  k_nome_tab
+
 		k_sql_orig = kdw_1.Object.DataWindow.Table.Select 
-		k_stringn = k_nome_nuovo	
-		k_string =  k_nome_orig
 		k_ctr = Pos(k_sql_orig, k_string, 1)
 		DO WHILE k_ctr > 0 and trim(k_string) <> trim(k_stringn)  
 			k_sql_orig = Replace(k_sql_orig, k_ctr, LenA(k_string), (k_stringn))
