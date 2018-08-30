@@ -61,11 +61,11 @@ private subroutine u_set_dataora_lav_prev_fin_1x (datastore kds_1, long k_riga) 
 private function long u_set_temptable_pilota_prev_lav_x () throws uo_exception
 public function string get_temptab_pilota_workqueue ()
 public function string get_temptab_pilota_prev_lav ()
-private function long u_set_ds_queue_lav_xfila_x (datastore kds_1) throws uo_exception
 private function datastore u_get_ds_pilota_workqueue () throws uo_exception
 private function long u_set_dataora_lav_prev_fin_x () throws uo_exception
 public function long get_ds_barcode_in_lav_prev () throws uo_exception
 public function long get_ds_barcode_queue_prev () throws uo_exception
+private function long u_set_ds_queue_lav_xfila_x (ref datastore kds_1) throws uo_exception
 end prototypes
 
 public subroutine _readme ();//
@@ -1076,7 +1076,14 @@ datastore kds_work, kds_queue
 	try
 
 		kds_work = u_get_ds_pilota_workqueue( )
-		if  kds_work.retrieve("WORK")  > 0 then  // retrive dati in lav con data ini e fine prevista di Lav e data fine prevista   
+		k_righe = kds_work.retrieve("WORK")
+		if k_righe > 0 then  // retrive dati in lav con data ini e fine prevista di Lav e data fine prevista   
+		
+			for k_riga = 1 to k_righe	
+				
+				u_set_dataora_lav_prev_fin_1x(kds_work, k_riga)  // imposta la data di fine lav prevista
+	
+			end for
 		
 			u_set_ds_queue_lav_xfila_x(kds_work)    // popola la CODA dei pallet x calcolo previsioni 
 		
@@ -1099,6 +1106,7 @@ datastore kds_work, kds_queue
 					k_dataora_lav_fin = kids_ds_queue_lav_xfila.getitemdatetime(k_riga_queue, "k_dataora_lav_fin")  // get della data di fine lav (prev) che diventa quella di inizio  
 
 //--- add minuti carico	
+					if not isvalid(kiuf_utility) then kiuf_utility = create kuf_utility
 					k_dataora_lav_fin = kiuf_utility.u_datetime_after_minute(k_dataora_lav_fin, 4)
 
 					kds_queue.setitem( k_riga, "dataora_lav_ini", k_dataora_lav_fin)
@@ -1317,66 +1325,6 @@ public function string get_temptab_pilota_prev_lav ();	//
 
 end function
 
-private function long u_set_ds_queue_lav_xfila_x (datastore kds_1) throws uo_exception;//---
-//--- Popola la CODA per il calcolo delle PREVISIONI, datastore: ds_queue_lav_xfila
-//--- inp: ds da caricare nella coda
-//--- out: nr righe inserite
-//---
-int k_rc
-long k_rows, k_row, k_row_insert
-string k_fila
-datetime k_dataora_ini
-
-
-try 
-	if not isvalid(kids_ds_queue_lav_xfila) then
-		kids_ds_queue_lav_xfila = create datastore
-		kids_ds_queue_lav_xfila.dataobject = ki_ds_queue_lav_xfila_dataobject
-	end if
-
-	k_rows = kds_1.rowcount( )
-	if k_rows > 0 then	//--- legge barcode in lav su Pilota 
-		
-
-		for k_row = 2 to k_rows
-		
-			if k_dataora_ini <> kds_1.getitemdatetime( k_row, "dataora_lav_ini") then
-				k_dataora_ini = kds_1.getitemdatetime( k_row, "dataora_lav_ini")
-
-				k_row_insert = kids_ds_queue_lav_xfila.insertrow(0)
-				kids_ds_queue_lav_xfila.setitem(k_row_insert, "k_dataora_lav_ini", k_dataora_ini)
-				kids_ds_queue_lav_xfila.setitem(k_row_insert, "k_dataora_lav_fin", kds_1.getitemdatetime( k_row, "dataora_lav_fin_prev"))
-				k_fila = string(kds_1.getitemnumber( k_row, "fila"))
-				kids_ds_queue_lav_xfila.setitem(k_row_insert, "fila", k_fila) 
-
-			end if
-			
-		end for
-		
-	end if
-
-	if k_rows < 0 then
-		kguo_exception.inizializza( )
-		kguo_exception.kist_esito.nome_oggetto = this.classname( )
-		kguo_exception.kist_esito.sqlcode = k_rows
-		kguo_exception.kist_esito.esito = kkg_esito.db_ko
-		kguo_exception.kist_esito.sqlerrtext = "Errore in lettura Fila in lavorazione in impianto: " + string(kguo_sqlca_db_magazzino.sqldbcode)
-		throw kguo_exception
-	end if
-
-
-catch (uo_exception kuo_exception)
-	throw kguo_exception
-	
-finally
-	
-end try
-
-return k_row_insert
-
-
-end function
-
 private function datastore u_get_ds_pilota_workqueue () throws uo_exception;//
 //--------------------------------------------------------------------------------------
 //--- Aggiorna la data di fine lavorazione in tab 'previsioni' per 
@@ -1397,7 +1345,8 @@ datastore kds_1
 
 		kguf_data_base.u_set_ds_change_name_tab(kds_1, "vx_MAST_pilota_pallet_workqueue",  ki_temptab_pilota_workqueue)
 		
-		if kds_1.retrieve("WORK") < 1 then //verifica se la tabella temp esiste altrimenti la popola
+		k_righe = kds_1.retrieve("WORK")
+		if k_righe < 1 then //verifica se la tabella temp esiste altrimenti la popola
 		
 //--- popola tabella temp con i data ini e fin previsti ( tutto quello nel Pilota in Lav e  in Coda di Programmazione) 		
 			k_righe = u_set_temptable_pilota_workqueue( )
@@ -1540,6 +1489,68 @@ finally
 end try
 
 return k_rows
+end function
+
+private function long u_set_ds_queue_lav_xfila_x (ref datastore kds_1) throws uo_exception;//---
+//--- Popola la CODA per il calcolo delle PREVISIONI, datastore: ds_queue_lav_xfila
+//--- inp: ds da caricare nella coda
+//--- out: nr righe inserite
+//---
+int k_rc
+long k_rows, k_row, k_row_insert
+string k_fila
+datetime k_dataora_ini, k_dataora_fin
+
+
+try 
+	if not isvalid(kids_ds_queue_lav_xfila) then
+		kids_ds_queue_lav_xfila = create datastore
+		kids_ds_queue_lav_xfila.dataobject = ki_ds_queue_lav_xfila_dataobject
+	end if
+
+	k_rows = kds_1.rowcount( )
+	if k_rows > 0 then	//--- legge barcode in lav su Pilota 
+		
+
+		for k_row = 1 to k_rows
+		
+			if k_dataora_ini <> kds_1.getitemdatetime( k_row, "dataora_lav_ini") then
+				
+				k_dataora_ini = kds_1.getitemdatetime( k_row, "dataora_lav_ini")
+				k_dataora_fin =  kds_1.getitemdatetime( k_row, "dataora_lav_fin_prev")
+				k_fila = string(kds_1.getitemnumber( k_row, "fila"))
+
+				k_row_insert = kids_ds_queue_lav_xfila.insertrow(0)
+				kids_ds_queue_lav_xfila.setitem(k_row_insert, "k_dataora_lav_ini", k_dataora_ini)
+				kids_ds_queue_lav_xfila.setitem(k_row_insert, "k_dataora_lav_fin", k_dataora_fin)
+				kids_ds_queue_lav_xfila.setitem(k_row_insert, "fila", k_fila) 
+
+			end if
+			
+		end for
+		
+	end if
+
+	if k_rows < 0 then
+		kguo_exception.inizializza( )
+		kguo_exception.kist_esito.nome_oggetto = this.classname( )
+		kguo_exception.kist_esito.sqlcode = k_rows
+		kguo_exception.kist_esito.esito = kkg_esito.db_ko
+		kguo_exception.kist_esito.sqlerrtext = "Errore in lettura Fila in lavorazione in impianto: " + string(kguo_sqlca_db_magazzino.sqldbcode)
+		throw kguo_exception
+	end if
+
+
+catch (uo_exception kuo_exception)
+	throw kguo_exception
+	
+finally
+	
+end try
+
+return k_row_insert
+
+
 end function
 
 on kuf_pilota_previsioni.create

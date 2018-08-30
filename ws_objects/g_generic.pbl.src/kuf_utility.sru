@@ -5172,14 +5172,21 @@ microsecond
 nanosecond*/  
 string ls_sql  
 datetime ldt_end  
-DECLARE get_diff DYNAMIC CURSOR FOR SQLSA ;  
-// Calculate the end date  
-ls_sql = 'SELECT DATEADD(' + a_datepart + ', ' + string(a_time) +  ", '" + string(a_datetime) + "')"  
-PREPARE SQLSA FROM :ls_sql ;  
-OPEN DYNAMIC get_diff ;  
-FETCH get_diff INTO :ldt_end ;  
-CLOSE get_diff ;  
-RETURN ldt_end  
+
+
+if isnull(a_datetime) or isnull(a_time) or isnull(a_datepart)  then
+	return datetime(date(0), time(0))
+else
+	
+	DECLARE get_diff DYNAMIC CURSOR FOR SQLSA ;  
+	// Calculate the end date  
+	ls_sql = 'SELECT DATEADD(' + a_datepart + ', ' + string(a_time) +  ", '" + string(a_datetime) + "')"  
+	PREPARE SQLSA FROM :ls_sql ;  
+	OPEN DYNAMIC get_diff ;  
+	FETCH get_diff INTO :ldt_end ;  
+	CLOSE get_diff ;  
+	RETURN ldt_end  
+end if
 end function
 
 public function datetime u_datetime_after_hour (datetime a_datetime, long a_nr_hour);//

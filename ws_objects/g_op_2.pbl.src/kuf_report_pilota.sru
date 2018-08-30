@@ -607,8 +607,6 @@ try
 		u_set_dati_barcode_figlio(kids_d_report_2_pilota_queue_table)
 		u_set_dati_note(kids_d_report_2_pilota_queue_table)
 		
-		//u_set_report_2_pilota_queue_data_prev()
-
 	end if
 
 

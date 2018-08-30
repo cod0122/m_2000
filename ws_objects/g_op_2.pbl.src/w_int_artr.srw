@@ -1148,16 +1148,22 @@ try
 		if not isvalid(kiuf_report_pilota) then kiuf_report_pilota = create kuf_report_pilota
 		if not isvalid(kiuf_pilota_previsioni) then kiuf_pilota_previsioni = create kuf_pilota_previsioni
 
-		kds_1 = kiuf_pilota_previsioni.get_ds_barcode_queue_prev( ) 
-		if kds_1.rowcount() > 0 then
+		k_righe = kiuf_pilota_previsioni.get_ds_barcode_queue_prev( ) 
+		if k_righe > 0 then
 		
-			kiuf_report_pilota.set_ds_report_2_pilota_queue_prev(kds_1)
+//			kiuf_report_pilota.set_ds_report_2_pilota_queue_prev()
+	
+//			kdw_1.dataobject = kds_1.dataobject
+//			kdw_1.visible = true
+//			kds_1.rowscopy(1, kds_1.rowcount(), primary!, kdw_1, 1, primary!)
 
-			kdw_1.dataobject = kds_1.dataobject
+			kdw_1.dataobject = "d_report_2_pilota_queue_table"
 			kdw_1.visible = true
-			kds_1.rowscopy(1, kds_1.rowcount(), primary!, kdw_1, 1, primary!)
+			
+			kguf_data_base.u_set_ds_change_name_tab(kdw_1, "vx_MAST_pilota_pallet_workqueue", kiuf_pilota_previsioni.get_temptab_pilota_workqueue( ) )
+			kdw_1.settransobject(kguo_sqlca_db_magazzino)
 		
-			k_righe = kdw_1.rowcount()
+			k_righe = kdw_1.retrieve()
 			
 		end if
 
@@ -1335,16 +1341,18 @@ datastore kds_1
 		if not isvalid(kiuf_report_pilota) then kiuf_report_pilota = create kuf_report_pilota
 		if not isvalid(kiuf_pilota_previsioni) then kiuf_pilota_previsioni = create kuf_pilota_previsioni
 		
-		kds_1 = kiuf_pilota_previsioni.get_ds_barcode_in_lav_prev( ) 
-		if kds_1.rowcount() > 0 then
+		k_righe = kiuf_pilota_previsioni.get_ds_barcode_in_lav_prev( ) 
+		if k_righe > 0 then
 		
-			kiuf_report_pilota.set_ds_report_3_pilota_pallet_in_lav(kds_1)
-
-			kdw_1.dataobject = kds_1.dataobject // "d_report_3_pilota_pallet_in_lav" 
+//			kiuf_report_pilota.set_ds_report_3_pilota_pallet_in_lav(kds_1)
+//
+			kdw_1.dataobject = "d_report_3_pilota_pallet_in_lav" // kds_1.dataobject //  
 			kdw_1.visible = true
-			kds_1.rowscopy(1, kds_1.rowcount(), primary!, kdw_1, 1, primary!)
+//			kds_1.rowscopy(1, kds_1.rowcount(), primary!, kdw_1, 1, primary!)
 			
-			k_righe = kdw_1.rowcount()
+			kguf_data_base.u_set_ds_change_name_tab(kdw_1, "vx_MAST_pilota_pallet_workqueue", kiuf_pilota_previsioni.get_temptab_pilota_workqueue( ) )
+			kdw_1.settransobject(kguo_sqlca_db_magazzino)
+			k_righe = kdw_1.retrieve()
 		end if
 		
 	end if

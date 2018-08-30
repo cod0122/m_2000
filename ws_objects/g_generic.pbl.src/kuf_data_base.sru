@@ -118,6 +118,7 @@ public function st_esito u_open_confdb_ini (integer k_tipo)
 public function string get_nome_profile_base ()
 public function boolean u_if_run_dev_mode ()
 public subroutine u_set_ds_change_name_tab (ref datastore kds_1, string k_nome_orig, string k_nome_nuovo) throws uo_exception
+public subroutine u_set_ds_change_name_tab (ref datawindow kdw_1, string k_nome_orig, string k_nome_nuovo) throws uo_exception
 end prototypes
 
 public function string db_commit ();//---
@@ -3549,6 +3550,48 @@ string k_sql_orig, k_string, k_stringn
 			if k_ctr > 0 then
 				k_sql_orig = Replace(k_sql_orig, k_ctr, LenA(k_string), (k_stringn))
 				kds_1.Object.DataWindow.Table.update = k_sql_orig	
+			end if
+		end if
+	
+	catch (uo_exception kuo_exception)
+		throw kuo_exception
+
+	finally
+
+	end try
+		
+	
+
+end subroutine
+
+public subroutine u_set_ds_change_name_tab (ref datawindow kdw_1, string k_nome_orig, string k_nome_nuovo) throws uo_exception;//
+//--------------------------------------------------------------------------------------
+//--- Cambia il nome della tabella nel dw
+//--- Inp: datastore, nome tab origine, nome tab nuovo
+//--------------------------------------------------------------------------------------
+//
+//
+int k_rc, k_ctr
+string k_sql_orig, k_string, k_stringn
+	
+	try
+
+		k_sql_orig = kdw_1.Object.DataWindow.Table.Select 
+		k_stringn = k_nome_nuovo	
+		k_string =  k_nome_orig
+		k_ctr = Pos(k_sql_orig, k_string, 1)
+		DO WHILE k_ctr > 0 and trim(k_string) <> trim(k_stringn)  
+			k_sql_orig = Replace(k_sql_orig, k_ctr, LenA(k_string), (k_stringn))
+			k_ctr = Pos(k_sql_orig, k_string, k_ctr+LenA(k_string))
+		LOOP
+		kdw_1.Object.DataWindow.Table.Select = k_sql_orig
+		
+		k_sql_orig = kdw_1.Object.DataWindow.Table.update
+		if k_sql_orig > " " then
+			k_ctr = Pos(k_sql_orig, k_string, 1)
+			if k_ctr > 0 then
+				k_sql_orig = Replace(k_sql_orig, k_ctr, LenA(k_string), (k_stringn))
+				kdw_1.Object.DataWindow.Table.update = k_sql_orig	
 			end if
 		end if
 	
