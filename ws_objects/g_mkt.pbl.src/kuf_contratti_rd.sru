@@ -27,6 +27,7 @@ constant string kki_STATO_annullato = '9' // contratto ANNULLATO
 
 
 end variables
+
 forward prototypes
 public function st_esito anteprima (ref datastore kdw_anteprima, st_tab_contratti_rd kst_tab_contratti_rd)
 public function st_esito anteprima (ref datawindow kdw_anteprima, st_tab_contratti_rd kst_tab_contratti_rd)

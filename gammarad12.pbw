@@ -3,6 +3,7 @@ Save Format v3.0(19990112)
 @end;
 @begin Targets
  0 "m_2000.pbt";
+ 1 "..\\..\\ufo\\testgammarad_AppeonTestCase\\testgammarad\\pb_sterigenics\\sorgenti_xSQLSERVER\\m_2000.pbt";
 @end;
 DefaultTarget "m_2000.pbt";
 DefaultRemoteTarget "m_2000.pbt";

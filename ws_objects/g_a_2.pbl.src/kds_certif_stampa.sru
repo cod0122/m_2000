@@ -19,6 +19,7 @@ public boolean ki_flag_ristampa=false
 private boolean ki_stampa_bianco_nero=false
 private boolean ki_mat_farmaceutico=false
 end variables
+
 forward prototypes
 public subroutine set_mat_farmaceutico ()
 public subroutine set_stampa_bianco_nero ()

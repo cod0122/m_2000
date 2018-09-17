@@ -21,9 +21,9 @@ public constant string ki_blocca_connessione_si = "1"
 private constant string ki_cfg_dbms_scelta_princ = "1"
 private constant string ki_cfg_dbms_scelta_muletto = "2"
 
+private st_errori_gestione kist_errori_gestione
 
 end variables
-
 forward prototypes
 public function st_esito db_commit ()
 public function boolean db_connetti () throws uo_exception
@@ -831,36 +831,37 @@ call super::destroy
 end on
 
 event dberror;//
-//st_esito kst_esito
-st_errori_gestione kst_errori_gestione
+st_errori_gestione kst_errori_gestione_nulla
 
-//--- evito di esporre gli errori di 'DROP TBABLE/VIEW' (in ORACLE code = 942 è tabella o view non esiste!)
-if (code < 0 or code = 942) and code <> -523 and code <> -206 and code <> -394 then
-	if code = -1 and sqldbcode = 0 then  
-		// -1 è di solito un errore di 'TRANSAZIONE NON CONNESSA' che si verifica spesso, quindi non faccio nulla
+	kist_errori_gestione = kst_errori_gestione_nulla
+
+	kist_errori_gestione.nome_oggetto =  kGuf_data_base.u_getfocus_nome( )  //this.classname()
+	if isnull(kist_errori_gestione.nome_oggetto) then kist_errori_gestione.nome_oggetto = ""
+	kist_errori_gestione.sqlsyntax = trim(sqlsyntax)
+	if isnull(kist_errori_gestione.sqlsyntax) then kist_errori_gestione.sqlsyntax = ""
+
+	kist_errori_gestione.sqlerrtext = trim(sqlerrtext)
+	if len(trim(kist_errori_gestione.sqlerrtext)) > 0 then
 	else
-		kst_errori_gestione.nome_oggetto =  kGuf_data_base.u_getfocus_nome( )  //this.classname()
-		if isnull(kst_errori_gestione.nome_oggetto) then kst_errori_gestione.nome_oggetto = ""
-		kst_errori_gestione.sqlsyntax = trim(sqlsyntax)
-		if isnull(kst_errori_gestione.sqlsyntax) then kst_errori_gestione.sqlsyntax = ""
-
-		kst_errori_gestione.sqlerrtext = trim(sqlerrtext)
-		if len(trim(kst_errori_gestione.sqlerrtext)) > 0 then
-		else
-			kst_errori_gestione.sqlerrtext = trim(sqlerrortext)
-		end if
-		if isnull(kst_errori_gestione.sqlerrtext) then kst_errori_gestione.sqlerrtext = ""
-		if this.sqlcode < 0 then
-			kst_errori_gestione.esito = kkg_esito.db_ko
-		else
-			kst_errori_gestione.esito = kkg_esito.db_wrn
-		end if
-		kst_errori_gestione.sqldbcode = code
-		kst_errori_gestione.sqlca = this //sqlca
-		
-		kGuf_data_base.errori_gestione(kst_errori_gestione)
+		kist_errori_gestione.sqlerrtext = trim(sqlerrortext)
 	end if
-end if
+	if isnull(kist_errori_gestione.sqlerrtext) then kist_errori_gestione.sqlerrtext = ""
+	if this.sqlcode < 0 then
+		kist_errori_gestione.esito = kkg_esito.db_ko
+	else
+		kist_errori_gestione.esito = kkg_esito.db_wrn
+	end if
+	kist_errori_gestione.sqldbcode = code
+	kist_errori_gestione.sqlca = this 
+
+//--- evito di esporre gli errori di 'DROP TBABLE/VIEW' (in ORACLE code = 942 e in MSSQL sono 3701 e 3705  è tabella o view non esiste!)
+	if code <> 942 and code <> -523 and code <> -206 and code <> -394 and code <> 3705 and code <> 3701 then
+		if code = -1 and sqldbcode = 0 then  
+			// -1 è di solito un errore di 'TRANSAZIONE NON CONNESSA' che si verifica spesso, quindi non faccio nulla
+		else
+			kGuf_data_base.errori_gestione(kist_errori_gestione)
+		end if
+	end if
 
 
 RETURN 1 // Do not display system error message

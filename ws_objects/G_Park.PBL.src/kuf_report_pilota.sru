@@ -11,11 +11,27 @@ global kuf_report_pilota kuf_report_pilota
 
 type variables
 //
-public string ki_ds_pilota_pallet_in_lav_dataobject = "d_report_3_pilota_pallet_in_lav"
+private string ki_ds_pilota_pallet_in_lav_dataobject = "d_report_3_pilota_pallet_in_lav"
+private string ki_ds_pilota_queue_dataobject = "d_report_2_pilota_queue_table"
+private string ki_ds_pilota_prev_lav_dataobject = "d_report_24_pilota_prev_lav"
+
+private string ki_ds_pilota_fila_in_lav_dataobject = "ds_report_3_pilota_fila_in_lav"
+private string ki_ds_queue_lav_xfila_dataobject = "ds_queue_lav_xfila"
+
+private string ki_temptab_pilota_prev_lav 
 
 private datastore kids_d_report_3_pilota_pallet_in_lav
+private datastore kids_ds_report_3_pilota_fila_in_lav
+private datastore kids_ds_queue_lav_xfila
 private datastore kids_barcode_avgtimeplant
+
+private datastore kids_d_report_2_pilota_queue_table
+
+private datastore kids_d_report_24_pilota_prev_lav
+
+
 private kuf_utility kiuf_utility
+
 
 end variables
 
@@ -24,20 +40,18 @@ public subroutine _readme ()
 private function long u_set_dati_barcode (ref datastore kds_1) throws uo_exception
 private function long u_set_dati_clie (ref datastore kds_1) throws uo_exception
 private function long u_set_dati_meca (ref datastore kds_1) throws uo_exception
-private function long u_set_dati_avgtimeplant (ref datastore kds_1) throws uo_exception
-public function datastore u_get_barcode_in_lav_all_data () throws uo_exception
-public function datastore u_get_barcode_in_lav () throws uo_exception
-private function long u_get_row_ds_in_lav_last (integer k_fila)
-public function st_report_pilota u_get_st_report_pilota_in_lav_last_f1 ()
-private function st_report_pilota u_get_st_report_pilota_in_lav_last (long k_row)
-public function st_report_pilota u_get_st_report_pilota_in_lav_last_f2 ()
-private function long u_get_row_ds_in_lav_last_f1 ()
-private function long u_get_row_ds_in_lav_last_f2 ()
-private function datastore u_get_st_report_pilota_in_lav_sort_fin ()
+private function long u_set_dati_barcode_figlio (ref datastore kds_1) throws uo_exception
+private function long u_set_dati_note (ref datastore kds_1) throws uo_exception
+public function datastore set_ds_report_24_pilota_prev_lav () throws uo_exception
+private function string u_get_fila (st_tab_barcode kst_tab_barcode) throws uo_exception
+private function long u_set_ds_report_24_pilota_prev_lav () throws uo_exception
+private function long u_set_id_meca (ref datastore kds_1) throws uo_exception
+public subroutine set_ds_report_3_pilota_pallet_in_lav (ref datastore kds_1) throws uo_exception
+public subroutine set_ds_report_2_pilota_queue_prev (ref datastore kds_1) throws uo_exception
 end prototypes
 
 public subroutine _readme ();//
-//--- Get dati dal PILOTA insieme ai dati di M2000
+//--- Report dati PILOTA insieme ai dati di M2000
 //
 end subroutine
 
@@ -57,69 +71,37 @@ st_tab_barcode kst_tab_barcode, kst_tab_barcode_app
 
 		for k_riga = 1 to k_righe
 			
-			kds_1.object.id_meca[k_riga] = 0
-			kds_1.object.k_data_lav_ini[k_riga] = date(0) //setnull(kst_tab_barcode.data_lav_ini)
-			kds_1.object.k_ora_lav_ini[k_riga] = time(0) //setnull(kst_tab_barcode.ora_lav_ini)
-			kds_1.object.k_dataora_lav_prev_fin[k_riga] = datetime(date(0), time(0))
 			kds_1.object.k_colli[k_riga] = "" 
 			
 			kst_tab_barcode.barcode = kds_1.object.barcode[k_riga]
+			kst_tab_barcode.id_meca = kds_1.object.id_meca[k_riga] 
 
-			select distinct
-					barcode.id_meca
-					,barcode.data_lav_ini
-					,barcode.ora_lav_ini
-				into
-					:kst_tab_barcode.id_meca
-					,:kst_tab_barcode.data_lav_ini
-					,:kst_tab_barcode.ora_lav_ini
-				from barcode
-				where barcode.barcode = :kst_tab_barcode.barcode 
-				using kguo_sqlca_db_magazzino;
-		
-			if kguo_sqlca_db_magazzino.sqlcode = 0 then
+			if kst_tab_barcode.id_meca > 0 and kst_tab_barcode.id_meca <> kst_tab_barcode_app.id_meca then
+				
+				kst_tab_barcode_app.id_meca = kst_tab_barcode.id_meca
 
-				if kst_tab_barcode.id_meca > 0 and kst_tab_barcode.id_meca <>kst_tab_barcode_app.id_meca then
-					kst_tab_barcode_app.id_meca = kst_tab_barcode.id_meca
-
-					select count(*)
+				select count(*)
 						into :k_colli
 						from barcode
 						where barcode.id_meca = :kst_tab_barcode.id_meca
 						using kguo_sqlca_db_magazzino;
 						
-					if isnull(k_colli) then k_colli = 0
+				if isnull(k_colli) then k_colli = 0
 					
-					k_data = kkg.data_no
-					select count(*)
+				k_data = kkg.data_no
+				select count(*)
 						into :k_colli_tr
 						from barcode
 						where barcode.id_meca = :kst_tab_barcode.id_meca and barcode.data_lav_fin > :k_data 
 						using kguo_sqlca_db_magazzino;
-					if isnull(k_colli_tr) then k_colli_tr = 0
+				if isnull(k_colli_tr) then k_colli_tr = 0
 					
-				end if
-				
 			end if
 			
-			if kst_tab_barcode.id_meca > 0 then
-			
-				if kst_tab_barcode.id_meca > 0 then
-					kds_1.object.id_meca[k_riga] = kst_tab_barcode.id_meca
-				end if
-				if kst_tab_barcode.data_lav_ini > kkg.data_no then
-					kds_1.object.k_data_lav_ini[k_riga] = kst_tab_barcode.data_lav_ini
-				end if
-				if kst_tab_barcode.ora_lav_ini > time(0) then
-					kds_1.object.k_ora_lav_ini[k_riga] = kst_tab_barcode.ora_lav_ini
-				end if
-	
-				if k_colli > 0 then
-					kds_1.object.k_colli[k_riga] = trim(string(k_colli_tr)) + " . " + trim(string(k_colli)) 
-				end if
-	
+			if k_colli > 0 then
+				kds_1.object.k_colli[k_riga] = trim(string(k_colli_tr)) + " . " + trim(string(k_colli)) 
 			end if
-			
+	
 		end for
 
 	catch (uo_exception kuo_exception)
@@ -243,7 +225,7 @@ st_tab_meca kst_tab_meca, kst_tab_meca_app
 						kds_1.object.data_int[k_riga] = kst_tab_meca.data_int
 					end if
 					if not isnull(kst_tab_meca.consegna_data) then
-						kds_1.object.k_consegna_data[k_riga] = string(kst_tab_meca.consegna_data,"dd.mm.yy")
+						kds_1.object.k_consegna_data[k_riga] = kst_tab_meca.consegna_data
 					end if
 	
 				end if
@@ -264,94 +246,70 @@ return k_righe
 
 end function
 
-private function long u_set_dati_avgtimeplant (ref datastore kds_1) throws uo_exception;//
+private function long u_set_dati_barcode_figlio (ref datastore kds_1) throws uo_exception;//
 //======================================================================
-//=== Aggiunge dati i tempi medi di uscita impiano al ds
+//=== Aggiunge dati del barcode figlio al ds
 //======================================================================
-//
 //
 long k_righe=0, k_riga=0
-long k_riga_avgtimeplant
-datetime k_dataora_lav_fin_prev, k_dataora_lav_ini
-st_tab_barcode kst_tab_barcode
-st_tab_s_avgtimeplant kst_tab_s_avgtimeplant_avg, kst_tab_s_avgtimeplant_min, kst_tab_s_avgtimeplant_max
+st_tab_meca kst_tab_meca_figlio, kst_tab_meca_app_figlio
+st_tab_barcode kst_tab_barcode_figlio
+st_tab_clienti kst_tab_clienti_figlio
 
 	
 	try
-		
-		if not isvalid(kiuf_utility) then kiuf_utility = create kuf_utility
-		
-		if not isvalid(kids_barcode_avgtimeplant)  then
-			kids_barcode_avgtimeplant = create datastore
-			kids_barcode_avgtimeplant.dataobject = "ds_barcode_avgtimeplant"
-			kids_barcode_avgtimeplant.SetTransObject(kguo_sqlca_db_magazzino)
-			k_righe = kids_barcode_avgtimeplant.retrieve()
-			if k_righe < 0 then
-				kguo_exception.inizializza( )
-				kguo_exception.kist_esito.sqlcode = k_righe
-				kguo_exception.kist_esito.esito = kkg_esito.db_ko
-				kguo_exception.kist_esito.sqlerrtext = "Anomalia in lettura dati tempi medi di trattamento per giro"
-				throw kguo_exception
-			end if
-		end if
+			
 		k_righe = kds_1.rowcount()
 
 		for k_riga = 1 to k_righe
 
-			kds_1.object.k_dataora_lav_prev_fin[k_riga] = datetime(date(0), time(0))
-
-			kst_tab_barcode.data_lav_ini = kds_1.getitemdate(k_riga, "k_data_lav_ini")
-			if kst_tab_barcode.data_lav_ini > kkg.data_no then
+//--- get dati barcode figlio
+			kst_tab_meca_figlio.clie_2 = 0
+			kst_tab_barcode_figlio.barcode = trim(kds_1.object.barcode_figlio[k_riga])
+			if kst_tab_barcode_figlio.barcode > " " then
+				select distinct
+						barcode.id_meca
+					into
+						:kst_tab_meca_figlio.id
+					from barcode
+					where barcode.barcode = :kst_tab_barcode_figlio.barcode 
+					using kguo_sqlca_db_magazzino;
+	
+	
+				if kst_tab_meca_figlio.id <> kst_tab_meca_app_figlio.id then
+					kst_tab_meca_app_figlio.id = kst_tab_meca_figlio.id
 				
-				kst_tab_barcode.ora_lav_ini = kds_1.getitemtime(k_riga, "k_ora_lav_ini")
-
-				if IsNumber(trim(kds_1.object.f1avp[k_riga])) then
-					kst_tab_barcode.fila_1 = integer(trim(kds_1.object.f1avp[k_riga]))
-				end if
-				if IsNumber(trim(kds_1.object.f2avp[k_riga])) then
-					kst_tab_barcode.fila_2 = integer(trim(kds_1.object.f2avp[k_riga]))
-				end if
-				if IsNumber(trim(kds_1.object.f1app[k_riga])) then
-					kst_tab_barcode.fila_1p = integer(trim(kds_1.object.f1app[k_riga]))
-				end if
-				if IsNumber(trim(kds_1.object.f2app[k_riga])) then
-					kst_tab_barcode.fila_2p = integer(trim(kds_1.object.f2app[k_riga]))
-				end if
-				
-				k_riga_avgtimeplant = kids_barcode_avgtimeplant.find( "giri_f1 = " + string(kst_tab_barcode.fila_1) &
-																+ " and giri_f1p = " + string(kst_tab_barcode.fila_1p) &
-																+ " and giri_f2 = " + string(kst_tab_barcode.fila_2) &
-																+ " and giri_f2p = " + string(kst_tab_barcode.fila_2p) &
-																,1 , kids_barcode_avgtimeplant.rowcount( ), primary!)
-				
-				if k_riga_avgtimeplant > 0 then
-					
-					kst_tab_s_avgtimeplant_avg.time_io_minute = kids_barcode_avgtimeplant.getitemnumber(k_riga_avgtimeplant, "k_time_io_minute_avg")
-					kst_tab_s_avgtimeplant_min.time_io_minute = kids_barcode_avgtimeplant.getitemnumber(k_riga_avgtimeplant, "k_time_io_minute_min")
-					kst_tab_s_avgtimeplant_max.time_io_minute = kids_barcode_avgtimeplant.getitemnumber(k_riga_avgtimeplant, "k_time_io_minute_max")
-					kds_1.setitem(k_riga, "k_time_io_minute", kst_tab_s_avgtimeplant_avg.time_io_minute)
-		
-					k_dataora_lav_ini = datetime(kst_tab_barcode.data_lav_ini, kst_tab_barcode.ora_lav_ini)
-		//--- calcola le previsioni aggiungendo i minuti previsti per l'uscita
-					k_dataora_lav_fin_prev = kiuf_utility.u_datetime_after_minute(k_dataora_lav_ini, kst_tab_s_avgtimeplant_avg.time_io_minute)
-					if date(k_dataora_lav_fin_prev) > kkg.data_no then
-						kds_1.setitem(k_riga, "k_dataora_lav_prev_fin", k_dataora_lav_fin_prev)
-						
+					select distinct
+								meca.clie_2
+								,clienti.rag_soc_10
+						into
+								:kst_tab_meca_figlio.clie_2
+								,:kst_tab_clienti_figlio.rag_soc_10
+						from 
+							  meca inner join clienti on
+								 meca.clie_2 = clienti.codice 
+						where meca.id = :kst_tab_meca_figlio.id 
+						using kguo_sqlca_db_magazzino;
+			
+					if kguo_sqlca_db_magazzino.sqlcode = 0 then
+					else
+						kst_tab_clienti_figlio.rag_soc_10 = trim(kguo_sqlca_db_magazzino.sqlerrtext)
 					end if
-					k_dataora_lav_fin_prev = kiuf_utility.u_datetime_after_minute(k_dataora_lav_ini, kst_tab_s_avgtimeplant_min.time_io_minute)
-					if date(k_dataora_lav_fin_prev) > kkg.data_no then
-						kds_1.setitem(k_riga, "k_dataora_lav_prev_fin_min", k_dataora_lav_fin_prev)
-						
-					end if
-					k_dataora_lav_fin_prev = kiuf_utility.u_datetime_after_minute(k_dataora_lav_ini, kst_tab_s_avgtimeplant_max.time_io_minute)
-					if date(k_dataora_lav_fin_prev) > kkg.data_no then
-						kds_1.setitem(k_riga, "k_dataora_lav_prev_fin_max", k_dataora_lav_fin_prev)
-						
-					end if
-					
 				end if
-				
-			end if			
+			end if
+			if trim(kst_tab_clienti_figlio.rag_soc_10) > " " then
+			else
+				kst_tab_clienti_figlio.rag_soc_10 = ""
+			end if
+			
+			if kst_tab_meca_figlio.id > 0 then
+			
+				if kst_tab_meca_figlio.clie_2 > 0 then
+					kds_1.object.k_rag_soc_figlio[k_riga] = kst_tab_clienti_figlio.rag_soc_10 + " (" + string(kst_tab_meca_figlio.clie_2,"#") + ")"
+				end if
+	
+			end if
+			
 		end for
 
 	catch (uo_exception kuo_exception)
@@ -367,7 +325,235 @@ return k_righe
 
 end function
 
-public function datastore u_get_barcode_in_lav_all_data () throws uo_exception;//---
+private function long u_set_dati_note (ref datastore kds_1) throws uo_exception;//
+//======================================================================
+//=== Aggiunge dati Note armo al ds
+//======================================================================
+//
+//
+long k_righe=0, k_riga=0
+st_tab_armo kst_tab_armo
+st_tab_meca kst_tab_meca
+	
+	try
+			
+		k_righe = kds_1.rowcount()
+
+		for k_riga = 1 to k_righe
+
+			kst_tab_meca.id = kds_1.object.id_meca[k_riga]
+
+			if kst_tab_meca.id > 0 then
+
+//--- acchiappa le note dalle righe Riferimento
+				select distinct
+							max(armo.note_1)
+							,max(armo.note_2)
+							,max(armo.note_3)
+					into
+							:kst_tab_armo.note_1
+							,:kst_tab_armo.note_2
+							,:kst_tab_armo.note_3
+					from armo
+					where armo.id_meca = :kst_tab_meca.id 
+					using kguo_sqlca_db_magazzino;
+
+			
+		
+				if kguo_sqlca_db_magazzino.sqlcode = 0 then
+					if trim(kst_tab_armo.note_1) > " " then
+						kst_tab_armo.note_1 = trim(kst_tab_armo.note_1)
+					else
+						kst_tab_armo.note_1 = ""
+					end if
+					if trim(kst_tab_armo.note_2) > " " then
+						kst_tab_armo.note_1 += " " + trim(kst_tab_armo.note_2)
+					end if
+					if trim(kst_tab_armo.note_1) > " " then
+						kds_1.object.k_note_2[k_riga] = trim(kst_tab_armo.note_1)
+					end if
+					
+				end if
+			end if
+			
+		end for
+
+	catch (uo_exception kuo_exception)
+		throw kuo_exception
+
+	finally
+
+	end try
+		
+
+return k_righe
+	
+
+end function
+
+public function datastore set_ds_report_24_pilota_prev_lav () throws uo_exception;//---
+//--- Legge i barcode in lavoraz. e programmazione nel PILOTA calcola previsione di inizio e fine lav per Lotto
+//---
+//
+int k_rc, k_ctr
+long k_rows
+string k_sql_orig, k_string, k_stringn
+kuf_pilota_previsioni kuf1_pilota_previsioni
+
+try 
+	
+	if not isvalid(kids_d_report_24_pilota_prev_lav) then
+		kids_d_report_24_pilota_prev_lav = create datastore
+		kids_d_report_24_pilota_prev_lav.dataobject = ki_ds_pilota_prev_lav_dataobject
+
+		k_sql_orig = kids_d_report_24_pilota_prev_lav.Object.DataWindow.Table.Select 
+
+		kuf1_pilota_previsioni = create kuf_pilota_previsioni
+		ki_temptab_pilota_prev_lav = kuf1_pilota_previsioni.get_temptab_pilota_prev_lav( )
+		k_stringn = ki_temptab_pilota_prev_lav //string(kguo_utente.get_id_utente( ))
+		
+		kguf_data_base.u_set_ds_change_name_tab(kids_d_report_24_pilota_prev_lav, "vx_MAST_pilota_prev_lav", ki_temptab_pilota_prev_lav)
+			
+		k_rc = kids_d_report_24_pilota_prev_lav.settransobject(kguo_sqlca_db_magazzino)
+		if k_rc < 0 then
+			kguo_exception.inizializza( )
+			kguo_exception.kist_esito.sqlcode = k_rc
+			kguo_exception.kist_esito.esito = kkg_esito.db_ko
+			kguo_exception.kist_esito.sqlerrtext = "Errore in connessione per previsione data inizio-fine lavorazione barcode in impianto per Lotto. Il server di Magazzino sembra non rispondere. Operazione Interrotta!"
+			throw kguo_exception
+		end if
+	end if
+	
+	u_set_ds_report_24_pilota_prev_lav( )
+
+catch (uo_exception kuo_exception)
+	throw kguo_exception
+	
+finally
+	
+end try
+
+return kids_d_report_24_pilota_prev_lav
+end function
+
+private function string u_get_fila (st_tab_barcode kst_tab_barcode) throws uo_exception;//
+//--------------------------------------------------------------------------------------
+//--- Get della FILA dal ds :
+//---  
+//--- Inp: st_tab_barcode con i campi fila valorizzati
+//--- Out: nr FILA
+//--------------------------------------------------------------------------------------
+//
+//
+string k_fila=""
+
+	
+	try
+		
+		if kst_tab_barcode.fila_1 > 0 then
+			k_fila = "1"
+		end if
+		if k_fila = "" then
+			if kst_tab_barcode.fila_1p > 0 then
+				k_fila = "1"
+			end if
+		end if
+		if k_fila = "" then
+			if kst_tab_barcode.fila_2 > 0 then
+				k_fila = "2"
+			end if
+		end if
+		if k_fila = "" then
+			if kst_tab_barcode.fila_2p > 0 then
+				k_fila = "2"
+			end if
+		end if
+		
+	catch (uo_exception kuo_exception)
+		throw kuo_exception
+
+	finally
+
+	end try
+		
+
+return k_fila
+	
+
+end function
+
+private function long u_set_ds_report_24_pilota_prev_lav () throws uo_exception;//
+//----------------------------------------------------------------------------------------
+//--- Popola ds data inizio-fine lavorazione previste x Lotto
+//---
+//----------------------------------------------------------------------------------------
+//
+//
+long k_righe=0
+
+ 	
+	try
+
+		k_righe = kids_d_report_24_pilota_prev_lav.retrieve( )
+		
+	catch (uo_exception kuo_exception)
+		throw kuo_exception
+
+	finally
+
+	end try
+		
+
+return k_righe
+	
+
+end function
+
+private function long u_set_id_meca (ref datastore kds_1) throws uo_exception;//
+//======================================================================
+//=== Aggiunge id_meca al ds
+//======================================================================
+//
+long k_righe=0, k_riga=0
+st_tab_barcode kst_tab_barcode
+	
+	try
+			
+		k_righe = kds_1.rowcount()
+
+		for k_riga = 1 to k_righe
+			
+			kst_tab_barcode.barcode = kds_1.object.barcode[k_riga]
+
+			select distinct
+					barcode.id_meca
+				into
+					:kst_tab_barcode.id_meca
+				from barcode
+				where barcode.barcode = :kst_tab_barcode.barcode 
+				using kguo_sqlca_db_magazzino;
+
+			if kguo_sqlca_db_magazzino.sqlcode <> 0 then
+				kst_tab_barcode.id_meca = 0 
+			end if
+			kds_1.setitem(k_riga, "id_meca", kst_tab_barcode.id_meca)
+
+		end for
+
+	catch (uo_exception kuo_exception)
+		throw kuo_exception
+
+	finally
+
+	end try
+		
+
+return k_righe
+	
+
+end function
+
+public subroutine set_ds_report_3_pilota_pallet_in_lav (ref datastore kds_1) throws uo_exception;//---
 //--- Legge i barcode in lavorazione nel PILOTA e add all data from M2000
 //---
 //
@@ -376,14 +562,16 @@ long k_rows
 
 try 
 	
-	u_get_barcode_in_lav()
+	kids_d_report_3_pilota_pallet_in_lav = kds_1
 	
-	if kids_d_report_3_pilota_pallet_in_lav.rowcount( ) > 0 then
-	
+	if kids_d_report_3_pilota_pallet_in_lav.rowcount() > 0 then
+		
+		u_set_id_meca(kids_d_report_3_pilota_pallet_in_lav)
 		u_set_dati_barcode(kids_d_report_3_pilota_pallet_in_lav)
 		u_set_dati_meca(kids_d_report_3_pilota_pallet_in_lav)
 		u_set_dati_clie(kids_d_report_3_pilota_pallet_in_lav)
-		u_set_dati_avgtimeplant(kids_d_report_3_pilota_pallet_in_lav)
+
+		//u_set_dataora_lav_prev_fin(kids_d_report_3_pilota_pallet_in_lav)
 
 	end if
 
@@ -395,39 +583,30 @@ finally
 	
 end try
 
-return kids_d_report_3_pilota_pallet_in_lav
-end function
+//return kids_d_report_3_pilota_pallet_in_lav
+end subroutine
 
-public function datastore u_get_barcode_in_lav () throws uo_exception;//---
-//--- Legge i barcode in lavorazione nel PILOTA
+public subroutine set_ds_report_2_pilota_queue_prev (ref datastore kds_1) throws uo_exception;//---
+//--- Legge i barcode in programmazione nel PILOTA e add all data from M2000
 //---
 //
 int k_rc
 long k_rows
 
 try 
-	if not isvalid(kids_d_report_3_pilota_pallet_in_lav) then
-		kids_d_report_3_pilota_pallet_in_lav = create datastore
-		kids_d_report_3_pilota_pallet_in_lav.dataobject = ki_ds_pilota_pallet_in_lav_dataobject
-		k_rc = kids_d_report_3_pilota_pallet_in_lav.settrans(kguo_sqlca_db_pilota)
-		//k_rc = kids_d_report_3_pilota_pallet_in_lav.settransobject(kguo_sqlca_db_pilota)
-		if k_rc < 0 then
-			kguo_exception.inizializza( )
-			kguo_exception.kist_esito.sqlcode = k_rc
-			kguo_exception.kist_esito.esito = kkg_esito.db_ko
-			kguo_exception.kist_esito.sqlerrtext = "Errore di connessione per leggere i barcode in lavorazione in impianto. Il server del PILOTA sembra non rispondere. Operazione Interrotta!"
-			throw kguo_exception
-		end if
-	end if
-
-	k_rows	= kids_d_report_3_pilota_pallet_in_lav.retrieve(date(0))
-
-	if k_rows < 0 then
-		kguo_exception.inizializza( )
-		kguo_exception.kist_esito.sqlcode = k_rows
-		kguo_exception.kist_esito.esito = kkg_esito.db_ko
-		kguo_exception.kist_esito.sqlerrtext = "Errore in lettura barcode in lavorazione in impianto. Il server del PILOTA sembra non rispondere. Operazione Interrotta!"
-		throw kguo_exception
+	
+	//u_get_barcode_queue()
+	kids_d_report_2_pilota_queue_table = kds_1
+	
+	if kids_d_report_2_pilota_queue_table.rowcount( ) > 0 then
+	
+		u_set_id_meca(kids_d_report_2_pilota_queue_table)
+		u_set_dati_barcode(kids_d_report_2_pilota_queue_table)
+		u_set_dati_meca(kids_d_report_2_pilota_queue_table)
+		u_set_dati_clie(kids_d_report_2_pilota_queue_table)
+		u_set_dati_barcode_figlio(kids_d_report_2_pilota_queue_table)
+		u_set_dati_note(kids_d_report_2_pilota_queue_table)
+		
 	end if
 
 
@@ -438,165 +617,8 @@ finally
 	
 end try
 
-return kids_d_report_3_pilota_pallet_in_lav
-end function
-
-private function long u_get_row_ds_in_lav_last (integer k_fila);//
-//--- Restituisce la riga del ds con la previsione del primo barcode in uscita da Fila indicata
-//--- inp: numero fila 1 o 2
-//--- out: nr riga del ds con la data media di uscita più bassa
-//
-long k_return 
-long k_rows
-long k_row
-string k_fila_x
-datetime k_time_in_lav_last
-
-
-k_rows = kids_d_report_3_pilota_pallet_in_lav.rowcount()
-
-if k_rows > 0 then
-
-	if k_fila = 1 then
-		k_fila_x = "f1"
-	else
-		k_fila_x = "f2"
-	end if
-
-	if trim(kids_d_report_3_pilota_pallet_in_lav.getitemstring(1, (k_fila_x + "avp"))) > "00" or trim(kids_d_report_3_pilota_pallet_in_lav.getitemstring(1, (k_fila_x + "app"))) > "00" then
-		k_time_in_lav_last = kids_d_report_3_pilota_pallet_in_lav.getitemdatetime(1, "k_dataora_lav_prev_fin")
-		k_return = 1
-	end if
-	
-	for k_row = 2 to k_rows
-		
-		if trim(kids_d_report_3_pilota_pallet_in_lav.getitemstring(k_row, (k_fila_x + "avp"))) > "00" or trim(kids_d_report_3_pilota_pallet_in_lav.getitemstring(k_row, (k_fila_x + "app"))) > "00" then
-			if k_time_in_lav_last > kids_d_report_3_pilota_pallet_in_lav.getitemdatetime(k_row, "k_dataora_lav_prev_fin") then
-				
-				k_return = k_row
-				
-				k_time_in_lav_last = kids_d_report_3_pilota_pallet_in_lav.getitemdatetime(k_row, "k_dataora_lav_prev_fin")
-				
-			end if
-		end if
-		
-	next
-
-end if
-
-return k_return
-end function
-
-public function st_report_pilota u_get_st_report_pilota_in_lav_last_f1 ();//
-//--- Restituisce i dati nella struttura st_report_pilota di previsione del primo barcode in uscita da Fila 1
-//--- inp:
-//--- out: st_report_data con le date di previsione impostate
-//
-long k_row
-st_report_pilota kst_report_pilota 
-
-
-	k_row = u_get_row_ds_in_lav_last_f1()
-	
-	kst_report_pilota = u_get_st_report_pilota_in_lav_last(k_row)
-	
-
-return kst_report_pilota
-end function
-
-private function st_report_pilota u_get_st_report_pilota_in_lav_last (long k_row);//
-//--- Restituisce i dati nella struttura st_report_pilota di previsione del primo barcode in uscita 
-//--- inp: nr. riga da cui prendere i dati
-//--- out: st_report_data con le date di previsione impostate
-//
-st_report_pilota kst_report_pilota 
-
-	
-	if k_row > 0 then
-		
-		kst_report_pilota.dataora_lav_prev_fin = kids_d_report_3_pilota_pallet_in_lav.getitemdatetime( k_row, "k_dataora_lav_prev_fin")
-		kst_report_pilota.dataora_lav_prev_fin_min = kids_d_report_3_pilota_pallet_in_lav.getitemdatetime( k_row, "k_dataora_lav_prev_fin_min")
-		kst_report_pilota.dataora_lav_prev_fin_max = kids_d_report_3_pilota_pallet_in_lav.getitemdatetime( k_row, "k_dataora_lav_prev_fin_max")
-		
-	end if
-
-
-return kst_report_pilota
-end function
-
-public function st_report_pilota u_get_st_report_pilota_in_lav_last_f2 ();//
-//--- Restituisce i dati nella struttura st_report_pilota di previsione del primo barcode in uscita da Fila 2
-//--- inp:
-//--- out: st_report_data con le date di previsione impostate
-//
-long k_row
-st_report_pilota kst_report_pilota 
-
-
-	k_row = u_get_row_ds_in_lav_last_f2()
-	
-	kst_report_pilota = u_get_st_report_pilota_in_lav_last(k_row)
-	
-
-return kst_report_pilota
-end function
-
-private function long u_get_row_ds_in_lav_last_f1 ();//
-//--- Restituisce la riga del ds con la previsione del primo barcode in uscita da Fila 1
-//--- inp:
-//--- out: nr riga del ds con la data media di uscita più bassa
-//
-long k_return 
-
-
-	k_return = u_get_row_ds_in_lav_last(1)
-
-
-return k_return
-end function
-
-private function long u_get_row_ds_in_lav_last_f2 ();//
-//--- Restituisce la riga del ds con la previsione del primo barcode in uscita da Fila 2
-//--- inp:
-//--- out: nr riga del ds con la data media di uscita più bassa
-//
-long k_return 
-
-
-	k_return = u_get_row_ds_in_lav_last(2)
-
-
-return k_return
-end function
-
-private function datastore u_get_st_report_pilota_in_lav_sort_fin ();//
-//--- Restituisce il ds ordinato per data prevista di uscita materiale 
-//--- inp:
-//--- out: datastore ds_d_report_3_pilota_pallet_in_lav
-//
-datastore kds_d_report_3_pilota_pallet_in_lav
-long k_row, k_rows
-
-
-	kds_d_report_3_pilota_pallet_in_lav = create datastore
-	kds_d_report_3_pilota_pallet_in_lav.dataobject = kids_d_report_3_pilota_pallet_in_lav.dataobject
-
-	kids_d_report_3_pilota_pallet_in_lav.setfilter( "f1avp = '00' or f1avp = '' ")
-	kids_d_report_3_pilota_pallet_in_lav.filter( )
-	k_rows = kids_d_report_3_pilota_pallet_in_lav.rowcount( )
-	
-	if k_row > 0 then
-
-		kids_d_report_3_pilota_pallet_in_lav.setsort("k_dataora_lav_prev_fin asc")
-		kids_d_report_3_pilota_pallet_in_lav.sort( )
-		
-		kids_d_report_3_pilota_pallet_in_lav.rowscopy( 1, k_rows, primary!, kds_d_report_3_pilota_pallet_in_lav, 1, primary!)
-
-	end if
-
-
-return kds_d_report_3_pilota_pallet_in_lav
-end function
+//return kids_d_report_2_pilota_queue_table
+end subroutine
 
 on kuf_report_pilota.create
 call super::create
@@ -610,7 +632,10 @@ end on
 
 event destructor;//
 	if isvalid(kids_d_report_3_pilota_pallet_in_lav) then destroy kids_d_report_3_pilota_pallet_in_lav 
+	if isvalid(kids_d_report_2_pilota_queue_table) then destroy kids_d_report_2_pilota_queue_table 
+	if isvalid(kids_d_report_24_pilota_prev_lav) then destroy kids_d_report_24_pilota_prev_lav 
 	if isvalid(kids_barcode_avgtimeplant) then destroy kids_barcode_avgtimeplant 
+	if isvalid(kids_ds_queue_lav_xfila) then destroy kids_ds_queue_lav_xfila
 	if isvalid(kiuf_utility) then destroy kiuf_utility 
 
 end event

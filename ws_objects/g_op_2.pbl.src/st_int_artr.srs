@@ -51,5 +51,6 @@ global type st_int_artr from structure
 	integer		gru_flag		descriptor "comment" = "tipo estrazione 2=tutti i gruppi"
 	integer		gru_attiva		descriptor "comment" = "flag x attivare/disattivare estrazione dati gruppo"
 	string		non_entrati		descriptor "comment" = "S=estrae lotti senza la data_ent"
+	string		xcliente		descriptor "comment" = "1 = estrae dati clienti"
 end type
 

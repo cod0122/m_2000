@@ -21,7 +21,7 @@ public datastore kids_report_merce_da_sped
 
 end variables
 
-forward prototypes 
+forward prototypes
 private subroutine db_crea_view_spediti (st_report_merce_da_sped kst_report_merce_da_sped) throws uo_exception
 public subroutine get_st_report_merce_da_sped (ref st_report_merce_da_sped kst_report_merce_da_sped) throws uo_exception
 private subroutine db_crea_view_trattati (st_report_merce_da_sped kst_report_merce_da_sped) throws uo_exception
@@ -52,7 +52,7 @@ kpointer = SetPointer(HourGlass!)
 	kuf1_utility = create kuf_utility
 
 //--- costruisco la view elenco  ID_MECA delle Bolle emesse 
-	k_view = "vx_" + trim(kguo_utente.get_comp()) + "_merce_da_sped_Spediti "
+	k_view = kguf_data_base.u_get_nometab_xutente("merce_da_sped_Spediti")
 	k_sql = " "                                   
 	k_sql = + &
 	"CREATE VIEW " + trim(k_view) &
@@ -64,9 +64,6 @@ kpointer = SetPointer(HourGlass!)
 	 + "  WHERE "   &
 	             + " armo.id_meca  >=   "  + string(kst_report_merce_da_sped.k_id_meca_da) + "   "     &
                  + " group by  armo.id_meca, armo.id_armo " 
-//	 + "ORDER BY sped.data_bolla_out ASC,     " &
-//	 + "         sped.num_bolla_out ASC     " 
-//	 + "    and id_armo in ( select id_armo from   vx_" + trim(kguo_utente.get_comp()) + "_art50_entrate_l )     " &
 
 	kst_esito = kguo_sqlca_db_magazzino.db_crea_view(1, k_view, k_sql)		
 
@@ -117,7 +114,7 @@ kpointer = SetPointer(HourGlass!)
 
 
 //--- costruisco la view con ID_MECA delle fatture emesse da data a data
-	k_view = "vx_" + trim(kguo_utente.get_comp()) + "_merce_da_sped_Trattati "
+	k_view =  kguf_data_base.u_get_nometab_xutente("merce_da_sped_Trattati")
 	k_sql = " "                                   
 	k_sql = + &
 	"CREATE VIEW " + trim(k_view) &
@@ -131,7 +128,7 @@ kpointer = SetPointer(HourGlass!)
 	 + "    FROM armo inner join artr on armo.id_armo = artr.id_armo  " &
 	 +                        " left outer join certif on artr.num_certif =  certif.num_certif  " &
 	 + "   WHERE       " &
-	 + "          armo.id_meca  >=   "  + string(kst_report_merce_da_sped.k_id_meca_da) + "  "     &
+	 + "          armo.id_meca  >=  "  + string(kst_report_merce_da_sped.k_id_meca_da) + "  "     &
 	 + " GROUP BY armo.id_meca,     " &
 			 + " armo.id_armo,  " & 
 			 + " artr.num_certif,   " & 
@@ -205,7 +202,7 @@ kuf1_utility = create kuf_utility
 
 
 //--- costruisco la view con ID_MECA delle fatture emesse da data a data
-	k_view = "vx_" + trim(kguo_utente.get_comp())  + "_merce_da_sped_elenco_l_1 "
+	k_view = kguf_data_base.u_get_nometab_xutente("merce_da_sped_elenco_l_1")
 	k_sql = " "                                   
 	k_sql = + &
 	"CREATE VIEW " + trim(k_view) &
@@ -265,34 +262,15 @@ kuf1_utility = create kuf_utility
 																	 + " coalesce(meca.e1rorn, 0) " &
                                                     + ",coalesce(meca.e1srst, 'NC') " &   
 	                          + "   FROM ((((((( meca INNER JOIN  armo ON ( meca.id =  armo.id_meca)) " &
-	                                               + " LEFT JOIN vx_" + trim(kguo_utente.get_comp()) + "_merce_da_sped_Trattati as Trattati ON armo.id_armo = Trattati.id_armo) " &
-	                                               + " LEFT JOIN vx_" + trim(kguo_utente.get_comp()) + "_merce_da_sped_daNonTrattare as daNonTrattare ON  armo.id_armo= daNonTrattare.id_armo)" &
-	                                               + " LEFT JOIN vx_" + trim(kguo_utente.get_comp()) + "_merce_da_sped_Spediti as sped ON armo.id_armo =  sped.id_armo)  " &
-	                                               + " LEFT JOIN vx_" + trim(kguo_utente.get_comp()) + "_merce_da_sped_NoMag as NoMag ON armo.id_armo =  NoMag.id_armo)  " &
+	                                               + " LEFT JOIN " + kguf_data_base.u_get_nometab_xutente("merce_da_sped_Trattati") + " as Trattati ON armo.id_armo = Trattati.id_armo) " &
+	                                               + " LEFT JOIN " + kguf_data_base.u_get_nometab_xutente("merce_da_sped_daNonTrattare") + " as daNonTrattare ON  armo.id_armo= daNonTrattare.id_armo)" &
+	                                               + " LEFT JOIN " + kguf_data_base.u_get_nometab_xutente("merce_da_sped_Spedit") + "i as sped ON armo.id_armo =  sped.id_armo)  " &
+	                                               + " LEFT JOIN " + kguf_data_base.u_get_nometab_xutente("merce_da_sped_NoMag") + " as NoMag ON armo.id_armo =  NoMag.id_armo)  " &
 	                                               + " INNER JOIN  clienti AS  clienti_1 ON  meca.clie_1 =  clienti_1.codice)  " &
 	                                               + " INNER JOIN  clienti AS  clienti_2 ON  meca.clie_2 =  clienti_2.codice) " &
 	                          + "   WHERE "  &
 	                          + "    meca.id  >=  "  + string(kst_report_merce_da_sped.k_id_meca_da)  + "   "    &
                              + "    and (meca.aperto is null or meca.aperto <> '" + kuf1_armo.kki_meca_aperto_no     + "') " 
-//	                          + "   group by " &
-//	                                                   + " meca.id, " &
-//	                                                   + " meca.num_int,  " &
-//	                                                   + " meca.data_int, " &
-//	                                                   + " meca.clie_1, " &
-//	                                                   + " clienti_1.rag_soc_10 , " &
-//	                                                   + " meca.clie_2, " &
-//	                                                   + " clienti_2.rag_soc_10 , " &
-//	                                                   + " meca.clie_3, " &
-//	                                                   + " meca.num_bolla_in, " &
-//	                                                   + " meca.consegna_data, " &
-//	                                                   + " Trattati.data_stampa, " &
-// 	                                                   + " armo.art, " &
-//	                                                   + " Trattati.num_certif, " &
-//	                                                   + " sped.colli_sped, " &
-//	                                                   + " Trattati.colli_trattati, " &
-//	                                                   + " Trattati.colli_groupage, " &
-//	                          + "         daNonTrattare.colli_daNonTrattare, " &
-//	                          + "         NoMag.colli_NoMag " 
 
 	 
 	kst_esito = kguo_sqlca_db_magazzino.db_crea_view(1, k_view, k_sql)		
@@ -336,7 +314,7 @@ kpointer = SetPointer(HourGlass!)
 	k_dataMeno365 = relativedate(KG_dataoggi, -365)
 
 //--- costruisco la view con ID_MECA delle fatture emesse da data a data
-	k_view = "vx_" + trim(kguo_utente.get_comp()) + "_merce_da_sped_daNonTrattare "
+	k_view = kguf_data_base.u_get_nometab_xutente("merce_da_sped_daNonTrattare")
 	k_sql = " "                                   
 	k_sql = + &
 	"CREATE VIEW " + trim(k_view) &
@@ -390,7 +368,7 @@ kuf1_utility = create kuf_utility
 
 
 //--- costruisco la view con ID_MECA con la somma dei colli da spedire
-	k_view = "vx_" + trim(kguo_utente.get_comp()) + "_merce_da_sped_elenco_l "
+	k_view = kguf_data_base.u_get_nometab_xutente("merce_da_sped_elenco_l")
 	k_sql = " "                                   
 	k_sql = + &
 	"CREATE VIEW " + trim(k_view) &
@@ -449,7 +427,7 @@ kuf1_utility = create kuf_utility
 	 + "  	e1doco, " &
 	 + "  	e1rorn " &
     + " ,e1srst " &
-	 + "  FROM vx_" + trim(kguo_utente.get_comp()) + "_merce_da_sped_elenco_l_1 "
+	 + "  FROM " + kguf_data_base.u_get_nometab_xutente("merce_da_sped_elenco_l_1") 
 	 
 	kst_esito = kguo_sqlca_db_magazzino.db_crea_view(1, k_view, k_sql)		
 
@@ -504,7 +482,7 @@ kpointer = SetPointer(HourGlass!)
 	kst_tab_armo.magazzino = kuf1_armo.kki_magazzino_DATRATTARE
 
 //--- costruisco la view con ID_MECA delle fatture emesse da data a data
-	k_view = "vx_" + trim(kguo_utente.get_comp()) + "_merce_da_sped_NoMag "
+	k_view = kguf_data_base.u_get_nometab_xutente("merce_da_sped_NoMag")
 	k_sql = " "                                   
 	k_sql = + &
 	"CREATE VIEW " + trim(k_view) &

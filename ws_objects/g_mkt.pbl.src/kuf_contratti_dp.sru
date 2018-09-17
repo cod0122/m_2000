@@ -30,6 +30,7 @@ constant string kki_ATTIVO_no = 'N'
 
 
 end variables
+
 forward prototypes
 public function st_esito anteprima (ref datastore kdw_anteprima, st_tab_contratti_dp kst_tab_contratti_dp)
 public function st_esito anteprima (ref datawindow kdw_anteprima, st_tab_contratti_dp kst_tab_contratti_dp)

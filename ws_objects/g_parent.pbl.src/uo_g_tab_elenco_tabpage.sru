@@ -237,12 +237,7 @@ datastore ds_elenco
 
 	SetPointer(kkg.pointer_attesa)
 
-//--- imposta gli oggetti standard
-//	setta_oggetti()
-
-	//tab_1.tabpage_1.text = trim(ki_st_open_w.key1)
-
-		
+	
 //--- Popolo l'elenco dal datastore passato
 	if kids_elenco_orig.rowcount( ) = 0 then 
 
@@ -260,7 +255,7 @@ datastore ds_elenco
 				dw_1.settrans (kguo_sqlca_db_e1)
 			end if
 		else
-			dw_1.settrans ( sqlca )
+			dw_1.settrans ( kguo_sqlca_db_magazzino )   // default
 		end if
 	
 		dw_sel.dataobject = trim(kist_open_w.key2)

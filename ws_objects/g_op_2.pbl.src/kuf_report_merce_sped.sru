@@ -73,7 +73,7 @@ kguf_data_base.u_set_ds_change_name_tab(kids_report_merce_sped, "vx_mast_merce_s
 	//--- Retrieve Datastore REPORT da restituire
 krc = kids_report_merce_sped.retrieve( kst_report_merce_sped.k_data_da,  kst_report_merce_sped.k_clie_2)
 
-
+krc = 9
 
 end subroutine
 
@@ -97,7 +97,8 @@ kpointer = SetPointer(HourGlass!)
 
 
 //--- costruisco la view 
-	k_view = "vx_" + trim(kguo_utente.get_comp()) + "_merce_sped_id_armo "
+	//k_view = "vx_" + trim(kguo_utente.get_comp()) + "_merce_sped_id_armo "
+	k_view = kguf_data_base.u_get_nometab_xutente("merce_sped_id_armo")
 	k_sql = &
 		"CREATE VIEW " + trim(k_view) &
 		 + " ( id_armo, id_sped, id_arsp) AS   " &
@@ -152,7 +153,8 @@ kpointer = SetPointer(HourGlass!)
 	kuf1_utility = create kuf_utility
 
 //--- costruisco la view elenco  ID_MECA delle Bolle emesse 
-	k_view = "vx_" + trim(kguo_utente.get_comp()) + "_merce_sped_Spediti "
+	//k_view = "vx_" + trim(kguo_utente.get_comp()) + "_merce_sped_Spediti "
+	k_view = kguf_data_base.u_get_nometab_xutente("merce_sped_Spediti")
 	k_sql = " "                                   
 	k_sql = + &
 	"CREATE VIEW " + trim(k_view) &
@@ -162,11 +164,8 @@ kpointer = SetPointer(HourGlass!)
 		 + " sum(arsp.colli), arsp.num_bolla_out, arsp.data_bolla_out, id_sped " &
 	 + "    FROM armo inner join arsp on  armo.id_armo = arsp.id_armo   " &
 	 + "  WHERE "  &
-	 + "          arsp.id_arsp  in   (" +  " select distinct id_arsp from vx_" + trim(kguo_utente.get_comp()) + "_merce_sped_id_armo" + ") "  &
+	 + "          arsp.id_arsp  in   (" +  " select distinct id_arsp from  " + kguf_data_base.u_get_nometab_xutente("merce_sped_id_armo") + ") "  &
 	 + " 	    group by  armo.id_meca, armo.id_armo, num_bolla_out, data_bolla_out, id_sped   " 
-//	 + "ORDER BY sped.data_bolla_out ASC,     " &
-//	 + "         sped.num_bolla_out ASC     " 
-//	 + "    and id_armo in ( select id_armo from   vx_" + trim(kguo_utente.get_comp()) + "_art50_entrate_l )     " &
 
 	kst_esito = kguo_sqlca_db_magazzino.db_crea_view(1, k_view, k_sql)		
 
@@ -207,7 +206,8 @@ kpointer = SetPointer(HourGlass!)
 
 
 //--- costruisco la view 
-	k_view = "vx_" + trim(kguo_utente.get_comp()) + "_merce_sped_Trattati "
+	//k_view = "vx_" + trim(kguo_utente.get_comp()) + "_merce_sped_Trattati "
+	k_view = kguf_data_base.u_get_nometab_xutente("merce_sped_Trattati")
 	k_sql = " "                                   
 	k_sql = + &
 	"CREATE VIEW " + trim(k_view) &
@@ -224,7 +224,7 @@ kpointer = SetPointer(HourGlass!)
           	 +    " inner join artr on arsp.id_armo = artr.id_armo  "   &
           	 +     " left outer join certif on artr.num_certif =  certif.num_certif  " &
 	 + "   WHERE       " &
-	 + "          arsp.id_arsp  in   (" +  " select distinct id_arsp from vx_" + trim(kguo_utente.get_comp()) + "_merce_sped_id_armo" + ") "  &
+	 + "          arsp.id_arsp  in   (" +  " select distinct id_arsp from " + kguf_data_base.u_get_nometab_xutente("merce_sped_id_armo") + ") "  &
 	 + " GROUP BY armo.id_meca " &
            	 + " ,armo.id_armo   " &
 		 + " ,artr.num_certif " & 
@@ -272,7 +272,8 @@ kpointer = SetPointer(HourGlass!)
 	k_dataMeno365 = relativedate(KG_dataoggi, -365)
 
 //--- costruisco la view con ID_MECA delle fatture emesse da data a data
-	k_view = "vx_" + trim(kguo_utente.get_comp()) + "_merce_sped_daNonTrattare "
+	//k_view = "vx_" + trim(kguo_utente.get_comp()) + "_merce_sped_daNonTrattare "
+	k_view = kguf_data_base.u_get_nometab_xutente("merce_sped_daNonTrattare")
 	k_sql = " "                                   
 	k_sql = + &
 	"CREATE VIEW " + trim(k_view) &
@@ -283,7 +284,7 @@ kpointer = SetPointer(HourGlass!)
 	 		+ " ,arsp.id_sped " &
 	 + "    FROM arsp inner join barcode  on  arsp.id_armo = barcode.id_armo " &
 	 + "   WHERE       " &
-	 + "          arsp.id_arsp  in   (" +  " select distinct id_arsp from vx_" + trim(kguo_utente.get_comp()) + "_merce_sped_id_armo" + ") "  &
+	 + "          arsp.id_arsp  in   (" +  " select distinct id_arsp from  " + kguf_data_base.u_get_nometab_xutente("merce_sped_id_armo") + ") "  &
 	 + "	and  barcode.causale =  '" + trim(kuf1_barcode.ki_causale_non_trattare ) + "' " &
 	 	+ " group by barcode.id_meca  " &
 	 		+ " ,barcode.id_armo  " &
@@ -328,7 +329,8 @@ kuf1_utility = create kuf_utility
 
 
 //--- costruisco la view con ID_MECA delle fatture emesse da data a data
-	k_view = "vx_" + trim(kguo_utente.get_comp()) + "_merce_sped_elenco_l "
+	k_view = kguf_data_base.u_get_nometab_xutente("merce_sped_elenco_l")
+	//k_view = "vx_" + trim(kguo_utente.get_comp()) + "_merce_sped_elenco_l "
 	k_sql = " "                                   
 	k_sql = + &
 	"CREATE VIEW " + trim(k_view) &
@@ -388,41 +390,15 @@ kuf1_utility = create kuf_utility
 	                          + " ,colli_in.alt_1 " &
 									 + " ,e1doco " &
 									 + " ,e1rorn " &
-	 + "  FROM (((((((( vx_" + trim(kguo_utente.get_comp()) + "_merce_sped_id_armo as arsp_armo  " &
-	                             + " INNER JOIN vx_" + trim(kguo_utente.get_comp()) + "_merce_sped_colli_in as colli_in   ON ( arsp_armo.id_armo =  colli_in.id_armo)) " &
-	                             + " INNER JOIN vx_" + trim(kguo_utente.get_comp()) + "_merce_sped_Spediti as arsp   ON ( arsp_armo.id_armo =  arsp.id_armo)) " &
-	                             + " LEFT JOIN vx_" + trim(kguo_utente.get_comp()) + "_merce_sped_Trattati as Trattati ON  arsp_armo.id_armo = Trattati.id_armo) " &
-	                             + " LEFT JOIN vx_" + trim(kguo_utente.get_comp()) + "_merce_sped_daNonTrattare as daNonTrattare ON  arsp_armo.id_armo = daNonTrattare.id_armo)" &
+	 + "  FROM (((((((( " + kguf_data_base.u_get_nometab_xutente("merce_sped_id_armo") + " as arsp_armo  " &
+	                             + " INNER JOIN " + kguf_data_base.u_get_nometab_xutente("merce_sped_colli_in") + " as colli_in   ON ( arsp_armo.id_armo =  colli_in.id_armo)) " &
+	                             + " INNER JOIN " + kguf_data_base.u_get_nometab_xutente("merce_sped_Spediti") + " as arsp   ON ( arsp_armo.id_armo =  arsp.id_armo)) " &
+	                             + " LEFT JOIN " + kguf_data_base.u_get_nometab_xutente("merce_sped_Trattati") + " as Trattati ON  arsp_armo.id_armo = Trattati.id_armo) " &
+	                             + " LEFT JOIN " + kguf_data_base.u_get_nometab_xutente("merce_sped_daNonTrattare") + " as daNonTrattare ON  arsp_armo.id_armo = daNonTrattare.id_armo)" &
 	                             + " INNER JOIN meca ON colli_in.id_meca =  meca.id)  " &
 	                             + " INNER JOIN sped ON arsp.id_sped =  sped.id_sped)  " &
 	                             + " INNER JOIN  clienti AS  clienti_1 ON  meca.clie_1 =  clienti_1.codice)  " &
 	                             + " INNER JOIN  clienti AS  clienti_2 ON  sped.clie_2 =  clienti_2.codice) " 
-
-//	 + "  FROM ((((((((( vx_" + trim(kguo_utente.get_comp()) + "_merce_sped_id_armo as arsp_armo  INNER JOIN  armo ON ( arsp_armo.id_armo =  armo.id_armo)) " &
-//	 + "  group by " &
-//	                          + " meca.id " &
-//	                          + " ,meca.num_int  " &
-//	                          + " ,meca.data_int " &
-//	                          + " ,meca.clie_1 " &
-//	                          + " ,clienti_1.rag_soc_10 " &
-//	                          + " ,sped.clie_2 " &
-//	                          + " ,clienti_2.rag_soc_10 " &
-//	                          + " ,meca.clie_3 " &
-//	                          + " ,meca.num_bolla_in " &
-//	                          + " ,meca.consegna_data " &
-//	                          + " ,Trattati.data_stampa " &
-//	                          + " ,Trattati.num_certif "  &
-//	                          + " ,arsp.num_bolla_out " &
-//	                          + " ,arsp.data_bolla_out " & 
-//	                          + " ,arsp.id_sped " & 
-//	                          + " ,armo.art " 
-	 
-//	 + "  WHERE "  &
-//	 + "          sped.id_arsp  in   (" +  " select distinct id_arsp from vx_" + trim(kguo_utente.get_comp()) + "_merce_sped_id_armo" + ") "  &
-	 
-//	 + "ORDER BY sped.data_bolla_out ASC,     " &
-//	 + "         sped.num_bolla_out ASC     " 
-//	 + "    and id_armo in ( select id_armo from   vx_" + trim(kguo_utente.get_comp()) + "_art50_entrate_l )     " &
 
 	kst_esito = kguo_sqlca_db_magazzino.db_crea_view(1, k_view, k_sql)		
 
@@ -463,14 +439,15 @@ kpointer = SetPointer(HourGlass!)
 
 
 //--- costruisco la view 
-	k_view = "vx_" + trim(kguo_utente.get_comp()) + "_merce_sped_colli_in "
+	//k_view = "vx_" + trim(kguo_utente.get_comp()) + "_merce_sped_colli_in "
+	k_view = kguf_data_base.u_get_nometab_xutente("merce_sped_colli_in")
 	k_sql = &
 		"CREATE VIEW " + trim(k_view) &
 		 + " ( id_meca, id_armo, colli_2, pedane, alt_1, art ) AS   " &
 		 + "  SELECT armo.id_meca, armo.id_armo, sum(armo.colli_2), sum(armo.pedane), armo.alt_1, armo.art " 
 	k_sql  += "    FROM armo   " &
 		 + "   WHERE  " &
-	     + "          armo.id_armo  in   (" +  " select distinct id_armo from vx_" + trim(kguo_utente.get_comp()) + "_merce_sped_id_armo" + ") "  
+	     + "          armo.id_armo  in   (" +  " select distinct id_armo from  " + kguf_data_base.u_get_nometab_xutente("merce_sped_id_armo") + ") "  
 	k_sql  += "  group by " &
 		 + "  armo.id_meca, armo.id_armo, armo.alt_1, armo.art " 
 	kst_esito = kguo_sqlca_db_magazzino.db_crea_view(1, k_view, k_sql)		

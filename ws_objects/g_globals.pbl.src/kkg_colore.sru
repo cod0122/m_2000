@@ -45,6 +45,7 @@ constant string REC_UPDx =string(65536 * (230) + 256 * (230) + (255)) //colore (
 constant string CAMPO_DISATTIVO=string(65536 * (223) + 256 * (223) + 223) //colore (blu),(verde),(rosso)
 
 end variables
+
 on kkg_colore.create
 call super::create
 TriggerEvent( this, "constructor" )

@@ -192,6 +192,9 @@ protected function string u_get_dataobject_esporta ()
 protected subroutine riposiziona_cursore ()
 private function long report_24_inizializza (uo_d_std_1 kdw_1)
 private subroutine report_24 ()
+private subroutine report_25 ()
+private subroutine crea_view_x_report_23_view0 () throws uo_exception
+private subroutine crea_view_x_report_23_runsrtrrtscli () throws uo_exception
 end prototypes
 
 protected function string inizializza () throws uo_exception;////======================================================================
@@ -5185,9 +5188,7 @@ if k_riga > 0 then
 		//		end if
 		
 			case "b_riferim_runrtrrts_l",  "b_riferim_runrtrrts_l_1"
-		//		if ki_scelta_report = ki_scelta_report_lotti_entrati then
-					leggi_dwc_runsrtrrts_help(k_riga, kidw_selezionata)
-		//		end if
+				leggi_dwc_runsrtrrts_help(k_riga, kidw_selezionata)
 		
 			case "id_gruppo"
 				leggi_dwc_gruppi(kidw_selezionata)
@@ -6708,6 +6709,11 @@ try
 		kist_int_artr.gru_attiva = 0
 	end if
 	
+	kist_int_artr.xcliente = tab_1.tabpage_1.dw_1.getitemstring(1, "daticlienti")
+	if isnull(kist_int_artr.xcliente) then
+		kist_int_artr.xcliente = "N"
+	end if
+	
 	set_nome_utente_tab() //--- imposta il nome utente da utilizzare x i nomi view 
 	
 	
@@ -6901,15 +6907,18 @@ kuf_base kuf1_base
 			get_parametri_23()
 
 	//--- view x estrazione 
-			crea_view_x_report_23_runsrtrrts()
-
-			kdw_1.dataobject = "d_report_23_runs_rtr_rts" 
-			k_rc = kdw_1.settransobject(sqlca)
+			if kist_int_artr.xcliente = "S" then
+				crea_view_x_report_23_runsrtrrtscli()
+				kdw_1.dataobject = "d_report_23_runs_rtr_rts_cli" 
+				kguf_data_base.u_set_ds_change_name_tab(kdw_1, "vx_MAST2_report_23CLI_runs_rtr_rts") // Aggiorna SQL della dw	
+			else
+				crea_view_x_report_23_runsrtrrts()
+				kdw_1.dataobject = "d_report_23_runs_rtr_rts" 
+				kguf_data_base.u_set_ds_change_name_tab(kdw_1, "vx_MAST2_report_23_runs_rtr_rts") // Aggiorna SQL della dw	
+			end if
+			
+			k_rc = kdw_1.settransobject( kguo_sqlca_db_magazzino )
 			kdw_1.visible = true
-
-	//--- Aggiorna SQL della dw	
-			kguf_data_base.u_set_ds_change_name_tab(kdw_1, "vx_MAST2_report_23_runs_rtr_rts")
-			k_rc = kdw_1.settransobject ( sqlca )
 			k_righe = kdw_1.retrieve()
 
 		end if
@@ -6943,77 +6952,8 @@ string k_view, k_sql, k_campi
 //=== Puntatore Cursore da attesa.....
 SetPointer(kkg.pointer_attesa)
 
-//--- costruisco la view con ID_MECA da estrarre
-	k_view = kguf_data_base.u_get_nometab_xutente("report_23 ") 
-	k_sql = " "                                   
-	k_sql = + &
-	"CREATE VIEW " + trim(k_view) &
-	 + " ( id_armo, id_meca ) AS   " 
-   k_campi = "id_armo integer " & 
-            + ", id_meca integer " 
-	k_sql += &
-			" SELECT  armo.id_armo, armo.id_meca  FROM " &
-			+ " meca  "  &
-			+ " inner JOIN armo " &
-			+ " ON meca.id = armo.id_meca " &
-			+ " inner JOIN certif " &
-			+ " ON meca.id = certif.id_meca " 
-			
-	k_sql += " WHERE  " 
-	if kist_int_artr.num_int > 0 then
-		k_sql += &
-	 		 " meca.id = " + string(kist_int_artr.id_meca_ini)
-	else
-		k_sql += &
-			+ " certif.data between '" + string(kist_int_artr.data_da) + "' and '" + string(kist_int_artr.data_a) + "' " 
-		
-		if kist_int_artr.clie_3 > 0 then
-			k_sql += &
-				 "and meca.clie_3 = " + string(kist_int_artr.clie_3)
-		end if
-	end if
-	k_sql += &
-			" group by  armo.id_armo, armo.id_meca "
-	kguo_sqlca_db_magazzino.db_crea_view(1, k_view, k_sql)		
-
-
-	k_view =  kguf_data_base.u_get_nometab_xutente("report_23_xgru") 
-	k_sql = " "                                   
-	k_sql = + &
-	"CREATE VIEW " + trim(k_view) &
-	 + " ( id_armo, id_meca ) AS   " 
-   k_campi = "id_armo integer " & 
-            + ", id_meca integer " 
-	k_sql += &
-			" SELECT report_23.id_armo, report_23.id_meca  FROM " &
-			+  kguf_data_base.u_get_nometab_xutente("report_23") + " as report_23 "
-	if kist_int_artr.gru_attiva = 1 then
-		k_sql += &
-			 " inner JOIN armo " &
-			+ " ON report_23.id_meca = armo.id_meca " &
-			+ " inner JOIN prodotti " &
-			+ " ON armo.art = prodotti.codice " 
-		if kist_int_artr.gru_flag = 1 or kist_int_artr.gru_flag = 0 then  // includi/escludi solo un gruppo puntuale
-			if kist_int_artr.gru > 0 then
-				k_sql += " WHERE  " 
-				if kist_int_artr.gru_flag = 1 then  
-					k_sql += " prodotti.gruppo = " + string(kist_int_artr.gru) + " " // includi solo un gruppo puntuale
-				else  
-					k_sql += " prodotti.gruppo <> " + string(kist_int_artr.gru) + " " // Ecludi solo un gruppo puntuale
-				end if
-			end if
-		else
-			 // escludi tutti quelli da Escludere x stat
-			k_sql += &
-			  " inner JOIN gru " &
-			+ " ON prodotti.gruppo = gru.codice " &
-			+ " WHERE  gru.escludi_da_stat_glob = 'N' "// tutti i gruppi (meno quelli da Escludere x stat)
-		end if
-	end if	
-	k_sql += &
-			" group by report_23.id_armo, report_23.id_meca "
-	kguo_sqlca_db_magazzino.db_crea_view(1, k_view, k_sql)		
-//   kguo_sqlca_db_magazzino.db_crea_temp_table(k_view, k_campi, k_sql)      
+//--- costruisco le view di base 
+	crea_view_x_report_23_view0()
 
 //--- costruisco altre view  
 	k_view = kguf_data_base.u_get_nometab_xutente("report_23_trattati") 
@@ -7183,9 +7123,8 @@ SetPointer(kkg.pointer_default)
 end subroutine
 
 private subroutine leggi_dwc_runsrtrrts_help (long k_riga, ref datawindow k_dw);//
-long k_rc
+long k_rc, k_cliente
 date k_data
-datastore kds_1
 kuf_elenco kuf1_elenco
 st_open_w kst_open_w
 
@@ -7193,44 +7132,51 @@ st_open_w kst_open_w
 try
 //--- se sono sul report generico allora faccio vedere i barcode
 //if ki_scelta_report = ki_scelta_report_lotti_entrati then
-	kds_1 = create datastore
-	kds_1.dataobject = "d_report_23_runs_rtr_rts_help"
-	kguf_data_base.u_set_ds_change_name_tab(kds_1, "vx_mast2_report_23_runsrtrrts_help")
-	kds_1.settransobject(kguo_sqlca_db_magazzino)
+	kst_open_w.key11_ds = create datastore
+	if kist_int_artr.xcliente = "S" then
+		kst_open_w.key11_ds.dataobject = "d_report_23cli_runs_rtr_rts_help"
+		kguf_data_base.u_set_ds_change_name_tab(kst_open_w.key11_ds, "vx_mast2_report_23CLI_runsrtrrts_help")
+	else
+		kst_open_w.key11_ds.dataobject = "d_report_23_runs_rtr_rts_help"
+		kguf_data_base.u_set_ds_change_name_tab(kst_open_w.key11_ds, "vx_mast2_report_23_runsrtrrts_help")
+	end if
+	kst_open_w.key11_ds.settransobject(kguo_sqlca_db_magazzino)
 
 	if k_dw.rowcount() > 0 then
 
 		if k_riga > 0 then
 			
-			// data x estrarre solo il mese e l'anno il giorno è fasullo
 			k_data =  k_dw.getitemdate(k_riga,"kdata")
-			
-			k_rc = kds_1.retrieve(k_data)
+			if kist_int_artr.xcliente = "S" then
+				k_cliente =  k_dw.getitemnumber(k_riga,"clie_3")
+			// x ciente allora mese, anno, cliente 
+				kst_open_w.key1 = "Lotti cliente " + string(k_cliente) + " rilasciati nel " + string( k_data, "mmm yy")
+				k_rc = kst_open_w.key11_ds.retrieve(k_cliente, k_data)
+			else
+			// x data allora solo il mese e anno 
+				kst_open_w.key1 = "Lotti rilasciati nel " + string( k_data, "mmm yy")
+				k_rc = kst_open_w.key11_ds.retrieve(k_data)
+			end if
+
 			if k_rc > 0 then
 			else
-				kds_1.insertrow(0)
+				kst_open_w.key11_ds.insertrow(0)
 			end if
 		else
-			kds_1.insertrow(0)
+			kst_open_w.key11_ds.insertrow(0)
 		end if
 	else
-		kds_1.insertrow(0)
+		kst_open_w.key11_ds.insertrow(0)
 
 	end if
 
-		//kiuf_parent.link_call( kds_1, "") call elenco ZOOM
-
 	SetPointer(kkg.pointer_attesa )
 
-	if kds_1.rowcount() > 0 then
+	if kst_open_w.key11_ds.rowcount() > 0 then
 		kuf1_elenco = create kuf_elenco
-		kst_open_w.key1 = "Lotti rilasciati nel " + string( k_data, "mmm yy")
-		kst_open_w.key2 = trim(kds_1.dataobject)
+		kst_open_w.key2 = trim(kst_open_w.key11_ds.dataobject)
 		kst_open_w.key3 = "0"     //--- viene riempito con il nr di riga selezionata
 		kst_open_w.key4 = trim(kiw_this_window.title)    //--- Titolo della Window di chiamata per riconoscerla
-		kst_open_w.key11_ds = create datastore
-		kst_open_w.key11_ds.dataobject = kds_1.dataobject
-		k_rc = kds_1.rowscopy(1, kds_1.rowcount(), primary!,kst_open_w.key11_ds,1,primary!)
 		kuf1_elenco.u_open(kst_open_w)
 	else
 		messagebox("Elenco Dati", "Nessun valore disponibile. ")
@@ -7241,7 +7187,6 @@ catch (uo_exception kuo_exception)
 	kuo_exception.messaggio_utente() 
 
 finally
-	if isvalid(kds_1) then destroy kds_1
 	if isvalid(kuf1_elenco) then destroy kuf1_elenco
 	
 	SetPointer(kkg.pointer_default)
@@ -7394,6 +7339,389 @@ attiva_tasti()
 
 
 
+end subroutine
+
+private subroutine report_25 ();//======================================================================
+//=== Inizializzazione della Windows
+//=== Ripristino DW; tasti; e retrieve liste
+//======================================================================
+//
+string k_scelta, k_importa, k_importato, k_importato_ora
+date k_data, k_data_da, k_data_a
+long  k_clie_3
+string k_rag_soc
+datawindowchild  kdwc_cliente_3  //kdwc_dose,
+datawindowchild   kdwc_cliente_3_C
+kuf_base kuf1_base
+
+
+if tab_1.tabpage_1.dw_1.rowcount() <= 0 or tab_1.tabpage_1.dw_1.dataobject <> "d_report_23" then
+	tab_1.tabpage_1.dw_1.dataobject = "d_report_23"
+	tab_1.tabpage_1.dw_1.settransobject(sqlca)
+
+	if u_dw_selezione_ripri( ) = 0 then
+		tab_1.tabpage_1.dw_1.insertrow(0)
+	end if
+
+	k_scelta = trim(ki_st_open_w.flag_modalita)
+	if isdate(trim(ki_st_open_w.key8)) then
+		k_data_da = date(trim(ki_st_open_w.key8)) //data riferimento da
+	end if
+	if isdate(trim(ki_st_open_w.key9)) then
+		k_data_a = date(trim(ki_st_open_w.key9)) //data riferimento a
+	end if
+	tab_1.tabpage_1.dw_1.getchild("clie_3", kdwc_cliente_3)
+	tab_1.tabpage_1.dw_1.getchild("clie_3_1", kdwc_cliente_3_c)
+
+	kdwc_cliente_3.settransobject(sqlca)
+	kdwc_cliente_3_c.settransobject(sqlca)
+
+	if tab_1.tabpage_1.dw_1.rowcount() = 0 then
+
+		kdwc_cliente_3.retrieve("%")
+		kdwc_cliente_3.insertrow(1)
+		kdwc_cliente_3.RowsCopy(1, kdwc_cliente_3.RowCount(), Primary!, kdwc_cliente_3_c, 1, Primary!)
+
+	end if
+	
+	tab_1.tabpage_1.dw_1.setfocus()
+
+//--- Setta valori di Default
+
+	if k_clie_3 > 0 then
+		if kdwc_cliente_3.rowcount() < 2 then
+			kdwc_cliente_3.insertrow(0)
+		end if
+	end if
+
+	try	
+//--- imposto l'utente (il "terminale") x costruire il nome della view
+		set_nome_utente_tab() //--- imposta il nome utente da utilizzare x i nomi view 
+		tab_1.tabpage_1.dw_1.setitem(1, "utente", kist_int_artr.utente)
+		tab_1.tabpage_1.dw_1.setitem(1, "report", 1)
+//--- prendi data oggi		
+		k_data = kguo_g.get_dataoggi( )
+
+		tab_1.tabpage_1.dw_1.setitem(1, "num_int", 0)
+
+		kist_int_artr.anno = tab_1.tabpage_1.dw_1.getitemnumber(1, "anno")
+		if kist_int_artr.anno = 0 or isnull(kist_int_artr.anno ) then
+			tab_1.tabpage_1.dw_1.setitem(1, "anno", year(kg_dataoggi))
+		end if
+		
+		if k_data_da > kkg.data_zero then
+		else
+			k_data_da = tab_1.tabpage_1.dw_1.getitemdate(1, "data_da")
+			if k_data_da > kkg.data_zero then
+			else
+				k_data_da = relativedate(k_data, -60)
+			end if
+		end if
+		if k_data_a > kkg.data_zero then
+		else
+			k_data_a = tab_1.tabpage_1.dw_1.getitemdate(1, "data_a")
+			if k_data_a > kkg.data_zero then
+			else
+				k_data_a = k_data
+			end if
+		end if
+		if k_data_da > kkg.data_zero then
+			tab_1.tabpage_1.dw_1.setitem(1, "data_da", k_data_da)
+		else
+			tab_1.tabpage_1.dw_1.setitem(1, "data_da", "00/00/00")
+		end if
+		if k_data_a = kkg.data_zero then
+			tab_1.tabpage_1.dw_1.setitem(1, "data_a", k_data_a)
+		else
+			tab_1.tabpage_1.dw_1.setitem(1, "data_a", "00/00/00")
+		end if
+
+		kist_int_artr.gru_attiva = tab_1.tabpage_1.dw_1.getitemnumber(1, "gruppo_attiva")
+		if kist_int_artr.gru_attiva >= 0 then
+		else
+			tab_1.tabpage_1.dw_1.setitem(1, "gruppo_attiva", 1)
+		end if
+			
+	catch (uo_exception kuo_exception)
+		kuo_exception.messaggio_utente()
+		
+	end try
+end if
+			
+attiva_tasti()
+	
+//return "0"
+
+	
+
+
+
+end subroutine
+
+private subroutine crea_view_x_report_23_view0 () throws uo_exception;//======================================================================
+//=== Crea le View per le query Receipt To Releise per Cliente
+//======================================================================
+//
+string k_view, k_sql, k_campi
+
+
+//--- costruisco la view con ID_MECA da estrarre
+	k_view = kguf_data_base.u_get_nometab_xutente("report_23") 
+	k_sql = " "                                   
+	k_sql = + &
+	"CREATE VIEW " + trim(k_view) &
+	 + " ( id_armo, id_meca ) AS   " 
+   k_campi = "id_armo integer " & 
+            + ", id_meca integer " 
+	k_sql += &
+			" SELECT  armo.id_armo, armo.id_meca  FROM " &
+			+ " meca  "  &
+			+ " inner JOIN armo " &
+			+ " ON meca.id = armo.id_meca " &
+			+ " inner JOIN certif " &
+			+ " ON meca.id = certif.id_meca " 
+			
+	k_sql += " WHERE  " 
+	if kist_int_artr.num_int > 0 then
+		k_sql += &
+	 		 " meca.id = " + string(kist_int_artr.id_meca_ini)
+	else
+		k_sql += &
+			+ " certif.data between '" + string(kist_int_artr.data_da) + "' and '" + string(kist_int_artr.data_a) + "' " 
+		
+		if kist_int_artr.clie_3 > 0 then
+			k_sql += &
+				 "and meca.clie_3 = " + string(kist_int_artr.clie_3)
+		end if
+	end if
+	k_sql += " group by  armo.id_armo, armo.id_meca "
+	kguo_sqlca_db_magazzino.db_crea_view(1, k_view, k_sql)		
+
+
+	k_view =  kguf_data_base.u_get_nometab_xutente("report_23_xgru") 
+	k_sql = " "                                   
+	k_sql = + &
+	"CREATE VIEW " + trim(k_view) &
+	 + " ( id_armo, id_meca ) AS   " 
+   k_campi = "id_armo integer " & 
+            + ", id_meca integer " 
+	k_sql += &
+			" SELECT report_23.id_armo, report_23.id_meca  FROM " &
+			+  kguf_data_base.u_get_nometab_xutente("report_23") + " as report_23 "
+	if kist_int_artr.gru_attiva = 1 then
+		k_sql += &
+			 " inner JOIN armo " &
+			+ " ON report_23.id_meca = armo.id_meca " &
+			+ " inner JOIN prodotti " &
+			+ " ON armo.art = prodotti.codice " 
+		if kist_int_artr.gru_flag = 1 or kist_int_artr.gru_flag = 0 then  // includi/escludi solo un gruppo puntuale
+			if kist_int_artr.gru > 0 then
+				k_sql += " WHERE  " 
+				if kist_int_artr.gru_flag = 1 then  
+					k_sql += " prodotti.gruppo = " + string(kist_int_artr.gru) + " " // includi solo un gruppo puntuale
+				else  
+					k_sql += " prodotti.gruppo <> " + string(kist_int_artr.gru) + " " // Ecludi solo un gruppo puntuale
+				end if
+			end if
+		else
+			 // escludi tutti quelli da Escludere x stat
+			k_sql += &
+			  " inner JOIN gru " &
+			+ " ON prodotti.gruppo = gru.codice " &
+			+ " WHERE  gru.escludi_da_stat_glob = 'N' "// tutti i gruppi (meno quelli da Escludere x stat)
+		end if
+	end if	
+	k_sql += &
+			" group by report_23.id_armo, report_23.id_meca "
+	kguo_sqlca_db_magazzino.db_crea_view(1, k_view, k_sql)		
+//   kguo_sqlca_db_magazzino.db_crea_temp_table(k_view, k_campi, k_sql)      
+
+
+
+
+			
+end subroutine
+
+private subroutine crea_view_x_report_23_runsrtrrtscli () throws uo_exception;//======================================================================
+//=== Crea le View per le query Receipt To Releise per Cliente
+//======================================================================
+//
+string k_view, k_sql, k_campi
+
+
+
+//=== Puntatore Cursore da attesa.....
+SetPointer(kkg.pointer_attesa)
+
+//--- costruisco le view di base 
+	crea_view_x_report_23_view0()
+	
+//--- costruisco altre view  
+	k_view = kguf_data_base.u_get_nometab_xutente("report_23CLI_trattati") 
+	k_sql = " "                                   
+	k_sql = + &
+	"CREATE VIEW " + trim(k_view) &
+	 + " ( clie_3, mese, anno, runs, colli_trattati ) AS   " 
+	k_sql += &
+			" SELECT meca.clie_3, month(certif.data), year(certif.data), count(distinct meca.id), sum(artr.colli_trattati) FROM " &
+			+ " armo  "  &
+			+ " inner JOIN artr " &
+			+ " ON armo.id_armo = artr.id_armo " &
+			+ " inner JOIN meca " &
+			+ " ON armo.id_meca = meca.id " &
+			+ " inner JOIN certif " &
+			+ " ON meca.id = certif.id_meca " 
+	k_sql += " WHERE  " 
+	k_sql += " armo.id_meca in (select id_meca from " &
+			  + kguf_data_base.u_get_nometab_xutente("report_23") + ")" 
+	k_sql += " group by meca.clie_3, month(certif.data), year(certif.data) " 
+	kguo_sqlca_db_magazzino.db_crea_view(1, k_view, k_sql)		
+
+	k_view = kguf_data_base.u_get_nometab_xutente("report_23CLI_etr_1") //End TO Release  (grezzo)
+	k_sql = " "                                   
+	k_sql = + &
+	"CREATE VIEW " + trim(k_view) &
+	 + " ( clie_3, mese, anno, etr_1 ) AS   " 
+	k_sql += &
+			" SELECT meca.clie_3, month(certif.data), year(certif.data) " & 
+			+ " ,datediff( day, (select max(artr.data_fin) from artr where artr.num_certif = certif.num_certif) " & 
+						+ ", (certif.data) )  " & 
+			+ " FROM " &
+			+ " certif  inner join meca on certif.id_meca = meca.id " 
+	k_sql += " WHERE  " 
+	k_sql += &
+	 		 " certif.id_meca in (select id_meca from " + kguf_data_base.u_get_nometab_xutente("report_23_xgru") + ")" 
+			  
+	kguo_sqlca_db_magazzino.db_crea_view(1, k_view, k_sql)		
+	
+	k_view = kguf_data_base.u_get_nometab_xutente("report_23CLI_etr")  //End TO Release  (media gg)
+	k_sql = " "                                   
+	k_sql = + &
+	"CREATE VIEW " + trim(k_view) &
+	 + " ( clie_3, mese, anno, etr ) AS   " 
+	k_sql += &
+			" SELECT clie_3, mese, anno, avg(convert(decimal(6,2), etr_1 )) " & 
+			+ " FROM " &
+			+ kguf_data_base.u_get_nometab_xutente("report_23CLI_etr_1") 
+	k_sql += " group by clie_3, mese, anno " 
+	kguo_sqlca_db_magazzino.db_crea_view(1, k_view, k_sql)		
+
+	k_view = kguf_data_base.u_get_nometab_xutente("report_23CLI_rtr") //Receive TO Release
+	k_sql = " "                                   
+	k_sql = + &
+	"CREATE VIEW " + trim(k_view) &
+	 + " ( clie_3, mese, anno, rtr ) AS   " 
+	k_sql += &
+			" SELECT meca.clie_3, month(certif.data), year(certif.data) " + &
+			+ ", avg(convert(decimal(6,2),datediff(day, convert(date, data_ent), certif.data))) " &
+			+ " FROM meca inner JOIN certif " &
+			+ " ON meca.id = certif.id_meca " 
+	k_sql += " WHERE  " 
+	k_sql += " meca.id in (select id_meca from " + kguf_data_base.u_get_nometab_xutente("report_23_xgru") + ")"
+	k_sql += " group by meca.clie_3, month(certif.data), year(certif.data) " 
+	kguo_sqlca_db_magazzino.db_crea_view(1, k_view, k_sql)		
+
+	k_view = kguf_data_base.u_get_nometab_xutente("report_23CLI_rts_1")    //Receive TO Send
+	k_sql = " "                                   
+	k_sql = + &
+	"CREATE VIEW " + trim(k_view) &
+	 + " ( clie_3, mese, anno, rts_1 ) AS   " 
+	k_sql += &
+			" SELECT meca.clie_3, month(certif.data), year(certif.data), datediff(day, convert(date, meca.data_ent), max(arsp.data_bolla_out))  FROM " &
+			+ " meca  "  &
+			+ " inner JOIN armo " &
+			+ " ON meca.id = armo.id_meca " &
+			+ " inner JOIN arsp " &
+			+ " ON armo.id_armo = arsp.id_armo " &
+			+ " inner JOIN certif " &
+			+ " ON meca.id = certif.id_meca " 
+	k_sql += " WHERE  " 
+	k_sql += " meca.id in (select id_meca from " + kguf_data_base.u_get_nometab_xutente("report_23_xgru") + ")"
+	k_sql += " group by meca.clie_3, month(certif.data), year(certif.data),  meca.data_ent " 
+	kguo_sqlca_db_magazzino.db_crea_view(1, k_view, k_sql)		
+   //kguo_sqlca_db_magazzino.db_crea_temp_table(k_view, k_campi, k_sql)      
+
+	k_view = kguf_data_base.u_get_nometab_xutente("report_23CLI_rts") 
+	k_sql = " "                                   
+	k_sql = + &
+	"CREATE VIEW " + trim(k_view) &
+	 + " ( clie_3, mese, anno, rts ) AS   " 
+	k_sql += &
+			" SELECT clie_3, mese, anno, avg(convert(decimal(6,2),rts_1))  FROM " &
+			+ kguf_data_base.u_get_nometab_xutente("report_23CLI_rts_1")
+	k_sql += " group by clie_3, mese, anno " 
+	kguo_sqlca_db_magazzino.db_crea_view(1, k_view, k_sql)		
+
+//--- View Finale riepilogativa 
+	k_view = kguf_data_base.u_get_nometab_xutente("report_23CLI_runs_rtr_rts") 
+	k_sql = " "                                   
+	k_sql = "CREATE VIEW " + trim(k_view) &
+	 		+ " ( clie_3, mese, anno, colli_trattati, runs, rtr, rts, etr ) AS   " 
+//   	k_campi = "clie_3 integer " & 
+//            + ", mese integer "  & 
+//            + ", anno integer "  & 
+//            + ", colli_trattati integer " &  
+//            + ", runs integer "  & 
+//            + ", rtr integer "  & 
+//            + ", rts integer "  & 
+//            + ", etr integer " 
+	k_sql += &
+			" SELECT  runs.clie_3, runs.mese, runs.anno, runs.colli_trattati, runs.runs, rtr.rtr, rts.rts, etr.etr  FROM " &
+			+ kguf_data_base.u_get_nometab_xutente("report_23CLI_trattati") + " as runs"  &
+			+ " left outer JOIN " &
+			+ kguf_data_base.u_get_nometab_xutente("report_23CLI_rtr") + " as rtr"  &
+			+ " ON runs.mese = rtr.mese and runs.anno = rtr.anno and runs.clie_3 = rtr.clie_3 " &
+			+ " left outer JOIN " &
+			+ kguf_data_base.u_get_nometab_xutente("report_23CLI_rts") + " as rts"  &
+			+ " ON runs.mese = rts.mese and runs.anno = rts.anno and runs.clie_3 = rts.clie_3 " &
+			+ " left outer JOIN " &
+			+ kguf_data_base.u_get_nometab_xutente("report_23CLI_etr") + " as etr"  &
+			+ " ON runs.mese = etr.mese and runs.anno = etr.anno and runs.clie_3 = etr.clie_3 " 
+	kguo_sqlca_db_magazzino.db_crea_view(1, k_view, k_sql)		
+//  	kguo_sqlca_db_magazzino.db_crea_temp_table_global(k_view, k_campi, k_sql)      
+
+
+//--- View Finale x il '?'
+	k_view = kguf_data_base.u_get_nometab_xutente("report_23CLI_runsrtrrts_help") 
+	k_sql = " "                                   
+	k_sql = + &
+	"CREATE VIEW " + trim(k_view) &
+	 + " (clie_3, id_meca, num_int, data_ent, data, data_bolla_out, num_bolla_out, data_fin, colli_trattati, rtr, rts, etr, gruppo ) AS   " 
+	k_sql += &
+			" SELECT meca.clie_3, meca.id, meca.num_int, meca.data_ent, certif.data " &
+			+ ", max(arsp.data_bolla_out), max(arsp.num_bolla_out) " & 
+			+ ", max(artr.data_fin), sum(artr.colli_trattati) " &
+			+ ", datediff(day, convert(date, meca.data_ent), certif.data) " & 
+			+ ", datediff(day, convert(date, meca.data_ent), max(arsp.data_bolla_out)) " &
+			+ ", datediff(day, max(artr.data_fin), certif.data) " & 
+			+ ", prodotti.gruppo " & 
+			+ " FROM " &
+			+ kguf_data_base.u_get_nometab_xutente("report_23") + " as runs"   &
+			+ " inner JOIN meca " &
+			+ " ON runs.id_meca = meca.id "  &
+			+ " inner JOIN artr " &
+			+ " ON runs.id_armo = artr.id_armo "  &
+			+ " inner JOIN armo " &
+			+ " ON runs.id_armo = armo.id_armo " &
+			+ " inner JOIN prodotti " &
+			+ " ON armo.art = prodotti.codice " &
+			+ " left outer JOIN  " &
+			+ kguf_data_base.u_get_nometab_xutente("report_23_xgru") + " as runs_xgru"   &
+			+ " ON runs.id_meca = runs_xgru.id_meca "  &
+			+ " left outer JOIN certif " &
+			+ " ON runs_xgru.id_meca = certif.id_meca "  &
+			+ " left outer JOIN arsp " &
+			+ " ON runs_xgru.id_armo = arsp.id_armo "  
+	k_sql += " group by meca.clie_3, meca.id, meca.num_int, meca.data_ent, certif.data, prodotti.gruppo " 
+	kguo_sqlca_db_magazzino.db_crea_view(1, k_view, k_sql)		
+
+	
+//=== Riprist. il vecchio puntatore : 
+SetPointer(kkg.pointer_default)
+
+
+
+			
 end subroutine
 
 on w_int_artr.create

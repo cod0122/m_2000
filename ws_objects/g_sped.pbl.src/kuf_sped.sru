@@ -31,6 +31,7 @@ public constant string kki_dw_meca_da_sped = "d_merce_da_sped"
 
 private datastore kdsi_dw_elenco_indirizzi
 end variables
+
 forward prototypes
 public subroutine if_isnull_testa (ref st_tab_sped kst_tab_sped)
 public function st_esito tb_delete_testa (st_tab_sped kst_tab_sped)
