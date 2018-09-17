@@ -21,7 +21,7 @@ public datastore kids_report_merce_da_sped
 
 end variables
 
-forward prototypes
+forward prototypes 
 private subroutine db_crea_view_spediti (st_report_merce_da_sped kst_report_merce_da_sped) throws uo_exception
 public subroutine get_st_report_merce_da_sped (ref st_report_merce_da_sped kst_report_merce_da_sped) throws uo_exception
 private subroutine db_crea_view_trattati (st_report_merce_da_sped kst_report_merce_da_sped) throws uo_exception
@@ -576,7 +576,7 @@ if kst_report_merce_da_sped.k_id_meca_da > 0 then
 	//--- estrae dati dal DB
 	
 	//--- Aggiorna SQL della 	kids_report_entrate_uscite
-	kguf_data_base.u_set_ds_change_name_tab(kids_report_merce_da_sped, "vx_mast",  "vx_" + trim(kguo_utente.get_comp()) )
+	kguf_data_base.u_set_ds_change_name_tab(kids_report_merce_da_sped, "vx_mast_merce_da_sped_elenco_l")
 	
 	//--- Retrieve Datastore REPORT da restituire
 	k_return = kids_report_merce_da_sped.retrieve( kst_report_merce_da_sped.k_data_da,  kst_report_merce_da_sped.k_clie_2)

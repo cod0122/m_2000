@@ -264,8 +264,24 @@ datastore ds_elenco
 		end if
 	
 		dw_sel.dataobject = trim(kist_open_w.key2)
-		
-		kids_elenco = kist_open_w.key12_any
+
+		if isvalid(kist_open_w.key12_any) then
+			if ClassName(kist_open_w.key12_any) = "datastore"  then
+				kids_elenco = kist_open_w.key12_any
+			end if
+		end if
+		if kids_elenco.rowcount( ) = 0 then
+			if isvalid(kist_open_w.key11_ds) then
+				kids_elenco = kist_open_w.key11_ds
+			else
+				kguo_exception.inizializza( )
+				kguo_exception.kist_esito.nome_oggetto = this.classname
+				kguo_exception.kist_esito.esito = kguo_exception.kk_st_uo_exception_tipo_err_int
+				kguo_exception.kist_esito.sqlerrtext = "ZOOM: manca l'oggetto dati (datastore/datawindow): " + trim(kist_open_w.key2)
+				throw kguo_exception
+			end if
+		end if
+			
 		k_rc = kids_elenco.rowscopy(1, kids_elenco.rowcount(), primary!,kids_elenco_orig,1,primary!)
 
 		attiva_drag_drop(dw_1)  // attiva il dar&drop solo se dw GRID

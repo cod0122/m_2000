@@ -68,7 +68,7 @@ db_crea_view_completa( )
 	
 	
 //--- Aggiorna SQL della 	kids_report_entrate_uscite
-kguf_data_base.u_set_ds_change_name_tab(kids_report_merce_sped, "vx_mast",  "vx_" + trim(kguo_utente.get_comp()) )
+kguf_data_base.u_set_ds_change_name_tab(kids_report_merce_sped, "vx_mast_merce_sped_elenco_l")
 	
 	//--- Retrieve Datastore REPORT da restituire
 krc = kids_report_merce_sped.retrieve( kst_report_merce_sped.k_data_da,  kst_report_merce_sped.k_clie_2)

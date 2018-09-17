@@ -120,6 +120,7 @@ public function boolean u_if_run_dev_mode ()
 public function string u_change_nometab_xutente (string k_nome_tab) throws uo_exception
 public subroutine u_set_ds_change_name_tab (ref datastore kds_1, string k_nome_tab) throws uo_exception
 public subroutine u_set_ds_change_name_tab (ref datawindow kdw_1, string k_nome_tab) throws uo_exception
+public function string u_get_nometab_xutente (string k_nome_tab_suffisso) throws uo_exception
 end prototypes
 
 public function string db_commit ();//---
@@ -3593,7 +3594,7 @@ string k_sql_orig, k_string, k_stringn
 		kds_1.Object.DataWindow.Table.Select = k_sql_orig
 		
 		k_sql_orig = kds_1.Object.DataWindow.Table.update
-		if k_sql_orig > " " then
+		if k_sql_orig <> "?" then
 			k_ctr = Pos(k_sql_orig, k_string, 1)
 			if k_ctr > 0 then
 				k_sql_orig = Replace(k_sql_orig, k_ctr, LenA(k_string), (k_stringn))
@@ -3639,7 +3640,7 @@ string k_sql_orig, k_string, k_stringn
 		kdw_1.Object.DataWindow.Table.Select = k_sql_orig
 		
 		k_sql_orig = kdw_1.Object.DataWindow.Table.update
-		if k_sql_orig > " " then
+		if k_sql_orig <> "?" then
 			k_ctr = Pos(k_sql_orig, k_string, 1)
 			if k_ctr > 0 then
 				k_sql_orig = Replace(k_sql_orig, k_ctr, LenA(k_string), (k_stringn))
@@ -3657,6 +3658,42 @@ string k_sql_orig, k_string, k_stringn
 	
 
 end subroutine
+
+public function string u_get_nometab_xutente (string k_nome_tab_suffisso) throws uo_exception;//
+//--------------------------------------------------------------------------------------
+//--- Torna il nome della tabella standard personalizzata utente 
+//--- es.  vx_0037_tabella_esempio
+//---     vx_ = prefisso del nome tabella standard
+//---     0037 = x utente 37 
+//---     _tabella_esempio = suffisso del nome tabella
+//--- Inp: nome tab suffisso della tabella es: "tabella_esempio"
+//--------------------------------------------------------------------------------------
+//
+//
+string k_return
+	
+	try
+
+		if trim(k_nome_tab_suffisso) > " " then
+			k_return =  "vx_"  + string(kguo_utente.get_id_utente( )) + "_" + trim(k_nome_tab_suffisso)
+		else
+			kguo_exception.inizializza( )
+			kguo_exception.kist_esito.nome_oggetto = this.classname( )
+			kguo_exception.kist_esito.esito = kguo_exception.kk_st_uo_exception_tipo_err_int
+			kguo_exception.kist_esito.sqlerrtext = "Fallita composizione nome tabella utente, manca il nome suffisso"
+			throw kguo_exception
+		end if
+
+	catch (uo_exception kuo_exception)
+		throw kuo_exception
+
+	finally
+
+	end try
+		
+return k_return 	
+
+end function
 
 on kuf_data_base.create
 call super::create

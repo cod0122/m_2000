@@ -726,6 +726,14 @@ int k_return, k_rc
 //--- tab già aperto?
 	k_return = u_get_tab_x_key()
 	if k_return > 0 then
+
+		kiuo_g_tab_elenco_tabpage[k_return].kist_open_w = ki_st_open_w
+		kiuo_g_tab_elenco_tabpage[k_return].dw_1.reset()
+		kiuo_g_tab_elenco_tabpage[k_return].dw_sel.reset()
+		kiuo_g_tab_elenco_tabpage[k_return].kids_elenco_orig.reset()
+		tab_1.selecttab(k_return)
+
+		inizializza( )
 		
 	else
 		ki_tab_max++ //upperbound(tab_1.control[])

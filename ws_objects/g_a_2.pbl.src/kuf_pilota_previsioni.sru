@@ -27,6 +27,7 @@ private kuf_utility kiuf_utility
 
 
 end variables
+
 forward prototypes
 public subroutine _readme ()
 private subroutine u_sort_ds_queue_lav_xfila () throws uo_exception
@@ -46,22 +47,6 @@ private function long u_set_dataora_lav_prev_fin () throws uo_exception
 private function long u_set_ds_queue_lav_xfila (ref datastore kds_1) throws uo_exception
 private function long u_set_temptable_pilota_prev_lav () throws uo_exception
 end prototypes
-
-event u_construct();//
-
-try
-	ki_temptab_pilota_workqueue = kguf_data_base.u_change_nometab_xutente( "vx_MAST_pilota_pallet_workqueue")
-	ki_temptab_pilota_prev_lav = kguf_data_base.u_change_nometab_xutente( "vx_MAST_pilota_prev_lav")
-//	ki_temptab_pilota_workqueue = "vx_" + string(kguo_utente.get_id_utente( )) + "_pilota_pallet_workqueue"
-//	ki_temptab_pilota_prev_lav = "vx_" + string(kguo_utente.get_id_utente( )) + "_pilota_prev_lav"
-
-	post u_set_barcode_avgtimeplant( ) //--- popola ds tempi medi impianto
-
-catch (uo_exception kuo_exception)
-	
-end try
-
-end event
 
 public subroutine _readme ();//
 //--- Get dati dal PILOTA insieme ai dati di M2000
@@ -831,7 +816,18 @@ event destructor;//
 end event
 
 event constructor;//
-post event u_construct( )
+
+try
+	ki_temptab_pilota_workqueue = kguf_data_base.u_change_nometab_xutente( "vx_MAST_pilota_pallet_workqueue")
+	ki_temptab_pilota_prev_lav = kguf_data_base.u_change_nometab_xutente( "vx_MAST_pilota_prev_lav")
+//	ki_temptab_pilota_workqueue = "vx_" + string(kguo_utente.get_id_utente( )) + "_pilota_pallet_workqueue"
+//	ki_temptab_pilota_prev_lav = "vx_" + string(kguo_utente.get_id_utente( )) + "_pilota_prev_lav"
+
+	u_set_barcode_avgtimeplant( ) //--- popola ds tempi medi impianto
+
+catch (uo_exception kuo_exception)
+	
+end try
 
 end event
 

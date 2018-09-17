@@ -52,7 +52,7 @@ try
 		ki_temptab_pilota_prev_lav = kuf1_pilota_previsioni.get_ki_temptab_pilota_prev_lav( )
 		k_stringn = ki_temptab_pilota_prev_lav //string(kguo_utente.get_id_utente( ))
 		
-		kguf_data_base.u_set_ds_change_name_tab(kids_d_report_24_pilota_prev_lav, "vx_MAST_pilota_prev_lav", ki_temptab_pilota_prev_lav)
+		kguf_data_base.u_set_ds_change_name_tab(kids_d_report_24_pilota_prev_lav, "vx_MAST_pilota_prev_lav")
 			
 		k_rc = kids_d_report_24_pilota_prev_lav.settransobject(kguo_sqlca_db_magazzino)
 		if k_rc < 0 then

@@ -152,7 +152,7 @@ private subroutine get_parametri_20 () throws uo_exception
 private subroutine get_parametri_21 () throws uo_exception
 private subroutine report_21 ()
 private function long report_21_inizializza (uo_d_std_1 kdw_1) throws uo_exception
-public subroutine u_parametri_clicked (string k_nome, long k_riga)
+public subroutine u_dw_report_clicked (string k_nome, long k_riga)
 protected subroutine inizializza_2 () throws uo_exception
 protected subroutine inizializza_3 () throws uo_exception
 protected subroutine inizializza_4 () throws uo_exception
@@ -5110,7 +5110,7 @@ return k_righe
 
 end function
 
-public subroutine u_parametri_clicked (string k_nome, long k_riga);//
+public subroutine u_dw_report_clicked (string k_nome, long k_riga);//
 int k_anno
 datawindowchild kdwc_cliente //, kdwc_dose
 kuf_prodotti kuf1_prodotti
@@ -5184,7 +5184,7 @@ if k_riga > 0 then
 					leggi_dwc_rif_x_data_mrf(k_riga, kidw_selezionata)
 		//		end if
 		
-	case "b_riferim_runrtrrts_l",  "b_riferim_runrtrrts_l_1"
+			case "b_riferim_runrtrrts_l",  "b_riferim_runrtrrts_l_1"
 		//		if ki_scelta_report = ki_scelta_report_lotti_entrati then
 					leggi_dwc_runsrtrrts_help(k_riga, kidw_selezionata)
 		//		end if
@@ -6900,25 +6900,15 @@ kuf_base kuf1_base
 	//--- piglia i parametri per l'estrazione 
 			get_parametri_23()
 
-			kdw_1.dataobject = "d_report_23_runs_rtr_rts" 
-			k_rc = kdw_1.settransobject(sqlca)
-			kdw_1.visible = true
-	
 	//--- view x estrazione 
 			crea_view_x_report_23_runsrtrrts()
 
+			kdw_1.dataobject = "d_report_23_runs_rtr_rts" 
+			k_rc = kdw_1.settransobject(sqlca)
+			kdw_1.visible = true
+
 	//--- Aggiorna SQL della dw	
-			k_sql_orig = kdw_1.Object.DataWindow.Table.Select 
-			k_stringn = "vx_" + trim(kist_int_artr.utente) + "_report_23_runs_rtr_rts"
-			k_string = "vx_MAST2_report_23_runs_rtr_rts"
-			k_ctr = PosA(k_sql_orig, k_string, 1)
-			DO WHILE k_ctr > 0 and trim(k_string) <> trim(k_stringn)  
-				k_sql_orig = ReplaceA(k_sql_orig, k_ctr, LenA(k_string), (k_stringn))
-				k_ctr = PosA(k_sql_orig, k_string, k_ctr+LenA(k_string))
-			LOOP
-			kdw_1.Object.DataWindow.Table.Select = k_sql_orig 
-		
-				
+			kguf_data_base.u_set_ds_change_name_tab(kdw_1, "vx_MAST2_report_23_runs_rtr_rts")
 			k_rc = kdw_1.settransobject ( sqlca )
 			k_righe = kdw_1.retrieve()
 
@@ -6954,7 +6944,7 @@ string k_view, k_sql, k_campi
 SetPointer(kkg.pointer_attesa)
 
 //--- costruisco la view con ID_MECA da estrarre
-	k_view = "vx_" + trim(kist_int_artr.utente) + "_report_23 "
+	k_view = kguf_data_base.u_get_nometab_xutente("report_23 ") 
 	k_sql = " "                                   
 	k_sql = + &
 	"CREATE VIEW " + trim(k_view) &
@@ -6975,7 +6965,7 @@ SetPointer(kkg.pointer_attesa)
 	 		 " meca.id = " + string(kist_int_artr.id_meca_ini)
 	else
 		k_sql += &
-			+ " certif.data between '" + string(kist_int_artr.data_da) + "' and '" + string(kist_int_artr.data_a) + "' " &
+			+ " certif.data between '" + string(kist_int_artr.data_da) + "' and '" + string(kist_int_artr.data_a) + "' " 
 		
 		if kist_int_artr.clie_3 > 0 then
 			k_sql += &
@@ -6985,10 +6975,9 @@ SetPointer(kkg.pointer_attesa)
 	k_sql += &
 			" group by  armo.id_armo, armo.id_meca "
 	kguo_sqlca_db_magazzino.db_crea_view(1, k_view, k_sql)		
-//   kguo_sqlca_db_magazzino.db_crea_temp_table(k_view, k_campi, k_sql)      
 
 
-	k_view = "vx_" + trim(kist_int_artr.utente) + "_report_23_xgru "
+	k_view =  kguf_data_base.u_get_nometab_xutente("report_23_xgru") 
 	k_sql = " "                                   
 	k_sql = + &
 	"CREATE VIEW " + trim(k_view) &
@@ -6997,7 +6986,7 @@ SetPointer(kkg.pointer_attesa)
             + ", id_meca integer " 
 	k_sql += &
 			" SELECT report_23.id_armo, report_23.id_meca  FROM " &
-			+ "vx_" + trim(kist_int_artr.utente) + "_report_23 as report_23 "  
+			+  kguf_data_base.u_get_nometab_xutente("report_23") + " as report_23 "
 	if kist_int_artr.gru_attiva = 1 then
 		k_sql += &
 			 " inner JOIN armo " &
@@ -7027,7 +7016,7 @@ SetPointer(kkg.pointer_attesa)
 //   kguo_sqlca_db_magazzino.db_crea_temp_table(k_view, k_campi, k_sql)      
 
 //--- costruisco altre view  
-	k_view = "vx_" + trim(kist_int_artr.utente) + "_report_23_trattati "
+	k_view = kguf_data_base.u_get_nometab_xutente("report_23_trattati") 
 	k_sql = " "                                   
 	k_sql = + &
 	"CREATE VIEW " + trim(k_view) &
@@ -7043,11 +7032,13 @@ SetPointer(kkg.pointer_attesa)
 			+ " ON meca.id = certif.id_meca " 
 	k_sql += " WHERE  " 
 	k_sql += &
-	 		 " armo.id_meca in (select id_meca from " + "vx_" + trim(kist_int_artr.utente) + "_report_23 " + ")"
+	 		 " armo.id_meca in (select id_meca from " &
+			  + kguf_data_base.u_get_nometab_xutente("report_23") + ")" 
+
 	k_sql += " group by  month(certif.data), year(certif.data) " 
 	kguo_sqlca_db_magazzino.db_crea_view(1, k_view, k_sql)		
 
-	k_view = "vx_" + trim(kist_int_artr.utente) + "_report_23_etr_1 "   //End TO Release  (grezzo)
+	k_view = kguf_data_base.u_get_nometab_xutente("report_23_etr_1") //End TO Release  (grezzo)
 	k_sql = " "                                   
 	k_sql = + &
 	"CREATE VIEW " + trim(k_view) &
@@ -7059,10 +7050,11 @@ SetPointer(kkg.pointer_attesa)
 			+ " certif  "  
 	k_sql += " WHERE  " 
 	k_sql += &
-	 		 " certif.id_meca in (select id_meca from " + "vx_" + trim(kist_int_artr.utente) + "_report_23_xgru " + ")"
+	 		 " certif.id_meca in (select id_meca from " + kguf_data_base.u_get_nometab_xutente("report_23_xgru") + ")"
+			  
 	kguo_sqlca_db_magazzino.db_crea_view(1, k_view, k_sql)		
 	
-	k_view = "vx_" + trim(kist_int_artr.utente) + "_report_23_etr "   //End TO Release  (media gg)
+	k_view = kguf_data_base.u_get_nometab_xutente("report_23_etr")  //End TO Release  (media gg)
 	k_sql = " "                                   
 	k_sql = + &
 	"CREATE VIEW " + trim(k_view) &
@@ -7070,11 +7062,12 @@ SetPointer(kkg.pointer_attesa)
 	k_sql += &
 			" SELECT mese, anno, avg(convert(decimal(6,2), etr_1 )) " & 
 			+ " FROM " &
-			+ "vx_" + trim(kist_int_artr.utente) + "_report_23_etr_1 "
+			+ kguf_data_base.u_get_nometab_xutente("report_23_etr_1") 
+
 	k_sql += " group by mese, anno " 
 	kguo_sqlca_db_magazzino.db_crea_view(1, k_view, k_sql)		
 
-	k_view = "vx_" + trim(kist_int_artr.utente) + "_report_23_rtr "   //Receive TO Release
+	k_view = kguf_data_base.u_get_nometab_xutente("report_23_rtr") //Receive TO Release
 	k_sql = " "                                   
 	k_sql = + &
 	"CREATE VIEW " + trim(k_view) &
@@ -7086,18 +7079,16 @@ SetPointer(kkg.pointer_attesa)
 			+ " ON meca.id = certif.id_meca " 
 	k_sql += " WHERE  " 
 	k_sql += &
-	 		 " meca.id in (select id_meca from " + "vx_" + trim(kist_int_artr.utente) + "_report_23_xgru " + ")"
+	 		 " meca.id in (select id_meca from " + kguf_data_base.u_get_nometab_xutente("report_23_xgru") + ")"
+ 			 
 	k_sql += " group by month(certif.data), year(certif.data) " 
 	kguo_sqlca_db_magazzino.db_crea_view(1, k_view, k_sql)		
 
-	k_view = "vx_" + trim(kist_int_artr.utente) + "_report_23_rts_1 "  //Receive TO Send
+	k_view = kguf_data_base.u_get_nometab_xutente("report_23_rts_1")    //Receive TO Send
 	k_sql = " "                                   
 	k_sql = + &
 	"CREATE VIEW " + trim(k_view) &
 	 + " ( mese, anno, rts_1 ) AS   " 
-//   k_campi = "mese integer " &
-//	          + ", anno integer " &
- //            + ", rts_1 decimal(6,3) " 
 	k_sql += &
 			" SELECT month(certif.data), year(certif.data), datediff(day, convert(date, meca.data_ent), max(arsp.data_bolla_out))  FROM " &
 			+ " meca  "  &
@@ -7109,51 +7100,47 @@ SetPointer(kkg.pointer_attesa)
 			+ " ON meca.id = certif.id_meca " 
 	k_sql += " WHERE  " 
 	k_sql += &
-	 		 " meca.id in (select id_meca from " + "vx_" + trim(kist_int_artr.utente) + "_report_23_xgru " + ")"
+	 		 " meca.id in (select id_meca from " + kguf_data_base.u_get_nometab_xutente("report_23_xgru") + ")"
+
 	k_sql += " group by month(certif.data), year(certif.data),  meca.data_ent " 
 	kguo_sqlca_db_magazzino.db_crea_view(1, k_view, k_sql)		
    //kguo_sqlca_db_magazzino.db_crea_temp_table(k_view, k_campi, k_sql)      
 
-	k_view = "vx_" + trim(kist_int_artr.utente) + "_report_23_rts "
+	k_view = kguf_data_base.u_get_nometab_xutente("report_23_rts") 
 	k_sql = " "                                   
 	k_sql = + &
 	"CREATE VIEW " + trim(k_view) &
 	 + " ( mese, anno, rts ) AS   " 
 	k_sql += &
 			" SELECT mese, anno, avg(convert(decimal(6,2),rts_1))  FROM " &
-			+ "vx_" + trim(kist_int_artr.utente) + "_report_23_rts_1 "  
+			+ kguf_data_base.u_get_nometab_xutente("report_23_rts_1")
+			
 	k_sql += " group by mese, anno " 
 	kguo_sqlca_db_magazzino.db_crea_view(1, k_view, k_sql)		
 
 //--- View Finale riepilogativa 
-	k_view = "vx_" + trim(kist_int_artr.utente) + "_report_23_runs_rtr_rts "
+	k_view = kguf_data_base.u_get_nometab_xutente("report_23_runs_rtr_rts") 
 	k_sql = " "                                   
 	k_sql = + &
 	"CREATE VIEW " + trim(k_view) &
 	 + " ( mese, anno, colli_trattati, runs, rtr, rts, etr ) AS   " 
-//   k_campi = "mese integer " &
-//	          + ", anno integer " &
-//             + ", runs integer " &
-//             + ", colli_trattati integer " &
-//             + ", rtr decimal(6,3) " &
-//             + ", rts decimal(6,3)"  
 	k_sql += &
 			" SELECT runs.mese, runs.anno, runs.colli_trattati, runs.runs, rtr.rtr, rts.rts, etr.etr  FROM " &
-			+ "vx_" + trim(kist_int_artr.utente) + "_report_23_trattati as runs"  &
+			+ kguf_data_base.u_get_nometab_xutente("report_23_trattati") + " as runs"  &
 			+ " left outer JOIN " &
-			+ "vx_" + trim(kist_int_artr.utente) + "_report_23_rtr as rtr "  &
+			+ kguf_data_base.u_get_nometab_xutente("report_23_rtr") + " as rtr"  &
 			+ " ON runs.mese = rtr.mese and runs.anno = rtr.anno " &
 			+ " left outer JOIN " &
-			+ "vx_" + trim(kist_int_artr.utente) + "_report_23_rts as rts "  &
+			+ kguf_data_base.u_get_nometab_xutente("report_23_rts") + " as rts"  &
 			+ " ON runs.mese = rts.mese and runs.anno = rts.anno " &
 			+ " left outer JOIN " &
-			+ "vx_" + trim(kist_int_artr.utente) + "_report_23_etr as etr "  &
+			+ kguf_data_base.u_get_nometab_xutente("report_23_etr") + " as etr"  &
 			+ " ON runs.mese = etr.mese and runs.anno = etr.anno " 
 	kguo_sqlca_db_magazzino.db_crea_view(1, k_view, k_sql)		
 
 
 //--- View Finale x il '?'
-	k_view = "vx_" + trim(kist_int_artr.utente) + "_report_23_runsrtrrts_help "
+	k_view = kguf_data_base.u_get_nometab_xutente("report_23_runsrtrrts_help") 
 	k_sql = " "                                   
 	k_sql = + &
 	"CREATE VIEW " + trim(k_view) &
@@ -7167,7 +7154,7 @@ SetPointer(kkg.pointer_attesa)
 			+ ", datediff(day, max(artr.data_fin), certif.data) " & 
 			+ ", prodotti.gruppo " & 
 			+ " FROM " &
-			+ " vx_" + trim(kist_int_artr.utente) + "_report_23 as runs"  &
+			+ kguf_data_base.u_get_nometab_xutente("report_23") + " as runs"   &
 			+ " inner JOIN meca " &
 			+ " ON runs.id_meca = meca.id "  &
 			+ " inner JOIN artr " &
@@ -7176,7 +7163,8 @@ SetPointer(kkg.pointer_attesa)
 			+ " ON runs.id_armo = armo.id_armo " &
 			+ " inner JOIN prodotti " &
 			+ " ON armo.art = prodotti.codice " &
-			+ " left outer JOIN  vx_" + trim(kist_int_artr.utente) + "_report_23_xgru as runs_xgru"  &
+			+ " left outer JOIN  " &
+			+ kguf_data_base.u_get_nometab_xutente("report_23_xgru") + " as runs_xgru"   &
 			+ " ON runs.id_meca = runs_xgru.id_meca "  &
 			+ " left outer JOIN certif " &
 			+ " ON runs_xgru.id_meca = certif.id_meca "  &
@@ -7198,6 +7186,9 @@ private subroutine leggi_dwc_runsrtrrts_help (long k_riga, ref datawindow k_dw);
 long k_rc
 date k_data
 datastore kds_1
+kuf_elenco kuf1_elenco
+st_open_w kst_open_w
+
 
 try
 //--- se sono sul report generico allora faccio vedere i barcode
@@ -7227,13 +7218,33 @@ try
 
 	end if
 
-	kiuf_parent.link_call( kds_1, "")
+		//kiuf_parent.link_call( kds_1, "") call elenco ZOOM
+
+	SetPointer(kkg.pointer_attesa )
+
+	if kds_1.rowcount() > 0 then
+		kuf1_elenco = create kuf_elenco
+		kst_open_w.key1 = "Lotti rilasciati nel " + string( k_data, "mmm yy")
+		kst_open_w.key2 = trim(kds_1.dataobject)
+		kst_open_w.key3 = "0"     //--- viene riempito con il nr di riga selezionata
+		kst_open_w.key4 = trim(kiw_this_window.title)    //--- Titolo della Window di chiamata per riconoscerla
+		kst_open_w.key11_ds = create datastore
+		kst_open_w.key11_ds.dataobject = kds_1.dataobject
+		k_rc = kds_1.rowscopy(1, kds_1.rowcount(), primary!,kst_open_w.key11_ds,1,primary!)
+		kuf1_elenco.u_open(kst_open_w)
+	else
+		messagebox("Elenco Dati", "Nessun valore disponibile. ")
+	end if
+						
 
 catch (uo_exception kuo_exception)
 	kuo_exception.messaggio_utente() 
 
 finally
 	if isvalid(kds_1) then destroy kds_1
+	if isvalid(kuf1_elenco) then destroy kuf1_elenco
+	
+	SetPointer(kkg.pointer_default)
 	
 end try
 end subroutine
@@ -7801,7 +7812,7 @@ end if
 end event
 
 event dw_1::clicked;call super::clicked;//
-u_parametri_clicked(dwo.Name, row)
+u_dw_report_clicked(dwo.Name, row)
 
 
 end event
@@ -7830,7 +7841,7 @@ boolean ki_link_standard_sempre_possibile = true
 end type
 
 event dw_2::clicked;call super::clicked;//
-u_parametri_clicked(trim(dwo.name), row)
+u_dw_report_clicked(trim(dwo.name), row)
 ////
 //pointer kpointer  // Declares a pointer variable
 //
@@ -7879,7 +7890,7 @@ boolean ki_link_standard_sempre_possibile = true
 end type
 
 event dw_3::clicked;call super::clicked;//
-u_parametri_clicked(trim(dwo.name), row)
+u_dw_report_clicked(trim(dwo.name), row)
 
 end event
 
@@ -7896,7 +7907,7 @@ boolean ki_link_standard_sempre_possibile = true
 end type
 
 event dw_4::clicked;call super::clicked;//
-u_parametri_clicked(trim(dwo.name), row)
+u_dw_report_clicked(trim(dwo.name), row)
 
 end event
 
@@ -7913,7 +7924,7 @@ boolean ki_link_standard_sempre_possibile = true
 end type
 
 event dw_5::clicked;call super::clicked;//
-u_parametri_clicked(trim(dwo.name), row)
+u_dw_report_clicked(trim(dwo.name), row)
 
 end event
 
@@ -7934,7 +7945,7 @@ boolean ki_link_standard_sempre_possibile = true
 end type
 
 event dw_6::clicked;call super::clicked;//
-u_parametri_clicked(trim(dwo.name), row)
+u_dw_report_clicked(trim(dwo.name), row)
 
 end event
 
@@ -7952,7 +7963,7 @@ boolean ki_link_standard_sempre_possibile = true
 end type
 
 event dw_7::clicked;call super::clicked;//
-u_parametri_clicked(trim(dwo.name), row)
+u_dw_report_clicked(trim(dwo.name), row)
 
 end event
 
@@ -7970,7 +7981,7 @@ boolean ki_link_standard_sempre_possibile = true
 end type
 
 event dw_8::clicked;call super::clicked;//
-u_parametri_clicked(trim(dwo.name), row)
+u_dw_report_clicked(trim(dwo.name), row)
 
 end event
 
@@ -7988,7 +7999,7 @@ boolean ki_link_standard_sempre_possibile = true
 end type
 
 event dw_9::clicked;call super::clicked;//
-u_parametri_clicked(trim(dwo.name), row)
+u_dw_report_clicked(trim(dwo.name), row)
 
 end event
 
