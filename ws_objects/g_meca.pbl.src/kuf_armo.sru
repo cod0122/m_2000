@@ -78,7 +78,6 @@ public function st_esito anteprima_testa (ref datawindow kdw_anteprima, st_tab_m
 public function boolean if_lotto_dosimetria_gia_autorizzata (ref st_tab_meca kst_tab_meca)
 public function string err_lav_ok_dammi_descr (ref st_tab_meca kst_tab_meca)
 public function boolean if_lotto_dosimetria_gia_definitivo (ref st_tab_meca kst_tab_meca)
-public subroutine meca_non_conforme_blocca_sblocca (st_tab_meca kst_tab_meca) throws uo_exception
 public function st_esito leggi_riga (string k_tipo, ref st_tab_armo kst_tab_armo)
 public function st_esito leggi_testa (string k_tipo, ref st_tab_meca kst_tab_meca)
 public function st_esito anteprima_elenco (ref datastore kdw_anteprima, st_tab_armo kst_tab_armo)
@@ -200,6 +199,9 @@ public function long get_id_meca_da_e1doco (ref st_tab_meca kst_tab_meca) throws
 public function long get_id_meca_max () throws uo_exception
 public function long get_id_armo_max () throws uo_exception
 public function boolean if_convalidato (st_tab_meca ast_tab_meca) throws uo_exception
+public function integer meca_non_conforme_blocca_sblocca (st_tab_meca kst_tab_meca) throws uo_exception
+private function integer meca_non_conforme_blocca_sblocca_upd (st_tab_meca kst_tab_meca) throws uo_exception
+public function string get_stato_descrizione_std (st_tab_meca ast_tab_meca) throws uo_exception
 end prototypes
 
 public function st_esito setta_errore_lav (st_tab_meca kst_tab_meca);//
@@ -863,164 +865,6 @@ return k_definitivo
 
 
 end function
-
-public subroutine meca_non_conforme_blocca_sblocca (st_tab_meca kst_tab_meca) throws uo_exception;//---
-//--- Funzione: Blocca/Sblocca Lotto di Entrata Incompleto
-//--- 
-//--- Argomenti: st_meca   riempire il ID del Riferimento
-//---
-//--- se NOT OK lancia exception con Esito (st_esito) come da Standard
-//---
-//---
-boolean k_autorizza
-st_esito kst_esito
-kst_esito.esito = kkg_esito.ok
-kst_esito.sqlcode = 0
-kst_esito.SQLErrText = ""
-kst_esito.nome_oggetto = this.classname()
-
-
-//kst_open_w = kst_open_w
-//kst_open_w.flag_modalita = kkg_flag_modalita.modifica
-//kst_open_w.id_programma = kkg_id_programma_sblocca_non_conforme
-//
-////--- controlla se utente autorizzato alla funzione in atto
-//kuf1_sicurezza = create kuf_sicurezza
-//k_autorizza = kuf1_sicurezza.autorizza_funzione(kst_open_w)
-//destroy kuf1_sicurezza
-
-k_autorizza = consenti_sblocco_meca_non_conforme(kst_tab_meca)   // utente autorizzato?
-if not k_autorizza then
-	kst_esito.sqlcode = sqlca.sqlcode
-	kst_esito.SQLErrText = "Autorizzazione allo Sblocco del Lotto: ~n~r" + "La funzione richiesta non e' stata abilitata"
-	kst_esito.esito = kkg_esito.no_aut
-	kguo_exception.inizializza( )
-	kguo_exception.set_esito(kst_esito)					
-	throw kguo_exception
-end if
-
-//--- leggo archivi per stato del Lotto
-	SELECT 
-	      meca.stato
-		into :kst_tab_meca.stato 
-			 FROM meca
-  			 where meca.id = :kst_tab_meca.id  
-				 using sqlca;
-				 
-		
-	if sqlca.sqlcode = 0 then
-	
-		SELECT 
-	      x_datins_sblk
-		,x_utente_sblk
-		into :kst_tab_meca.x_datins_sblk
-		      ,:kst_tab_meca.x_utente_sblk
-			 FROM meca_blk
-				where id_meca = :kst_tab_meca.id
-				 using sqlca;
-
-		if kst_tab_meca.stato = ki_meca_stato_blk or kst_tab_meca.stato = ki_meca_stato_sblk &
-		 		or  kst_tab_meca.stato =  ki_meca_stato_blk_con_controllo &
-				or  kst_tab_meca.stato = ki_meca_stato_ok then
-			
-			choose case kst_tab_meca.stato
-				case ki_meca_stato_blk
-					kst_tab_meca.stato = ki_meca_stato_sblk 
-					kst_tab_meca.x_datins_sblk = kGuf_data_base.prendi_x_datins()
-					kst_tab_meca.x_utente_sblk = kGuf_data_base.prendi_x_utente()
-//--- se 'SBLOCCATO' (e quindo non ancora 'confermato') metto in stato di bloccato il lotto (bloccato e senza controllo sui dati del Riferimento))					
-				case ki_meca_stato_sblk
-					kst_tab_meca.stato = ki_meca_stato_blk 
-//					setnull(kst_tab_meca.x_datins_sblk)
-//					kst_tab_meca.x_utente_sblk = " "
-				case ki_meca_stato_blk_con_controllo
-					kst_tab_meca.stato = ki_meca_stato_ok
-//--- se OK metto in stato di bloccato il lotto (bloccato ma con gli opportuni controlli se si modificano i dati nel riferimento)					
-				case ki_meca_stato_ok
-					kst_tab_meca.stato = ki_meca_stato_blk_con_controllo 
-
-			end choose
-
-
-			kst_tab_meca.x_datins = kGuf_data_base.prendi_x_datins()
-			kst_tab_meca.x_utente = kGuf_data_base.prendi_x_utente()
-
-			update meca
-				set stato = :kst_tab_meca.stato
-			    ,x_datins = :kst_tab_meca.x_datins
-			    ,x_utente = :kst_tab_meca.x_utente
-				where id = :kst_tab_meca.id
-				using sqlca;
-
-			if sqlca.sqlcode < 0 then
-				kGuf_data_base.db_rollback_1()
-				kst_esito.sqlcode = sqlca.sqlcode
-				kst_esito.SQLErrText = "Errore durante aggiornamento Sblocco/Blocco Riferimento (Lotto id= " &
-									 + string(kst_tab_meca.id) + " " &
-									 + ")~n~r" + trim(SQLCA.SQLErrText)
-				kst_esito.esito = kkg_esito.db_ko
-				kguo_exception.inizializza( )
-				kguo_exception.set_esito(kst_esito)					
-				throw kguo_exception
-			end if	
-			
-			update meca_blk
-				set 
-			    x_datins_sblk = :kst_tab_meca.x_datins_sblk
-			    ,x_utente_sblk = :kst_tab_meca.x_utente_sblk
-			    ,x_datins = :kst_tab_meca.x_datins
-			    ,x_utente = :kst_tab_meca.x_utente
-				where id_meca = :kst_tab_meca.id
-				using sqlca;
-
-			if sqlca.sqlcode < 0 then
-				kGuf_data_base.db_rollback_1()
-				kst_esito.sqlcode = sqlca.sqlcode
-				kst_esito.SQLErrText = "Errore durante aggiornamento Sblocco/Blocco Riferimento (tab. blocchi Lotto id= " &
-									 + string(kst_tab_meca.id) + " " &
-									 + ")~n~r" + trim(SQLCA.SQLErrText)
-				kst_esito.esito = kkg_esito.db_ko
-				kguo_exception.inizializza( )
-				kguo_exception.set_esito(kst_esito)					
-				throw kguo_exception
-			end if	
-
-			update armo
-				set stato = :kst_tab_meca.stato
-				where id_meca = :kst_tab_meca.id
-				using sqlca;
-				
-				
-		else
-			kst_esito.sqlcode = sqlca.sqlcode
-			kst_esito.SQLErrText = "Stato del Riferimento (id="+string(kst_tab_meca.id) +") non aggiornato." &
-										  + "~n~rStato non riconosciuto (" + string(kst_tab_meca.stato) +")"
-			kst_esito.esito = kkg_esito.db_ko
-			kguo_exception.inizializza( )
-			kguo_exception.set_esito(kst_esito)					
-			kguo_exception.set_tipo(kguo_exception.KK_st_uo_exception_tipo_dati_anomali)
-			throw kguo_exception
-		end if
-		
-		kst_esito=kGuf_data_base.db_commit_1()
-		
-	else
-		if sqlca.sqlcode < 0 then
-			kst_esito.sqlcode = sqlca.sqlcode
-			kst_esito.SQLErrText = "Lettura del Riferimento (id="+string(kst_tab_meca.id) +") Fallito. ~n~r" + "Errore: " + string(sqlca.sqlcode) &
-										  + trim(sqlca.sqlerrtext)
-			kst_esito.esito = kkg_esito.db_ko
-			kguo_exception.inizializza( )
-			kguo_exception.set_esito(kst_esito)					
-			throw kguo_exception
-		end if	
-	end if
-	
-
-
-
-
-end subroutine
 
 public function st_esito leggi_riga (string k_tipo, ref st_tab_armo kst_tab_armo);//
 //====================================================================
@@ -9226,7 +9070,7 @@ end subroutine
 
 public function string get_meca_blk_descrizione (st_tab_meca kst_tab_meca) throws uo_exception;//
 //-------------------------------------------------------------------------------------------------------
-//--- Torna DDT del mandante 
+//--- Torna descrizione Blocco
 //--- 
 //--- Input : st_tab_meca.id 
 //--- out: 
@@ -9715,6 +9559,231 @@ end try
 	
 return k_return
 
+
+end function
+
+public function integer meca_non_conforme_blocca_sblocca (st_tab_meca kst_tab_meca) throws uo_exception;//---
+//--- Funzione: Blocca/Sblocca Lotto di Entrata Incompleto
+//--- 
+//--- inp: st_meca   riempire il ID del Riferimento
+//--- out: stato: stato del lotto
+//--- se NOT OK lancia exception con Esito (st_esito) come da Standard
+//---
+//---
+int k_return
+boolean k_autorizza
+st_esito kst_esito
+
+
+	try 
+		kst_esito.esito = kkg_esito.ok
+		kst_esito.sqlcode = 0
+		kst_esito.SQLErrText = ""
+		kst_esito.nome_oggetto = this.classname()
+
+		k_autorizza = consenti_sblocco_meca_non_conforme(kst_tab_meca)   // utente autorizzato?
+		if not k_autorizza then
+			kst_esito.sqlcode = 0
+			kst_esito.SQLErrText = "Autorizzazione allo Sblocco del Lotto: ~n~r" + "La funzione richiesta non e' stata abilitata"
+			kst_esito.esito = kkg_esito.no_aut
+			kguo_exception.inizializza( )
+			kguo_exception.set_esito(kst_esito)					
+			throw kguo_exception
+		end if
+	
+	//--- leggo archivi per stato del Lotto
+		SELECT 
+				meca.stato
+			into :kst_tab_meca.stato 
+				 FROM meca
+				 where meca.id = :kst_tab_meca.id  
+					 using kguo_sqlca_db_magazzino;
+					 
+			
+		if kguo_sqlca_db_magazzino.sqlcode = 0 then
+		
+			SELECT 
+				x_datins_sblk
+				,x_utente_sblk
+			into :kst_tab_meca.x_datins_sblk
+					,:kst_tab_meca.x_utente_sblk
+				 FROM meca_blk
+					where id_meca = :kst_tab_meca.id
+					 using kguo_sqlca_db_magazzino;
+	
+			if kguo_sqlca_db_magazzino.sqlcode = 0 &
+				and  (kst_tab_meca.stato = ki_meca_stato_blk &
+						or kst_tab_meca.stato = ki_meca_stato_sblk &
+						or  kst_tab_meca.stato =  ki_meca_stato_blk_con_controllo &
+						or  kst_tab_meca.stato = ki_meca_stato_ok) then
+				
+				
+				k_return = meca_non_conforme_blocca_sblocca_upd(kst_tab_meca)
+
+					
+			else
+
+				kst_esito.sqlcode = kguo_sqlca_db_magazzino.sqlcode
+				if kguo_sqlca_db_magazzino.sqlcode = 0 then
+					kst_esito.SQLErrText = "Stato del Riferimento (id="+string(kst_tab_meca.id) +") non aggiornato." &
+											  + "~n~rStato non riconosciuto (" + string(kst_tab_meca.stato) +")"
+					kst_esito.esito = kkg_esito.no_esecuzione
+				else
+					kst_esito.SQLErrText = "Errore in lettura Blocco del Riferimento (id="+string(kst_tab_meca.id) +")." &
+										 + "~n~r" + trim(kguo_sqlca_db_magazzino.SQLErrText)
+					kst_esito.esito = kkg_esito.db_ko
+				end if
+				kguo_exception.inizializza( )
+				kguo_exception.set_esito(kst_esito)					
+				kguo_exception.set_tipo(kguo_exception.KK_st_uo_exception_tipo_dati_anomali)
+				throw kguo_exception
+			end if
+			
+		else
+			if kguo_sqlca_db_magazzino.sqlcode < 0 then
+				kst_esito.sqlcode = kguo_sqlca_db_magazzino.sqlcode
+				kst_esito.SQLErrText = "Lettura del Riferimento (id="+string(kst_tab_meca.id) +") Fallito. ~n~r" + "Errore: " + string(kguo_sqlca_db_magazzino.sqlcode) &
+											  + trim(kguo_sqlca_db_magazzino.sqlerrtext)
+				kst_esito.esito = kkg_esito.db_ko
+				kguo_exception.inizializza( )
+				kguo_exception.set_esito(kst_esito)					
+				throw kguo_exception
+			end if	
+		end if
+		
+	catch (uo_exception kuo_exception)
+		throw kuo_exception
+		
+		
+	end try
+
+return k_return
+
+end function
+
+private function integer meca_non_conforme_blocca_sblocca_upd (st_tab_meca kst_tab_meca) throws uo_exception;//---
+//--- Funzione: Blocca/Sblocca Lotto di Entrata Incompleto 
+//--- 
+//--- inp: st_meca   riempire il ID del Riferimento
+//--- out: stato: stato del lotto
+//--- se NOT OK lancia exception con Esito (st_esito) come da Standard
+//---
+//---
+int k_return
+st_esito kst_esito
+
+
+	try 
+	
+		kst_esito.esito = kkg_esito.ok
+		kst_esito.sqlcode = 0
+		kst_esito.SQLErrText = ""
+		kst_esito.nome_oggetto = this.classname()
+
+		choose case kst_tab_meca.stato
+			case ki_meca_stato_blk
+				kst_tab_meca.stato = ki_meca_stato_sblk 
+				kst_tab_meca.x_datins_sblk = kGuf_data_base.prendi_x_datins()
+				kst_tab_meca.x_utente_sblk = kGuf_data_base.prendi_x_utente()
+//--- se 'SBLOCCATO' (e quindo non ancora 'confermato') metto in stato di bloccato il lotto (bloccato e senza controllo sui dati del Riferimento))					
+			case ki_meca_stato_sblk
+				kst_tab_meca.stato = ki_meca_stato_blk 
+			case ki_meca_stato_blk_con_controllo
+				kst_tab_meca.stato = ki_meca_stato_ok
+//--- se OK metto in stato di bloccato il lotto (bloccato ma con gli opportuni controlli se si modificano i dati nel riferimento)					
+			case ki_meca_stato_ok
+				kst_tab_meca.stato = ki_meca_stato_blk_con_controllo 
+
+		end choose
+
+
+		kst_tab_meca.x_datins = kGuf_data_base.prendi_x_datins()
+		kst_tab_meca.x_utente = kGuf_data_base.prendi_x_utente()
+
+		update meca
+			set stato = :kst_tab_meca.stato
+			 	,x_datins = :kst_tab_meca.x_datins
+			 	,x_utente = :kst_tab_meca.x_utente
+			where id = :kst_tab_meca.id
+			using kguo_sqlca_db_magazzino;
+
+		if kguo_sqlca_db_magazzino.sqlcode < 0 then
+			kst_esito.sqlcode = kguo_sqlca_db_magazzino.sqlcode
+			kst_esito.SQLErrText = "Errore durante aggiornamento Sblocco/Blocco Riferimento (Lotto id= " &
+								 + string(kst_tab_meca.id) + " " &
+								 + ")~n~r" + trim(kguo_sqlca_db_magazzino.SQLErrText)
+			kst_esito.esito = kkg_esito.db_ko
+			kguo_exception.inizializza( )
+			kguo_exception.set_esito(kst_esito)					
+			throw kguo_exception
+		end if	
+		
+		update meca_blk
+			set 
+				 x_datins_sblk = :kst_tab_meca.x_datins_sblk
+				 ,x_utente_sblk = :kst_tab_meca.x_utente_sblk
+				 ,x_datins = :kst_tab_meca.x_datins
+				 ,x_utente = :kst_tab_meca.x_utente
+			where id_meca = :kst_tab_meca.id
+			using kguo_sqlca_db_magazzino;
+
+		if kguo_sqlca_db_magazzino.sqlcode < 0 then
+			kst_esito.sqlcode = kguo_sqlca_db_magazzino.sqlcode
+			kst_esito.SQLErrText = "Errore durante aggiornamento Sblocco/Blocco Riferimento (tab. blocchi Lotto id= " &
+								 + string(kst_tab_meca.id) + " " &
+								 + ")~n~r" + trim(kguo_sqlca_db_magazzino.SQLErrText)
+			kst_esito.esito = kkg_esito.db_ko
+			kguo_exception.inizializza( )
+			kguo_exception.set_esito(kst_esito)					
+			throw kguo_exception
+		end if	
+
+		update armo
+			set stato = :kst_tab_meca.stato
+			where id_meca = :kst_tab_meca.id
+			using kguo_sqlca_db_magazzino;
+
+		kguo_sqlca_db_magazzino.db_commit()
+		
+		k_return = kst_tab_meca.stato
+			
+	catch (uo_exception kuo_exception)
+		kguo_sqlca_db_magazzino.db_rollback()
+		throw kuo_exception
+		
+		
+	end try
+
+return k_return
+
+end function
+
+public function string get_stato_descrizione_std (st_tab_meca ast_tab_meca) throws uo_exception;//
+//---------------------------------------------------------------------------------------------
+//--- Torna la descrizione STANDARD dello STATO del Lotto 
+//--- 
+//--- 
+//---  input: st_tab_meca.STATO  es. 3
+//---  Output: 
+//---  rit.: descrizione standard
+//---  Lancia Exception
+//---------------------------------------------------------------------------------------------
+//
+string k_return = ""
+datastore kds_1
+int  k_riga
+
+
+	kds_1 = create datastore
+	
+	kds_1.dataobject = "dd_meca_armo_stato"
+	k_riga = kds_1.find( "stato = '" + string(ast_tab_meca.stato) + "'", 0, kds_1.rowcount())
+	if k_riga > 0 then
+		k_return = trim(kds_1.getitemstring(k_riga, "descr"))
+	end if
+
+
+return k_return 
 
 end function
 

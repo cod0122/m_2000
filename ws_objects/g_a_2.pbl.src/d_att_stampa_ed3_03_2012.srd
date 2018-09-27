@@ -52,16 +52,16 @@ table(column=(type=long updatewhereclause=yes identity=yes name=certif_id dbname
          certif.data_stampa,   
          certif.num_certif,   
          certif.data,   
-         meca.num_int + '/' + year(meca.data_int) as meca_num_int,   
+         concat(meca.num_int, '/', year(meca.data_int)) as meca_num_int,   
          meca.clie_1,   
-         trim(clienti_a.rag_soc_10) + ' (' + meca.clie_1 + ')' as rag_soc_10,   
+         concat(trim(clienti_a.rag_soc_10) , ' (',  convert(varchar, meca.clie_1), ')') as rag_soc_10,   
          meca.num_bolla_in,   
          meca.data_bolla_in,   
          certif.colli,   
          certif.clie_2,   
-         trim(clienti_b.rag_soc_10) + ' (' + meca.clie_2 + ')' as rag_soc_10_1,   
+         concat(trim(clienti_b.rag_soc_10), ' (', convert(varchar, meca.clie_2), ')') as rag_soc_10_1,   
          meca.clie_3,   
-         trim(clienti_c.rag_soc_10) + ' (' + meca.clie_3 + ')' as rag_soc_10_2,   
+         concat(trim(clienti_c.rag_soc_10), ' (', convert(varchar, meca.clie_3), ')') as rag_soc_10_2,   
          contratti.mc_co,   
          certif.note,
 			certif.note_1,
@@ -232,4 +232,3 @@ export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
 import.xml()
 export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
 export.xhtml()
- 

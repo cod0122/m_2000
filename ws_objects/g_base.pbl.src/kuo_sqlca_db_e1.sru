@@ -13,6 +13,7 @@ protected subroutine x_db_profilo () throws uo_exception
 public function boolean if_connessione_bloccata () throws uo_exception
 public function boolean u_db_connetti (ref datawindow adw_1) throws uo_exception
 public function boolean if_connesso_x () throws uo_exception
+public function integer u_get_col_len (string a_table, string a_col)
 end prototypes
 
 protected subroutine x_db_profilo () throws uo_exception;//
@@ -158,6 +159,25 @@ int k_conta
 	end if
 
 return k_return
+
+end function
+
+public function integer u_get_col_len (string a_table, string a_col);//
+int k_return 
+datastore kds_1
+
+SELECT CHAR_LENGTH
+          into :k_return
+            FROM ALL_TAB_COLUMNS 
+	WHERE TABLE_NAME = :a_table AND COLUMN_NAME = :a_col
+	using this;
+
+if isnull(k_return) then
+	k_return = 0
+end if
+		
+return k_return
+
 
 end function
 

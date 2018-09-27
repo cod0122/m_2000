@@ -451,7 +451,6 @@ public function integer add_wm_pklist (ref st_wm_pklist kst_wm_pklist) throws uo
 int k_return=0
 int k_righe_insert=0
 long k_ctr
-st_esito kst_esito
 st_tab_wm_pklist_righe kst_tab_wm_pklist_righe
 kuf_wm_pklist_testa kuf1_wm_pklist_testa
 kuf_wm_pklist_righe kuf1_wm_pklist_righe
@@ -481,11 +480,6 @@ kuf_wm_pklist_righe kuf1_wm_pklist_righe
 			next
 			
 		end if
-	
-		if kst_esito.esito = kkg_esito.db_ko then
-			kguo_exception.set_esito(kst_esito)
-			throw kguo_exception
-		end if
 
 	catch (uo_exception kuo_exception)
 		throw kuo_exception
@@ -493,9 +487,9 @@ kuf_wm_pklist_righe kuf1_wm_pklist_righe
 	finally
 //--- se almeno 1 riga è stata caricata faccio COMMIT		
 		if k_righe_insert > 0 then
-			kst_esito = kguo_sqlca_db_magazzino.db_commit()
+			kguo_sqlca_db_magazzino.db_commit()
 		else
-			kst_esito = kguo_sqlca_db_magazzino.db_rollback()
+			kguo_sqlca_db_magazzino.db_rollback()
 		end if
 		if isvalid(kuf1_wm_pklist_testa) then destroy kuf1_wm_pklist_testa
 		if isvalid(kuf1_wm_pklist_righe) then destroy kuf1_wm_pklist_righe

@@ -2311,7 +2311,7 @@ else
 				if LenA(trim(k_return)) = 0 then
 					k_return = " "
 				end if
-				k_bytes = filewrite(k_file, "File LOG creato il: " + string(today()) +"  ore: " +  string(now()) ) //La prima riga!!!
+				k_bytes = filewriteEx(k_file, "File LOG creato il: " + string(today()) +"  ore: " +  string(now()) ) //La prima riga!!!
 				fileClose(k_file)
 			end if
 		end if
@@ -2320,19 +2320,19 @@ else
 		k_file = fileopen( trim(k_path_nome_file), linemode!, write!, lockreadwrite!, Append!)
 		if k_file > 0 then
 			
-			k_bytes = filewrite(k_file, " ") //Una riga vuota
+			k_bytes = filewriteEx(k_file, " ") //Una riga vuota
 			
 			if k_operazione = "W"  then // Scrivo l'errore
 				k_record = "Errore del " + string(today(),"dd/mm/yyyy") + " ore " + String(Now( ), "hh:mm:ss") + " - Versione Programma " + string(KKG.VERSIONE) + " - Nome device di rete: " + kguo_g.get_nome_computer()
 			else								// Scrivo msg informativo					
 				k_record = "Messaggio del " + string(today(),"dd/mm/yyyy") + " ore " + String(Now( ), "hh:mm:ss") + " - Versione Programma " + string(KKG.VERSIONE) + " - Nome device di rete: " + kguo_g.get_nome_computer()
 			end if
-			k_bytes = filewrite(k_file, k_record) //scrivo la data dell'errore
+			k_bytes = filewriteEx(k_file, k_record) //scrivo la data dell'errore
 			if kst_esito.esito <> kkg_esito.ok then
-				k_bytes = filewrite(k_file, "Codice Esito (st_esito.esito) = " +  trim(kst_esito.esito)) //scrivo l'errore
+				k_bytes = filewriteEx(k_file, "Codice Esito (st_esito.esito) = " +  trim(kst_esito.esito)) //scrivo l'errore
 			end if
-			k_bytes = filewrite(k_file, k_errore) //scrivo l'errore
-			k_bytes = filewrite(k_file, " ") //Una riga vuota
+			k_bytes = filewriteEx(k_file, k_errore) //scrivo l'errore
+			k_bytes = filewriteEx(k_file, " ") //Una riga vuota
 
 			k_return = "W"
 
@@ -2402,7 +2402,7 @@ if k_operazione = "D" then //Azzero il file
 		if LenA(trim(k_return)) = 0 then
 			k_return = " "
 		end if
-		k_bytes = filewrite(k_file, "File LOG creato il: " + string(today()) + "  ore: " + string(now()) ) //La prima riga!!!
+		k_bytes = filewriteEx(k_file, "File LOG creato il: " + string(today()) + "  ore: " + string(now()) ) //La prima riga!!!
 	end if
 end if
 

@@ -1720,7 +1720,7 @@ st_treeview_data_any kst_treeview_data_any
 			kids_certif_tree_stampati_xgiornomeseanno.settransobject(kguo_sqlca_db_magazzino) 
 		end if
 
-		k_data_da = relativedate(kguo_g.get_dataoggi( ),  -1700)
+		k_data_da = relativedate(kguo_g.get_dataoggi( ),  -2100)
 		k_nr_righe = kids_certif_tree_stampati_xgiornomeseanno.retrieve(k_data_da)
 //		open kc_treeview;
 		

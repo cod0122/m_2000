@@ -21,6 +21,7 @@ public function boolean if_connesso_x ()
 public function boolean db_set_isolation_level () throws uo_exception
 public function st_esito db_crea_temp_table (string k_table, string k_campi, string k_select) throws uo_exception
 public function st_esito db_crea_temp_table_global (string k_table, string k_campi, string k_select) throws uo_exception
+public function integer u_get_col_len (string a_table, string a_col)
 end prototypes
 
 protected subroutine x_db_profilo () throws uo_exception;//
@@ -314,6 +315,21 @@ kst_esito.nome_oggetto = this.classname()
 	
 
 return kst_esito
+end function
+
+public function integer u_get_col_len (string a_table, string a_col);//
+int k_return 
+datastore kds_1
+
+
+kds_1 = create datastore 
+kds_1.dataobject = "ds_ssql_col_len"
+kds_1.settransobject(this)
+if kds_1.retrieve(a_table, a_col) > 0 then
+	k_return = kds_1.getitemnumber(1, "kcol_len") 
+end if		
+		
+return k_return
 end function
 
 on kuo_sqlca_db_magazzino.create

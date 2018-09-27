@@ -36,6 +36,7 @@ public function integer get_nr_pallet_wm_associati (ref st_tab_wm_pklist_righe k
 public function st_esito get_id_meca_da_id_wm_pklist (ref st_tab_wm_pklist_righe kst_tab_wm_pklist_righe)
 public function long get_id_armo_da_wm_barcode (ref st_tab_wm_pklist_righe kst_tab_wm_pklist_righe) throws uo_exception
 public function long get_id_wm_pklist_riga_max () throws uo_exception
+private subroutine u_set_col_len_max (string k_ope, ref st_tab_wm_pklist_righe kst_tab_wm_pklist_righe)
 end prototypes
 
 public subroutine if_isnull (ref st_tab_wm_pklist_righe kst_tab_wm_pklist_righe);//---
@@ -879,6 +880,7 @@ public function boolean tb_add (ref st_tab_wm_pklist_righe kst_tab_wm_pklist_rig
 //
 int k_resp
 boolean k_return=false
+string k_ope
 st_esito kst_esito
 st_open_w kst_open_w
 st_tab_wm_pklist_righe kst_tab_wm_pklist_righe_righe
@@ -907,22 +909,20 @@ destroy kuf1_sicurezza
 
 if not k_return then
 
-	kst_esito.sqlcode = sqlca.sqlcode
+	kst_esito.sqlcode = kguo_sqlca_db_magazzino.sqlcode
 	kst_esito.SQLErrText = "Aggiornamento Packing-List Mandante non Autorizzato: ~n~r" + "La funzione richiesta non e' stata abilitata"
 	kst_esito.esito = kkg_esito.no_aut
 
 else
 	
-	//22062018 tronca kst_tab_wm_pklist_righe.idlotto_clie a 80 char
-	kst_tab_wm_pklist_righe.idlotto_clie = left(kst_tab_wm_pklist_righe.idlotto_clie,80)
-	kst_tab_wm_pklist_righe.idart_clie = left(kst_tab_wm_pklist_righe.idart_clie,24)
-
 	if_isnull(kst_tab_wm_pklist_righe)
 	kst_tab_wm_pklist_righe.x_datins = kGuf_data_base.prendi_x_datins()
 	kst_tab_wm_pklist_righe.x_utente = kGuf_data_base.prendi_x_utente()
 
 	if kst_tab_wm_pklist_righe.id_wm_pklist_riga > 0 then
-
+		k_ope = "AGGIORNAMENTO" 
+		u_set_col_len_max(k_ope, kst_tab_wm_pklist_righe)
+		
 		UPDATE wm_pklist_righe  
 		  SET id_wm_pklist = :kst_tab_wm_pklist_righe.id_wm_pklist,   
 				stato = :kst_tab_wm_pklist_righe.stato,   
@@ -943,10 +943,13 @@ else
 				x_datins = :kst_tab_wm_pklist_righe.x_datins,   
 				x_utente = :kst_tab_wm_pklist_righe.x_utente  
 			WHERE wm_pklist_righe.id_wm_pklist_riga = :kst_tab_wm_pklist_righe.id_wm_pklist_riga   
-				using sqlca;
+				using kguo_sqlca_db_magazzino;
 
 		
 	else
+		k_ope = "INSERIMENTO" 
+		u_set_col_len_max(k_ope, kst_tab_wm_pklist_righe)
+
 		//id_wm_pklist_riga,   
 		INSERT INTO wm_pklist_righe  
 					( 
@@ -983,54 +986,39 @@ else
 					  :kst_tab_wm_pklist_righe.eliminato,   
 					  :kst_tab_wm_pklist_righe.x_datins,   
 					  :kst_tab_wm_pklist_righe.x_utente )  
-				using sqlca;
+				using kguo_sqlca_db_magazzino;
 		
-		if sqlca.sqlcode = 0 then
+		if kguo_sqlca_db_magazzino.sqlcode = 0 then
 		
 			kst_tab_wm_pklist_righe.id_wm_pklist_riga = get_id_wm_pklist_riga_max()
-			//kst_tab_wm_pklist_righe.id_wm_pklist_riga = long(sqlca.SQLReturnData)
+			//kst_tab_wm_pklist_righe.id_wm_pklist_riga = long(kguo_sqlca_db_magazzino.SQLReturnData)
 		
 		end if
 	
 	end if
 		
-	if sqlca.sqlcode <> 0 then
+	if kguo_sqlca_db_magazzino.sqlcode < 0 then
 			
-		kst_esito.sqlcode = sqlca.sqlcode
+		kst_esito.sqlcode = kguo_sqlca_db_magazzino.sqlcode
 		kst_esito.SQLErrText = &
-"Errore durante Aggiornamento riga Packing-List Mandante ~n~r" &
+"Errore in " + k_ope + " dettaglio riga Packing-List cliente~n~r" &
 				+ " id Packing: " + string(kst_tab_wm_pklist_righe.id_wm_pklist, "####0") + " -  id riga: " &
 				+ string(kst_tab_wm_pklist_righe.id_wm_pklist_riga) &	
-				+ " ~n~rErrore-tab.'wm_pklist':"	+ trim(sqlca.SQLErrText)
-		if sqlca.sqlcode = 100 then
-			kst_esito.esito = kkg_esito.not_fnd
-		else
-			if sqlca.sqlcode > 0 then
-				kst_esito.esito = kkg_esito.db_wrn
-			else
-				kst_esito.esito = kkg_esito.db_ko
-				kguo_exception.set_esito(kst_esito)
-				throw kguo_exception
-			end if
+				+ " ~n~rErrore-tab.'wm_pklist':"	+ trim(kguo_sqlca_db_magazzino.SQLErrText)
+		kst_esito.esito = kkg_esito.db_ko
+		kguo_exception.set_esito(kst_esito)
+	
+		if kst_tab_wm_pklist_righe.st_tab_g_0.esegui_commit <> "N" or isnull(kst_tab_wm_pklist_righe.st_tab_g_0.esegui_commit) then
+			kguo_sqlca_db_magazzino.db_rollback( )
 		end if
-	
-	
+		
+	else
 	//---- COMMIT....	
-		if kst_esito.esito = kkg_esito.db_ko then
-			if kst_tab_wm_pklist_righe.st_tab_g_0.esegui_commit <> "N" or isnull(kst_tab_wm_pklist_righe.st_tab_g_0.esegui_commit) then
-				kGuf_data_base.db_rollback_1( )
-			end if
-		else
-			if kst_esito.esito = kkg_esito.ok then
-	
-				if kst_tab_wm_pklist_righe.st_tab_g_0.esegui_commit <> "N" or isnull(kst_tab_wm_pklist_righe.st_tab_g_0.esegui_commit) then
-					kGuf_data_base.db_commit_1( )
-					k_return=true
-				end if
-			end if
+		if kst_tab_wm_pklist_righe.st_tab_g_0.esegui_commit <> "N" or isnull(kst_tab_wm_pklist_righe.st_tab_g_0.esegui_commit) then
+			kguo_sqlca_db_magazzino.db_commit( )
+			k_return=true
 		end if
-	
-	
+		
 	end if
 		
 end if
@@ -2386,6 +2374,51 @@ kst_esito.nome_oggetto = this.classname()
 return k_return
 
 end function
+
+private subroutine u_set_col_len_max (string k_ope, ref st_tab_wm_pklist_righe kst_tab_wm_pklist_righe);int k_lencolmax
+
+
+	kguo_exception.kist_esito.esito = kkg_esito.ok
+	kguo_exception.kist_esito.sqlcode = 0
+	kguo_exception.kist_esito.SQLErrText = ""
+	kguo_exception.kist_esito.nome_oggetto = this.classname()
+
+	//22062018 tronca kst_tab_wm_pklist_righe.idlotto_clie a 80 char
+	kst_tab_wm_pklist_righe.idlotto_clie = left(kst_tab_wm_pklist_righe.idlotto_clie,80)
+	k_lencolmax = kguo_sqlca_db_magazzino.u_get_col_len( "wm_pklist_righe", "idlotto_clie") //get max size colonna su db
+	if k_lencolmax > 0 and len(trim(kst_tab_wm_pklist_righe.idlotto_clie)) > k_lencolmax then
+
+		kguo_exception.kist_esito.sqlcode = 0
+		kguo_exception.kist_esito.SQLErrText = &
+"Anomalia in " + k_ope + " Riga Packing-List cliente~n~r" &
+				+ " ~n~rCodice Lotto Cliente TROPPO LUNGO (è stato troncato): "	+ trim(kst_tab_wm_pklist_righe.idlotto_clie ) &	 
+				+ " ~n~rid=" + string(kst_tab_wm_pklist_righe.id_wm_pklist, "####0")  &
+				+ " barcode: " + string(kst_tab_wm_pklist_righe.wm_barcode) + " rif. Art. cliente: " + trim(kst_tab_wm_pklist_righe.idart_clie) 
+		kguo_exception.kist_esito.esito = kkg_esito.db_wrn
+		kguo_exception.scrivi_log( )
+
+		kst_tab_wm_pklist_righe.idlotto_clie = left(trim(kst_tab_wm_pklist_righe.idlotto_clie), k_lencolmax)
+
+	end if
+	
+	k_lencolmax = kguo_sqlca_db_magazzino.u_get_col_len( "wm_pklist_righe", "idart_clie") //get max size colonna su db
+	if k_lencolmax > 0 and len(trim(kst_tab_wm_pklist_righe.idart_clie)) > k_lencolmax then
+
+		kguo_exception.kist_esito.sqlcode = 0
+		kguo_exception.kist_esito.SQLErrText = &
+"Anomalia in " + k_ope + " Riga Packing-List cliente~n~r" &
+				+ " ~n~rArticolo Cliente TROPPO LUNGO (è stato troncato): "	+ trim(kst_tab_wm_pklist_righe.idart_clie ) &	 
+				+ " ~n~rid=" + string(kst_tab_wm_pklist_righe.id_wm_pklist, "####0")  &
+				+ " barcode: " + string(kst_tab_wm_pklist_righe.wm_barcode) + " Codice Lotto cliente: " + trim(kst_tab_wm_pklist_righe.idlotto_clie) 
+		kguo_exception.kist_esito.esito = kkg_esito.db_wrn
+		kguo_exception.scrivi_log( )
+
+		kst_tab_wm_pklist_righe.idart_clie = left(trim(kst_tab_wm_pklist_righe.idart_clie), k_lencolmax)
+
+	end if
+	
+
+end subroutine
 
 on kuf_wm_pklist_righe.create
 call super::create

@@ -74,7 +74,6 @@ public subroutine autorizza_funzioni ()
 protected subroutine inizializza_4 () throws uo_exception
 protected subroutine inizializza_5 () throws uo_exception
 protected function integer inserisci ()
-private subroutine call_memo ()
 private subroutine u_add_memo_link (string a_file[], integer a_file_nr)
 public function long u_drop_file (integer a_k_tipo_drag, long a_handle)
 private subroutine call_ddt ()
@@ -84,6 +83,7 @@ public subroutine u_cambia_num_data ()
 public subroutine u_cambia_aperto ()
 public subroutine u_aprichiudi_lotto (st_tab_meca kst_tab_meca)
 protected subroutine attiva_tasti_0 ()
+private subroutine call_memo_old ()
 end prototypes
 
 protected subroutine inizializza_1 ();//
@@ -1677,43 +1677,6 @@ return (k_return)
 
 end function
 
-private subroutine call_memo ();//
-//=== Legge il rek dalla DW lista per la modifica
-long k_riga
-st_tab_meca_memo kst_tab_meca_memo 
-st_memo kst_memo
-kuf_memo kuf1_memo
-kuf_memo_inout kuf1_memo_inout
-
-
-try   
-	k_riga = tab_1.tabpage_1.dw_1.getrow()
-	if k_riga > 0 then
-
-		kuf1_memo = create kuf_memo
-		kuf1_memo_inout = create kuf_memo_inout
-	
-		kst_tab_meca_memo.id_meca_memo = tab_1.tabpage_1.dw_1.getitemnumber( k_riga, "id_meca_memo" ) 
-		kst_tab_meca_memo.id_meca = tab_1.tabpage_1.dw_1.getitemnumber( k_riga, "id_meca" ) 
-			
-		if kst_tab_meca_memo.id_meca  > 0 then
-			kst_tab_meca_memo.tipo_sv = ki_st_open_w.sr_settore // kuf1_memo.kki_tipo_sv_QLT
-			kst_memo.st_tab_meca_memo = kst_tab_meca_memo
-			kuf1_memo_inout.memo_xmeca(kst_memo.st_tab_meca_memo, kst_memo.st_tab_memo)
-			kuf1_memo.u_attiva_funzione(kst_memo,kkg_flag_modalita.inserimento )   // APRE FUNZIONE
-			
-		end if
-	end if 
-		
-catch (uo_exception	kuo_exception)
-	kuo_exception.messaggio_utente()
-		
-end try
-	
-
-
-end subroutine
-
 private subroutine u_add_memo_link (string a_file[], integer a_file_nr);//
 long k_riga=0
 int k_risposta_load_memo_link = 1
@@ -2149,6 +2112,43 @@ end if
 
 end subroutine
 
+private subroutine call_memo_old ();////
+////=== Legge il rek dalla DW lista per la modifica
+//long k_riga
+//st_tab_meca_memo kst_tab_meca_memo 
+//st_memo kst_memo
+//kuf_memo kuf1_memo
+//kuf_memo_inout kuf1_memo_inout
+//
+//
+//try   
+//	k_riga = tab_1.tabpage_1.dw_1.getrow()
+//	if k_riga > 0 then
+//
+//		kuf1_memo = create kuf_memo
+//		kuf1_memo_inout = create kuf_memo_inout
+//	
+//		kst_tab_meca_memo.id_meca_memo = tab_1.tabpage_1.dw_1.getitemnumber( k_riga, "id_meca_memo" ) 
+//		kst_tab_meca_memo.id_meca = tab_1.tabpage_1.dw_1.getitemnumber( k_riga, "id_meca" ) 
+//			
+//		if kst_tab_meca_memo.id_meca  > 0 then
+//			kst_tab_meca_memo.tipo_sv = ki_st_open_w.sr_settore // kuf1_memo.kki_tipo_sv_QLT
+//			kst_memo.st_tab_meca_memo = kst_tab_meca_memo
+//			kuf1_memo_inout.memo_xmeca(kst_memo.st_tab_meca_memo, kst_memo.st_tab_memo)
+//			kuf1_memo.u_attiva_funzione(kst_memo,kkg_flag_modalita.inserimento )   // APRE FUNZIONE
+//			
+//		end if
+//	end if 
+//		
+//catch (uo_exception	kuo_exception)
+//	kuo_exception.messaggio_utente()
+//		
+//end try
+//	
+//
+//
+end subroutine
+
 on w_meca_1.destroy
 call super::destroy
 if IsValid(MenuID) then destroy(MenuID)
@@ -2447,10 +2447,10 @@ if left(dwo.name, 2) = "b_" or left(dwo.name, 2) = "p_"  then
 				kst_open_w.key1 = "Cliente " + string(this.object.clienti_rag_soc_10_2[this.getrow()]) 
 			end if
 
-//--- memo: carico note e allegati
-		case "p_id_memo_no" 
-			k_elabora=true
-			call_memo()
+////--- memo: carico note e allegati
+//		case "p_id_memo_no" 
+//			k_elabora=true
+//			call_memo()
 			
 	end choose
 
@@ -2673,8 +2673,6 @@ boolean titlebar = true
 string title = "armo "
 string dataobject = "d_meca_1_armo_speciali"
 boolean controlmenu = true
-boolean hscrollbar = true
-boolean vscrollbar = true
 boolean resizable = true
 string icon = "Form!"
 boolean hsplitscroll = false

@@ -24,6 +24,7 @@ private constant string ki_cfg_dbms_scelta_muletto = "2"
 private st_errori_gestione kist_errori_gestione
 
 end variables
+
 forward prototypes
 public function st_esito db_commit ()
 public function boolean db_connetti () throws uo_exception
@@ -45,6 +46,7 @@ public function st_esito db_truncate (string k_table) throws uo_exception
 public function boolean db_disconnetti ()
 public subroutine set_profilo_db () throws uo_exception
 public function boolean db_riconnetti () throws uo_exception
+public function integer u_get_col_len (string a_table, string a_col)
 end prototypes
 
 public function st_esito db_commit ();//
@@ -818,6 +820,13 @@ finally
 end try
 
 return k_return
+end function
+
+public function integer u_get_col_len (string a_table, string a_col);//
+//--- get defined column size 
+//
+
+return 0
 end function
 
 on kuo_sqlca_db_0.create

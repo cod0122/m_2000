@@ -216,7 +216,8 @@ public function integer tb_add_righe (kds_e1_asn_rows ads1_e1_asn_rows) throws u
 //=== 
 //====================================================================
 int k_return = 0
-int k_upd=0, k_righe=0, k_riga
+int k_upd=0, k_righe=0, k_riga, k_lencolmax
+st_tab_f5547014 kst_tab_f5547014
 st_esito kst_esito
 
 
@@ -230,9 +231,17 @@ try
 	if k_righe > 0 then
 		
 		ads1_e1_asn_rows.db_connetti( )
+
+		kst_tab_f5547014.eduser = kguo_utente.get_codice( )
+		k_lencolmax = kguo_sqlca_db_e1.u_get_col_len( "F5547014", "EDUSER") //get max size col utente su E1
+		if k_lencolmax > 0 then
+			if len(trim(kst_tab_f5547014.eduser)) > k_lencolmax then
+				kst_tab_f5547014.eduser = left(kst_tab_f5547014.eduser, k_lencolmax)
+			end if
+		end if
 		
 		for k_riga = 1 to k_righe
-			ads1_e1_asn_rows.setitem(k_riga, "eduser", kguo_utente.get_codice( )) // set il codice utente
+			ads1_e1_asn_rows.setitem(k_riga, "eduser", kst_tab_f5547014.eduser) // set il codice utente
 			ads1_e1_asn_rows.setitem(k_riga, "ededsp", " ") // set space in field how to request by e1
 		next
 		k_upd = ads1_e1_asn_rows.update( )   // AGGIORNA TABELLA
@@ -274,9 +283,9 @@ public function integer tb_add_testata (kds_e1_asn_header ads1_e1_asn_header) th
 //=== 
 //====================================================================
 int k_return = 0
-int k_upd=0, k_righe=0
+int k_upd=0, k_righe=0, k_lencolmax
 st_esito kst_esito
-
+st_tab_f5547013 kst_tab_f5547013
 
 try
 	kst_esito.esito = kkg_esito.ok
@@ -287,8 +296,16 @@ try
 	k_righe = ads1_e1_asn_header.rowcount() 
 	if k_righe > 0 then
 		
+		kst_tab_f5547013.ehuser = kguo_utente.get_codice( )
+		k_lencolmax = kguo_sqlca_db_e1.u_get_col_len( "F5547013", "EHUSER") //get max size col utente su E1
+		if k_lencolmax > 0 then
+			if len(trim(kst_tab_f5547013.ehuser)) > k_lencolmax then
+				kst_tab_f5547013.ehuser = left(kst_tab_f5547013.ehuser, k_lencolmax)
+			end if
+		end if
+		
 		ads1_e1_asn_header.db_connetti( )
-		ads1_e1_asn_header.object.ehuser[1] = kguo_utente.get_codice( )
+		ads1_e1_asn_header.object.ehuser[1] = kst_tab_f5547013.ehuser
 		ads1_e1_asn_header.object.EHMCU[1] = kkg.e1mcu 				   // codice 270 = MINERBIO
 		ads1_e1_asn_header.object.ehedsp[1] = " "  // set space in field how to request by e1
 		k_upd = ads1_e1_asn_header.update( )   // AGGIORNA TABELLA

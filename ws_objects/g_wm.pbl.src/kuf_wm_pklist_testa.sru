@@ -38,6 +38,7 @@ public function long get_id_wm_pklist_altro (ref st_tab_wm_pklist kst_tab_wm_pkl
 public function long get_id_wm_pklist (ref st_tab_wm_pklist kst_tab_wm_pklist) throws uo_exception
 public function string get_customerlot (st_tab_wm_pklist kst_tab_wm_pklist) throws uo_exception
 public function long get_id_wm_pklist_max ()
+private subroutine u_set_col_len_max (string k_ope, ref st_tab_wm_pklist kst_tab_wm_pklist)
 end prototypes
 
 public subroutine if_isnull (ref st_tab_wm_pklist kst_tab_wm_pklist);//---
@@ -1634,7 +1635,7 @@ public function boolean tb_add (ref st_tab_wm_pklist kst_tab_wm_pklist) throws u
 //=== 
 //====================================================================
 //
-int k_resp
+int k_resp, k_lencolmax
 boolean k_return=false
 string k_ope
 st_esito kst_esito
@@ -1676,8 +1677,10 @@ else
 	kst_tab_wm_pklist.x_utente = kGuf_data_base.prendi_x_utente()
 
 	if kst_tab_wm_pklist.id_wm_pklist > 0 then
-
 		k_ope = "AGGIORNAMENTO" 
+
+		this.u_set_col_len_max(k_ope, kst_tab_wm_pklist)
+
 		UPDATE wm_pklist  
 			  SET idpkl = :kst_tab_wm_pklist.idpkl,   
 					stato = :kst_tab_wm_pklist.stato,   
@@ -1708,6 +1711,8 @@ else
 	
 	else
 		k_ope = "INSERIMENTO" 
+		this.u_set_col_len_max(k_ope, kst_tab_wm_pklist)
+
 		//id_wm_pklist,   
 	  	INSERT INTO wm_pklist  
 				( 
@@ -1773,7 +1778,7 @@ else
 	
 	end if
 
-	if kguo_sqlca_db_magazzino.sqlcode <> 0 then
+	if kguo_sqlca_db_magazzino.sqlcode < 0 then
 			
 		kst_esito.sqlcode = kguo_sqlca_db_magazzino.sqlcode
 		kst_esito.SQLErrText = &
@@ -1781,36 +1786,28 @@ else
 				+ " id=" + string(kst_tab_wm_pklist.id_wm_pklist, "####0") + " codice: " + trim(kst_tab_wm_pklist.idpkl) &
 				+ " cliente: " + string(kst_tab_wm_pklist.clie_1) + " DDT: " + trim(kst_tab_wm_pklist.nrddt) + " " + string(kst_tab_wm_pklist.dtddt) &	 
 				+ " ~n~rcustomer lot: "	+ trim(kst_tab_wm_pklist.customerlot ) &	 
+				+ " ~n~rnr.ord: "	+ trim(kst_tab_wm_pklist.nrord ) &	 
+				+ " ~n~rContratto CO: "	+ trim(kst_tab_wm_pklist.mc_co ) &	 
+				+ " ~n~rCapitolato: "	+ trim(kst_tab_wm_pklist.sc_cf ) &	 
+				+ " ~n~rNote: "	+ trim(kst_tab_wm_pklist.note ) &	 
+				+ " ~n~rPackinglist code: "	+ trim(kst_tab_wm_pklist.packinglistcode ) &	 
 				+ " ~n~rErrore-tab.'wm_pklist': "	+ trim(kguo_sqlca_db_magazzino.SQLErrText)
-		if kguo_sqlca_db_magazzino.sqlcode = 100 then
-			kst_esito.esito = kkg_esito.not_fnd
-		else
-			if kguo_sqlca_db_magazzino.sqlcode > 0 then
-				kst_esito.esito = kkg_esito.db_wrn
-			else
-				kst_esito.esito = kkg_esito.db_ko
-				kguo_exception.set_esito(kst_esito)
-				throw kguo_exception
-			end if
-		end if
+		kst_esito.esito = kkg_esito.db_ko
+		kguo_exception.set_esito(kst_esito)
 	
+	end if
 	
 	//---- COMMIT....	
-		if kst_esito.esito = kkg_esito.db_ko then
-			if kst_tab_wm_pklist.st_tab_g_0.esegui_commit <> "N" or isnull(kst_tab_wm_pklist.st_tab_g_0.esegui_commit) then
-				kGuf_data_base.db_rollback_1( )
-			end if
-		else
-			if kst_esito.esito = kkg_esito.ok then
-	
-				if kst_tab_wm_pklist.st_tab_g_0.esegui_commit <> "N" or isnull(kst_tab_wm_pklist.st_tab_g_0.esegui_commit) then
-					kGuf_data_base.db_commit_1( )
-					k_return=true
-				end if
-			end if
+	if kst_esito.esito = kkg_esito.db_ko then
+		if kst_tab_wm_pklist.st_tab_g_0.esegui_commit <> "N" or isnull(kst_tab_wm_pklist.st_tab_g_0.esegui_commit) then
+			kguo_sqlca_db_magazzino.db_rollback( )
 		end if
-	
-	
+		throw kguo_exception
+	else
+		if kst_tab_wm_pklist.st_tab_g_0.esegui_commit <> "N" or isnull(kst_tab_wm_pklist.st_tab_g_0.esegui_commit) then
+			kguo_sqlca_db_magazzino.db_commit( )
+		end if
+		k_return=true
 	end if
 		
 end if
@@ -2795,6 +2792,69 @@ kst_esito.nome_oggetto = this.classname()
 return k_return
 
 end function
+
+private subroutine u_set_col_len_max (string k_ope, ref st_tab_wm_pklist kst_tab_wm_pklist);//
+//====================================================================
+//=== Aggiorna Packing List  (testata) se ID_WM_PKLIST=0 fa INSERT altrimenti UPDATE
+//=== 
+//=== Input: st_tab_wm_pklist
+//=== Ritorna:       TRUE=agg. eseguito, FALSE=nessun aggiornamento 
+//=== se ERRORE Lancia EXCEPTION
+//=== 
+//====================================================================
+//
+int k_lencolmax
+
+
+	kguo_exception.kist_esito.esito = kkg_esito.ok
+	kguo_exception.kist_esito.sqlcode = 0
+	kguo_exception.kist_esito.SQLErrText = ""
+	kguo_exception.kist_esito.nome_oggetto = this.classname()
+
+	k_lencolmax = kguo_sqlca_db_magazzino.u_get_col_len( "wm_pklist", "sc_cf") //get max size colonna su db
+	if k_lencolmax > 0 and len(trim(kst_tab_wm_pklist.sc_cf)) > k_lencolmax then
+
+		kguo_exception.kist_esito.sqlcode = 0
+		kguo_exception.kist_esito.SQLErrText = &
+"Anomalia in " + k_ope + " Testata Packing-List cliente~n~r" &
+				+ " ~n~rCapitolato TROPPO LUNGO (è stato troncato): "	+ trim(kst_tab_wm_pklist.sc_cf ) &	 
+				+ " ~n~rid=" + string(kst_tab_wm_pklist.id_wm_pklist, "####0") + " codice: " + trim(kst_tab_wm_pklist.idpkl) &
+				+ " cliente: " + string(kst_tab_wm_pklist.clie_1) + " DDT: " + trim(kst_tab_wm_pklist.nrddt) + " " + string(kst_tab_wm_pklist.dtddt) &	 
+				+ " ~n~rcustomer lot: "	+ trim(kst_tab_wm_pklist.customerlot ) &	 
+				+ " ~n~rnr.ord: "	+ trim(kst_tab_wm_pklist.nrord ) &	 
+				+ " ~n~rContratto CO: "	+ trim(kst_tab_wm_pklist.mc_co ) &	 
+				+ " ~n~rNote: "	+ trim(kst_tab_wm_pklist.note ) &	 
+				+ " ~n~rPackinglist code: "	+ trim(kst_tab_wm_pklist.packinglistcode ) 
+		kguo_exception.kist_esito.esito = kkg_esito.db_wrn
+		kguo_exception.scrivi_log( )
+
+		kst_tab_wm_pklist.sc_cf = left(trim(kst_tab_wm_pklist.sc_cf), k_lencolmax)
+
+	end if
+
+	k_lencolmax = kguo_sqlca_db_magazzino.u_get_col_len( "wm_pklist", "mc_co") //get max size colonna su db
+	if k_lencolmax > 0 and len(trim(kst_tab_wm_pklist.mc_co)) > k_lencolmax then
+
+		kguo_exception.kist_esito.sqlcode = 0
+		kguo_exception.kist_esito.SQLErrText = &
+"Anomalia in " + k_ope + " Testata Packing-List cliente~n~r" &
+				+ " ~n~rContratto_CO  TROPPO LUNGO (è stato troncato): "	+ trim(kst_tab_wm_pklist.mc_co ) &	 
+				+ " ~n~rid=" + string(kst_tab_wm_pklist.id_wm_pklist, "####0") + " codice: " + trim(kst_tab_wm_pklist.idpkl) &
+				+ " cliente: " + string(kst_tab_wm_pklist.clie_1) + " DDT: " + trim(kst_tab_wm_pklist.nrddt) + " " + string(kst_tab_wm_pklist.dtddt) &	 
+				+ " ~n~rcustomer lot: "	+ trim(kst_tab_wm_pklist.customerlot ) &	 
+				+ " ~n~rnr.ord: "	+ trim(kst_tab_wm_pklist.nrord ) &	 
+				+ " ~n~rCapitolato: "	+ trim(kst_tab_wm_pklist.sc_cf ) &	 
+				+ " ~n~rNote: "	+ trim(kst_tab_wm_pklist.note ) &	 
+				+ " ~n~rPackinglist code: "	+ trim(kst_tab_wm_pklist.packinglistcode ) 	 
+		kguo_exception.kist_esito.esito = kkg_esito.db_wrn
+		kguo_exception.scrivi_log( )
+
+		kst_tab_wm_pklist.mc_co = left(trim(kst_tab_wm_pklist.mc_co), k_lencolmax)
+
+	end if
+
+
+end subroutine
 
 on kuf_wm_pklist_testa.create
 call super::create

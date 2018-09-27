@@ -27,6 +27,7 @@ table(column=(type=char(12) update=yes updatewhereclause=yes name=barcode dbname
  column=(type=decimal(0) updatewhereclause=yes name=k_time_io_minute_min dbname="k_time_io_minute_min" )
  column=(type=datetime updatewhereclause=yes name=k_dataora_lav_prev_fin_max dbname="k_dataora_lav_prev_fin_max" )
  column=(type=decimal(0) updatewhereclause=yes name=k_time_io_minute_max dbname="k_time_io_minute_max" )
+ column=(type=char(16) updatewhereclause=yes name=stato dbname="stato" )
  retrieve="  SELECT   
          trim(pallet.barcode) as Pallet_Code,   
          pallet.F1AVP,   
@@ -49,7 +50,8 @@ table(column=(type=char(12) update=yes updatewhereclause=yes name=barcode dbname
      	, pallet.dataora_lav_fin_min_prev k_dataora_lav_prev_fin_min
 	  	, 0 as k_time_io_minute_min 
      	, pallet.dataora_lav_fin_max_prev k_dataora_lav_prev_fin_max
-	  	, 0 as k_time_io_minute_max 
+	  	, 0 as k_time_io_minute_max
+		, pallet.stato
     FROM #vx_MAST_pilota_pallet_workqueue as pallet left outer join barcode on pallet.barcode = barcode.barcode  
                                                    left outer join meca on barcode.id_meca = meca.id
 	                                              left outer join clienti on  meca.clie_3 = clienti.codice	 

@@ -283,19 +283,22 @@ st_tab_meca kst_tab_meca
 
 
 //--- Modifica 
-		k_ok = messagebox("Operazione di: "+trim(dw_dett_0.object.b_meca_stato.text), "Cambia lo Stato del Riferimento?", &
+		k_ok = messagebox("Operazione di: "+trim(dw_dett_0.object.b_meca_stato.text), "Cambiare lo Stato del Lotto?", &
 							question!, yesno!, 2) 
 		if k_ok = 1 then
 //--- aggiorna lo stato del Riferimento
-			kiuf_armo.meca_non_conforme_blocca_sblocca(kst_tab_meca)
+			kst_tab_meca.stato = kiuf_armo.meca_non_conforme_blocca_sblocca(kst_tab_meca)
+			messagebox("Operazione Conclusa", "Lo Stato del Lotto è stato impostato a "  &
+							+ kiuf_armo.get_stato_descrizione_std(kst_tab_meca) )
 			inizializza_lista()
+		else
+			dw_dett_0.object.b_meca_stato.enabled = true
 		end if
 			
 	catch (uo_exception kuo_exception)
 		kuo_exception.messaggio_utente()
 
 	finally
-		dw_dett_0.object.b_meca_stato.enabled = true
 		
 	end try
 

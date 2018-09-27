@@ -17,8 +17,6 @@ private constant string ki_ds_pallet_workqueue_dataobject = "ds_pilota_pallet_wo
 
 private string ki_temptab_pilota_workqueue // = "vx_MAST_pilota_pallet_workqueue"
 private string ki_temptab_pilota_prev_lav //= "vx_MAST_pilota_prev_lav"
-//	ki_temptab_pilota_workqueue = "vx_" + string(kguo_utente.get_id_utente( )) + "_pilota_pallet_workqueue"
-//	ki_temptab_pilota_prev_lav = "vx_" + string(kguo_utente.get_id_utente( )) + "_pilota_prev_lav"
 
 private datastore kids_ds_queue_lav_xfila
 private datastore kids_barcode_avgtimeplant
@@ -63,7 +61,7 @@ int k_rc
 try 
 	if kids_ds_queue_lav_xfila.rowcount( ) > 0 then
 
-		k_rc = kids_ds_queue_lav_xfila.setsort("fila asc, dataora_lav_fin asc")
+		k_rc = kids_ds_queue_lav_xfila.setsort("fila asc, k_dataora_lav_fin asc")
 		if k_rc > 0 then
 			k_rc = kids_ds_queue_lav_xfila.sort()
 		end if
@@ -291,7 +289,10 @@ public function long get_ds_barcode_in_lav_prev () throws uo_exception;//---
 long k_rows
 
 try 
-	
+
+//--- popola tabella temp con i data ini e fin previsti ( tutto quello nel Pilota in Lav e  in Coda di Programmazione) 		
+	k_rows = u_set_temptable_pilota_workqueue( )
+
 	k_rows = u_set_dataora_lav_prev_fin( )	  // imposta data fine lav per rec in lavorazione
 
 
@@ -313,6 +314,9 @@ int k_rc
 long k_rows
 
 try  
+	
+//--- popola tabella temp con i data ini e fin previsti ( tutto quello nel Pilota in Lav e  in Coda di Programmazione) 		
+	k_rows = u_set_temptable_pilota_workqueue( )
 	
 	k_rows = u_set_ds_pilota_queue_data_prev( )	  // imposta data fine lav per rec in programmazione
 
@@ -522,6 +526,9 @@ datastore kds_work, kds_queue
 			kds_queue.setsort( "n_ordine asc")
 			kds_queue.sort()
 
+//			u_sort_ds_queue_lav_xfila( )  //DBG
+//			kids_ds_queue_lav_xfila.saveas("c:\ufo\queuesort.txt", Text!, true) //DBG
+
 			k_riga = 1
 			do while k_riga <= k_righe  
 
@@ -607,7 +614,7 @@ private function long u_set_dataora_lav_prev_fin () throws uo_exception;//
 //
 long k_riga, k_righe
 int k_rc
-datastore kds_1	
+datastore kds_1
 	
 	
 	try
@@ -666,6 +673,7 @@ try
 		kids_ds_queue_lav_xfila = create datastore
 		kids_ds_queue_lav_xfila.dataobject = ki_ds_queue_lav_xfila_dataobject
 	end if
+	kids_ds_queue_lav_xfila.reset( )
 
 	k_rows = kds_1.rowcount( )
 	if k_rows > 0 then	//--- legge barcode in lav su Pilota 
@@ -820,8 +828,6 @@ event constructor;//
 try
 	ki_temptab_pilota_workqueue = kguf_data_base.u_change_nometab_xutente( "vx_MAST_pilota_pallet_workqueue")
 	ki_temptab_pilota_prev_lav = kguf_data_base.u_change_nometab_xutente( "vx_MAST_pilota_prev_lav")
-//	ki_temptab_pilota_workqueue = "vx_" + string(kguo_utente.get_id_utente( )) + "_pilota_pallet_workqueue"
-//	ki_temptab_pilota_prev_lav = "vx_" + string(kguo_utente.get_id_utente( )) + "_pilota_prev_lav"
 
 	u_set_barcode_avgtimeplant( ) //--- popola ds tempi medi impianto
 
