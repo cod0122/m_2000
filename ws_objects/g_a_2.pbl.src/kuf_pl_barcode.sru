@@ -75,6 +75,7 @@ public function boolean crea_file_pilota_padri (ds_pl_barcode kds_pl_barcode, st
 public function boolean crea_file_pilota_wo (st_tab_pl_barcode kst_tab_pl_barcode, string k_file_nome, string k_path_temp, string k_path_pilota) throws uo_exception
 public function boolean crea_file_pilota_dosimpos (ds_pl_barcode kds_pl_barcode, string k_file_nome, string k_path_temp, string k_path_pilota) throws uo_exception
 public function long get_codice_max () throws uo_exception
+public function st_esito u_batch_run () throws uo_exception
 end prototypes
 
 public function string tb_delete (ref st_tab_pl_barcode kst_tab_pl_barcode);//
@@ -4886,6 +4887,45 @@ st_esito kst_esito
 
 return k_return
 
+end function
+
+public function st_esito u_batch_run () throws uo_exception;//---
+//--- Lancio operazioni Batch
+//---
+int k_ctr
+st_esito kst_esito
+
+
+try 
+
+	kst_esito.esito = kkg_esito.ok
+	kst_esito.sqlcode = 0
+	kst_esito.SQLErrText = ""
+	kst_esito.nome_oggetto = this.classname()
+
+	k_ctr = this.importa_inizio_lav_pilota("0") 
+	if k_ctr > 0 then
+		kst_esito.SQLErrText =  string(k_ctr) + " barcode sono ancora in Trattamento" 
+	else
+		kst_esito.SQLErrText = "nessun barcode ha iniziato il trattamento"
+	end if
+
+	k_ctr = this.importa_trattati_pilota("0") 
+	if k_ctr > 0 then
+		kst_esito.SQLErrText +=  " e " + string(k_ctr) + " barcode hanno concluso il Trattamento. Operazione terminata." 
+	else
+		kst_esito.SQLErrText += " e nessun barcode ha terminato il trattamento. Operazione conclusa."
+	end if
+	
+catch (uo_exception kuo_exception)
+	throw kuo_exception
+	
+finally
+	
+end try
+
+
+return kst_esito
 end function
 
 on kuf_pl_barcode.create

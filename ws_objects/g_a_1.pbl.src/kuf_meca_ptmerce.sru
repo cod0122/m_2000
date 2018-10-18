@@ -18,6 +18,7 @@ public function long u_add_email_invio () throws uo_exception
 public function date tb_pulizia () throws uo_exception
 public function boolean if_esiste (st_tab_meca_ptmerce ast_tab_meca_ptmerce) throws uo_exception
 public function boolean tb_delete (st_tab_meca_ptmerce ast_tab_meca_ptmerce) throws uo_exception
+public function st_esito u_batch_run () throws uo_exception
 end prototypes
 
 public function boolean if_sicurezza (st_open_w ast_open_w) throws uo_exception;//
@@ -660,6 +661,41 @@ kst_esito.nome_oggetto = this.classname()
 	
 return k_return
 
+end function
+
+public function st_esito u_batch_run () throws uo_exception;//---
+//--- Lancio operazioni Batch
+//---
+int k_ctr
+st_esito kst_esito
+
+
+try 
+
+	kst_esito.esito = kkg_esito.ok
+	kst_esito.sqlcode = 0
+	kst_esito.SQLErrText = ""
+	kst_esito.nome_oggetto = this.classname()
+
+//--- Carica Avvisi Pronto Merce kuf_meca_reportpilotakuf_meca_reportpilotain tab Email da Inviare
+	k_ctr = u_add_email_invio( )
+	if k_ctr > 0 then
+		kst_esito.SQLErrText = "Operazione conclusa correttamente." &
+									+ "Sono stati caricati " + string(k_ctr) + " avvisi di 'Pronto Merce' in tabella 'email da inviare'." 
+	else
+		kst_esito.SQLErrText = "Operazione conclusa.  Nessuno nuovo Avviso di Pronto Merce caricato in tabella 'email da inviare'."
+	end if
+
+
+catch (uo_exception kuo_exception)
+	throw kuo_exception
+	
+finally
+	
+end try
+
+
+return kst_esito
 end function
 
 on kuf_meca_ptmerce.create

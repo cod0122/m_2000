@@ -20,6 +20,7 @@ public function integer u_tree_riempi_listview (ref kuf_treeview kuf1_treeview, 
 public function st_esito tb_delete (ref st_wm_pkl_web kst_wm_pkl_web)
 public function integer u_tree_open (string k_modalita, st_wm_pklist kst_wm_pklist[], ref datawindow kdw_anteprima)
 public function long importa_wm_pklist_file () throws uo_exception
+public function st_esito u_batch_run () throws uo_exception
 end prototypes
 
 public function integer u_tree_riempi_treeview (ref kuf_treeview kuf1_treeview, string k_tipo_oggetto);//
@@ -796,6 +797,54 @@ end try
 return k_return
 
 
+end function
+
+public function st_esito u_batch_run () throws uo_exception;//---
+//--- Lancio operazioni Batch
+//---
+long k_ctr, k_ctr1
+st_esito kst_esito
+kuf_wm_pklist_inout kuf1_wm_pklist_inout
+
+try 
+
+	kst_esito.esito = kkg_esito.ok
+	kst_esito.sqlcode = 0
+	kst_esito.SQLErrText = ""
+	kst_esito.nome_oggetto = this.classname()
+
+	kuf1_wm_pklist_inout = create kuf_wm_pklist_inout
+
+	k_ctr = importa_wm_pklist_file( ) 
+	k_ctr1 = kuf1_wm_pklist_inout.importa_wm_pklist_ext_tutti( ) 
+	if (k_ctr + k_ctr1) > 0 then
+		if k_ctr > 0 and k_ctr1 > 0 then
+			kst_esito.SQLErrText = "Operazione conclusa correttamente." &
+												+ "Caricati " + string(k_ctr) + " file di Packing-List Cliente (WEB/FTP/TXT) in Magazzino " & 
+												+ " e " + string(k_ctr1) + " Packing-List pronte per essere importate come Riferimento." 
+		else
+			if k_ctr > 0  then
+				kst_esito.SQLErrText = "Operazione conclusa correttamente." &
+												+ "Caricati " + string(k_ctr) + " file di Packing-List Cliente (WEB/FTP/TXT) in Magazzino."  
+			else
+				kst_esito.SQLErrText = "Operazione conclusa correttamente." &
+												+ "Caricati " +  string(k_ctr1) + " Packing-List pronte per essere importate come Riferimento." 
+			end if
+		end if
+	else
+		kst_esito.SQLErrText = "Operazione conclusa. Nessun Packing-List Cliente (WEB/FTP/TXT) trovato nelle cartelle definite per la ricezione."
+	end if
+
+catch (uo_exception kuo_exception)
+	throw kuo_exception
+	
+finally
+	if isvalid(kuf1_wm_pklist_inout) then destroy kuf1_wm_pklist_inout
+	
+end try
+
+
+return kst_esito
 end function
 
 on kuf_wm_pklist_file.create

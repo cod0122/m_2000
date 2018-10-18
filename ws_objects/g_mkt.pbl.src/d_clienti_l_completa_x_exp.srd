@@ -206,7 +206,7 @@ table(column=(type=long updatewhereclause=yes identity=yes name=id_cliente dbnam
          COALESCE(clienti.e1an , 0) as e1an,
          COALESCE(clienti.e1ancodrs , '') as e1ancodrs
         FROM clienti  
-							  inner join vx_MAST2_clienti_l as clienti_l on clienti.codice = clienti_l.id_cliente
+							  inner join #vx_MAST2_clienti_l as clienti_l on clienti.codice = clienti_l.id_cliente
 							  left outer join  ind_comm on clienti.codice = ind_comm.clie_c
 							  left outer join nazioni on   clienti.id_nazione_1 = nazioni.id_nazione     
 							  left outer join nazioni as nazioni1 on   clienti.id_nazione_2 = nazioni1.id_nazione 

@@ -65,7 +65,7 @@ table(column=(type=char(30) updatewhereclause=yes name=rag_soc_1 dbname="meca_ca
    				ELSE 0
    			END as allegato
         FROM clienti  
-               inner join vx_MAST2_clienti_l as clienti_l on 
+               inner join #vx_MAST2_clienti_l as clienti_l on 
                  clienti.codice = clienti_l.id_cliente
               LEFT OUTER JOIN pagam  ON 
 				     clienti.cod_pag = pagam.codice
@@ -137,4 +137,3 @@ export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
 import.xml()
 export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
 export.xhtml()
- 

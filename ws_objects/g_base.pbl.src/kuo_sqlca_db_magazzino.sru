@@ -22,6 +22,7 @@ public function boolean db_set_isolation_level () throws uo_exception
 public function st_esito db_crea_temp_table (string k_table, string k_campi, string k_select) throws uo_exception
 public function st_esito db_crea_temp_table_global (string k_table, string k_campi, string k_select) throws uo_exception
 public function integer u_get_col_len (string a_table, string a_col)
+public function st_esito db_crea_table (string k_table, string k_sql) throws uo_exception
 end prototypes
 
 protected subroutine x_db_profilo () throws uo_exception;//
@@ -330,6 +331,91 @@ if kds_1.retrieve(a_table, a_col) > 0 then
 end if		
 		
 return k_return
+end function
+
+public function st_esito db_crea_table (string k_table, string k_sql) throws uo_exception;//-----------------------------------------------------------------------------------------------------------------------------------
+//--- 
+//--- CREA TABELLA 
+//---
+//--- Par. input	: k_table = nome della tabella
+//--- 		         : k_sql = ddl della tabella
+//---
+//--- Ritorna st_esito : Vedi Standard
+//---   
+//-----------------------------------------------------------------------------------------------------------------------------------
+string k_sql_d
+st_esito kst_esito
+st_errori_gestione kst_errori_gestione
+
+
+kst_esito.esito = kkg_esito.ok
+kst_esito.sqlcode = 0
+kst_esito.SQLErrText = ""
+kst_esito.nome_oggetto =  this.classname()
+
+
+//--- Cancello e ricreo view/tab
+	k_sql_d = "drop view if exists " + trim(k_table) + "  " 
+	EXECUTE IMMEDIATE :k_sql_d using this;
+	if this.sqlcode = 0 then 
+		commit using this;
+	end if
+	k_sql_d = "IF OBJECT_ID('" + trim(k_table) + "') IS NOT NULL " &
+					+ "truncate table " + trim(k_table) + "  " 
+	EXECUTE IMMEDIATE :k_sql_d using this;
+	if this.sqlcode = 0 then 
+		commit using this;
+	else
+	
+//		k_sql_d = "drop table " + trim(k_table) + "  " 
+//		EXECUTE IMMEDIATE :k_sql_d using this;
+//		if this.sqlcode = 0 then 
+//			commit using this;
+//		end if
+		
+		k_sql = " CREATE TABLE  " + trim(k_table) + "  (	" + k_sql + " ) "
+		EXECUTE IMMEDIATE :k_sql using this;
+		kst_esito.sqlerrtext = "Generazione terminata correttamente "
+		if this.sqlcode <> 0 then
+			if this.sqlcode > 0 then
+				kst_esito.esito = kkg_esito.db_wrn
+				kst_esito.sqlcode = this.sqlcode
+				kst_esito.sqlerrtext = "Anomalie durante generazione Table '" &
+											  + trim(k_table) + "' err.: " + trim(this.SQLErrText)
+			else
+				kst_esito.esito = kkg_esito.db_ko
+				kst_esito.sqlcode = this.sqlcode
+				kst_esito.sqlerrtext = "Generazione Table '" &
+											  + trim(k_table) + "' non riuscita: " + trim(this.SQLErrText)
+			end if
+			rollback using this;
+	
+			if kst_esito.sqlcode < 0 then
+				
+				kguo_exception.inizializza( )
+				kguo_exception.set_esito(kst_esito)
+				throw kguo_exception
+				
+			end if
+
+
+//--- scrive l'errore su LOG
+//		kst_errori_gestione.nome_oggetto = this.classname()
+//		kst_errori_gestione.sqlsyntax = trim(kst_esito.sqlerrtext)
+//		kst_errori_gestione.sqlerrtext = trim(this.SQLErrText)
+//		kst_errori_gestione.sqldbcode = this.sqlcode
+//		kst_errori_gestione.sqlca = this
+//		kuf_data_base.errori_gestione(kst_errori_gestione)
+
+		else
+			commit using this;
+			
+		end if
+		
+	end if
+
+
+return kst_esito
 end function
 
 on kuo_sqlca_db_magazzino.create

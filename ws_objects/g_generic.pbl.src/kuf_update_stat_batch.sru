@@ -10,6 +10,7 @@ global kuf_update_stat_batch kuf_update_stat_batch
 
 forward prototypes
 public function string run_update_stat () throws uo_exception
+public function st_esito u_batch_run () throws uo_exception
 end prototypes
 
 public function string run_update_stat () throws uo_exception;//
@@ -41,7 +42,7 @@ try
 	if k_rc < 0 then
 		kst_esito.esito = kkg_esito.db_ko
 		kst_esito.sqlcode = -1
-		kst_esito.sqlerrtext = "Errrore in Ottimizzazione DB: '" &
+		kst_esito.sqlerrtext = "Errore in Ottimizzazione DB: '" &
 									  + k_esito + "': esito " + string (k_rc) 
 	else
 		if k_rc = 0 then
@@ -87,6 +88,40 @@ end try
 
 return k_return
 
+end function
+
+public function st_esito u_batch_run () throws uo_exception;//---
+//--- Lancio operazioni Batch
+//---
+string k_string
+st_esito kst_esito
+
+
+try 
+
+	kst_esito.esito = kkg_esito.ok
+	kst_esito.sqlcode = 0
+	kst_esito.SQLErrText = ""
+	kst_esito.nome_oggetto = this.classname()
+
+//--- Ottimizza DB (update statistics ecc...)
+	k_string = run_update_stat( ) 
+	if len(trim(k_string)) > 0 then
+		kst_esito.SQLErrText = "Operazione conclusa. " + k_string
+	else
+		kst_esito.SQLErrText = "Operazione non eseguita. Nessuna Ottimizzazione del DB effettuata."
+	end if
+
+
+catch (uo_exception kuo_exception)
+	throw kuo_exception
+	
+finally
+	
+end try
+
+
+return kst_esito
 end function
 
 on kuf_update_stat_batch.create

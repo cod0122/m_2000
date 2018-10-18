@@ -24,6 +24,7 @@ public function st_esito set_barcode_in_wm_receiptgammarad (ref st_tab_wm_pklist
 public function long get_id_cliente (string k_codice) throws uo_exception
 public function st_esito toglie_id_meca_in_wm_receiptgammarad (st_tab_wm_pklist_righe kst_tab_wm_pklist_righe)
 public function long u_duplica_pklist (st_tab_wm_pklist ast_tab_wm_pklist, string a_idpkl_nuovo) throws uo_exception
+public function st_esito u_batch_run () throws uo_exception
 end prototypes
 
 public function integer u_tree_riempi_listview (ref kuf_treeview kuf1_treeview, string k_tipo_oggetto);// 
@@ -1045,6 +1046,38 @@ end try
 return k_return
 
 
+end function
+
+public function st_esito u_batch_run () throws uo_exception;//---
+//--- Lancio operazioni Batch
+//---
+int k_ctr
+st_esito kst_esito
+
+
+try 
+
+	kst_esito.esito = kkg_esito.ok
+	kst_esito.sqlcode = 0
+	kst_esito.SQLErrText = ""
+	kst_esito.nome_oggetto = this.classname()
+
+	k_ctr = importa_wm_pklist_ext_tutti( ) 
+	if k_ctr > 0 then
+		kst_esito.SQLErrText = "Operazione conclusa correttamente." + "Ci sono " + string(k_ctr) + " Packing-List Clienti pronte per essere importate come Riferimento.  " 
+	else
+		kst_esito.SQLErrText = "Operazione conclusa. Nessun Packing-List Cliente trovato pronto per fare il Riferimento."
+	end if
+
+catch (uo_exception kuo_exception)
+	throw kuo_exception
+	
+finally
+	
+end try
+
+
+return kst_esito
 end function
 
 on kuf_wm_pklist_inout.create

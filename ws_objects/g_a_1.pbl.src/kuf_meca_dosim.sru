@@ -4187,15 +4187,16 @@ st_tab_meca_dosim kst_tab_meca_dosim
 	select max(dosim_dose)
 		into :ast_tab_meca_dosim.dosim_dose
 		from meca_dosim 
-		where (meca_dosim.id_meca = :ast_tab_meca_dosim.id_meca
-           		      or meca_dosim.barcode_lav in 
- 				 		 (select barcode_lav from barcode where id_meca = :ast_tab_meca_dosim.id_meca)
-					)
+		where meca_dosim.id_meca = :ast_tab_meca_dosim.id_meca
 		        and (meca_dosim.dosim_flg_tipo_dose is null
 				       or meca_dosim.dosim_flg_tipo_dose = :kst_tab_meca_dosim.dosim_flg_tipo_dose
 						 or meca_dosim.dosim_flg_tipo_dose = ''
 						 )
 		using kguo_sqlca_db_magazzino ;
+
+//08102018 NO BUONO beccava i valori del padre	           		      or meca_dosim.barcode_lav in 
+// 				 		 (select barcode_lav from barcode where id_meca = :ast_tab_meca_dosim.id_meca)
+
 	
 	if sqlca.sqlcode <> 0 then
 		if sqlca.sqlcode < 0 then

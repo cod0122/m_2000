@@ -61,6 +61,9 @@ public subroutine run_eventi_sched (st_open_w kst_open_w) throws uo_exception
 public function long ds_eventi_da_lanciare_retrieve () throws uo_exception
 private subroutine run_eventi_sched_dos (long a_ctr) throws uo_exception
 private function boolean oldds_eventi_da_lanciare_run_dos () throws uo_exception
+public function string get_id_programma (string k_flag_modalita)
+public subroutine run_eventi_sched_old (st_open_w kst_open_w) throws uo_exception
+public function st_esito u_batch_run () throws uo_exception
 end prototypes
 
 public subroutine tb_delete_sv_eventi_sked ();//
@@ -353,8 +356,7 @@ int k_giorno, k_num_gg, k_ora
 long k_secondi, k_eventi_insert=0
 string k_table, k_sql_w, k_sql
 time k_orario_fine
-pointer kpointer_1 
-kuf_base kuf1_base
+kuf_utility kuf1_utility
 st_esito kst_esito, kst1_esito
 
 try 
@@ -379,20 +381,13 @@ try
 		 using sqlca;
 
 
-	kpointer_1 = setpointer(HourGlass!)
+	setpointer(kkg.pointer_attesa )
+
+	kuf1_utility = create kuf_utility
 
 //--- prendi data oggi		
 	k_dataoggi = kGuf_data_base.prendi_dataora( )
 	
-//	kuf1_base = create kuf_base
-//	k_dataoggix = trim(MidA(kuf1_base.prendi_dato_base("dataoggi"), 2))
-//	destroy kuf1_base
-//	if isdate(k_dataoggix) then
-//		k_dataoggi = date(k_dataoggix)
-//	else
-//		k_dataoggi = today()
-//	end if
-
 	k_ora_attuale = now()
 	
 //--- costruisco la tabella armo 
@@ -461,8 +456,10 @@ try
 
 
 //--- elaborazione estemporanea, cioe' all'ora stabilita + un tot di minuti
-			if kist_sv_skedula.flag_run_giorni = "8" then
+		choose case kist_sv_skedula.flag_run_giorni 
 				
+			case "8"   // estemporanea
+		
 				k_giorno = integer((kist_sv_skedula.rilancia_dopo_mm / 60) / 24)	
 				if k_giorno > 0 then
 					k_data = relativedate ( date(k_dataoggi), k_giorno )
@@ -494,8 +491,30 @@ try
 					
 				end if	
 				
+			case "M"   // primo del mese
+			case "N"   // Ultimo giorno del mese
+				k_giorno = integer((kist_sv_skedula.rilancia_dopo_mm / 60) / 24)	
+				k_data = date(k_dataoggi )
+				if kist_sv_skedula.flag_run_giorni = "M" then
+					k_data = date(year(k_data), month(k_data), 01)
+				else
+					k_data = kuf1_utility.u_data_get_lastmonthday(k_data)
+				end if
+				k_secondi = (kist_sv_skedula.rilancia_dopo_mm - k_giorno * 24 * 60 ) * 60
+				k_run_ora = time(kist_sv_skedula.orario)
+				k_run_ora = relativetime ( k_run_ora, k_secondi )
 				
-			else
+				kist_sv_eventi_sked[1].run_giorno = k_data
+				kist_sv_eventi_sked[1].run_ora = string(k_run_ora, "hh:mm") 
+				kist_sv_eventi_sked[1].run_datetime = datetime(kist_sv_eventi_sked[1].run_giorno, time(kist_sv_eventi_sked[1].run_ora + ":00"))
+//--- inserisco nuovo evento						
+				tb_insert_schedula_eventi()
+				if kist_esito.esito = kkg_esito.ok then
+					k_eventi_insert++
+				end if
+
+				
+			case else   // lunedì - domenica
 
 //--- popola tabella eventi da oggi x 31 giorni avanti
 				for k_giorno = 0 to 32 
@@ -573,7 +592,8 @@ try
 					end if	
 					
 				next	
-			end if
+
+			end choose
 
 			fetch c_genera_eventi into 
 							:kist_sv_skedula.id
@@ -620,6 +640,10 @@ try
 catch (uo_exception kuo_exception)
 	kst_esito = kuo_exception.get_st_esito()
 		
+finally 
+	if isvalid(kuf1_utility) then destroy kuf1_utility
+	setpointer(kkg.pointer_default)
+
 		
 end try
 
@@ -1054,313 +1078,65 @@ public subroutine run_eventi_sched (st_open_w kst_open_w) throws uo_exception;//
 string k_string
 long k_ctr, k_long=0, k_long1
 st_tab_wm_pklist kst_tab_wm_pklist
-kuf_pl_barcode kuf1_pl_barcode
-kuf_pilota_cmd kuf1_pilota_cmd
-kuf_wm_pklist_inout kuf1_wm_pklist_inout
-//kuf_wm_pklist_web kuf1_wm_pklist_web
-kuf_wm_pklist_file kuf1_wm_pklist_file
-kuf_prof_exp kuf1_prof_exp
-//kuf_prof_exp_fidi kuf1_prof_exp_fidi
-//kuf_prof_imp_fidi kuf1_prof_imp_fidi
-kuf_stat_batch kuf1_stat_batch
-kuf_e1_inout kuf1_e1_inout
-kuf_e1_wo_f5548014 kuf1_e1_wo_f5548014
-kuf_e1_wo_f5548014_allinea kuf1_e1_wo_f5548014_allinea
-kuf_barcode_ini kuf1_barcode_ini
-kuf_update_stat_batch kuf1_update_stat_batch
-kuf_meca_set_data_ent kuf1_meca_set_data_ent
-kuf_meca_set_e1srst kuf1_meca_set_e1srst
-kuf_meca_ptmerce kuf1_meca_ptmerce
-kuf_meca_chiudi kuf1_meca_chiudi
-kuf_meca_reportpilota kuf1_meca_reportpilota
+st_esito kst_esito
+kuf_parent kuf1_parent
+kuf_menu_window kuf1_menu_window
 
+	
+	try 
+		kuf1_menu_window = create kuf_menu_window
 
-		try 
+		kist_sv_eventi_sked[1] = kst_open_w.key12_any
+		kist_sv_eventi_sked[1].esito = " in esecuzione..."
+		tb_aggiorna_stato_sv_eventi_sked()
 
-			kuf1_wm_pklist_inout = create kuf_wm_pklist_inout
-//			kuf1_wm_pklist_web = create kuf_wm_pklist_web
-			kuf1_wm_pklist_file = create kuf_wm_pklist_file
-			kuf1_prof_exp = create kuf_prof_exp
-//			kuf1_prof_exp_fidi = create kuf_prof_exp_fidi
-//			kuf1_prof_imp_fidi = create kuf_prof_imp_fidi
-			kuf1_stat_batch = create kuf_stat_batch
-			kuf1_e1_inout = create kuf_e1_inout
-			kuf1_e1_wo_f5548014 = create kuf_e1_wo_f5548014
-			kuf1_e1_wo_f5548014_allinea = create kuf_e1_wo_f5548014_allinea
-			kuf1_barcode_ini = create kuf_barcode_ini
-			kuf1_update_stat_batch = create kuf_update_stat_batch
-			kuf1_meca_set_data_ent = create kuf_meca_set_data_ent
-			kuf1_meca_set_e1srst = create kuf_meca_set_e1srst
-			kuf1_meca_ptmerce = create kuf_meca_ptmerce
-			kuf1_meca_chiudi = create kuf_meca_chiudi
-			kuf1_meca_reportpilota = create kuf_meca_reportpilota
-			
-			kist_sv_eventi_sked[1] = kst_open_w.key12_any
-			kist_sv_eventi_sked[1].esito = " in esecuzione..."
-			tb_aggiorna_stato_sv_eventi_sked()
-
-			kist_sv_eventi_sked[1].esito = "" 
+		kist_sv_eventi_sked[1].esito = "" 
 			
 
 //--- Get del ID PROGRAMMA da chiamare 		
-			kst_open_w.id_programma = trim(lower(kst_open_w.id_programma))
+		kst_open_w.id_programma = trim(lower(kst_open_w.id_programma))
 			
-			if kst_open_w.id_programma = "" then 
+		if kst_open_w.id_programma = "" then 
 				
-				kist_sv_eventi_sked[1].esito = 	"Operazione non eseguita. Funzione da eseguire non indicata. ERRORE INTERNO!! "
+			kist_sv_eventi_sked[1].esito = "Operazione non eseguita. Funzione da eseguire non indicata. ERRORE INTERNO!! "
 				
-			else				
+		else				
 				
-//--- Lancio effettivo PROGRAMMA trovato
-				choose case kst_open_w.id_programma
-
-//--- Chiudo la Procedura			
-					case kkg_id_programma.EXITM2000
-						post close(w_main)
-					
-//--- Aggiorna dati INIZIO e FINE Trattamento dal PILOTA
-					case kkg_id_programma.pilota_importa_esiti
-						kuf1_pl_barcode = create kuf_pl_barcode
-						
-						k_ctr = kuf1_pl_barcode.importa_inizio_lav_pilota("0") 
-						if k_ctr > 0 then
-							kist_sv_eventi_sked[1].esito +=  string(k_ctr) + " barcode sono ancora in Trattamento. Operazione terminata. " 
-						else
-							kist_sv_eventi_sked[1].esito += "nessun barcode ha iniziato il trattamento; operazione conclusa. Funzione: " + kst_open_w.id_programma 
-						end if
-
-						k_ctr = kuf1_pl_barcode.importa_trattati_pilota("0") 
-						if k_ctr > 0 then
-							kist_sv_eventi_sked[1].esito =  string(k_ctr) + " barcode hanno concluso il Trattamento. " 
-						else
-							kist_sv_eventi_sked[1].esito = "nessun barcode ha terminato il trattamento e "
-						end if
-	
-//--- Invio Pianificazione al Pilota
-					case kkg_id_programma.pilota_esporta_pl
-						kuf1_pilota_cmd = create kuf_pilota_cmd
-						
-						if kuf1_pilota_cmd.job_pianificazione_lavorazioni() then
-							kuf1_pilota_cmd.get_pilota_cfg()
-							kist_sv_eventi_sked[1].esito = 	"Operazione conclusa correttamente." &
-									+ "E' stato generato il file con il Piano di Lavoro nella cartella:" &
-									+ kuf1_pilota_cmd.kist_tab_pilota_cfg.path_file_pl_barcode &
-									+ kuf1_pilota_cmd.kist_tab_pilota_cfg.ultimo_nome_file_pl_barcode 
-						else
-							kist_sv_eventi_sked[1].esito = 	"Operazione conclusa. Nessun Piano Inviato al Pilota. Funzione: " + kst_open_w.id_programma
-						end if
-						
-					
-//--- Importa Packing List da tab Receiptgammarad (Grezze dal WM)
-					case kuf1_wm_pklist_inout.get_id_programma(kkg_flag_modalita.BATCH)
-						k_ctr = kuf1_wm_pklist_inout.importa_wm_pklist_ext_tutti( ) 
-						if k_ctr > 0 then
-							kist_sv_eventi_sked[1].esito = 	"Operazione conclusa correttamente." + "Sono stati caricati " + string(k_ctr) + " Packing-List da WM.  " 
-						else
-							kist_sv_eventi_sked[1].esito = 	"Operazione conclusa. Nessun Packing-List da importare da WM. Funzione: " + kst_open_w.id_programma
-						end if
-						
-						
-//--- Importa Packing List XML/TXT in tab receiptgammard (del ex-WM) 
-					case kuf1_wm_pklist_file.get_id_programma(kkg_flag_modalita.BATCH)
-						k_long = kuf1_wm_pklist_file.importa_wm_pklist_file( ) 
-						k_long1 = kuf1_wm_pklist_inout.importa_wm_pklist_ext_tutti( ) 
-						if (k_long + k_long1) > 0 then
-							if k_long > 0 and k_long1 > 0 then
-								kist_sv_eventi_sked[1].esito = 	"Operazione conclusa correttamente." &
-																	+ "Caricati " + string(k_long) + " file di Packing-List da WEB/FTP/TXT in Magazzino " & 
-																	+ " e " + string(k_long1) + " Packing-List pronte per fare i Riferimenti." 
-							else
-								if k_long > 0  then
-									kist_sv_eventi_sked[1].esito = 	"Operazione conclusa correttamente." &
-																	+ "Caricati " + string(k_long) + " file di Packing-List da WEB/FTP/TXT in Magazzino."  
-								else
-									kist_sv_eventi_sked[1].esito = 	"Operazione conclusa correttamente." &
-																	+ "Caricati " +  string(k_long1) + " Packing-List pronte per fare i Riferimenti." 
-								end if
-							end if
-						else
-							kist_sv_eventi_sked[1].esito = 	"Operazione conclusa. Nessun Packing-List WEB/FTP/TXT trovato nelle cartelle definite. Funzione: " + kst_open_w.id_programma
-						end if
-	
-
-//--- Esporta Archivio x ESOLVER - CONTABILITA' FATTURE
-					case kuf1_prof_exp.get_id_programma(kkg_flag_modalita.BATCH)
-						k_string = kuf1_prof_exp.esolver_esporta_anag_batch( ) 
-						if len(trim(k_string)) > 0 then
-							kist_sv_eventi_sked[1].esito = "Operazione conclusa. " + k_string
-						else
-							kist_sv_eventi_sked[1].esito = "Operazione non eseguita. Nessun archivio 'FATTURAZIONE' esportato x la ESOLVER. Funzione: " + kst_open_w.id_programma
-						end if
-
-////--- Esporta Archivio x ESOLVER - FIDI'
-//					case kuf1_prof_exp_fidi.get_id_programma(kkg_flag_modalita.BATCH)
-//						k_string = kuf1_prof_exp.esolver_esporta_fidi_batch( ) 
-//						if len(trim(k_string)) > 0 then
-//							kist_sv_eventi_sked[1].esito = "Operazione conclusa. " + k_string
-//						else
-//							kist_sv_eventi_sked[1].esito = "Operazione non eseguita. Nessun archivio FIDI esportato x ESOLVER. Funzione: " + kst_open_w.id_programma
-//						end if
-//
-////--- Importa Archivio da ESOLVER - FIDI'
-//					case kuf1_prof_imp_fidi.get_id_programma(kkg_flag_modalita.BATCH)
-//						k_string = kuf1_prof_exp.esolver_importa_fuori_fido_batch( ) 
-//						if len(trim(k_string)) > 0 then
-//							kist_sv_eventi_sked[1].esito = "Operazione conclusa. " + k_string
-//						else
-//							kist_sv_eventi_sked[1].esito = "Operazione non eseguita. Nessun archivio FIDI importato da file di ESOLVER. Funzione: " + kst_open_w.id_programma
-//						end if
-
-//--- Genera archivi STATISTICI
-					case kuf1_stat_batch.get_id_programma(kkg_flag_modalita.BATCH)
-						k_string = kuf1_stat_batch.run_stat_0_batch( ) 
-						if len(trim(k_string)) > 0 then
-							kist_sv_eventi_sked[1].esito = "Operazione conclusa. " + k_string
-						else
-							kist_sv_eventi_sked[1].esito = "Operazione non eseguita. Nessun archivio Statistici generato. Funzione: " + kst_open_w.id_programma
-						end if
-						
-//--- Ottimizza DB (update statistics ecc...)
-					case kuf1_update_stat_batch.get_id_programma(kkg_flag_modalita.BATCH)
-						k_string = kuf1_update_stat_batch.run_update_stat( ) 
-						if len(trim(k_string)) > 0 then
-							kist_sv_eventi_sked[1].esito = "Operazione conclusa. " + k_string
-						else
-							kist_sv_eventi_sked[1].esito = "Operazione non eseguita. Nessuna Ottimizzazione del DB effettuata. Funzione: " + kst_open_w.id_programma
-						end if
-		
-////--- ????
-//					case kuf1_e1_inout.get_id_programma(kkg_flag_modalita.BATCH)
-//						k_ctr = kuf1_e1_inout.u u_set_datilav_toe1( )
-//						if k_ctr > 0 then
-//							kist_sv_eventi_sked[1].esito = "Operazione conclusa correttamente." &
-//									+ "Sono stati inviati " + string(k_ctr) + " record dati di 'trattamento' al Sistema E-ONE" 
-//						else
-//							kist_sv_eventi_sked[1].esito = 	"Operazione conclusa. Nessun dato di 'trattamento' disponibile per E-ONE. Funzione: " + kst_open_w.id_programma
-//						end if
-						
-//--- Invio dati trattamento/dosimetria a E1
-					case kuf1_e1_wo_f5548014.get_id_programma(kkg_flag_modalita.BATCH)
-						k_ctr = kuf1_e1_wo_f5548014.u_set_datilav_toe1( )
-						if k_ctr > 0 then
-							kist_sv_eventi_sked[1].esito = "Operazione conclusa correttamente." &
-									+ "Sono stati inviati " + string(k_ctr) + " record dati di 'trattamento' al Sistema E-ONE" 
-						else
-							kist_sv_eventi_sked[1].esito = 	"Operazione conclusa. Nessun dato di 'trattamento' disponibile per E-ONE. Funzione: " + kst_open_w.id_programma
-						end if
-//--- Allinea dati trattamento/dosimetria con E1
-					case kuf1_e1_wo_f5548014_allinea.get_id_programma(kkg_flag_modalita.BATCH)
-						k_ctr = kuf1_e1_wo_f5548014_allinea.u_allinea_datilav_e1( )
-						if k_ctr > 0 then
-							kist_sv_eventi_sked[1].esito = "Operazione conclusa correttamente." &
-									+ "Sono stati ripristinati " + string(k_ctr) + " record dati di 'trattamento' inviati in precedenza al Sistema E-ONE" 
-						else
-							kist_sv_eventi_sked[1].esito = 	"Operazione conclusa. Nessun dato di 'trattamento' inviato a E-ONE e ripristinato. Funzione: " + kst_open_w.id_programma
-						end if
-						
-//--- Riceve barcode generati da E1
-					case kuf1_barcode_ini.get_id_programma(kkg_flag_modalita.BATCH)
-						k_ctr = kuf1_barcode_ini.u_e1_importa_barcode_batch( )
-						if k_ctr > 0 then
-							kist_sv_eventi_sked[1].esito = "Operazione conclusa correttamente." &
-									+ "Sono stati ricevuti " + string(k_ctr) + " nuovi barcode. Dati ottenuti dal Sistema E-ONE" 
-						else
-							kist_sv_eventi_sked[1].esito = 	"Operazione conclusa. Nessun nuovo barcode disponibile da E-ONE. Funzione: " + kst_open_w.id_programma
-						end if
-						
-//--- Imposta Data di entrata merce di E1 su MECA
-					case kuf1_meca_set_data_ent.get_id_programma(kkg_flag_modalita.BATCH)
-						k_ctr = kuf1_meca_set_data_ent.u_set_data_ent( )
-						if k_ctr > 0 then
-							kist_sv_eventi_sked[1].esito = "Operazione conclusa correttamente." &
-									+ "Sono state registrate " + string(k_ctr) + " date di entrata Lotto a magazzino. Dati ottenuti dal Sistema E-ONE" 
-						else
-							kist_sv_eventi_sked[1].esito = 	"Operazione conclusa. Nessuna data di entrata Lotto a magazzino importata da E-ONE. Funzione: " + kst_open_w.id_programma
-						end if
-						
-//--- Imposta STATO Lotto di E1 su MECA
-					case kuf1_meca_set_e1srst.get_id_programma(kkg_flag_modalita.BATCH)
-						k_ctr = kuf1_meca_set_e1srst.u_set_stato_lotto_da_e1( )
-						if k_ctr > 0 then
-							kist_sv_eventi_sked[1].esito = "Operazione conclusa correttamente." &
-									+ "Sono stati aggiornati " + string(k_ctr) + " STATI Lotto di E1 (wasrst). Dati ottenuti dal Sistema E-ONE" 
-						else
-							kist_sv_eventi_sked[1].esito = 	"Operazione conclusa. Nessuno STATO Lotto di E1 aggiornato. Dati dello STATO ottenuti da E-ONE. Funzione: " + kst_open_w.id_programma
-						end if
-						
-//--- Carica Avvisi Pronto Merce kuf_meca_reportpilotakuf_meca_reportpilotain tab Email da Inviare
-					case kuf1_meca_ptmerce.get_id_programma(kkg_flag_modalita.BATCH)
-						k_ctr = kuf1_meca_ptmerce.u_add_email_invio( )
-						if k_ctr > 0 then
-							kist_sv_eventi_sked[1].esito = "Operazione conclusa correttamente." &
-									+ "Sono stati caricati " + string(k_ctr) + " 'Avvisi di ritiro Pronto Merce' in tabella 'email da inviare'." 
-						else
-							kist_sv_eventi_sked[1].esito = 	"Operazione conclusa. Nessuno Avviso di Pronto Merce da ritirare caricato in tabella 'email da inviare'. Funzione: " + kst_open_w.id_programma
-						end if
-						
-//--- Chiudi Lotti Spediti
-					case kuf1_meca_chiudi.get_id_programma(kkg_flag_modalita.BATCH)
-						k_ctr = kuf1_meca_chiudi.u_chiude_lotti_spediti( )
-						if k_ctr > 0 then
-							kist_sv_eventi_sked[1].esito = "Operazione conclusa correttamente." &
-									+ "Sono stati Chiusi " + string(k_ctr) + " Lotti già spediti" 
-						else
-							kist_sv_eventi_sked[1].esito = 	"Operazione conclusa. Nessuno Lotto già spedito è stato Chiuso. Funzione: " + kst_open_w.id_programma
-						end if
-
-//--- Importa Report Prodotti dal PILOTA dalla cartella del Pilota a quella interna
-					case kuf1_meca_reportpilota.get_id_programma(kkg_flag_modalita.BATCH)
-						k_ctr = kuf1_meca_reportpilota.u_job_importa_report_pilota( )
-						if k_ctr > 0 then
-							kist_sv_eventi_sked[1].esito = "Operazione conclusa correttamente." &
-									+ "Sono stati importati " + string(k_ctr) + " nuovi Report (pdf) prodotti dal Pilota" 
-						else
-							kist_sv_eventi_sked[1].esito = 	"Operazione conclusa. Non è stato trovato nessun nuovo Report generato dal Pilota. Funzione: " + kst_open_w.id_programma
-						end if
-
-//--- Funzione SCONOSCIUTA!						
-					case else
-						kist_sv_eventi_sked[1].esito = 	"Operazione non eseguita. Funzione " + trim(kst_open_w.id_programma) + " NON trovata (controllare funzione in Sicurezza). ERRORE INTERNO!! "
-						
-				end choose
-			end if				
-
-		catch (uo_exception kuo_exception)
-			st_esito kst_esito
-			kst_esito = kuo_exception.get_st_esito()
-			if kst_esito.esito <> kkg_esito.not_fnd then
-				kist_sv_eventi_sked[1].esito = 	"Operazione conclusa per ERRORE: " + trim(kst_esito.sqlerrtext)
-			else
-				kist_sv_eventi_sked[1].esito = 	"Operazione conclusa ma:  " + trim(kst_esito.sqlerrtext)
+			if trim(kst_open_w.nome_oggetto) = "" then
+//--- Get nome oggetto da chiamare 		
+				kst_open_w.nome_oggetto = kuf1_menu_window.get_nome_oggetto(kst_open_w.id_programma)
 			end if
-		
-		
-		finally
 
-			if isvalid(kuf1_wm_pklist_inout) then destroy kuf1_wm_pklist_inout
-//			if isvalid(kuf1_wm_pklist_web) then destroy kuf1_wm_pklist_web
-			if isvalid(kuf1_wm_pklist_file) then destroy kuf1_wm_pklist_file
-			if isvalid(kuf1_stat_batch) then destroy kuf1_stat_batch
-			if isvalid(kuf1_e1_inout) then destroy kuf1_e1_inout
-			if isvalid(kuf1_e1_wo_f5548014) then destroy kuf1_e1_wo_f5548014
-			if isvalid(kuf1_e1_wo_f5548014_allinea) then destroy kuf1_e1_wo_f5548014_allinea
-			if isvalid(kuf1_barcode_ini) then destroy kuf1_barcode_ini
-			if isvalid(kuf1_update_stat_batch) then destroy kuf1_update_stat_batch
-			if isvalid(kuf1_meca_set_data_ent) then destroy kuf1_meca_set_data_ent
-			if isvalid(kuf1_meca_set_e1srst) then destroy kuf1_meca_set_e1srst
-			if isvalid(kuf1_meca_ptmerce) then destroy kuf1_meca_ptmerce
-			if isvalid(kuf1_meca_chiudi) then destroy kuf1_meca_chiudi
-			if isvalid(kuf1_meca_reportpilota) then destroy kuf1_meca_reportpilota
-			
-			kist_sv_eventi_sked[1].run_giorno_stop = kGuf_data_base.prendi_dataora() 
-			kist_sv_eventi_sked[1].stato = kki_sv_eventi_sked_stato_eseg
-			
-			
-			if isvalid(	kuf1_pl_barcode) then destroy kuf1_pl_barcode
-			if isvalid(	kuf1_pilota_cmd) then destroy kuf1_pilota_cmd
-			
+			if trim(kst_open_w.nome_oggetto) > " " then
+				kuf1_parent = create using kst_open_w.nome_oggetto   //"kuf_prodotti"
+
+				kst_esito = kuf1_parent.u_batch_run( )  // LANCIA LA FUNZIONE
+				kist_sv_eventi_sked[1].esito = kst_esito.sqlerrtext +  " Funzione: " + kst_open_w.id_programma
+				
+//--- Funzione SCONOSCIUTA!						
+			else
+				kist_sv_eventi_sked[1].esito = "Operazione non eseguita. Funzione " + trim(kst_open_w.id_programma) + " NON trovata (controllare funzione in Sicurezza). ERRORE INTERNO!! "
+			end if
+		end if				
+
+	catch (uo_exception kuo_exception)
+		kst_esito = kuo_exception.get_st_esito()
+		if kst_esito.esito <> kkg_esito.not_fnd then
+			kist_sv_eventi_sked[1].esito = 	"Operazione conclusa per ERRORE: " + trim(kst_esito.sqlerrtext)
+		else
+			kist_sv_eventi_sked[1].esito = 	"Operazione conclusa ma:  " + trim(kst_esito.sqlerrtext)
+		end if
 		
-		end try
+		
+	finally
+
+		if isvalid(kuf1_parent) then destroy kuf1_parent
+		if isvalid(kuf1_menu_window) then destroy kuf1_menu_window
+		
+		kist_sv_eventi_sked[1].run_giorno_stop = kGuf_data_base.prendi_dataora() 
+		kist_sv_eventi_sked[1].stato = kki_sv_eventi_sked_stato_eseg
+			
+	end try
 		
 
 end subroutine
@@ -1557,6 +1333,396 @@ st_open_w k_st_open_w
 
 
 return k_return
+end function
+
+public function string get_id_programma (string k_flag_modalita);//
+string k_return=""
+st_tab_menu_window_oggetti kst_tab_menu_window_oggetti
+
+
+	kst_tab_menu_window_oggetti.funzione = trim(k_flag_modalita)
+	kst_tab_menu_window_oggetti.nome_oggetto = trim(this.classname( ))
+	if kguf_menu_window.get_id_menu_window(kst_tab_menu_window_oggetti) then
+
+		k_return = trim(kst_tab_menu_window_oggetti.id_menu_window)
+	else
+		k_return = this.classname( )
+	end if
+
+return k_return
+end function
+
+public subroutine run_eventi_sched_old (st_open_w kst_open_w) throws uo_exception;//---
+//--- Lancio operazioni Batch
+//---
+//string k_id_programma = ""
+string k_string
+long k_ctr, k_long=0, k_long1
+st_tab_wm_pklist kst_tab_wm_pklist
+kuf_pl_barcode kuf1_pl_barcode
+kuf_pilota_cmd kuf1_pilota_cmd
+kuf_wm_pklist_inout kuf1_wm_pklist_inout
+//kuf_wm_pklist_web kuf1_wm_pklist_web
+kuf_wm_pklist_file kuf1_wm_pklist_file
+kuf_prof_exp kuf1_prof_exp
+//kuf_prof_exp_fidi kuf1_prof_exp_fidi
+//kuf_prof_imp_fidi kuf1_prof_imp_fidi
+kuf_stat_batch kuf1_stat_batch
+kuf_e1_inout kuf1_e1_inout
+kuf_e1_wo_f5548014 kuf1_e1_wo_f5548014
+kuf_e1_wo_f5548014_allinea kuf1_e1_wo_f5548014_allinea
+kuf_barcode_ini kuf1_barcode_ini
+kuf_update_stat_batch kuf1_update_stat_batch
+kuf_meca_set_data_ent kuf1_meca_set_data_ent
+kuf_meca_set_e1srst kuf1_meca_set_e1srst
+kuf_meca_ptmerce kuf1_meca_ptmerce
+kuf_meca_chiudi kuf1_meca_chiudi
+kuf_meca_reportpilota kuf1_meca_reportpilota
+kuf_pilota_previsioni kuf1_pilota_previsioni
+st_esito kst_esito
+
+
+		try 
+
+			kuf1_wm_pklist_inout = create kuf_wm_pklist_inout
+//			kuf1_wm_pklist_web = create kuf_wm_pklist_web
+			kuf1_wm_pklist_file = create kuf_wm_pklist_file
+			kuf1_prof_exp = create kuf_prof_exp
+//			kuf1_prof_exp_fidi = create kuf_prof_exp_fidi
+//			kuf1_prof_imp_fidi = create kuf_prof_imp_fidi
+			kuf1_stat_batch = create kuf_stat_batch
+			kuf1_e1_inout = create kuf_e1_inout
+			kuf1_e1_wo_f5548014 = create kuf_e1_wo_f5548014
+			kuf1_e1_wo_f5548014_allinea = create kuf_e1_wo_f5548014_allinea
+			kuf1_barcode_ini = create kuf_barcode_ini
+			kuf1_update_stat_batch = create kuf_update_stat_batch
+			kuf1_meca_set_data_ent = create kuf_meca_set_data_ent
+			kuf1_meca_set_e1srst = create kuf_meca_set_e1srst
+			kuf1_meca_ptmerce = create kuf_meca_ptmerce
+			kuf1_meca_chiudi = create kuf_meca_chiudi
+			kuf1_meca_reportpilota = create kuf_meca_reportpilota
+			
+			kist_sv_eventi_sked[1] = kst_open_w.key12_any
+			kist_sv_eventi_sked[1].esito = " in esecuzione..."
+			tb_aggiorna_stato_sv_eventi_sked()
+
+			kist_sv_eventi_sked[1].esito = "" 
+			
+
+//--- Get del ID PROGRAMMA da chiamare 		
+			kst_open_w.id_programma = trim(lower(kst_open_w.id_programma))
+			
+			if kst_open_w.id_programma = "" then 
+				
+				kist_sv_eventi_sked[1].esito = 	"Operazione non eseguita. Funzione da eseguire non indicata. ERRORE INTERNO!! "
+				
+			else				
+				
+//--- Lancio effettivo PROGRAMMA trovato
+				choose case kst_open_w.id_programma
+
+//--- Chiudo la Procedura			
+					case kkg_id_programma.EXITM2000
+						post close(w_main)
+					
+//--- Aggiorna dati INIZIO e FINE Trattamento dal PILOTA
+					case kkg_id_programma.pilota_importa_esiti
+						kuf1_pl_barcode = create kuf_pl_barcode
+						
+						k_ctr = kuf1_pl_barcode.importa_inizio_lav_pilota("0") 
+						if k_ctr > 0 then
+							kist_sv_eventi_sked[1].esito +=  string(k_ctr) + " barcode sono ancora in Trattamento. Operazione terminata. " 
+						else
+							kist_sv_eventi_sked[1].esito += "nessun barcode ha iniziato il trattamento; operazione conclusa. Funzione: " + kst_open_w.id_programma 
+						end if
+
+						k_ctr = kuf1_pl_barcode.importa_trattati_pilota("0") 
+						if k_ctr > 0 then
+							kist_sv_eventi_sked[1].esito =  string(k_ctr) + " barcode hanno concluso il Trattamento. " 
+						else
+							kist_sv_eventi_sked[1].esito = "nessun barcode ha terminato il trattamento e "
+						end if
+	
+//--- Invio Pianificazione al Pilota
+					case kkg_id_programma.pilota_esporta_pl
+						kuf1_pilota_cmd = create kuf_pilota_cmd
+						
+						if kuf1_pilota_cmd.job_pianificazione_lavorazioni() then
+							kuf1_pilota_cmd.get_pilota_cfg()
+							kist_sv_eventi_sked[1].esito = 	"Operazione conclusa correttamente." &
+									+ "E' stato generato il file con il Piano di Lavoro nella cartella:" &
+									+ kuf1_pilota_cmd.kist_tab_pilota_cfg.path_file_pl_barcode &
+									+ kuf1_pilota_cmd.kist_tab_pilota_cfg.ultimo_nome_file_pl_barcode 
+						else
+							kist_sv_eventi_sked[1].esito = 	"Operazione conclusa. Nessun Piano Inviato al Pilota. Funzione: " + kst_open_w.id_programma
+						end if
+						
+					
+//--- Importa Packing List da tab Receiptgammarad (Grezze dal WM)
+					case kuf1_wm_pklist_inout.get_id_programma(kkg_flag_modalita.BATCH)
+						k_ctr = kuf1_wm_pklist_inout.importa_wm_pklist_ext_tutti( ) 
+						if k_ctr > 0 then
+							kist_sv_eventi_sked[1].esito = 	"Operazione conclusa correttamente." + "Sono stati caricati " + string(k_ctr) + " Packing-List da WM.  " 
+						else
+							kist_sv_eventi_sked[1].esito = 	"Operazione conclusa. Nessun Packing-List da importare da WM. Funzione: " + kst_open_w.id_programma
+						end if
+						
+						
+//--- Importa Packing List XML/TXT in tab receiptgammard (del ex-WM) 
+					case kuf1_wm_pklist_file.get_id_programma(kkg_flag_modalita.BATCH)
+						k_long = kuf1_wm_pklist_file.importa_wm_pklist_file( ) 
+						k_long1 = kuf1_wm_pklist_inout.importa_wm_pklist_ext_tutti( ) 
+						if (k_long + k_long1) > 0 then
+							if k_long > 0 and k_long1 > 0 then
+								kist_sv_eventi_sked[1].esito = 	"Operazione conclusa correttamente." &
+																	+ "Caricati " + string(k_long) + " file di Packing-List da WEB/FTP/TXT in Magazzino " & 
+																	+ " e " + string(k_long1) + " Packing-List pronte per fare i Riferimenti." 
+							else
+								if k_long > 0  then
+									kist_sv_eventi_sked[1].esito = 	"Operazione conclusa correttamente." &
+																	+ "Caricati " + string(k_long) + " file di Packing-List da WEB/FTP/TXT in Magazzino."  
+								else
+									kist_sv_eventi_sked[1].esito = 	"Operazione conclusa correttamente." &
+																	+ "Caricati " +  string(k_long1) + " Packing-List pronte per essere importate come Riferimento." 
+								end if
+							end if
+						else
+							kist_sv_eventi_sked[1].esito = 	"Operazione conclusa. Nessun Packing-List WEB/FTP/TXT trovato nelle cartelle definite. Funzione: " + kst_open_w.id_programma
+						end if
+	
+
+//--- Esporta Archivio x ESOLVER - CONTABILITA' FATTURE
+					case kuf1_prof_exp.get_id_programma(kkg_flag_modalita.BATCH)
+						k_string = kuf1_prof_exp.esolver_esporta_anag_batch( ) 
+						if len(trim(k_string)) > 0 then
+							kist_sv_eventi_sked[1].esito = "Operazione conclusa. " + k_string
+						else
+							kist_sv_eventi_sked[1].esito = "Operazione non eseguita. Nessun archivio 'FATTURAZIONE' esportato x la ESOLVER. Funzione: " + kst_open_w.id_programma
+						end if
+
+////--- Esporta Archivio x ESOLVER - FIDI'
+//					case kuf1_prof_exp_fidi.get_id_programma(kkg_flag_modalita.BATCH)
+//						k_string = kuf1_prof_exp.esolver_esporta_fidi_batch( ) 
+//						if len(trim(k_string)) > 0 then
+//							kist_sv_eventi_sked[1].esito = "Operazione conclusa. " + k_string
+//						else
+//							kist_sv_eventi_sked[1].esito = "Operazione non eseguita. Nessun archivio FIDI esportato x ESOLVER. Funzione: " + kst_open_w.id_programma
+//						end if
+//
+////--- Importa Archivio da ESOLVER - FIDI'
+//					case kuf1_prof_imp_fidi.get_id_programma(kkg_flag_modalita.BATCH)
+//						k_string = kuf1_prof_exp.esolver_importa_fuori_fido_batch( ) 
+//						if len(trim(k_string)) > 0 then
+//							kist_sv_eventi_sked[1].esito = "Operazione conclusa. " + k_string
+//						else
+//							kist_sv_eventi_sked[1].esito = "Operazione non eseguita. Nessun archivio FIDI importato da file di ESOLVER. Funzione: " + kst_open_w.id_programma
+//						end if
+
+//--- Genera archivi STATISTICI
+					case kuf1_stat_batch.get_id_programma(kkg_flag_modalita.BATCH)
+						k_string = kuf1_stat_batch.run_stat_0_batch( ) 
+						if len(trim(k_string)) > 0 then
+							kist_sv_eventi_sked[1].esito = "Operazione conclusa. " + k_string
+						else
+							kist_sv_eventi_sked[1].esito = "Operazione non eseguita. Nessun archivio Statistici generato. Funzione: " + kst_open_w.id_programma
+						end if
+						
+//--- Ottimizza DB (update statistics ecc...)
+					case kuf1_update_stat_batch.get_id_programma(kkg_flag_modalita.BATCH)
+						k_string = kuf1_update_stat_batch.run_update_stat( ) 
+						if len(trim(k_string)) > 0 then
+							kist_sv_eventi_sked[1].esito = "Operazione conclusa. " + k_string
+						else
+							kist_sv_eventi_sked[1].esito = "Operazione non eseguita. Nessuna Ottimizzazione del DB effettuata. Funzione: " + kst_open_w.id_programma
+						end if
+		
+////--- ????
+//					case kuf1_e1_inout.get_id_programma(kkg_flag_modalita.BATCH)
+//						k_ctr = kuf1_e1_inout.u u_set_datilav_toe1( )
+//						if k_ctr > 0 then
+//							kist_sv_eventi_sked[1].esito = "Operazione conclusa correttamente." &
+//									+ "Sono stati inviati " + string(k_ctr) + " record dati di 'trattamento' al Sistema E-ONE" 
+//						else
+//							kist_sv_eventi_sked[1].esito = "Operazione conclusa. Nessun dato di 'trattamento' disponibile per E-ONE. Funzione: " + kst_open_w.id_programma
+//						end if
+						
+//--- Invio dati trattamento/dosimetria a E1
+					case kuf1_e1_wo_f5548014.get_id_programma(kkg_flag_modalita.BATCH)
+						k_ctr = kuf1_e1_wo_f5548014.u_set_datilav_toe1( )
+						if k_ctr > 0 then
+							kist_sv_eventi_sked[1].esito = "Operazione conclusa correttamente." &
+									+ "Sono stati inviati " + string(k_ctr) + " record dati di 'trattamento' al Sistema E-ONE" 
+						else
+							kist_sv_eventi_sked[1].esito = "Operazione conclusa. Nessun dato di 'trattamento' disponibile per E-ONE. Funzione: " + kst_open_w.id_programma
+						end if
+//--- Allinea dati trattamento/dosimetria con E1
+					case kuf1_e1_wo_f5548014_allinea.get_id_programma(kkg_flag_modalita.BATCH)
+						k_ctr = kuf1_e1_wo_f5548014_allinea.u_allinea_datilav_e1( )
+						if k_ctr > 0 then
+							kist_sv_eventi_sked[1].esito = "Operazione conclusa correttamente." &
+									+ "Sono stati ripristinati " + string(k_ctr) + " record dati di 'trattamento' inviati in precedenza al Sistema E-ONE" 
+						else
+							kist_sv_eventi_sked[1].esito = "Operazione conclusa. Nessun dato di 'trattamento' inviato a E-ONE e ripristinato. Funzione: " + kst_open_w.id_programma
+						end if
+						
+//--- Riceve barcode generati da E1
+					case kuf1_barcode_ini.get_id_programma(kkg_flag_modalita.BATCH)
+						k_ctr = kuf1_barcode_ini.u_e1_importa_barcode_batch( )
+						if k_ctr > 0 then
+							kist_sv_eventi_sked[1].esito = "Operazione conclusa correttamente." &
+									+ "Sono stati ricevuti " + string(k_ctr) + " nuovi barcode. Dati ottenuti dal Sistema E-ONE" 
+						else
+							kist_sv_eventi_sked[1].esito = "Operazione conclusa. Nessun nuovo barcode disponibile da E-ONE. Funzione: " + kst_open_w.id_programma
+						end if
+						
+//--- Imposta Data di entrata merce di E1 su MECA
+					case kuf1_meca_set_data_ent.get_id_programma(kkg_flag_modalita.BATCH)
+						k_ctr = kuf1_meca_set_data_ent.u_set_data_ent( )
+						if k_ctr > 0 then
+							kist_sv_eventi_sked[1].esito = "Operazione conclusa correttamente." &
+									+ "Sono state registrate " + string(k_ctr) + " date di entrata Lotto a magazzino. Dati ottenuti dal Sistema E-ONE" 
+						else
+							kist_sv_eventi_sked[1].esito = "Operazione conclusa. Nessuna data di entrata Lotto a magazzino importata da E-ONE. Funzione: " + kst_open_w.id_programma
+						end if
+						
+//--- Imposta STATO Lotto di E1 su MECA
+					case kuf1_meca_set_e1srst.get_id_programma(kkg_flag_modalita.BATCH)
+						k_ctr = kuf1_meca_set_e1srst.u_set_stato_lotto_da_e1( )
+						if k_ctr > 0 then
+							kist_sv_eventi_sked[1].esito = "Operazione conclusa correttamente." &
+									+ "Sono stati aggiornati " + string(k_ctr) + " STATI Lotto di E1 (wasrst). Dati ottenuti dal Sistema E-ONE" 
+						else
+							kist_sv_eventi_sked[1].esito = "Operazione conclusa. Nessuno STATO Lotto di E1 aggiornato. Dati dello STATO ottenuti da E-ONE. Funzione: " + kst_open_w.id_programma
+						end if
+						
+//--- Carica Avvisi Pronto Merce kuf_meca_reportpilotakuf_meca_reportpilotain tab Email da Inviare
+					case kuf1_meca_ptmerce.get_id_programma(kkg_flag_modalita.BATCH)
+						k_ctr = kuf1_meca_ptmerce.u_add_email_invio( )
+						if k_ctr > 0 then
+							kist_sv_eventi_sked[1].esito = "Operazione conclusa correttamente." &
+									+ "Sono stati caricati " + string(k_ctr) + " 'Avvisi di ritiro Pronto Merce' in tabella 'email da inviare'." 
+						else
+							kist_sv_eventi_sked[1].esito = "Operazione conclusa. Nessuno Avviso di Pronto Merce da ritirare caricato in tabella 'email da inviare'. Funzione: " + kst_open_w.id_programma
+						end if
+						
+//--- Chiudi Lotti Spediti
+					case kuf1_meca_chiudi.get_id_programma(kkg_flag_modalita.BATCH)
+						k_ctr = kuf1_meca_chiudi.u_chiude_lotti_spediti( )
+						if k_ctr > 0 then
+							kist_sv_eventi_sked[1].esito = "Operazione conclusa correttamente." &
+									+ "Sono stati Chiusi " + string(k_ctr) + " Lotti già spediti" 
+						else
+							kist_sv_eventi_sked[1].esito = "Operazione conclusa. Nessuno Lotto già spedito è stato Chiuso. Funzione: " + kst_open_w.id_programma
+						end if
+
+//--- Importa Report Prodotti dal PILOTA dalla cartella del Pilota a quella interna
+					case kuf1_meca_reportpilota.get_id_programma(kkg_flag_modalita.BATCH)
+						k_ctr = kuf1_meca_reportpilota.u_job_importa_report_pilota( )
+						if k_ctr > 0 then
+							kist_sv_eventi_sked[1].esito = "Operazione conclusa correttamente." &
+									+ "Sono stati importati " + string(k_ctr) + " nuovi Report (pdf) prodotti dal Pilota" 
+						else
+							kist_sv_eventi_sked[1].esito = "Operazione conclusa. Non è stato trovato nessun nuovo Report generato dal Pilota. Funzione: " + kst_open_w.id_programma
+						end if
+
+//--- Genera Eventi 
+					case this.get_id_programma(kkg_flag_modalita.BATCH)
+						kst_esito = this.genera_eventi()
+						if kst_esito.esito = kkg_esito.ok then
+							kist_sv_eventi_sked[1].esito = "Generati eventi di schedulazione. " + trim(kst_esito.sqlerrtext)
+						else
+							kist_sv_eventi_sked[1].esito = "Errore in generazione eventi di schedulazione. " + trim(kst_esito.sqlerrtext) &
+										+ "; codice errore: " + string(kst_esito.sqlcode) + ". Funzione: " + kst_open_w.id_programma 
+						end if
+
+//--- Genera archivi STATISTICI
+					case kuf1_pilota_previsioni.get_id_programma(kkg_flag_modalita.BATCH)
+						k_string = kuf1_pilota_previsioni.batch_run_stat_u_m2000_avgtimeplant( )
+						if len(trim(k_string)) > 0 then
+							kist_sv_eventi_sked[1].esito = "Operazione conclusa. " + k_string
+						else
+							kist_sv_eventi_sked[1].esito = "Operazione non eseguita. Nessun dato caricato in tabella Previsioni Tempi di Lavorazione. Funzione: " + kst_open_w.id_programma
+						end if
+						
+//--- Funzione SCONOSCIUTA!						
+					case else
+						kist_sv_eventi_sked[1].esito = 	"Operazione non eseguita. Funzione " + trim(kst_open_w.id_programma) + " NON trovata (controllare funzione in Sicurezza). ERRORE INTERNO!! "
+						
+				end choose
+			end if				
+
+		catch (uo_exception kuo_exception)
+			kst_esito = kuo_exception.get_st_esito()
+			if kst_esito.esito <> kkg_esito.not_fnd then
+				kist_sv_eventi_sked[1].esito = 	"Operazione conclusa per ERRORE: " + trim(kst_esito.sqlerrtext)
+			else
+				kist_sv_eventi_sked[1].esito = 	"Operazione conclusa ma:  " + trim(kst_esito.sqlerrtext)
+			end if
+		
+		
+		finally
+
+			if isvalid(kuf1_wm_pklist_inout) then destroy kuf1_wm_pklist_inout
+//			if isvalid(kuf1_wm_pklist_web) then destroy kuf1_wm_pklist_web
+			if isvalid(kuf1_wm_pklist_file) then destroy kuf1_wm_pklist_file
+			if isvalid(kuf1_stat_batch) then destroy kuf1_stat_batch
+			if isvalid(kuf1_e1_inout) then destroy kuf1_e1_inout
+			if isvalid(kuf1_e1_wo_f5548014) then destroy kuf1_e1_wo_f5548014
+			if isvalid(kuf1_e1_wo_f5548014_allinea) then destroy kuf1_e1_wo_f5548014_allinea
+			if isvalid(kuf1_barcode_ini) then destroy kuf1_barcode_ini
+			if isvalid(kuf1_update_stat_batch) then destroy kuf1_update_stat_batch
+			if isvalid(kuf1_meca_set_data_ent) then destroy kuf1_meca_set_data_ent
+			if isvalid(kuf1_meca_set_e1srst) then destroy kuf1_meca_set_e1srst
+			if isvalid(kuf1_meca_ptmerce) then destroy kuf1_meca_ptmerce
+			if isvalid(kuf1_meca_chiudi) then destroy kuf1_meca_chiudi
+			if isvalid(kuf1_meca_reportpilota) then destroy kuf1_meca_reportpilota
+			if isvalid(kuf1_pilota_previsioni) then destroy kuf1_pilota_previsioni
+			
+			kist_sv_eventi_sked[1].run_giorno_stop = kGuf_data_base.prendi_dataora() 
+			kist_sv_eventi_sked[1].stato = kki_sv_eventi_sked_stato_eseg
+			
+			
+			if isvalid(	kuf1_pl_barcode) then destroy kuf1_pl_barcode
+			if isvalid(	kuf1_pilota_cmd) then destroy kuf1_pilota_cmd
+			
+		
+		end try
+		
+
+end subroutine
+
+public function st_esito u_batch_run () throws uo_exception;//---
+//--- Lancio operazioni Batch
+//---
+st_esito kst_esito
+
+
+try 
+
+	kst_esito.esito = kkg_esito.ok
+	kst_esito.sqlcode = 0
+	kst_esito.SQLErrText = ""
+	kst_esito.nome_oggetto = this.classname()
+
+//--- Rigenera TUTTI gli Eventi 
+	kst_esito = this.genera_eventi()
+	if kst_esito.esito = kkg_esito.ok then
+		kst_esito.SQLErrText = "Generati eventi di schedulazione. " + trim(kst_esito.sqlerrtext)
+	else
+		kst_esito.SQLErrText = "Errore in generazione eventi di schedulazione. " + trim(kst_esito.sqlerrtext) &
+					+ "; codice errore: " + string(kst_esito.sqlcode) + "."
+	end if
+
+
+catch (uo_exception kuo_exception)
+	throw kuo_exception
+	
+finally
+	
+end try
+
+
+return kst_esito
 end function
 
 on kuf_sv_skedula.create

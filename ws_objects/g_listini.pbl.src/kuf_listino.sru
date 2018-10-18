@@ -76,7 +76,6 @@ public function st_esito get_id_listino (ref st_tab_listino kst_tab_listino)
 private function boolean get_prezzo_1 (ref st_tab_listino kst_tab_listino, ref st_tab_armo kst_tab_armo, ref st_tab_cond_fatt kst_tab_cond_fatt, ref kuf_armo kuf1_armo, ref kuf_fatt kuf1_fatt) throws uo_exception
 private function boolean get_prezzo_2 (ref st_tab_listino kst_tab_listino, ref st_tab_armo kst_tab_armo, ref st_tab_cond_fatt kst_tab_cond_fatt, ref kuf_armo kuf1_armo, ref kuf_fatt kuf1_fatt) throws uo_exception
 public function boolean get_prezzo (ref st_tab_listino kst_tab_listino, ref st_tab_armo kst_tab_armo) throws uo_exception
-public function st_esito get_id_listini (ref st_tab_listino kst_tab_listino[])
 public function long tb_add (st_tab_listino kst_tab_listino) throws uo_exception
 public function boolean link_call_imvc (ref st_tab_listino kst_tab_listino, st_open_w kst_open_w_arg) throws uo_exception
 public function boolean set_stato_annullato_massivo (st_tab_listino kast_tab_listino, st_tab_contratti kast_tab_contratti) throws uo_exception
@@ -106,6 +105,7 @@ public function string get_e1litm (st_tab_listino ast_tab_listino) throws uo_exc
 public function integer if_e1litm_x_contratto (st_tab_listino ast_tab_listino) throws uo_exception
 public function long tb_gia_spedito (st_tab_listino kst_tab_listino) throws uo_exception
 public function long get_id_max () throws uo_exception
+public function long get_id_listini (ref st_tab_listino kst_tab_listino[]) throws uo_exception
 end prototypes
 
 public function integer autorizza_campi (ref datawindow kdw_listino);//---
@@ -1298,76 +1298,6 @@ finally
 end try
 
 return k_return
-
-end function
-
-public function st_esito get_id_listini (ref st_tab_listino kst_tab_listino[]);//
-//====================================================================
-//=== Torna  ID_ LISTINI x Cliente e altro
-//=== 
-//=== Input: st_tab_listino[1]  COD_CLI, CONTRATTO ordinata x  MIS_Y da grande a piccola   
-//=== Out: st_tab_listino[].id,  st_tab_listino[1].st_tab_g_0.contati il numero listini trovati                 
-//=== Ritorna ST_ESITO
-//===           		  
-//====================================================================
-long k_ctr=0
-string k_attivo_si
-st_esito kst_esito
-
-
- 
-	kst_esito.esito = kkg_esito.ok
-	kst_esito.sqlcode = 0
-	kst_esito.SQLErrText = ""
-	kst_esito.nome_oggetto = this.classname()
-
-//=
-	if isnull(kst_tab_listino[1].COD_CLI) then kst_tab_listino[1].COD_CLI = 0
-	if isnull(kst_tab_listino[1].CONTRATTO) then kst_tab_listino[1].CONTRATTO = 0
-
-	kst_tab_listino[1].st_tab_g_0.contati = 0  
-	k_attivo_si = kki_attivo_si
-
-//---- declare x leggere i listini	
-	declare c_get_id_listini cursor for 
-		SELECT listino.id
-				 FROM listino
-				 where
-						LISTINO.COD_CLI   = :kst_tab_listino[1].COD_CLI    and
-						(:kst_tab_listino[1].CONTRATTO = 0 or LISTINO.CONTRATTO = :kst_tab_listino[1].CONTRATTO)
-						and listino.attivo = :k_attivo_si
-					order by LISTINO.MIS_Y desc
-				  using sqlca;		
-		
-	open c_get_id_listini;
-	if sqlca.sqlcode = 0 then
-		
-		fetch c_get_id_listini into :kst_tab_listino[1].id;
-		if sqlca.sqlcode = 0 then
-			
-			do while sqlca.sqlcode = 0
-				
-				k_ctr++
-				fetch c_get_id_listini into :kst_tab_listino[k_ctr].id;
-				
-			loop
-		end if
-
-		if sqlca.sqlcode < 0 then
-			kst_esito.esito = kkg_esito.db_ko
-			kst_esito.sqlcode = sqlca.sqlcode
-			kst_esito.SQLErrText = "Errore in Lettura Listini (cercato ID Listino) ~n~rCliente: " &
-								+ string(kst_tab_listino[1].COD_CLI) + "- Contratto: " +  string(kst_tab_listino[1].contratto) + "~n~r" &
-								+ trim(sqlca.SQLErrText) 
-
-		end if
-		close c_get_id_listini;
-	end if
-
-	kst_tab_listino[1].st_tab_g_0.contati = k_ctr
-
-return kst_esito
-
 
 end function
 
@@ -3558,6 +3488,88 @@ st_esito kst_esito
 	
 
 return k_return
+
+end function
+
+public function long get_id_listini (ref st_tab_listino kst_tab_listino[]) throws uo_exception;//
+//====================================================================
+//=== Torna  ID_ LISTINI x Cliente e altro
+//=== 
+//=== Input: st_tab_listino[1]  COD_CLI, CONTRATTO ordinata x  MIS_Y da grande a piccola   
+//=== Out: st_tab_listino[].id,  st_tab_listino[1].st_tab_g_0.contati il numero listini trovati                 
+//=== Ritorna id del listino (occurs 1)
+//===           		  
+//====================================================================
+long k_return 
+int k_ctr
+string k_attivo_si
+boolean k_open=false
+
+
+try
+
+	if isnull(kst_tab_listino[1].COD_CLI) then kst_tab_listino[1].COD_CLI = 0
+	if isnull(kst_tab_listino[1].CONTRATTO) then kst_tab_listino[1].CONTRATTO = 0
+
+	kst_tab_listino[1].st_tab_g_0.contati = 0  
+	k_attivo_si = kki_attivo_si
+
+//---- declare x leggere i listini	
+	declare c_get_id_listini cursor for 
+		SELECT listino.id
+				 FROM listino
+				 where
+						LISTINO.COD_CLI   = :kst_tab_listino[1].COD_CLI    and
+						(:kst_tab_listino[1].CONTRATTO = 0 or LISTINO.CONTRATTO = :kst_tab_listino[1].CONTRATTO)
+						and listino.attivo = :k_attivo_si
+					order by LISTINO.MIS_Y desc
+				  using kguo_sqlca_db_magazzino;		
+		
+	open c_get_id_listini;
+	if kguo_sqlca_db_magazzino.sqlcode = 0 then
+		k_open = true
+		
+		fetch c_get_id_listini into :kst_tab_listino[1].id;
+		if kguo_sqlca_db_magazzino.sqlcode = 0 then
+			
+			do while kguo_sqlca_db_magazzino.sqlcode = 0
+				
+				k_ctr++
+				fetch c_get_id_listini into :kst_tab_listino[k_ctr].id;
+				
+			loop
+		end if
+
+		if kguo_sqlca_db_magazzino.sqlcode < 0 then
+			kguo_exception.inizializza( )
+			kguo_exception.kist_esito.nome_oggetto = this.classname()
+			kguo_exception.kist_esito.esito = kkg_esito.db_ko
+			kguo_exception.kist_esito.sqlcode = kguo_sqlca_db_magazzino.sqlcode
+			kguo_exception.kist_esito.SQLErrText = "Errore in Lettura Listini (cercato ID Listino) ~n~rCliente: " &
+								+ string(kst_tab_listino[1].COD_CLI) + "- Contratto: " +  string(kst_tab_listino[1].contratto) + "~n~r" &
+								+ trim(kguo_sqlca_db_magazzino.SQLErrText) 
+			throw kguo_exception
+
+		end if
+	end if
+
+	kst_tab_listino[1].st_tab_g_0.contati = k_ctr
+	k_return = kst_tab_listino[1].id
+
+
+catch (uo_exception kuo_execption)
+	throw kuo_execption
+	
+
+finally
+	if k_open then 
+		close c_get_id_listini;
+	end if
+	
+end try
+
+return k_return
+
 
 end function
 

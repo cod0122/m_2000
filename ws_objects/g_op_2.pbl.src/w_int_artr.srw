@@ -14,7 +14,6 @@ integer y = 172
 integer width = 3424
 integer height = 2176
 string title = "Interrogazioni: Magazzino"
-long backcolor = 32567536
 boolean ki_toolbar_window_presente = true
 end type
 global w_int_artr w_int_artr
@@ -7870,6 +7869,7 @@ end on
 type tabpage_1 from w_g_tab_3`tabpage_1 within tab_1
 integer width = 3118
 integer height = 1624
+long backcolor = 10789024
 string text = "Parametri"
 string picturename = "edit16.gif"
 ddplb_report ddplb_report
@@ -8345,7 +8345,7 @@ fontcharset fontcharset = ansi!
 fontpitch fontpitch = variable!
 fontfamily fontfamily = swiss!
 string facename = "Arial"
-long backcolor = 12632256
+long backcolor = 553648127
 string text = "Scegliere il Report"
 boolean allowedit = true
 boolean autohscroll = true

@@ -116,7 +116,7 @@ kuf_utility kuf1_utility
 	
 //--- trova la larghezza orizzontale del datawindow
 	k_riga = 1
-	do while len(trim(ki_tab_nome_oggetto[k_riga, 1])) > 0  
+	do while len(trim(ki_tab_nome_oggetto[k_riga, 1])) > 0  and k_riga < 100
 	
 		k_nome = trim(ki_tab_nome_oggetto[k_riga, 3])
 		k_nome_testo = trim(ki_tab_nome_oggetto[k_riga, 1]) 
@@ -2508,7 +2508,7 @@ private function string u_get_dw_nomi_col (string a_datawindow_syntax);//---
 //--- input: describe("DataWindow.Syntax")       impostare in kist_stampe_add_testata il Titolo e dw_print
 //--- Rit: kdw_1.Describe("DataWindow.Syntax")  che non serve a molto
 long k_colcount=0, k_riga, k_pos_x, k_pos_x_max=0, k_width=0, k_pos_y=0
-long k_ctr, k_ctr1, k_ctr2, k_tab_nome_oggetto_ind, k_ind1, k_start_pos, k_ctr_t=0
+long k_ctr, k_pos_field, k_ctr2, k_tab_nome_oggetto_ind, k_ind1, k_start_pos, k_len
 string k_rc, k_str, k_dw, k_nome_visible, k_modify, k_nome_campo_visible
 string k_tab_nome_oggetto_VUOTA[100,4]
 datawindow kdw_1
@@ -2527,32 +2527,34 @@ datawindow kdw_1
 	k_ctr = 1
 	k_ctr = pos(k_dw, "text(", k_ctr)
 	DO WHILE k_ctr > 0 and k_tab_nome_oggetto_ind < 100
-		k_ctr1 = pos(k_dw, "name=", k_ctr)
-		if k_ctr1 > 0 then
-			k_ctr1 = k_ctr1 + 5
-			k_ctr2 = pos(k_dw, " ", k_ctr1) - k_ctr1
+		k_pos_field = pos(k_dw, "name=", k_ctr)
+		if k_pos_field > 0 then
+			k_pos_field = k_pos_field + 5
+			k_ctr2 = pos(k_dw, " ", k_pos_field) - k_pos_field
 			if k_ctr2 > 0 then
 //--- nome colonna TESTATA				
-				ki_tab_nome_oggetto[k_tab_nome_oggetto_ind, 1] = mid(k_dw, k_ctr1, k_ctr2)
+				ki_tab_nome_oggetto[k_tab_nome_oggetto_ind, 1] = mid(k_dw, k_pos_field, k_ctr2)
 				k_nome_campo_visible = ki_tab_nome_oggetto[k_tab_nome_oggetto_ind, 1] + ".visible"
 				k_str = kdw_1.Describe(k_nome_campo_visible)  // verifica se colonna esiste
 				
 //--- La colonna deve esistere e NON deve essere "fzoom" poichè servono solo come FUNZIONE di ZOOM a VIDEO
 				if k_str <> "!" and pos(ki_tab_nome_oggetto[k_tab_nome_oggetto_ind, 1], "fzoom", 1) = 0 then
 
-//--- nome colonna DETTAGLIO				
-					k_ctr_t = pos(ki_tab_nome_oggetto[k_tab_nome_oggetto_ind, 1], "_t", 1)
-					if k_ctr_t > 1 then // in campo testata dovrebbere esserci la '_t'
-						k_str = kdw_1.Describe(left(ki_tab_nome_oggetto[k_tab_nome_oggetto_ind, 1], k_ctr_t - 1) + ".visible")
+//--- nome colonna DETTAGLIO (tolgo '_t' dalla fine del nome)	
+					if right(ki_tab_nome_oggetto[k_tab_nome_oggetto_ind, 1], 2) = "_t"  then
+						k_len = len(ki_tab_nome_oggetto[k_tab_nome_oggetto_ind, 1]) 
+					//k_ctr_t = pos(ki_tab_nome_oggetto[k_tab_nome_oggetto_ind, 1], "_t", 1)
+					//if k_ctr_t > 1 then // in campo testata dovrebbere esserci la '_t'
+						k_str = kdw_1.Describe(left(ki_tab_nome_oggetto[k_tab_nome_oggetto_ind, 1], k_len - 2) + ".visible")
 						if k_str = "!" then
 							k_nome_visible = ki_tab_nome_oggetto[k_tab_nome_oggetto_ind, 1]
 						else
-							ki_tab_nome_oggetto[k_tab_nome_oggetto_ind, 3] = left(ki_tab_nome_oggetto[k_tab_nome_oggetto_ind, 1], k_ctr_t - 1)
+							ki_tab_nome_oggetto[k_tab_nome_oggetto_ind, 3] = left(ki_tab_nome_oggetto[k_tab_nome_oggetto_ind, 1], k_len - 2)
 							k_nome_visible = ki_tab_nome_oggetto[k_tab_nome_oggetto_ind, 3]
 						end if
 					else 
 						k_nome_visible = ki_tab_nome_oggetto[k_tab_nome_oggetto_ind, 1]
-						k_ctr_t = len(trim(ki_tab_nome_oggetto[k_tab_nome_oggetto_ind, 1])) + 1
+						k_len = len(trim(ki_tab_nome_oggetto[k_tab_nome_oggetto_ind, 1])) 
 					end if
 //--- Proprietà VISIBLE				
 					k_str = kdw_1.Describe(k_nome_visible + ".visible")
@@ -2562,17 +2564,17 @@ datawindow kdw_1
 					end if
 
 //--- nome colonna K_				
-					k_str = kdw_1.Describe("k_" + left(ki_tab_nome_oggetto[k_tab_nome_oggetto_ind, 1], k_ctr_t - 1) + ".visible")
+					k_str = kdw_1.Describe("k_" + left(ki_tab_nome_oggetto[k_tab_nome_oggetto_ind, 1], k_len - 2) + ".visible")
 					if k_str = "!" then
 					else
-						ki_tab_nome_oggetto[k_tab_nome_oggetto_ind, 4] = "k_" + left(ki_tab_nome_oggetto[k_tab_nome_oggetto_ind, 1], k_ctr_t - 1) 
+						ki_tab_nome_oggetto[k_tab_nome_oggetto_ind, 4] = "k_" + left(ki_tab_nome_oggetto[k_tab_nome_oggetto_ind, 1],k_len - 2) 
 					end if
 
 					k_tab_nome_oggetto_ind++
 				end if
 			end if
 		end if
-		k_ctr = k_ctr1
+		k_ctr = k_pos_field
 		k_ctr = pos(k_dw, "text(", k_ctr)
 	LOOP	
 

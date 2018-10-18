@@ -1589,9 +1589,9 @@ try
 					kds_1.setitem( k_riga, "u_id", kst_log_msg_xml.u_id )
 					kds_1.setitem( k_riga, "utente", kst_log_msg_xml.utente )
 					kds_1.setitem( k_riga, "oggetto", kst_log_msg_xml.oggetto )
-					kds_1.setitem( k_riga, "segnalazione", kst_log_msg_xml.segnalazione )
+					kds_1.setitem( k_riga, "segnalazione", trim(kst_log_msg_xml.segnalazione) )
 					kds_1.setitem( k_riga, "s_sqlcode", kst_log_msg_xml.s_sqlcode )
-					kds_1.setitem( k_riga, "esito", kst_log_msg_xml.esito )
+					kds_1.setitem( k_riga, "esito", trim(kst_log_msg_xml.esito) )
 					kds_1.setitem( k_riga, "e_cod", kst_log_msg_xml.e_cod )
 					kds_1.setitem( k_riga, "m_tipo", kst_log_msg_xml.m_tipo )
 				end if

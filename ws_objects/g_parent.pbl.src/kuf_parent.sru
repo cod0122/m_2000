@@ -35,6 +35,8 @@ public function boolean u_open (ref st_open_w ast_open_w)
 public function string u_get_errmsg_nontrovato (string a_modalita)
 public subroutine _readme ()
 public function boolean link_call (ref datastore ads_1, string a_campo_link) throws uo_exception
+public subroutine u_set_ki_nomeoggetto (any a_any)
+public function st_esito u_batch_run () throws uo_exception
 end prototypes
 
 public function string get_id_programma (string k_flag_modalita);//
@@ -731,6 +733,47 @@ return k_return
 
 end function
 
+public subroutine u_set_ki_nomeoggetto (any a_any);//
+kuf_parent kuf1_parent
+
+
+kuf1_parent = a_any
+ki_nomeoggetto = trim(kuf1_parent.classname())
+
+end subroutine
+
+public function st_esito u_batch_run () throws uo_exception;//---
+//--- Lancio operazioni Batch
+//---
+st_esito kst_esito
+
+
+try 
+
+	kst_esito.esito = kkg_esito.ok
+	kst_esito.sqlcode = 0
+	kst_esito.SQLErrText = ""
+	kst_esito.nome_oggetto = this.classname()
+
+// call della routine che esegue il batch
+//	k_ctr = this.eseguie_batch( ) 
+//	if k_ctr > 0 then
+//		kst_esito.SQLErrText = "Operazione conclusa correttamente." + "Sono stati caricati " + string(k_ctr) + " Packing-List da WM.  " 
+//	else
+//		kst_esito.SQLErrText = "Operazione conclusa. Nessun Packing-List da importare da WM. Funzione: " + kst_open_w.id_programma
+//	end if
+	
+catch (uo_exception kuo_exception)
+	throw kuo_exception
+	
+finally
+	
+end try
+
+
+return kst_esito
+end function
+
 on kuf_parent.create
 call super::create
 TriggerEvent( this, "constructor" )
@@ -744,8 +787,8 @@ end on
 event constructor;//
 //--- operazioni iniziali
 //
-ki_nomeOggetto = trim(this.classname( ))
-
+//ki_nomeOggetto = trim(this.classname( ))
+u_set_ki_nomeoggetto(this)
 end event
 
 event destructor;//

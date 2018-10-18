@@ -15,7 +15,6 @@ end variables
 
 forward prototypes
 public function integer u_esegui ()
-public function integer u_esegui_u_m2000_avgtimeplant ()
 end prototypes
 
 public function integer u_esegui ();//
@@ -47,41 +46,6 @@ int k_rc
 		end if
 		CLOSE u_m2000_0_start_stat;
 	END IF
-
-return k_return
-end function
-
-public function integer u_esegui_u_m2000_avgtimeplant ();//
-//--- Esecuzione della Stored Procedure MSSQL STATISTICI (DATAWHERHOUSE)
-//--- Chiama la sp che scatena tutte le altre
-//
-int k_return
-int k_rc
-
-	ki_status = ""
-
-	DECLARE u_m2000_avgtimeplant PROCEDURE FOR
-			@li_rc = dbo.u_m2000_avgtimeplant
-									@k_status varchar(8000) = :ki_status OUT
-		using kguo_sqlca_db_magazzino ;
-			
-	execute u_m2000_avgtimeplant;
-	
-	IF kguo_sqlca_db_magazzino.SQLCode < 0 THEN
-		//ls_msg = SQLCA.SQLErrText
-		k_return =  kguo_sqlca_db_magazzino.SQLCode
-	ELSE
-			// Put the return value into the var and close the declaration.
-		FETCH u_m2000_avgtimeplant INTO :k_rc, :ki_status;
-		IF kguo_sqlca_db_magazzino.SQLCode = 0 THEN
-			k_return = k_rc
-		else
-			k_return = 0
-		end if
-		CLOSE u_m2000_avgtimeplant;
-	END IF
-	
-	kguo_sqlca_db_magazzino.db_commit( )
 
 return k_return
 end function

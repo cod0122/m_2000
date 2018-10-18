@@ -55,7 +55,6 @@ public function st_esito anteprima (ref datastore kdw_anteprima, st_tab_contratt
 public function st_esito anteprima_sc_cf (ref datastore kdw_anteprima, st_tab_contratti kst_tab_contratti)
 public function st_esito get_sc_cf_pt (ref st_tab_contratti kst_tab_contratti)
 public function st_esito get_et_bcode_note (ref st_tab_contratti kst_tab_contratti)
-public function st_esito get_codice_da_cf_co (ref st_tab_contratti kst_tab_contratti) throws uo_exception
 public function st_esito get_sl_pt (ref st_tab_contratti kst_tab_contratti)
 public function st_esito get_co_cf_pt (ref st_tab_contratti kst_tab_contratti)
 public function st_esito tb_delete (st_tab_sd_md kst_tab_sd_md)
@@ -85,6 +84,7 @@ public function boolean if_scaduto_sc_cf (st_tab_contratti kst_tab_contratti) th
 public function date get_data_scad_sc_cf (st_tab_contratti ast_tab_contratti) throws uo_exception
 public function long elenco_contratti_attivi_cliente (st_tab_contratti kst_tab_contratti)
 public function long get_codice_max () throws uo_exception
+public function st_esito get_codice_da_cf_co (ref st_tab_contratti kst_tab_contratti) throws uo_exception
 end prototypes
 
 public function string tb_delete (long k_codice);//
@@ -738,124 +738,6 @@ st_esito kst_esito
 			end if
 		end if
 	end if
-	
-return kst_esito
-
-
-end function
-
-public function st_esito get_codice_da_cf_co (ref st_tab_contratti kst_tab_contratti) throws uo_exception;//
-//------------------------------------------------------------------------------------------------------------------------------
-//--- Leggo Contratto specifico da SC_CF e MC_CO e CLIE_3
-//---
-//--- Inp: st_tab_contratti con sc_cf + mc_co + clie_3
-//--- Out: st_tab_contratti.codice   se + di 1 allora torna il piu' vecchio ma segnla errore!!!
-//--- lancia EXCEPTION
-//---
-//------------------------------------------------------------------------------------------------------------------------------
-//
-st_tab_contratti kst_tab_contratti_PIU
-st_esito kst_esito
-uo_exception kuo_exception
-
-
-
-	kst_esito.esito = kkg_esito.ok
-	kst_esito.sqlcode = 0
-	kst_esito.SQLErrText = ""
-	kst_esito.nome_oggetto = this.classname()
-	
-	if isnull(kst_tab_contratti.mc_co) or len(trim(kst_tab_contratti.mc_co)) = 0 then kst_tab_contratti.mc_co = ""
-	if isnull(kst_tab_contratti.sc_cf) or len(trim(kst_tab_contratti.sc_cf)) = 0 then kst_tab_contratti.sc_cf = ""
-	if isnull(kst_tab_contratti.cod_cli)  then kst_tab_contratti.cod_cli = 0
-	if isnull(kst_tab_contratti.data_scad) or kst_tab_contratti.data_scad = date(0) then kst_tab_contratti.data_scad = kg_dataoggi
-	
-	kst_tab_contratti.SC_CF = trim(kst_tab_contratti.SC_CF)
-	kst_tab_contratti.MC_CO = trim(kst_tab_contratti.MC_CO)
-	
-   declare c_get_codice_da_cf_co cursor for 
-	   select distinct data, codice 
-         from contratti 
-         where cod_cli = :kst_tab_contratti.cod_cli  
-            and (MC_CO = :kst_tab_contratti.MC_CO or :kst_tab_contratti.MC_CO = "")
-            and (SC_CF = :kst_tab_contratti.SC_CF or :kst_tab_contratti.SC_CF = "") 
-            and contratti.data_scad >= :kst_tab_contratti.data_scad 
-            and contratti.data <= :kst_tab_contratti.data_scad 
-         order by data asc, codice asc
-		  using sqlca;
-
-//				    or MC_CO is null and :kst_tab_contratti.MC_CO = "")
-//				    or SC_CF is null and :kst_tab_contratti.SC_CF = "")
-
-	
-	open c_get_codice_da_cf_co ;         
-	if sqlca.sqlcode = 0 then
-			
-     	fetch c_get_codice_da_cf_co   
-        	into :kst_tab_contratti.data, :kst_tab_contratti.codice;
-
-		if sqlca.sqlcode = 0 then
-
-	     	fetch c_get_codice_da_cf_co   
-   		     	into :kst_tab_contratti_PIU.data, :kst_tab_contratti_PIU.codice;
-
-//--- se trovo più contratti allora errore!
-			if sqlca.sqlcode = 0 then
-				kst_esito.sqlcode = sqlca.sqlcode
-				kst_esito.SQLErrText = "Trovati piu' di 1 contratto oltre al " + string(kst_tab_contratti.codice) + " anche il " + string(kst_tab_contratti_PIU.codice) + ")  " 
-				kst_esito.esito = kkg_esito.err_logico
-			end if
-			
-		else
-			if sqlca.sqlcode <> 0 then
-				kst_esito.sqlcode = sqlca.sqlcode
-				kst_esito.SQLErrText = "Tab.Contratti (CF=" + string(kst_tab_contratti.sc_cf) + "- " &
-											+ "CO=" + string(kst_tab_contratti.mc_co) + "- " &
-											+ "data validita'=" + string(kst_tab_contratti.data_scad) + "- " &
-											+ "cliente=" + string(kst_tab_contratti.cod_cli) + "): ~n~r" &
-											+ trim(SQLCA.SQLErrText)
-				if sqlca.sqlcode = 100 then
-					kst_esito.esito = kkg_esito.not_fnd
-				else
-					if sqlca.sqlcode < 0 then
-						close c_get_codice_da_cf_co ;         
-						kst_esito.esito = kkg_esito.db_ko
-						kuo_exception = create uo_exception
-						kuo_exception.set_esito( kst_esito )
-						throw kuo_exception
-					end if
-				end if
-			end if
-				
-		end if
-
-		close c_get_codice_da_cf_co ;         
-
-	else
-		if sqlca.sqlcode <> 0 then
-			kst_esito.sqlcode = sqlca.sqlcode
-			kst_esito.SQLErrText = "Tab.Contratti (CF=" + string(kst_tab_contratti.sc_cf) + "- " &
-											+ "CO=" + string(kst_tab_contratti.mc_co) + "- " &
-											+ "data validita'=" + string(kst_tab_contratti.data_scad) + "- " &
-											+ "cliente=" + string(kst_tab_contratti.cod_cli) + ") (operazione di OPEN): ~n~r" &
-											+ trim(SQLCA.SQLErrText)
-			if sqlca.sqlcode = 100 then
-				kst_esito.esito = kkg_esito.not_fnd
-			else
-				if sqlca.sqlcode > 0 then
-					kst_esito.esito = kkg_esito.db_wrn
-				else	
-					kst_esito.esito = kkg_esito.db_ko
-				end if
-			end if
-		end if
-			
-		kuo_exception = create uo_exception
-		kuo_exception.set_esito( kst_esito )
-		throw kuo_exception
-	end if
-		
-	
 	
 return kst_esito
 
@@ -2690,6 +2572,97 @@ st_esito kst_esito
 	
 
 return k_return
+
+end function
+
+public function st_esito get_codice_da_cf_co (ref st_tab_contratti kst_tab_contratti) throws uo_exception;//
+//------------------------------------------------------------------------------------------------------------------------------
+//--- Leggo Contratto specifico da SC_CF e MC_CO e CLIE_3
+//---
+//--- Inp: st_tab_contratti con sc_cf + mc_co + clie_3
+//--- Out: st_tab_contratti.codice   se + di 1 allora torna il piu' vecchio ma segnla errore!!!
+//--- Rit: st_esito con kkg_esito.err_logico = trovati più codici
+//--- lancia EXCEPTION
+//---
+//------------------------------------------------------------------------------------------------------------------------------
+//
+long k_righe, k_riga
+st_esito kst_esito
+datastore kds_1
+
+
+try
+
+	kst_esito.esito = kkg_esito.ok
+	kst_esito.sqlcode = 0
+	kst_esito.SQLErrText = ""
+	kst_esito.nome_oggetto = this.classname()
+	
+	if isnull(kst_tab_contratti.mc_co) or len(trim(kst_tab_contratti.mc_co)) = 0 then kst_tab_contratti.mc_co = ""
+	if isnull(kst_tab_contratti.sc_cf) or len(trim(kst_tab_contratti.sc_cf)) = 0 then kst_tab_contratti.sc_cf = ""
+	if isnull(kst_tab_contratti.cod_cli)  then kst_tab_contratti.cod_cli = 0
+	if isnull(kst_tab_contratti.data_scad) or kst_tab_contratti.data_scad = date(0) then kst_tab_contratti.data_scad = kg_dataoggi
+
+	
+	kst_tab_contratti.SC_CF = trim(kst_tab_contratti.SC_CF)
+	kst_tab_contratti.MC_CO = trim(kst_tab_contratti.MC_CO)
+
+	kds_1 = create datastore
+	kds_1.dataobject = "ds_contratti_x_cli_co_cf"
+	kds_1.settransobject( kguo_sqlca_db_magazzino )
+	
+	k_righe = kds_1.retrieve(kst_tab_contratti.cod_cli, kst_tab_contratti.MC_CO, kst_tab_contratti.SC_CF, kst_tab_contratti.data_scad )
+	
+	if k_righe > 0 then
+			
+		kst_tab_contratti.data = kds_1.getitemdate(1, "data")
+		kst_tab_contratti.codice = kds_1.getitemnumber(1, "codice")
+
+		if k_righe > 1 then
+
+//--- se trovo più contratti allora errore!
+			kst_esito.SQLErrText = "Trovati " + string(k_righe) + " contratti: "
+			for k_riga = 1 to k_righe
+				kst_esito.SQLErrText += string(kds_1.getitemnumber(k_riga, "codice")) + ",  " 
+			next
+			kst_esito.SQLErrText += " prego controllare." 
+			kst_esito.esito = kkg_esito.err_logico
+			
+		end if
+	else
+		if k_righe < 0 then
+			kst_esito.esito = kkg_esito.db_ko
+			kst_esito.sqlcode = k_righe
+			kst_esito.SQLErrText = "Errore in ricerca Codice Contratto (" &
+										+ "cliente: " + string(kst_tab_contratti.cod_cli) + " " &
+										+ "CF: " + string(kst_tab_contratti.sc_cf) + " " &
+										+ "CO: " + string(kst_tab_contratti.mc_co) + " " &
+										+ "data validità: " + string(kst_tab_contratti.data_scad) + "- " &
+										+ "cliente=" + string(kst_tab_contratti.cod_cli) + "): ~n~r" &
+										+ trim(kguo_sqlca_db_magazzino.sqlerrtext)
+			kguo_exception.inizializza( )
+			kguo_exception.set_esito( kst_esito )
+			throw kguo_exception
+		end if
+	end if
+	
+	if kst_tab_contratti.codice > 0 then
+	else
+		kst_esito.esito = kkg_esito.not_fnd
+	end if
+
+
+catch (uo_exception kuo_exception)
+	throw kuo_exception
+
+finally
+	
+	if isvalid(kds_1) then destroy kds_1
+	
+end try
+	
+return kst_esito
+
 
 end function
 

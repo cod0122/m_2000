@@ -459,27 +459,7 @@ protected function uo_d_std_1 u_get_dw ();//---
 uo_d_std_1 kdw_x
 
 	kdw_x = kiuo_g_tab_elenco_tabpage[tab_1.selectedtab].dw_1
-//	choose case tab_1.selectedtab 
-//		case  1 
-//			kdw_x = tab_1.tabpage_1.dw_1
-//		case 2
-//			kdw_x = tab_1.tabpage_2.dw_2
-//		case 3
-//			kdw_x = tab_1.tabpage_3.dw_3
-//		case 4
-//			kdw_x = tab_1.tabpage_4.dw_4
-//		case 5
-//			kdw_x = tab_1.tabpage_5.dw_5
-//		case 6
-//			kdw_x = tab_1.tabpage_6.dw_6
-//		case 7
-//			kdw_x = tab_1.tabpage_7.dw_7
-//		case 8
-//			kdw_x = tab_1.tabpage_8.dw_8
-//		case 9
-//			kdw_x = tab_1.tabpage_9.dw_9
-//	end choose	
-//
+
 return kdw_x	
 
 
@@ -1362,6 +1342,8 @@ setnull(k_null)
 end event
 
 event selectionchanged;//
+kidw_selezionata = u_get_dw( )
+
 attiva_tasti( )
 
 end event

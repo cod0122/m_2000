@@ -25,6 +25,7 @@ public function integer u_distruggi_barcode (st_tab_barcode ast_tab_barcode, int
 public function integer u_e1_importa_barcode (st_tab_barcode ast_tab_barcode) throws uo_exception
 public function integer u_e1_importa_barcode_batch () throws uo_exception
 private function boolean u_add_barcode (st_tab_barcode ast_tab_barcode) throws uo_exception
+public function st_esito u_batch_run () throws uo_exception
 end prototypes
 
 public function boolean if_sicurezza (st_open_w ast_open_w) throws uo_exception;//
@@ -1316,6 +1317,41 @@ end if
 
 return k_return
 
+end function
+
+public function st_esito u_batch_run () throws uo_exception;//---
+//--- Lancio operazioni Batch
+//---
+int k_ctr
+st_esito kst_esito
+
+
+try 
+
+	kst_esito.esito = kkg_esito.ok
+	kst_esito.sqlcode = 0
+	kst_esito.SQLErrText = ""
+	kst_esito.nome_oggetto = this.classname()
+
+//--- Riceve barcode generati da E1
+	k_ctr = u_e1_importa_barcode_batch( )
+	if k_ctr > 0 then
+		kst_esito.SQLErrText = "Operazione conclusa correttamente." &
+									+ "Sono stati ricevuti " + string(k_ctr) + " nuovi barcode. Dati ottenuti dal Sistema E-ONE" 
+	else
+		kst_esito.SQLErrText = "Operazione conclusa. Nessun nuovo barcode disponibile da E-ONE."
+	end if
+
+
+catch (uo_exception kuo_exception)
+	throw kuo_exception
+	
+finally
+	
+end try
+
+
+return kst_esito
 end function
 
 on kuf_barcode_ini.create

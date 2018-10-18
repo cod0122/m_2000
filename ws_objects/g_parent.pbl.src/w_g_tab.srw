@@ -673,8 +673,8 @@ protected subroutine attiva_tasti ();
 if ki_st_open_w.flag_primo_giro <> "S" and not ki_exit_si then
 	
 	attiva_menu_reset( )
-   attiva_tasti_0()
-   attiva_menu()
+	attiva_tasti_0()
+ 	attiva_menu()
 
 	post set_titolo_window_personalizza()
 
@@ -829,21 +829,21 @@ return kst_esito
 end function
 
 protected subroutine set_titolo_window ();//
+	if LenA(trim(ki_st_open_w.window_title )) > 0 then
+		ki_win_titolo_orig = "<" + trim(ki_st_open_w.id_programma) + "> " + ki_st_open_w.window_title 
+	else
+		ki_win_titolo_orig = "<" + trim(ki_st_open_w.id_programma) + "> " + trim(this.title)
+	end if
+
 	if isnull(ki_st_open_w.id_programma) then
 		ki_st_open_w.id_programma = "NULL"
 	end if
 	if isnull(ki_st_open_w.window_title) then
-		ki_st_open_w.window_title = this.title
+		ki_st_open_w.window_title = ki_win_titolo_orig
 	end if
 
-	if LenA(trim(ki_st_open_w.window_title )) > 0 then
-		this.title = "<" + trim(ki_st_open_w.id_programma) + "> " + ki_st_open_w.window_title 
-	else
-		this.title = "<" + trim(ki_st_open_w.id_programma) + "> " + trim(this.title)
-	end if
-	ki_win_titolo_orig = this.title
 	
-	this.title += " " + trim(ki_win_titolo_custom)
+//	this.title = ki_win_titolo_orig + " " + trim(ki_win_titolo_custom)
 
 end subroutine
 
@@ -906,8 +906,6 @@ end subroutine
 public subroutine set_window_size ();//
 //--- Durante la OPEN: Dimensione e Posizione Window come da ultimo utilizzo
 //
-
-u_win_open()
 
 
 end subroutine
@@ -1034,13 +1032,19 @@ public function boolean u_ordina_in_dw ();//=== Possibilita' di filtrare su una 
 boolean k_return = false
 string k_x
 datawindow kdw_1
+graphicobject kobj_1
 
 	
 //--- fisso l'elenco di ricerca 	
 	if isvalid(kidw_selezionata) then
 		kdw_1 = kidw_selezionata
 	else
-		kdw_1 = getfocus() //get_obj_trova()
+		kobj_1 = getfocus()
+		if kobj_1.TypeOf() = DataWindow! then
+			kdw_1 = getfocus() //get_obj_trova()	
+		else
+			messagebox("Operazione interrotta", "Impossibile ordinare i dati del '" + string(kobj_1.classname()) + "'. ", stopsign!) 
+		end if
 	end if
 	
 	if isvalid(kdw_1) then
@@ -1233,7 +1237,6 @@ long k_ctr
 
 //--- INIZIO OPERAZIONI PRELIMINARI --------------------------------------------------------------------------
 
-//sembra nascondere il puntatore	this.setredraw(false)
 	
 //--- Importante: personalizzazione x i figli	
 	event u_open_preliminari()   
@@ -1305,17 +1308,6 @@ destroy(this.st_aggiorna_lista)
 destroy(this.cb_ritorna)
 destroy(this.st_stampa)
 end on
-
-event close;//---
-//---
-u_win_close()
-//if isvalid(ki_menu) then
-//	ki_menu.post u_close_window()
-//end if
-
- 
-
-end event
 
 event activate;//---
 if not ki_exit_si and not kguo_g.kG_exit_si then

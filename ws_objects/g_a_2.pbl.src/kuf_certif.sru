@@ -65,8 +65,9 @@ private function long stampa_digitale () throws uo_exception
 public function date get_data_stampa (ref st_tab_certif kst_tab_certif) throws uo_exception
 private function any stampa_attestato_get_nome_pdf (ref st_tab_certif ast_tab_certif, ref st_tab_meca ast_tab_meca, boolean a_ristampa) throws uo_exception
 public function long get_id_meca (ref st_tab_certif kst_tab_certif) throws uo_exception
-public subroutine crea_certif_0 (ref st_tab_certif kst_tab_certif) throws uo_exception
 public function integer u_tree_riempi_treeview_x_giorno (ref kuf_treeview kuf1_treeview, readonly string k_tipo_oggetto)
+private function boolean stampa_1 (ref st_tab_certif ast_tab_certif) throws uo_exception
+public subroutine crea_certif_0 (ref st_tab_certif kst_tab_certif) throws uo_exception
 end prototypes
 
 public subroutine if_isnull (ref st_tab_certif kst_tab_certif);//---
@@ -782,7 +783,7 @@ try
 			using sqlca; 
 
 
-	if sqlca.sqlcode = 100 then   // se ATTESTATO non resgitrato lo carica in tabella
+	if sqlca.sqlcode = 100 then   // se ATTESTATO NUOVO lo carica in tabella
 
 		if not isvalid(kids_certif_stampa) then kids_certif_stampa = create kds_certif_stampa 
 
@@ -811,6 +812,7 @@ try
 			
 		end if
 	else
+		
 //--- AGGIORNA attestato in tabella
 		if sqlca.sqlcode = 0 then 
 			
@@ -2479,82 +2481,19 @@ try
 
 	for k_item_attestato = 1 to upperbound(ast_tab_certif[])
 		
-//--- introduco un delayed precauzionale per evitare problemi con la generazione del PDF
-		if k_item_attestato > 1 then
-			sleep(1)  
-		end if
 
 		if ast_tab_certif[k_item_attestato].num_certif  > 0 then
 			
-			kist_tab_certif = ast_tab_certif[k_item_attestato] // attestato sul quale sto lavorando
-
-//--- Decide quale form dell'Attesto utilizzare (Gold/Silver/...) o RISTAMPA
-			if not kids_certif_stampa.set_attestato(kist_tab_certif) then
-				kst_esito.sqlcode = 0
-				kst_esito.SQLErrText = "Fallita associazione form di stampa per l'Attestato: "+ string(kist_tab_certif.num_certif) //+ "~n~r"&
-				kst_esito.esito = kkg_esito.ko
-				kguo_exception.inizializza( )
-				kguo_exception.set_esito(kst_esito)
-				throw kguo_exception
+//--- introduco un delayed precauzionale per evitare problemi con la generazione del PDF
+			if k_item_attestato > 1 then
+				sleep(2)  
 			end if
+			
+//--- STAMPA ATTESTATO			
+			k_return = stampa_1(ast_tab_certif[k_item_attestato])
 			
 		
-//			kds_attestato.dataobject = kids_certif_stampa.dataobject			
-//			kds_attestato.settransobject(sqlca)
-		
-			if NOT stampa_attestato_prepara () then   // prepara il ds kids_certif_stampa
-				
-				kguo_exception.inizializza( )
-				kguo_exception.set_tipo(kguo_exception.kk_st_uo_exception_tipo_ko)
-				kguo_exception.setmessage("Operazioni di preparzione per 'Stampa Attestato' " + string( kist_tab_certif.num_certif ) + " non riuscite! ")
-//				kguo_exception.messaggio_utente( )
-				throw kguo_exception
-			end if
-			
-	
-			if kids_certif_stampa.rowcount( ) = 0 then
-				kguo_exception.inizializza( )
-				kguo_exception.set_tipo(kguo_exception.kk_st_uo_exception_tipo_not_fnd )
-				kguo_exception.setmessage ("Selezionare un documento dall'elenco (" + string(kist_tab_certif.num_certif ) + ") ") 
-//					kguo_exception.messaggio_utente("Stampa Attestato non eseguita", "Selezionare un documento dall'elenco (" + string(kist_tab_certif.num_certif ) + 	") ")
-				throw kguo_exception
-			end if
-					
-//--- Controlli in sicurezza 
-			if kids_certif_stampa.ki_flag_ristampa then
-//--- Se sono in RI-STAMPA controlla 'leggeri' in sicurezza 
-				if_sicurezza(kkg_flag_modalita.visualizzazione) 
-			else
-//--- Se sono in STAMPA (no ristampa) controllo puntuale in sicurezza 
-				if_sicurezza(kkg_flag_modalita.stampa) 
-			end if
-
-			ki_flag_stampa_di_test = false
-
-			if ki_stampante[1] > " " then
-			else
-				stampa_attestato_set_printer( )   // imposta le stampanti ki_stampante[]
-			end if
-			
-			if not kids_certif_stampa.ki_flag_ristampa then
-				stampa_attestato ()  		// STAMPA ATTESTATO CON ALLEGATI!!
-			end if
-			//stampa_attestato_allegati()	// STAMPA ALLEGATI ALL'ATTESTATO !!
-			stampa_attestato_documento()	// STAMPA SINGOLA DELL'ATTESTATO !!
-
-			stampa_digitale() // EMISSIONE DIGITALE DELL'ATTESTATO
-			
-//			if kst_esito.esito <> kkg_esito.ok then
-//				k_return = false
-//				kguo_exception.inizializza( )
-//				kguo_exception.set_tipo(kguo_exception.kk_st_uo_exception_tipo_ko)
-//				kguo_exception.setmessage ("Si è verificato un errore durante la Stampa dell'Attestato " + string( kist_tab_certif.num_certif ) + 	"~n~r" + trim(kst_esito.sqlerrtext))
-////						kguo_exception.messaggio_utente("Stampa Attestato non eseguita", "Si è verificato un errore durante la Stampa dell'Attestato " + string( kist_tab_certif.num_certif ) + 	"~n~r" + trim(kst_esito.sqlerrtext))
-//				throw kguo_exception
-//				
-//			end if
-		
-		//--- se NON sono in ristampa registro definitivamente l'attestato in archivio 								
+//--- se NON sono in ristampa registro definitivamente l'attestato in archivio 								
 			if kids_certif_stampa.ki_flag_ristampa then
 				k_return = true
 			else
@@ -4800,6 +4739,411 @@ return k_return
 
 end function
 
+public function integer u_tree_riempi_treeview_x_giorno (ref kuf_treeview kuf1_treeview, readonly string k_tipo_oggetto);//
+//--- Visualizza Treeview
+//
+integer k_return = 0, k_rc
+long k_handle_item = 0, k_handle_item_padre = 0, k_handle_item_figlio = 0, k_handle_primo=0
+long k_totale
+integer k_ctr, k_pic_close, k_pic_open, k_pic_list
+string k_tipo_oggetto_padre, k_tipo_oggetto_figlio
+date k_save_data_int, k_data
+string k_mese, k_anno
+int  k_giorno, k_annoN, k_meseN //k_anno_old,
+string k_giorno_desc [0 to 8], k_mese_desc [0 to 13]
+long  k_nr_righe, k_riga
+treeviewitem ktvi_treeviewitem
+st_esito kst_esito
+st_tab_certif kst_tab_certif
+st_tab_treeview kst_tab_treeview
+st_treeview_data kst_treeview_data
+st_treeview_data_any kst_treeview_data_any
+
+
+
+//--- Ricavo l'oggetto figlio dal DB 
+	kst_tab_treeview.id = k_tipo_oggetto
+	kuf1_treeview.u_select_tab_treeview(kst_tab_treeview)
+	k_tipo_oggetto_figlio = kst_tab_treeview.funzione
+	
+//--- Acchiappo handle dell'item
+	kst_treeview_data = kuf1_treeview.u_get_st_treeview_data ()
+	k_handle_item_padre = kst_treeview_data.handle
+
+	if k_handle_item_padre > 0 then
+		kuf1_treeview.kitv_tv1.getitem(k_handle_item_padre, ktvi_treeviewitem)
+		kst_treeview_data = ktvi_treeviewitem.data
+		k_tipo_oggetto_padre = kst_treeview_data.oggetto
+	else
+		k_handle_item_padre = kuf1_treeview.kitv_tv1.finditem(RootTreeItem!, 0)
+		k_tipo_oggetto_padre = k_tipo_oggetto_figlio
+	end if
+	 
+	k_handle_item_figlio = kuf1_treeview.kitv_tv1.finditem(ChildTreeItem!, k_handle_item_padre)
+
+//--- Procedo alla lettura della tab solo se non ho figli 
+	if k_handle_item_figlio <= 0 or kuf1_treeview.ki_forza_refresh = kuf1_treeview.ki_forza_refresh_si then
+		
+//--- Imposta le propietà di default della tree 
+		kuf1_treeview.u_imposta_propieta( ktvi_treeviewitem, k_tipo_oggetto, kuf1_treeview.kist_treeview_oggetto)
+
+//--- Preleva dall'archivio dati di conf della tree 
+		kst_tab_treeview.id = trim(k_tipo_oggetto_padre)
+		kst_esito = kuf1_treeview.u_select_tab_treeview(kst_tab_treeview)
+		if kst_esito.esito = "0" then
+			ktvi_treeviewitem.pictureindex = kst_tab_treeview.pic_close
+			ktvi_treeviewitem.selectedpictureindex = kst_tab_treeview.pic_open 
+			k_pic_list = kst_tab_treeview.pic_list
+		end if
+
+//--- Cancello gli Item dalla tree prima di ripopolare
+		kuf1_treeview.u_delete_item_child(k_handle_item_padre)
+
+	
+		k_mese_desc[0] = "[Completa]"
+		k_mese_desc[1] = "Gennaio"
+		k_mese_desc[2] = "Febbraio"
+		k_mese_desc[3] = "Marzo"
+		k_mese_desc[4] = "Aprile"
+		k_mese_desc[5] = "Maggio"
+		k_mese_desc[6] = "Giugno"
+		k_mese_desc[7] = "Luglio"
+		k_mese_desc[8] = "Agosto"
+		k_mese_desc[9] = "Settembre"
+		k_mese_desc[10] = "Ottobre"
+		k_mese_desc[11] = "Novembre"
+		k_mese_desc[12] = "Dicembre"
+		k_mese_desc[13] = "NON RILEVATO"
+
+		k_giorno_desc[0] = "[MESE]"
+		k_giorno_desc[2] = "lunedì"
+		k_giorno_desc[3] = "martedì"
+		k_giorno_desc[4] = "mercoledì"
+		k_giorno_desc[5] = "giovedì"
+		k_giorno_desc[6] = "venerdì"
+		k_giorno_desc[7] = "sabato"
+		k_giorno_desc[1] = "domenica"
+		k_giorno_desc[8] = "NON RILEVATO"
+
+		k_totale = 0
+//		k_anno_old = 0
+
+//--- Periodo di estrazione, se la data e' a zero allora calcolo in automatico -3 mesi
+		kst_treeview_data_any = kst_treeview_data.struttura
+//		if (kst_treeview_data_any.st_tab_certif.data = date (0) &
+//			 or isnull(kst_treeview_data_any.st_tab_certif.data)) &
+//			 then
+//
+////--- Ricavo la data da dataoggi e vado indietro per sicurezza di alcuni mesi
+//			k_data = kguo_g.get_dataoggi()
+//			k_data = date(year(relativedate(k_data,-90)), month(relativedate(k_data,-90)),01)
+//
+//		else
+////--- prelevo il periodo da a 
+//			//k_data_da = kst_treeview_data_any.st_tab_certif.data 
+//			k_data = kst_treeview_data_any.st_tab_certif.data_stampa 
+//	
+//		end if
+
+		if not isvalid(kids_certif_tree_stampati_xgiornomeseanno) then 
+			kids_certif_tree_stampati_xgiornomeseanno = create datastore
+			kids_certif_tree_stampati_xgiornomeseanno.dataobject = "ds_certif_tree_stampati_xgiornomeseanno"
+			kids_certif_tree_stampati_xgiornomeseanno.settransobject(kguo_sqlca_db_magazzino) 
+		end if
+
+		k_nr_righe = kids_certif_tree_stampati_xgiornomeseanno.rowcount()
+		if k_nr_righe > 0 then
+			k_data = kst_treeview_data_any.st_tab_certif.data
+			k_meseN = month(k_data)
+			k_annoN = year(k_data)
+			k_mese = string(k_meseN)
+			k_anno = string(k_annoN)
+			k_riga = kids_certif_tree_stampati_xgiornomeseanno.find( "anno = " + k_anno + " and mese = " +  k_mese , 0, k_nr_righe)
+		end if
+
+//--- Item totali
+		kst_treeview_data.label = "[" + k_mese_desc[k_meseN] + "]" &
+										  + "  " &
+										  + k_anno 
+		kst_tab_treeview.voce = kst_treeview_data.label
+		kst_tab_treeview.id = "0"
+		kst_tab_treeview.descrizione = "  ...conteggio in esecuzione..."
+		kst_tab_treeview.descrizione_tipo = "Attestati " 
+		kst_treeview_data.pic_list = k_pic_list
+		kst_treeview_data.oggetto = k_tipo_oggetto_figlio 
+		kst_treeview_data_any.st_tab_treeview = kst_tab_treeview
+		kst_treeview_data_any.st_tab_certif = kst_tab_certif
+		kst_treeview_data_any.st_tab_certif.data = date(k_annoN, k_meseN, 01)
+		kst_treeview_data.struttura = kst_treeview_data_any
+		kst_treeview_data.handle = k_handle_item_padre
+		ktvi_treeviewitem.label = kst_treeview_data.label
+		ktvi_treeviewitem.data = kst_treeview_data
+//--- Nuovo Item
+		ktvi_treeviewitem.selected = false
+		k_handle_item = kuf1_treeview.kitv_tv1.insertitemlast(k_handle_item_padre, ktvi_treeviewitem)
+//--- salvo handle del item appena inserito nella stessa struttura
+		kst_treeview_data.handle = k_handle_item
+		k_handle_primo = k_handle_item
+//--- inserisco il handle di questa riga tra i dati del item
+		ktvi_treeviewitem.data = kst_treeview_data
+		kuf1_treeview.kitv_tv1.setitem(k_handle_item, ktvi_treeviewitem)
+
+
+		if k_riga > 0 then
+
+//--- find where the next group break is and get rownumber
+			do while k_riga > 0
+//			do while sqlca.sqlcode = 0
+
+//--- get the value of the computed field at that row
+				kst_treeview_data_any.contati = kids_certif_tree_stampati_xgiornomeseanno.getitemnumber(k_riga, "giorno_tot")
+				k_giorno = kids_certif_tree_stampati_xgiornomeseanno.getitemnumber(k_riga, "giorno")
+	
+//--- a rottura di anno presenta la riga totale a inizio
+//				if k_anno <> k_anno_old then
+//			
+//					if k_totale > 0 then
+//				
+////--- Estrazione del primo Item, quello dei totali
+//						ktvi_treeviewitem.selected = false
+//						k_handle_item = kuf1_treeview.kitv_tv1.getitem(k_handle_primo, ktvi_treeviewitem)
+//						kst_treeview_data = ktvi_treeviewitem.data
+//						kst_treeview_data_any = kst_treeview_data.struttura
+//						kst_tab_treeview = kst_treeview_data_any.st_tab_treeview
+//
+////--- Aggiorno il primo Item con i totali
+//						kst_tab_treeview.descrizione = string(k_totale, "###,###,##0") + "  Attestati presenti"
+//						k_totale = 0
+//			
+//						kst_tab_certif.data = date(k_anno_old,01,01)
+//						kst_tab_certif.data_stampa = date(k_anno_old+1,01,01)
+//						
+//						kst_treeview_data_any.st_tab_certif = kst_tab_certif
+//						kst_treeview_data_any.st_tab_treeview = kst_tab_treeview
+//						kst_treeview_data.struttura = kst_treeview_data_any
+//						ktvi_treeviewitem.data = kst_treeview_data
+//						
+//						k_handle_item = kuf1_treeview.kitv_tv1.setitem(k_handle_primo, ktvi_treeviewitem)
+//					end if
+					
+//					k_anno_old = k_anno // memorizzo l'anno x la rottura
+					
+//					kst_treeview_data.label = k_mese_desc[k_mese] &
+//													  + "  " &
+//													  + string(k_anno) 
+//					kst_tab_treeview.voce = kst_treeview_data.label
+//					kst_tab_treeview.id = "0"
+//					kst_tab_treeview.descrizione = "  ...conteggio in esecuzione..."
+//					kst_tab_treeview.descrizione_tipo = "Attestati " 
+//					kst_treeview_data.pic_list = k_pic_list
+//					kst_treeview_data.oggetto = k_tipo_oggetto_figlio 
+//					kst_treeview_data_any.st_tab_treeview = kst_tab_treeview
+//					kst_treeview_data_any.st_tab_certif = kst_tab_certif
+//					kst_treeview_data_any.st_tab_certif.data_stampa = date(0)
+//					kst_treeview_data.struttura = kst_treeview_data_any
+//					kst_treeview_data.handle = k_handle_item_padre
+//					ktvi_treeviewitem.label = kst_treeview_data.label
+//					ktvi_treeviewitem.data = kst_treeview_data
+	//--- Nuovo Item
+//					ktvi_treeviewitem.selected = false
+//					k_handle_item = kuf1_treeview.kitv_tv1.insertitemlast(k_handle_item_padre, ktvi_treeviewitem)
+	//--- salvo handle del item appena inserito nella stessa struttura
+//					kst_treeview_data.handle = k_handle_item
+//					k_handle_primo = k_handle_item
+	//--- inserisco il handle di questa riga tra i dati del item
+//					ktvi_treeviewitem.data = kst_treeview_data
+//					kuf1_treeview.kitv_tv1.setitem(k_handle_item, ktvi_treeviewitem)
+	//			end if
+	 
+				k_totale = k_totale + kst_treeview_data_any.contati
+				kst_tab_certif.data = date(k_annoN, k_meseN, k_giorno)
+				kst_tab_certif.data_stampa = kst_tab_certif.data
+				
+				kst_treeview_data.label = &
+											string(k_giorno) &
+										  	+ " (" &
+										  	+ k_giorno_desc[DayNumber(kst_tab_certif.data)]  &
+										  	+ ")" 
+											  
+//				if k_mese = 0 or k_mese > 12 or isnull(k_mese) then
+//					k_mese = 13
+//					kst_tab_certif.data = date(k_anno,01,01)
+//					kst_tab_certif.data_stampa = date(k_anno+1,01,01)
+//				else			
+//					kst_tab_certif.data = date(k_anno,k_mese,01)
+//					k_mese++
+//					if k_mese > 12 then
+//						k_mese = 1
+//						k_anno++
+//					end if
+//					kst_tab_certif.data_stampa = date(k_anno, k_mese, 01)
+//				end if
+
+				kst_tab_treeview.voce = kst_treeview_data.label
+				kst_tab_treeview.id = string(k_anno, "0000")  + string(k_mese, "00") + string(k_giorno, "00") 
+				if kst_treeview_data_any.contati = 1 then
+					kst_tab_treeview.descrizione = string(kst_treeview_data_any.contati, "###,##0") + "  Attestato presente"
+				else
+					kst_tab_treeview.descrizione = string(kst_treeview_data_any.contati, "###,##0") + "  Attestati presenti"
+				end if
+
+				kst_tab_treeview.descrizione_tipo = "Attestati " 
+				kst_treeview_data.oggetto = k_tipo_oggetto_figlio 
+				kst_treeview_data_any.st_tab_treeview = kst_tab_treeview
+				kst_treeview_data_any.st_tab_certif = kst_tab_certif
+				kst_treeview_data.struttura = kst_treeview_data_any
+
+				kst_treeview_data.handle = k_handle_item_padre
+	
+				ktvi_treeviewitem.label = kst_treeview_data.label
+				ktvi_treeviewitem.data = kst_treeview_data
+										  
+//--- Nuovo Item
+				ktvi_treeviewitem.selected = false
+				k_handle_item = kuf1_treeview.kitv_tv1.insertitemlast(k_handle_item_padre, ktvi_treeviewitem)
+				
+//--- salvo handle del item appena inserito nella stessa struttura
+				kst_treeview_data.handle = k_handle_item
+
+//--- inserisco il handle di questa riga tra i dati del item
+				ktvi_treeviewitem.data = kst_treeview_data
+
+				kuf1_treeview.kitv_tv1.setitem(k_handle_item, ktvi_treeviewitem)
+
+
+//--- find where the next group break is and get rownumber
+				k_riga += 1
+				k_riga = kids_certif_tree_stampati_xgiornomeseanno.find( "anno = " + k_anno + " and mese = " +  k_mese , k_riga, k_nr_righe)
+	
+			loop
+
+//--- giro finale per totale mese
+			if k_totale > 0 then
+		
+//--- Estrazione del primo Item, quello dei totali
+				ktvi_treeviewitem.selected = false
+				k_handle_item = kuf1_treeview.kitv_tv1.getitem(k_handle_primo, ktvi_treeviewitem)
+				kst_treeview_data = ktvi_treeviewitem.data
+				kst_treeview_data_any = kst_treeview_data.struttura
+				kst_treeview_data_any.st_tab_certif.data_stampa = date(k_annoN, k_meseN, k_giorno)
+				kst_tab_treeview = kst_treeview_data_any.st_tab_treeview
+//--- Aggiorno il primo Item con i totali
+				kst_tab_treeview.descrizione = string(k_totale, "###,###,##0") + "  Attestati presenti"
+				k_totale = 0
+				kst_treeview_data_any.st_tab_treeview = kst_tab_treeview
+				kst_treeview_data.struttura = kst_treeview_data_any
+				ktvi_treeviewitem.data = kst_treeview_data
+				k_handle_item = kuf1_treeview.kitv_tv1.setitem(k_handle_primo, ktvi_treeviewitem)
+			end if
+			
+//			close kc_treeview;
+			
+		end if
+
+	end if 
+ 
+return k_return
+
+
+end function
+
+private function boolean stampa_1 (ref st_tab_certif ast_tab_certif) throws uo_exception;//---
+//---  Stampa ATTESTATO
+//---
+boolean k_return=false
+int k_item_attestato=0
+st_esito kst_esito
+
+
+try
+	
+	kst_esito.esito = kkg_esito.ok
+	kst_esito.sqlcode = 0
+	kst_esito.SQLErrText = ""
+	kst_esito.nome_oggetto = this.classname()
+
+
+	kist_tab_certif = ast_tab_certif // attestato sul quale sto lavorando
+
+//--- Decide quale form dell'Attesto utilizzare (Gold/Silver/...) o RISTAMPA
+	if not kids_certif_stampa.set_attestato(kist_tab_certif) then
+		kst_esito.sqlcode = 0
+		kst_esito.SQLErrText = "Fallita associazione form di stampa per l'Attestato: "+ string(kist_tab_certif.num_certif) //+ "~n~r"&
+		kst_esito.esito = kkg_esito.ko
+		kguo_exception.inizializza( )
+		kguo_exception.set_esito(kst_esito)
+		throw kguo_exception
+	end if
+	
+
+//			kds_attestato.dataobject = kids_certif_stampa.dataobject			
+//			kds_attestato.settransobject(sqlca)
+
+	if NOT stampa_attestato_prepara () then   // prepara il ds kids_certif_stampa
+		
+		kguo_exception.inizializza( )
+		kguo_exception.set_tipo(kguo_exception.kk_st_uo_exception_tipo_ko)
+		kguo_exception.setmessage("Operazioni di preparzione per 'Stampa Attestato' " + string( kist_tab_certif.num_certif ) + " non riuscite! ")
+//				kguo_exception.messaggio_utente( )
+		throw kguo_exception
+	end if
+	
+
+	if kids_certif_stampa.rowcount( ) = 0 then
+		kguo_exception.inizializza( )
+		kguo_exception.set_tipo(kguo_exception.kk_st_uo_exception_tipo_not_fnd )
+		kguo_exception.setmessage ("Selezionare un documento dall'elenco (" + string(kist_tab_certif.num_certif ) + ") ") 
+//					kguo_exception.messaggio_utente("Stampa Attestato non eseguita", "Selezionare un documento dall'elenco (" + string(kist_tab_certif.num_certif ) + 	") ")
+		throw kguo_exception
+	end if
+			
+//--- Controlli in sicurezza 
+	if kids_certif_stampa.ki_flag_ristampa then
+//--- Se sono in RI-STAMPA controlla 'leggeri' in sicurezza 
+		if_sicurezza(kkg_flag_modalita.visualizzazione) 
+	else
+//--- Se sono in STAMPA (no ristampa) controllo puntuale in sicurezza 
+		if_sicurezza(kkg_flag_modalita.stampa) 
+	end if
+
+	ki_flag_stampa_di_test = false
+
+	if ki_stampante[1] > " " then
+	else
+		stampa_attestato_set_printer( )   // imposta le stampanti ki_stampante[]
+	end if
+	
+	if not kids_certif_stampa.ki_flag_ristampa then
+		stampa_attestato ()  		// STAMPA ATTESTATO CON ALLEGATI!!
+	end if
+	//stampa_attestato_allegati()	// STAMPA ALLEGATI ALL'ATTESTATO !!
+	stampa_attestato_documento()	// STAMPA SINGOLA DELL'ATTESTATO !!
+
+	stampa_digitale() // EMISSIONE DIGITALE DELL'ATTESTATO
+	
+//			if kst_esito.esito <> kkg_esito.ok then
+//				k_return = false
+//				kguo_exception.inizializza( )
+//				kguo_exception.set_tipo(kguo_exception.kk_st_uo_exception_tipo_ko)
+//				kguo_exception.setmessage ("Si è verificato un errore durante la Stampa dell'Attestato " + string( kist_tab_certif.num_certif ) + 	"~n~r" + trim(kst_esito.sqlerrtext))
+////						kguo_exception.messaggio_utente("Stampa Attestato non eseguita", "Si è verificato un errore durante la Stampa dell'Attestato " + string( kist_tab_certif.num_certif ) + 	"~n~r" + trim(kst_esito.sqlerrtext))
+//				throw kguo_exception
+//				
+//			end if
+
+
+catch (uo_exception kuo_exception)
+	throw kuo_exception
+	
+finally
+	
+	
+end try
+		
+return k_return		
+
+end function
+
 public subroutine crea_certif_0 (ref st_tab_certif kst_tab_certif) throws uo_exception;//
 //=== 
 //====================================================================
@@ -5227,7 +5571,7 @@ try
 //19-07-2016 su richiesta di REZIO set DOSE MINIMA al posto della MASSIMA se il FATTORE di CORRELAZIONE MAX è > zero!!!!!!!
 	kst_tab_meca_dosim.id_meca = kst_tab_certif.id_meca
 	//if kst_tab_sl_pt_MAX.dosetgmaxfattcorr = 1.00 or kst_tab_sl_pt_MAX.dosetgmaxfattcorr = 0.00 then
-	if not k_maxfattcorr_attivo  or kst_tab_sl_pt_MAX.dosetgmaxfattcorr = 0.00 then
+	if not k_maxfattcorr_attivo or kst_tab_sl_pt_MAX.dosetgmaxfattcorr = 0.00 then
 		kuf1_meca_dosim.get_dosim_dose_max(kst_tab_meca_dosim)  // get dose max (tra le massime inserite) del lotto
 		kst_tab_certif.DOSE_MAX = kst_tab_meca_dosim.dosim_dose
 	else
@@ -5302,314 +5646,6 @@ end try
 
 
 end subroutine
-
-public function integer u_tree_riempi_treeview_x_giorno (ref kuf_treeview kuf1_treeview, readonly string k_tipo_oggetto);//
-//--- Visualizza Treeview
-//
-integer k_return = 0, k_rc
-long k_handle_item = 0, k_handle_item_padre = 0, k_handle_item_figlio = 0, k_handle_primo=0
-long k_totale
-integer k_ctr, k_pic_close, k_pic_open, k_pic_list
-string k_tipo_oggetto_padre, k_tipo_oggetto_figlio
-date k_save_data_int, k_data
-string k_mese, k_anno
-int  k_giorno, k_annoN, k_meseN //k_anno_old,
-string k_giorno_desc [0 to 8], k_mese_desc [0 to 13]
-long  k_nr_righe, k_riga
-treeviewitem ktvi_treeviewitem
-st_esito kst_esito
-st_tab_certif kst_tab_certif
-st_tab_treeview kst_tab_treeview
-st_treeview_data kst_treeview_data
-st_treeview_data_any kst_treeview_data_any
-
-
-
-//--- Ricavo l'oggetto figlio dal DB 
-	kst_tab_treeview.id = k_tipo_oggetto
-	kuf1_treeview.u_select_tab_treeview(kst_tab_treeview)
-	k_tipo_oggetto_figlio = kst_tab_treeview.funzione
-	
-//--- Acchiappo handle dell'item
-	kst_treeview_data = kuf1_treeview.u_get_st_treeview_data ()
-	k_handle_item_padre = kst_treeview_data.handle
-
-	if k_handle_item_padre > 0 then
-		kuf1_treeview.kitv_tv1.getitem(k_handle_item_padre, ktvi_treeviewitem)
-		kst_treeview_data = ktvi_treeviewitem.data
-		k_tipo_oggetto_padre = kst_treeview_data.oggetto
-	else
-		k_handle_item_padre = kuf1_treeview.kitv_tv1.finditem(RootTreeItem!, 0)
-		k_tipo_oggetto_padre = k_tipo_oggetto_figlio
-	end if
-	 
-	k_handle_item_figlio = kuf1_treeview.kitv_tv1.finditem(ChildTreeItem!, k_handle_item_padre)
-
-//--- Procedo alla lettura della tab solo se non ho figli 
-	if k_handle_item_figlio <= 0 or kuf1_treeview.ki_forza_refresh = kuf1_treeview.ki_forza_refresh_si then
-		
-//--- Imposta le propietà di default della tree 
-		kuf1_treeview.u_imposta_propieta( ktvi_treeviewitem, k_tipo_oggetto, kuf1_treeview.kist_treeview_oggetto)
-
-//--- Preleva dall'archivio dati di conf della tree 
-		kst_tab_treeview.id = trim(k_tipo_oggetto_padre)
-		kst_esito = kuf1_treeview.u_select_tab_treeview(kst_tab_treeview)
-		if kst_esito.esito = "0" then
-			ktvi_treeviewitem.pictureindex = kst_tab_treeview.pic_close
-			ktvi_treeviewitem.selectedpictureindex = kst_tab_treeview.pic_open 
-			k_pic_list = kst_tab_treeview.pic_list
-		end if
-
-//--- Cancello gli Item dalla tree prima di ripopolare
-		kuf1_treeview.u_delete_item_child(k_handle_item_padre)
-
-	
-		k_mese_desc[0] = "[Completa]"
-		k_mese_desc[1] = "Gennaio"
-		k_mese_desc[2] = "Febbraio"
-		k_mese_desc[3] = "Marzo"
-		k_mese_desc[4] = "Aprile"
-		k_mese_desc[5] = "Maggio"
-		k_mese_desc[6] = "Giugno"
-		k_mese_desc[7] = "Luglio"
-		k_mese_desc[8] = "Agosto"
-		k_mese_desc[9] = "Settembre"
-		k_mese_desc[10] = "Ottobre"
-		k_mese_desc[11] = "Novembre"
-		k_mese_desc[12] = "Dicembre"
-		k_mese_desc[13] = "NON RILEVATO"
-
-		k_giorno_desc[0] = "[MESE]"
-		k_giorno_desc[2] = "lunedì"
-		k_giorno_desc[3] = "martedì"
-		k_giorno_desc[4] = "mercoledì"
-		k_giorno_desc[5] = "giovedì"
-		k_giorno_desc[6] = "venerdì"
-		k_giorno_desc[7] = "sabato"
-		k_giorno_desc[1] = "domenica"
-		k_giorno_desc[8] = "NON RILEVATO"
-
-		k_totale = 0
-//		k_anno_old = 0
-
-//--- Periodo di estrazione, se la data e' a zero allora calcolo in automatico -3 mesi
-		kst_treeview_data_any = kst_treeview_data.struttura
-//		if (kst_treeview_data_any.st_tab_certif.data = date (0) &
-//			 or isnull(kst_treeview_data_any.st_tab_certif.data)) &
-//			 then
-//
-////--- Ricavo la data da dataoggi e vado indietro per sicurezza di alcuni mesi
-//			k_data = kguo_g.get_dataoggi()
-//			k_data = date(year(relativedate(k_data,-90)), month(relativedate(k_data,-90)),01)
-//
-//		else
-////--- prelevo il periodo da a 
-//			//k_data_da = kst_treeview_data_any.st_tab_certif.data 
-//			k_data = kst_treeview_data_any.st_tab_certif.data_stampa 
-//	
-//		end if
-
-		if not isvalid(kids_certif_tree_stampati_xgiornomeseanno) then 
-			kids_certif_tree_stampati_xgiornomeseanno = create datastore
-			kids_certif_tree_stampati_xgiornomeseanno.dataobject = "ds_certif_tree_stampati_xgiornomeseanno"
-			kids_certif_tree_stampati_xgiornomeseanno.settransobject(kguo_sqlca_db_magazzino) 
-		end if
-
-		k_nr_righe = kids_certif_tree_stampati_xgiornomeseanno.rowcount()
-		if k_nr_righe > 0 then
-			k_data = kst_treeview_data_any.st_tab_certif.data
-			k_meseN = month(k_data)
-			k_annoN = year(k_data)
-			k_mese = string(k_meseN)
-			k_anno = string(k_annoN)
-			k_riga = kids_certif_tree_stampati_xgiornomeseanno.find( "anno = " + k_anno + " and mese = " +  k_mese , 0, k_nr_righe)
-		end if
-
-//--- Item totali
-		kst_treeview_data.label = "[" + k_mese_desc[k_meseN] + "]" &
-										  + "  " &
-										  + k_anno 
-		kst_tab_treeview.voce = kst_treeview_data.label
-		kst_tab_treeview.id = "0"
-		kst_tab_treeview.descrizione = "  ...conteggio in esecuzione..."
-		kst_tab_treeview.descrizione_tipo = "Attestati " 
-		kst_treeview_data.pic_list = k_pic_list
-		kst_treeview_data.oggetto = k_tipo_oggetto_figlio 
-		kst_treeview_data_any.st_tab_treeview = kst_tab_treeview
-		kst_treeview_data_any.st_tab_certif = kst_tab_certif
-		kst_treeview_data_any.st_tab_certif.data = date(k_annoN, k_meseN, 01)
-		kst_treeview_data.struttura = kst_treeview_data_any
-		kst_treeview_data.handle = k_handle_item_padre
-		ktvi_treeviewitem.label = kst_treeview_data.label
-		ktvi_treeviewitem.data = kst_treeview_data
-//--- Nuovo Item
-		ktvi_treeviewitem.selected = false
-		k_handle_item = kuf1_treeview.kitv_tv1.insertitemlast(k_handle_item_padre, ktvi_treeviewitem)
-//--- salvo handle del item appena inserito nella stessa struttura
-		kst_treeview_data.handle = k_handle_item
-		k_handle_primo = k_handle_item
-//--- inserisco il handle di questa riga tra i dati del item
-		ktvi_treeviewitem.data = kst_treeview_data
-		kuf1_treeview.kitv_tv1.setitem(k_handle_item, ktvi_treeviewitem)
-
-
-		if k_riga > 0 then
-
-//--- find where the next group break is and get rownumber
-			do while k_riga > 0
-//			do while sqlca.sqlcode = 0
-
-//--- get the value of the computed field at that row
-				kst_treeview_data_any.contati = kids_certif_tree_stampati_xgiornomeseanno.getitemnumber(k_riga, "giorno_tot")
-				k_giorno = kids_certif_tree_stampati_xgiornomeseanno.getitemnumber(k_riga, "giorno")
-	
-//--- a rottura di anno presenta la riga totale a inizio
-//				if k_anno <> k_anno_old then
-//			
-//					if k_totale > 0 then
-//				
-////--- Estrazione del primo Item, quello dei totali
-//						ktvi_treeviewitem.selected = false
-//						k_handle_item = kuf1_treeview.kitv_tv1.getitem(k_handle_primo, ktvi_treeviewitem)
-//						kst_treeview_data = ktvi_treeviewitem.data
-//						kst_treeview_data_any = kst_treeview_data.struttura
-//						kst_tab_treeview = kst_treeview_data_any.st_tab_treeview
-//
-////--- Aggiorno il primo Item con i totali
-//						kst_tab_treeview.descrizione = string(k_totale, "###,###,##0") + "  Attestati presenti"
-//						k_totale = 0
-//			
-//						kst_tab_certif.data = date(k_anno_old,01,01)
-//						kst_tab_certif.data_stampa = date(k_anno_old+1,01,01)
-//						
-//						kst_treeview_data_any.st_tab_certif = kst_tab_certif
-//						kst_treeview_data_any.st_tab_treeview = kst_tab_treeview
-//						kst_treeview_data.struttura = kst_treeview_data_any
-//						ktvi_treeviewitem.data = kst_treeview_data
-//						
-//						k_handle_item = kuf1_treeview.kitv_tv1.setitem(k_handle_primo, ktvi_treeviewitem)
-//					end if
-					
-//					k_anno_old = k_anno // memorizzo l'anno x la rottura
-					
-//					kst_treeview_data.label = k_mese_desc[k_mese] &
-//													  + "  " &
-//													  + string(k_anno) 
-//					kst_tab_treeview.voce = kst_treeview_data.label
-//					kst_tab_treeview.id = "0"
-//					kst_tab_treeview.descrizione = "  ...conteggio in esecuzione..."
-//					kst_tab_treeview.descrizione_tipo = "Attestati " 
-//					kst_treeview_data.pic_list = k_pic_list
-//					kst_treeview_data.oggetto = k_tipo_oggetto_figlio 
-//					kst_treeview_data_any.st_tab_treeview = kst_tab_treeview
-//					kst_treeview_data_any.st_tab_certif = kst_tab_certif
-//					kst_treeview_data_any.st_tab_certif.data_stampa = date(0)
-//					kst_treeview_data.struttura = kst_treeview_data_any
-//					kst_treeview_data.handle = k_handle_item_padre
-//					ktvi_treeviewitem.label = kst_treeview_data.label
-//					ktvi_treeviewitem.data = kst_treeview_data
-	//--- Nuovo Item
-//					ktvi_treeviewitem.selected = false
-//					k_handle_item = kuf1_treeview.kitv_tv1.insertitemlast(k_handle_item_padre, ktvi_treeviewitem)
-	//--- salvo handle del item appena inserito nella stessa struttura
-//					kst_treeview_data.handle = k_handle_item
-//					k_handle_primo = k_handle_item
-	//--- inserisco il handle di questa riga tra i dati del item
-//					ktvi_treeviewitem.data = kst_treeview_data
-//					kuf1_treeview.kitv_tv1.setitem(k_handle_item, ktvi_treeviewitem)
-	//			end if
-	 
-				k_totale = k_totale + kst_treeview_data_any.contati
-				kst_tab_certif.data = date(k_annoN, k_meseN, k_giorno)
-				kst_tab_certif.data_stampa = kst_tab_certif.data
-				
-				kst_treeview_data.label = &
-											string(k_giorno) &
-										  	+ " (" &
-										  	+ k_giorno_desc[DayNumber(kst_tab_certif.data)]  &
-										  	+ ")" 
-											  
-//				if k_mese = 0 or k_mese > 12 or isnull(k_mese) then
-//					k_mese = 13
-//					kst_tab_certif.data = date(k_anno,01,01)
-//					kst_tab_certif.data_stampa = date(k_anno+1,01,01)
-//				else			
-//					kst_tab_certif.data = date(k_anno,k_mese,01)
-//					k_mese++
-//					if k_mese > 12 then
-//						k_mese = 1
-//						k_anno++
-//					end if
-//					kst_tab_certif.data_stampa = date(k_anno, k_mese, 01)
-//				end if
-
-				kst_tab_treeview.voce = kst_treeview_data.label
-				kst_tab_treeview.id = string(k_anno, "0000")  + string(k_mese, "00") + string(k_giorno, "00") 
-				if kst_treeview_data_any.contati = 1 then
-					kst_tab_treeview.descrizione = string(kst_treeview_data_any.contati, "###,##0") + "  Attestato presente"
-				else
-					kst_tab_treeview.descrizione = string(kst_treeview_data_any.contati, "###,##0") + "  Attestati presenti"
-				end if
-
-				kst_tab_treeview.descrizione_tipo = "Attestati " 
-				kst_treeview_data.oggetto = k_tipo_oggetto_figlio 
-				kst_treeview_data_any.st_tab_treeview = kst_tab_treeview
-				kst_treeview_data_any.st_tab_certif = kst_tab_certif
-				kst_treeview_data.struttura = kst_treeview_data_any
-
-				kst_treeview_data.handle = k_handle_item_padre
-	
-				ktvi_treeviewitem.label = kst_treeview_data.label
-				ktvi_treeviewitem.data = kst_treeview_data
-										  
-//--- Nuovo Item
-				ktvi_treeviewitem.selected = false
-				k_handle_item = kuf1_treeview.kitv_tv1.insertitemlast(k_handle_item_padre, ktvi_treeviewitem)
-				
-//--- salvo handle del item appena inserito nella stessa struttura
-				kst_treeview_data.handle = k_handle_item
-
-//--- inserisco il handle di questa riga tra i dati del item
-				ktvi_treeviewitem.data = kst_treeview_data
-
-				kuf1_treeview.kitv_tv1.setitem(k_handle_item, ktvi_treeviewitem)
-
-
-//--- find where the next group break is and get rownumber
-				k_riga += 1
-				k_riga = kids_certif_tree_stampati_xgiornomeseanno.find( "anno = " + k_anno + " and mese = " +  k_mese , k_riga, k_nr_righe)
-	
-			loop
-
-//--- giro finale per totale mese
-			if k_totale > 0 then
-		
-//--- Estrazione del primo Item, quello dei totali
-				ktvi_treeviewitem.selected = false
-				k_handle_item = kuf1_treeview.kitv_tv1.getitem(k_handle_primo, ktvi_treeviewitem)
-				kst_treeview_data = ktvi_treeviewitem.data
-				kst_treeview_data_any = kst_treeview_data.struttura
-				kst_treeview_data_any.st_tab_certif.data_stampa = date(k_annoN, k_meseN, k_giorno)
-				kst_tab_treeview = kst_treeview_data_any.st_tab_treeview
-//--- Aggiorno il primo Item con i totali
-				kst_tab_treeview.descrizione = string(k_totale, "###,###,##0") + "  Attestati presenti"
-				k_totale = 0
-				kst_treeview_data_any.st_tab_treeview = kst_tab_treeview
-				kst_treeview_data.struttura = kst_treeview_data_any
-				ktvi_treeviewitem.data = kst_treeview_data
-				k_handle_item = kuf1_treeview.kitv_tv1.setitem(k_handle_primo, ktvi_treeviewitem)
-			end if
-			
-//			close kc_treeview;
-			
-		end if
-
-	end if 
- 
-return k_return
-
-
-end function
 
 on kuf_certif.create
 call super::create

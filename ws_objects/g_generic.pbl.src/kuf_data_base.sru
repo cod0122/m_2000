@@ -3530,8 +3530,8 @@ public function string u_change_nometab_xutente (string k_nome_tab) throws uo_ex
 //--- es.  vx_MAST_tabella_esempio ---> vx_0037_tabella_esempio
 //---     vx_ = prefisso del nome tabella quasi sempre fisso così
 //---     MAST = parte da cambiare x utente 37 
-//---     _tabella_esempio = suffisso del nome tabella
-//--- Inp: nome tab completa ex "vx_MAST_tabella_esempio"
+//---     _nomeTabella = suffisso del nome tabella
+//--- Inp: nome tab completa ex "vx_MAST_nomeTabella"
 //--------------------------------------------------------------------------------------
 //
 //
@@ -3572,8 +3572,8 @@ public subroutine u_set_ds_change_name_tab (ref datastore kds_1, string k_nome_t
 //--- es.  vx_MAST_tabella_esempio ---> vx_0001_tabella_esempio
 //---     vx_ = prefisso del nome tabella quasi sempre fisso così
 //---     MAST = parte da cambiare
-//---     _tabella_esempio = suffisso del nome tabella
-//--- Inp: datastore, nome tab completa ex "vx_MAST_tabella_esempio"
+//---     _nomeTabella = suffisso del nome tabella
+//--- Inp: datastore, nome tab completa es "vx_MAST_nomeTabella"
 //--------------------------------------------------------------------------------------
 //
 //
@@ -3582,8 +3582,8 @@ string k_sql_orig, k_string, k_stringn
 	
 	try
 
-		k_stringn = u_change_nometab_xutente(k_nome_tab)  // ritorna il nuovo nome tab x utente 
-		k_string =  k_nome_tab
+		k_stringn = u_change_nometab_xutente(k_nome_tab)  // get del nuovo nome tab x utente 
+		k_string = k_nome_tab
 
 		k_sql_orig = kds_1.Object.DataWindow.Table.Select 
 		k_ctr = Pos(k_sql_orig, k_string, 1)
@@ -3618,8 +3618,8 @@ public subroutine u_set_ds_change_name_tab (ref datawindow kdw_1, string k_nome_
 //--- es.  vx_MAST_tabella_esempio ---> vx_0001_tabella_esempio
 //---     vx_ = prefisso del nome tabella quasi sempre fisso così
 //---     MAST = parte da cambiare
-//---     _tabella_esempio = suffisso del nome tabella
-//--- Inp: datastore, nome tab completa ex "vx_MAST_tabella_esempio"
+//---     _nomeTabella = suffisso del nome tabella
+//--- Inp: datastore, nome tab completa ex "nomeTabella"
 //--------------------------------------------------------------------------------------
 //
 //
@@ -3661,7 +3661,7 @@ end subroutine
 
 public function string u_get_nometab_xutente (string k_nome_tab_suffisso) throws uo_exception;//
 //--------------------------------------------------------------------------------------
-//--- Torna il nome della tabella standard personalizzata utente 
+//--- Torna il nome della tabella/view standard personalizzata utente 
 //--- es.  vx_0037_tabella_esempio
 //---     vx_ = prefisso del nome tabella standard
 //---     0037 = x utente 37 

@@ -21,6 +21,7 @@ public function long u_chiudi (ref datastore ads_1, st_meca_chiudi ast_meca_chiu
 public function boolean u_open ()
 public function boolean u_chiudi_lotto (st_tab_meca ast_tab_meca) throws uo_exception
 public function long u_chiude_lotti_spediti () throws uo_exception
+public function st_esito u_batch_run () throws uo_exception
 end prototypes
 
 public subroutine log_destroy ();//
@@ -310,6 +311,41 @@ end try
 
 return k_return
 
+end function
+
+public function st_esito u_batch_run () throws uo_exception;//---
+//--- Lancio operazioni Batch
+//---
+int k_ctr
+st_esito kst_esito
+
+
+try 
+
+	kst_esito.esito = kkg_esito.ok
+	kst_esito.sqlcode = 0
+	kst_esito.SQLErrText = ""
+	kst_esito.nome_oggetto = this.classname()
+
+//--- Chiudi Lotti Spediti
+	k_ctr = u_chiude_lotti_spediti( )
+	if k_ctr > 0 then
+		kst_esito.SQLErrText = "Operazione conclusa correttamente." &
+									+ "Sono stati Chiusi " + string(k_ctr) + " Lotti già spediti" 
+	else
+		kst_esito.SQLErrText = "Operazione conclusa. Nessuno nuovo Lotto già spedito da Chiudere trovato."
+	end if
+
+
+catch (uo_exception kuo_exception)
+	throw kuo_exception
+	
+finally
+	
+end try
+
+
+return kst_esito
 end function
 
 on kuf_meca_chiudi.create

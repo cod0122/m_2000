@@ -32,6 +32,7 @@ boolean vscrollbar = true
 long backcolor = 16777215
 boolean ki_toolbar_window_presente = true
 boolean ki_reset_dopo_save_ok = false
+event u_check_troppi_barcode ( )
 cb_chiudi cb_chiudi
 cb_togli cb_togli
 cb_aggiungi cb_aggiungi
@@ -164,7 +165,25 @@ protected function string aggiorna_dati ()
 protected subroutine attiva_tasti_0 ()
 public subroutine u_obj_visible_0 ()
 public function boolean u_resize_predefinita ()
+private subroutine u_check_troppi_barcode ()
 end prototypes
+
+event u_check_troppi_barcode();//---
+//--- Verifica se ci sono troppi bacode in programmazione
+//---
+int k_max_barcode = 3, k_n_barcode_presenti
+
+
+k_n_barcode_presenti =  dw_lista_0.rowcount( )
+
+if k_n_barcode_presenti > k_max_barcode then
+	messagebox("Avvertimento",  string( k_n_barcode_presenti) + " barcode inseriti. Il Programma " + &
+	               	"rischia di non essere caricato in Impianto. Si consiglia di Chiudere questo e di proseguire " + &
+					"la programmazione in un nuovo programma.", stopsign!)
+end if
+
+	
+end event
 
 private function string cancella ();//
 string k_return="0 "
@@ -914,18 +933,17 @@ st_tab_pl_barcode kst_tab_pl_barcode
 		k_nr_errori = 0
 	
 		do while k_nr_righe > 0 and k_nr_errori < 10
-	
-			k_pl_barcode_progr = dw_lista_0.getitemnumber ( k_riga, "barcode_pl_barcode_progr")
-			k_barcode = string(dw_lista_0.getitemstring ( k_riga, "barcode_barcode"))
 
-			kst_tab_barcode.barcode = k_barcode
-			kst_esito = kuf1_barcode.get_pl_barcode(kst_tab_barcode)
-			if kst_esito.esito <> kkg_esito.ok then
-				k_return = k_return + trim(kst_esito.sqlerrtext) + "~n~r"
-				k_errore = "1"
-			else
+			try 
+				k_pl_barcode_progr = dw_lista_0.getitemnumber ( k_riga, "barcode_pl_barcode_progr")
+				k_barcode = string(dw_lista_0.getitemstring ( k_riga, "barcode_barcode"))
+
+				kst_tab_barcode.barcode = k_barcode
+				kst_tab_barcode.pl_barcode = kuf1_barcode.get_pl_barcode(kst_tab_barcode)
+
 //---- se codice Piano presente è diverso da questo che sto caricando allora GRAVE! 
 				if kst_tab_barcode.pl_barcode > 0 and kst_tab_barcode.pl_barcode <> kst_tab_pl_barcode.codice then
+					
 					k_return = k_return  & 
 							  + "Il Barcode "+ trim(k_barcode) +" è già presente nel Piano " + string(kst_tab_barcode.pl_barcode) + ". Lo elimino dalla LISTA~n~r" 
 					k_errore = "1"
@@ -935,8 +953,13 @@ st_tab_pl_barcode kst_tab_pl_barcode
 					
 				end if
 				
-			end if					
-		
+			catch (uo_exception kuo2_exception)
+				kst_esito = kuo2_exception.get_st_esito()
+				k_return = k_return  & 
+						  + "Problemi durante controllo barcode "  + trim(k_barcode) + " se già pianificato, " + trim(kst_esito.sqlerrtext) + "~n~r"
+				k_errore = "1"
+			end try
+			
 			k_riga --
 	
 		loop
@@ -1048,8 +1071,8 @@ st_tab_pl_barcode kst_tab_pl_barcode
 					end if	
 				end if
 				
-			catch (uo_exception kuo2_exception)
-				kst_esito = kuo2_exception.get_st_esito()
+			catch (uo_exception kuo3_exception)
+				kst_esito = kuo3_exception.get_st_esito()
 				k_return = k_return  & 
 					  + "Problemi durante controllo stato 'Figlio' " + trim(k_barcode) + ", " + trim(kst_esito.sqlerrtext)
 				k_errore = "1"
@@ -6273,6 +6296,23 @@ return TRUE
 
 end function
 
+private subroutine u_check_troppi_barcode ();//---
+//--- Verifica se ci sono troppi bacode in programmazione
+//---
+int k_max_barcode = 300, k_n_barcode_presenti
+
+
+k_n_barcode_presenti =  dw_lista_0.rowcount( )
+
+if k_n_barcode_presenti > k_max_barcode then
+	messagebox("Avvertimento",  string( k_n_barcode_presenti) + " barcode inseriti sembrano troppi. Il Programma " + &
+	               	"rischia di non essere caricato in Impianto. Si consiglia di Chiuderlo e di proseguire " + &
+					"la programmazione con un nuovo Programma.", stopsign!)
+end if
+
+	
+end subroutine
+
 on w_pl_barcode_dett.create
 int iCurrent
 call super::create
@@ -6420,18 +6460,10 @@ end event
 event u_ricevi_da_elenco;call super::u_ricevi_da_elenco;//
 //
 int k_rc
-long k_num_int, k_riga
-date k_data_int
-window k_window
-st_esito kst_esito
 st_tab_pl_barcode kst_tab_pl_barcode
 st_tab_barcode kst_tab_barcode
-kuf_barcode kuf1_barcode
 
 
-//st_open_w kst_open_w
-
-//kst_open_w = Message.PowerObjectParm	
 
 if isvalid(kst_open_w) then
 
@@ -6469,7 +6501,7 @@ if isvalid(kst_open_w) then
 					if kdsi_elenco_input.rowcount() > 0 then
 						kst_tab_barcode.barcode = kdsi_elenco_input.getitemstring(long(kst_open_w.key3), "barcode")
 						aggiungi_barcode_padre(kst_tab_barcode)
-						
+						u_check_troppi_barcode( )
 					end if
 
 
@@ -6479,7 +6511,7 @@ if isvalid(kst_open_w) then
 					if kdsi_elenco_input.rowcount() > 0 then
 						kst_tab_barcode.barcode = kdsi_elenco_input.getitemstring(long(kst_open_w.key3), "barcode_barcode")
 						aggiungi_barcode_padre(kst_tab_barcode)
-						
+						u_check_troppi_barcode( )
 					end if
 					
 							
@@ -6678,12 +6710,15 @@ CHOOSE CASE TypeOf(source)
 					
 				case "dw_meca" 
 					aggiungi_barcode_tutti(dw_lista_0)
+					u_check_troppi_barcode( )
 	
 				case "dw_barcode" 
 					aggiungi_barcode_singolo(dw_lista_0, dw_barcode)
+					u_check_troppi_barcode( )
 					
 				case "dw_groupage" 
 					aggiungi_barcode_singolo(dw_lista_0, dw_groupage)
+					u_check_troppi_barcode( )
 					
 				case "dw_lista_0" 
 //--- sistema il codice e i progressivi nella lista
@@ -6927,6 +6962,7 @@ event clicked;//
 	if dw_barcode.getselectedrow(0) > 0 then
 		if kGuf_data_base.u_getfocus_nome() = "dw_lista_0" then
 			aggiungi_barcode_singolo(dw_lista_0, dw_barcode)
+			u_check_troppi_barcode( )
 		else
 			aggiungi_barcode_singolo(dw_groupage, dw_barcode)
 		end if
@@ -6935,6 +6971,7 @@ event clicked;//
 		if dw_meca.getselectedrow(0) > 0 then
 			if kGuf_data_base.u_getfocus_nome() = "dw_lista_0" then
 				aggiungi_barcode_tutti(dw_lista_0)
+				u_check_troppi_barcode( )
 			else
 				aggiungi_barcode_tutti(dw_groupage)
 			end if
@@ -6997,7 +7034,7 @@ integer taborder = 50
 boolean bringtotop = true
 boolean enabled = true
 boolean titlebar = true
-string title = "Groupage trascina il barcode Figlio"
+string title = "Groupage trascina il barcode per identificarlo come Figlio"
 string dataobject = "d_pl_barcode_dett_grp_all"
 boolean minbox = true
 boolean maxbox = true
@@ -7126,6 +7163,7 @@ boolean resizable = true
 boolean hsplitscroll = false
 boolean ki_link_standard_attivi = false
 boolean ki_colora_riga_aggiornata = false
+boolean ki_d_std_1_attiva_sort = false
 boolean ki_attiva_dragdrop = true
 end type
 
@@ -7148,6 +7186,7 @@ end event
 event u_doppio_click;//
 if ki_st_open_w.flag_modalita = kkg_flag_modalita.modifica or ki_st_open_w.flag_modalita = kkg_flag_modalita.inserimento then
 	aggiungi_barcode_singolo(dw_lista_0, dw_barcode )
+	u_check_troppi_barcode( )
 end if
 
 

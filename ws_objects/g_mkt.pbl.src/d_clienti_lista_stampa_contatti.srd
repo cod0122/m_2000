@@ -50,7 +50,7 @@ table(column=(type=long updatewhereclause=yes identity=yes name=clienti_codice d
          trim(clienti_web_b.note) as contatto_note,   
          clienti_web_b.sito_web as contatto_sito_web 
     FROM clienti clienti_a 
-		 	     inner join vx_MAST2_clienti_l as clienti_l on clienti_a.codice = clienti_l.id_cliente
+		 	     inner join #vx_MAST2_clienti_l as clienti_l on clienti_a.codice = clienti_l.id_cliente
               LEFT OUTER JOIN clienti_web clienti_web_a ON clienti_a.codice = clienti_web_a.id_cliente, clienti_mkt
                            INNER JOIN clienti clienti_b ON clienti_mkt.id_contatto_1 = clienti_b.codice 
                            LEFT OUTER JOIN clienti_web clienti_web_b ON clienti_mkt.id_contatto_1 = clienti_web_b.id_cliente  
@@ -252,4 +252,3 @@ export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
 import.xml()
 export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" nativepdf.customsize=0 nativepdf.customorientation=0 )
 export.xhtml()
- 

@@ -1459,7 +1459,7 @@ if kst_tab_wm_pklist.id_wm_pklist > 0 then
 					kist_tab_meca.id_meca_causale = kuf1_contratti.get_id_meca_causale(kst_tab_contratti)
 				end if
 			end if
-			kist_tab_meca.meca_blk_descrizione = ""
+			kist_tab_meca.meca_blk_descrizione = "" 
 			kist_tab_meca.meca_blk_rich_autorizz = ""
 			kist_tab_meca.stato = kiuf_armo.ki_meca_stato_gen_da_completare 
 			if kist_tab_meca.id_meca_causale > 0 then 

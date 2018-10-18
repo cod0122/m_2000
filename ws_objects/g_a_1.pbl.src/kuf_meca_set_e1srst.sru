@@ -15,6 +15,7 @@ end variables
 
 forward prototypes
 public function long u_set_stato_lotto_da_e1 () throws uo_exception
+public function st_esito u_batch_run () throws uo_exception
 end prototypes
 
 public function long u_set_stato_lotto_da_e1 () throws uo_exception;//
@@ -136,6 +137,41 @@ end try
 return k_return
 
 
+end function
+
+public function st_esito u_batch_run () throws uo_exception;//---
+//--- Lancio operazioni Batch
+//---
+int k_ctr
+st_esito kst_esito
+
+
+try 
+
+	kst_esito.esito = kkg_esito.ok
+	kst_esito.sqlcode = 0
+	kst_esito.SQLErrText = ""
+	kst_esito.nome_oggetto = this.classname()
+
+//--- Imposta STATO Lotto di E1 su MECA
+	k_ctr = u_set_stato_lotto_da_e1( )
+	if k_ctr > 0 then
+		kst_esito.SQLErrText = "Operazione conclusa correttamente." &
+									+ "Sono stati aggiornati " + string(k_ctr) + " STATI Lotto di E1 (wasrst). Dati ottenuti dal Sistema E-ONE" 
+	else
+		kst_esito.SQLErrText = "Operazione conclusa. Nessun nuovo STATO Lotto E1  (wasrst) importato da E-ONE."
+	end if
+
+
+catch (uo_exception kuo_exception)
+	throw kuo_exception
+	
+finally
+	
+end try
+
+
+return kst_esito
 end function
 
 on kuf_meca_set_e1srst.create

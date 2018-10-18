@@ -28,6 +28,7 @@ private function any u_build_path_all (string a_path[], st_tab_meca_reportpilota
 private function string u_build_pathreport (ref st_tab_meca_reportpilota ast_tab_meca_reportpilota) throws uo_exception
 public function string u_get_path_nomereport (ref st_tab_meca_reportpilota ast_tab_meca_reportpilota) throws uo_exception
 private function any get_path_all (ref st_tab_meca_reportpilota ast_tab_meca_reportpilota) throws uo_exception
+public function st_esito u_batch_run () throws uo_exception
 end prototypes
 
 public function boolean tb_add (st_tab_meca_fconv ast_tab_meca_fconv) throws uo_exception;// funzione che fa l'insert sulla tabella meca_fconv
@@ -1126,6 +1127,41 @@ end try
 
 return k_return[]
 
+end function
+
+public function st_esito u_batch_run () throws uo_exception;//---
+//--- Lancio operazioni Batch
+//---
+int k_ctr
+st_esito kst_esito
+
+
+try 
+
+	kst_esito.esito = kkg_esito.ok
+	kst_esito.sqlcode = 0
+	kst_esito.SQLErrText = ""
+	kst_esito.nome_oggetto = this.classname()
+
+//--- Importa Report Prodotti dal PILOTA dalla cartella del Pilota a quella interna
+	k_ctr = u_job_importa_report_pilota( )
+	if k_ctr > 0 then
+		kst_esito.SQLErrText = "Operazione conclusa correttamente." &
+									+ "Sono stati importati " + string(k_ctr) + " nuovi Report (pdf) prodotti dal Pilota" 
+	else
+		kst_esito.SQLErrText = "Operazione conclusa. Nessun nuovo Report (pdf) prodotto dal Pilota è stato trovato."
+	end if
+
+
+catch (uo_exception kuo_exception)
+	throw kuo_exception
+	
+finally
+	
+end try
+
+
+return kst_esito
 end function
 
 on kuf_meca_reportpilota.create

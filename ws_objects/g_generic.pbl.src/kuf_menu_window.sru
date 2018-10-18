@@ -34,7 +34,6 @@ forward prototypes
 private subroutine open_run_batch (st_open_w kst_open_w) throws uo_exception
 public subroutine if_isnull (st_open_w ast_open_w)
 private function boolean connetti () throws uo_exception
-private function string get_nome_oggetto (string a_menu_id)
 public subroutine open_trova (st_open_w ast_open_w)
 public subroutine open_filtra (st_open_w ast_open_w)
 public subroutine open_conv_calc (st_open_w ast_open_w)
@@ -43,6 +42,7 @@ public function boolean get_st_tab_menu_window_anteprima (ref st_tab_menu_window
 public function boolean get_id_menu_window (ref st_tab_menu_window_oggetti kst_tab_menu_window_oggetti)
 public function boolean open_w_tabelle_da_ds (datastore ads_dati_window, string a_modalita) throws uo_exception
 public subroutine open_w_tabelle (st_open_w kst_open_w)
+public function string get_nome_oggetto (string a_menu_id)
 end prototypes
 
 private subroutine open_run_batch (st_open_w kst_open_w) throws uo_exception;//---
@@ -117,31 +117,6 @@ else
 	kguo_exception.messaggio_utente("Programma instabile", "Prego uscire e rilanciare il Programma per continuare la sessione di lavoro")
 end if
 
-return k_return
-
-end function
-
-private function string get_nome_oggetto (string a_menu_id);//
-//--- Trova il nome Oggetto es "kuf_clienti"
-//--- inp: id
-//--- rit: nome_oggetto 
-//
-string k_return = ""
-long k_ctr, k_ctr_idx
-
-
-	a_menu_id = lower(trim(a_menu_id))
-
-	k_ctr = 1
-	k_ctr_idx = UpperBound(kGst_tab_menu_window[])
-	do while k_ctr <= k_ctr_idx 
-		if a_menu_id = (trim(kGst_tab_menu_window[k_ctr].id)) then
-			k_return = trim(kGst_tab_menu_window[k_ctr].nome_oggetto)
-			exit
-		end if
-		k_ctr++
-	loop
-		
 return k_return
 
 end function
@@ -462,10 +437,10 @@ try
 //--- APRO LA WINDOW STANDARD
 					kguo_g.kGst_open_w = kst_open_w
 
-//--- ECCEZIONE per compatibilità con il vecchio pgm da ripristinare tra un p' di tempo 13-04-2017					
-					if kguo_g.kGst_open_w.window = "w_stampe" then
-						kGst_tab_menu_window[k_ctr].primopiano = "A"
-					end if
+////--- ECCEZIONE per compatibilità con il vecchio pgm da ripristinare tra un p' di tempo 13-04-2017					
+//					if kguo_g.kGst_open_w.window = "w_stampe" then
+//						kGst_tab_menu_window[k_ctr].primopiano = "A"
+//					end if
 
 //--- Recupera la modalità della docking-window NON FUNZIONA BENE!!!!!!!!!!!!!!!
 //					kst_tab_base_docking.wstate = ""
@@ -500,9 +475,9 @@ try
 //						if kguo_g.kGst_open_w.flag_primo_giro > " " then
 //							kguo_g.kGst_open_w.flag_primo_giro = "S"
 //						end if 
-							
+
 					choose case kGst_tab_menu_window[k_ctr].primopiano
-//--- S = APRO LA WINDOW MODALE O SENZA MDI
+//--- S = APRO LA WINDOW IN PRIMO PIANO SOPRA A TUTTE (DEVE ESSERE TIPO MAIN)
 						case "S"
 							k_rc_open = string(OpenWithParm(kw_window_open, kguo_g.kGst_open_w, kguo_g.kGst_open_w.window), "0")
 //--- A = APRO WINDOW PARTICOLARE TIPO ZOOM/STAMPA/....
@@ -601,6 +576,31 @@ end try
 //return k_rc_open
 
 end subroutine
+
+public function string get_nome_oggetto (string a_menu_id);//
+//--- Trova il nome Oggetto es "kuf_clienti"
+//--- inp: id   es. kst_open_w.id_programma
+//--- rit: nome_oggetto 
+//
+string k_return = ""
+long k_ctr, k_ctr_idx
+
+
+	a_menu_id = lower(trim(a_menu_id))
+
+	k_ctr = 1
+	k_ctr_idx = UpperBound(kGst_tab_menu_window[])
+	do while k_ctr <= k_ctr_idx 
+		if a_menu_id = (trim(kGst_tab_menu_window[k_ctr].id)) then
+			k_return = trim(kGst_tab_menu_window[k_ctr].nome_oggetto)
+			exit
+		end if
+		k_ctr++
+	loop
+		
+return k_return
+
+end function
 
 on kuf_menu_window.create
 call super::create

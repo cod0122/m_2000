@@ -54,11 +54,10 @@ private subroutine call_elenco_capitolati ()
 protected subroutine open_start_window ()
 public function integer u_retrieve_dw_lista ()
 public subroutine u_retrieve_post ()
-public function integer u_win_close ()
-protected subroutine u_win_open ()
 protected subroutine attiva_tasti_0 ()
 private subroutine stampa_crea_temptable () throws uo_exception
 public subroutine stampa_choose_run ()
+public subroutine set_window_size ()
 end prototypes
 
 event u_premuto_enter;//
@@ -620,50 +619,6 @@ end if
 
 end subroutine
 
-public function integer u_win_close ();//---
-//--- Salva proprietà della funzione
-//---
-int k_return = 0
-string k_rcx
-st_profilestring_ini kst_profilestring_ini
-
-
-	kst_profilestring_ini.operazione = "2"
-	kst_profilestring_ini.valore = string(dw_guida.getitemnumber(1, "dinamico"))
-	if isnull(kst_profilestring_ini.valore) then kst_profilestring_ini.valore = "0"
-	kst_profilestring_ini.file = "window" 
-	kst_profilestring_ini.titolo = trim(this.classname( ))
- 	kst_profilestring_ini.nome = "dw_guida_dinamico"
-	k_rcx = trim(kGuf_data_base.profilestring_ini(kst_profilestring_ini))
-
-
-	k_return = super::u_win_close( )
-	
-return 0
-
-end function
-
-protected subroutine u_win_open ();//---
-//--- Recupera proprietà della funzione
-//---
-string k_rcx
-st_profilestring_ini kst_profilestring_ini
-
-
-	kst_profilestring_ini.operazione = "1"
-	kst_profilestring_ini.file = "window" 
-	kst_profilestring_ini.titolo = trim(this.classname( ))
- 	kst_profilestring_ini.nome = "dw_guida_dinamico"
-	k_rcx = trim(kGuf_data_base.profilestring_ini(kst_profilestring_ini))
-
-	if isnull(kst_profilestring_ini.valore) or not isnumber(kst_profilestring_ini.valore) then kst_profilestring_ini.valore = "0"
-	ki_dw_guida_dinamico = integer(kst_profilestring_ini.valore)
-
-	super::u_win_open( )
-	
-
-end subroutine
-
 protected subroutine attiva_tasti_0 ();//
 //=========================================================================
 //=== Attiva/Disattiva i tasti a seconda delle funzioni e dei campi 
@@ -741,8 +696,8 @@ kst_esito.nome_oggetto = this.classname()
 //=== Se volessi riprist. il vecchio puntatore : SetPointer(kpointer)
 SetPointer(kkg.pointer_attesa)
 
-//--- costruisco la view con ID_MECA delle fatture emesse da data a data
-	k_view = "vx_" + trim(kguo_utente.get_codice( )) + "_clienti_l "
+//--- costruisco la temp-table con ID_MECA delle fatture emesse da data a data
+	k_view = kguf_data_base.u_get_nometab_xutente("clienti_l")   //"vx_" + trim(kguo_utente.get_codice( )) + "_clienti_l "
 	k_sql = " "                                   
    k_campi = "riga integer, id_cliente integer " 
    kguo_sqlca_db_magazzino.db_crea_temp_table(k_view, k_campi, k_sql)      
@@ -750,15 +705,16 @@ SetPointer(kkg.pointer_attesa)
 	k_nr_clienti = dw_lista_0.rowcount( )
 	for k_riga = 1 to k_nr_clienti
    	k_id_cliente = dw_lista_0.getitemnumber(k_riga, "id_cliente")
-  		k_sql = "INSERT INTO " + trim(k_view) + " (riga, id_cliente) VALUES (" + string(k_riga) + ", " + string(k_id_cliente) + ")"
+  		k_sql = "INSERT INTO " + "#" + trim(k_view) + " (riga, id_cliente) VALUES (" + string(k_riga) + ", " + string(k_id_cliente) + ")"
  
    	EXECUTE IMMEDIATE :k_sql USING kguo_sqlca_db_magazzino ;
  
    	if kguo_sqlca_db_magazzino.SQLCode < 0 then
 			kst_esito.esito = kkg_esito.db_ko
 			kst_esito.sqlcode = kguo_sqlca_db_magazzino.sqlcode
-			kst_esito.sqlerrtext = "Inserimanto dati nella Temp-Table '" &
-										  + trim(k_view) + "' non riuscita:" + trim(kguo_sqlca_db_magazzino.SQLErrText)
+			kst_esito.sqlerrtext = "Inserimanto dati nella Temp-Table '"  + trim(k_view) &
+										  + "' non riuscito: " + trim(kguo_sqlca_db_magazzino.SQLErrText) &
+										  + " (" + string(kguo_sqlca_db_magazzino.SQLcode) + ")"
 			kguo_exception.inizializza( )
 			kguo_exception.set_esito(kst_esito)
 			throw kguo_exception
@@ -790,25 +746,7 @@ try
 
 	stampa_crea_temptable( ) // Crea la tabella pilota con i clienti da estrarre
 
-//	//--- se non ho messo nulla campo sopra di ricerca e non ho passato nulla all'inizio allora cerco tutto
-//	if len(trim(ki_st_tab_clienti.rag_soc_10)) > 0 and ki_st_tab_clienti.rag_soc_10 <> "*" then
-//		k_rag_soc = ki_st_tab_clienti.rag_soc_10
-//	else
-//		if isnumber(trim(ki_st_tab_clienti.rag_soc_10)) then  // se ho indicato un numero...
-//			if dw_lista_0.rowcount( ) > 0 then
-//				k_rag_soc = dw_lista_0.getitemstring( 1, "rag_soc_10")
-//			else
-//				k_rag_soc = "%"
-//			end if
-//		else  // se ho indicato un nome parziale...
-//			if len(trim(ki_st_open_w.key1)) > 0 then
-//				k_rag_soc = "%" + trim(ki_st_open_w.key1) + "%"
-//			else
-//				k_rag_soc = "%"
-//			end if
-//		end if
-//	end if
-	
+
 	choose case k_tipo_stampa_anag
 			
 		case "C"
@@ -818,15 +756,7 @@ try
 			kst_stampe.ds_print.dataobject = "d_clienti_l_1"
 			kst_stampe.ds_print.settransobject(kguo_sqlca_db_magazzino)
 	//--- Aggiorna SQL della dw	
-			k_sql_orig = kst_stampe.ds_print.Object.DataWindow.Table.Select 
-			k_stringn = "vx_" + trim(kguo_utente.get_codice( )) + "_"
-			k_string = "vx_MAST2_"
-			k_ctr = PosA(k_sql_orig, k_string, 1)
-			DO WHILE k_ctr > 0 and trim(k_string) <> trim(k_stringn)  
-				k_sql_orig = ReplaceA(k_sql_orig, k_ctr, LenA(k_string), (k_stringn))
-				k_ctr = PosA(k_sql_orig, k_string, k_ctr+LenA(k_string))
-			LOOP
-			kst_stampe.ds_print.Object.DataWindow.Table.Select = k_sql_orig 
+			kguf_data_base.u_set_ds_change_name_tab(kst_stampe.ds_print, "vx_MAST2_clienti_l") 
 			k_rc = kst_stampe.ds_print.retrieve( )
 			if k_rc > 0 then
 				kst_stampe.tipo = kuf_stampe.ki_stampa_tipo_datastore_diretta
@@ -850,15 +780,7 @@ try
 			kst_stampe.ds_print.dataobject = "d_clienti_l_completa_x_exp"
 			kst_stampe.ds_print.settransobject(kguo_sqlca_db_magazzino)
 	//--- Aggiorna SQL della dw	
-			k_sql_orig = kst_stampe.ds_print.Object.DataWindow.Table.Select 
-			k_stringn = "vx_" + trim(kguo_utente.get_codice( )) + "_"
-			k_string = "vx_MAST2_"
-			k_ctr = PosA(k_sql_orig, k_string, 1)
-			DO WHILE k_ctr > 0 and trim(k_string) <> trim(k_stringn)  
-				k_sql_orig = ReplaceA(k_sql_orig, k_ctr, LenA(k_string), (k_stringn))
-				k_ctr = PosA(k_sql_orig, k_string, k_ctr+LenA(k_string))
-			LOOP
-			kst_stampe.ds_print.Object.DataWindow.Table.Select = k_sql_orig 
+			kguf_data_base.u_set_ds_change_name_tab(kst_stampe.ds_print, "vx_MAST2_clienti_l") 
 			if kst_stampe.ds_print.retrieve() > 0 then
 				kst_stampe.tipo = kuf_stampe.ki_stampa_tipo_datastore_diretta
 				kst_stampe.titolo = trim(k_stampa)
@@ -872,15 +794,7 @@ try
 			kst_stampe.ds_print.dataobject = "d_clienti_lista_stampa_contatti"
 			kst_stampe.ds_print.settransobject(kguo_sqlca_db_magazzino)
 	//--- Aggiorna SQL della dw	
-			k_sql_orig = kst_stampe.ds_print.Object.DataWindow.Table.Select 
-			k_stringn = "vx_" + trim(kguo_utente.get_codice( )) + "_"
-			k_string = "vx_MAST2_"
-			k_ctr = PosA(k_sql_orig, k_string, 1)
-			DO WHILE k_ctr > 0 and trim(k_string) <> trim(k_stringn)  
-				k_sql_orig = ReplaceA(k_sql_orig, k_ctr, LenA(k_string), (k_stringn))
-				k_ctr = PosA(k_sql_orig, k_string, k_ctr+LenA(k_string))
-			LOOP
-			kst_stampe.ds_print.Object.DataWindow.Table.Select = k_sql_orig 
+			kguf_data_base.u_set_ds_change_name_tab(kst_stampe.ds_print, "vx_MAST2_clienti_l") 
 			if kst_stampe.ds_print.retrieve() > 0 then
 				kst_stampe.tipo = kuf_stampe.ki_stampa_tipo_datastore_diretta
 				kst_stampe.titolo = trim(k_stampa)
@@ -889,26 +803,13 @@ try
 	
 		case else
 	//--- stampa quello che è a video	
-//			dw_dett_0.dataobject = dw_lista_0.dataobject
-//			k_rc = dw_lista_0.sharedata(dw_dett_0)
-	//		dw_lista_0.rowscopy(1, dw_lista_0.RowCount(), Primary!, dw_dett_0, 1, Primary!)
 			if not isvalid(kst_stampe.ds_print) then kst_stampe.ds_print = create datastore
 			kst_stampe.ds_print.reset( )
 			kst_stampe.ds_print.dataobject = "d_clienti_lista_stampa"
 			kst_stampe.ds_print.settransobject(kguo_sqlca_db_magazzino)
-			//k_rc = dw_lista_0.rowscopy(1, dw_lista_0.RowCount(), Primary!, kst_stampe.ds_print, 1, Primary!)
 //--- Aggiorna SQL della dw	
-			k_sql_orig = kst_stampe.ds_print.Object.DataWindow.Table.Select 
-			k_stringn = "vx_" + trim(kguo_utente.get_codice( )) + "_"
-			k_string = "vx_MAST2_"
-			k_ctr = PosA(k_sql_orig, k_string, 1)
-			DO WHILE k_ctr > 0 and trim(k_string) <> trim(k_stringn)  
-				k_sql_orig = ReplaceA(k_sql_orig, k_ctr, LenA(k_string), (k_stringn))
-				k_ctr = PosA(k_sql_orig, k_string, k_ctr+LenA(k_string))
-			LOOP
-			kst_stampe.ds_print.Object.DataWindow.Table.Select = k_sql_orig 
+			kguf_data_base.u_set_ds_change_name_tab(kst_stampe.ds_print, "vx_MAST2_clienti_l") 
 			if kst_stampe.ds_print.retrieve( ) > 0 then
-				//kst_stampe.dw_print = dw_dett_0
 				kst_stampe.titolo = trim(k_stampa)
 				kst_stampe.tipo = kuf_stampe.ki_stampa_tipo_datastore
 				kGuf_data_base.stampa_dw(kst_stampe)
@@ -921,6 +822,27 @@ catch (uo_exception kuo_exception)
 end try
 
 
+
+end subroutine
+
+public subroutine set_window_size ();//---
+//--- Recupera proprietà della funzione
+//---
+string k_rcx
+st_profilestring_ini kst_profilestring_ini
+
+
+	kst_profilestring_ini.operazione = "1"
+	kst_profilestring_ini.file = "window" 
+	kst_profilestring_ini.titolo = trim(this.classname( ))
+ 	kst_profilestring_ini.nome = "dw_guida_dinamico"
+	k_rcx = trim(kGuf_data_base.profilestring_ini(kst_profilestring_ini))
+
+	if isnull(kst_profilestring_ini.valore) or not isnumber(kst_profilestring_ini.valore) then kst_profilestring_ini.valore = "0"
+	ki_dw_guida_dinamico = integer(kst_profilestring_ini.valore)
+
+	super::set_window_size( )
+	
 
 end subroutine
 
@@ -981,6 +903,24 @@ imposta_elenco()
 
     this.visible = true
 	 
+
+end event
+
+event close;call super::close;//---
+//--- Salva proprietà della funzione
+//---
+string k_rcx
+st_profilestring_ini kst_profilestring_ini
+
+
+	kst_profilestring_ini.operazione = "2"
+	kst_profilestring_ini.valore = string(dw_guida.getitemnumber(1, "dinamico"))
+	if isnull(kst_profilestring_ini.valore) then kst_profilestring_ini.valore = "0"
+	kst_profilestring_ini.file = "window" 
+	kst_profilestring_ini.titolo = trim(this.classname( ))
+ 	kst_profilestring_ini.nome = "dw_guida_dinamico"
+	k_rcx = trim(kGuf_data_base.profilestring_ini(kst_profilestring_ini))
+
 
 end event
 

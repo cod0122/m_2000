@@ -75,6 +75,8 @@ public function boolean check_presenza_file_richieste () throws uo_exception
 public function boolean get_pilota_pilota_barcode (ref st_tab_pilota_queue ast_tab_pilota_queue) throws uo_exception
 public function st_txt_pilota_cmd get_file_richieste_progressivi () throws uo_exception
 public function string get_path_file_richieste () throws uo_exception
+public function st_esito u_batch_run () throws uo_exception
+public function datetime get_data_ins_x_pl_barcode_codice (st_tab_pilota_cmd kst_tab_pilota_cmd) throws uo_exception
 end prototypes
 
 public function st_esito select_riga ();//
@@ -3486,6 +3488,85 @@ kst_esito.nome_oggetto = this.classname()
 	
 //SetPointer(oldpointer)
 
+
+return k_return
+
+end function
+
+public function st_esito u_batch_run () throws uo_exception;//---
+//--- Lancio operazioni Batch
+//---
+int k_ctr
+st_esito kst_esito
+
+
+try 
+
+	kst_esito.esito = kkg_esito.ok
+	kst_esito.sqlcode = 0
+	kst_esito.SQLErrText = ""
+	kst_esito.nome_oggetto = this.classname()
+
+	if job_pianificazione_lavorazioni() then
+		get_pilota_cfg()
+		kst_esito.SQLErrText = "Operazione conclusa correttamente. " &
+									+ "Piano di Lavorazione generato e inviato al Pilota nella cartella '" &
+									+ kist_tab_pilota_cfg.path_file_pl_barcode + "' (ultimo file: "&
+									+ kist_tab_pilota_cfg.ultimo_nome_file_pl_barcode + ")"
+	else
+		kst_esito.SQLErrText = "Operazione conclusa. Nessun Piano di Lavorazione da inviare al Pilota trovato."
+	end if
+
+catch (uo_exception kuo_exception)
+	throw kuo_exception
+	
+finally
+	
+end try
+
+
+return kst_esito
+end function
+
+public function datetime get_data_ins_x_pl_barcode_codice (st_tab_pilota_cmd kst_tab_pilota_cmd) throws uo_exception;//---
+//---   Torna il nome completo del path di Appoggio dei file da passare al Pilota
+//---   Output: il path
+//---   Lancia un exception se si verifica un grave errore
+//---
+datetime k_return 
+
+
+
+  SELECT 
+        data_ins 
+    INTO 
+        :kst_tab_pilota_cmd.data_ins 
+    FROM pilota_cmd  
+	 where pilota_cmd.pl_barcode_codice = :kst_tab_pilota_cmd.pl_barcode_codice
+	 using kguo_sqlca_db_magazzino;
+
+	
+	if kguo_sqlca_db_magazzino.sqlcode = 0 then
+		
+		if isnull(kist_tab_pilota_cmd.data_ins) then kist_tab_pilota_cmd.data_ins = datetime(date(0), time(0))
+		
+		k_return = kist_tab_pilota_cmd.data_ins
+		
+	else
+		
+		if kguo_sqlca_db_magazzino.sqlcode < 0 then
+			
+			kguo_exception.inizializza( )
+			kguo_exception.kist_esito.nome_oggetto = this.classname()
+			kguo_exception.kist_esito.sqlcode = kguo_sqlca_db_magazzino.sqlcode
+			kguo_exception.kist_esito.SQLErrText = "Errore in lettura data inserimento in tabella 'comandi pilota' per il codice PL '" + string(kst_tab_pilota_cmd.pl_barcode_codice) &
+											+ "'. Errore: " + trim(kguo_sqlca_db_magazzino.SQLErrText)
+			kguo_exception.kist_esito.esito = kkg_esito.db_ko
+			throw kguo_exception
+		end if
+
+	end if
+	
 
 return k_return
 

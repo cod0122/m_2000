@@ -12,8 +12,9 @@ global kuf_pilota_previsioni kuf_pilota_previsioni
 
 type variables
 //
-private string ki_ds_queue_lav_xfila_dataobject = "ds_queue_lav_xfila"
+private constant string ki_ds_queue_lav_xfila_dataobject = "ds_queue_lav_xfila"
 private constant string ki_ds_pallet_workqueue_dataobject = "ds_pilota_pallet_workqueue"
+private constant string ki_ds_prev_data_fine_lav_xdtpl = "ds_pilota_prev_data_fin_lav_xdtpl"
 
 private string ki_temptab_pilota_workqueue // = "vx_MAST_pilota_pallet_workqueue"
 private string ki_temptab_pilota_prev_lav //= "vx_MAST_pilota_prev_lav"
@@ -23,7 +24,7 @@ private datastore kids_barcode_avgtimeplant
 
 private kuf_utility kiuf_utility
 
-
+private string ki_status
 end variables
 
 forward prototypes
@@ -39,11 +40,16 @@ public function string get_ki_temptab_pilota_workqueue ()
 public function string get_ki_temptab_pilota_prev_lav ()
 private function datastore u_get_ds_pilota_workqueue () throws uo_exception
 private function long u_set_barcode_avgtimeplant () throws uo_exception
-private subroutine u_set_dataora_lav_prev_fin_1 (datastore kds_1, long k_riga) throws uo_exception
 private function long u_set_ds_pilota_queue_data_prev () throws uo_exception
 private function long u_set_dataora_lav_prev_fin () throws uo_exception
 private function long u_set_ds_queue_lav_xfila (ref datastore kds_1) throws uo_exception
 private function long u_set_temptable_pilota_prev_lav () throws uo_exception
+public function string batch_run_stat_u_m2000_avgtimeplant () throws uo_exception
+public function string get_id_programma (string k_flag_modalita)
+public function st_esito u_batch_run () throws uo_exception
+private function datastore u_get_ds_prev_dataora_lav_fin_fromdtpl () throws uo_exception
+private subroutine u_set_dataora_lav_prev_fin_1 (ref datastore ads_1, long a_riga) throws uo_exception
+public function integer u_esegui_u_m2000_avgtimeplant ()
 end prototypes
 
 public subroutine _readme ();//
@@ -229,6 +235,7 @@ datastore kds_out, kds_inp
 					 	 + ", dataora_lav_fin_prev datetime " &
  					 	 + ", dataora_lav_fin_min_prev datetime " &
 					 	 + ", dataora_lav_fin_max_prev datetime " &
+					 	 + ", dataora_lav_fin_prev_dtpl datetime " &
 						 + ", avg_time_io_minute integer" 
 //	   	kguo_sqlca_db_magazzino.db_crea_temp_table_global(ki_temptab_pilota_workqueue, k_campi, "")      
 	   	kguo_sqlca_db_magazzino.db_crea_temp_table(ki_temptab_pilota_workqueue, k_campi, "")      
@@ -363,7 +370,7 @@ datastore kds_1
 		k_righe = kds_1.retrieve("WORK")
 		if k_righe < 1 then //verifica se la tabella temp esiste altrimenti la popola
 		
-//--- popola tabella temp con i data ini e fin previsti ( tutto quello nel Pilota in Lav e  in Coda di Programmazione) 		
+//--- popola tabella temp con i data ini e fin previsti ( tutto quello che c'e' nel Pilota in Lav e  in Coda di Programmazione) 		
 			k_righe = u_set_temptable_pilota_workqueue( )
 		
 		end if
@@ -430,67 +437,6 @@ return k_righe
 
 end function
 
-private subroutine u_set_dataora_lav_prev_fin_1 (datastore kds_1, long k_riga) throws uo_exception;//
-//--------------------------------------------------------------------------------------
-//--- Aggiorna la data di fine lavorazione in tab 'previsioni' per 
-//--- i pallet in lavorazione (WORK)
-//--- input: datastore previsioni, nr riga 
-//--------------------------------------------------------------------------------------
-//
-//
-datetime k_dataora_lav_fin_prev, k_dataora_lav_ini, k_dataora_lav_fin_min_prev, k_dataora_lav_fin_max_prev
-int k_rc
-st_tab_s_avgtimeplant kst_tab_s_avgtimeplant_avg, kst_tab_s_avgtimeplant_min, kst_tab_s_avgtimeplant_max
-
-	
-	try
-
-			
-		kds_1.object.dataora_lav_fin_prev[k_riga] = datetime(date(0), time(0))
-
-		k_dataora_lav_ini = kds_1.getitemdatetime(k_riga, "dataora_lav_ini")
-		if date(k_dataora_lav_ini) > kkg.data_no then
-				
-			kst_tab_s_avgtimeplant_avg.time_io_minute = kds_1.getitemnumber(k_riga, "time_io_minute_avg")
-			kst_tab_s_avgtimeplant_min.time_io_minute = kds_1.getitemnumber(k_riga, "time_io_minute_min")
-			kst_tab_s_avgtimeplant_max.time_io_minute = kds_1.getitemnumber(k_riga, "time_io_minute_max")
-			kds_1.setitem(k_riga, "avg_time_io_minute", kst_tab_s_avgtimeplant_avg.time_io_minute)
-
-		//--- calcola le previsioni aggiungendo i minuti previsti in impianto per l'uscita
-			if not isvalid(kiuf_utility) then kiuf_utility = create kuf_utility
-			k_dataora_lav_fin_prev = kiuf_utility.u_datetime_after_minute(k_dataora_lav_ini, kst_tab_s_avgtimeplant_avg.time_io_minute)
-			if date(k_dataora_lav_fin_prev) > kkg.data_no then
-						
-				if k_dataora_lav_fin_prev < kguo_g.get_datetime_current( ) then
-					k_dataora_lav_fin_prev = kiuf_utility.u_datetime_after_minute(kguo_g.get_datetime_current( ), 60) // se data prev minore di adesso allora metto adesso + un tot di minuti
-				end if
-							
-				k_dataora_lav_fin_min_prev = kiuf_utility.u_datetime_after_minute(k_dataora_lav_fin_prev, (kst_tab_s_avgtimeplant_min.time_io_minute - kst_tab_s_avgtimeplant_avg.time_io_minute))
-							
-				k_dataora_lav_fin_max_prev = kiuf_utility.u_datetime_after_minute(k_dataora_lav_fin_prev, (kst_tab_s_avgtimeplant_max.time_io_minute - kst_tab_s_avgtimeplant_avg.time_io_minute))
-							
-			end if
-					
-			kds_1.setitem(k_riga, "dataora_lav_fin_prev", k_dataora_lav_fin_prev)
-			kds_1.setitem(k_riga, "dataora_lav_fin_min_prev", k_dataora_lav_fin_min_prev)
-			kds_1.setitem(k_riga, "dataora_lav_fin_max_prev", k_dataora_lav_fin_max_prev)
-					
-		end if
-		
-
-	catch (uo_exception kuo_exception)
-		throw kuo_exception
-
-	finally
-
-	end try
-		
-
-//return k_righe
-	
-
-end subroutine
-
 private function long u_set_ds_pilota_queue_data_prev () throws uo_exception;//
 //----------------------------------------------------------------------------------------
 //--- Imposta data inizio-fine lavorazione presunte in tab 'previsioni 
@@ -499,17 +445,26 @@ private function long u_set_ds_pilota_queue_data_prev () throws uo_exception;//
 //----------------------------------------------------------------------------------------
 //
 //
-long k_righe=0, k_riga=0, k_riga_queue, k_ordine_queue, k_ordine_queue_exit
+long k_righe=0, k_riga=0, k_riga_queue, k_ordine_queue, k_ordine_queue_exit, k_riga_dtfin_xdtpl
 int k_ctr, k_rc
-datetime k_dataora_lav_ini, k_dataora_lav_fin
+datetime k_dataora_lav_ini, k_dataora_lav_fin, k_dataora_lav_fin_fromdtpl
 int k_fila
 st_tab_barcode kst_tab_barcode
-datastore kds_work, kds_queue
+datastore kds_work, kds_queue, kds_prev_dtfin_xdtpl
 	
 	try
 
 		kds_work = u_get_ds_pilota_workqueue( )
 		k_righe = kds_work.retrieve("WORK")
+		if k_righe < 0 then
+			kguo_exception.inizializza( )
+			kguo_exception.kist_esito.esito = kguo_exception.kk_st_uo_exception_tipo_err_int
+			kguo_exception.kist_esito.sqlerrtext = "Errore in estrazione dati previsione data fine lavorazione."
+			kguo_exception.kist_esito.nome_oggetto = this.classname( )
+			kguo_exception.scrivi_log( )
+			throw kguo_exception
+		end if
+		
 		if k_righe > 0 then  // retrive dati in lav con data ini e fine prevista di Lav e data fine prevista   
 		
 			for k_riga = 1 to k_righe	
@@ -528,6 +483,8 @@ datastore kds_work, kds_queue
 
 //			u_sort_ds_queue_lav_xfila( )  //DBG
 //			kids_ds_queue_lav_xfila.saveas("c:\ufo\queuesort.txt", Text!, true) //DBG
+
+			kds_prev_dtfin_xdtpl = u_get_ds_prev_dataora_lav_fin_fromdtpl( ) // get dt fine prev calcolata da dt ins pilota_cmd
 
 			k_riga = 1
 			do while k_riga <= k_righe  
@@ -554,6 +511,12 @@ datastore kds_work, kds_queue
 					kids_ds_queue_lav_xfila.setitem(k_riga_queue, "k_dataora_lav_ini", k_dataora_lav_ini)
 					kids_ds_queue_lav_xfila.setitem(k_riga_queue, "k_dataora_lav_fin", k_dataora_lav_fin)
 
+//--- get della prev di fine lav calcolata da dt ins del pilota_cmd
+					k_riga_dtfin_xdtpl = kds_prev_dtfin_xdtpl.find( "barcode = '" + trim(kds_queue.getitemstring( k_riga, "barcode")) + "'",1 , kds_prev_dtfin_xdtpl.rowcount( ), primary!)
+					if k_riga_dtfin_xdtpl > 0 then
+						k_dataora_lav_fin = kds_prev_dtfin_xdtpl.getitemdatetime( k_riga_dtfin_xdtpl, "dataora_lav_fin_prev")
+						kds_queue.setitem(k_riga, "dataora_lav_fin_prev_dtpl", k_dataora_lav_fin)
+					end if
 //--- Oltre alla riga stessa aggiorna se ci sono eventuali righe di gorupage che hanno lo stesso numero 'ordine', ripete2 volte xchè queste viaggiano sempre in coppia
 					k_ordine_queue = kds_queue.getitemnumber(k_riga, "n_ordine")
 					k_riga ++
@@ -562,11 +525,12 @@ datastore kds_work, kds_queue
 						do while k_ordine_queue = kds_queue.getitemnumber(k_riga, "n_ordine") 
 							
 							//u_set_ds_pilota_queue_data_prev_1(k_riga)
-							kds_queue.setitem( k_riga, "dataora_lav_ini", kds_queue.getitemdatetime( k_riga - 1, "dataora_lav_ini"))
-							kds_queue.setitem( k_riga, "dataora_lav_fin_prev", kds_queue.getitemdatetime( k_riga - 1, "dataora_lav_fin_prev"))
-							kds_queue.setitem( k_riga, "dataora_lav_fin_min_prev", kds_queue.getitemdatetime( k_riga - 1, "dataora_lav_fin_min_prev"))
-							kds_queue.setitem( k_riga, "dataora_lav_fin_max_prev", kds_queue.getitemdatetime( k_riga - 1, "dataora_lav_fin_max_prev"))
-							kds_queue.setitem( k_riga, "avg_time_io_minute", kds_queue.getitemnumber( k_riga - 1, "avg_time_io_minute"))
+							kds_queue.setitem(k_riga, "dataora_lav_ini", kds_queue.getitemdatetime( k_riga - 1, "dataora_lav_ini"))
+							kds_queue.setitem(k_riga, "dataora_lav_fin_prev", kds_queue.getitemdatetime( k_riga - 1, "dataora_lav_fin_prev"))
+							kds_queue.setitem(k_riga, "dataora_lav_fin_min_prev", kds_queue.getitemdatetime( k_riga - 1, "dataora_lav_fin_min_prev"))
+							kds_queue.setitem(k_riga, "dataora_lav_fin_max_prev", kds_queue.getitemdatetime( k_riga - 1, "dataora_lav_fin_max_prev"))
+							kds_queue.setitem(k_riga, "avg_time_io_minute", kds_queue.getitemnumber( k_riga - 1, "avg_time_io_minute"))
+							kds_queue.setitem(k_riga, "dataora_lav_fin_prev_dtpl", kds_queue.getitemdatetime( k_riga - 1, "dataora_lav_fin_prev_dtpl"))
 							k_riga ++
 							if k_riga > k_righe then 
 								exit
@@ -595,6 +559,10 @@ datastore kds_work, kds_queue
 		throw kuo_exception
 
 	finally
+
+//		if isvalid(kds_work) then destroy kds_work
+//		if isvalid(kds_queue) then destroy kds_queue
+//		if isvalid(kds_prev_dtfin_xdtpl) then destroy kds_prev_dtfin_xdtpl
 
 	end try
 		
@@ -804,6 +772,266 @@ datastore kds_inp, kds_out
 return k_rigainsert
 	
 
+end function
+
+public function string batch_run_stat_u_m2000_avgtimeplant () throws uo_exception;//
+string k_return = ""
+string k_esito = ""
+integer k_rc
+st_esito kst_esito
+st_errori_gestione kst_errori_gestione
+//kdsp_stat_start kdsp1_stat_start
+kuf_sp_stat_start kuf1_sp_stat_start
+
+try	
+
+	kst_esito.esito = kkg_esito.ok
+	kst_esito.sqlcode = 0
+	kst_esito.SQLErrText = ""
+
+//--- lancio spl (datastore)
+	kuf1_sp_stat_start = create kuf_sp_stat_start
+//	k_rc = kuf1_sp_stat_start.u_esegui_u_m2000_avgtimeplant( )
+	k_rc = u_esegui_u_m2000_avgtimeplant( )
+	k_esito = trim(ki_status)
+
+	if k_rc < 0 then
+		kst_esito.esito = kkg_esito.db_ko
+		kst_esito.sqlcode = -1
+		kst_esito.sqlerrtext = "Errore in Generazione dati Tempi Medi Giri Impianto: '" &
+									  + k_esito + "': esito " + string (k_rc) 
+	else
+		if k_rc = 0 then
+			kst_esito.esito = kkg_esito.ko
+			kst_esito.sqlcode = 0
+			kst_esito.sqlerrtext = "Anomalia in generazione dati Tempi Medi Giri Impianto ' " &
+										  + k_esito + " Nessun dato estratto! "
+		else
+			kst_esito.esito = kkg_esito.ok
+			kst_esito.sqlcode = 0
+			kst_esito.sqlerrtext = "Generazione dati Tempi Medi Giri Impianto terminata correttamente: " + k_esito
+
+		end if
+	end if
+//			if left(k_esito,2) <> "Ok" then
+//				kst_esito.esito = kkg_esito.ko
+//				kst_esito.sqlcode = 0
+//				kst_esito.sqlerrtext = "Anomalie in generazione Statistici ' " &
+//											  + trim(kdsp1_stat_start.dataobject) + "' err.:" + trim(k_esito)
+//			else
+//			end if
+
+//--- scrive l'errore su LOG
+	kst_errori_gestione.esito = kst_esito.esito
+	kst_errori_gestione.nome_oggetto = this.classname()
+	kst_errori_gestione.sqlsyntax = trim(kst_esito.sqlerrtext)
+	kst_errori_gestione.sqlerrtext = trim(kst_esito.SQLErrText)
+	kst_errori_gestione.sqldbcode = kst_esito.sqlcode
+	kst_errori_gestione.sqlca = kguo_sqlca_db_magazzino
+	kGuf_data_base.errori_gestione(kst_errori_gestione)
+				
+	
+catch(uo_exception kuo_exception)
+	throw kuo_exception
+
+finally
+//	if isvalid(kdsp1_stat_start) then destroy kdsp1_stat_start
+	if isvalid(kuf1_sp_stat_start) then destroy kuf1_sp_stat_start
+	
+	k_return = kst_esito.sqlerrtext 
+
+end try
+
+return k_return
+
+end function
+
+public function string get_id_programma (string k_flag_modalita);//
+string k_return
+kuf_parent kuf1_parent
+
+
+kuf1_parent = create kuf_parent
+
+kuf1_parent.u_set_ki_nomeoggetto(this)
+k_return = kuf1_parent.get_id_programma(k_flag_modalita)
+
+destroy kuf1_parent
+
+return k_return
+end function
+
+public function st_esito u_batch_run () throws uo_exception;//---
+//--- Lancio operazioni Batch
+//---
+string k_string
+st_esito kst_esito
+
+
+try 
+
+	kst_esito.esito = kkg_esito.ok
+	kst_esito.sqlcode = 0
+	kst_esito.SQLErrText = ""
+	kst_esito.nome_oggetto = this.classname()
+
+//--- Genera tabella dei tempi di previsioni di lavorazione impianto
+	k_string = batch_run_stat_u_m2000_avgtimeplant( )
+	if trim(k_string) > " " then
+		kst_esito.SQLErrText = "Operazione conclusa correttamente." + k_string
+	else
+		kst_esito.SQLErrText = "Operazione conclusa. Nessun dato caricato in tabella Previsioni Tempi Impianto di irraggiamento."
+	end if
+
+
+catch (uo_exception kuo_exception)
+	throw kuo_exception
+	
+finally
+	
+end try
+
+
+return kst_esito
+end function
+
+private function datastore u_get_ds_prev_dataora_lav_fin_fromdtpl () throws uo_exception;//
+//--------------------------------------------------------------------------------------
+//--- Popola ds con la data di fine lavorazione x data chiusura PL
+//--------------------------------------------------------------------------------------
+//
+long k_righe
+int k_rc
+datastore kds_1	
+	
+	try
+
+		kds_1 = CREATE datastore
+		kds_1.dataobject = ki_ds_prev_data_fine_lav_xdtpl
+		k_rc = kds_1.SetTransObject (kguo_sqlca_db_magazzino)
+
+		kguf_data_base.u_set_ds_change_name_tab(kds_1, "vx_MAST_pilota_pallet_workqueue")
+		
+		k_righe = kds_1.retrieve()
+		
+		if k_righe < 1 then
+			
+			kguo_exception.inizializza( )
+			kguo_exception.kist_esito.esito = kguo_exception.kk_st_uo_exception_tipo_err_int
+			kguo_exception.kist_esito.sqlerrtext = "Errore in estrazione previsione data fine lavorazione calcolata dalla chiusura del piano di lavoro, query '" + ki_ds_prev_data_fine_lav_xdtpl + "'"
+			kguo_exception.kist_esito.nome_oggetto = this.classname( )
+			kguo_exception.scrivi_log( )
+			throw kguo_exception
+			
+		end if
+		
+	catch (uo_exception kuo_exception)
+		throw kuo_exception
+
+	finally
+
+	end try
+		
+
+return kds_1
+	
+
+end function
+
+private subroutine u_set_dataora_lav_prev_fin_1 (ref datastore ads_1, long a_riga) throws uo_exception;//
+//--------------------------------------------------------------------------------------
+//--- Aggiorna la data di fine lavorazione in tab 'previsioni' per 
+//--- i pallet in lavorazione (WORK)
+//--- input: datastore previsioni, nr riga 
+//--------------------------------------------------------------------------------------
+//
+//
+datetime k_dataora_lav_fin_prev, k_dataora_lav_ini, k_dataora_lav_fin_min_prev, k_dataora_lav_fin_max_prev
+int k_rc
+st_tab_s_avgtimeplant kst_tab_s_avgtimeplant_avg, kst_tab_s_avgtimeplant_min, kst_tab_s_avgtimeplant_max
+
+	
+	try
+
+			
+		ads_1.object.dataora_lav_fin_prev[a_riga] = datetime(date(0), time(0))
+
+		k_dataora_lav_ini = ads_1.getitemdatetime(a_riga, "dataora_lav_ini")
+		if date(k_dataora_lav_ini) > kkg.data_no then
+				
+			kst_tab_s_avgtimeplant_avg.time_io_minute = ads_1.getitemnumber(a_riga, "time_io_minute_avg")
+			kst_tab_s_avgtimeplant_min.time_io_minute = ads_1.getitemnumber(a_riga, "time_io_minute_min")
+			kst_tab_s_avgtimeplant_max.time_io_minute = ads_1.getitemnumber(a_riga, "time_io_minute_max")
+			ads_1.setitem(a_riga, "avg_time_io_minute", kst_tab_s_avgtimeplant_avg.time_io_minute)
+
+		//--- calcola le previsioni aggiungendo i minuti previsti in impianto per l'uscita
+			if not isvalid(kiuf_utility) then kiuf_utility = create kuf_utility
+			k_dataora_lav_fin_prev = kiuf_utility.u_datetime_after_minute(k_dataora_lav_ini, kst_tab_s_avgtimeplant_avg.time_io_minute)
+			if date(k_dataora_lav_fin_prev) > kkg.data_no then
+						
+				if k_dataora_lav_fin_prev < kguo_g.get_datetime_current( ) then
+					k_dataora_lav_fin_prev = kiuf_utility.u_datetime_after_minute(kguo_g.get_datetime_current( ), 60) // se data prev minore di adesso allora metto adesso + un tot di minuti
+				end if
+							
+				k_dataora_lav_fin_min_prev = kiuf_utility.u_datetime_after_minute(k_dataora_lav_fin_prev, (kst_tab_s_avgtimeplant_min.time_io_minute - kst_tab_s_avgtimeplant_avg.time_io_minute))
+							
+				k_dataora_lav_fin_max_prev = kiuf_utility.u_datetime_after_minute(k_dataora_lav_fin_prev, (kst_tab_s_avgtimeplant_max.time_io_minute - kst_tab_s_avgtimeplant_avg.time_io_minute))
+							
+			end if
+					
+			ads_1.setitem(a_riga, "dataora_lav_fin_prev", k_dataora_lav_fin_prev)
+			ads_1.setitem(a_riga, "dataora_lav_fin_min_prev", k_dataora_lav_fin_min_prev)
+			ads_1.setitem(a_riga, "dataora_lav_fin_max_prev", k_dataora_lav_fin_max_prev)
+					
+		end if
+		
+
+	catch (uo_exception kuo_exception)
+		throw kuo_exception
+
+	finally
+
+	end try
+		
+
+//return k_righe
+	
+
+end subroutine
+
+public function integer u_esegui_u_m2000_avgtimeplant ();//
+//--- Esecuzione della Stored Procedure MSSQL STATISTICI (DATAWHERHOUSE)
+//--- Chiama la sp che scatena tutte le altre
+//
+int k_return
+int k_rc
+
+	ki_status = ""
+
+	DECLARE u_m2000_avgtimeplant PROCEDURE FOR
+			@li_rc = dbo.u_m2000_avgtimeplant
+									@k_status varchar(8000) = :ki_status OUT
+		using kguo_sqlca_db_magazzino ;
+			
+	execute u_m2000_avgtimeplant;
+	
+	IF kguo_sqlca_db_magazzino.SQLCode < 0 THEN
+		//ls_msg = SQLCA.SQLErrText
+		k_return =  kguo_sqlca_db_magazzino.SQLCode
+	ELSE
+			// Put the return value into the var and close the declaration.
+		FETCH u_m2000_avgtimeplant INTO :k_rc, :ki_status;
+		IF kguo_sqlca_db_magazzino.SQLCode = 0 THEN
+			k_return = k_rc
+		else
+			k_return = 0
+		end if
+		CLOSE u_m2000_avgtimeplant;
+	END IF
+	
+	kguo_sqlca_db_magazzino.db_commit( )
+
+return k_return
 end function
 
 on kuf_pilota_previsioni.create

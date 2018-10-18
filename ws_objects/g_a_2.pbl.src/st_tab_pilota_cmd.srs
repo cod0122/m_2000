@@ -4,7 +4,7 @@ global type st_tab_pilota_cmd from structure
 	integer		num_rich
 	datetime		data_ins
 	integer		tipo
-	integer		pl_barcode_codice
+	long		pl_barcode_codice
 	string		path
 	string		pfile		descriptor "comment" = "in informix era solo 'file'"
 	string		stato

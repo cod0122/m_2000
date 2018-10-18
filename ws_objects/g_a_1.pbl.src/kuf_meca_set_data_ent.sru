@@ -16,6 +16,7 @@ end variables
 forward prototypes
 public function long u_set_data_ent () throws uo_exception
 public function long u_set_data_ent_lotto (ref st_tab_meca ast_tab_meca) throws uo_exception
+public function st_esito u_batch_run () throws uo_exception
 end prototypes
 
 public function long u_set_data_ent () throws uo_exception;//
@@ -156,6 +157,41 @@ end try
 return k_return
 
 
+end function
+
+public function st_esito u_batch_run () throws uo_exception;//---
+//--- Lancio operazioni Batch
+//---
+int k_ctr
+st_esito kst_esito
+
+
+try 
+
+	kst_esito.esito = kkg_esito.ok
+	kst_esito.sqlcode = 0
+	kst_esito.SQLErrText = ""
+	kst_esito.nome_oggetto = this.classname()
+
+//--- Imposta Data di entrata merce di E1 su MECA
+	k_ctr = u_set_data_ent( )
+	if k_ctr > 0 then
+		kst_esito.SQLErrText = "Operazione conclusa correttamente." &
+									+ "Sono state registrate " + string(k_ctr) + " date di entrata Lotto a magazzino. Dati ottenuti dal Sistema E-ONE" 
+	else
+		kst_esito.SQLErrText = "Operazione conclusa. Nessuna nuova data di entrata Lotto a magazzino importata da E-ONE."
+	end if
+
+
+catch (uo_exception kuo_exception)
+	throw kuo_exception
+	
+finally
+	
+end try
+
+
+return kst_esito
 end function
 
 on kuf_meca_set_data_ent.create

@@ -2295,12 +2295,13 @@ int k_riga, k_ctr
 int k_nr_errori 
 date k_data_scad_sf_cf, k_data_pkl
 kuf_armo kuf1_armo
+kuf_listino kuf1_listino
 st_esito kst_esito
 st_tab_wm_pklist kst_tab_wm_pklist, kst_tab_wm_pklist_altro
 st_tab_wm_pklist_righe kst_tab_wm_pklist_righe
 st_tab_contratti kst_tab_contratti
 st_tab_meca kst_tab_meca
-
+st_tab_listino kst_tab_listino[]
 
 
 
@@ -2437,7 +2438,7 @@ st_tab_meca kst_tab_meca
 					if kst_esito.esito <> kkg_esito.ok then
 						if kst_esito.esito = kkg_esito.err_logico then
 							k_return = tab_1.tabpage_1.text + " - " + trim(tab_1.tabpage_1.dw_1.object.sc_cf_t.text) + " " + trim(kst_tab_contratti.sc_cf) + " Più di un Contratto " + trim(kst_tab_contratti.mc_co) &
-											+ " + cf = '" + trim(kst_tab_contratti.sc_cf) + "' presente in archivio~n~r" 
+											+ " + cf = '" + trim(kst_tab_contratti.sc_cf) + "' presente in archivio~n~r" + kst_esito.sqlerrtext
 						else
 							k_return = tab_1.tabpage_1.text + " - " + trim(tab_1.tabpage_1.dw_1.object.sc_cf_t.text) + " " + trim(kst_tab_contratti.sc_cf) + " Contratto " + trim(kst_tab_contratti.mc_co) &
 											+ " + cf = '" + trim(kst_tab_contratti.sc_cf) + "', non Trovato in archivio~n~r" 
@@ -2457,13 +2458,34 @@ st_tab_meca kst_tab_meca
 				end if
 			end if	
 			
+//--- controllo se è presente il Contratto-E1 su Listino 
+			if k_errore = "0" or k_errore = "4" or k_errore = "5" then
+				if kst_tab_wm_pklist.clie_3  > 0 and kst_tab_contratti.codice > 0 then
+					kuf1_listino = create kuf_listino			
+					kst_tab_listino[1].cod_cli = kst_tab_wm_pklist.clie_3 
+					kst_tab_listino[1].contratto = kst_tab_contratti.codice 
+					kuf1_listino.get_id_listini(kst_tab_listino[])  // get id listino
+					kst_tab_listino[1].e1litm = kuf1_listino.get_e1litm(kst_tab_listino[1])   // get del contratto E1
+					
+					if trim(kst_tab_listino[1].e1litm) > " " then // verifica se c'è il Contratto-E1 su Listino
+					else
+						k_return = tab_1.tabpage_1.text + ": Attenzione listino senza Contratto-E1, il documento ASN su E1 non può essere generato!!~n~r" 
+						k_errore = "5"
+						k_nr_errori++
+					end if
+			
+				end if
+			end if
+			
 		catch (uo_exception kuo_exception2)
 				kst_esito = kuo_exception2.get_st_esito()
 				k_return += tab_1.tabpage_1.text + ": Errore DB-1: '" + string(kst_esito.sqlcode) +" - "+ trim(kst_esito.sqlerrtext) + "'~n~r" 
 				k_errore = "1"
 				k_nr_errori++
 			
+			
 		finally
+			if isvalid(kuf1_listino) then destroy kuf1_listino			
 			
 		end try
 	end if
@@ -2488,32 +2510,6 @@ st_tab_meca kst_tab_meca
 		end if
 	end if
 
-//--- controllo se è presente almeno un Contratto-E1 
-//					if k_errore = "0" or k_errore = "4" or k_errore = "5" then
-//						try
-//							u_set_k_e1litm_ok()   // verifica se c'è almeno un Contratto-E1 è attivo su Listino
-//							
-//							if tab_1.tabpage_1.dw_1.getitemstring(1, "k_e1litm_ok") = "1" then
-//							else
-//								k_return = tab_1.tabpage_1.text + ": Attenzione nessun Contratto-E1 attivo in archivio, il documento ASN su E1 non verrà generato!!~n~r" 
-//								k_errore = "5"
-//								k_nr_errori++
-//								if messagebox("Importa Packing-List come Nuovo Lotto", & 
-//									"Generare il nuovo Lotto da questa Packing-List '" + kst_tab_wm_pklist.idpkl + "'?~n~r" &
-//									+ "Durante l'importazione eventuali modifiche saranno subito inserite sul Pk-List e sul nuovo Lotto" &
-//									, question!, yesno!, 2) = 1 then
-//							end if
-//							
-//						catch (uo_exception kuo_exception3)
-//								kst_esito = kuo_exception3.get_st_esito()
-//								k_return += tab_1.tabpage_1.text + ": Errore DB-1: '" + string(kst_esito.sqlcode) +" - "+ trim(kst_esito.sqlerrtext) + "'~n~r" 
-//								k_errore = "1"
-//								k_nr_errori++
-//							
-//						finally
-//							
-//						end try
-//					end if
 
 	if k_errore = "0" or k_errore = "4" or k_errore = "5" then
 		
@@ -2778,7 +2774,6 @@ end on
 type tabpage_1 from w_g_tab_3`tabpage_1 within tab_1
 integer width = 3159
 integer height = 1428
-long backcolor = 32435950
 string text = "Testata"
 string picturename = "Custom081!"
 long picturemaskcolor = 32435950
@@ -2792,6 +2787,7 @@ integer width = 2953
 integer height = 1308
 string dataobject = "d_wm_pklist"
 boolean controlmenu = true
+string icon = "Asterisk!"
 boolean ki_attiva_standard_select_row = false
 end type
 
@@ -3079,8 +3075,6 @@ boolean titlebar = true
 string title = "Dettaglio Riga"
 string dataobject = "d_wm_pklist_righe"
 boolean controlmenu = true
-boolean hscrollbar = true
-boolean vscrollbar = true
 boolean hsplitscroll = false
 boolean ki_disattiva_moment_cb_aggiorna = false
 boolean ki_colora_riga_aggiornata = false
@@ -3299,7 +3293,6 @@ boolean titlebar = true
 string title = "cambia codici barcode"
 string dataobject = "d_wm_pklist_barcode_change"
 boolean controlmenu = true
-boolean vscrollbar = true
 boolean resizable = true
 boolean hsplitscroll = false
 end type

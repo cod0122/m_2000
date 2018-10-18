@@ -113,6 +113,7 @@ public function string u_stringa_pulisci_nomefunzione (string k_stringa)
 private function datetime u_datetime_after (datetime a_datetime, long a_time, string a_datepart)
 public function datetime u_datetime_after_hour (datetime a_datetime, long a_nr_hour)
 public function datetime u_datetime_after_minute (datetime a_datetime, long a_nr_minute)
+public function date u_data_get_lastmonthday (date a_date)
 end prototypes
 
 public function unsignedinteger u_sound (string k_suono, unsignedinteger k_umodule, unsignedlong k_flag);//
@@ -5213,6 +5214,31 @@ k_return = u_datetime_after(a_datetime, a_nr_minute, "minute")
 
 return k_return 
   
+end function
+
+public function date u_data_get_lastmonthday (date a_date);//
+//---- torna data con l'ultimo giorno del mese es. 20/10/2018 --> 31/10/2018 
+//
+date k_return
+int li_month, li_year
+
+li_month = Month(a_date)
+li_year = year(a_date)
+
+IF li_month < 12 THEN
+   li_month ++
+ELSE
+   li_month = 1
+   li_year ++
+END IF
+
+// build a new date
+k_return = date(li_year,li_month,1)
+// extract the last day of the previous month
+k_return = RelativeDate(k_return, -1)
+
+
+return k_return
 end function
 
 on kuf_utility.create

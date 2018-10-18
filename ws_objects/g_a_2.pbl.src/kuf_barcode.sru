@@ -131,7 +131,6 @@ public function st_tab_barcode get_ultimo_barcode_importato () throws uo_excepti
 public function long get_nr_barcode_da_non_trattare (readonly st_tab_barcode kst_tab_barcode) throws uo_exception
 public function long get_nr_barcode_trattati (readonly st_tab_barcode kst_tab_barcode) throws uo_exception
 public function st_esito get_padre_id_meca (ref st_tab_barcode kst_tab_barcode)
-public function st_esito get_pl_barcode (ref st_tab_barcode kst_tab_barcode)
 public function st_esito set_num_data_int (st_tab_barcode kst_tab_barcode)
 public function boolean if_essere_barcode_figlio (st_tab_barcode kst_tab_barcode_figlio, st_tab_barcode kst_tab_barcode_padre) throws uo_exception
 public function boolean if_essere_barcode_padre_con_giri_figlio (st_tab_barcode kst_tab_barcode_figlio, st_tab_barcode kst_tab_barcode_padre) throws uo_exception
@@ -176,6 +175,7 @@ public subroutine get_fila_tot_x_id_meca (ref st_tab_barcode kst_tab_barcode) th
 public function long get_barcode_da_id_meca (ref st_tab_barcode kst_tab_barcode[]) throws uo_exception
 public function boolean if_barcode_figlio (ref st_tab_barcode ast_tab_barcode) throws uo_exception
 public function boolean if_da_trattare (st_tab_barcode ast_tab_barcode) throws uo_exception
+public function long get_pl_barcode (st_tab_barcode kst_tab_barcode) throws uo_exception
 end prototypes
 
 public function string togli_pl_barcode (ref st_tab_barcode kst_tab_barcode);//
@@ -3017,51 +3017,6 @@ st_esito kst_esito
 
 return kst_esito
 
-end function
-
-public function st_esito get_pl_barcode (ref st_tab_barcode kst_tab_barcode);//
-//====================================================================
-//=== Select il codice PL_BARCODE del Barcode richeisto
-//=== 
-//=== arg: st_tab_barcode.barcode
-//=== rit.: st_tab_barcode.pl_barcode
-//=== Ritorna tab. ST_ESITO, Esiti: 0=OK; 100=not found
-//===                                     1=errore grave
-//===                                     2=errore > 0
-//=== 
-//====================================================================
-//
-
-string k_return = "0 "
-st_esito kst_esito
-
-
-	kst_esito.esito = kkg_esito.ok
-	kst_esito.sqlcode = 0
-	kst_esito.SQLErrText = ""
-	kst_esito.nome_oggetto = this.classname()
-
-	select 
-			 pl_barcode
-		into
-			 :kst_tab_barcode.pl_barcode
-		from barcode
-		where barcode = :kst_tab_barcode.barcode
-		using sqlca;
-
-
-	if sqlca.sqlcode <> 0 then
-		kst_esito.sqlcode = sqlca.sqlcode
-		kst_esito.SQLErrText = "Tab.Barcode: " + trim(sqlca.SQLErrText)
-		if sqlca.sqlcode = 100 then
-			kst_esito.esito = kkg_esito.not_fnd
-		else
-			kst_esito.esito = kkg_esito.db_ko
-		end if
-	end if
-
-
-return kst_esito
 end function
 
 public function st_esito set_num_data_int (st_tab_barcode kst_tab_barcode);//
@@ -6087,6 +6042,54 @@ st_tab_barcode kst_tab_barcode
 
 return k_return
 
+end function
+
+public function long get_pl_barcode (st_tab_barcode kst_tab_barcode) throws uo_exception;//
+//====================================================================
+//=== Select il codice PL_BARCODE del Barcode richeisto
+//=== 
+//=== arg: st_tab_barcode.barcode
+//=== rit.: st_tab_barcode.pl_barcode
+//=== Ritorna:pl_barcode
+//=== 
+//====================================================================
+//
+long k_return 
+
+
+
+try
+
+	select 
+			 pl_barcode
+		into
+			 :kst_tab_barcode.pl_barcode
+		from barcode
+		where barcode = :kst_tab_barcode.barcode
+		using kguo_sqlca_db_magazzino;
+
+
+	if kguo_sqlca_db_magazzino.sqlcode < 0 then
+		kguo_exception.inizializza( )
+		kguo_exception.kist_esito.sqlcode = kguo_sqlca_db_magazzino.sqlcode
+		kguo_exception.kist_esito.SQLErrText = "Errore in lettura codice PL da tab.Barcode: " + trim(kguo_sqlca_db_magazzino.SQLErrText)
+		kguo_exception.kist_esito.esito = kkg_esito.db_ko
+		kguo_exception.kist_esito.nome_oggetto = this.classname()
+		throw kguo_exception
+	end if
+
+	if isnull(kst_tab_barcode.pl_barcode) then kst_tab_barcode.pl_barcode = 0
+	
+	k_return = kst_tab_barcode.pl_barcode
+
+catch (uo_exception  kuo_exception)
+	throw kuo_exception
+	
+	
+end try
+	
+
+return k_return
 end function
 
 on kuf_barcode.create

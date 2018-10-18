@@ -2143,13 +2143,13 @@ end type
 
 event clicked;//
 string k_return
-kuf_stat_batch kuf1_stat_batch
+kuf_pilota_previsioni kuf1_pilota_previsioni
 
 
 setpointer(kkg.pointer_attesa)
 		
 try
-	kuf1_stat_batch = create kuf_stat_batch
+	kuf1_pilota_previsioni = create kuf_pilota_previsioni
 
 	if messagebox ("Genera Tabella Tempi Medi Giri Impianto", &
 						"L'operazione popola la tabella con i dati dei tempi medi giri impianto degli ultimi anni~n~r" &
@@ -2158,7 +2158,7 @@ try
 						+ "Vuoi procedere con l'esecuzione?" &
 						 ,question!, YesNo!, 2) = 1 then
 
-		k_return = kuf1_stat_batch.run_stat_u_m2000_avgtimeplant( )
+		k_return = kuf1_pilota_previsioni.batch_run_stat_u_m2000_avgtimeplant( )
 		messagebox ("Genera Tabella Tempi Medi Giri Impianto", &
 					"L'operazione è conclusa. " &
 					+ "Esito:~n~r" &
@@ -2171,7 +2171,7 @@ catch (uo_exception kuo_exception)
 	kuo_exception.messaggio_utente()
 
 finally
-	destroy kuf1_stat_batch
+	destroy kuf1_pilota_previsioni
 
 end try
 

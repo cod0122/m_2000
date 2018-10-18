@@ -18,8 +18,6 @@ boolean titlebar = false
 boolean controlmenu = false
 boolean minbox = false
 boolean maxbox = false
-windowtype windowtype = child!
-windowstate windowstate = normal!
 event u_open ( )
 cb_ritorna cb_ritorna
 cb_aggiorna cb_aggiorna
@@ -366,13 +364,7 @@ protected subroutine set_titolo_window ();//
 
 end subroutine
 
-public subroutine set_window_size ();//
-//--- Durante la OPEN: Dimensione e Posizione Window come da ultimo utilizzo
-//
-
-u_win_open()
-
-
+public subroutine set_window_size ();
 end subroutine
 
 public subroutine set_pos_cursore ();//
@@ -478,6 +470,9 @@ pointer kpointer_orig
 //--- altre operazioni
 	post event u_open( )
 	
+
+	u_win_open()
+
 		
 	setpointer(kpointer_orig )		
 

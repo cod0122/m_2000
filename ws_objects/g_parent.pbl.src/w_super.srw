@@ -141,34 +141,6 @@ w_super kw_super
 //--- Aggiungo la window tra le aperte
 		kguo_g.window_aperta_add(kw_super)
 	
-//		if kguo_g.if_w_toolbar_programmi( ) then
-//	
-//	//--- ripristino le caratteristiche della window e toolbar
-//			kst_window_size=u_window_size_restore() 
-//			
-//		//--- Posiziona window all'interno MDI 
-//			if kw_super.ki_st_open_w.flag_open_maximized then
-//				this.WindowState = Maximized!
-//			else
-//				if kw_super.ki_st_open_w.flag_adatta_win = kkg.adatta_win or kw_super.ki_st_open_w.flag_adatta_win = "" then
-//					if (lower(kst_window_size.WindowState) = "normal!" &
-//							or lower(kst_window_size.WindowState) = "minimized!" &
-//							or lower(kst_window_size.WindowState) = "nullo" &
-//							or Len(trim(kst_window_size.WindowState)) = 0) &
-//							and kst_window_size.h > 0 then
-//						//this.setredraw( false )
-//						this.resize(kst_window_size.w, kst_window_size.h)
-//						this.move(kst_window_size.x, kst_window_size.y)
-//						//this.setredraw( true )
-//					else
-//						this.WindowState = Maximized!
-//					end if
-//				else
-//			//--- altrimenti solo posizione		
-//					this.move(kst_window_size.x, kst_window_size.y)
-//				end if
-//			end if
-//		end if
 	end if
 
 
@@ -492,25 +464,6 @@ w_super kw_super
 		end if
 	end if
 
-////--- attivo la toolbar se nessuna finestra aperta
-//	if (kGuf_data_base.prendi_win_la_prima()) = (kGuf_data_base.prendi_win_la_ultima()) then
-////--- invisibile la parte personalizzata della toolbar
-//		this.SetToolbar(2, false)
-//	end if
-
-////--- toglie dalla toolbar dei programmi aperti la voce 
-//#if defined PBNATIVE then
-//	kGuf_data_base.u_toolbar_programmi_cancella(kw_super)
-//#end if
-
-//	if isvalid(ki_st_open_w.key10_window_chiamante) then
-//		ki_st_open_w.key10_window_chiamante.post event activate( )
-//	else
-////--- se non c'e' alcun menu non faccio sta roba
-//		if isvalid(ki_menu) then
-//			ki_menu.reset_menu_strumenti( )
-//		end if
-//	end if
 
 return k_return
 
@@ -1234,18 +1187,7 @@ event open;//
 
 	ki_nome_save = trim(this.ClassName())
 
-	//this.toolbarvisible = false  // nasconde la toolbar
-//	if this.windowtype = response! or this.windowtype = popup! then
-//	else
-//		if NOT this.ki_st_open_w.flag_open_maximized then
-//			this.move(9999,9999)  // trucco x NASCONDERE le window appena aperte (VISIBLE e HIDE non funziano in MDI)
-//		end if
-//	end if
-
-//kGuf_data_base.u_dbg_trace_open(kguo_g.kG_trace_attiva)
-	
-
-
+	post u_win_open( )
 
 end event
 
@@ -1255,5 +1197,9 @@ if ki_st_open_w.flag_primo_giro <> "S" then
 end if
 
 
+end event
+
+event close;//
+u_win_close( )
 end event
 

@@ -26,8 +26,6 @@ type st_6 from statictext within w_stampe
 end type
 type dw_personalizza from datawindow within w_stampe
 end type
-type r_print from rectangle within w_stampe
-end type
 type cb_excel from commandbutton within w_stampe
 end type
 type cb_anteprima from commandbutton within w_stampe
@@ -66,11 +64,12 @@ end forward
 
 global type w_stampe from w_g_tab
 boolean visible = true
-integer width = 2711
-integer height = 1600
-boolean controlmenu = false
+integer width = 1317
+integer height = 1528
+string menuname = ""
 boolean minbox = false
 boolean maxbox = false
+boolean resizable = false
 long backcolor = 32567536
 string icon = "Report5!"
 string pointer = "Arrow!"
@@ -93,7 +92,6 @@ rb_2 rb_2
 rb_1 rb_1
 st_6 st_6
 dw_personalizza dw_personalizza
-r_print r_print
 cb_excel cb_excel
 cb_anteprima cb_anteprima
 cb_imposta cb_imposta
@@ -125,6 +123,10 @@ private long ki_ridimensione_y=0
 private string ki_stampante_pdf=""
 private boolean ki_anteprima_on=false
 kuf_stampe kiuf_stampe
+private int ki_winsaved_x
+private int ki_winsaved_y
+private int ki_winsaved_w
+private int ki_winsaved_h
 //w_g_tab kiw_this_window
 //m_toolbar_libx ki_menu   
 end variables
@@ -143,18 +145,20 @@ private subroutine u_imposta_form ()
 protected subroutine open_start_window ()
 protected subroutine attiva_tasti_0 ()
 public subroutine u_resize_1 ()
-public function integer u_win_close ()
 end prototypes
 
 event set_window_size();//
 
 
-	this.title = "Esegui Stampa: " + trim(kist_stampe.titolo)
 
 //
-////	this.windowState = normal!
 //
-//	this.resize( r_dimensione_win.width , r_dimensione_win.Height )
+	this.x = ki_winsaved_x 
+	this.y = ki_winsaved_y 
+	this.width = ki_winsaved_w 
+	this.height = ki_winsaved_h 
+	this.windowState = normal!
+
 //	r_dimensione_win.visible = false
 //
 //
@@ -170,7 +174,7 @@ event set_window_size();//
 //		this.y = 1
 //	end if
 //	
-//	this.setredraw(true)
+	this.setredraw(true)
 
 	
 
@@ -289,11 +293,11 @@ event set_window_size_oggetti(boolean k_visible);//
 	ki_anteprima_on = not k_visible
 	cb_close_anteprima.visible = not k_visible 
 	dw_print.visible = not k_visible
-	r_print.visible = not k_visible
+//	r_print.visible = not k_visible
 
-	dw_print.hscrollbar = not k_visible
-	dw_print.vscrollbar = not k_visible
-	dw_print.livescroll = not k_visible
+//	dw_print.hscrollbar = not k_visible
+//	dw_print.vscrollbar = not k_visible
+//	dw_print.livescroll = not k_visible
 
 	dw_print.enabled = not k_visible
 	if not k_visible then
@@ -871,6 +875,7 @@ kuf_utility kuf1_utility
 		end if
 	end if
 
+	ki_win_titolo_orig  = "Esegui Stampa: " + trim(kist_stampe.titolo)
 
 end subroutine
 
@@ -925,19 +930,25 @@ public subroutine u_resize_1 ();//
 
 	if ki_anteprima_on then
 
+		ki_winsaved_x = this.x
+		ki_winsaved_y = this.y
+		ki_winsaved_w = this.width
+		ki_winsaved_h = this.height
+		
+		This.WindowState = Maximized!
+
 		gb_pagine.x = 1
 		gb_pagine.y = 1
 		dw_print.move(1, 1)
-		r_print.x = dw_print.x
-		r_print.y = dw_print.x
+//		r_print.x = dw_print.x
+//		r_print.y = dw_print.x
 
-//		this.r_print.resize(this.width - 80, this.height - 150)
-		this.r_print.resize(this.width - 1, this.height - 100)
-//		this.dw_print.resize(this.width - 1, this.height - 100)
-		this.dw_print.resize(this.width - 1, this.height - dw_print.y - cb_close_anteprima.height * 2.0 -100)
+//		this.r_print.resize(this.width, this.height - 100)
+		this.dw_print.resize(this.workspacewidth( ) , this.workspaceheight( ) - cb_close_anteprima.height * 2.0) // -100)
+		this.dw_print.setredraw(true)
 		cb_close_anteprima.x = dw_print.x + cb_close_anteprima.width * 0.25
-		cb_close_anteprima.y = this.height - cb_close_anteprima.height * 1.5 -100
-
+		cb_close_anteprima.y = dw_print.height  + cb_close_anteprima.height / 2
+		
 //		this.resizable = true
 //	else
 //		this.resizable = false
@@ -946,12 +957,6 @@ public subroutine u_resize_1 ();//
 	
 
 end subroutine
-
-public function integer u_win_close ();//
-//--- non so per ora evito perchè forse mi da CRASH inaspettati in chiusura
-//
-return 0
-end function
 
 event u_open;//
 //--- Operazioni iniziali di OPEN 
@@ -977,6 +982,11 @@ event u_open;//
 
 	else
 
+		ki_winsaved_x = this.x
+		ki_winsaved_y = this.y
+		ki_winsaved_w = r_dimensione_win.width
+		ki_winsaved_h = r_dimensione_win.height
+		
 //--- imposta dimensioni della window 
 		post event set_window_size()	
 
@@ -1003,7 +1013,6 @@ this.rb_2=create rb_2
 this.rb_1=create rb_1
 this.st_6=create st_6
 this.dw_personalizza=create dw_personalizza
-this.r_print=create r_print
 this.cb_excel=create cb_excel
 this.cb_anteprima=create cb_anteprima
 this.cb_imposta=create cb_imposta
@@ -1034,29 +1043,27 @@ this.Control[iCurrent+9]=this.rb_2
 this.Control[iCurrent+10]=this.rb_1
 this.Control[iCurrent+11]=this.st_6
 this.Control[iCurrent+12]=this.dw_personalizza
-this.Control[iCurrent+13]=this.r_print
-this.Control[iCurrent+14]=this.cb_excel
-this.Control[iCurrent+15]=this.cb_anteprima
-this.Control[iCurrent+16]=this.cb_imposta
-this.Control[iCurrent+17]=this.cb_stampa
-this.Control[iCurrent+18]=this.em_zoom
-this.Control[iCurrent+19]=this.cbx_landscape
-this.Control[iCurrent+20]=this.cbx_personalizzazioni
-this.Control[iCurrent+21]=this.dw_originale
-this.Control[iCurrent+22]=this.em_nro
-this.Control[iCurrent+23]=this.cbx_personalizzazioni_salva
-this.Control[iCurrent+24]=this.cb_pdf
-this.Control[iCurrent+25]=this.st1_em_zoom
-this.Control[iCurrent+26]=this.ddplb_stampanti
-this.Control[iCurrent+27]=this.gb_pagine
-this.Control[iCurrent+28]=this.dw_print
-this.Control[iCurrent+29]=this.dw_crea_xls
-this.Control[iCurrent+30]=this.cb_printlist
+this.Control[iCurrent+13]=this.cb_excel
+this.Control[iCurrent+14]=this.cb_anteprima
+this.Control[iCurrent+15]=this.cb_imposta
+this.Control[iCurrent+16]=this.cb_stampa
+this.Control[iCurrent+17]=this.em_zoom
+this.Control[iCurrent+18]=this.cbx_landscape
+this.Control[iCurrent+19]=this.cbx_personalizzazioni
+this.Control[iCurrent+20]=this.dw_originale
+this.Control[iCurrent+21]=this.em_nro
+this.Control[iCurrent+22]=this.cbx_personalizzazioni_salva
+this.Control[iCurrent+23]=this.cb_pdf
+this.Control[iCurrent+24]=this.st1_em_zoom
+this.Control[iCurrent+25]=this.ddplb_stampanti
+this.Control[iCurrent+26]=this.gb_pagine
+this.Control[iCurrent+27]=this.dw_print
+this.Control[iCurrent+28]=this.dw_crea_xls
+this.Control[iCurrent+29]=this.cb_printlist
 end on
 
 on w_stampe.destroy
 call super::destroy
-if IsValid(MenuID) then destroy(MenuID)
 destroy(this.cb_esci)
 destroy(this.cb_email)
 destroy(this.cbx_chiude)
@@ -1069,7 +1076,6 @@ destroy(this.rb_2)
 destroy(this.rb_1)
 destroy(this.st_6)
 destroy(this.dw_personalizza)
-destroy(this.r_print)
 destroy(this.cb_excel)
 destroy(this.cb_anteprima)
 destroy(this.cb_imposta)
@@ -1182,22 +1188,7 @@ st_profilestring_ini kst_profilestring_ini
 
 end event
 
-event close;call super::close;////
-//window kwindow
-// 
-// 
-// 	if isvalid(ki_st_open_w.key10_window_chiamante) then
-//		ki_st_open_w.key10_window_chiamante.setfocus( )
-//	else
-//		kwindow = kGuf_data_base.prendi_win_la_ultima()
-//		
-//	//--- attivo la toolbar se nessuna finestra aperta
-//		if isvalid(kwindow) then
-//			kwindow.setfocus( )
-//		end if
-//	end if
-
-//kguo_g.rimuove_window_aperta(kiw_this_window)
+event close;call super::close;// 
 
 if isvalid(kiuf_stampe) then destroy kiuf_stampe
 
@@ -1219,8 +1210,8 @@ type st_stampa from w_g_tab`st_stampa within w_stampe
 end type
 
 type cb_esci from commandbutton within w_stampe
-integer x = 654
-integer y = 1292
+integer x = 709
+integer y = 1332
 integer width = 393
 integer height = 84
 integer taborder = 80
@@ -1242,8 +1233,8 @@ close(parent)
 end event
 
 type cb_email from commandbutton within w_stampe
-integer x = 654
-integer y = 1176
+integer x = 709
+integer y = 1216
 integer width = 393
 integer height = 84
 integer taborder = 30
@@ -1356,8 +1347,8 @@ end try
 end event
 
 type cbx_chiude from checkbox within w_stampe
-integer x = 786
-integer y = 700
+integer x = 731
+integer y = 724
 integer width = 535
 integer height = 80
 integer textsize = -10
@@ -1375,18 +1366,18 @@ end type
 
 type cb_close_anteprima from commandbutton within w_stampe
 boolean visible = false
-integer x = 1042
-integer y = 1236
-integer width = 567
-integer height = 88
+integer x = 640
+integer y = 1496
+integer width = 681
+integer height = 104
 integer taborder = 70
 boolean bringtotop = true
-integer textsize = -9
+integer textsize = -10
 integer weight = 700
 fontcharset fontcharset = ansi!
 fontpitch fontpitch = variable!
 fontfamily fontfamily = swiss!
-string facename = "Arial"
+string facename = "Verdana"
 string pointer = "HyperLink!"
 string text = "&Chiudi Anteprima"
 boolean flatstyle = true
@@ -1394,6 +1385,7 @@ end type
 
 event clicked;//
 //--- chiudo solo anteprima
+	ki_anteprima_on = false
 	parent.event set_window_size()
 	parent.event set_window_size_oggetti(true)
 	dw_personalizza.visible = false
@@ -1401,8 +1393,8 @@ event clicked;//
 end event
 
 type cb_personalizza from commandbutton within w_stampe
-integer x = 110
-integer y = 1292
+integer x = 165
+integer y = 1332
 integer width = 393
 integer height = 84
 integer taborder = 40
@@ -1439,13 +1431,13 @@ boolean visible = false
 linestyle linestyle = transparent!
 integer linethickness = 4
 long fillcolor = 255
-integer width = 1371
-integer height = 1436
+integer width = 1413
+integer height = 1628
 end type
 
 type st_em_zoom from statictext within w_stampe
-integer x = 78
-integer y = 592
+integer x = 110
+integer y = 616
 integer width = 622
 integer height = 80
 integer textsize = -10
@@ -1481,8 +1473,8 @@ end type
 
 type rb_2 from radiobutton within w_stampe
 boolean visible = false
-integer x = 78
-integer y = 96
+integer x = 110
+integer y = 120
 integer width = 242
 integer height = 52
 integer textsize = -10
@@ -1501,8 +1493,8 @@ end on
 
 type rb_1 from radiobutton within w_stampe
 boolean visible = false
-integer x = 78
-integer y = 168
+integer x = 110
+integer y = 192
 integer width = 320
 integer height = 76
 integer textsize = -10
@@ -1522,8 +1514,8 @@ end on
 
 type st_6 from statictext within w_stampe
 boolean visible = false
-integer x = 768
-integer y = 192
+integer x = 800
+integer y = 216
 integer width = 375
 integer height = 52
 integer textsize = -8
@@ -1543,8 +1535,8 @@ event rbuttonup pbm_dwnrbuttonup
 event u_personalizza_start ( )
 event ue_keydwn pbm_dwnkey
 boolean visible = false
-integer x = 1257
-integer y = 12
+integer x = 1650
+integer y = 8
 integer width = 1710
 integer height = 1056
 integer taborder = 120
@@ -1576,6 +1568,8 @@ event u_personalizza_start();//
 	
 	kiuf_stampe.personalizza_dw_print (dw_print, dw_personalizza)
 	
+	dw_print.setredraw( true )
+	dw_print.enabled = true
 //	this.Resize(dw_print.width*0.35, dw_print.Height*0.70)
 //	this.Modify("nome_testata.Width='"+ String(this.width - 100) +"' ")
 
@@ -1674,19 +1668,9 @@ pointer koldpointer
 
 end event
 
-type r_print from rectangle within w_stampe
-boolean visible = false
-integer linethickness = 4
-long fillcolor = 32567536
-integer x = 1184
-integer y = 1044
-integer width = 165
-integer height = 144
-end type
-
 type cb_excel from commandbutton within w_stampe
-integer x = 654
-integer y = 944
+integer x = 709
+integer y = 984
 integer width = 393
 integer height = 84
 integer taborder = 50
@@ -1720,8 +1704,8 @@ end if
 end event
 
 type cb_anteprima from commandbutton within w_stampe
-integer x = 110
-integer y = 1176
+integer x = 165
+integer y = 1216
 integer width = 393
 integer height = 84
 integer taborder = 30
@@ -1751,8 +1735,8 @@ event clicked;//
 end event
 
 type cb_imposta from commandbutton within w_stampe
-integer x = 110
-integer y = 944
+integer x = 165
+integer y = 984
 integer width = 393
 integer height = 84
 integer taborder = 10
@@ -1786,8 +1770,8 @@ SetPointer(kpointer_1)
 end event
 
 type cb_stampa from commandbutton within w_stampe
-integer x = 110
-integer y = 1060
+integer x = 165
+integer y = 1100
 integer width = 393
 integer height = 84
 integer taborder = 20
@@ -1864,8 +1848,8 @@ oldpointer = SetPointer(HourGlass!)
 end event
 
 type em_zoom from editmask within w_stampe
-integer x = 713
-integer y = 592
+integer x = 745
+integer y = 616
 integer width = 306
 integer height = 84
 integer taborder = 90
@@ -1903,8 +1887,8 @@ end event
 
 type cbx_landscape from checkbox within w_stampe
 boolean visible = false
-integer x = 78
-integer y = 288
+integer x = 110
+integer y = 312
 integer width = 997
 integer height = 96
 boolean bringtotop = true
@@ -1931,8 +1915,8 @@ end event
 
 type cbx_personalizzazioni from checkbox within w_stampe
 boolean visible = false
-integer x = 78
-integer y = 404
+integer x = 110
+integer y = 428
 integer width = 1051
 integer height = 76
 boolean bringtotop = true
@@ -2019,7 +2003,7 @@ end type
 
 type em_nro from editmask within w_stampe
 boolean visible = false
-integer x = 398
+integer x = 430
 integer y = 160
 integer width = 352
 integer height = 96
@@ -2053,8 +2037,8 @@ end event
 
 type cbx_personalizzazioni_salva from checkbox within w_stampe
 boolean visible = false
-integer x = 78
-integer y = 480
+integer x = 110
+integer y = 504
 integer width = 1083
 integer height = 76
 boolean bringtotop = true
@@ -2123,8 +2107,8 @@ event clicked;////
 end event
 
 type cb_pdf from commandbutton within w_stampe
-integer x = 654
-integer y = 1060
+integer x = 709
+integer y = 1100
 integer width = 393
 integer height = 84
 integer taborder = 60
@@ -2268,8 +2252,8 @@ end type
 
 type ddplb_stampanti from dropdownpicturelistbox within w_stampe
 integer x = 165
-integer y = 816
-integer width = 1198
+integer y = 856
+integer width = 1125
 integer height = 736
 integer taborder = 110
 boolean bringtotop = true
@@ -2297,8 +2281,9 @@ end event
 
 type gb_pagine from groupbox within w_stampe
 boolean visible = false
-integer x = 37
-integer width = 1335
+integer x = 69
+integer y = 24
+integer width = 1248
 integer height = 792
 integer textsize = -10
 integer weight = 700
@@ -2327,8 +2312,7 @@ string dataobject = "d_nulla"
 boolean controlmenu = true
 boolean hscrollbar = true
 boolean vscrollbar = true
-boolean border = false
-boolean livescroll = true
+borderstyle borderstyle = stylelowered!
 end type
 
 event ue_keydwn;//
@@ -2433,8 +2417,8 @@ end event
 
 type dw_crea_xls from datawindow within w_stampe
 boolean visible = false
-integer x = 965
-integer y = 520
+integer x = 1499
+integer y = 528
 integer width = 1143
 integer height = 668
 integer taborder = 130
@@ -2615,7 +2599,7 @@ end event
 
 type cb_printlist from picturebutton within w_stampe
 integer x = 37
-integer y = 816
+integer y = 856
 integer width = 119
 integer height = 100
 integer taborder = 100
