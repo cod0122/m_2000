@@ -231,6 +231,7 @@ protected subroutine open_start_window ()
 public subroutine u_build_menu (ref m_main am_main)
 public subroutine u_resize_1 ()
 private function boolean u_set_ki_menu ()
+public subroutine u_resize ()
 end prototypes
 
 protected function string inizializza () throws uo_exception;//
@@ -709,29 +710,14 @@ public subroutine u_build_menu (ref m_main am_main);//
 //--- Imposta le voci di menu 
 //--- Inp: il menu da 'trattare'
 //
-//--- Imposta le icone nella Window che simula il menu
-//string k_primo_giro
-//w_g_tab kw_g_tab
 
-ki_menu = am_main 
 
-//kw_g_tab = kGuf_data_base.prendi_win_attiva( )
-//if isvalid(kw_g_tab) then
-//	if NOT isnull(kw_g_tab) then
-//		if kw_g_tab.ki_st_open_w.flag_primo_giro = "S" or ki_exit_si then
-//			k_elabora = false
-//		end if
-//		k_menu_ok = true
-//		ki_menu = kw_g_tab.ki_menu
-//	else
-//		ki_menu = ki_menu_0 
-//	end if
-//else
-//	ki_menu = ki_menu_0 
-//end if
+if not u_set_ki_menu() then
+	ki_menu = am_main 
+end if
 
-if not isnull(u_set_ki_menu()) then
-
+if isvalid(ki_menu) then
+	
 	m_main = ki_menu
 //	this.changemenu(ki_menu)
 
@@ -1495,28 +1481,27 @@ boolean k_return = false
 w_g_tab kw_g_tab
 
 
-//if isvalid(ki_menu) then
-//	k_return = true
-//
-//else
-	kw_g_tab = kGuf_data_base.prendi_win_attiva( )
-	if isvalid(kw_g_tab) then
-		if NOT isnull(kw_g_tab) then
-			k_return = true
-			ki_menu = kw_g_tab.ki_menu
-		end if
-	else
-		ki_menu = w_main.menuid
-		if isvalid(ki_menu) then
-			k_return = true
-		end if
+kw_g_tab = kGuf_data_base.prendi_win_attiva( )
+if isvalid(kw_g_tab) then
+	if NOT isnull(kw_g_tab) then
+		ki_menu = kw_g_tab.ki_menu
 	end if
-//end if
+else
+	ki_menu = w_main.menuid
+end if
 
+if isvalid(ki_menu) then
+	k_return = true
+end if
 
 return k_return
 
 end function
+
+public subroutine u_resize ();//
+u_resize_1( )
+
+end subroutine
 
 on w_menu_tree.create
 int iCurrent

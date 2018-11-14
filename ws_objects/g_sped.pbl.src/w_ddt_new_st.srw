@@ -13,7 +13,6 @@ end forward
 global type w_ddt_new_st from w_fatture_new_st
 integer height = 2252
 string title = ""
-boolean center = true
 ddlb_copie ddlb_copie
 cbx_forza_wm_camion_caricato cbx_forza_wm_camion_caricato
 gb_copie gb_copie
@@ -39,6 +38,7 @@ protected subroutine smista_funz (string k_par_in)
 private function boolean check_lista_se_ristampa ()
 protected subroutine stampa_ddt_bianco ()
 public function boolean u_riopen (st_open_w kst_open_w) throws uo_exception
+private subroutine popola_lista_no_st ()
 end prototypes
 
 protected subroutine stampa ();//--
@@ -190,12 +190,12 @@ try
 
 //--- se tutto OK e stampato il cartaceo e ho stampato qls allora cancello i ddt stampati dall'elenco
 		if kst_esito.esito = kkg_esito.ok or kst_esito.esito = kkg_esito.db_wrn then	
-			if rb_modo_stampa_s.checked  then
-//				k_nr_ddt = kuf1_sped_ddt.stampa_ddt (kst_ddt_stampa[])
-				if k_nr_ddt > 0 then
-					popola_lista_da_st( ) // stampa effettuata pulisco l'elenco
-				end if
-			end if
+			popola_lista_no_st( )
+//			if rb_modo_stampa_s.checked  then
+//				if k_nr_ddt > 0 then
+//					popola_lista_da_st( ) // stampa effettuata pulisco l'elenco
+//				end if
+//			end if
 		end if
 		
 	end if
@@ -850,6 +850,36 @@ return true
 
 end function
 
+private subroutine popola_lista_no_st ();//
+//---
+//--- pulisce dw da righe stampate
+//---
+long k_riga, k_righe
+
+
+k_righe = dw_documenti.rowcount( )
+
+for k_riga = k_righe to 1 step -1
+
+	if rb_modo_stampa_s.checked  then
+		
+		if dw_documenti.getitemnumber( k_riga, "sel") = 1 then
+			dw_documenti.deleterow(k_riga)
+		end if
+		
+	else
+		
+		dw_documenti.reset( )
+		
+	end if
+		
+end for
+
+
+
+
+end subroutine
+
 on w_ddt_new_st.create
 int iCurrent
 call super::create
@@ -864,6 +894,7 @@ end on
 
 on w_ddt_new_st.destroy
 call super::destroy
+if IsValid(MenuID) then destroy(MenuID)
 destroy(this.ddlb_copie)
 destroy(this.cbx_forza_wm_camion_caricato)
 destroy(this.gb_copie)

@@ -37,6 +37,7 @@ public function st_esito get_id_meca_da_id_wm_pklist (ref st_tab_wm_pklist_righe
 public function long get_id_armo_da_wm_barcode (ref st_tab_wm_pklist_righe kst_tab_wm_pklist_righe) throws uo_exception
 public function long get_id_wm_pklist_riga_max () throws uo_exception
 private subroutine u_set_col_len_max (string k_ope, ref st_tab_wm_pklist_righe kst_tab_wm_pklist_righe)
+public function string get_idlotto_clie (st_tab_wm_pklist_righe ast_tab_wm_pklist_righe) throws uo_exception
 end prototypes
 
 public subroutine if_isnull (ref st_tab_wm_pklist_righe kst_tab_wm_pklist_righe);//---
@@ -60,7 +61,6 @@ if isnull(kst_tab_wm_pklist_righe.areamag  ) then kst_tab_wm_pklist_righe.areama
 if isnull(kst_tab_wm_pklist_righe.id_armo   ) then kst_tab_wm_pklist_righe.id_armo   = 0
 if isnull(kst_tab_wm_pklist_righe.id_meca  ) then kst_tab_wm_pklist_righe.id_meca  = 0
 if isnull(kst_tab_wm_pklist_righe.gruppo  ) then kst_tab_wm_pklist_righe.gruppo  = 0
-
 
 if isnull(kst_tab_wm_pklist_righe.eliminato  ) then kst_tab_wm_pklist_righe.eliminato = ""
 
@@ -453,7 +453,10 @@ st_profilestring_ini kst_profilestring_ini
 		k_campo[k_ind] = "Stato "
 		k_align[k_ind] = left!
 		k_ind++
-		k_campo[k_ind] = "Articolo codice del Mandante "
+		k_campo[k_ind] = "Articolo del Mandante "
+		k_align[k_ind] = left!
+		k_ind++
+		k_campo[k_ind] = "Lotto del Mandante "
 		k_align[k_ind] = left!
 		k_ind++
 		k_campo[k_ind] = "Gruppo "
@@ -517,6 +520,7 @@ st_profilestring_ini kst_profilestring_ini
 			+ "	wm_pklist_righe.stato, " &  
 			+ "	wm_pklist_righe.colli,   " & 
 			+ "	wm_pklist_righe.idart_clie,  " & 
+			+ "	wm_pklist_righe.idlotto_clie, " &   
 			+ "	wm_pklist_righe.id_armo, " &  
 			+ "	wm_pklist_righe.id_meca, " &  
 			+ "	wm_pklist_righe.gruppo,  " & 
@@ -558,6 +562,7 @@ st_profilestring_ini kst_profilestring_ini
 						:kst_tab_wm_pklist_righe.stato,   
 						:kst_tab_wm_pklist_righe.colli,   
 						:kst_tab_wm_pklist_righe.idart_clie,   
+						:kst_tab_wm_pklist_righe.idlotto_clie,   
 						:kst_tab_wm_pklist_righe.id_armo,   
 						:kst_tab_wm_pklist_righe.id_meca,   
 						:kst_tab_wm_pklist_righe.gruppo,   
@@ -605,6 +610,8 @@ st_profilestring_ini kst_profilestring_ini
 					k_ind++
 					kuf1_treeview.kilv_lv1.setitem(k_ctr, k_ind, trim(kst_tab_wm_pklist_righe.idart_clie))
 					k_ind++
+					kuf1_treeview.kilv_lv1.setitem(k_ctr, k_ind, trim(kst_tab_wm_pklist_righe.idlotto_clie))
+					k_ind++
 					kuf1_treeview.kilv_lv1.setitem(k_ctr, k_ind, string(kst_tab_wm_pklist_righe.gruppo) + " - " +  trim(kst_tab_gru.des))
 					k_ind++
 					if kst_treeview_data_any.st_tab_meca.num_int > 0 then
@@ -629,6 +636,7 @@ st_profilestring_ini kst_profilestring_ini
 							:kst_tab_wm_pklist_righe.stato,   
 							:kst_tab_wm_pklist_righe.colli,   
 							:kst_tab_wm_pklist_righe.idart_clie,   
+							:kst_tab_wm_pklist_righe.idlotto_clie,   
 							:kst_tab_wm_pklist_righe.id_armo,   
 							:kst_tab_wm_pklist_righe.id_meca,   
 							:kst_tab_wm_pklist_righe.gruppo,   
@@ -2419,6 +2427,58 @@ private subroutine u_set_col_len_max (string k_ope, ref st_tab_wm_pklist_righe k
 	
 
 end subroutine
+
+public function string get_idlotto_clie (st_tab_wm_pklist_righe ast_tab_wm_pklist_righe) throws uo_exception;//
+//----------------------------------------------------------------------------------------------------------------------
+//--- Rstituisce codice Barcode Lotto caricato dal cliente in packing list (idlotto_clie)
+//--- inp: st_tab_wm_pklist_righe.id_wm_pklist_riga
+//--- rit: idlotto_clie (string)
+//--- uo_exception: ST_ESITO
+//---           	
+//----------------------------------------------------------------------------------------------------------------------
+//
+string k_return = ""
+st_esito kst_esito
+
+
+try
+	
+	kst_esito.esito = kkg_esito.ok
+	kst_esito.sqlcode = 0
+	kst_esito.SQLErrText = ""
+	kst_esito.nome_oggetto = this.classname()
+
+	select idlotto_clie
+		into :ast_tab_wm_pklist_righe.idlotto_clie
+		from wm_pklist_righe 
+		where id_wm_pklist_riga = :ast_tab_wm_pklist_righe.id_wm_pklist_riga
+		using kguo_sqlca_db_magazzino;
+		
+	if kguo_sqlca_db_magazzino.sqlcode < 0 then
+		kst_esito.sqlcode = kguo_sqlca_db_magazzino.sqlcode
+		kst_esito.SQLErrText = "Errore in lettura Codice Lotto caricato in Packling List dal cliente, nel barcode id: " + string(ast_tab_wm_pklist_righe.id_wm_pklist_riga) + " ~n~r" + trim(kguo_sqlca_db_magazzino.SQLErrText)
+		kst_esito.esito = kkg_esito.db_ko
+		kguo_exception.inizializza( )
+		kguo_exception.set_esito(kst_esito)
+		throw kguo_exception
+	end if
+
+	if trim(ast_tab_wm_pklist_righe.idlotto_clie) > " " then
+		k_return = trim(ast_tab_wm_pklist_righe.idlotto_clie)
+	end if
+
+
+catch (uo_exception kuo_exception)
+	throw kuo_exception
+	
+finally
+	
+	
+end try
+
+return k_return
+
+end function
 
 on kuf_wm_pklist_righe.create
 call super::create

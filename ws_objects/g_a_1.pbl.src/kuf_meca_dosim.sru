@@ -3899,6 +3899,11 @@ try
 		throw kguo_exception
 	end if
 
+//---- COMMIT....	
+	if ast_tab_meca_dosim.st_tab_g_0.esegui_commit <> "N" or isnull(ast_tab_meca_dosim.st_tab_g_0.esegui_commit) then
+		kguo_sqlca_db_magazzino.db_commit( )
+	end if
+
 //--- Preparazione Invio avviso via e-mail 
 	if kst_tab_meca_dosim.err_lav_ok = ki_err_lav_ok_conv_aut_ok &
 			or kst_tab_meca_dosim.err_lav_ok = ki_err_lav_ok_conv_ko_sbloc then

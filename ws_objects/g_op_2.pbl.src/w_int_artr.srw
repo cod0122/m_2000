@@ -103,9 +103,7 @@ protected function integer inserisci ()
 private subroutine report_5 ()
 private subroutine get_id_meca (ref st_tab_meca kst_tab_meca_da, ref st_tab_meca kst_tab_meca_a) throws uo_exception
 private subroutine report_6 ()
-private function long report_6_inizializza (uo_d_std_1 kdw_1)
 private subroutine get_parametri_6 () throws uo_exception
-private subroutine crea_view_x_report_6 ()
 private subroutine report_7 ()
 private function long report_7_inizializza (uo_d_std_1 kdw_1)
 private subroutine get_parametri_7 () throws uo_exception
@@ -194,6 +192,8 @@ private subroutine report_24 ()
 private subroutine report_25 ()
 private subroutine crea_view_x_report_23_view0 () throws uo_exception
 private subroutine crea_view_x_report_23_runsrtrrtscli () throws uo_exception
+private function long report_6_inizializza (uo_d_std_1 kdw_1) throws uo_exception
+private subroutine crea_view_x_report_6 () throws uo_exception
 end prototypes
 
 protected function string inizializza () throws uo_exception;////======================================================================
@@ -1772,93 +1772,6 @@ attiva_tasti()
 
 end subroutine
 
-private function long report_6_inizializza (uo_d_std_1 kdw_1);//
-//======================================================================
-//=== Inizializzazione del TAB 2 controllandone i valori se gia' presenti
-//======================================================================
-//
-string k_scelta, k_codice_prec
-string k_sql, k_sql_w, k_sql_orig, k_stringn, k_string
-boolean k_errore=false
-long k_righe=0, k_ctr, k_rc
-datawindowchild kdwc_barcode
-//datawindowchild kdwc_cliente, kdwc_cliente_2, kdwc_cliente_3
-kuf_utility kuf1_utility
-kuf_base kuf1_base
-
-
-	try
-			
-		k_scelta = trim(ki_st_open_w.flag_modalita)
-	
-	//--- Acchiappo i codice della RETRIEVE per evitare eventalmente la rilettura
-		if not isnull(kdw_1.tag) then
-			k_codice_prec = kdw_1.tag
-		else
-			k_codice_prec = " "
-		end if
-	
-	//--- salvo i parametri cosi come sono stati immessi
-		kuf1_utility = create kuf_utility
-		kdw_1.tag = kuf1_utility.u_stringa_campi_dw(1, 1, tab_1.tabpage_1.dw_1)
-		destroy kuf1_utility
-
-		if trim(k_codice_prec) <> trim(kdw_1.tag) then
-			u_set_tabpage_picture(true)
-		else
-			u_set_tabpage_picture(false)
-		end if
-	
-		if trim(k_codice_prec) =  "" or kdw_1.rowcount() = 0 then //<> k_codice_prec then
-
-			kdw_1.visible = true
-			kdw_1.dataobject = "d_report_6_lotti_in_mag" 
-			k_rc = kdw_1.settransobject(sqlca)
-
-	//--- piglia i parametri per l'estrazione 
-			get_parametri_6()
-	
-	//--- view x estrazione 
-			crea_view_x_report_6()
-		
-			leggi_dwc_barcode(0, kdw_1)
-		
-	//--- Aggiorna SQL della dw	
-			k_sql_orig = kdw_1.Object.DataWindow.Table.Select 
-			k_stringn = "vx_" + trim(kist_int_artr.utente) + "_report_6"
-			k_string = "vx_MAST2_report_6"
-			k_ctr = PosA(k_sql_orig, k_string, 1)
-			DO WHILE k_ctr > 0 and trim(k_string) <> trim(k_stringn)  
-				k_sql_orig = ReplaceA(k_sql_orig, k_ctr, LenA(k_string), (k_stringn))
-				k_ctr = PosA(k_sql_orig, k_string, k_ctr+LenA(k_string))
-			LOOP
-			kdw_1.Object.DataWindow.Table.Select = k_sql_orig 
-		
-				
-			k_rc = kdw_1.settransobject ( sqlca )
-			k_righe = kdw_1.retrieve()
-
-		end if
-
-	catch (uo_exception kuo_exception)
-		throw kuo_exception
-//			kuo_exception.messaggio_utente()
-
-	finally		
-		attiva_tasti()
-		if kdw_1.rowcount() = 0 then
-			kdw_1.insertrow(0) 
-		end if
-		kdw_1.setfocus()
-
-	end try
-
-
-return k_righe
-
-
-end function
-
 private subroutine get_parametri_6 () throws uo_exception;//======================================================================
 //=== Polola la struttura con i parametri di estrazione
 //======================================================================
@@ -1902,72 +1815,6 @@ end if
 
 
 
-end subroutine
-
-private subroutine crea_view_x_report_6 ();//======================================================================
-//=== Crea le View per le query
-//======================================================================
-//
-int k_ctr
-string k_view, k_sql, k_sql_orig, k_stringn, k_string
-boolean k_esegui_query=true
-date k_data_int_da, k_data_int_a
-string k_data_ent_dax, k_data_ent_ax
-kuf_utility kuf1_utility
-kuf_armo kuf1_armo
-pointer kpointer  // Declares a pointer variable
-
-
-//=== Puntatore Cursore da attesa.....
-//=== Se volessi riprist. il vecchio puntatore : SetPointer(kpointer)
-kpointer = SetPointer(HourGlass!)
-
-
-	
-	k_data_int_da = relativedate(kist_int_artr.data_da, -180)
-	k_data_int_a = relativedate(kist_int_artr.data_da, 30)
-	k_data_ent_dax = string(datetime(kist_int_artr.data_da)) + " " + string(time(0))  //YEAR TO SECOND "  1998-01-02 00:00:00.000
-	k_data_ent_ax =  string(datetime(kist_int_artr.data_a, time(23,59,59)))  //YEAR TO SECOND "
-
-//--- costruisco la view con ID_MECA delle fatture emesse da data a data
-	k_view = "vx_" + trim(kist_int_artr.utente) + "_report_6 "
-	k_sql = " "                                   
-	k_sql = + &
-	"CREATE VIEW " + trim(k_view) &
-	 + " ( id_armo, colli_spediti ) AS   " 
-	 
-	k_sql += &
-		+ " SELECT  armo.id_armo,  sum(arsp.colli)  FROM " &
-		+ " meca  " 
-		k_sql += &
-			+ " inner JOIN armo " &
-			+ " ON meca.id = armo.id_meca " &
-			+ " left outer JOIN arsp " &
-			+ " ON armo.id_armo = arsp.id_armo " &
-			+ " and (arsp.data_bolla_out <= '" + string(kist_int_artr.data_a) + "' or arsp.data_bolla_out is null)" &
-			+ " WHERE  " &
-			+ " meca.data_int between '" + string(k_data_int_da) + "' and '" + string(k_data_int_a) + "' "  &
-		   + " and meca.data_ent between '"  + k_data_ent_dax + "' and '" + k_data_ent_ax + "'  "     &
-			+ " and (meca.aperto <> '" + string(kuf1_armo.kki_meca_aperto_annullato ) + "') "
-		if kist_int_artr.no_dose = 1 then
-			k_sql += &
-				 " and armo.dose > 0 " 
-		end if
-
-		k_sql += &
-	 			" group by armo.id_armo " 
-			
-//	 			+ " inner JOIN sped " &
-//			+ " ON arsp.num_bolla_out = sped.num_bolla_out " &
-//			+ " and arsp.data_bolla_out = sped.data_bolla_out " &
-//			+ " and sped.data_uscita > '01.01.1990' " &
-//
-	kguo_sqlca_db_magazzino.db_crea_view(1, k_view, k_sql)		
-	
-//=== Riprist. il vecchio puntatore : 
-SetPointer(kpointer)
-
-//
 end subroutine
 
 private subroutine report_7 ();//======================================================================
@@ -7723,6 +7570,161 @@ SetPointer(kkg.pointer_default)
 			
 end subroutine
 
+private function long report_6_inizializza (uo_d_std_1 kdw_1) throws uo_exception;//
+//======================================================================
+//=== Inizializzazione del TAB 2 controllandone i valori se gia' presenti
+//======================================================================
+//
+string k_scelta, k_codice_prec
+string k_sql, k_sql_w, k_sql_orig, k_stringn, k_string
+boolean k_errore=false
+long k_righe=0, k_ctr, k_rc
+datawindowchild kdwc_barcode
+//datawindowchild kdwc_cliente, kdwc_cliente_2, kdwc_cliente_3
+kuf_utility kuf1_utility
+kuf_base kuf1_base
+
+
+	try
+			
+		k_scelta = trim(ki_st_open_w.flag_modalita)
+	
+	//--- Acchiappo i codice della RETRIEVE per evitare eventalmente la rilettura
+		if not isnull(kdw_1.tag) then
+			k_codice_prec = kdw_1.tag
+		else
+			k_codice_prec = " "
+		end if
+	
+	//--- salvo i parametri cosi come sono stati immessi
+		kuf1_utility = create kuf_utility
+		kdw_1.tag = kuf1_utility.u_stringa_campi_dw(1, 1, tab_1.tabpage_1.dw_1)
+		destroy kuf1_utility
+
+		if trim(k_codice_prec) <> trim(kdw_1.tag) then
+			u_set_tabpage_picture(true)
+		else
+			u_set_tabpage_picture(false)
+		end if
+	
+		if trim(k_codice_prec) =  "" or kdw_1.rowcount() = 0 then //<> k_codice_prec then
+
+			kdw_1.visible = true
+			kdw_1.dataobject = "d_report_6_lotti_in_mag" 
+			k_rc = kdw_1.settransobject(sqlca)
+
+	//--- piglia i parametri per l'estrazione 
+			get_parametri_6()
+	
+	//--- view x estrazione 
+			crea_view_x_report_6()
+		
+			leggi_dwc_barcode(0, kdw_1)
+		
+	//--- Aggiorna SQL della dw	
+			kguf_data_base.u_set_ds_change_name_tab(kdw_1, "vx_MAST2_report_6" )
+//			k_sql_orig = kdw_1.Object.DataWindow.Table.Select 
+//			k_stringn = "vx_" + trim(kist_int_artr.utente) + "_report_6"
+//			k_string = "vx_MAST2_report_6"
+//			k_ctr = PosA(k_sql_orig, k_string, 1)
+//			DO WHILE k_ctr > 0 and trim(k_string) <> trim(k_stringn)  
+//				k_sql_orig = ReplaceA(k_sql_orig, k_ctr, LenA(k_string), (k_stringn))
+//				k_ctr = PosA(k_sql_orig, k_string, k_ctr+LenA(k_string))
+//			LOOP
+//			kdw_1.Object.DataWindow.Table.Select = k_sql_orig 
+		
+				
+			k_rc = kdw_1.settransobject ( sqlca )
+			k_righe = kdw_1.retrieve()
+
+		end if
+
+	catch (uo_exception kuo_exception)
+		
+		throw kuo_exception
+//			kuo_exception.messaggio_utente()
+
+	finally		
+		attiva_tasti()
+		if kdw_1.rowcount() = 0 then
+			kdw_1.insertrow(0) 
+		end if
+		kdw_1.setfocus()
+
+	end try
+
+
+return k_righe
+
+
+end function
+
+private subroutine crea_view_x_report_6 () throws uo_exception;//======================================================================
+//=== Crea le View per le query
+//======================================================================
+//
+int k_ctr
+string k_view, k_sql, k_sql_orig, k_stringn, k_string
+boolean k_esegui_query=true
+date k_data_int_da, k_data_int_a
+string k_data_ent_dax, k_data_ent_ax
+kuf_utility kuf1_utility
+kuf_armo kuf1_armo
+pointer kpointer  // Declares a pointer variable
+
+try
+//=== Puntatore Cursore da attesa.....
+//=== Se volessi riprist. il vecchio puntatore : SetPointer(kpointer)
+	kpointer = SetPointer(HourGlass!)
+
+	k_data_int_da = relativedate(kist_int_artr.data_da, -180)
+	k_data_int_a = relativedate(kist_int_artr.data_da, 30)
+	k_data_ent_dax = string(datetime(kist_int_artr.data_da)) + " " + string(time(0))  //YEAR TO SECOND "  1998-01-02 00:00:00.000
+	k_data_ent_ax =  string(datetime(kist_int_artr.data_a, time(23,59,59)))  //YEAR TO SECOND "
+
+//--- costruisco la view con ID_MECA delle fatture emesse da data a data
+	k_view = kguf_data_base.u_get_nometab_xutente("_report_6")
+//	k_view = "vx_" + trim(kist_int_artr.utente) + "_report_6 "
+	k_sql = " "                                   
+	k_sql = + &
+	"CREATE VIEW " + trim(k_view) &
+	 + " ( id_armo, colli_spediti ) AS   " 
+	 
+	k_sql += &
+		+ " SELECT  armo.id_armo,  sum(arsp.colli)  FROM " &
+		+ " meca  " 
+		k_sql += &
+			+ " inner JOIN armo " &
+			+ " ON meca.id = armo.id_meca " &
+			+ " left outer JOIN arsp " &
+			+ " ON armo.id_armo = arsp.id_armo " &
+			+ " and (arsp.data_bolla_out <= '" + string(kist_int_artr.data_a) + "' or arsp.data_bolla_out is null)" &
+			+ " WHERE  " &
+			+ " meca.data_int between '" + string(k_data_int_da) + "' and '" + string(k_data_int_a) + "' "  &
+		   + " and meca.data_ent between '"  + k_data_ent_dax + "' and '" + k_data_ent_ax + "'  "     &
+			+ " and (meca.aperto <> '" + string(kuf1_armo.kki_meca_aperto_annullato ) + "') "
+		if kist_int_artr.no_dose = 1 then
+			k_sql += &
+				 " and armo.dose > 0 " 
+		end if
+
+		k_sql += &
+	 			" group by armo.id_armo " 
+			
+	kguo_sqlca_db_magazzino.db_crea_view(1, k_view, k_sql)		
+
+	
+catch (uo_exception kuo_exception)
+	throw kuo_exception
+
+finally
+	SetPointer(kpointer)
+	
+end try
+
+
+end subroutine
+
 on w_int_artr.create
 int iCurrent
 call super::create
@@ -8349,7 +8351,6 @@ long backcolor = 553648127
 string text = "Scegliere il Report"
 boolean allowedit = true
 boolean autohscroll = true
-boolean border = false
 boolean sorted = false
 boolean showlist = true
 string item[] = {""}

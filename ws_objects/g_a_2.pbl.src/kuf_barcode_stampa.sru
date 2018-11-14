@@ -2618,22 +2618,33 @@ int k_len, k_ind
 		k_avanza_col = 190 
 		k_testo_verticale = "POS:" + trim(kst_barcode_stampa.dosimpos_codice)			// codice posizione dosimetro es.  POS: 79
 		stampa_testo_verticale(k_testo_verticale, 3630, k_inizio_col, k_num_righe, k_num_colonne)
+		
 		k_testo_verticale = trim(kst_barcode_stampa.dosim_tipo_des)							// Tipo Dosimetro AMBER, RED ....
 		stampa_testo_verticale(k_testo_verticale, 2300, k_inizio_col, k_num_righe, k_num_colonne)
+
 		k_testo_verticale = trim(kst_barcode_stampa.tipo_dose_des)							// Tipo Dose MASSIMA, MINIMA ....
-		stampa_testo_verticale(k_testo_verticale, 1100, k_inizio_col, k_num_righe, k_num_colonne)
-		//k_testo_verticale = trim(left(trim(kst_tab_sl_pt.dosim_et_descr),48))     // I'  riga  della descrizione posizione dosimetri
-		k_testo_verticale = trim(kst_tab_sl_pt_dosimpos.descr)     // I'  riga  della descrizione posizione dosimetri
+		k_inizio_col += k_avanza_col 
+		stampa_testo_verticale(k_testo_verticale, 2300, k_inizio_col, k_num_righe, k_num_colonne)
+		//stampa_testo_verticale(k_testo_verticale, 1100, k_inizio_col, k_num_righe, k_num_colonne)
+		
+		k_testo_verticale = left(trim(kst_tab_sl_pt_dosimpos.descr), 20)     // I'  riga  della descrizione posizione dosimetri
 		k_inizio_col += k_avanza_col 
 		stampa_testo_verticale(k_testo_verticale, 3630, k_inizio_col, k_num_righe, k_num_colonne)
-		//k_testo_verticale = trim(mid(trim(kst_tab_sl_pt.dosim_et_descr),41))     // II' riga della descrizione posizione dosimetri
+		if len(trim(kst_tab_sl_pt_dosimpos.descr)) > 20 then
+			k_testo_verticale = trim(mid(trim(kst_tab_sl_pt_dosimpos.descr), 21))     // I'  riga  della descrizione posizione dosimetri
+			k_inizio_col += k_avanza_col 
+			stampa_testo_verticale(k_testo_verticale, 3630, k_inizio_col, k_num_righe, k_num_colonne)
+		end if
+		
 		k_testo_verticale = trim(kst_tab_sl_pt_dosimpos.descr1)     // I'  riga  della descrizione posizione dosimetri
 		k_inizio_col += k_avanza_col 
 		stampa_testo_verticale(k_testo_verticale, 3630, k_inizio_col, k_num_righe, k_num_colonne)
+
 //--- stampa il nr dosimetro + nr tot dosimetri da stampare
 		k_testo_verticale = trim("Dosim.: " + string(kst_barcode_stampa.flg_dosimetro_stampati,"#") + "/" + string (kst_barcode_stampa.flg_dosimetro_contati,"#"))
 		stampa_testo_verticale(k_testo_verticale, 2800, 4900, k_num_righe, k_num_colonne)
-//--- imposta il font VERTICALE x stampare il NUM.RIF + WO + COLLO DI
+
+//--- stampa 3 righe VERTICALI:l NUM.RIF + WO + COLLI in modo sfasato
 		k_inizio_col = 5200 //5320 
 		k_avanza_col = 190 
 		for k_righe = 1 to 3

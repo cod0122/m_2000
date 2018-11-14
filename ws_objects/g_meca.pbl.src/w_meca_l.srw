@@ -482,7 +482,7 @@ try
 						end if
 						k_riga = dw_lista_0.getselectedrow(k_riga)
 						sleep (1) // ritardo per lasciare il tempo di fare il pdf
-						kuf1_meca_stampa.u_stampa_stampa_pdf( )  // stampa file PDF aggiunti nell'arrey 
+						kuf1_meca_stampa.u_stampa_all_pdf( )  // stampa file PDF aggiunti nell'array 
 					loop
 				else
 //--- un solo documento quindi esegue solo la stampa del DW + PDF

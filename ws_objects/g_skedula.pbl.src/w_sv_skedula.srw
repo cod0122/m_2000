@@ -249,7 +249,7 @@ end function
 
 private subroutine genera_sked ();//
 int k_rc
-kuf_sv_skedula kuf1_sv_skedula
+kuf_sv_skedula_batch kuf1_sv_skedula_batch
 st_esito kst_esito
 pointer kpointer  // Declares a pointer variable
 
@@ -265,9 +265,9 @@ pointer kpointer  // Declares a pointer variable
 //=== Puntatore Cursore da attesa.....
 		kpointer = SetPointer(HourGlass!)
 		
-		kuf1_sv_skedula = create kuf_sv_skedula
-		kst_esito = kuf1_sv_skedula.genera_eventi()
-		destroy kuf1_sv_skedula
+		kuf1_sv_skedula_batch = create kuf_sv_skedula_batch
+		kst_esito = kuf1_sv_skedula_batch.genera_eventi()
+		destroy kuf1_sv_skedula_batch
 	
 		SetPointer(kpointer)
 	
@@ -417,6 +417,7 @@ end on
 
 on w_sv_skedula.destroy
 call super::destroy
+if IsValid(MenuID) then destroy(MenuID)
 end on
 
 type st_ritorna from w_g_tab0`st_ritorna within w_sv_skedula

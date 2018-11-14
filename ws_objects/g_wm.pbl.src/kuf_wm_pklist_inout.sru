@@ -445,6 +445,7 @@ st_tab_wm_receiptgammarad kst_tab_wm_receiptgammarad[]
 					kst_wm_pklist.st_tab_wm_pklist_righe[k_ind].idlotto_clie = trim(kst_tab_wm_receiptgammarad[k_ind].customerlot) 
 					// q.tà TOTALE dei singoli sacchi o scatole nel pallet  
 					kst_wm_pklist.st_tab_wm_pklist_righe[k_ind].qtapezzi_pallet = kst_tab_wm_receiptgammarad[k_ind].quantitasacchi
+					
 				end if
 				
 			end for

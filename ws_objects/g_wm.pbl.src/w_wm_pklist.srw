@@ -11,10 +11,12 @@ end type
 end forward
 
 global type w_wm_pklist from w_g_tab_3
-integer width = 2720
+integer width = 2651
 integer height = 2176
 string title = "Packing List"
 boolean ki_toolbar_window_presente = true
+boolean ki_fai_nuovo_dopo_update = false
+boolean ki_fai_nuovo_dopo_insert = false
 boolean ki_msg_dopo_update = false
 dw_x_copia dw_x_copia
 dw_riga dw_riga
@@ -150,7 +152,7 @@ if tab_1.tabpage_1.dw_1.rowcount( ) > 0 and (tab_1.tabpage_1.dw_1.getnextmodifie
 					
 				else
 					kst_esito.esito = kkg_esito.db_ko  // fermo la registrazione  ROLLBACK!
-					kst_esito.sqlerrtext = "Errore durante l'aggiornamento del Documento, ~n~r" + "impossibile proseguire con la registrazione!"
+					kst_esito.sqlerrtext = "Errore in aggiornamento testata del PKL, ~n~r" + "impossibile proseguire con la registrazione!"
 					kst_esito.sqlcode = 0
 				end if	
 	
@@ -174,27 +176,32 @@ if tab_1.tabpage_1.dw_1.rowcount( ) > 0 and (tab_1.tabpage_1.dw_1.getnextmodifie
 	if kst_esito.esito <> kkg_esito.db_ko then
 
 
-		k_riga = 1
-		do while k_riga <= tab_1.tabpage_4.dw_4.rowcount() and kst_esito.esito <> kkg_esito.db_ko
+		k_riga = 0
+		k_riga = tab_1.tabpage_4.dw_4.getnextmodified (k_riga, primary!)
+		//do while kst_esito.esito <> kkg_esito.db_ko
+		//do while k_riga <= tab_1.tabpage_4.dw_4.rowcount() and kst_esito.esito <> kkg_esito.db_ko
+		if k_riga > 0 then
+//			riempi_st_tab_wm_pklist_righe_da_dw4( k_riga, kst_tab_wm_pklist_righe )
+//			kst_tab_wm_pklist_righe.id_wm_pklist = kst_tab_wm_pklist.id_wm_pklist
 
-			riempi_st_tab_wm_pklist_righe_da_dw4( k_riga, kst_tab_wm_pklist_righe )
-			kst_tab_wm_pklist_righe.id_wm_pklist = kst_tab_wm_pklist.id_wm_pklist
+//--- Aggiorna righe PK-LIST
+			//if tab_1.tabpage_4.dw_4.GetItemStatus (k_riga, primary!) > 0	then
+				k_rc =  tab_1.tabpage_4.dw_4.update()  
+				if k_rc = 1 then
+					tab_1.tabpage_4.dw_4.resetupdate( )
+					kst_esito.esito = kkg_esito.ok
+					kst_esito.sqlerrtext = ""
+					kst_esito.sqlcode = 0
+				else
+					kst_esito.esito = kkg_esito.db_ko  // fermo la registrazione  ROLLBACK!
+					kst_esito.sqlerrtext = "Errore in aggiornamento righe del PKL, ~n~r" + "impossibile proseguire con la registrazione!"
+					kst_esito.sqlcode = 0
+				end if	
+			//end if			
+			//k_riga++
+			k_riga = tab_1.tabpage_4.dw_4.getnextmodified (k_riga, primary!)
 
-//--- Aggiorna la testa PK-LIST
-			k_rc =  tab_1.tabpage_4.dw_4.update()  
-			if k_rc = 1 then
-				kst_esito.esito = kkg_esito.ok
-				kst_esito.sqlerrtext = ""
-				kst_esito.sqlcode = 0
-			else
-				kst_esito.esito = kkg_esito.db_ko  // fermo la registrazione  ROLLBACK!
-				kst_esito.sqlerrtext = "Errore durante l'aggiornamento del Documento, ~n~r" + "impossibile proseguire con la registrazione!"
-				kst_esito.sqlcode = 0
-			end if	
-			
-			k_riga++
-
-		loop
+		end if
 		
 	end if
 
@@ -1013,13 +1020,16 @@ if k_ctr > 0 then
 
 	k_righe = tab_1.tabpage_4.dw_4.rowcount()
 	for k_ctr = 1 to k_righe 
-
-		tab_1.tabpage_4.dw_4.setitem(k_ctr, "id_wm_pklist", kst_tab_wm_pklist.id_wm_pklist)
-
-//=== Se non sono in caricamento allora imposto a zero l'ID serial
-		if tab_1.tabpage_4.dw_4.getitemstatus(k_ctr, 0, primary!) = newmodified! then
-			tab_1.tabpage_4.dw_4.setitem(k_ctr, "id_wm_pklist_riga", 0)
-			
+		
+		if tab_1.tabpage_4.dw_4.getitemnumber(k_ctr, "id_wm_pklist") > 0 then
+		else
+			tab_1.tabpage_4.dw_4.setitem(k_ctr, "id_wm_pklist", kst_tab_wm_pklist.id_wm_pklist)
+	
+	//=== Se non sono in caricamento allora imposto a zero l'ID serial
+			if tab_1.tabpage_4.dw_4.getitemstatus(k_ctr, 0, primary!) = newmodified! then
+				tab_1.tabpage_4.dw_4.setitem(k_ctr, "id_wm_pklist_riga", 0)
+				
+			end if
 		end if
 	
 	end for
@@ -1053,7 +1063,7 @@ boolean k_attiva
 
 
 //--- solo se sono im caricamento posso importare nuove PKL grezze
-	if ki_st_open_w.flag_modalita = kkg_flag_modalita.inserimento then
+	if ki_st_open_w.flag_modalita = kkg_flag_modalita.inserimento and ki_tab_1_index_new = 1 then
 		k_attiva = true
 	else
 		k_attiva = false
@@ -1075,7 +1085,9 @@ boolean k_attiva
 	if tab_1.tabpage_1.dw_1.rowcount( ) > 0 then	
 
 		if tab_1.tabpage_1.dw_1.getitemnumber(1, "id_wm_pklist") > 0 &
-					and tab_1.tabpage_1.dw_1.object.stato[1] = kiuf_wm_pklist_testa.kki_stato_nuovo and ki_st_open_w.flag_modalita = kkg_flag_modalita.modifica then
+					and tab_1.tabpage_1.dw_1.object.stato[1] = kiuf_wm_pklist_testa.kki_stato_nuovo &
+					and ki_st_open_w.flag_modalita = kkg_flag_modalita.modifica &
+					and ki_tab_1_index_new = 1 then
 			k_attiva = true
 		else
 			k_attiva = false
@@ -1095,7 +1107,8 @@ boolean k_attiva
 		
 
 		if tab_1.tabpage_1.dw_1.getitemnumber(1, "id_wm_pklist") > 0 &
-					and ki_st_open_w.flag_modalita = kkg_flag_modalita.modifica then
+					and ki_st_open_w.flag_modalita = kkg_flag_modalita.modifica &
+					and ki_tab_1_index_new = 1 then
 			k_attiva = true
 		else
 			k_attiva = false
@@ -1289,7 +1302,7 @@ if kst_tab_wm_pklist_righe.id_wm_pklist  > 0 then
 	end if
 
 //---- azzera il flag delle modifiche
-	tab_1.tabpage_4.dw_4.SetItemStatus( 1, 0, Primary!, NotModified!)
+//	tab_1.tabpage_4.dw_4.SetItemStatus( 1, 0, Primary!, NotModified!)
 
 else
 
@@ -1588,7 +1601,7 @@ private function long riga_modifica_in_lista (long k_riga, st_tab_wm_pklist_righ
 	
 	if k_riga > 0 then
 	
-		kiuf_wm_pklist_righe  .if_isnull(kst_tab_wm_pklist_righe)
+		kiuf_wm_pklist_righe.if_isnull(kst_tab_wm_pklist_righe)
 	
 //--- espone i dati circa l'articolo, prezzo, iva ecc... 	
 		riga_aggiorna_in_lista_art(k_riga, kst_tab_wm_pklist_righe)
@@ -1682,7 +1695,7 @@ private subroutine riempi_st_tab_wm_pklist_righe_da_dw4 (long k_riga, ref st_tab
 		kst_tab_wm_pklist_righe.x_datins_elim = tab_1.tabpage_4.dw_4.getitemdatetime(k_riga, "x_datins_elim")
 		kst_tab_wm_pklist_righe.x_utente_elim = tab_1.tabpage_4.dw_4.getitemstring(k_riga, "x_utente_elim")
 
-		kiuf_wm_pklist_righe  .if_isnull( kst_tab_wm_pklist_righe )
+		kiuf_wm_pklist_righe.if_isnull( kst_tab_wm_pklist_righe )
 	
 
 end subroutine
@@ -3064,8 +3077,8 @@ event u_posiziona ( )
 event u_visualizza ( )
 event u_intemchanged_riga_magazzino ( string k_campo )
 event u_modifica ( )
-integer x = 1627
-integer y = 292
+integer x = 471
+integer y = 156
 integer width = 3063
 integer height = 1684
 integer taborder = 60

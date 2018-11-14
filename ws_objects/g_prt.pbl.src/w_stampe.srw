@@ -70,6 +70,7 @@ string menuname = ""
 boolean minbox = false
 boolean maxbox = false
 boolean resizable = false
+windowtype windowtype = response!
 long backcolor = 32567536
 string icon = "Report5!"
 string pointer = "Arrow!"

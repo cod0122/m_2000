@@ -115,6 +115,7 @@ public function boolean u_resize_predefinita ()
 protected subroutine set_titolo_window_personalizza ()
 public subroutine u_timer_old ()
 public subroutine u_wtitolo_path (st_treeview_data ast_treeview_data)
+public subroutine u_resize_1 ()
 end prototypes
 
 event u_timer(boolean a_attiva);//
@@ -1203,15 +1204,17 @@ end function
 protected subroutine u_key (keycode key, unsignedlong keyflags);//---
 //--- get key pressed
 //---
-	if key = KeyEscape! then //or key = KeyDelete! then
+choose case key
+	case KeyEscape!
 		u_zoom_off(dw_anteprima )
-	else
-		if key = KeyAdd! or key = KeyEqual! then
-			u_zoom_piu(dw_anteprima)   //Zoomma +
-		else
-			u_zoom_meno(dw_anteprima)   //Zoomma -
-		end if
-	end if
+	case KeyAdd!
+	case KeyEqual!
+		u_zoom_piu(dw_anteprima)   //Zoomma +
+	case KeySubtract!
+	case KeyDash!
+		u_zoom_meno(dw_anteprima)   //Zoomma -
+end choose
+
 
 
 
@@ -1634,6 +1637,81 @@ kst_treeview_data = ast_treeview_data
 	end if
 
 //end if
+
+
+end subroutine
+
+public subroutine u_resize_1 ();//---
+long k_width_orig, k_height_orig
+
+
+	this.setredraw(false)
+
+	tv_root.x = 1 //15
+	tv_root.y = 1 //15
+	lv_1.y = 1
+	dw_anteprima.x = 1
+	st_vertical.y = 1
+	st_orizzontal.x = 1
+	st_vertical.width = 20
+	st_orizzontal.height = 20
+
+	st_vertical.visible = ki_st_vertical
+	st_orizzontal.visible = ki_st_orizzontal
+
+	if ki_st_orizzontal then
+		k_width_orig = st_orizzontal.width
+		k_height_orig = st_orizzontal.y + st_orizzontal.height + dw_anteprima.height
+	else
+		k_height_orig = tv_root.height
+		if ki_st_vertical then
+			k_width_orig = st_vertical.X + st_vertical.width + lv_1.width
+		else
+			k_width_orig = tv_root.width
+		end if
+	end if
+		
+	if k_width_orig > 0 then
+		
+		if ki_st_vertical then
+			st_vertical.X = this.width * (((100 / k_width_orig) * st_vertical.X) / 100)
+		end if
+		if ki_st_orizzontal then
+			st_orizzontal.Y = this.height * (((100 / k_height_orig) * st_orizzontal.y) / 100)
+		end if
+		
+		if st_vertical.visible then
+			tv_root.width = st_vertical.X - st_vertical.width 
+			lv_1.width =  this.width - st_vertical.X - st_vertical.width // -70 
+		else
+			lv_1.width = this.width //- 75 
+		end if
+
+		if st_vertical.visible then
+			lv_1.x = st_vertical.x + st_vertical.width 
+			st_vertical.bringtotop = true
+		end if
+		st_vertical.height = st_orizzontal.y
+		
+		if st_orizzontal.visible then
+			st_orizzontal.width = this.width
+			st_orizzontal.bringtotop = true
+			dw_anteprima.y = st_orizzontal.y + st_orizzontal.height
+			dw_anteprima.height = this.height - st_orizzontal.y - st_orizzontal.height //- 240 
+			dw_anteprima.width = st_orizzontal.width 
+			 lv_1.height = this.height - st_orizzontal.y 
+		end if
+	
+		lv_1.height = st_vertical.height
+		tv_root.height = st_vertical.height 
+
+		lv_1.visible = true
+		tv_root.visible = st_vertical.visible
+		dw_anteprima.visible = st_orizzontal.visible
+	
+	end if
+	this.setredraw(true)
+
 
 
 end subroutine

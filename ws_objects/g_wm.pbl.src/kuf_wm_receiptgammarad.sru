@@ -50,6 +50,7 @@ public function long set_wm_pklist_txt_to_wm_tab (ref datastore kds_receiptgamma
 public function boolean set_id_meca (st_tab_wm_receiptgammarad kst_tab_wm_receiptgammarad) throws uo_exception
 public function boolean link_call (ref datawindow adw_link, string a_campo_link) throws uo_exception
 public function boolean tb_delete_x_idwmpklist (ref st_tab_wm_receiptgammarad kst_tab_wm_receiptgammarad) throws uo_exception
+public function st_esito anteprima_tree (ref datastore kdw_anteprima, st_tab_wm_receiptgammarad kst_tab_wm_receiptgammarad)
 end prototypes
 
 public function st_esito set_idwmpklist (ref st_tab_wm_receiptgammarad kst_tab_wm_receiptgammarad);//
@@ -1097,11 +1098,10 @@ if upperbound(kst_tab_wm_receiptgammarad) > 0 then
 
 			if len(trim(kst_tab_wm_receiptgammarad[1].packinglistcode)) > 0 then
 				kds_1 = create datastore
-				kst_esito = anteprima ( kds_1, kst_tab_wm_receiptgammarad[1])
+				kst_esito = anteprima_tree(kds_1, kst_tab_wm_receiptgammarad[1])
 				if kst_esito.esito = kkg_esito.db_ko then
 					k_return = 1
 					kguo_exception.set_esito( kst_esito )
-				// setmessage( "Accesso al Documento di Vendita non disponibile. ")
 					kguo_exception.messaggio_utente( )
 				else
 
@@ -3333,6 +3333,95 @@ finally
 end try
 
 return k_return
+
+end function
+
+public function st_esito anteprima_tree (ref datastore kdw_anteprima, st_tab_wm_receiptgammarad kst_tab_wm_receiptgammarad);//
+//=== 
+//====================================================================
+//=== Operazione di Anteprima 
+//===
+//=== Par. Inut: 
+//===               datastore  di  anteprima
+//===               dati tabella per estrazione dell'anteprima
+//=== 
+//=== Ritorna tab. ST_ESITO, Esiti: come Standard
+//=== 
+//====================================================================
+//
+//=== 
+long k_rc
+boolean k_return
+st_open_w kst_open_w
+st_esito kst_esito
+kuf_sicurezza kuf1_sicurezza
+kuf_utility kuf1_utility
+kuo_sqlca_db_0 kuo1_sqlca_db_0
+
+
+kst_esito.esito = kkg_esito.ok
+kst_esito.sqlcode = 0
+kst_esito.SQLErrText = ""
+
+kst_open_w = kst_open_w
+kst_open_w.flag_modalita = kkg_flag_modalita.anteprima
+kst_open_w.id_programma = get_id_programma(kkg_flag_modalita.anteprima) 
+
+//--- controlla se utente autorizzato alla funzione in atto
+kuf1_sicurezza = create kuf_sicurezza
+k_return = kuf1_sicurezza.autorizza_funzione(kst_open_w)
+destroy kuf1_sicurezza
+
+if not k_return then
+
+	kst_esito.sqlcode = sqlca.sqlcode
+	kst_esito.SQLErrText = "Anteprima non Autorizzata: ~n~r" + "La funzione richiesta non e' stata abilitata"
+	kst_esito.esito = kkg_esito.no_aut
+
+else
+
+	try
+		kuo1_sqlca_db_0 = set_connessione(true)
+	
+		if isvalid(kdw_anteprima)  then
+			if kdw_anteprima.dataobject = "d_wm_receiptgammarad_l"  then
+				if kdw_anteprima.object.packinglistcode [1] = kst_tab_wm_receiptgammarad.packinglistcode   then
+					kst_tab_wm_receiptgammarad.packinglistcode  = "" 
+				end if
+			end if
+		end if
+	
+		if len(trim(kst_tab_wm_receiptgammarad.packinglistcode))  > 0 then
+		
+			kdw_anteprima.dataobject = "d_wm_receiptgammarad_l"		
+			kdw_anteprima.settransobject(kuo1_sqlca_db_0)
+		
+//			kuf1_utility = create kuf_utility
+//			kuf1_utility.u_dw_toglie_ddw(1, kdw_anteprima)
+//			destroy kuf1_utility
+	
+			kdw_anteprima.reset()	
+	//--- retrive dell'attestato 
+			k_rc=kdw_anteprima.retrieve(kst_tab_wm_receiptgammarad.packinglistcode )
+	
+		else
+			kst_esito.sqlcode = 0
+			kst_esito.SQLErrText = "Nessun Packing-List Mandante da visualizzare: ~n~r" + "nessun Codice indicato"
+			kst_esito.esito = kkg_esito.blok
+			
+		end if
+	catch (uo_exception kuo_exception)
+		kst_esito = kuo_exception.get_st_esito()
+		
+	finally
+		set_connessione(false)
+		
+		
+	end try
+end if
+
+
+return kst_esito
 
 end function
 

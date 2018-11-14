@@ -36,7 +36,7 @@ table(column=(type=long updatewhereclause=yes key=yes identity=yes name=id_wm_pk
  column=(type=char(32) update=yes updatewhereclause=yes name=packinglistcode dbname="wm_pklist.packinglistcode" )
  column=(type=long update=yes updatewhereclause=yes name=id_wm_pklist_padre dbname="wm_pklist.id_wm_pklist_padre" )
  column=(type=long updatewhereclause=yes name=id_contratto dbname="id_contratto" )
- column=(type=char(255) updatewhereclause=yes name=customerlot dbname="customerlot" )
+ column=(type=char(255) update=yes updatewhereclause=yes name=customerlot dbname="customerlot" )
  retrieve="  SELECT wm_pklist.id_wm_pklist,   
          trim(wm_pklist.idpkl) as idpkl,   
          wm_pklist.eliminato,   
@@ -147,6 +147,6 @@ xsltgen()
 jsgen()
 export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
 import.xml()
-export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" nativepdf.customsize=0 nativepdf.customorientation=0 )
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" nativepdf.customsize=0 nativepdf.customorientation=0 nativepdf.pdfstandard=0 nativepdf.useprintspec=no )
 export.xhtml()
  

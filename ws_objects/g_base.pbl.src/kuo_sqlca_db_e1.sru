@@ -166,7 +166,7 @@ public function integer u_get_col_len (string a_table, string a_col);//
 int k_return 
 datastore kds_1
 
-SELECT CHAR_LENGTH
+SELECT min(CHAR_LENGTH)
           into :k_return
             FROM ALL_TAB_COLUMNS 
 	WHERE TABLE_NAME = :a_table AND COLUMN_NAME = :a_col

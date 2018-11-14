@@ -498,6 +498,10 @@ end subroutine
 
 public subroutine u_menu_init ();//
 	if isvalid(ki_menu_0) then
+//--- assegna il puntatore al MENU generale della MDI
+		ki_menu_0 = this.menuid
+	end if
+	if isvalid(ki_menu_0) then
 		//this.changemenu(ki_menu_0)
 		ki_menu_0.reset_menu_all( )
 		ki_menu_0.u_imposta_window_menu( )

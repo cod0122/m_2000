@@ -729,6 +729,7 @@ int k_return, k_rc
 			kiuo_g_tab_elenco_tabpage[ki_tab_max].kist_open_w = ki_st_open_w
 			kiuo_g_tab_elenco_tabpage[ki_tab_max].tag = this.title 
 			kiuo_g_tab_elenco_tabpage[ki_tab_max].u_resize( ) 
+			kiuo_g_tab_elenco_tabpage[ki_tab_max].kitab_1 = tab_1
 			tab_1.selecttab(ki_tab_max)
 
 			inizializza( )
@@ -985,57 +986,11 @@ boolean default = true
 end type
 
 event clicked;//
-//uo_d_std_1 kdw_focus
-//datastore kds_1
-////st_tab_menu_window_anteprima kst_tab_menu_window_anteprima
-////st_open_w kst_open_w
-////kuf_menu_window kuf1_menu_window
-
-
 try
 
 	if tab_1.selectedtab > 0 then
 		kiuo_g_tab_elenco_tabpage[tab_1.selectedtab].u_esegui_funzione(kkg_flag_modalita.visualizzazione)
 	end if
-
-//	kdw_focus = u_get_dw( )
-//	if kdw_focus.rowcount( ) > 0 then
-//
-//		kds_1 = create datastore
-//		kds_1.dataobject = kdw_focus.dataobject
-//		if kdw_focus.getrow( ) = 0 then kdw_focus.setrow(1) 
-//		kdw_focus.rowscopy( kdw_focus.getrow( ) , kdw_focus.getrow( ), primary!, kds_1, 1, primary!)
-//
-////		kuf1_menu_window = create kuf_menu_window
-//		kguf_menu_window.open_w_tabelle_da_ds(kds_1, kkg_flag_modalita.visualizzazione)
-//		
-//		
-////		kuf1_menu_window = create kuf_menu_window
-////		kst_tab_menu_window_anteprima.anteprima = kdw_focus.dataobject
-////		kuf1_menu_window.get_st_tab_menu_window_anteprima(kst_tab_menu_window_anteprima)
-////		
-////		kst_open_w.id_programma = kst_tab_menu_window_anteprima.id_menu_window
-////		kst_open_w.flag_modalita = kkg_flag_modalita.visualizzazione
-////		kst_open_w.key9 = kst_tab_menu_window_anteprima.nome_id_tabella
-////		kst_open_w.key11_ds = create datastore
-////		kst_open_w.key11_ds.dataobject = kdw_focus.dataobject
-////		kdw_focus.rowscopy( kdw_focus.getrow( ) , kdw_focus.getrow( ), primary!, kst_open_w.key11_ds, 1, primary!)
-////		kst_open_w.key11_ds.setrow(1)
-////		
-////		kuf1_menu_window.u_open_funzione(kst_open_w)
-//		
-//	//	if kdw_focus.dataobject = "d_meca_1_anteprima" then
-//	//		
-//	//		if kdw_focus.getrow() = 0 then kdw_focus.setrow(1)
-//	//		
-//	//		kst_tab_g_0.id = kdw_focus.getitemnumber(kdw_focus.getrow(),"id_meca")
-//	//		
-//	//		kuf1_armo = create kuf_armo
-//	//		kuf1_armo.u_open_applicazione(kst_tab_g_0, kkg_flag_modalita.visualizzazione )
-//	//		
-//	//	end if
-//		
-//	end if
 
 catch (uo_exception kuo_exception)
 	kuo_exception.messaggio_utente()
@@ -1178,166 +1133,13 @@ integer selectedtab = 1
 end type
 
 event ue_exit();//
-cb_ritorna.event clicked( )
+u_close_tab()
+
 
 end event
 
 event constructor;//
 this.backcolor = parent.backcolor
-
-end event
-
-event key;//
-//=== Controllo quale tasto da tastiera ha premuto
-int k_null
-
-setnull(k_null)
-
-
-//choose case key
-//	case keypagedown!
-//		if tab_1.selectedtab = 1 and tab_1.tabpage_2.visible = true and &
-//			tab_1.tabpage_2.enabled = true then
-//			tab_1.selectedtab = 2
-//		else
-//			if tab_1.selectedtab = 2 and tab_1.tabpage_3.visible = true and &
-//				tab_1.tabpage_3.enabled = true then
-//				tab_1.selectedtab = 3
-//			else
-//				if tab_1.selectedtab = 3 and tab_1.tabpage_4.visible = true and &
-//					tab_1.tabpage_4.enabled = true then
-//					tab_1.selectedtab = 4
-//				else
-//					if tab_1.selectedtab = 4 and tab_1.tabpage_5.visible = true and &
-//						tab_1.tabpage_5.enabled = true then
-//						tab_1.selectedtab = 5
-//					else
-//						if tab_1.selectedtab = 5 and tab_1.tabpage_6.visible = true and &
-//							tab_1.tabpage_6.enabled = true then
-//							tab_1.selectedtab = 6
-//						else
-//							if tab_1.selectedtab = 6 and tab_1.tabpage_7.visible = true and &
-//								tab_1.tabpage_6.enabled = true then
-//								tab_1.selectedtab = 7
-//							else
-//								if tab_1.selectedtab = 7 and tab_1.tabpage_8.visible = true and &
-//									tab_1.tabpage_6.enabled = true then
-//									tab_1.selectedtab = 8
-//								else
-//									if tab_1.selectedtab = 8 and tab_1.tabpage_9.visible = true and &
-//										tab_1.tabpage_6.enabled = true then
-//										tab_1.selectedtab = 9
-//									else
-//										tab_1.selectedtab = 1
-//									end if
-//								end if
-//							end if
-//						end if
-//					end if
-//				end if
-//			end if
-//		end if
-//	case keypageup!
-//		
-//		choose case tab_1.selectedtab 
-//		
-//			case 1
-//				if tab_1.tabpage_9.visible = true and &
-//					tab_1.tabpage_9.enabled = true then
-//					tab_1.selectedtab = 9
-//				else
-//				if tab_1.tabpage_8.visible = true and &
-//					tab_1.tabpage_8.enabled = true then
-//					tab_1.selectedtab = 8
-//				else
-//				if tab_1.tabpage_7.visible = true and &
-//					tab_1.tabpage_7.enabled = true then
-//					tab_1.selectedtab = 7
-//				else
-//				if tab_1.tabpage_6.visible = true and &
-//					tab_1.tabpage_6.enabled = true then
-//					tab_1.selectedtab = 6
-//				else
-//				if tab_1.tabpage_5.visible = true and &
-//					tab_1.tabpage_5.enabled = true then
-//					tab_1.selectedtab = 5
-//				else
-//				if tab_1.tabpage_4.visible = true and &
-//					tab_1.tabpage_4.enabled = true then
-//					tab_1.selectedtab = 4
-//				else
-//				if tab_1.tabpage_3.visible = true and &
-//					tab_1.tabpage_3.enabled = true then
-//					tab_1.selectedtab = 3
-//				else
-//				if tab_1.tabpage_2.visible = true and &
-//					tab_1.tabpage_2.enabled = true then
-//					tab_1.selectedtab = 2
-//					
-//				end if
-//				end if
-//				end if
-//				end if
-//				end if
-//				end if
-//				end if
-//				end if
-//				
-//			case 2
-//				if tab_1.tabpage_1.visible = true and &
-//					tab_1.tabpage_1.enabled = true then
-//					tab_1.selectedtab = 1
-//				end if
-//					
-//			case 3
-//				if tab_1.tabpage_2.visible = true and &
-//					tab_1.tabpage_2.enabled = true then
-//					tab_1.selectedtab = 2
-//				end if
-//					
-//			case 4
-//				if tab_1.tabpage_3.visible = true and &
-//					tab_1.tabpage_3.enabled = true then
-//					tab_1.selectedtab = 3
-//				end if
-//					
-//			case 5
-//				if tab_1.tabpage_4.visible = true and &
-//					tab_1.tabpage_4.enabled = true then
-//					tab_1.selectedtab = 4
-//				end if
-//					
-//			case 6
-//				if tab_1.tabpage_5.visible = true and &
-//					tab_1.tabpage_5.enabled = true then
-//					tab_1.selectedtab = 5
-//				end if
-//					
-//			case 7
-//				if tab_1.tabpage_6.visible = true and &
-//					tab_1.tabpage_6.enabled = true then
-//					tab_1.selectedtab = 6
-//				end if
-//					
-//			case 8
-//				if tab_1.tabpage_7.visible = true and &
-//					tab_1.tabpage_7.enabled = true then
-//					tab_1.selectedtab = 7
-//				end if
-//					
-//			case 9
-//				if tab_1.tabpage_8.visible = true and &
-//					tab_1.tabpage_8.enabled = true then
-//					tab_1.selectedtab = 8
-//				end if
-//		end choose
-//		
-//	case else
-//		parent.trigger event key (key, 0)
-//		
-//end choose
-
-			
 
 end event
 
@@ -1351,24 +1153,5 @@ end event
 event clicked;//
 attiva_tasti()
 
-end event
-
-event doubleclicked;//
-if index > 0 then
-	if kiuo_g_tab_elenco_tabpage[index].dw_1.getrow() < 1 then
-		return 1
-	end if
-	//if cb_conferma.enabled then 
-	//	
-	//	conferma_selezione()
-	//	
-	//end if
-	//
-	if cb_conferma.enabled = true then 
-		kiuo_g_tab_elenco_tabpage[index].kist_open_w.key5 = " " //--- nessun pulsante pigiato
-		cb_conferma.event clicked( ) 
-	end if
-	
-end if
 end event
 

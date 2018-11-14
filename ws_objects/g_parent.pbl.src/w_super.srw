@@ -36,6 +36,8 @@ protected boolean ki_windowpredef=false		// Mostra il pulsante di sistemazione d
 protected boolean ki_personalizza_pos_controlli=false		// possibile personalizz.posiz. dei controlli dentro la window
 protected boolean ki_controlli_ripristinati=false		// una volta ripristinati lo mette a true
 
+protected boolean ki_risize_w=false		// ridimensione dell'intera Window
+
 //--- da usare per personalizzare il nome della Windows in salvataggio della SIZE e POSITION
 protected string ki_nome_save = " "
 
@@ -925,6 +927,11 @@ boolean k_risize = false, k_predef = false
 		if  k_predef then
 			u_window_control_save( )  // salva subito le pos e size predef dei controlli 
 		end if
+	else
+		if ki_risize_w then
+			ki_risize_w = false
+			u_resize_1( )
+		end if
 	end if
 	
 end subroutine
@@ -1193,6 +1200,7 @@ end event
 
 event resize;//
 if ki_st_open_w.flag_primo_giro <> "S" then
+	ki_risize_w = true
 	u_resize()
 end if
 

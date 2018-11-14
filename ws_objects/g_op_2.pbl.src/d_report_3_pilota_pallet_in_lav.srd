@@ -56,8 +56,8 @@ table(column=(type=char(12) update=yes updatewhereclause=yes name=barcode dbname
                                                    left outer join meca on barcode.id_meca = meca.id
 	                                              left outer join clienti on  meca.clie_3 = clienti.codice	 
 	where pallet.stato = 'WORK'
-	order by pallet.N_ordine asc
-" )
+--	order by pallet.N_ordine asc
+"  sort="num_int A n_ordine A " )
 text(band=header alignment="2" text="Durata
 Media" border="0" color="8421504" x="4905" y="12" height="104" width="265" html.valueishtml="0"  name=k_avg_time_io_minute_t visible="1"  font.face="Verdana" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="32435950" background.transparency="0" background.gradient.color="0" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="0" background.gradient.focus="0" background.gradient.scale="0" background.gradient.spread="0" tooltip.backcolor="0" tooltip.delay.initial="0" tooltip.delay.visible="0" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="0" tooltip.transparency="0" transparency="0" )
 text(band=header alignment="2" text="Barcode

@@ -39,6 +39,7 @@ st_open_w kist_open_w
 kuf_sr_sicurezza kiuf_sr_sicurezza
 
 end variables
+
 forward prototypes
 private subroutine u_check_caps_on ()
 private subroutine imposta_password ()
@@ -340,8 +341,8 @@ pointer oldpointer  // Declares a pointer variable
 			KGuo_sqlca_db_magazzino.db_connetti()
 
 			kuf1_utility = create kuf_utility			 
-			kuf1_utility.u_aggiorna_procedura()			
-			//kuf1_utility.u_aggiorna_procedura_diprova( )
+			//kuf1_utility.u_aggiorna_procedura()			
+			kuf1_utility.u_aggiorna_procedura_diprova( )
 			destroy kuf1_utility
 
 		catch (uo_exception kuo_exception)

@@ -2853,6 +2853,27 @@ int k_lencolmax
 
 	end if
 
+	k_lencolmax = kguo_sqlca_db_magazzino.u_get_col_len( "wm_pklist", "nrddt") //get max size colonna su db
+	if k_lencolmax > 0 and len(trim(kst_tab_wm_pklist.mc_co)) > k_lencolmax then
+
+		kguo_exception.kist_esito.sqlcode = 0
+		kguo_exception.kist_esito.SQLErrText = &
+"Anomalia in " + k_ope + " Testata Packing-List cliente~n~r" &
+				+ " ~n~rN. ddt (nrddt)  TROPPO LUNGO (è stato troncato): "	+ trim(kst_tab_wm_pklist.nrddt ) &	 
+				+ " ~n~rid=" + string(kst_tab_wm_pklist.id_wm_pklist, "####0") + " codice: " + trim(kst_tab_wm_pklist.idpkl) &
+				+ " cliente: " + string(kst_tab_wm_pklist.clie_1) + " DDT: " + trim(kst_tab_wm_pklist.nrddt) + " " + string(kst_tab_wm_pklist.dtddt) &	 
+				+ " ~n~rcustomer lot: "	+ trim(kst_tab_wm_pklist.customerlot ) &	 
+				+ " ~n~rnr.ord: "	+ trim(kst_tab_wm_pklist.nrord ) &	 
+				+ " ~n~rCapitolato: "	+ trim(kst_tab_wm_pklist.sc_cf ) &	 
+				+ " ~n~rNote: "	+ trim(kst_tab_wm_pklist.note ) &	 
+				+ " ~n~rPackinglist code: "	+ trim(kst_tab_wm_pklist.packinglistcode ) 	 
+		kguo_exception.kist_esito.esito = kkg_esito.db_wrn
+		kguo_exception.scrivi_log( )
+
+		kst_tab_wm_pklist.nrddt = left(trim(kst_tab_wm_pklist.nrddt), k_lencolmax)
+
+	end if
+
 
 end subroutine
 

@@ -13,9 +13,9 @@ table(column=(type=number updatewhereclause=yes name=sddoco dbname="f4211.sddoco
   F4211.sdlotn,
   f4111.iltrdj,
   f4111.iltday
-FROM proddta.F4211 F4211,
-  proddta.f4111  f4111,
-  proddta.F4101  F4101
+FROM PRODDTA.F4211 F4211,
+  PRODDTA.f4111  f4111,
+  PRODDTA.F4101  F4101
 WHERE F4211.sdmcu = :k_wamcu
 AND f4111.ildct   = 'IR'
 AND F4211.sddoco  = f4111.ildoco

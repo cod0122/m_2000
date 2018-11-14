@@ -59,7 +59,7 @@ kst_esito.nome_oggetto = this.classname()
 
 	if if_esiste(ast_tab_meca_ptmerce) then
 		kst_esito.esito = kkg_esito.no_esecuzione
-		kst_esito.sqlerrtext = "Inserimento nel 'Pronto Merce' non eseguiuto, il lotto id " + string(ast_tab_meca_ptmerce.id_meca) + " è  già caricato in archivio!"
+		kst_esito.sqlerrtext = "Inserimento avviso nel 'Pronto Merce' fallito, il Lotto id " + string(ast_tab_meca_ptmerce.id_meca) + " è  già stato caricato in archivio!"
 		kguo_exception.inizializza( )
 		kguo_exception.set_esito(kst_esito)
 		throw kguo_exception

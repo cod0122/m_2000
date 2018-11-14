@@ -493,7 +493,7 @@ try
 
 	ast_tab_f5547013.ehapid = trim(ast_tab_f5547013.ehapid)
 	kst_tab_wm_pklist.id_wm_pklist = kst_tab_meca.id_wm_pklist
-	kst_tab_wm_pklist.customerlot = kuf1_wm_pklist_testa.get_customerlot(kst_tab_wm_pklist) // get del codice lotto caricato dal cliente
+	kst_tab_wm_pklist.customerlot = kuf1_wm_pklist_testa.get_customerlot(kst_tab_wm_pklist) // get del codice lotto caricato dal cliente in testata
 	kst_tab_wm_pklist.idpkl = kuf1_wm_pklist_testa.get_idpkl(kst_tab_wm_pklist) // get del codice packing-list
 
 	//kst_tab_armo.colli_2 = get_totale_colli( )
@@ -534,16 +534,17 @@ try
 				kds1_e1_asn_rows.setitem( k_riga_insert, "EDLNID", k_riga_insert * 1000)
 				kds1_e1_asn_rows.setitem( k_riga_insert, "EDUORG", 1)
 				kds1_e1_asn_rows.setitem( k_riga_insert, "EDLITM", trim(kst_tab_listino.e1litm))
+				
+				if trim(kds_wm_pklist_righe_l_barcode.getitemstring(k_ctr, "idlotto_clie")) > " " then  //--- se caricate le righe cusomerlot sui singoli barcode 
+					kst_tab_wm_pklist.customerlot = trim(kds_wm_pklist_righe_l_barcode.getitemstring(k_ctr, "idlotto_clie"))
+				end if
 				if trim(kst_tab_wm_pklist.customerlot) > " " then
 					kds1_e1_asn_rows.setitem( k_riga_insert, "EDIR02", trim(left(kst_tab_wm_pklist.customerlot,30)))
 				else
 					kds1_e1_asn_rows.setitem( k_riga_insert, "EDIR02", trim(left(kst_tab_wm_pklist.idpkl,30)))
 				end if
-				//if trim(kst_tab_clienti.pklbcodepref) > " " then
-				//	kds1_e1_asn_rows.setitem( k_riga_insert, "EDIR01", (trim(kst_tab_clienti.pklbcodepref) + trim(kds_wm_pklist_righe_l_barcode.getitemstring(k_ctr, "wm_barcode"))))
-				//else
+				
 				kds1_e1_asn_rows.setitem( k_riga_insert, "EDIR01", trim(kds_wm_pklist_righe_l_barcode.getitemstring(k_ctr, "wm_barcode")))
-				//end if
 			next
 		end if
 							

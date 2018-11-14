@@ -10,11 +10,8 @@ global kuf_meca_stampa kuf_meca_stampa
 
 type variables
 //
-private string ki_stampa_pdf[]
-private int ki_stampa_pdf_idx
-
+private kuf_pdf kiuf_pdf 
 end variables
-
 forward prototypes
 public function boolean if_sicurezza (st_open_w ast_open_w) throws uo_exception
 public function boolean u_stampa_reportpilota (st_tab_meca ast_tab_meca) throws uo_exception
@@ -25,7 +22,7 @@ public function boolean u_genera_pdf_completa (st_tab_meca ast_tab_meca) throws 
 public subroutine u_inizializza_stampa_pdf ()
 public function boolean u_add_stampa_pdf_reportpilota (st_tab_meca ast_tab_meca) throws uo_exception
 public function boolean u_add_stampa_pdf_lotto (st_tab_meca ast_tab_meca) throws uo_exception
-public function integer u_stampa_stampa_pdf () throws uo_exception
+public function integer u_stampa_all_pdf () throws uo_exception
 end prototypes
 
 public function boolean if_sicurezza (st_open_w ast_open_w) throws uo_exception;//
@@ -164,12 +161,9 @@ return k_return
 end function
 
 public subroutine u_add_stampa_pdf (string k_path_file);//
-//int k_ind 
 
-//k_ind=upperbound(ki_stampa_pdf) 
-//k_ind ++
-ki_stampa_pdf_idx ++
-ki_stampa_pdf[ki_stampa_pdf_idx] = k_path_file
+kiuf_pdf.u_add_file(k_path_file)
+
 
 end subroutine
 
@@ -219,14 +213,10 @@ return k_return
 end function
 
 public subroutine u_inizializza_stampa_pdf ();//
-string k_stampa_pdf_vuota[]
 
-//--- riporta il path nella directory di base (es. c:\at_m2000)
-kGuf_data_base.setta_path_default ()
+if not isvalid(kiuf_pdf) then kiuf_pdf = create kuf_pdf
 
-ki_stampa_pdf_idx = 0
-ki_stampa_pdf[] = k_stampa_pdf_vuota[]
-
+kiuf_pdf.u_inizializza()
 
 end subroutine
 
@@ -342,8 +332,8 @@ end try
 return k_return
 end function
 
-public function integer u_stampa_stampa_pdf () throws uo_exception;//--------------------------------------------------------------------------------------------------------------
-//--- Esegue la Stampa dei pdf indicati nell'array  instance:  ki_stampa_pdf[]
+public function integer u_stampa_all_pdf () throws uo_exception;//--------------------------------------------------------------------------------------------------------------
+//--- Esegue la Stampa dei pdf accumulati nell'oggetto kuf_pdf
 //--- 
 //--- Input: 
 //--- out: 
@@ -352,92 +342,16 @@ public function integer u_stampa_stampa_pdf () throws uo_exception;//-----------
 //--- 
 //--------------------------------------------------------------------------------------------------------------
 int k_return 
-int k_nr_doc, k_ind, k_nr_doc_printed
-string k_nome_pdf_out //k_stampe
-st_esito kst_esito
-kuf_utility kuf1_utility
-kuf_file_explorer kuf1_file_explorer
 
 
 try
 
-	kst_esito.esito = kkg_esito.ok
-	kst_esito.sqlcode = 0
-	kst_esito.SQLErrText = ""
-	kst_esito.nome_oggetto = this.classname()
-
-	kuf1_utility = create kuf_utility
-
-	if ki_stampa_pdf_idx > upperbound(ki_stampa_pdf) then
-		k_nr_doc = upperbound(ki_stampa_pdf)  // Mooolto strano questa sforamento della tabella!!!
-		kguo_exception.inizializza()
-		kguo_exception.kist_esito = kst_esito
-		kguo_exception.kist_esito.SQLErrText = "Stampa PDF, indice interno " + string(ki_stampa_pdf_idx) + " stranamente maggiore della tabella " + string(k_nr_doc) + " !!! Non blocco l'esecuzione."
-		kguo_exception.kist_esito.esito = kkg_esito_ko
-	else
-		k_nr_doc = ki_stampa_pdf_idx
-	end if
-			
-//	if k_nr_doc > 0 then 
-//	
-////--- Unisce i PDF dell'array
-//		k_nome_pdf_out = kguo_path.get_temp( ) + KKG.PATH_SEP + "FileProdotto_"+string(kguo_g.get_datetime_current( ) ,"yyyymmdd_hhmmss") +".pdf"
-//		k_nr_doc_printed = kuf1_utility.u_pdf_merge( ki_stampa_pdf, k_nome_pdf_out)	
-		
-	for k_ind = 1 to k_nr_doc
-		try
-			if ki_stampa_pdf[k_ind] > " " then
-	//			k_stampe += ki_stampa_pdf[k_ind] + " "
-				sleep(1)
-				if kuf1_utility.u_print_file(ki_stampa_pdf[k_ind]) then
-					k_nr_doc_printed ++
-				else
-//--- non blocca l'esecuzione ma segnala nel log		
-					kst_esito.esito = kkg_esito.no_esecuzione
-					kst_esito.sqlerrtext = "Stampa del file '" + ki_stampa_pdf[k_ind] + "' non effettuata,~n~r" & 
-						+ "verificare se il file è corretto opresente." 
-				end if
-			end if
-		catch (uo_exception kuo_exception)
-//--- non blocca l'esecuzione ma segnala nel log		
-			kst_esito = kuo_exception.kist_esito
-		end try
-	end for
-
-//--- Segnala solo nel log		
-	if kst_esito.esito <> kkg_esito.ok then
-		kguo_exception.inizializza( )
-		kguo_exception.set_esito(kst_esito)
-		kguo_exception.scrivi_log( )
-	end if
-
-//	if trim(k_stampe) > " " then
-//		kuf1_file_explorer = create kuf_file_explorer
-//		if kuf1_file_explorer.of_execute("pdftk " + k_stampe + " output " +  kguo_path.get_temp( ) + KKG.PATH_SEP + ) then
-	
-//		if k_nr_doc_printed > 0 then
-//			sleep(1)
-//			if kuf1_utility.u_print_file(k_nome_pdf_out) then
-//				k_return = k_nr_doc_printed
-//			else
-//				kst_esito.esito = kkg_esito.no_esecuzione
-//				kst_esito.sqlerrtext = "Stampa del file '" + k_nome_pdf_out + "' non effettuata,~n~r" & 
-//					+ "verificare se il file è corretto." 
-//				kguo_exception.inizializza( )
-//				kguo_exception.set_esito(kst_esito)
-//				throw kguo_exception
-//			end if
-//		end if
-//	end if
+	k_return = kiuf_pdf.u_print_pdf()
 	
 catch (uo_exception kuo1_exception)
-		throw kuo1_exception
+	throw kuo1_exception
 	
 finally
-	if isvalid(kuf1_utility) then destroy kuf1_utility
-	if isvalid(kuf1_file_explorer) then destroy kuf1_file_explorer
-	
-	k_return = k_nr_doc_printed
 	
 end try
 
@@ -452,9 +366,8 @@ on kuf_meca_stampa.destroy
 call super::destroy
 end on
 
-event constructor;call super::constructor;//--- solo per autorizzazione a RIAPRIRE i Lotto 
-//--- ovvero da CHIUSO o ANNULLATO a RIAPRI
+event destructor;call super::destructor;//
+if isvalid(kiuf_pdf) then destroy kiuf_pdf
 
-ki_msgErrDescr="Riapertura Lotto"
 end event
 

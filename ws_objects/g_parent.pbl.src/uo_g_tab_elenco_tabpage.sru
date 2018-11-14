@@ -24,21 +24,17 @@ global uo_g_tab_elenco_tabpage uo_g_tab_elenco_tabpage
 type variables
 //
 string ki_syntaxquery
-//private w_g_tab_elenco kiw_g_tab_elenco
-//uo_d_std_1 kidw_lista_elenco
-//uo_d_std_1 kidw_lista_elenco_sel
 uo_d_std_1 kidw_selezionata
 datastore kids_elenco, kids_elenco_orig
 st_open_w kist_open_w	
 boolean ki_conferma=false, ki_disattiva_exit=false, ki_attendi_u_ricevi_da_elenco=false
 kuf_utility kiuf_utility
+tab kitab_1
 end variables
-
 forward prototypes
 public subroutine u_zoom_meno ()
 public subroutine u_zoom_off ()
 public subroutine u_zoom_piu ()
-public function integer togli_righe_selezionate ()
 public subroutine set_dw_1_visible (boolean a_visible)
 public subroutine set_dw_1_enabled (boolean a_enabled)
 public function uo_d_std_1 get_dw_1 ()
@@ -46,14 +42,15 @@ public function string conferma_dati ()
 public function uo_d_std_1 get_dw_sel ()
 public function datastore get_ds_elenco_orig ()
 public function datastore get_ds_elenco ()
-public subroutine attiva_drag_drop (uo_d_std_1 adw_1)
 public function string inizializza () throws uo_exception
 public subroutine leggi_liste ()
 public subroutine u_resize ()
-public function long riposiziona_cursore ()
 public subroutine mostra_elenco_selezionati ()
-public subroutine attiva_evento_in_win_origine ()
 public subroutine u_esegui_funzione (string a_flag_modalita)
+private subroutine attiva_drag_drop (uo_d_std_1 adw_1)
+private function boolean u_attiva_evento_in_win_origine ()
+private function integer u_togli_righe_selezionate ()
+private function long u_riposiziona_cursore ()
 end prototypes
 
 public subroutine u_zoom_meno ();//
@@ -113,25 +110,6 @@ int k_zoom
 
 end subroutine
 
-public function integer togli_righe_selezionate ();//--- x postare nella dw dei "cliccati" tutte le righe  selezionate
-long k_ind_selected=0, k_return
-
-
-	k_ind_selected = dw_1.getselectedrow( 0 )
-	do while k_ind_selected > 0 
-		
-		k_return ++
-		dw_sel.event ue_aggiungi_riga(k_ind_selected)
-	
-		k_ind_selected --
-		k_ind_selected = dw_1.getselectedrow( k_ind_selected )
-		
-	loop
-	
-	
-return k_return
-end function
-
 public subroutine set_dw_1_visible (boolean a_visible);//
 dw_1.visible = a_visible
 
@@ -152,6 +130,7 @@ string k_rc
 string k_processing 
 string k_return = ""
 long k_riga
+boolean k_windows_called
 
 
 
@@ -165,31 +144,29 @@ if dw_1.ki_ultrigasel > 0 then
 	dw_1.setfocus()
 		
 //--- invia la riga selezionata alla windows che ha chiamato l'elenco	
-	attiva_evento_in_win_origine()
+	k_windows_called = u_attiva_evento_in_win_origine()
 	
-	if NOT ki_disattiva_exit and kist_open_w.key7 = "S" then //kiuf_elenco.ki_esci_dopo_scelta then
-		parent.triggerevent("ue_exit") 
-		//k_return = "EXIT"
+	if NOT ki_disattiva_exit and k_windows_called then
+		if kist_open_w.key7 = "N" then
+		else
+			k_return = "EXIT"
+		end if
 	else
 	
 //--- Se è stata aperta come windows di "CONFERMA" oppure come da "inquary" ma è di tipo "GRID" o "TREEVIEW" allora 
-//--- quando fccio doppio click metto il record nella DW di appoggio 'dei selzionati'
+//--- x doppio click metto il record nella DW di appoggio 'dei selzionati'
 		if dw_1.rowcount() > 0 & 
 				and ( &
 					 (k_processing = "1" &
 						or k_processing = "8" &
 						or k_processing = "9") ) then
 
-			//kiuo_g_tab_elenco_tabpage = tab_1.control[tab_1.SelectedTab] 
-			//kiuo_g_tab_elenco_tabpage.togli_righe_selezionate()
-			togli_righe_selezionate()
+			u_togli_righe_selezionate()
 
 //--- ripiglia il fuoco sul tab giusto
-			riposiziona_cursore()
+			u_riposiziona_cursore()
 
 		end if
-
-//			attiva_tasti()
 
 		ki_conferma = true
 	end if
@@ -212,14 +189,6 @@ end function
 public function datastore get_ds_elenco ();// 
 return kids_elenco
 end function
-
-public subroutine attiva_drag_drop (uo_d_std_1 adw_1);//
-if dw_1.u_get_tipo() = dw_1.kki_tipo_processing_grid then
-	dw_1.ki_attiva_dragdrop = true
-else
-	dw_1.ki_attiva_dragdrop = false
-end if
-end subroutine
 
 public function string inizializza () throws uo_exception;//
 //======================================================================
@@ -358,7 +327,121 @@ public subroutine u_resize ();//
 
 end subroutine
 
-public function long riposiziona_cursore ();//
+public subroutine mostra_elenco_selezionati ();//
+
+if dw_sel.visible then
+	dw_sel.visible = false
+else
+	dw_sel.visible = true
+end if
+
+end subroutine
+
+public subroutine u_esegui_funzione (string a_flag_modalita);//
+st_open_w kst_open_w
+datastore kds_1
+
+
+try
+
+	kds_1 = create datastore
+	kds_1.dataobject = dw_1.dataobject
+
+	if dw_1.rowcount( ) > 0 then
+		if dw_1.getrow( ) = 0 then dw_1.setrow(1) 
+		dw_1.rowscopy( dw_1.getrow( ) , dw_1.getrow( ), primary!, kds_1, 1, primary!)
+	end if
+	
+	kGuf_menu_window.open_w_tabelle_da_ds(kds_1, a_flag_modalita)
+		
+
+catch (uo_exception kuo_exception)
+	kuo_exception.messaggio_utente()
+	
+end try
+end subroutine
+
+private subroutine attiva_drag_drop (uo_d_std_1 adw_1);//
+if dw_1.u_get_tipo() = dw_1.kki_tipo_processing_grid then
+	dw_1.ki_attiva_dragdrop = true
+else
+	dw_1.ki_attiva_dragdrop = false
+end if
+end subroutine
+
+private function boolean u_attiva_evento_in_win_origine ();//
+//--- Call Windows chiamante event: "u_ricevi_da_elenco"
+//---
+//--- rit.: TRUE se evento chiamato
+//---
+boolean k_return
+long k_riga=0, k_riga_ins=0, k_righe
+int k_errore, k_rc
+string k_key
+
+
+//--- imposta gli oggetti standard
+//	setta_oggetti()
+
+
+//=== Valorizza l'oggetto DATASTORE per ritorno dei valori 
+	if isvalid(kids_elenco) then destroy kids_elenco 
+	kids_elenco = create datastore
+	kids_elenco.dataobject = dw_1.dataobject
+	kids_elenco.reset( )
+	
+//--- copia solo i record selezionati	
+	k_riga = dw_1.getselectedrow(0)
+	do while k_riga > 0
+		
+		k_riga_ins++
+		if dw_1.rowscopy(k_riga, k_riga, primary!, kids_elenco, k_riga_ins, primary!) > 0 then // copia la riga SELECTED
+			kids_elenco.selectrow( k_riga_ins,true) // anche qui la rende SELECTED (solo x mantenere la vecchia compatibilità)
+		end if
+			
+		kist_open_w.key12_any = kids_elenco
+		kist_open_w.key3 = string(k_riga_ins) //"1"
+		
+		if not isnull(kist_open_w.key10_window_chiamante) then
+			
+			if isvalid(kist_open_w.key10_window_chiamante) and not ki_attendi_u_ricevi_da_elenco then
+				k_return = true
+				ki_attendi_u_ricevi_da_elenco = true
+				kist_open_w.key10_window_chiamante.event u_ricevi_da_elenco (kist_open_w)
+				kist_open_w.key10_window_chiamante.setfocus( )
+				//kist_open_w.key10_window_chiamante.bringtotop	 = true
+				ki_attendi_u_ricevi_da_elenco = false
+			end if
+			
+		end if
+		
+		k_riga = dw_1.getselectedrow(k_riga) // cerca la successiva selezionata
+		
+	loop
+	
+return k_return	
+end function
+
+private function integer u_togli_righe_selezionate ();//--- x postare nella dw dei "cliccati" tutte le righe  selezionate
+long k_ind_selected=0, k_return
+
+
+	k_ind_selected = dw_1.getselectedrow( 0 )
+	do while k_ind_selected > 0 
+		
+		k_return ++
+		dw_sel.event ue_aggiungi_riga(k_ind_selected)
+	
+		k_ind_selected --
+		k_ind_selected = dw_1.getselectedrow( k_ind_selected )
+		
+	loop
+	
+	
+return k_return
+end function
+
+private function long u_riposiziona_cursore ();//
 long k_riga
 
 
@@ -386,95 +469,6 @@ long k_riga
 
 return k_riga
 end function
-
-public subroutine mostra_elenco_selezionati ();//
-
-if dw_sel.visible then
-	dw_sel.visible = false
-else
-	dw_sel.visible = true
-end if
-
-end subroutine
-
-public subroutine attiva_evento_in_win_origine ();//
-//--- richiama nella Windows chiamata (se ancora aperta) l'evento "u_ricevi_da_elenco"
-long k_riga=0, k_riga_ins=0, k_righe
-int k_errore, k_rc
-string k_key
-
-
-//--- imposta gli oggetti standard
-//	setta_oggetti()
-
-
-//=== Valorizza l'oggetto DATASTORE per ritorno dei valori 
-	if isvalid(kids_elenco) then destroy kids_elenco 
-	kids_elenco = create datastore
-	kids_elenco.dataobject = dw_1.dataobject
-	kids_elenco.reset( )
-	
-//--- copia solo i record selezionati	
-	k_riga = dw_1.getselectedrow(0)
-	//k_righe = dw_1.rowcount()
-	//for k_riga = 1 to k_righe
-	do while k_riga > 0
-		
-//		if dw_1.isselected( k_riga) then
-			
-			k_riga_ins++
-			if dw_1.rowscopy(k_riga, k_riga, primary!, kids_elenco, k_riga_ins, primary!) > 0 then // copia la riga SELECTED
-				kids_elenco.selectrow( k_riga_ins,true) // anche qui la rende SELECTED (solo x mantenere la vecchia compatibilità)
-			end if
-			
-	
-//			if kids_elenco.rowcount( ) > 0 then
-				kist_open_w.key12_any = kids_elenco
-				kist_open_w.key3 = string(k_riga_ins) //"1"
-				
-				if not isnull(kist_open_w.key10_window_chiamante) then
-					
-					if isvalid(kist_open_w.key10_window_chiamante) and not ki_attendi_u_ricevi_da_elenco then
-						ki_attendi_u_ricevi_da_elenco = true
-						kist_open_w.key10_window_chiamante.event u_ricevi_da_elenco (kist_open_w)
-						ki_attendi_u_ricevi_da_elenco = false
-					end if
-					
-				end if
-			//end if
-		
-		//end if
-		
-		k_riga = dw_1.getselectedrow(k_riga) // cerca la successiva selezionata
-		
-	loop
-	
-	
-end subroutine
-
-public subroutine u_esegui_funzione (string a_flag_modalita);//
-st_open_w kst_open_w
-datastore kds_1
-
-
-try
-
-	kds_1 = create datastore
-	kds_1.dataobject = dw_1.dataobject
-
-	if dw_1.rowcount( ) > 0 then
-		if dw_1.getrow( ) = 0 then dw_1.setrow(1) 
-		dw_1.rowscopy( dw_1.getrow( ) , dw_1.getrow( ), primary!, kds_1, 1, primary!)
-	end if
-	
-	kGuf_menu_window.open_w_tabelle_da_ds(kds_1, a_flag_modalita)
-		
-
-catch (uo_exception kuo_exception)
-	kuo_exception.messaggio_utente()
-	
-end try
-end subroutine
 
 event constructor;//
 	if trim(message.stringparm) > " " then 
@@ -562,8 +556,9 @@ if row < 1 then
 end if
 if ki_conferma then 
 	kist_open_w.key5 = " " //--- nessun pulsante pigiato
-	//kiw_g_tab_elenco.cb_conferma.event clicked( ) 
-	conferma_dati( )
+	if conferma_dati( ) = "EXIT" then
+		kitab_1.triggerevent("ue_exit") 
+	end if
 end if
 
 
@@ -595,7 +590,7 @@ event ue_drag_out;call super::ue_drag_out;//
 if ki_conferma then 
 
 //--- x postare nella dw dei "cliccati" tutte le righe  selezionate
-	togli_righe_selezionate()
+	u_togli_righe_selezionate()
 
 end if
 

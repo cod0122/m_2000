@@ -891,7 +891,7 @@ listviewitem klvi_listviewitem
 		
 		k_rc = kilv_lv1.SelectedIndex()
 		if k_rc > 0 then
-			k_rc = kilv_lv1.getitem(kilv_lv1.SelectedIndex(), 1, klvi_listviewitem) 
+			k_rc = kilv_lv1.getitem(k_rc, 1, klvi_listviewitem) 
 			if k_rc > 0 then 
 			
 				kst_treeview_data = klvi_listviewitem.data  

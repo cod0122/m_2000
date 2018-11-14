@@ -200,7 +200,7 @@ end function
 
 private subroutine genera_sked ();//
 int k_rc
-kuf_sv_skedula kuf1_sv_skedula
+kuf_sv_skedula_batch kuf1_sv_skedula_batch
 st_esito kst_esito
 
 pointer kpointer  // Declares a pointer variable
@@ -217,9 +217,9 @@ pointer kpointer  // Declares a pointer variable
 //=== Puntatore Cursore da attesa.....
 		kpointer = SetPointer(HourGlass!)
 		
-		kuf1_sv_skedula = create kuf_sv_skedula
-		kst_esito = kuf1_sv_skedula.genera_eventi()
-		destroy kuf1_sv_skedula
+		kuf1_sv_skedula_batch = create kuf_sv_skedula_batch
+		kst_esito = kuf1_sv_skedula_batch.genera_eventi()
+		destroy kuf1_sv_skedula_batch
 	
 		SetPointer(kpointer)
 	
@@ -321,7 +321,6 @@ string k_key
 long k_codice
 string k_attiva
 int k_importa = 0
-kuf_sv_skedula kuf1_sv_skedula
 pointer oldpointer  // Declares a pointer variable
 
 
@@ -360,36 +359,6 @@ pointer oldpointer  // Declares a pointer variable
 		attiva_tasti( )
 		
 	else
-//--- se programma lanciato in modalita' batch...	
-		try 
-
-			kiw_this_window.windowstate = minimized!
-			
-			kuf1_sv_skedula = create kuf_sv_skedula 
-			kuf1_sv_skedula.kist_sv_eventi_sked[1] = ki_st_open_w.key12_any
-	//		kuf1_sv_skedula.kist_sv_eventi_sked[1] = kst_sv_eventi_sked
-			kuf1_sv_skedula.kist_sv_eventi_sked[1].esito = " in esecuzione..."
-			kuf1_sv_skedula.tb_aggiorna_stato_sv_eventi_sked()
-			
-			kuf1_sv_skedula.genera_eventi()  // esegue l'elaborazione
-			
-			kuf1_sv_skedula.kist_sv_eventi_sked[1].esito = ""
-			if dw_lista_0.rowcount() > 0 then
-				kuf1_sv_skedula.kist_sv_eventi_sked[1].esito = "Generati nuovi " &
-				+ string(dw_lista_0.rowcount()) + " eventi da eseguire  "
-			else
-				kuf1_sv_skedula.kist_sv_eventi_sked[1].esito = "nessun evento da eseguire " 
-			end if
-			
-			kuf1_sv_skedula.kist_sv_eventi_sked[1] = ki_st_open_w.key12_any
-			kuf1_sv_skedula.kist_sv_eventi_sked[1].stato = kuf1_sv_skedula.kki_sv_eventi_sked_stato_eseg
-			kuf1_sv_skedula.tb_aggiorna_stato_sv_eventi_sked()
-		
-			destroy kuf1_sv_skedula
-		
-		catch(uo_exception kuo_exception1)
-		
-		end try
 		cb_ritorna.postevent(clicked!)
 		
 	end if 

@@ -1709,11 +1709,22 @@ end subroutine
 private subroutine popola_dw_2 ();//
 //=== Legge parametri dal arch. di config
 //
+int k_riga_user
 string k_nome_db, k_parametro_db, k_path_db, k_path_dw, k_server="?", k_dbversione="?"
 string k_esito=""
+datastore kds_1
 kuf_base kuf1_base
+kuf_utility kuf1_utility
 
+
+	try
 		kuf1_base = create kuf_base
+		kuf1_utility = create kuf_utility
+		kds_1 = create datastore
+		
+		kds_1.dataobject = "ds_current_user"
+		kds_1.settransobject( kguo_sqlca_db_magazzino )
+		k_riga_user = kds_1.retrieve( )
 	
 		k_parametro_db = trim ( kguo_sqlca_db_magazzino.DBParm )
 		k_path_dw = trim(kGuf_data_base.profilestring_leggi_scrivi(kGuf_data_base.ki_profilestring_operazione_leggi, "arch_saveas", ""))
@@ -1735,12 +1746,26 @@ kuf_base kuf1_base
 		tab_1.tabpage_2.dw_2.setitem(1, "path_files_dat", trim(k_path_dw))
 		tab_1.tabpage_2.dw_2.setitem(1, "server", trim(k_server))
 		tab_1.tabpage_2.dw_2.setitem(1, "dbversione", trim(k_dbversione))
+		tab_1.tabpage_2.dw_2.setitem(1, "pc_name", trim(kuf1_utility.u_nome_computer()))
+		if k_riga_user > 0 then
+			tab_1.tabpage_2.dw_2.setitem(1, "user", trim(kds_1.getitemstring(1, "current_user")))
+		else
+			tab_1.tabpage_2.dw_2.setitem(1, "user", "NON RICONOSCIUTO")
+		end if
+
+		
 
 		tab_1.tabpage_2.dw_2.resetupdate()
 		
+	catch (uo_exception kuo_exception)
+		kuo_exception.messaggio_utente()
 		
-		destroy kuf1_base
-
+	finally		
+		if isvalid(kuf1_base) then destroy kuf1_base
+		if isvalid(kuf1_base) then destroy kuf1_utility
+		if isvalid(kds_1) then destroy kds_1
+		
+	end try
 
 end subroutine
 
@@ -2694,6 +2719,7 @@ integer height = 1048
 boolean enabled = true
 string dataobject = "d_base_gen"
 boolean hsplitscroll = false
+boolean livescroll = false
 end type
 
 event dw_4::buttonclicked;call super::buttonclicked;//

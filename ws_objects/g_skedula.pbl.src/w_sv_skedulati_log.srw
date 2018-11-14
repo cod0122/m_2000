@@ -43,7 +43,8 @@ protected function string leggi_liste ()
 public subroutine u_set_operazione ()
 protected subroutine leggi_liste_reset ()
 protected subroutine open_start_window ()
-public subroutine u_timer ()
+private subroutine u_timer ()
+private subroutine u_timer_esegui ()
 end prototypes
 
 protected function integer inserisci ();//
@@ -61,13 +62,16 @@ st_sv_eventi_sked_log kst_sv_eventi_sked_log
 	dw_lista_0.scrolltorow(dw_lista_0.insertrow(1)) // nuova riga
 	if k_righe = 0 then
 		kst_sv_eventi_sked_log = kist_sv_eventi_sked_log
+		
 		kist_sv_eventi_sked_log.log_testo = "ESEGUITO LO START DEGLI EVENTI DA ELABORARE "
 		u_set_operazione()
-		kist_sv_eventi_sked_log = kst_sv_eventi_sked_log
 		
 		dw_lista_0.scrolltorow(dw_lista_0.insertrow(1))
+		kist_sv_eventi_sked_log = kst_sv_eventi_sked_log
+		
 	end if
 		
+	u_set_operazione()
 
 return (0)
 
@@ -121,7 +125,6 @@ pointer oldpointer  // Declares a pointer variable
 		setnull(kist_sv_eventi_sked_log.log_ora)
 		kist_sv_eventi_sked_log.log_testo = "attendere il prossimo evento...."
 		inserisci()
-		u_set_operazione( )
 		
 	//--- setto a null data e ora cosi' li riempie inserisci()		
 		setnull(kist_sv_eventi_sked_log.log_data)
@@ -133,7 +136,6 @@ pointer oldpointer  // Declares a pointer variable
 		else
 			kist_sv_eventi_sked_log.log_testo = "ATTENZIONE: operazione Fallita! timer eventi non rilanciato"
 			inserisci()
-			u_set_operazione( )
 		end if
 	
 		if kiuf_sv_skedula.ds_eventi_da_lanciare_inizializzazione() then
@@ -144,7 +146,6 @@ pointer oldpointer  // Declares a pointer variable
 		else
 			kist_sv_eventi_sked_log.log_testo = "ATTENZIONE: operazione Fallita! timer eventi BLOCCATO uscire dalla Procedura e tentare il rilancio"
 			inserisci()
-			u_set_operazione( )
 		end if
 
 		SetPointer(oldpointer)
@@ -269,24 +270,59 @@ catch (uo_exception kuo_exception)
 	kuo_exception.messaggio_utente()
 
 finally
-	if isvalid(kuf1_base) then	destroy kuf1_base
+	if isvalid(kuf1_base) then	destroy kuf1_base 
 
 end try
 
 
 end subroutine
 
-public subroutine u_timer ();//--- 
+private subroutine u_timer ();//--- 
 //--- scatena gli eventi da lanciare
 //---
-string k_errore="", k_cmd_lanciato="", k_esito=""
-//kuf_db kuf1_db
 
 
 //--- ferma il timer di skedulazione
 	timer_stop()
 
 	try
+
+//--- lancia eventi		
+		u_timer_esegui()	
+		
+//--- setto a null data e ora cosi' li riempie inserisci()		
+		setnull(kist_sv_eventi_sked_log.log_data)
+		setnull(kist_sv_eventi_sked_log.log_ora)
+		kist_sv_eventi_sked_log.log_testo = "attendere il prossimo evento...."
+		inserisci()
+
+//--- Se tutto OK, riattiva il timer di skedulazione
+		timer_start()
+	
+	catch (uo_exception kuo_exception)
+		kuo_exception.scrivi_log()
+		setnull(kist_sv_eventi_sked_log.log_data)
+		setnull(kist_sv_eventi_sked_log.log_ora)
+		
+		kist_sv_eventi_sked_log.log_testo = kuo_exception.get_errtext( )
+		u_set_operazione()
+
+	finally		
+
+	end try
+end subroutine
+
+private subroutine u_timer_esegui ();//--- 
+//--- scatena gli eventi da lanciare
+//---
+string k_cmd_lanciato="", k_esito=""
+int k_n_cmd
+
+
+try
+
+	do
+		
 		setnull(kist_sv_eventi_sked_log.log_data)
 		setnull(kist_sv_eventi_sked_log.log_ora)
 		kist_sv_eventi_sked_log.log_testo = "in ricerca evento da lanciare...."
@@ -298,19 +334,18 @@ string k_errore="", k_cmd_lanciato="", k_esito=""
 		setnull(kist_sv_eventi_sked_log.log_data)
 		setnull(kist_sv_eventi_sked_log.log_ora)
 		kist_sv_eventi_sked_log.log_testo = "verifica se evento da lanciare n. "	+ string(ki_conta_timer) + ". Prego attendere.... " 
-	
-//		inserisci()  // Inserisce una nuova riga
-	
-//--- valuta cosa lanciare		
-		if not kiuf_sv_skedula.ds_eventi_da_lanciare_run() then
+
+//--- lancia EVENTO
+		k_n_cmd = kiuf_sv_skedula.ds_eventi_da_lanciare_run()
+		if k_n_cmd = 0  then
 			
 			setnull(kist_sv_eventi_sked_log.log_data)
 			setnull(kist_sv_eventi_sked_log.log_ora)
 			kist_sv_eventi_sked_log.log_testo = "ok, NESSUN evento da eseguire per la verifica n. " + string(ki_conta_timer) + ". "
 
 		else
-			
-//--- se ho disconnesso il DB allora riprova la connessione			
+				
+	//--- se ho disconnesso il DB allora riprova la connessione			
 			if kiuf_sv_skedula.ki_db_disconnesso then
 				dw_dett_0.settransobject ( kguo_sqlca_db_magazzino )
 				dw_lista_0.settransobject ( kguo_sqlca_db_magazzino )
@@ -321,7 +356,7 @@ string k_errore="", k_cmd_lanciato="", k_esito=""
 			if upperbound(kiuf_sv_skedula.kist_sv_eventi_sked[]) > 0 then
 				k_esito = kiuf_sv_skedula.kist_sv_eventi_sked[1].esito 
 				if LenA(trim(kiuf_sv_skedula.kist_sv_eventi_sked[1].cmd_dos)) > 0 then
-					k_cmd_lanciato =	trim(kiuf_sv_skedula.kist_sv_eventi_sked[1].cmd_dos)
+					k_cmd_lanciato = trim(kiuf_sv_skedula.kist_sv_eventi_sked[1].cmd_dos)
 				else
 					k_cmd_lanciato = trim(kiuf_sv_skedula.kist_sv_eventi_sked[1].id_menu_window)
 				end if
@@ -336,37 +371,26 @@ string k_errore="", k_cmd_lanciato="", k_esito=""
 		end if
 		u_set_operazione()
 
-//--- controlla se DB connesso se no lo ricconnette grazie alla gestione errori standard della dw
-//		dw_dett_0.retrieve() 
-
-//--- Se tutto OK, riattiva il timer di skedulazione
-		timer_start()
-
-//--- setto a null data e ora cosi' li riempie inserisci()		
-		setnull(kist_sv_eventi_sked_log.log_data)
-		setnull(kist_sv_eventi_sked_log.log_ora)
-		kist_sv_eventi_sked_log.log_testo = "attendere il prossimo evento...."
-		inserisci()
-		u_set_operazione( )
+		if k_n_cmd > 1 then
+			inserisci()
+		end if
+		
+	loop while k_n_cmd > 1
 	
-	catch (uo_exception kuo_exception1)
-		setnull(kist_sv_eventi_sked_log.log_data)
-		setnull(kist_sv_eventi_sked_log.log_ora)
-		kist_sv_eventi_sked_log.log_testo = "KO, si è verificato un errore GRAVE, schedulatore FERMO!! (" + trim(kGuo_exception.getmessage( )) + ") "
-		u_set_operazione()
+catch (uo_exception kuo_exception1)
+	kuo_exception1.kist_esito.sqlerrtext = "KO, si è verificato un errore GRAVE, schedulatore FERMO!! (" + trim(kuo_exception1.getmessage( )) + ") "
+	throw kuo_exception1
+	
+catch (RuntimeError re)
+	kguo_exception.inizializza( )
+	kguo_exception.kist_esito.nome_oggetto = this.classname( )
+	kguo_exception.kist_esito.sqlerrtext = "KO, si è verificato un errore GRAVE di 'RUNTIME', schedulatore FERMO!! (" + re.text + ")"
+	throw kguo_exception
+	
+finally		
 
-		
-	catch (RuntimeError re)
-		setnull(kist_sv_eventi_sked_log.log_data)
-		setnull(kist_sv_eventi_sked_log.log_ora)
-		kist_sv_eventi_sked_log.log_testo = "KO, si è verificato un errore GRAVE di 'RUNTIME', schedulatore FERMO!! "
-		u_set_operazione()
-		
-	finally		
-////--- riattiva il timer di skedulazione
-//		timer_start()
-//
-	end try
+end try
+	
 end subroutine
 
 on w_sv_skedulati_log.create
@@ -381,6 +405,7 @@ end on
 
 on w_sv_skedulati_log.destroy
 call super::destroy
+if IsValid(MenuID) then destroy(MenuID)
 destroy(this.cb_schedula)
 destroy(this.p_schedula)
 end on
@@ -454,6 +479,7 @@ end type
 type dw_lista_0 from w_g_tab0`dw_lista_0 within w_sv_skedulati_log
 integer y = 20
 string dataobject = "d_sv_eventi_sked_log"
+boolean livescroll = false
 boolean ki_link_standard_attivi = false
 boolean ki_button_standard_attivi = false
 boolean ki_d_std_1_attiva_sort = false

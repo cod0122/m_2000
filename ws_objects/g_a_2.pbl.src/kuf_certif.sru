@@ -3861,7 +3861,7 @@ try
 				end if
 				//k_nome_pdf_out = kguo_path.get_temp( ) + KKG.PATH_SEP + "LottoAttestato" + string(kist_tab_certif.num_certif) +"_"+string(kguo_g.get_datetime_current( ) ,"yymmdd_hhmm") +".pdf"
 				//k_nr_doc_printed = kuf1_utility.u_pdf_merge( kuf1_meca_stampa.ki_stampa_pdf, k_nome_pdf_out)	// unisce i file pdf da stampare
-				k_nr_doc_printed = kuf1_meca_stampa.u_stampa_stampa_pdf( )  // stampa i file PDF  ATTESTATO + DATI LOTTO + REPORT PILOTA
+				k_nr_doc_printed = kuf1_meca_stampa.u_stampa_all_pdf( )  // stampa i file PDF accantonati:  ATTESTATO + DATI LOTTO + REPORT PILOTA
 			
 			//20180201 k_rc = kids_certif_stampa_completa.print() 
 			//if k_rc > 0 then

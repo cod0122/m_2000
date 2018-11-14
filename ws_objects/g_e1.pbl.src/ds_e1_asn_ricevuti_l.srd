@@ -10,7 +10,7 @@ table(column=(type=number updatewhereclause=yes name=wadoco dbname="f4801_adt.wa
  column=(type=decimal(0) updatewhereclause=yes name=irdse dbname="f553112t.irdse" dbalias="f553112t.irdse" )
  column=(type=number updatewhereclause=yes name=irwwast dbname="f553112t.irwwast" dbalias="f553112t.irwwast" )
  retrieve="select distinct f4801.wadoco, 0 sddoco, f553112t.irdse, f553112t.irwwast
- from proddta.F4801_ADT  f4801, proddta.F553112T  f553112t
+ from PRODDTA.F4801_ADT  f4801, PRODDTA.F553112T  f553112t
   where (:k_wadoco= 0 or f4801.wadoco = :k_wadoco)
     and f4801.wamcu = :k_wamcu 
     and f4801.wadoco = f553112t.irdoco and f553112t.iropsq = 40000 
@@ -19,9 +19,9 @@ union all
 SELECT distinct 0, F4211.sddoco
   ,f4111.ildgl
   ,f4111.iltday
-FROM proddta.F4211 F4211,
-  proddta.f4111  f4111,
-  proddta.F4101  F4101
+FROM PRODDTA.F4211 F4211,
+  PRODDTA.f4111  f4111,
+  PRODDTA.F4101  F4101
 WHERE F4211.sdmcu = :k_wamcu
 AND f4111.ildct   = 'IR'
 AND F4211.sddoco  = f4111.ildoco
