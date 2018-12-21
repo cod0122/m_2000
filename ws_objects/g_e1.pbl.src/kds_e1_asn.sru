@@ -26,7 +26,7 @@ public function boolean db_connetti () throws uo_exception;//
 boolean k_return = false
 
 
-	this.object.DataWindow.Table.Select = kiuf_e1_conn_cfg.u_sql_set_schema_nome(this.object.DataWindow.Table.Select)  //imposta sql con lo il nome schema giusto
+	//this.object.DataWindow.Table.Select = kiuf_e1_conn_cfg.u_sql_set_schema_nome(this.object.DataWindow.Table.Select)  //imposta sql con lo il nome schema giusto
 
 	if kguo_sqlca_db_e1.db_connetti( ) then
 		this.settransobject( kguo_sqlca_db_e1)

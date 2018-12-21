@@ -14,6 +14,7 @@ public function boolean if_connessione_bloccata () throws uo_exception
 public function boolean u_db_connetti (ref datawindow adw_1) throws uo_exception
 public function boolean if_connesso_x () throws uo_exception
 public function integer u_get_col_len (string a_table, string a_col)
+public function integer x_db_connetti_post_ok () throws uo_exception
 end prototypes
 
 protected subroutine x_db_profilo () throws uo_exception;//
@@ -110,22 +111,13 @@ public function boolean u_db_connetti (ref datawindow adw_1) throws uo_exception
 //---   Lancia una ECCEZIONE x errore grave
 //---
 boolean k_return = false
-st_esito kst_esito
-kuf_e1_conn_cfg kuf1_e1_conn_cfg
 
 	
 try
 	SetPointer(kkg.pointer_attesa )
 
-	kst_esito.esito = kkg_esito.ok
-	kst_esito.sqlcode = 0
-	kst_esito.SQLErrText = ""
-	kst_esito.nome_oggetto = this.classname()
-
 	db_connetti( )
 	
-	kuf1_e1_conn_cfg	= create kuf_e1_conn_cfg
-	adw_1.Object.DataWindow.Table.Select = kuf1_e1_conn_cfg.u_sql_set_schema_nome(adw_1.Object.DataWindow.Table.Select)
 	adw_1.settransobject(this)
 	
 	
@@ -178,6 +170,36 @@ end if
 		
 return k_return
 
+
+end function
+
+public function integer x_db_connetti_post_ok () throws uo_exception;//---
+//---  Setta lo schema del DB
+//---  rit: 0 
+//---
+//---   Lancia una ECCEZIONE x errore grave
+//---
+kuf_e1_conn_cfg kuf1_e1_conn_cfg
+
+	
+try
+	
+	kuf1_e1_conn_cfg = create kuf_e1_conn_cfg
+	kuf1_e1_conn_cfg.u_sql_set_schema_nome()
+	
+	
+catch (uo_exception kuo_exception)	
+	throw kuo_exception
+	
+finally
+	if isvalid(kuf1_e1_conn_cfg) then destroy kuf1_e1_conn_cfg
+	
+
+end try
+
+
+
+return 0
 
 end function
 

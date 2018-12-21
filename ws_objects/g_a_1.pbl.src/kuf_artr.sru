@@ -11,6 +11,7 @@ global kuf_artr kuf_artr
 type variables
 //
 public st_tab_artr kist_tab_artr
+public date ki_data_certif_da_st_da, ki_data_certif_da_st_a 
 
 end variables
 
@@ -1185,6 +1186,7 @@ try
 	k_data_0 = date(0)
 	k_data_a = date(0)
 	k_data_da = date(0)
+
 	
 //--- Periodo di estrazione, se la data e' a zero allora calcolo in automatico -3 mesi
 	kst_treeview_data_any = kst_treeview_data.struttura
@@ -1212,6 +1214,19 @@ try
 		k_data_a = date (k_anno, k_mese, 01) 
 	
 	end if
+	
+	choose case k_tipo_oggetto
+			case kuf1_treeview.kist_treeview_oggetto.certif_da_st_dett &
+				  ,kuf1_treeview.kist_treeview_oggetto.certif_da_st_sd_dett &
+				  ,kuf1_treeview.kist_treeview_oggetto.certif_da_st_farma_dett &
+				  ,kuf1_treeview.kist_treeview_oggetto.certif_da_st_alimen_dett 
+			if ki_data_certif_da_st_da > date(0) then
+				k_data_da = ki_data_certif_da_st_da
+			end if
+			if ki_data_certif_da_st_a > date(0) then
+				k_data_a = ki_data_certif_da_st_a
+			end if
+	end choose
 		 
 	k_handle_item_figlio = kuf1_treeview.kitv_tv1.finditem(ChildTreeItem!, k_handle_item_padre)
 
@@ -1240,16 +1255,6 @@ try
 //--- Cancello gli Item dalla tree prima di ripopolare
 		kuf1_treeview.u_delete_item_child(k_handle_item_padre)
 
-//		+ "  meca_dosim.dosim_data,   " & 
-//		+ "  meca_dosim.dosim_dose,   " & 
-//		+ "  meca_dosim.dosim_assorb,   " &
-//		+ "  meca_dosim.dosim_spessore,   " &
-//		+ "  meca_dosim.dosim_rapp_a_s,   " &
-//		+ "  meca_dosim.dosim_lotto_dosim,   " &
-//		+ "  meca_dosim.barcode,   " &
-//		+ "  meca_dosim.barcode_dosimetro,   " &
-//		+   "  LEFT OUTER JOIN meca_dosim ON  " &
-//		+   "  meca.id = meca_dosim.id_meca) " &
 	
 		k_query_select = &
 		"  	SELECT " &
@@ -1303,8 +1308,8 @@ try
 				k_query_where = " where " 
 				if k_data_da  <> k_data_0 then
 					k_query_where = k_query_where &
-					+ " artr.data_in > '"+ string(k_dataoggi_meno1anno)+"' " &
-					+ " and artr.data_in >= ? and artr.data_in < ?   "
+					+ "  artr.data_in >= ? and artr.data_in < ?   "
+	//				+ " artr.data_in > '"+ string(k_dataoggi_meno1anno)+"' " &
 				end if
 //					+ " and meca_dosim.dosim_data > '" + string(KKG.DATA_NO) + "' " &
 				k_query_where += &

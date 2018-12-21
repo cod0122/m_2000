@@ -2017,15 +2017,7 @@ kuf_base kuf1_base
 			crea_view_x_report_7()
 
 	//--- Aggiorna SQL della dw	
-			k_sql_orig = kdw_1.Object.DataWindow.Table.Select 
-			k_stringn = "vx_" + trim(kist_int_artr.utente) + "_report_7"
-			k_string = "vx_MAST2_report_7"
-			k_ctr = PosA(k_sql_orig, k_string, 1)
-			DO WHILE k_ctr > 0 and trim(k_string) <> trim(k_stringn)  
-				k_sql_orig = ReplaceA(k_sql_orig, k_ctr, LenA(k_string), (k_stringn))
-				k_ctr = PosA(k_sql_orig, k_string, k_ctr+LenA(k_string))
-			LOOP
-			kdw_1.Object.DataWindow.Table.Select = k_sql_orig 
+			kguf_data_base.u_set_ds_change_name_tab(kdw_1, "vx_MAST2_report_7") // Aggiorna SQL della dw	
 		
 			k_rc = kdw_1.settransobject ( sqlca )
 			k_righe = kdw_1.retrieve()
@@ -2902,31 +2894,6 @@ try
 				kuf1_report_merce_da_sped.kids_report_merce_da_sped.rowscopy( 1, k_righe, primary!, kdw_1, 1, primary!)
 				kdw_1.scrolltorow( kdw_1.rowcount( ))
 				
-////					if ki_e1_enabled then
-//					if kst_report_merce_da_sped.k_rileva_stato_e1 = "1" then
-//						kuf1_e1_asn = create kuf_e1_asn
-//						k_righe = kdw_1.rowcount( )
-//						for k_riga = 1 to k_righe
-//							kst_tab_e1_asn[k_riga].wammcu = kkg.E1MCU
-//							if kdw_1.getitemnumber( k_riga, "e1doco") > 0 then
-////--- Prepara l'array per get dello STATO del ASN da E1
-//								kst_tab_e1_asn[k_riga].waapid = string(kdw_1.getitemnumber( k_riga, "id_meca"))
-//							else
-//								kst_tab_e1_asn[k_riga].waapid = "~'~'"
-//							end if
-//						next
-////--- Get dello STATO del ASN su E1
-//						kuf1_e1_asn.u_get_stato(kst_tab_e1_asn[])
-////--- Imposta lo STATO del ASN
-//						for k_riga = 1 to k_righe
-//							if kst_tab_e1_asn[k_riga].wasrst > " " then
-//								kdw_1.setitem(k_riga, "k_wasrst", kst_tab_e1_asn[k_riga].wasrst)
-//							else
-//								kdw_1.setitem(k_riga, "k_wasrst", " ")
-//							end if
-//						next
-//					end if
-			
 			else
 				kGuo_exception.setmessage("Nessun Dato Trovato,~n~r Controlla i dati immessi.")
 				throw kGuo_exception
@@ -2959,8 +2926,8 @@ return k_righe
 end function
 
 private subroutine leggi_dwc_rif_x_data_mrf (long k_riga, ref datawindow k_dw);//
-string k_data_x
 date k_data_ini, k_data_fin
+int k_anno, k_mese
 st_tab_meca kst_tab_meca
 st_tab_armo kst_tab_armo
 datawindowchild kdwc_meca
@@ -2977,9 +2944,11 @@ datawindowchild kdwc_meca
 		if k_riga > 0 then
 			
 			// data in formato 'yyyy / mm'
-			k_data_x =  k_dw.getitemstring(k_riga,"data_int")
+			k_anno =  k_dw.getitemnumber(k_riga,"data_ent")
+			k_mese =  k_dw.getitemnumber(k_riga,"data_ent_mese")
+			//k_data_x =  k_dw.getitemstring(k_riga,"data_int")
 			// calcola data inizio mese
-			k_data_ini = date(integer( mid(k_data_x, 1, 4) ), integer( mid(k_data_x, 8, 2) ), 01)
+			k_data_ini = date(k_anno, k_mese, 01)
 			// calcola data fine mese (ultimo giorno del mese)
 			k_data_fin = relativedate(k_data_ini, 31)
 			k_data_fin =  relativedate(date(year(k_data_fin), month(k_data_fin), 01), -1)  
@@ -4995,17 +4964,10 @@ if k_riga > 0 then
 					kdwc_cliente.insertrow(1)
 				end if
 		
-		end choose
-//
-//	else
-		
-		choose case k_nome
-				
 			case "b_registra" 
 		//		if ki_scelta_report = ki_scelta_report_RegArt50 then
 					report_9_salva_dati()
 		//		end if
-			
 			
 			case "b_cod_art_l" 
 				try 
@@ -5017,12 +4979,10 @@ if k_riga > 0 then
 					if isvalid(kuf1_prodotti) then destroy kuf1_prodotti
 				end try
 			
-			
 			case "b_mese_prec" 
 				kidw_selezionata.object.data_a[1] = relativedate( date(kguo_g.get_anno( ), kguo_g.get_mese( ), 01), -1)
 				kidw_selezionata.object.data_da[1] = date(year(kidw_selezionata.object.data_a[1]), month(kidw_selezionata.object.data_a[1]), 01)
 
-			
 			case "b_barcode_l" 
 		//		if ki_scelta_report = ki_scelta_report_generico then
 					leggi_dwc_barcode(k_riga, kidw_selezionata)
@@ -6049,21 +6009,30 @@ public subroutine u_resize_1 ();//
 
 
 //--- PERSONALIZZATA
-	tab_1.tabpage_1.st_report.width = tab_1.tabpage_1.width / 2 - 100
-	tab_1.tabpage_1.st_report.height = 90
-	tab_1.tabpage_1.st_report.x =  10
-	tab_1.tabpage_1.st_report.y =  10
-	tab_1.tabpage_1.ddplb_report.width = 1050 //tab_1.tabpage_1.width - tab_1.tabpage_1.st_report.width - 100
+//	tab_1.tabpage_1.st_report.x =  10
+//	tab_1.tabpage_1.st_report.y =  10
+//	tab_1.tabpage_1.st_report.width = tab_1.tabpage_1.width / 2 - 100
+//	tab_1.tabpage_1.st_report.height = 90
+
+	tab_1.tabpage_1.ddplb_report.x = 1 //tab_1.tabpage_1.x + tab_1.tabpage_1.st_report.width + 50
+	tab_1.tabpage_1.ddplb_report.y = 1
+	if tab_1.tabpage_1.width / 7 < 1050 then
+		tab_1.tabpage_1.ddplb_report.width = 1050 
+	else
+		tab_1.tabpage_1.ddplb_report.width = tab_1.tabpage_1.width / 7 //1050 //tab_1.tabpage_1.width - tab_1.tabpage_1.st_report.width - 100
+	end if
 	tab_1.tabpage_1.ddplb_report.height = tab_1.tabpage_1.height // tab_1.tabpage_1.st_report.height
-	tab_1.tabpage_1.ddplb_report.x = 5 //tab_1.tabpage_1.x + tab_1.tabpage_1.st_report.width + 50
-	tab_1.tabpage_1.ddplb_report.y = 5
+
+//	tab_1.tabpage_1.st_report.x =  tab_1.tabpage_1.ddplb_report.x + tab_1.tabpage_1.ddplb_report.width
+//	tab_1.tabpage_1.st_report.y =  tab_1.tabpage_1.ddplb_report.y
+//	tab_1.tabpage_1.st_report.width = 10
+//	tab_1.tabpage_1.st_report.height = tab_1.tabpage_1.ddplb_report.height
+//	tab_1.tabpage_1.st_report.visible = true
 	
 	tab_1.tabpage_1.dw_1.width = tab_1.tabpage_1.width - 10 - tab_1.tabpage_1.ddplb_report.width //tab_1.tabpage_1.width - 10
 	tab_1.tabpage_1.dw_1.height = tab_1.tabpage_1.height //tab_1.tabpage_1.height - tab_1.tabpage_1.st_report.height - 130
 	tab_1.tabpage_1.dw_1.x = tab_1.tabpage_1.ddplb_report.width + tab_1.tabpage_1.ddplb_report.x //(tab_1.tabpage_1.width - tab_1.tabpage_1.dw_1.width) / 2
 	tab_1.tabpage_1.dw_1.y = tab_1.tabpage_1.ddplb_report.y //tab_1.tabpage_1.st_report.y + 150 //(tab_1.tabpage_1.height - tab_1.tabpage_1.dw_1.height) / 2
-
-
 
 //=== Dimensiona dw nel tab
 //		case 2
@@ -6400,7 +6369,8 @@ pointer kpointer  // Declares a pointer variable
 kpointer = SetPointer(HourGlass!)
 
 //--- costruisco la view con ID_MECA delle fatture emesse da data a data
-	k_view = "vx_" + trim(kist_int_artr.utente) + "_report_7 "
+	k_view = kguf_data_base.u_get_nometab_xutente("report_7")
+//	k_view = "vx_" + trim(kist_int_artr.utente) + "_report_7 "
 	k_sql = " "                                   
 	k_sql = + &
 	"CREATE VIEW " + trim(k_view) &
@@ -7844,6 +7814,7 @@ integer x = 14
 integer y = 0
 integer width = 3154
 integer height = 1752
+long backcolor = 32435950
 end type
 
 event tab_1::selectionchanged;call super::selectionchanged;//
@@ -7871,7 +7842,7 @@ end on
 type tabpage_1 from w_g_tab_3`tabpage_1 within tab_1
 integer width = 3118
 integer height = 1624
-long backcolor = 10789024
+long backcolor = 67108864
 string text = "Parametri"
 string picturename = "edit16.gif"
 ddplb_report ddplb_report
@@ -7896,8 +7867,8 @@ end on
 
 type dw_1 from w_g_tab_3`dw_1 within tabpage_1
 boolean visible = true
-integer x = 1097
-integer y = 180
+integer x = 1061
+integer y = 160
 integer width = 2011
 integer height = 1400
 integer taborder = 50
@@ -8337,7 +8308,7 @@ type ddplb_report from dropdownpicturelistbox within tabpage_1
 event u_constructor ( )
 integer x = 32
 integer y = 88
-integer width = 1047
+integer width = 910
 integer height = 1396
 integer taborder = 100
 boolean bringtotop = true
@@ -8347,7 +8318,7 @@ fontcharset fontcharset = ansi!
 fontpitch fontpitch = variable!
 fontfamily fontfamily = swiss!
 string facename = "Arial"
-long backcolor = 553648127
+long backcolor = 32435950
 string text = "Scegliere il Report"
 boolean allowedit = true
 boolean autohscroll = true
@@ -8434,6 +8405,7 @@ fontcharset fontcharset = ansi!
 fontpitch fontpitch = variable!
 fontfamily fontfamily = swiss!
 string facename = "Arial"
+string pointer = "SizeWE!"
 long textcolor = 33554432
 long backcolor = 31449055
 string text = "Scegli il Report:"

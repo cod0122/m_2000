@@ -1222,7 +1222,7 @@ date k_data, k_dataoggi
 long k_long
 double k_num1, k_num2, k_num3, k_double
 ulong k_ulong 
-boolean k_boolean, k_dati_no_da_db
+boolean k_boolean, k_dati_no_da_db, k_trim_no
 string k_Version, k_Level, k_MajorVersion, k_MinorVersion, k_ProductBuild, k_Edition, k_EngineEdition, k_name, k_server_id, k_provider
 datastore kds
 st_tab_base_utenti kst_tab_base_utenti
@@ -1837,29 +1837,29 @@ kuf_stampe kuf1_stampe
 			k_pos_ini = 1
 			k_lungo = len(k_record)
 			
-		case "iva_inc"
-			select iva_inc
-				 into :k_long
-				 from base;
-			k_record = string(k_long, "00000")
-			if isnull(k_record) then
-				k_record = "0"
-			end if
-			k_record = trim(k_record)
-			k_pos_ini = 1
-			k_lungo = len(k_record)
-			
-		case "clie_gru"
-			select CLIE_GRU
-				 into :k_long
-				 from base;
-			k_record = string(k_long, "00000")
-			if isnull(k_record) then
-				k_record = "0"
-			end if
-			k_record = trim(k_record)
-			k_pos_ini = 1
-			k_lungo = len(k_record)
+//		case "iva_inc"
+//			select iva_inc
+//				 into :k_long
+//				 from base;
+//			k_record = string(k_long, "00000")
+//			if isnull(k_record) then
+//				k_record = "0"
+//			end if
+//			k_record = trim(k_record)
+//			k_pos_ini = 1
+//			k_lungo = len(k_record)
+//			
+//		case "clie_gru"
+//			select CLIE_GRU
+//				 into :k_long
+//				 from base;
+//			k_record = string(k_long, "00000")
+//			if isnull(k_record) then
+//				k_record = "0"
+//			end if
+//			k_record = trim(k_record)
+//			k_pos_ini = 1
+//			k_lungo = len(k_record)
 			
 //		case "inc_gru"
 //			select INC_GRU
@@ -1873,42 +1873,29 @@ kuf_stampe kuf1_stampe
 //			k_pos_ini = 1
 //			k_lungo = len(k_record)
 			
-//--- Conto contabile per l'IVA
-		case "iva_conto"
-			select iva_conto
-				 into :k_record
-				 from base;
-			if k_record > " " then
-				k_record = trim(k_record)
-			else
-				k_record = ""
-			end if
-			k_pos_ini = 1
-			k_lungo = len(k_record)
-			
-		case "bolli_gru"
-			select bolli_gru
-				 into :k_long
-				 from base;
-			k_record = string(k_long, "00000")
-			if isnull(k_record) then
-				k_record = "0"
-			end if
-			k_record = trim(k_record)
-			k_pos_ini = 1
-			k_lungo = len(k_record)
-			
-		case "art_vari_gru"
-			select art_vari_gru
-				 into :k_long
-				 from base;
-			k_record = string(k_long, "00000")
-			if isnull(k_record) then
-				k_record = "0"
-			end if
-			k_record = trim(k_record)
-			k_pos_ini = 1
-			k_lungo = len(k_record)
+//		case "bolli_gru"
+//			select bolli_gru
+//				 into :k_long
+//				 from base;
+//			k_record = string(k_long, "00000")
+//			if isnull(k_record) then
+//				k_record = "0"
+//			end if
+//			k_record = trim(k_record)
+//			k_pos_ini = 1
+//			k_lungo = len(k_record)
+//			
+//		case "art_vari_gru"
+//			select art_vari_gru
+//				 into :k_long
+//				 from base;
+//			k_record = string(k_long, "00000")
+//			if isnull(k_record) then
+//				k_record = "0"
+//			end if
+//			k_record = trim(k_record)
+//			k_pos_ini = 1
+//			k_lungo = len(k_record)
 
 //--- Dati	 dell'azienda 
 		case "rag_soc_1"
@@ -2482,6 +2469,18 @@ kuf_stampe kuf1_stampe
 //			k_pos_ini = 1
 //			k_lungo = len(k_record)
 
+//--- codice azienda E1
+		case "e1mcu"
+			select e1mcu
+				 into :k_record
+				 from base;
+			if isnull(k_record) then
+				k_record = ""
+			end if
+			k_record = k_record
+			k_pos_ini = 1
+			k_lungo = len(k_record)
+			k_trim_no = true
 
 //---- Ultima spiaggia cerco dentro ai dati personali
 		case else
@@ -2555,11 +2554,16 @@ kuf_stampe kuf1_stampe
 			k_return = k_stato + k_errore  + " "
 		else
 			if isnull(k_record) then k_record = " "
-			k_return = k_stato + trim(mid(k_record, k_pos_ini, k_lungo)) + " "
+			if k_trim_no then
+				k_return = k_stato + mid(k_record, k_pos_ini, k_lungo)
+			else
+				k_return = k_stato + trim(mid(k_record, k_pos_ini, k_lungo)) + " "
+			end if
 		end if
 	else
 		k_return = k_stato + k_errore + " "
 	end if
+		
 		
 		
 return k_return

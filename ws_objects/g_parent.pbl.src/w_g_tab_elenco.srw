@@ -19,8 +19,8 @@ end type
 end forward
 
 global type w_g_tab_elenco from w_g_tab
-integer width = 4009
-integer height = 1352
+integer width = 261
+integer height = 292
 boolean ki_toolbar_window_presente = true
 boolean ki_esponi_msg_dati_modificati = false
 cb_visualizza cb_visualizza
@@ -331,7 +331,7 @@ if ki_st_open_w.flag_primo_giro <> "S" then
 		ki_menu.m_strumenti.m_fin_gest_libero1.enabled = true
 		ki_menu.m_strumenti.m_fin_gest_libero1.toolbaritemVisible = true
 	end if		
-
+	ki_menu.m_strumenti.m_fin_gest_libero1.visible = ki_menu.m_strumenti.m_fin_gest_libero1.enabled
 	
 //--- Visualizza elenco selezionati	
 //	if cb_conferma.enabled  then 	
@@ -350,6 +350,8 @@ if ki_st_open_w.flag_primo_giro <> "S" then
 		ki_menu.m_strumenti.m_fin_gest_libero2.enabled = cb_conferma.enabled
 		ki_menu.m_strumenti.m_fin_gest_libero2.toolbaritemVisible = true
 	end if		
+	ki_menu.m_strumenti.m_fin_gest_libero2.visible = ki_menu.m_strumenti.m_fin_gest_libero2.enabled
+
 //--- Come doppio-click
 	if not ki_menu.m_strumenti.m_fin_gest_libero3.visible  then 
 		ki_menu.m_strumenti.m_fin_gest_libero3.text = "Mosta/Nascondi elenco Righe già Selezonate "
@@ -361,6 +363,8 @@ if ki_st_open_w.flag_primo_giro <> "S" then
 		ki_menu.m_strumenti.m_fin_gest_libero3.enabled = true
 		ki_menu.m_strumenti.m_fin_gest_libero3.toolbaritemVisible = true
 	end if
+	ki_menu.m_strumenti.m_fin_gest_libero3.visible = ki_menu.m_strumenti.m_fin_gest_libero3.enabled
+
 //--- ZOOM
 	if not ki_menu.m_strumenti.m_fin_gest_libero7.visible  then 
 		ki_menu.m_strumenti.m_fin_gest_libero7.text = "Zoom sulla scheda aperta (usa anche i tasti più e meno)"
@@ -390,6 +394,9 @@ if ki_st_open_w.flag_primo_giro <> "S" then
 		ki_menu.m_strumenti.m_fin_gest_libero7.libero2.enabled = true
 		ki_menu.m_strumenti.m_fin_gest_libero7.libero2.toolbaritemVisible = true
 	end if
+	ki_menu.m_strumenti.m_fin_gest_libero7.visible = ki_menu.m_strumenti.m_fin_gest_libero7.enabled
+	ki_menu.m_strumenti.m_fin_gest_libero7.libero1.visible = ki_menu.m_strumenti.m_fin_gest_libero7.libero1.enabled
+	ki_menu.m_strumenti.m_fin_gest_libero7.libero2.visible = ki_menu.m_strumenti.m_fin_gest_libero7.libero2.enabled
 
 //---
 	super::attiva_menu()
@@ -1113,8 +1120,6 @@ end event
 type tab_1 from tab within w_g_tab_elenco
 event ue_exit ( )
 boolean visible = false
-integer x = 14
-integer y = 16
 integer width = 3886
 integer height = 872
 integer taborder = 10

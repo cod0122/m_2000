@@ -120,14 +120,14 @@ try
 
 			end if
 		
-//--- aggiorna tabelle tipo PROFIS 		
-			if cbx_update_profis.checked then
-				kst_esito = kuf1_fatt.aggiorna_tabelle_profis(kst_tab_arfa[])
-				if kst_esito.esito = kkg_esito.db_ko then
-					kguo_exception.set_tipo( kguo_exception.kk_st_uo_exception_tipo_db_ko )
-					kguo_exception.set_esito( kst_esito )
-				end if
-			end if
+////--- aggiorna tabelle tipo PROFIS 		
+//			if cbx_update_profis.checked then
+//				kst_esito = kuf1_fatt.aggiorna_tabelle_profis(kst_tab_arfa[])
+//				if kst_esito.esito = kkg_esito.db_ko then
+//					kguo_exception.set_tipo( kguo_exception.kk_st_uo_exception_tipo_db_ko )
+//					kguo_exception.set_esito( kst_esito )
+//				end if
+//			end if
 
 //--- aggiorna tabelle tipo SCADENZE....		
 			if cbx_update_tab_varie.checked then
@@ -836,8 +836,6 @@ integer taborder = 80
 boolean bringtotop = true
 boolean enabled = true
 string dataobject = "d_arfa_l"
-boolean hscrollbar = true
-boolean vscrollbar = true
 boolean border = true
 boolean ki_link_standard_sempre_possibile = true
 end type

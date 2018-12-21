@@ -140,7 +140,6 @@ public function boolean u_open_inserimento (ref st_tab_arfa kst_tab_arfa)
 public function boolean u_open_modifica (ref st_tab_arfa kst_tab_arfa)
 public function boolean u_open_visualizza (ref st_tab_arfa kst_tab_arfa)
 public function boolean u_open (st_tab_arfa kst_tab_arfa[], st_open_w kst_open_w)
-public function integer u_tree_open_old (string k_modalita, ref kuf_treeview kuf1_treeview, ref datawindow kdw_anteprima)
 public function integer u_tree_open (string k_modalita, st_tab_arfa kst_tab_arfa[], ref datawindow kdw_anteprima)
 public function boolean u_open_stampa (ref st_tab_arfa kst_tab_arfa[])
 public subroutine elenco_indirizzi_commerciale (st_tab_arfa kst_tab_arfa)
@@ -158,7 +157,6 @@ public function boolean if_num_data_congruenti (ref st_tab_arfa kst_tab_arfa) th
 public function st_esito get_ultimo_doc_ins (ref st_tab_arfa kst_tab_arfa)
 public function boolean if_esiste_fattura (st_tab_arfa kst_tab_arfa) throws uo_exception
 public function double get_totale_x_cliente_periodo (st_tab_arfa kst_tab_arfa_da, st_tab_arfa kst_tab_arfa_a) throws uo_exception
-public function st_esito aggiorna_tabelle_profis (ref st_tab_arfa kst_tab_arfa[])
 public function st_esito get_data_stampa (ref st_tab_arfa kst_tab_arfa)
 public function st_esito get_modo_stampa (ref st_tab_arfa kst_tab_arfa)
 public function st_esito get_modo_email (ref st_tab_arfa kst_tab_arfa)
@@ -4764,8 +4762,8 @@ kuf1_ausiliari = create kuf_ausiliari
 		kst_tab_prof[k_ind_prof].importo = kst_fattura_totali.totale
 		kst_tab_prof[k_ind_prof].s_conto = kst_tab_arfa.clie_3
 		kst_tab_prof[k_ind_prof].iva = 0
-		kst_tab_gru.codice = integer(trim(mid(kuf1_base.prendi_dato_base( "clie_gru"), 2)))
-		kst_esito = kuf1_ausiliari.tb_select( kst_tab_gru)
+//		kst_tab_gru.codice = integer(trim(mid(kuf1_base.prendi_dato_base( "clie_gru"), 2)))
+//		kst_esito = kuf1_ausiliari.tb_select( kst_tab_gru)
 		kst_tab_prof[k_ind_prof].conto = kst_tab_gru.conto
 		if isnull(kst_tab_prof[k_ind_prof].conto ) then 
 			kst_tab_prof[k_ind_prof].conto  = 0 
@@ -5190,18 +5188,8 @@ kuf1_ausiliari = create kuf_ausiliari
 
 //--- Importo Fattura x CONTO contabile righe VARIE SENZA Articolo 
 		
-		kst_tab_gru.codice = integer(trim(mid(kuf1_base.prendi_dato_base( "art_vari_gru"), 2)))
+//		kst_tab_gru.codice = integer(trim(mid(kuf1_base.prendi_dato_base( "art_vari_gru"), 2)))
 		kst_esito = kuf1_ausiliari.tb_select( kst_tab_gru )
-//		select conto, s_conto
-//				into :kst_tab_gru.conto
-//					,:kst_tab_gru.s_conto
-//				from gru 
-//				where codice = :kst_tab_gru.codice
-//				using sqlca;
-//		if sqlca.sqlcode <> 0 then
-//			kst_tab_gru.conto = 0 
-//			kst_tab_gru.s_conto = 0
-//		end if
 		if kst_esito.esito <> kkg_esito.db_ko then
 			 DECLARE get_importo_doc_x_magV4 CURSOR FOR  
 				select sum(prezzo_t), iva
@@ -5936,201 +5924,6 @@ return k_return
 
 end function
 
-public function integer u_tree_open_old (string k_modalita, ref kuf_treeview kuf1_treeview, ref datawindow kdw_anteprima);//
-//--- Chiama applicazioni di dettaglio
-//
-integer k_return = 0, k_rc = 0
-long k_handle_item = 0, k_riga=0
-integer k_ctr, k_index
-boolean k_fatt_selected_eof 
-ds_fatture kds_fatture
-kuf_prof kuf1_prof
-
-st_esito kst_esito
-st_tab_arfa kst_tab_arfa
-st_tab_prof kst_tab_prof
-st_treeview_data kst_treeview_data, kst_treeview_data_parent
-st_treeview_data_any kst_treeview_data_any
-treeviewitem ktvi_treeviewitem, ktvi_treeviewitem_parent
-listviewitem klvi_listviewitem
-
-st_open_w kst_open_w
-kuf_menu_window kuf1_menu_window
-
-
-
-//--- ricavo il tipo oggetto e richiamo la windows di dettaglio 
-	kst_treeview_data = kuf1_treeview.u_get_st_treeview_data ()
-	kst_treeview_data_parent.handle = kuf1_treeview.kitv_tv1.finditem(ParentTreeItem!, kst_treeview_data.handle)
-	if kst_treeview_data_parent.handle > 0 then
-		if kuf1_treeview.kitv_tv1.getitem(kst_treeview_data_parent.handle, ktvi_treeviewitem_parent) > 0 then
-			kst_treeview_data_parent = ktvi_treeviewitem_parent.data
-		end if
-	end if
-
-//--- 
-	kst_treeview_data_any = kst_treeview_data.struttura
-
-	choose case k_modalita  
-
-		case kkg_flag_modalita.anteprima
-
-				if kst_treeview_data_any.st_tab_arfa.num_fatt > 0 then
-					kst_esito = anteprima ( kdw_anteprima, kst_treeview_data_any.st_tab_arfa )
-				else
-					k_return = 1
-					kguo_exception.setmessage( "Accesso al Documento di Vendita non disponibile. ")
-					kguo_exception.messaggio_utente( )
-				end if
-
-		case kkg_flag_modalita.stampa
-					
-			kds_fatture = create ds_fatture	
-			kuf1_prof = create kuf_prof
-
-//--- Se sono RISTAMPE...					
-			if trim(kst_treeview_data_parent.oggetto) <> kuf1_treeview.kist_treeview_oggetto.fattura_dett_da_st  &
-				and trim(kst_treeview_data_parent.oggetto) <> kuf1_treeview.kist_treeview_oggetto.fattura_da_st then
-				
-				k_index = kuf1_treeview.kilv_lv1.SelectedIndex()
-				
-//--- Cicla fino a che ci sono righe selezionate
-				do while k_index > 0 //NOT k_fatt_selected_eof
-					
-					kst_tab_arfa = kst_treeview_data_any.st_tab_arfa
-					
-					k_riga=kds_fatture.insertrow(0)
-					kds_fatture.object.num_fatt[k_riga] = kst_tab_arfa.num_fatt
-					kds_fatture.object.data_fatt[k_riga] = kst_tab_arfa.data_fatt
-					kds_fatture.object.sel[k_riga] = 1 //kds_fatture.kki_sel_si
-					kds_fatture.object.prof[k_riga] = kuf1_prof.kki_fattura_in_profis_non_rilev
-							
-//--- cerco se altre righe selezionate		
-					klvi_listviewitem.Selected = false
-					do while not klvi_listviewitem.Selected and k_index > 0  	
-						k_index++
-						k_rc = kuf1_treeview.kilv_lv1.getitem(k_index, 1, klvi_listviewitem) 
-						if k_rc > 0 then 
-							kst_treeview_data = klvi_listviewitem.data  
-							kst_treeview_data_any = kst_treeview_data.struttura
-						else
-							k_index = 0
-						end if
-					loop
-				loop
-			else
-					
-//--- Se sono FATTURE NUOVE --------------------------------------------------------------------
-				
-				k_index = 1
-				k_rc = kuf1_treeview.kilv_lv1.getitem(k_index, 1, klvi_listviewitem) 
-				if k_rc > 0 then 
-					kst_treeview_data = klvi_listviewitem.data  
-					kst_treeview_data_any = kst_treeview_data.struttura
-				else
-					k_index = 0
-				end if
-			
-//--- Cicla fino a che ci sono righe 
-				do while k_index > 0 
-					
-					kst_tab_arfa = kst_treeview_data_any.st_tab_arfa
-					
-					if kst_tab_arfa.num_fatt > 0 then
-						k_riga=kds_fatture.insertrow(0)
-						kds_fatture.object.num_fatt[k_riga] = kst_tab_arfa.num_fatt
-						kds_fatture.object.data_fatt[k_riga] = kst_tab_arfa.data_fatt
-						if klvi_listviewitem.Selected then
-							kds_fatture.object.sel[k_riga] = 1 //kds_fatture.kki_sel_si
-						else
-							kds_fatture.object.sel[k_riga] = 0 //kds_fatture.kki_sel_no
-						end if								
-//--- leggo se c'e' gia' il movimento in Profis							
-						kst_tab_prof.num_fatt = kst_tab_arfa.num_fatt
-						kst_tab_prof.data_fatt = kst_tab_arfa.data_fatt
-						try
-							
-							kds_fatture.object.prof[k_riga] = kuf1_prof.if_fattura_presente( kst_tab_prof ) 
-							
-					catch (uo_exception kuo_exception)
-							kds_fatture.object.prof[k_riga] = kuf1_prof.kki_fattura_in_profis_non_rilev
-						end try
-					end if	
-					
-//---leggo altra riga 
-					k_index++
-					k_rc = kuf1_treeview.kilv_lv1.getitem(k_index, 1, klvi_listviewitem) 
-					if k_rc > 0 then 
-						kst_treeview_data = klvi_listviewitem.data  
-						kst_treeview_data_any = kst_treeview_data.struttura
-					else
-						k_index = 0
-					end if
-				loop
-				
-			end if
-
-			if kds_fatture.rowcount( ) > 0 then	
-				k_return = 1
-				try 
-					if trim(kst_treeview_data_parent.oggetto) = kuf1_treeview.kist_treeview_oggetto.fattura_dett_da_st  then
-
-						stampa_fattura_nuova (kds_fatture)
-					else	
-						stampa_fattura (kds_fatture)
-					end if
-
-				catch (uo_exception kuo_exception1)
-					kuo_exception1.messaggio_utente()
-				end try
-			end if
-			
-			destroy kds_fatture
-			destroy kuf1_prof
-				
-		case kkg_flag_modalita.cancellazione
-
-			if kst_treeview_data_any.st_tab_arfa.num_fatt > 0 then
-				
-//--- chiamare la window 
-//=== Parametri : 
-//=== struttura st_open_w
-//					kst_open_w.id_programma = kkg_id_programma_fatture
-//					kst_open_w.flag_primo_giro = "S"
-//					kst_open_w.flag_modalita = k_modalita
-//					kst_open_w.flag_adatta_win = KKG.ADATTA_WIN
-//					kst_open_w.flag_leggi_dw = "N"
-//					kst_open_w.flag_cerca_in_lista = " "
-//					kst_open_w.key1 = string(kst_treeview_data_any.st_tab_arfa.num_fatt, "0000000000")
-//					kst_open_w.key2 = " "
-//					kst_open_w.key3 = " "
-//					kst_open_w.key4 = " "
-//					kst_open_w.flag_where = " "
-//					
-//					kuf1_menu_window = create kuf_menu_window 
-//					kuf1_menu_window.open_w_tabelle(kst_open_w)
-//					destroy kuf1_menu_window
-						
-			else
-				k_return = 1
-				
-				messagebox("Accesso Fattura", "Valore non disponibile. ")
-			end if
-				
-		case else
-				
-				
-	end choose		
-
-
-	
-//	end if
- 
- 
-return k_return
-
-end function
-
 public function integer u_tree_open (string k_modalita, st_tab_arfa kst_tab_arfa[], ref datawindow kdw_anteprima);//
 //--- Chiama applicazioni di dettaglio
 //
@@ -6189,13 +5982,11 @@ long k_riga=0
 integer k_ctr, k_index
 //boolean k_fatt_selected_eof 
 ds_fatture kds_fatture
-kuf_prof kuf1_prof
 st_tab_prof kst_tab_prof
 
 
 			
 	kds_fatture = create ds_fatture	
-	kuf1_prof = create kuf_prof
 
 //--- Se sono RISTAMPE...					
 //			if trim(kst_treeview_data_parent.oggetto) <> kuf1_treeview.kist_treeview_oggetto.fattura_dett_da_st  &
@@ -6213,15 +6004,6 @@ st_tab_prof kst_tab_prof
 			kds_fatture.object.data_fatt[k_riga] = kst_tab_arfa[k_index].data_fatt
 			kds_fatture.object.sel[k_riga] = 1 //kds_fatture.kki_sel_si
 				
-//--- leggo se c'e' gia' il movimento in Profis							
-			kst_tab_prof.num_fatt = kst_tab_arfa[k_index].num_fatt
-			kst_tab_prof.data_fatt = kst_tab_arfa[k_index].data_fatt
-			try
-				kds_fatture.object.prof[k_riga] = kuf1_prof.if_fattura_presente( kst_tab_prof ) 
-			catch (uo_exception kuo_exception)
-				kds_fatture.object.prof[k_riga] = kuf1_prof.kki_fattura_in_profis_non_rilev
-			end try
-			
 		end if								
 		k_index++
 	loop
@@ -6239,7 +6021,6 @@ st_tab_prof kst_tab_prof
 	end if
 	
 	destroy kds_fatture
-	destroy kuf1_prof
 		
 
 return k_return
@@ -7204,7 +6985,6 @@ st_tab_prof kst_tab_prof, kst_tab_prof_old
 st_open_w kst_open_w
 st_tab_arfa kst_tab_arfa_old, kst_tab_arfa1
 kuf_sicurezza kuf1_sicurezza
-kuf_prof kuf1_prof
 kuf_ricevute kuf1_ricevute
 
 
@@ -7291,15 +7071,6 @@ else
 					kuf1_ricevute.tb_update_num_data_fatt( kst_tab_ricevute_old, kst_tab_ricevute )
 					destroy kuf1_ricevute
 					
-		//--- cancello movim passaggio Conatbilità (PROFIS) 
-					kuf1_prof = create kuf_prof
-					kst_tab_prof_old.num_fatt = kst_tab_arfa_old.num_fatt
-					kst_tab_prof_old.data_fatt = kst_tab_arfa_old.data_fatt
-					kst_tab_prof.num_fatt = kst_tab_arfa.num_fatt
-					kst_tab_prof.data_fatt = kst_tab_arfa.data_fatt
-					kuf1_prof.tb_update_num_data_fatt( kst_tab_prof_old, kst_tab_prof )
-					destroy kuf1_prof
-				
 				else
 					kst_esito.sqlcode = sqlca.sqlcode
 					kst_esito.SQLErrText = &
@@ -7651,68 +7422,6 @@ uo_exception kuo_exception
 
 return k_tot_fatture
 
-
-end function
-
-public function st_esito aggiorna_tabelle_profis (ref st_tab_arfa kst_tab_arfa[]);//
-//--- Genera righe tabelle PROFIS della Fattura
-//--- input:  array st_ta_arfa con l'elenco delle fatture da aggiornare
-//--- out: st_esito 
-//---
-long k_riga_fatture=0, k_nr_fatt=0
-st_esito kst_esito, kst_esito1 
-st_tab_prof kst_tab_prof
-kuf_prof kuf1_prof
-
-
-
-	kst_esito.esito = kkg_esito.ok
-	kst_esito.sqlcode = 0
-	kst_esito.SQLErrText = ""
-	kst_esito.nome_oggetto = this.classname()
-
-
-	k_nr_fatt = upperbound(kst_tab_arfa[])
-
-	if k_nr_fatt > 0 then
-		
-//--- Crea Movimenti x PROFIS
-		kuf1_prof = create kuf_prof
-
-		for k_riga_fatture = 1 to k_nr_fatt
-
-			try
-
-				kst_tab_prof.num_fatt = kst_tab_arfa[k_riga_fatture].num_fatt
-				kst_tab_prof.data_fatt = kst_tab_arfa[k_riga_fatture].data_fatt 
-				kst_tab_prof.id_fattura = kst_tab_arfa[k_riga_fatture].id_fattura 
-//--- Verifica se movim PROFIS gia Trasferiti 
-				if not (kuf1_prof.if_gia_trasferiti(kst_tab_prof)) then
-
-//--- prima cancella i movim PROFIS
-					kst_tab_prof.st_tab_g_0.esegui_commit = "N" 
-					kst_esito = kuf1_prof.tb_delete( kst_tab_prof ) 
-					if kst_esito.esito <> kkg_esito.db_ko then
-//--- ... poi crea i nuovi PROFIS
-						kst_tab_prof.st_tab_g_0.esegui_commit = "S" 
-						kuf1_prof.crea_movimenti( kst_tab_prof ) 
-					end if
-				end if
-
-			catch (uo_exception kuo_exception)
-				kst_esito = kuo_exception.get_st_esito( )
-				
-			end try
-	
-		next
-
-		destroy kuf1_prof
-	
-		
-	end if
-
-
-return kst_esito
 
 end function
 
@@ -10138,7 +9847,6 @@ public function st_esito tb_delete_x_rif () throws uo_exception;//
 //
 long k_ctr, k_righe, k_riga
 boolean k_return, k_flag_fattura_vuota
-kuf_prof kuf1_prof
 st_tab_prof kst_tab_prof
 st_esito kst_esito, kst_esito1, kst_esito2, kst_esito3
 st_open_w kst_open_w
@@ -10243,15 +9951,6 @@ try
 				throw kguo_exception
 			end if
 	
-//--- cancella righe PROFIS
-			if k_flag_fattura_vuota then
-				kuf1_prof = create kuf_prof
-				kst_tab_prof.num_fatt = kist_tab_arfa.num_fatt
-				kst_tab_prof.data_fatt = kist_tab_arfa.data_fatt
-				kst_esito1 = kuf1_prof.tb_delete( kst_tab_prof )
-				destroy kuf1_prof
-			end if
-
 //--- controllo se ci sono righe RIBA gia' presentate
 			kuf1_ricevute.kist_tab_ricevute.num_fatt = kist_tab_arfa.num_fatt
 				kuf1_ricevute.kist_tab_ricevute.data_fatt = kist_tab_arfa.data_fatt

@@ -7,7 +7,7 @@ footer(height=0 color="536870912" transparency="0" gradient.color="8421504" grad
 detail(height=88 color="536870912" transparency="0" gradient.color="8421504" gradient.transparency="0" gradient.angle="0" brushmode="0" gradient.repetition.mode="0" gradient.repetition.count="0" gradient.repetition.length="100" gradient.focus="0" gradient.scale="100" gradient.spread="100" )
 table(column=(type=char(12) updatewhereclause=yes name=waapid dbname="f4801_adt.waapid" dbalias="f4801.waapid" )
  retrieve=" select trim(f4801.waapid) as waapid
-from PRODDTA.F4801_ADT  f4801 
+from F4801_ADT  f4801 
 where 
    f4801.wasrst = '08'
   and f4801.wamcu = :k_mcu

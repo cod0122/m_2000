@@ -57,12 +57,10 @@ m_main ki_menu_0
 end variables
 
 forward prototypes
-private subroutine open_win_iniziale ()
 protected subroutine smista_funz (string k_par_in)
 protected subroutine apri_win_iniziale (string k_window_iniziale)
 private subroutine imposta_password ()
 public subroutine inizializza ()
-public subroutine u_open ()
 public subroutine u_allarme_utente ()
 public subroutine wf_initialize_winproperty ()
 public subroutine u_open_toolbar ()
@@ -86,7 +84,9 @@ try
 	SetPointer(kkg.pointer_attesa)
 
 //--- assegna il puntatore al MENU generale della MDI
-	ki_menu_0 = this.menuid
+	//ki_menu_0 = this.menuid
+	ki_menu_0 = create m_main
+	ki_menu_0.visible = false
 	ki_menu_0.autorizza_menu( )
 
 //--- memorizza l'anno di esercizio impostato sul BASE
@@ -176,9 +176,6 @@ finally
 end try
 
 end event
-
-private subroutine open_win_iniziale ();
-end subroutine
 
 protected subroutine smista_funz (string k_par_in);
 end subroutine
@@ -291,11 +288,10 @@ kuf_sicurezza kuf1_sicurezza
 			end if
 			
 			if messagebox ("Aggiornamento Automatico della Procedura", &
-								"La Procedura puo' essere aggiornata alla nuova versione: " &
-								+ k_versione + " ~n~r Eseguire ora? ", &
+								"E' disponibile la nuova versione " + k_versione + " della Procedura procedere ora con l'aggiornamento?", &
 								 question!, YesNo!, 1) = 1 then
 			 
-				kuf1_utility.u_aggiorna_procedura()			
+				kuf1_utility.u_aggiorna_procedura_diprova( )			
 				
 			end if
 		else
@@ -316,6 +312,12 @@ kuf_sicurezza kuf1_sicurezza
 				kuo_exception1.messaggio_utente()
 			end try
 			try
+				k_rcx = trim(kuf1_base.prendi_dato_base("e1mcu"))
+				if left(k_rcx,1) = "0" then
+					kguo_g.E1MCU = mid(k_rcx,2)
+				else
+					kguo_g.E1MCU = ""
+				end if
 				KGuo_sqlca_db_e1.set_profilo_db()
 			catch (uo_exception kuo_exception2)
 				kuo_exception2.messaggio_utente()
@@ -415,6 +417,8 @@ kuf_sicurezza kuf1_sicurezza
 	
 		end if
 	
+		this.changemenu( ki_menu_0 )
+	
 		if isvalid(kuf1_base) then destroy kuf1_base
 		if isvalid(kuf1_utility) then destroy kuf1_utility
 		
@@ -422,9 +426,6 @@ kuf_sicurezza kuf1_sicurezza
 		
 	end if
 
-end subroutine
-
-public subroutine u_open ();
 end subroutine
 
 public subroutine u_allarme_utente ();//
@@ -497,13 +498,14 @@ kuf_menu_tree kuf1_menu_tree
 end subroutine
 
 public subroutine u_menu_init ();//
-	if isvalid(ki_menu_0) then
+	if not isvalid(ki_menu_0) then
 //--- assegna il puntatore al MENU generale della MDI
-		ki_menu_0 = this.menuid
+//		ki_menu_0 = this.menuid
+		ki_menu_0 = create m_main
+		ki_menu_0.visible = false
 	end if
 	if isvalid(ki_menu_0) then
-		//this.changemenu(ki_menu_0)
-		ki_menu_0.reset_menu_all( )
+//		ki_menu_0.reset_menu_all( )
 		ki_menu_0.u_imposta_window_menu( )
 	end if
 

@@ -33,6 +33,9 @@ kw_1 = kGuf_data_base.prendi_win_attiva( )
 
 if isvalid(kw_1) then
 
+	//if isvalid(mi_menu) then destroy mi_menu
+	//mi_menu = create m_popup
+	
 	k_menu = kw_1.ki_menu
 	
 //--- se non c'e' alcun menu non faccio sta roba
@@ -155,6 +158,7 @@ if isvalid(kw_1) then
 		a_ypos += kw_1.y
 		mi_menu.popmenu(a_xpos, a_ypos)
 		mi_menu.visible = false
+		//destroy mi_menu
 	
 
 	end if

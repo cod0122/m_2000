@@ -2345,6 +2345,7 @@ integer width = 1010
 integer height = 880
 integer taborder = 20
 boolean enabled = true
+pointer kipointer_orig = hourglass!
 end type
 
 event itemchanged;call super::itemchanged;

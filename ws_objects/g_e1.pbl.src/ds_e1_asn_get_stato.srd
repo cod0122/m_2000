@@ -8,7 +8,7 @@ detail(height=88 color="536870912" transparency="0" gradient.color="8421504" gra
 table(column=(type=char(2) updatewhereclause=yes name=wasrst dbname="wasrst" )
  column=(type=char(12) updatewhereclause=yes name=waapid dbname="waapid" )
  retrieve="select nvl(f4801.wasrst,'') as wasrst, nvl(f4801.waapid, '') as waapid
- from PRODDTA.F4801_ADT  f4801 
+ from F4801_ADT  f4801 
 group by f4801.wasrst
  ,f4801.waapid
 " )

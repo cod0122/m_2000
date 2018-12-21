@@ -20,24 +20,24 @@ table(column=(type=number updatewhereclause=yes key=yes name=f5548014_osdoco dbn
  column=(type=decimal(0) updatewhereclause=yes name=f5548014_osupmj dbname="f5548014.osupmj" )
  column=(type=number updatewhereclause=yes name=f5548014_ostday dbname="f5548014.ostday" )
  retrieve="  SELECT 
-         ~"PRODDTA~".~"F5548014~".~"OSDOCO~",   
-         ~"PRODDTA~".~"F5548014~".~"OSEV01~",   
-         ~"PRODDTA~".~"F5548014~".~"OSDEE~",   
-         ~"PRODDTA~".~"F5548014~".~"OSWWAET~",   
-         ~"PRODDTA~".~"F5548014~".~"OS55GS25A~",   
-         ~"PRODDTA~".~"F5548014~".~"OS55GS25B~",   
-         ~"PRODDTA~".~"F5548014~".~"OS55GS25C~",   
-         ~"PRODDTA~".~"F5548014~".~"OSUSER~",   
-         ~"PRODDTA~".~"F5548014~".~"OSEDSP~",   
-         ~"PRODDTA~".~"F5548014~".~"OSDL011~",   
-         ~"PRODDTA~".~"F5548014~".~"OSPID~",   
-         ~"PRODDTA~".~"F5548014~".~"OSJOBN~",   
-         ~"PRODDTA~".~"F5548014~".~"OSUPMJ~",   
-         ~"PRODDTA~".~"F5548014~".~"OSTDAY~"  
-    FROM ~"PRODDTA~".~"F5548014~"  
-   WHERE ~"PRODDTA~".~"F5548014~".~"OSDOCO~" = :k_doco
-ORDER BY ~"PRODDTA~".~"F5548014~".~"OSEV01~" ASC   
-" update="PRODDTA.F5548014" updatewhere=0 updatekeyinplace=no arguments=(("k_doco", number)) )
+         ~"F5548014~".~"OSDOCO~",   
+         ~"F5548014~".~"OSEV01~",   
+         ~"F5548014~".~"OSDEE~",   
+         ~"F5548014~".~"OSWWAET~",   
+         ~"F5548014~".~"OS55GS25A~",   
+         ~"F5548014~".~"OS55GS25B~",   
+         ~"F5548014~".~"OS55GS25C~",   
+         ~"F5548014~".~"OSUSER~",   
+         ~"F5548014~".~"OSEDSP~",   
+         ~"F5548014~".~"OSDL011~",   
+         ~"F5548014~".~"OSPID~",   
+         ~"F5548014~".~"OSJOBN~",   
+         ~"F5548014~".~"OSUPMJ~",   
+         ~"F5548014~".~"OSTDAY~"  
+    FROM ~"F5548014~"  
+   WHERE ~"F5548014~".~"OSDOCO~" = :k_doco
+ORDER BY ~"F5548014~".~"OSEV01~" ASC   
+" update="F5548014" updatewhere=0 updatekeyinplace=no arguments=(("k_doco", number)) )
 column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="33554432" x="352" y="8" height="72" width="613" format="[general]" html.valueishtml="0"  name=f5548014_osev01 visible="1" dddw.name=dd_e1_wo_stato_ev01 dddw.displaycolumn=descr dddw.datacolumn=stato dddw.percentwidth=0 dddw.lines=0 dddw.limit=0 dddw.allowedit=no dddw.useasborder=no dddw.case=any  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0" )
 column(band=detail id=3 alignment="2" tabsequence=32766 border="0" color="33554432" x="974" y="8" height="72" width="261" format="# ## ###" html.valueishtml="0"  name=f5548014_osdee visible="1" edit.limit=8 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="1" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.tip="~tstring(~"formato: '1' + anno (2 cifre) + numero giorno da inizio anno (3 cifre)~")" tooltip.transparency="0" transparency="0" )
 column(band=detail id=4 alignment="2" tabsequence=32766 border="0" color="33554432" x="1243" y="8" height="72" width="233" format="##:##:##" html.valueishtml="0"  name=f5548014_oswwaet visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0" )

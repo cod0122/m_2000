@@ -182,6 +182,8 @@ boolean k_exit=false
 //--- se tasto ESC provo l'undo
 if key = KeyESCape! then
 
+	setpointer(kkg.pointer_default)
+	
 //--- chiude eventuali DRAG & GDROP
 	event ue_dragdrop_end( )
 
@@ -629,9 +631,9 @@ end event
 
 event ue_lbuttonup;//
 
-//	if this.ki_attiva_DRAGDROP then
+	if this.ki_attiva_DRAGDROP then
 		this.event ue_dragdrop_end()
-//	end if
+	end if
 end event
 
 event ue_dragdrop_end();//
@@ -641,22 +643,23 @@ event ue_dragdrop_end();//
 	this.drag(end!)
 	this.ki_drag_scroll=false	
 	this.dragicon = ""
-	this.modify("k_dragdrop_row.Expression='0' ")
-	if isvalid(kidw_dragdrop_this) then
-		kidw_dragdrop_this.drag(end!)
-		kidw_dragdrop_this.ki_in_drag = false
-		kidw_dragdrop_this.ki_drag_scroll = false
-		kidw_dragdrop_this.dragicon = ""
-		kidw_dragdrop_this.modify("k_dragdrop_row.Expression='0' ")
+	if ki_attiva_DRAGDROP then
+		this.modify("k_dragdrop_row.Expression='0' ")
+		if isvalid(kidw_dragdrop_this) then
+			kidw_dragdrop_this.drag(end!)
+			kidw_dragdrop_this.ki_in_drag = false
+			kidw_dragdrop_this.ki_drag_scroll = false
+			kidw_dragdrop_this.dragicon = ""
+			kidw_dragdrop_this.modify("k_dragdrop_row.Expression='0' ")
+		end if
+		if isvalid(kidw_source) then
+			kidw_source.drag(end!)
+			kidw_source.ki_in_drag = false
+			kidw_source.ki_drag_scroll = false
+			kidw_source.dragicon = ""
+			kidw_source.modify("k_dragdrop_row.Expression='0' ")
+		end if
 	end if
-	if isvalid(kidw_source) then
-		kidw_source.drag(end!)
-		kidw_source.ki_in_drag = false
-		kidw_source.ki_drag_scroll = false
-		kidw_source.dragicon = ""
-		kidw_source.modify("k_dragdrop_row.Expression='0' ")
-	end if
-		
 
 
 end event
@@ -884,6 +887,7 @@ long k_righe_tot, k_riga_scroll, k_last_row, k_first_row
 string k_rc
 
 	
+if ki_attiva_DRAGDROP then
 	ki_u_drag_scroll_lanciata=true
 	ki_drag_scroll=true	
 	
@@ -916,7 +920,7 @@ string k_rc
 
 
 	ki_u_drag_scroll_lanciata=false
-
+end if
 end subroutine
 
 public function boolean u_sort (readonly string a_nome_campo);//---
@@ -1849,96 +1853,98 @@ long k_row, k_ret
 DragObject		do_control
 
 
+if ki_attiva_DRAGDROP then
 
-//st_barcode.visible = false
-this.SetRedraw(FALSE)
-
-//ki_drag_scroll=false	
-//this.modify("k_dragdrop_row.Expression='0' ")
-
-//Get the dragged object
-do_control = DraggedObject()
-
-IF IsValid(do_control) then //AND this.ki_attiva_DRAGDROP THEN
-
-//	k_ret = this.EVENT ue_BeforeDrop(l_row, dw_source)
+	//st_barcode.visible = false
+	this.SetRedraw(FALSE)
 	
-	IF k_ret <> -1 THEN
-
-//	if not this.IsSelected( row ) then 
+	//ki_drag_scroll=false	
+	//this.modify("k_dragdrop_row.Expression='0' ")
+	
+	//Get the dragged object
+	do_control = DraggedObject()
+	
+	IF IsValid(do_control) then //AND this.ki_attiva_DRAGDROP THEN
+	
+	//	k_ret = this.EVENT ue_BeforeDrop(l_row, dw_source)
 		
-		CHOOSE CASE TypeOf(source)
-		
-			CASE datawindow!
-		
-				kidw_source = source
+		IF k_ret <> -1 THEN
+	
+	//	if not this.IsSelected( row ) then 
 			
-//				kidw_source.Drag(cancel!)
-//				this.dragicon = ""
-				if isvalid(kidw_source) then
-					if kidw_source.ki_UltRigaSel > 0 then
-						k_row = kidw_source.ki_UltRigaSel
-					 else
-						k_row = 1
-					end if
-					this.scrolltorow( k_row)
-						
-					IF kidw_source <> this THEN
-						
-	//--- Drop qlc il quale non e' dal ns Datawindow
-						IF Lower(kidw_source.dataobject) = Lower(this.dataobject) THEN
+			CHOOSE CASE TypeOf(source)
+			
+				CASE datawindow!
+			
+					kidw_source = source
+				
+	//				kidw_source.Drag(cancel!)
+	//				this.dragicon = ""
+					if isvalid(kidw_source) then
+						if kidw_source.ki_UltRigaSel > 0 then
+							k_row = kidw_source.ki_UltRigaSel
+						 else
+							k_row = 1
+						end if
+						this.scrolltorow( k_row)
 							
-	//--- DataObjects  sono uguali (drop x DW UGUALI)
-							k_ret = this.EVENT ue_DropFromSame(ki_riga_dragwithin, kidw_source)
+						IF kidw_source <> this THEN
 							
+		//--- Drop qlc il quale non e' dal ns Datawindow
+							IF Lower(kidw_source.dataobject) = Lower(this.dataobject) THEN
+								
+		//--- DataObjects  sono uguali (drop x DW UGUALI)
+								k_ret = this.EVENT ue_DropFromSame(ki_riga_dragwithin, kidw_source)
+								
+							ELSE
+								
+		//--- Noi Copiamo da un altro DW.. l'utente deve fare Copy stuff (drop ESTERNO)
+								k_ret = this.event ue_drop_out(k_row, kidw_source)
+								if k_ret = 1 then
+									kidw_source.event ue_drag_out(k_row, this)	
+								end if
+								
+							END IF
 						ELSE
 							
-	//--- Noi Copiamo da un altro DW.. l'utente deve fare Copy stuff (drop ESTERNO)
-							k_ret = this.event ue_drop_out(k_row, kidw_source)
-							if k_ret = 1 then
-								kidw_source.event ue_drag_out(k_row, this)	
+		//--- Noi Drop dal  Datawindow (i drop INTERNO )
+							if ki_riga_dragwithin > 0 then 
+								k_ret = this.EVENT ue_DropFromThis(ki_riga_dragwithin, kidw_source)	
 							end if
 							
 						END IF
-					ELSE
-						
-	//--- Noi Drop dal  Datawindow (i drop INTERNO )
-						if ki_riga_dragwithin > 0 then 
-							k_ret = this.EVENT ue_DropFromThis(ki_riga_dragwithin, kidw_source)	
-						end if
-						
-					END IF
-	
-					if ki_riga_dragwithin > 0 then 
-						this.setrow(ki_riga_dragwithin)
-					end if
-				end if
-//				choose case kdw_1.classname()
-//						
-//					case "dw_lista_sel" 
-//						this.postevent( "ue_aggiungi_riga")
-//		
-//				end choose
-//				
-				
-		END CHOOSE
-
-//	ELSE
-//--- Mark Row come Errore x AfterDrop
-//		k_row = 0
-	END IF
 		
-//--- AfterDrop e' sempre Fired
-//	this.EVENT ue_AfterDrop(k_row)
+						if ki_riga_dragwithin > 0 then 
+							this.setrow(ki_riga_dragwithin)
+						end if
+					end if
+	//				choose case kdw_1.classname()
+	//						
+	//					case "dw_lista_sel" 
+	//						this.postevent( "ue_aggiungi_riga")
+	//		
+	//				end choose
+	//				
+					
+			END CHOOSE
 	
+	//	ELSE
+	//--- Mark Row come Errore x AfterDrop
+	//		k_row = 0
+		END IF
+			
+	//--- AfterDrop e' sempre Fired
+	//	this.EVENT ue_AfterDrop(k_row)
+		
+		
+	end if
+	
+	//--- pulisco area del drag&drop
+	event ue_dragdrop_end( )
+	
+	this.SetRedraw(true)
 	
 end if
-
-//--- pulisco area del drag&drop
-event ue_dragdrop_end( )
-
-this.SetRedraw(true)
-
 
 
 end event

@@ -4,6 +4,8 @@ global type w_contratti from w_g_tab0
 end type
 type dw_data from uo_d_std_1 within w_contratti
 end type
+type dw_data_change from uo_d_std_1 within w_contratti
+end type
 end forward
 
 global type w_contratti from w_g_tab0
@@ -13,6 +15,7 @@ string title = "Elenco CO"
 long backcolor = 32501743
 boolean ki_toolbar_window_presente = true
 dw_data dw_data
+dw_data_change dw_data_change
 end type
 global w_contratti w_contratti
 
@@ -52,6 +55,8 @@ private subroutine cambia_data_scadenze ()
 public function boolean get_dati_cliente (ref st_tab_clienti kst_tab_clienti)
 private subroutine put_video_cliente (st_tab_clienti kst_tab_clienti)
 public function integer u_retrieve_dw_lista ()
+private subroutine u_modifica_massiva_data_scad ()
+private function long u_modifica_massiva_data_scad_esegue () throws uo_exception
 end prototypes
 
 public function string inizializza ();//
@@ -293,7 +298,7 @@ datawindowchild kdwc_clienti_d
 	end if
 
 //--- Imposta dati di DEFAULT
-	dw_dett_0.setitem(1, "flg_acconto", kiuf_contratti.kki_flg_acconto_no)
+//	dw_dett_0.setitem(1, "flg_acconto", kiuf_contratti.kki_flg_acconto_no)
 	dw_dett_0.setitem(1, "tipo", kiuf_contratti.kki_TIPO_standard)
 	dw_dett_0.setitem(1, "et_dosimetro", kiuf_contratti.kki_et_dosimetro_default )
 	if ki_st_tab_contratti_insert.data > date (0) then
@@ -532,11 +537,22 @@ protected subroutine attiva_menu ();//--- Attiva/Dis. Voci di menu
 		ki_menu.m_strumenti.m_fin_gest_libero4.text = "Cambia data estrazione scadenze "
 		ki_menu.m_strumenti.m_fin_gest_libero4.microhelp = "Cambia data estrazione scadenze "
 		ki_menu.m_strumenti.m_fin_gest_libero4.enabled = true
-		ki_menu.m_strumenti.m_fin_gest_libero4.toolbaritemText = "Scad.,"+ki_menu.m_strumenti.m_fin_gest_libero4.text
+		ki_menu.m_strumenti.m_fin_gest_libero4.toolbaritemText = "data,"+ki_menu.m_strumenti.m_fin_gest_libero4.text
 		ki_menu.m_strumenti.m_fin_gest_libero4.toolbaritemName = "Custom015!"
 //		ki_menu.m_strumenti.m_fin_gest_libero4.toolbaritembarindex=2
 		ki_menu.m_strumenti.m_fin_gest_libero4.visible = true
 		ki_menu.m_strumenti.m_fin_gest_libero4.toolbaritemVisible = true
+	end if	
+	
+	if not ki_menu.m_strumenti.m_fin_gest_libero5.visible then
+		ki_menu.m_strumenti.m_fin_gest_libero5.text = "Modifica massiva della data di scadenza "
+		ki_menu.m_strumenti.m_fin_gest_libero5.microhelp = "Modifica massiva della data di scadenza "
+		ki_menu.m_strumenti.m_fin_gest_libero5.enabled = true
+		ki_menu.m_strumenti.m_fin_gest_libero5.toolbaritemText = "Scad.,"+ki_menu.m_strumenti.m_fin_gest_libero5.text
+		ki_menu.m_strumenti.m_fin_gest_libero5.toolbaritemName = "EditMask5!"
+//		ki_menu.m_strumenti.m_fin_gest_libero5.toolbaritembarindex=2
+		ki_menu.m_strumenti.m_fin_gest_libero5.visible = true
+		ki_menu.m_strumenti.m_fin_gest_libero5.toolbaritemVisible = true
 	end if	
 	
 
@@ -558,6 +574,9 @@ choose case LeftA(k_par_in, 2)
 
 	case KKG_FLAG_RICHIESTA.libero4		//cambia data estrazione scadenze
 		cambia_data_scadenze()
+
+	case KKG_FLAG_RICHIESTA.libero5		//modifica massiva data scadenze
+		u_modifica_massiva_data_scad( )
 		
 	case else
 		super::smista_funz(k_par_in)
@@ -902,11 +921,11 @@ st_tab_contratti kst_tab_contratti
 	k_riga = dw_dett_0.rowcount( )
 	if k_riga > 0 then
 		
-		kst_tab_contratti.flg_acconto = dw_dett_0.getitemstring(1, "flg_acconto")  
-		if trim(kst_tab_contratti.flg_acconto) > " " then
-		else
-			dw_dett_0.setitem(1, "flg_acconto", kiuf_contratti.kki_flg_acconto_no)
-		end if
+//		kst_tab_contratti.flg_acconto = dw_dett_0.getitemstring(1, "flg_acconto")  
+//		if trim(kst_tab_contratti.flg_acconto) > " " then
+//		else
+//			dw_dett_0.setitem(1, "flg_acconto", kiuf_contratti.kki_flg_acconto_no)
+//		end if
 		
 		kst_tab_contratti.tipo = dw_dett_0.getitemstring(1, "tipo")  
 		if trim(kst_tab_contratti.tipo) > " " then
@@ -914,11 +933,11 @@ st_tab_contratti kst_tab_contratti
 			dw_dett_0.setitem(1, "tipo", kiuf_contratti.kki_TIPO_standard)
 		end if
 		
-		kst_tab_contratti.flg_fatt_dopo_valid = dw_dett_0.getitemstring(1, "flg_fatt_dopo_valid")  
-		if trim(kst_tab_contratti.flg_fatt_dopo_valid) > " " then
-		else
-			dw_dett_0.setitem(1, "flg_fatt_dopo_valid", kiuf_contratti.kki_flg_fatt_dopo_valid_no)
-		end if
+//		kst_tab_contratti.flg_fatt_dopo_valid = dw_dett_0.getitemstring(1, "flg_fatt_dopo_valid")  
+//		if trim(kst_tab_contratti.flg_fatt_dopo_valid) > " " then
+//		else
+//			dw_dett_0.setitem(1, "flg_fatt_dopo_valid", kiuf_contratti.kki_flg_fatt_dopo_valid_no)
+//		end if
 
 	end if
 
@@ -1256,18 +1275,85 @@ return k_return
 
 end function
 
+private subroutine u_modifica_massiva_data_scad ();//---
+//--- Visualizza il box x il cambio DATA
+//---
+
+
+dw_data_change.triggerevent("ue_visibile")
+
+end subroutine
+
+private function long u_modifica_massiva_data_scad_esegue () throws uo_exception;//---
+//--- Cambia le date di scadenza in elenco
+//---
+long k_return
+long k_riga, k_riga_max, k_update
+st_tab_contratti kst_tab_contratti
+
+
+try
+
+	if dw_data_change.rowcount( ) > 0 then
+	
+		kst_tab_contratti.data_scad = dw_data_change.getitemdate(1, "kdata")
+
+		kst_tab_contratti.st_tab_g_0.esegui_commit = "N"
+		
+		k_riga_max = dw_lista_0.rowcount()
+		for k_riga = 1 to k_riga_max
+			kst_tab_contratti.codice = dw_lista_0.getitemnumber(k_riga, "codice")
+			if kst_tab_contratti.codice > 0 then
+				
+				kiuf_contratti.set_data_scad(kst_tab_contratti)
+				k_update ++
+				
+			end if
+			
+		next
+		
+		if k_update > 0 then
+			
+			kguo_sqlca_db_magazzino.db_commit( )
+			k_return = k_update
+			for k_riga = 1 to k_riga_max
+				kst_tab_contratti.codice = dw_lista_0.getitemnumber(k_riga, "codice")
+				if kst_tab_contratti.codice > 0 then
+					dw_lista_0.setitem(k_riga, "data_scad", kst_tab_contratti.data_scad)
+				end if
+			next
+			
+		end if
+		
+	end if
+	
+catch (uo_exception kuo_exception)
+	kguo_sqlca_db_magazzino.db_rollback( )
+	throw kuo_exception
+	
+finally
+	
+end try
+
+return k_return
+
+end function
+
 on w_contratti.create
 int iCurrent
 call super::create
 this.dw_data=create dw_data
+this.dw_data_change=create dw_data_change
 iCurrent=UpperBound(this.Control)
 this.Control[iCurrent+1]=this.dw_data
+this.Control[iCurrent+2]=this.dw_data_change
 end on
 
 on w_contratti.destroy
 call super::destroy
 if IsValid(MenuID) then destroy(MenuID)
 destroy(this.dw_data)
+destroy(this.dw_data_change)
 end on
 
 event close;call super::close;//
@@ -1605,6 +1691,7 @@ integer x = 23
 integer width = 3291
 integer height = 732
 string dataobject = "d_contratti_l"
+boolean ki_link_standard_sempre_possibile = true
 end type
 
 type dw_guida from w_g_tab0`dw_guida within w_contratti
@@ -1746,6 +1833,89 @@ int k_rc
 	this.reset()
 	k_rc = this.insertrow(0)
 	k_rc = this.setitem(1, "kdata", ki_data_scad)
+	this.visible = true
+	this.setfocus()
+end event
+
+type dw_data_change from uo_d_std_1 within w_contratti
+integer x = 878
+integer y = 416
+integer width = 2601
+integer height = 668
+integer taborder = 80
+boolean bringtotop = true
+boolean enabled = true
+boolean titlebar = true
+string title = "MODIFICA MASSIVA DELLA DATA DI SCADENZA"
+string dataobject = "d_contratti_data_change"
+boolean controlmenu = true
+boolean hsplitscroll = false
+boolean livescroll = false
+end type
+
+event buttonclicked;call super::buttonclicked;//
+st_stampe kst_stampe
+int k_msg
+long k_upd
+date k_data, k_data_min
+pointer oldpointer  // Declares a pointer variable
+
+	
+//=== Puntatore Cursore da attesa.....
+oldpointer = SetPointer(HourGlass!)
+	
+
+if dwo.name = "b_ok" then
+	
+	this.visible = false
+	
+	k_data_min = relativedate(kguo_g.get_dataoggi( ), -2)
+	k_data  = this.getitemdate( 1, "kdata")
+	if k_data > k_data_min and dw_lista_0.rowcount() > 0 then 
+		k_msg = messagebox("Modifica Contratti", "Confermare il cambio della data di scadenza al " + string(k_data, "dd mmm yy") + " di tutti i " + string(dw_lista_0.rowcount()) + " Contratti presenti in elenco", question!, yesno!, 2) 
+		if k_msg = 1 then
+			try 
+				k_upd = u_modifica_massiva_data_scad_esegue()
+				if k_upd > 0 then
+					inizializza()
+					messagebox("Operazione Completata", "Sono state cambiate " + string(k_upd) + " date di scadenza al "  + string(k_data, "dd mmm yy") + " in modo corretto.", information!)
+				else
+					messagebox("Aggiornamento Incompleto", "Non è stata cambiata alcuna data di scadenza, prego controllare.", stopsign!)
+				end if
+			catch (uo_exception kuo_exception)
+				messagebox("Aggiornamento Fallito", "Si sono verificati errori durante l'operazione di aggiornamento delle fate di scadenza. Errore: " + kguo_exception.get_errtext( ), stopsign!)
+			end try				
+		end if
+	else
+		messagebox("Modifica Contratti", "Cambio data di scadenza non possibile, indicare una data superiore al "  + string(k_data_min, "dd mmm yy") + " e almeno un Contratto in elenco!", stopsign!)
+	end if
+
+else
+	if dwo.name = "b_annulla" then
+
+		this.visible = false
+	
+	end if
+end if
+
+SetPointer(oldpointer)
+
+
+end event
+
+event ue_visibile;call super::ue_visibile;//
+int k_rc
+
+	this.width = long(this.object.k_titolo_t.x) + long(this.object.k_titolo_t.width) + 100
+	this.height = long(this.object.b_ok.y) + long(this.object.b_ok.height) * 1.5 + 160
+
+	this.x = (kiw_this_window.width  - this.width) / 4
+	this.y = (kiw_this_window.height - this.height) / 4
+
+	this.reset()
+	k_rc = this.insertrow(0)
+	k_rc = this.setitem(1, "kdata", ki_data_scad)
+	k_rc = this.setitem(1, "knco", dw_lista_0.rowcount( ) )
 	this.visible = true
 	this.setfocus()
 end event

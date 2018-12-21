@@ -268,9 +268,11 @@ kuf1_utility = create kuf_utility
 	                                               + " LEFT JOIN " + kguf_data_base.u_get_nometab_xutente("merce_da_sped_NoMag") + " as NoMag ON armo.id_armo =  NoMag.id_armo)  " &
 	                                               + " INNER JOIN  clienti AS  clienti_1 ON  meca.clie_1 =  clienti_1.codice)  " &
 	                                               + " INNER JOIN  clienti AS  clienti_2 ON  meca.clie_2 =  clienti_2.codice) " &
-	                          + "   WHERE "  &
-	                          + "    meca.id  >=  "  + string(kst_report_merce_da_sped.k_id_meca_da)  + "   "    &
-                             + "    and (meca.aperto is null or meca.aperto <> '" + kuf1_armo.kki_meca_aperto_no     + "') " 
+	                          	+ " WHERE "  &
+	                          	+ "  meca.id  >=  "  + string(kst_report_merce_da_sped.k_id_meca_da)  + "   "    &
+                            	+ "  and (meca.aperto is null or meca.aperto = ' ' " & 
+							+ " or meca.aperto = '" + kuf1_armo.kki_meca_aperto_SI + "' " &
+							+ " or meca.aperto = '" + kuf1_armo.kki_meca_aperto_RIAPERTO + "') " 
 
 	 
 	kst_esito = kguo_sqlca_db_magazzino.db_crea_view(1, k_view, k_sql)		

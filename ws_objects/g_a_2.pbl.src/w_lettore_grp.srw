@@ -37,6 +37,7 @@ protected subroutine smista_funz (string k_par_in)
 protected subroutine attiva_menu ()
 private subroutine abilita_modifica_giri ()
 public function integer aggiorna_groupage ()
+public function integer u_delete_file_all ()
 end prototypes
 
 public function string inizializza ();//
@@ -67,16 +68,12 @@ pointer oldpointer  // Declares a pointer variable
 	end if
 
 
-
-//	dw_dett_0.visible = false
-
-
-//=== Legge le righe del dw salvate l'ultima volta (importfile)
-	if ki_st_open_w.flag_primo_giro = "S" then  //solo la prima volta il tasto e' false 
-
-		k_importa = kGuf_data_base.dw_importfile(trim(ki_syntaxquery), dw_lista_0)
-
-	end if
+////=== Legge le righe del dw salvate l'ultima volta (importfile)
+//	if ki_st_open_w.flag_primo_giro = "S" then  //solo la prima volta il tasto e' false 
+//
+//		k_importa = kGuf_data_base.dw_importfile(trim(ki_syntaxquery), dw_lista_0)
+//
+//	end if
 		
 	if k_importa <= 0 then // Nessuna importazione eseguita
 
@@ -485,6 +482,8 @@ choose case LeftA(k_par_in, 2)
 //			end if
 //		end if
 
+	case KKG_FLAG_RICHIESTA.libero5		//delete all file
+		u_delete_file_all( )
 
 	case KKG_FLAG_RICHIESTA.libero8		//Mette i Barcode in GRP
 		aggiorna_groupage()
@@ -536,6 +535,18 @@ if not ki_menu.m_strumenti.m_fin_gest_libero2.visible then
 	ki_menu.m_strumenti.m_fin_gest_libero2.visible = true
 end if
 
+if not ki_menu.m_strumenti.m_fin_gest_libero5.visible then
+	ki_menu.m_strumenti.m_fin_gest_libero5.text = "&Svuota Cartella"
+	ki_menu.m_strumenti.m_fin_gest_libero5.microhelp = "Cancella tutti i file nella cartella dei Groupage generati dai lettori di barcode"
+	ki_menu.m_strumenti.m_fin_gest_libero5.enabled = true
+	ki_menu.m_strumenti.m_fin_gest_libero5.toolbaritemtext = "Svuota,"+ ki_menu.m_strumenti.m_fin_gest_libero5.text
+	ki_menu.m_strumenti.m_fin_gest_libero5.toolbaritemvisible = true
+	ki_menu.m_strumenti.m_fin_gest_libero5.toolbaritembarindex=2
+	//ki_menu.m_strumenti.m_fin_gest_libero2.toolbaritemname = kGuo_path.get_risorse() + "\cicli.bmp"
+	ki_menu.m_strumenti.m_fin_gest_libero5.toolbaritemname = "Delete_2!"
+	ki_menu.m_strumenti.m_fin_gest_libero5.visible = true
+end if
+
 if not ki_menu.m_strumenti.m_fin_gest_libero8.visible then
 	ki_menu.m_strumenti.m_fin_gest_libero8.text = "Crea il Groupage, aggiorna i Barcode "
 	ki_menu.m_strumenti.m_fin_gest_libero8.microhelp =  "Crea il Groupage, aggiorna i Giri nel Barcode e crea il Groupage"
@@ -546,6 +557,8 @@ if not ki_menu.m_strumenti.m_fin_gest_libero8.visible then
 	ki_menu.m_strumenti.m_fin_gest_libero8.toolbaritemName = "CheckIn5!"
 	ki_menu.m_strumenti.m_fin_gest_libero8.toolbaritembarindex=2
 end if	
+
+
 //---
 	super::attiva_menu()
 
@@ -744,6 +757,42 @@ k_return = k_nr_grp
 
 return k_return
 
+
+end function
+
+public function integer u_delete_file_all ();//
+int k_return
+int k_resp, k_file_deleted
+
+
+try
+	
+	k_resp = messagebox("Rimozione Archivi", "Procedere con la completa cancellazione di tutti i file presenti nella cartella dei Groupage. I dati protrebbero ancora non essere stati importati.", question!, yesno!, 2) 
+	if k_resp = 1 then
+
+		setpointer(kkg.pointer_attesa)
+
+		k_file_deleted = kiuf1_lettore_grp.u_delete_file_all( )
+		
+		setpointer(kkg.pointer_default)
+		
+		if k_file_deleted > 0 then
+			messagebox("Operazione Conclusa", "Sono stati cancellati " + string(k_file_deleted) + " file.", information!)
+		else
+			messagebox("Operazione Conclusa", "Non sono stati trovati file da cancellare.", information!)
+		end if
+		
+		k_return = k_file_deleted
+		
+	end if
+
+catch(uo_exception kuo_exception)
+	setpointer(kkg.pointer_default)
+	messagebox("Operazione Interrotta", "Si sono verificati degli errori durante la cancellazione dei file di groupage. Errore: " + trim(kuo_exception.get_errtext( )) , information!)
+
+end try
+
+return k_return
 
 end function
 

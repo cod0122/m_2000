@@ -510,6 +510,7 @@ try
 							else
 								k_rc_open =  string(OpenSheetWithParmAsDocument(kw_window_open, kguo_g.kGst_open_w, kguo_g.kGst_open_w.window, kw_prima_window_operta, kguo_g.kGst_open_w.window ))
 							end if
+							kguo_g.window_aperta_add(kw_window_open)
 					end choose
 //					if k_rc_open > "0" then
 //						kw_window_open.SetFocus()   // Fuoco sulla window appena aperta

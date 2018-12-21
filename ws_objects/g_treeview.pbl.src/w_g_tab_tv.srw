@@ -24,18 +24,22 @@ type st_orizzontal from statictext within w_g_tab_tv
 end type
 type st_vertical from statictext within w_g_tab_tv
 end type
+type dw_data1 from uo_d_std_1 within w_g_tab_tv
+end type
 end forward
 
 global type w_g_tab_tv from w_g_tab
+integer width = 681
+integer height = 440
 string title = "Navigatore"
 long backcolor = 553648127
 windowanimationstyle closeanimation = rightroll!
 boolean ki_salva_controlli = true
 boolean ki_windowpredef = true
 boolean ki_personalizza_pos_controlli = true
+boolean ki_esponi_msg_dati_modificati = false
 boolean ki_filtra_attivo = false
-event u_timer ( boolean a_attiva )
-event ue_downkey pbm_dwnkey
+boolean ki_aggiorna_richiesta_conferma = false
 tv_root tv_root
 lv_1 lv_1
 dw_anteprima dw_anteprima
@@ -47,6 +51,7 @@ st_modifica st_modifica
 st_visualizza st_visualizza
 st_orizzontal st_orizzontal
 st_vertical st_vertical
+dw_data1 dw_data1
 end type
 global w_g_tab_tv w_g_tab_tv
 
@@ -78,6 +83,10 @@ private string ki_zoom
 private boolean ki_st_vertical=true, ki_st_orizzontal=true
 
 private long ki_listview_index
+
+private boolean ki_focus_on_st_oizzontal, ki_focus_on_st_vertical
+
+private date ki_data_ini, ki_data_fin
 
 //private boolean ki_primo_giro_tv = true
 end variables
@@ -113,37 +122,10 @@ protected subroutine attiva_tasti_0 ()
 public subroutine u_obj_visible_0 ()
 public function boolean u_resize_predefinita ()
 protected subroutine set_titolo_window_personalizza ()
-public subroutine u_timer_old ()
 public subroutine u_wtitolo_path (st_treeview_data ast_treeview_data)
 public subroutine u_resize_1 ()
+private subroutine u_set_data_certif_da_st ()
 end prototypes
-
-event u_timer(boolean a_attiva);//
-////---- Scatena il timer (vedi l'evento)
-//17-06-2017 tolto perchè manda in crash al ritorno dalla stampa
-
-//if a_attiva then
-//	if not ki_time_attivo then
-//		timer (1.00)
-//	end if
-//else
-//	timer (0)
-//end if
-//ki_time_attivo = a_attiva
-
-this.setredraw(true)
-
-
-
-
-
-end event
-
-event ue_downkey;//
-	u_key(key, keyflags)
-
-
-end event
 
 protected function integer u_dammi_item_padre_da_list ();//
 //--- Torna il padre dell'item di listview
@@ -294,16 +276,40 @@ boolean k_flg_lotto=false
 //--- Attiva/Dis. Voci di menu personalizzate
 //
 
+	choose case kiuf_treeview.kist_treeview_oggetto.oggetto
+			case kiuf_treeview.kist_treeview_oggetto.certif_da_st_dett &
+				  ,kiuf_treeview.kist_treeview_oggetto.certif_da_st_sd_dett &
+				  ,kiuf_treeview.kist_treeview_oggetto.certif_da_st_farma_dett &
+				  ,kiuf_treeview.kist_treeview_oggetto.certif_da_st_alimen_dett 
+
+				if not ki_menu.m_strumenti.m_fin_gest_libero1.visible then
+					ki_menu.m_strumenti.m_fin_gest_libero1.text = "Cambia data estrazione Attestati "
+					ki_menu.m_strumenti.m_fin_gest_libero1.microhelp = "Cambia data estrazione Attestati "
+					ki_menu.m_strumenti.m_fin_gest_libero1.visible = true
+					ki_menu.m_strumenti.m_fin_gest_libero1.enabled = true
+					ki_menu.m_strumenti.m_fin_gest_libero1.toolbaritemVisible = true
+					ki_menu.m_strumenti.m_fin_gest_libero1.toolbaritemText = "data,"+ki_menu.m_strumenti.m_fin_gest_libero1.text
+					ki_menu.m_strumenti.m_fin_gest_libero1.toolbaritemName = "Custom015!"
+			//		ki_menu.m_strumenti.m_fin_gest_libero1.toolbaritembarindex=2
+				end if	
+			case else
+				ki_menu.m_strumenti.m_fin_gest_libero1.visible = false
+				ki_menu.m_strumenti.m_fin_gest_libero1.enabled = false
+	end choose
+
 //--- Menu LIBERI in aggiunta alle normali funzionalità
 	if not ki_menu.m_strumenti.m_fin_gest_libero1.enabled then
-		ki_menu.m_strumenti.m_fin_gest_libero1.text = "Chiude tutti i 'rami'"
-		ki_menu.m_strumenti.m_fin_gest_libero1.microhelp = "Nasconde tutti i rami escluso quelli iniziali"
-		ki_menu.m_strumenti.m_fin_gest_libero1.visible = true
-		ki_menu.m_strumenti.m_fin_gest_libero1.enabled = true
-		ki_menu.m_strumenti.m_fin_gest_libero1.toolbaritemVisible = true //ki_menu.m_strumenti.m_fin_gest_libero1.visible
-		ki_menu.m_strumenti.m_fin_gest_libero1.toolbaritemText = "comp.,"+ki_menu.m_strumenti.m_fin_gest_libero1.text
-		ki_menu.m_strumenti.m_fin_gest_libero1.toolbaritemName = "close!"
-		ki_menu.m_strumenti.m_fin_gest_libero1.toolbaritembarindex=2
+		
+		
+		
+		ki_menu.m_strumenti.m_fin_gest_libero2.text = "Chiude tutti i 'rami'"
+		ki_menu.m_strumenti.m_fin_gest_libero2.microhelp = "Nasconde tutti i rami escluso quelli iniziali"
+		ki_menu.m_strumenti.m_fin_gest_libero2.visible = true
+		ki_menu.m_strumenti.m_fin_gest_libero2.enabled = true
+		ki_menu.m_strumenti.m_fin_gest_libero2.toolbaritemVisible = true //ki_menu.m_strumenti.m_fin_gest_libero1.visible
+		ki_menu.m_strumenti.m_fin_gest_libero2.toolbaritemText = "comp.,"+ki_menu.m_strumenti.m_fin_gest_libero2.text
+		ki_menu.m_strumenti.m_fin_gest_libero2.toolbaritemName = "close!"
+		ki_menu.m_strumenti.m_fin_gest_libero2.toolbaritembarindex=2
 	
 //	//	if tv_root.visible = true then
 //			ki_menu.m_strumenti.m_fin_gest_libero2.text = "Mostra/Nascondi pannelli"
@@ -506,8 +512,6 @@ st_treeview_data kst_treeview_data
 
 
 	SetPointer(kkg.pointer_attesa)
-
-//	timer(0)
 
 //--- solo x il primo giro forza la lettura e l'espansione del ramo
    if ki_st_open_w.flag_primo_giro = "S" then 
@@ -869,7 +873,6 @@ else
 end if
 destroy kuf1_base
 
-event u_timer(true)
 
 
 
@@ -959,21 +962,11 @@ try
 			open_dettaglio(k_par_in)
 	
 	
-		case KKG_FLAG_RICHIESTA.libero1		//collassa rami tree
-			treeview_collassa_tutti_i_rami()
+		case KKG_FLAG_RICHIESTA.libero1		//cambia data
+			u_set_data_certif_da_st( )
 	
-//		case KKG_FLAG_RICHIESTA.libero2		//Nascondi/visualizza TREE/anteprima
-//			choose case true
-//				case tv_root.visible and dw_anteprima.visible
-//					ki_st_orizzontal = false
-//				case tv_root.visible and not dw_anteprima.visible
-//					ki_st_vertical = false
-//				case not tv_root.visible and not dw_anteprima.visible
-//					ki_st_orizzontal = true
-//				case not tv_root.visible and dw_anteprima.visible
-//					ki_st_vertical = true
-//			end choose
-//			u_resize_predefinita( )
+		case KKG_FLAG_RICHIESTA.libero2		//collassa rami tree
+			treeview_collassa_tutti_i_rami()
 	
 		case KKG_FLAG_RICHIESTA.libero3	//Stampa datawindow attiva
 			stampa()
@@ -1100,7 +1093,6 @@ try
 	
 	if k_rc then
 		u_anteprima() // refresh del dw_anteprima
-//		u_timer( ) // refresh del dw_anteprima
 	else
 		messagebox("Operazione annullata", "Non è possibile creare alcun MEMO da qui", information!)
 	end if
@@ -1130,30 +1122,6 @@ public subroutine u_anteprima ();//
 				if dw_anteprima.rowcount( ) > 0 then
 					
 			
-//					if dw_anteprima.Object.DataWindow.Processing = "5" then
-//						dw_anteprima.Object.DataWindow.ReadOnly = "No"
-//						dw_anteprima.Object.DataWindow.Print.Preview = "Yes"
-//					else
-//						dw_anteprima.Object.DataWindow.Print.Preview = "Yes"
-//						dw_anteprima.Object.DataWindow.ReadOnly = "yes"
-//					end if
-//					dw_anteprima.Object.DataWindow.Print.Margin.Bottom = '0'
-//					dw_anteprima.Object.DataWindow.Print.Margin.Left = '0'
-//					dw_anteprima.Object.DataWindow.Print.Margin.Right = '0'
-//					dw_anteprima.Object.DataWindow.Print.Margin.Top = '0'
-//					dw_anteprima.Object.DataWindow.Print.paper.source = '0'
-//					if dw_anteprima.Object.DataWindow.Units = '3' then  // 3 = 1/1000 di centimetro
-//						dw_anteprima.Object.DataWindow.Print.Paper.Size = '256'  // dimensioni in mm
-//						string w, k 
-//						k = string(dw_anteprima.width)
-//						w = dw_anteprima.Object.DataWindow.Print.CustomPage.Width
-//						dw_anteprima.Object.DataWindow.Print.CustomPage.Width = k
-//						dw_anteprima.Object.DataWindow.Print.CustomPage.Length = dw_anteprima.height * 100
-//					else
-//						dw_anteprima.Object.DataWindow.Print.Paper.Size = '255'  // millesimi di pollice
-//						dw_anteprima.Object.DataWindow.Print.CustomPage.Width = dw_anteprima.width 
-//						dw_anteprima.Object.DataWindow.Print.CustomPage.Length = dw_anteprima.height 
-//					end if
 					dw_anteprima.Object.DataWindow.Print.Preview.Zoom = ki_zoom
 					dw_anteprima.SetRedraw(TRUE)
 
@@ -1168,6 +1136,7 @@ public subroutine u_anteprima ();//
 		end if
 	end if
 
+	attiva_tasti()
 end subroutine
 
 public function long u_drop_file (integer a_k_tipo_drag, long a_handle);//
@@ -1517,36 +1486,6 @@ protected subroutine set_titolo_window_personalizza ();//
 //--- da non fare
 end subroutine
 
-public subroutine u_timer_old ();////
-////--- spegne il TIMER
-//event u_timer(false)
-//
-////--- Richiesta ANTEPRIMA ?
-//if ki_time_lbuttondown_riga > 0 then //and not isnull(ki_time_lbuttondown) then
-//	
-////--- resetta il timer x questo evento
-////		setnull(ki_time_lbuttondown)
-//		
-////--- attivo modalita' anteprima nella apposita dw_anteprima		
-//		u_anteprima()
-//		
-////	end if 
-//end if
-//
-////--- rilegge automaticamente se per un tot di tempo non si fa nulla sul navigatore
-//if relativetime ( ki_time_rileggi_auto, 1800 ) < now() then
-//
-////---- reinizializza il timer per eventuale auto-lettura
-//	ki_time_rileggi_auto = now()
-//
-////--- rilegge le liste 	
-//	smista_funz(kkg_flag_richiesta.refresh)
-//
-//end if
-
-
-end subroutine
-
 public subroutine u_wtitolo_path (st_treeview_data ast_treeview_data);//
 string k_path 
 int k_rc
@@ -1716,6 +1655,44 @@ long k_width_orig, k_height_orig
 
 end subroutine
 
+private subroutine u_set_data_certif_da_st ();//---
+//--- Visualizza il box x il cambio DATA
+//---
+
+
+//dw_data1.triggerevent("ue_visibile")
+//
+//kiw_parent = kiw_this_window
+//super::event ue_visible( )
+
+if kiuf_treeview.ki_data_certif_da_st_da > date(0) then
+else
+	ki_data_ini = kkg.data_zero 
+end if
+if kiuf_treeview.ki_data_certif_da_st_a > date(0) then
+else
+	ki_data_fin = kguo_g.get_dataoggi( )
+end if
+
+//
+int k_rc
+
+	dw_data1.width = long(dw_data1.object.data_al.x) + long(dw_data1.object.data_al.width) + 100
+	dw_data1.height = long(dw_data1.object.b_ok.y) + long(dw_data1.object.b_ok.height) + 160
+
+	dw_data1.x = (kiw_this_window.width  - dw_data1.width) / 4
+	dw_data1.y = (kiw_this_window.height - dw_data1.height) / 4
+
+	dw_data1.reset()
+	k_rc = dw_data1.insertrow(0)
+	k_rc = dw_data1.setitem(1, "data_dal", ki_data_ini)
+	k_rc = dw_data1.setitem(1, "data_al", ki_data_fin)
+
+	dw_data1.visible = true
+	dw_data1.enabled = true
+	dw_data1.setfocus()
+end subroutine
+
 on w_g_tab_tv.create
 int iCurrent
 call super::create
@@ -1730,6 +1707,7 @@ this.st_modifica=create st_modifica
 this.st_visualizza=create st_visualizza
 this.st_orizzontal=create st_orizzontal
 this.st_vertical=create st_vertical
+this.dw_data1=create dw_data1
 iCurrent=UpperBound(this.Control)
 this.Control[iCurrent+1]=this.tv_root
 this.Control[iCurrent+2]=this.lv_1
@@ -1742,6 +1720,7 @@ this.Control[iCurrent+8]=this.st_modifica
 this.Control[iCurrent+9]=this.st_visualizza
 this.Control[iCurrent+10]=this.st_orizzontal
 this.Control[iCurrent+11]=this.st_vertical
+this.Control[iCurrent+12]=this.dw_data1
 end on
 
 on w_g_tab_tv.destroy
@@ -1758,6 +1737,7 @@ destroy(this.st_modifica)
 destroy(this.st_visualizza)
 destroy(this.st_orizzontal)
 destroy(this.st_vertical)
+destroy(this.dw_data1)
 end on
 
 event close;call super::close;//
@@ -1836,38 +1816,11 @@ kuf_base kuf1_base
 
 end event
 
-event deactivate;call super::deactivate;//
-//---- Spegne il timer (vedi l'evento)
-//	timer (0)
-
-
-end event
-
-event timer;call super::timer;//
-//u_timer( )  //lancia questa funzione dopo un tot di tempo
-
-end event
-
-event rbuttondown;call super::rbuttondown;//
-//---- menu contestuale
-//
-int k_xpos, k_ypos
-//kuf_menu_popup kuf1_menu_popup
-
-
-//	timer(0)
-
-//	kuf1_menu_popup = create kuf_menu_popup
-	k_xpos = xpos + this.x  
-	k_ypos = ypos + this.y 
-	kiuf_menu_popup.u_popup(k_xpos, k_ypos)
-
-//	destroy kuf1_menu_popup
-//
-end event
-
 event u_open;call super::u_open;//
+	dw_data1.visible = false
 	u_resize()
+	dw_data1.move( 8000, 8000)
+	
 
 end event
 
@@ -1919,20 +1872,18 @@ long statepicturemaskcolor = 536870912
 end type
 
 event u_rbuttondown;//
+//---- menu contestuale
 //
-parent.event rbuttondown(flags, xpos, ypos)
-//
-//int k_xpos, k_ypos
-////kuf_menu_popup kuf1_menu_popup
-//
-//
-////	kuf1_menu_popup = create kuf_menu_popup
-//	k_xpos = xpos + this.x  
-//	k_ypos = ypos + this.y 
-//	kiuf_menu_popup.u_popup(k_xpos, k_ypos)
-//
-////	destroy kuf1_menu_popup
-//
+int k_xpos, k_ypos
+
+
+//	kuf1_menu_popup = create kuf_menu_popup
+	k_xpos = xpos + this.x  
+	k_ypos = ypos + this.y 
+	kiuf_menu_popup.u_popup(k_xpos, k_ypos)
+
+//	destroy kuf1_menu_popup
+
 end event
 
 event clicked;//
@@ -1940,11 +1891,8 @@ ki_flag_tree_appena_espanso = false
 
 kiuf_treeview.ki_fuoco_tree_list = kiuf_treeview.ki_fuoco_su_tree
 
-//---- inizia il timer per eventuale auto-lettura
-//ki_time_rileggi_auto = now()
 
 ki_listview_index = 0 //azzero l'indice x anteprima
-//ki_time_lbuttondown_riga = 0  // riga utile per anteprima
 
 
 attiva_tasti( )
@@ -1980,10 +1928,6 @@ end event
 event getfocus;//
 kiuf_treeview.ki_fuoco_tree_list = kiuf_treeview.ki_fuoco_su_tree
 
-//---- inizia il timer per eventuale auto-lettura
-//ki_time_rileggi_auto = now()
-
-//
 attiva_tasti()
 
 end event
@@ -2022,13 +1966,10 @@ event selectionchanged;//
 
 end event
 
-event selectionchanging;
-Integer				li_Cnt, li_Start
+event selectionchanging;//
 Long					ll_OldParent, ll_NewParent
-Boolean				lb_Changed
 TreeViewItem		ltvi_Old, ltvi_New
 
-//ib_Retrieve = True
 
 If GetItem(oldhandle, ltvi_Old) = -1 Or GetItem(newhandle, ltvi_New) = -1 Then Return 0
 
@@ -2037,7 +1978,6 @@ If ltvi_Old.Level = ltvi_New.Level Then
 	// First determine if the DW will need to be re-retrieved.  If the
 	// new item has the same parent as the old, it does not.
 	If FindItem(ParentTreeItem!, oldhandle) = FindItem(ParentTreeItem!, newhandle) Then
-//		ib_Retrieve = False
 		Return 0
 	end if
 end if
@@ -2057,6 +1997,7 @@ end event
 
 type lv_1 from listview within w_g_tab_tv
 event u_dropfiles pbm_dropfiles
+event u_rbuttondown pbm_rbuttondown
 boolean visible = false
 integer x = 946
 integer width = 1463
@@ -2070,12 +2011,14 @@ fontpitch fontpitch = variable!
 fontfamily fontfamily = swiss!
 string facename = "MS Sans Serif"
 long textcolor = 33554432
-long backcolor = 553648127
+long backcolor = 16777215
 boolean border = false
 boolean autoarrange = true
 boolean fixedlocations = true
 boolean hideselection = false
+boolean oneclickactivate = true
 boolean fullrowselect = true
+boolean underlinehot = true
 listviewview view = listviewreport!
 string largepicturename[] = {"","","","","","",""}
 long largepicturemaskcolor = 553648127
@@ -2096,24 +2039,30 @@ return k_file_nr
 
 end event
 
+event u_rbuttondown;//
+//---- menu contestuale
+//
+int k_xpos, k_ypos
+
+kiuf_treeview.ki_fuoco_tree_list = kiuf_treeview.ki_fuoco_su_list
+
+//	kuf1_menu_popup = create kuf_menu_popup
+	k_xpos = xpos + this.x  
+	k_ypos = ypos + this.y 
+	kiuf_menu_popup.post u_popup(k_xpos, k_ypos)
+
+//	destroy kuf1_menu_popup
+
+end event
+
 event clicked;//
 	kiuf_treeview.ki_fuoco_tree_list = kiuf_treeview.ki_fuoco_su_list
+
 
 	if index > 1 then
 		u_anteprima()
 	end if
 
-////---- inizia il timer per eventuale 'anteprima' 
-//	ki_time_rileggi_auto = now()
-//
-//	ki_time_lbuttondown_riga = index
-//
-//	if index > 0 and index <> ki_index then
-//		ki_index = index
-////--- Riattiva il TIMER
-//		event u_timer( )
-//	end if
-	
 
 end event
 
@@ -2191,13 +2140,9 @@ event doubleclicked;////---
 end event
 
 event getfocus;//
-//---- inizia il timer per eventuale auto-lettura
-//ki_time_rileggi_auto = now()
-
 //--- imposta oggetto selezionato x fare il TROVA
 kigrf_x_trova = this
 
-//
 attiva_tasti()
 
 end event
@@ -2281,46 +2226,6 @@ event sort;//
 //
 end event
 
-event itemactivate;//
-//if focuschange and selected then
-//	kiuf_treeview.ki_fuoco_tree_list = kiuf_treeview.ki_fuoco_su_list
-
-//---- inizia il timer per eventuale 'anteprima' 
-//	ki_time_rileggi_auto = now()
-
-//	if index > 1 and index <> ki_time_lbuttondown_riga then
-//		ki_time_lbuttondown_riga = index
-////--- Riattiva il TIMER
-////		event u_timer(true)
-//		u_timer()
-//	end if
-//--- fa ANTEPRIMA se non è al 'primo giro' appena espansa
-//	if index > 0 and ki_listview_index <> index then 
-//		if ki_listview_index > 0 then
-//			u_anteprima()
-//		end if
-//		ki_listview_index = index
-//	end if
-	
-	
-//	cliccato_list(index)
-
-//	this.enabled = true
-
-//	if index > 1 then   // il primo elemento è sempre la cartellina per risalire
-//		u_anteprima()
-//	end if
-
-//end if
-
-
-end event
-
-event rightclicked;//
-parent.event rbuttondown(0, this.pointerX(), this.pointerY())
-
-end event
-
 type dw_anteprima from uo_d_std_1 within w_g_tab_tv
 integer x = 937
 integer y = 772
@@ -2330,16 +2235,12 @@ integer taborder = 60
 boolean bringtotop = true
 boolean enabled = true
 string title = "anteprima"
-boolean ki_attiva_standard_select_row = false
+boolean ki_disattiva_moment_cb_aggiorna = false
+boolean ki_link_standard_sempre_possibile = true
 boolean ki_d_std_1_attiva_cerca = false
 end type
 
 event getfocus;call super::getfocus;//
-
-//---- inizia il timer per eventuale auto-lettura
-//ki_time_rileggi_auto = now()
-
-//
 attiva_tasti()
 
 end event
@@ -2491,32 +2392,38 @@ boolean focusrectangle = false
 end type
 
 event mousemove;//Check for move in progess
-If KeyDown(keyLeftButton!) Then
-	if Parent.PointerY() > parent.height / 10 then
-		if Parent.PointerY() > parent.height * 0.98 then
-			dw_anteprima.visible = false
-			this.visible = false
-			tv_root.height =  parent.height 
-			lv_1.height =  parent.height
-			st_vertical.height =  parent.height
-		else
-			
-			This.y = Parent.PointerY()
-			tv_root.height = y 
-			lv_1.height = y
-			st_vertical.height = y
-			dw_anteprima.y = y + this.height
-			dw_anteprima.height = parent.height - y - this.height
-	
+if ki_focus_on_st_oizzontal then
+	If KeyDown(keyLeftButton!) Then
+		if Parent.PointerY() > parent.height / 10 then
+			if Parent.PointerY() > parent.height * 0.98 then
+				dw_anteprima.visible = false
+				this.visible = false
+				tv_root.height =  parent.height 
+				lv_1.height =  parent.height
+				st_vertical.height =  parent.height
+			else
+				
+				This.y = Parent.PointerY()
+				tv_root.height = y 
+				lv_1.height = y
+				st_vertical.height = y
+				dw_anteprima.y = y + this.height
+				dw_anteprima.height = parent.height - y - this.height
+		
+			end if
 		end if
-	end if
-End If
-
+	End If
+end if	
 
 end event
 
-event mouseup;//
-parent.triggerevent (resize!)
+event getfocus;//
+ki_focus_on_st_oizzontal = true
+
+end event
+
+event losefocus;//
+ki_focus_on_st_oizzontal = false
 
 end event
 
@@ -2542,29 +2449,131 @@ boolean focusrectangle = false
 end type
 
 event mousemove;//Check for move in progess
-If KeyDown(keyLeftButton!) Then
-	if Parent.PointerX() < parent.width * 0.95 then
-		if Parent.PointerX() < parent.width * 0.01 then
-			tv_root.visible = false
-			this.visible = false
-			lv_1.x = tv_root.x
-			lv_1.width =  parent.width 
-		else
-			
-			This.x = Parent.PointerX()
-			tv_root.width = x 
-			lv_1.x = x + this.width
-			lv_1.width = parent.width - x - this.width
-			
+if ki_focus_on_st_vertical then
+	If KeyDown(keyLeftButton!) Then
+		if Parent.PointerX() < parent.width * 0.95 then
+			if Parent.PointerX() < parent.width * 0.01 then
+				tv_root.visible = false
+				this.visible = false
+				lv_1.x = tv_root.x
+				lv_1.width =  parent.width 
+			else
+				
+				This.x = Parent.PointerX()
+				tv_root.width = x 
+				lv_1.x = x + this.width
+				lv_1.width = parent.width - x - this.width
+				
+			end if
 		end if
-	end if
-End If
+	End If
+end if	
+
+end event
+
+event getfocus;//
+ki_focus_on_st_vertical = true
+
+end event
+
+event losefocus;//
+ki_focus_on_st_vertical = false
+
+end event
+
+type dw_data1 from uo_d_std_1 within w_g_tab_tv
+event ue_clicked_0 ( integer row,  string k_dwo_name )
+event ue_clicked ( )
+integer x = 1518
+integer y = 880
+integer width = 923
+integer height = 420
+integer taborder = 20
+boolean bringtotop = true
+string title = "Periodo di estrazione"
+string dataobject = "d_periodo"
+boolean hscrollbar = false
+boolean vscrollbar = false
+boolean border = true
+boolean hsplitscroll = false
+boolean livescroll = false
+borderstyle borderstyle = stylelowered!
+end type
+
+event ue_clicked_0(integer row, string k_dwo_name);//
+//--- Richiamato dal CLICKED
+//
+
+
+IF row > 0 THEN
+
+	try
+	
+		if k_dwo_name = "b_ok" then
+			
+			this.visible = false
+			this.x = 10000
+			this.y = 10000
+			
+			this.accepttext( )
+			
+			ki_data_ini = this.getitemdate( 1, "data_dal")
+			ki_data_fin = this.getitemdate( 1, "data_al")
+			event ue_clicked( )
+		
+		else
+			if k_dwo_name = "b_annulla" then
+		
+				this.visible = false
+			
+			end if
+		end if
+		
+	
+	catch (uo_exception kuo_exception)
+		kuo_exception.messaggio_utente()
+	
+	
+	finally
+	
+		
+	end try
+
+end if
+
+end event
+
+event ue_clicked();//
+if ki_data_ini > date(0) then
+	kiuf_treeview.ki_data_certif_da_st_da = ki_data_ini 
+else
+end if
+if ki_data_fin > date(0) then
+	kiuf_treeview.ki_data_certif_da_st_a = ki_data_fin
+else
+end if
+
+kiuf_treeview.ki_forza_refresh = kiuf_treeview.ki_forza_refresh_si
+aggiorna_liste()
+
+end event
+
+event u_pigiato_enter;//
+//--- Premuto ENTER: simulo come il clicked su ITEM_PICTURE
+//
+
+	THIS.Trigger Event ue_clicked_0(1, "b_ok") 
+
+
+return 1 
 
 
 end event
 
-event mouseup;//
-parent.triggerevent (resize!)
+event buttonclicked;call super::buttonclicked;//
+
+THIS.Trigger Event ue_clicked_0(row, dwo.name) 
+
 
 end event
 

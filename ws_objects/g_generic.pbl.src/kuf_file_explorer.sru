@@ -32,8 +32,11 @@ Private constant long MAX_PATH = 260
 
 public string ki_ds_dirlist = "ds_dirlist"
 
-end variables
+public constant string k_dirlist_tipo_folder = 'c'
+public constant string k_dirlist_tipo_hidden = 'n'
+public constant string k_dirlist_tipo_file = 'f'
 
+end variables
 forward prototypes
 public function boolean of_execute (readonly string as_file, readonly string as_extension)
 public function boolean of_execute (string k_file)
@@ -161,12 +164,12 @@ if lul_handle > 0 then
 				kds_dirlist.setitem(k_riga, "path", path)
 				kds_dirlist.setitem(k_riga, "nome", str_find.filename)
 				if str_find.fileattributes = 16 then
-					kds_dirlist.setitem(k_riga, "tipo", "c")  // è una cartella
+					kds_dirlist.setitem(k_riga, "tipo", k_dirlist_tipo_folder)  // è una cartella
 				else
 					if str_find.fileattributes = 38 then   // è un file nascosto
-						kds_dirlist.setitem(k_riga, "tipo", "n")  
+						kds_dirlist.setitem(k_riga, "tipo", k_dirlist_tipo_hidden)  
 					else	
-						kds_dirlist.setitem(k_riga, "tipo", "f")  // è un file
+						kds_dirlist.setitem(k_riga, "tipo", k_dirlist_tipo_file)  // è un file
 					end if					
 				end if					
 				kds_dirlist.setitem(k_riga, "size", str_find.filesizelow)

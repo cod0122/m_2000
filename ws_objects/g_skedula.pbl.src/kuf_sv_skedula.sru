@@ -861,6 +861,9 @@ try
 		
 	catch (RuntimeError kRuntimeError2)
 		kuo_exception2 = create uo_exception
+		kst_esito.esito = kkg_esito.ko
+		kst_esito.sqlerrtext = trim(kRuntimeError2.text) + "; Object: " +  trim(kRuntimeError2.ObjectName) + "; Routine: " + trim(kRuntimeError2.RoutineName) + "; Line: " + string(kRuntimeError2.line)
+		kuo_exception2.set_esito(kst_esito)
 		throw kuo_exception2		
 		
 	finally

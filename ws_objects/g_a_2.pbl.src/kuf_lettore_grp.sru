@@ -25,6 +25,7 @@ public function st_esito popola_tab_lettore_grp_da_ds ()
 public function st_esito popola_tab_lettore_grp ()
 public function st_esito delete_file_grp (ref string k_file)
 public function boolean if_gia_caricato (st_tab_lettore_grp kst_tab_lettore_grp) throws uo_exception
+public function long u_delete_file_all () throws uo_exception
 end prototypes
 
 public function integer get_files_groupage (ref st_file_lettore_grp kst_file_lettore_grp[]) throws uo_exception;//
@@ -42,7 +43,7 @@ integer k_return=0
 boolean k_b=false
 string k_rc, k_file=""
 int k_rcn, k_file_ind=0
-long k_ind, k_nr_file_dirlist=0
+long k_ind, k_nr_file_dirlist, k_nr_file
 datastore kds_dirlist
 string k_esito=""
 st_esito kst_esito
@@ -79,8 +80,11 @@ kuf_base kuf1_base
 //--- estrae il file da importare		
 			k_file = trim(kds_dirlist.getitemstring(k_file_ind, "nome"))
 			
-			kst_file_lettore_grp[k_file_ind].nome_file = k_file
-			kst_file_lettore_grp[k_file_ind].path_file = kst_tab_base.fgrp_out_path
+			if kds_dirlist.getitemstring(k_file_ind, "tipo") = kuf1_file_explorer.k_dirlist_tipo_file then
+				k_nr_file ++
+				kst_file_lettore_grp[k_nr_file].nome_file = k_file
+				kst_file_lettore_grp[k_nr_file].path_file = kst_tab_base.fgrp_out_path
+			end if
 			
 		end for
 
@@ -467,7 +471,7 @@ return kst_esito
 end function
 
 public function st_esito popola_tab_lettore_grp ();//
-//--- Scrive su tabella i Groupage Scaricati sulla cartella comune con il Lettore
+//--- Scrive su tabella i Groupage Scaricati nella cartella comune con il Lettore
 //--- inp: 
 //--- out: 
 //--- rit: st_esito
@@ -514,7 +518,9 @@ try
 		
 //--- se si è verificato un errore grave esco!		
 		if kst_esito.esito <> kkg_esito.ok and kst_esito.esito <> kkg_esito.db_wrn then
-			k_ind = k_n_file + 1  //USCITA !!!
+			//k_ind = k_n_file + 1  //USCITA !!!
+			kGuo_exception.inizializza( )
+			kGuo_exception.set_esito(kst_esito) // scrive LOG
 		end if
 		
 	end for
@@ -526,9 +532,9 @@ catch (uo_exception kuo_exception)
 	
 end try
 
-if kst_esito.esito <> kkg_esito.ok and kst_esito.esito <> kkg_esito.db_wrn then
-	kGuf_data_base.errori_scrivi_esito(kst_esito) // scrive LOG
-end if
+//if kst_esito.esito <> kkg_esito.ok and kst_esito.esito <> kkg_esito.db_wrn then
+//	kGuf_data_base.errori_scrivi_esito(kst_esito) // scrive LOG
+//end if
 
 
 return kst_esito
@@ -639,6 +645,62 @@ else
 	kguo_exception.set_esito(kst_esito)
 	throw kguo_exception
 	
+end if
+
+
+return k_return
+
+end function
+
+public function long u_delete_file_all () throws uo_exception;//
+//--- Scrive su tabella i Groupage Scaricati nella cartella comune con il Lettore
+//--- inp: 
+//--- out: 
+//--- rit: st_esito
+//--- deve essere stato impostato il PATH dove il Lettore mette i Groupage sulle Proprietà Base
+//---
+long k_return
+string k_file=""
+int k_n_file, k_ind
+st_esito kst_esito
+st_file_lettore_grp kst_file_lettore_grp[]
+
+
+kst_esito.esito = kkg_esito.ok
+kst_esito.sqlcode = 0
+kst_esito.SQLErrText = ""
+kst_esito.nome_oggetto = this.classname()
+
+try
+	
+//--- legge i groupage dalla cartella
+	get_files_groupage(kst_file_lettore_grp[])
+	
+	k_n_file = upperbound(kst_file_lettore_grp[])
+	for k_ind = 1 to k_n_file
+		
+//--- legge un file Groupage e lo importa nel DataStore
+		if right(kst_file_lettore_grp[k_ind].path_file,1) <> kkg.path_sep then 
+			kst_file_lettore_grp[k_ind].path_file += kkg.path_sep
+		end if
+		k_file = kst_file_lettore_grp[k_ind].path_file + kst_file_lettore_grp[k_ind].nome_file
+
+		kst_esito = delete_file_grp( k_file )  // cancella il file 
+		
+	end for
+	
+	k_return = k_n_file
+	
+catch (uo_exception kuo_exception)
+	kst_esito = kuo_exception.get_st_esito()
+	
+	
+end try
+
+if kst_esito.esito <> kkg_esito.ok and kst_esito.esito <> kkg_esito.db_wrn then
+	kguo_exception.inizializza( )
+	kguo_exception.set_esito(kst_esito)
+	throw kguo_exception
 end if
 
 

@@ -1895,24 +1895,24 @@ try
 	k_rcn = kds_prof_x_esolver.retrieve(ast_prof_exp_fatt.num_fattura_da, ast_prof_exp_fatt.num_fattura_a, ast_prof_exp_fatt.data_fattura_da,  ast_prof_exp_fatt.data_fattura_a, ast_prof_exp_fatt.profis ) 
 	if k_rcn > 0 then 
 
-		k_esito = kuf1_base.prendi_dato_base( "iva_conto")
-		if left(k_esito,1) <> "0" then
-			kst_esito.nome_oggetto = this.classname()
-			kst_esito.esito = kkg_esito.db_ko  
-			kst_esito.sqlcode = 0
-			kst_esito.SQLErrText = mid(k_esito,2)
-			kguo_exception.set_esito(kst_esito)
-			throw kguo_exception
-		end if
-		k_conto_iva	= mid(k_esito,2)
-		if k_conto_iva > " " then
-		else
-			kst_esito.nome_oggetto = this.classname()
-			kst_esito.esito = kkg_esito.dati_insuff 
-			kst_esito.sqlcode = 0
-			kst_esito.SQLErrText = "Manca il codice conto contabile IVA in archivio Proprietà Azienda"
-			kguo_exception.set_esito(kst_esito)
-		end if
+//		k_esito = kuf1_base.prendi_dato_base( "iva_conto")
+//		if left(k_esito,1) <> "0" then
+//			kst_esito.nome_oggetto = this.classname()
+//			kst_esito.esito = kkg_esito.db_ko  
+//			kst_esito.sqlcode = 0
+//			kst_esito.SQLErrText = mid(k_esito,2)
+//			kguo_exception.set_esito(kst_esito)
+//			throw kguo_exception
+//		end if
+//		k_conto_iva	= mid(k_esito,2)
+//		if k_conto_iva > " " then
+//		else
+//			kst_esito.nome_oggetto = this.classname()
+//			kst_esito.esito = kkg_esito.dati_insuff 
+//			kst_esito.sqlcode = 0
+//			kst_esito.SQLErrText = "Manca il codice conto contabile IVA in archivio Proprietà Azienda"
+//			kguo_exception.set_esito(kst_esito)
+//		end if
 
 		kst_tab_arfa.id_fattura = 0
 		k_rec = 1 // numero record della tabella

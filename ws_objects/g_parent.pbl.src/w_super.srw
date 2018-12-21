@@ -6,6 +6,8 @@ end forward
 
 global type w_super from window
 boolean visible = false
+integer x = 29999
+integer y = 30000
 integer width = 3538
 integer height = 1624
 boolean titlebar = true
@@ -18,7 +20,6 @@ string icon = "AppIcon!"
 boolean toolbarvisible = false
 integer toolbarx = 1
 integer toolbary = 1
-boolean center = true
 event type integer ue_menu ( string k_flag_richiesta )
 event u_open_preliminari ( )
 end type
@@ -132,18 +133,6 @@ end function
 protected subroutine u_win_open ();//---
 //--- Chiamata in Apertura di una Windows
 //---
-//st_window_size kst_window_size
-w_super kw_super
-
-//--- me stessa
-	kw_super = this
-
-	if this.windowtype = response! or this.windowtype = popup! then
-	else
-//--- Aggiungo la window tra le aperte
-		kguo_g.window_aperta_add(kw_super)
-	
-	end if
 
 
 

@@ -28,7 +28,7 @@ public function boolean set_blocco_conn_no () throws uo_exception
 public function boolean set_blocco_conn_si () throws uo_exception
 private function boolean set_blocca_conn (st_tab_e1_conn_cfg kst_tab_e1_conn_cfg) throws uo_exception
 public function string get_schema_nome (st_tab_e1_conn_cfg kst_tab_e1_conn_cfg) throws uo_exception
-public function string u_sql_set_schema_nome (string a_sql) throws uo_exception
+public function string u_sql_set_schema_nome () throws uo_exception
 end prototypes
 
 public function boolean get_profilo_db (ref kuo_sqlca_db_e1 kuo_sqlca) throws uo_exception;//---
@@ -395,12 +395,12 @@ return k_return
 
 end function
 
-public function string u_sql_set_schema_nome (string a_sql) throws uo_exception;//--
+public function string u_sql_set_schema_nome () throws uo_exception;//--
 //---  Aggiorna nel SQL il nome dello schema
 //---
-//---  input: stringa dell'intero sql 
+//---  input: 
 //---  otput: 
-//---  ritorna: sql modificato
+//---  ritorna: nome schema (table owner)
 //---  se ERRORE lancia un Exception
 //---
 string k_return=""
@@ -410,45 +410,42 @@ st_esito kst_esito
 st_tab_e1_conn_cfg kst_tab_e1_conn_cfg
 
 
-kst_esito.esito = kkg_esito.ok 
-kst_esito.sqlcode = 0
-kst_esito.SQLErrText = ""
-kst_esito.nome_oggetto = this.classname()
-
 try 
+	
+	kst_esito.esito = kkg_esito.ok 
+	kst_esito.sqlcode = 0
+	kst_esito.SQLErrText = ""
+	kst_esito.nome_oggetto = this.classname()
+
 	kst_tab_e1_conn_cfg.schema_nome = get_schema_nome(kst_tab_e1_conn_cfg)
 
-//--- sostituzione dello schema 'campione' con quello effettivo	
-	k_sql_orig = a_sql  //tab_1.tabpage_3.dw_3.Object.DataWindow.Table.Select 
-   k_stringn = trim(kst_tab_e1_conn_cfg.schema_nome) //+ "."
-	k_lenN = len(k_stringn)
-   k_string = "PRODDTA" //."
-	k_lenO = len(trim(k_string)) 
+	k_sql_orig  = "alter session set current_schema = " + trim(kst_tab_e1_conn_cfg.schema_nome)
 	
-	if trim(k_string) <> trim(k_stringn) then
-		
-		k_ctr = Pos(k_sql_orig, k_string, 1)
-		DO WHILE k_ctr > 0  
-			  k_sql_orig = left(k_sql_orig, k_ctr - 1) + k_stringn + mid(k_sql_orig, (k_ctr + k_lenO)) //Replace(k_sql_orig, k_ctr, Len(k_string), (k_stringn))
-			  k_ctr = Pos(k_sql_orig, k_string, (k_ctr + k_lenO))
-		LOOP
-	
-		k_string = "proddta" //."
-		k_ctr = Pos(k_sql_orig, k_string, 1)
-		DO WHILE k_ctr > 0  
-			  k_sql_orig = left(k_sql_orig, k_ctr - 1) + k_stringn + mid(k_sql_orig, (k_ctr + k_lenO)) //Replace(k_sql_orig, k_ctr, Len(k_string), (k_stringn))
-			  k_ctr = Pos(k_sql_orig, k_string, (k_ctr + k_lenO))
-		LOOP
-		
-	end if
+	EXECUTE IMMEDIATE :k_sql_orig using kguo_sqlca_db_e1;
+	if kguo_sqlca_db_e1.sqlcode <> 0 then
+		if kguo_sqlca_db_e1.sqlcode > 0 then
+			kst_esito.esito = kkg_esito.db_wrn
+			kst_esito.sqlcode = kguo_sqlca_db_e1.sqlcode
+			kst_esito.sqlerrtext = "Anomalie durante impostazione del db Table-Owner (schema) di E1 '" &
+			                       + trim(kst_tab_e1_conn_cfg.schema_nome) + "' err.: " + trim(kguo_sqlca_db_e1.SQLErrText)
+		else
+			kst_esito.esito = kkg_esito.db_ko
+			kst_esito.sqlcode = kguo_sqlca_db_e1.sqlcode
+			kst_esito.sqlerrtext = "Errore in impostazione del db Table-Owner (schema) di E1 '" &
+			                       + trim(kst_tab_e1_conn_cfg.schema_nome) + "' non riuscita: " + trim(kguo_sqlca_db_e1.SQLErrText)
+		end if
 
-	k_return = k_sql_orig
+		kguo_exception.inizializza()
+		kguo_exception.set_esito(kst_esito)
+		throw kguo_exception
+
+	end if
+	k_return = trim(kst_tab_e1_conn_cfg.schema_nome)
 	
 catch (uo_exception kuo_exception)
 	throw kuo_exception
 
 end try
-
 
 
 return k_return

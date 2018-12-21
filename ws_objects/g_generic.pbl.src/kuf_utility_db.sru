@@ -1549,7 +1549,7 @@ try
 		+ "  and f4801.wamcu = '" + kkg.E1MCU + "'  " &
 		+ "  and f4108.iomcu = '" + kkg.E1MCU + "'  "
 
-	k_sql = kuf1_e1_conn_cfg.u_sql_set_schema_nome(k_sql)  // imposta il giusto nome schema
+//	k_sql = kuf1_e1_conn_cfg.u_sql_set_schema_nome(k_sql)  // imposta il giusto nome schema
 
 	kguo_sqlca_db_e1.db_connetti( )
 

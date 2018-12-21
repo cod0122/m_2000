@@ -166,6 +166,7 @@ protected subroutine attiva_tasti_0 ()
 public subroutine u_obj_visible_0 ()
 public function boolean u_resize_predefinita ()
 private subroutine u_check_troppi_barcode ()
+public subroutine u_resize_1 ()
 end prototypes
 
 event u_check_troppi_barcode();//---
@@ -6311,6 +6312,11 @@ if k_n_barcode_presenti > k_max_barcode then
 end if
 
 	
+end subroutine
+
+public subroutine u_resize_1 ();//
+//--- evita evento padre
+//
 end subroutine
 
 on w_pl_barcode_dett.create

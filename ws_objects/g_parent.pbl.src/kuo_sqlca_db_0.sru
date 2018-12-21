@@ -47,6 +47,7 @@ public function boolean db_disconnetti ()
 public subroutine set_profilo_db () throws uo_exception
 public function boolean db_riconnetti () throws uo_exception
 public function integer u_get_col_len (string a_table, string a_col)
+public function integer x_db_connetti_post_ok () throws uo_exception
 end prototypes
 
 public function st_esito db_commit ();//
@@ -115,7 +116,7 @@ try
 //--- piglia i dati di connessione dal DB	
 		x_db_profilo() 
 	
-//--- Definizione del DB (profilo dal confdb.ini)
+//--- Connessione al db
 		k_return = x_db_connetti()
 	end if
 	
@@ -167,42 +168,47 @@ boolean k_return = false
 st_esito kst_esito
 
 	
-SetPointer(kkg.pointer_attesa)
-
+	SetPointer(kkg.pointer_attesa)
 	
-kst_esito.esito = kkg_esito.ok
-kst_esito.sqlcode = 0
-kst_esito.SQLErrText = ""
-kst_esito.nome_oggetto = this.classname()
-
-connect using this;
- 
-if this.sqlcode < 0 then
 	
-		kst_esito.esito = kkg_esito.db_ko
-		kst_esito.sqlcode = this.sqlcode
-		kst_esito.SQLErrText = "Fallito tentativo di Connessione al " + ki_db_descrizione + ". ~n~r" &
-						+ "Parm: " + this.DBParm + "; ~n~rServer: " + this.servername & 		
-						+ "; returnData= " + trim(this.sqlreturndata)&
-						+ "; ~n~rsqldbcode= "+ string(this.sqldbcode)+"; text= " +trim(this.sqlerrtext) + " " 
-		kguo_exception.inizializza()
-		kguo_exception.set_tipo( kguo_exception.KK_st_uo_exception_tipo_db_ko)
-		kguo_exception.set_esito( kst_esito )
-		throw kguo_exception			
-			
-end if
+	kst_esito.esito = kkg_esito.ok
+	kst_esito.sqlcode = 0
+	kst_esito.SQLErrText = ""
+	kst_esito.nome_oggetto = this.classname()
 	
-try	
+	connect using this;
+	
+	if this.sqlcode = 0 then
+	
+		x_db_connetti_post_ok()
+		
+	else
+	
+		if this.sqlcode < 0 then
+			kst_esito.esito = kkg_esito.db_ko
+			kst_esito.sqlcode = this.sqlcode
+			kst_esito.SQLErrText = "Fallito tentativo di Connessione al " + ki_db_descrizione + ". ~n~r" &
+							+ "Parm: " + this.DBParm + "; ~n~rServer: " + this.servername & 		
+							+ "; returnData= " + trim(this.sqlreturndata)&
+							+ "; ~n~rsqldbcode= "+ string(this.sqldbcode)+"; text= " +trim(this.sqlerrtext) + " " 
+			kguo_exception.inizializza()
+			kguo_exception.set_tipo( kguo_exception.KK_st_uo_exception_tipo_db_ko)
+			kguo_exception.set_esito( kst_esito )
+			throw kguo_exception			
+		end if			
+	end if
+	
+	try	
 //--- Imposta l'ISOLATION LEVEL ovvero cosa fare se becco un LOCK su un record
-	db_set_isolation_level( )
-catch (uo_exception kuo_exception)
-end try
+		db_set_isolation_level( )
+	catch (uo_exception kuo_exception)
+	end try
 	
-k_return = true
+	k_return = true
 
-SetPointer(kkg.pointer_default)
+	SetPointer(kkg.pointer_default)
 
-return k_return
+	return k_return
 
 end function
 
@@ -824,6 +830,13 @@ end function
 
 public function integer u_get_col_len (string a_table, string a_col);//
 //--- get defined column size 
+//
+
+return 0
+end function
+
+public function integer x_db_connetti_post_ok () throws uo_exception;//
+//--- Dopo la connessione ok fa delle cose 
 //
 
 return 0

@@ -8,6 +8,7 @@ end forward
 global type w_main from w_main_0
 integer width = 2825
 integer height = 1816
+integer transparency = 0
 integer animationtime = 300
 end type
 global w_main w_main

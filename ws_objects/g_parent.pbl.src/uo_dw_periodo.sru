@@ -17,6 +17,7 @@ global type uo_dw_periodo from datawindow
 boolean visible = false
 integer width = 1015
 integer height = 508
+boolean enabled = false
 boolean titlebar = true
 string title = "Periodo di estrazione"
 string dataobject = "d_periodo"
@@ -72,6 +73,7 @@ int k_rc
 	k_rc = this.setitem(1, "data_al", ki_data_fin)
 
 	this.visible = true
+	this.enabled = true
 	this.setfocus()
 end event
 
@@ -89,6 +91,8 @@ IF row > 0 THEN
 		if k_dwo_name = "b_ok" then
 			
 			this.visible = false
+			this.x = 32767
+			this.y = 32767
 			
 			this.accepttext( )
 			

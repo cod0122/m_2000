@@ -51,15 +51,15 @@ end prototypes
 public subroutine _readme ();//--- oltre al PARENT
 //--- oggetto per la gestione delle tabelle E-ONE circa la resistrazione del LOTTO/RIFERIMENTO che qui si chiama ASN
 //--- tabelle:  
-//--- PRODDTA.F5547013 = testata ASN
-//--- PRODDTA.F5547014 = dettaglio ASN
+//--- F5547013 = testata ASN
+//--- F5547014 = dettaglio ASN
 //---
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 //--- * 	= 	necessario
 //--- # 	= 	lasciare vuoto
 //--- E1 	= 	compilato da E1, lasciare vuoto
 //--- 
-//--- descrizione campi PRODDTA.F5547013 = testata ASN
+//--- descrizione campi F5547013 = testata ASN
 //--- EHAPID	NCHAR(12 CHAR)		No		*	Riferimento M2000
 //--- EHAN8	NUMBER						Yes		*	Codice cliente E1
 //--- EHSHAN	NUMBER					Yes		*	Codice cliente (E1) spedizione
@@ -79,7 +79,7 @@ public subroutine _readme ();//--- oltre al PARENT
 //--- EHUPMJ	NUMBER(6,0)			Yes		E1	Date updated
 //--- EHTDAY	NUMBER					Yes		E1	Time updated
 //------
-//--- PRODDTA.F5547014 = dettaglio ASN
+//--- F5547014 = dettaglio ASN
 //--- EDAPID	NCHAR(12 CHAR)		No		*	Riferimento M2000
 //--- EDLNID	NUMBER					No		*	Numero di linea - per ogni ASN, parte da 1000 con incrementi di 1000
 //--- EDUORG	NUMBER					Yes		*	Quantità - 1
@@ -306,7 +306,7 @@ try
 		
 		ads1_e1_asn_header.db_connetti( )
 		ads1_e1_asn_header.object.ehuser[1] = kst_tab_f5547013.ehuser
-		ads1_e1_asn_header.object.EHMCU[1] = kkg.e1mcu 				   // codice 270 = MINERBIO
+		ads1_e1_asn_header.object.EHMCU[1] = kguo_g.E1MCU 				   // codice 270 = MINERBIO
 		ads1_e1_asn_header.object.ehedsp[1] = " "  // set space in field how to request by e1
 		k_upd = ads1_e1_asn_header.update( )   // AGGIORNA TABELLA
 	
@@ -749,7 +749,7 @@ try
 	
 		kst_get_e1barcode.apid = trim(kst_get_e1barcode.apid)
 		//kst_get_e1barcode.srst = kki_status_ready_label
-		kst_get_e1barcode.mcu = kkg.e1mcu
+		kst_get_e1barcode.mcu = kguo_g.E1MCU
 	
 		kds1_e1_asn_barcode_creati = create kds_e1_asn_barcode_creati
 		if kds1_e1_asn_barcode_creati.db_connetti( ) then
@@ -808,7 +808,7 @@ try
 	
 		kst_get_e1barcode.apid = trim(kst_get_e1barcode.apid)
 		//kst_get_e1barcode.srst = kki_status_ready_label
-		kst_get_e1barcode.mcu = kkg.e1mcu
+		kst_get_e1barcode.mcu = kguo_g.E1MCU
 	
 		kds1_e1_asn_x_schedule = create kds_e1_asn_x_schedule
 
@@ -855,7 +855,7 @@ try
 	
 	if not isvalid(kids_e1_asn_x_schedule_l) then kids_e1_asn_x_schedule_l = create kds_e1_asn_x_schedule_l
 
-	kst_get_e1barcode.mcu = kkg.e1mcu
+	kst_get_e1barcode.mcu = kguo_g.E1MCU
 	k_return = kids_e1_asn_x_schedule_l.u_get_ready_to_schedule(kst_get_e1barcode)
 
 	if k_return < 0 then
@@ -909,7 +909,7 @@ try
 		end if
 		
 		//ast_get_e1barcode.srst = kki_status_ready_label
-		ast_get_e1barcode.mcu = kkg.e1mcu
+		ast_get_e1barcode.mcu = kguo_g.E1MCU
 		k_rc = kds1_e1_asn_get_barcode.retrieve(ast_get_e1barcode.apid, ast_get_e1barcode.mcu)
 
 		if k_rc < 0 then
@@ -967,7 +967,7 @@ try
 		if not isvalid(kids_e1_asn_accettato) then kids_e1_asn_accettato = create kds_e1_asn_accettato
 
 		kst_get_e1barcode.apid = trim(kst_get_e1barcode.apid)
-		kst_get_e1barcode.mcu = kkg.e1mcu
+		kst_get_e1barcode.mcu = kguo_g.E1MCU
 	
 		k_return = kids_e1_asn_accettato.u_if_accettato(kst_get_e1barcode) // check ASN pronto x essere messo in lav
 
@@ -1013,7 +1013,7 @@ try
 	if not isvalid(kids_e1_asn_accettati_l) then kids_e1_asn_accettati_l = create kds_e1_asn_accettati_l
 	kids_e1_asn_accettati_l.db_connetti( )
 
-	kst_get_e1barcode.mcu = kkg.e1mcu
+	kst_get_e1barcode.mcu = kguo_g.E1MCU
 	k_return = kids_e1_asn_accettati_l.u_get_accettati_l(kst_get_e1barcode)
 	if k_return < 0 then
 		kst_esito.sqlcode = k_return
@@ -1062,7 +1062,7 @@ try
 
 		if k_accettati > 0 then
 			kst_get_e1barcode.apid = trim(kst_get_e1barcode.apid)
-			kst_get_e1barcode.mcu = kkg.e1mcu
+			kst_get_e1barcode.mcu = kguo_g.E1MCU
 	
 			k_return = kids_e1_asn_accettati_l.u_if_accettato(kst_get_e1barcode) // check ASN Ricevuto
 		end if
@@ -1111,7 +1111,7 @@ try
 	if trim(kst_get_e1barcode.apid) > " " then
 	
 		kst_get_e1barcode.apid = trim(kst_get_e1barcode.apid)
-		kst_get_e1barcode.mcu = kkg.e1mcu
+		kst_get_e1barcode.mcu = kguo_g.E1MCU
 	
 		if not isvalid(kids_e1_asn_x_schedule_l) then 
 			u_get_ready_to_schedule( )
@@ -1141,13 +1141,15 @@ return k_return
 end function
 
 public function long u_get_stato (ref st_tab_e1_asn ast_tab_e1_asn[]) throws uo_exception;//-------------------------------------------------------------------------------
-//--- Popola il ds 'kids_e1_asn_get_stato' con lo stato dei APID (waapid e wasrst)
+//--- Popola il ds 'kids_e1_asn_get_stato' con lo stato 
+//---        degi ASN indicati in array ( ASN=APID waapid e wasrst)
 //--- Inpu: st_tab_e1_asn[].waapid array con gli APID da estrarre
-//--- Out: st_tab_e1_asn[].wasrst
-//--- Rit: nr APID trovati 
+//--- Out: st_tab_e1_asn[].wasrst con solo gli APID trovati
+//--- Rit: nr ASN trovati 
 //--- lancia exception x errore grave
 //-------------------------------------------------------------------------------
 long k_return 
+long k_row
 string k_apid
 st_esito kst_esito
 
@@ -1162,15 +1164,21 @@ try
 
 	kids_e1_asn_get_stato.db_connetti( )
 
-	ast_tab_e1_asn[1].wammcu = kkg.e1mcu
 	k_return = kids_e1_asn_get_stato.u_get_stato(ast_tab_e1_asn[])
-	if k_return < 0 then
-		kst_esito.sqlcode = k_return
-		kst_esito.esito = kkg_esito.db_ko
-		kst_esito.SQLErrText = "Errore in lettura 'stato' ASN (operazione su E-ONE non riuscita " + trim(kst_esito.nome_oggetto) + ") "
-		kguo_exception.inizializza( )
-		kguo_exception.set_esito(kst_esito)
-		throw kguo_exception
+
+	if k_return > 0 then
+		
+		
+	else
+		if k_return = 0 then
+		else
+			kst_esito.sqlcode = k_return
+			kst_esito.esito = kkg_esito.db_ko
+			kst_esito.SQLErrText = "Errore in lettura 'stato' ASN (operazione su E-ONE non riuscita " + trim(kst_esito.nome_oggetto) + ") "
+			kguo_exception.inizializza( )
+			kguo_exception.set_esito(kst_esito)
+			throw kguo_exception
+		end if
 	end if
 	
 catch (uo_exception kuo_exception)
@@ -1204,7 +1212,7 @@ try
 	
 	if not isvalid(kids_e1_asn_ricevuti_l) then kids_e1_asn_ricevuti_l = create kds_e1_asn_ricevuti_l
 
-	ast_tab_e1_asn.wammcu = kkg.e1mcu
+	ast_tab_e1_asn.wammcu = kguo_g.E1MCU
 	if kids_e1_asn_ricevuti_l.u_get_date_received(ast_tab_e1_asn) then
 		if ast_tab_e1_asn.IRDSE > 0 then
 			k_date = kGuf_data_base.u_get_datefromjuliandate(string(ast_tab_e1_asn.IRDSE))  // torna la data in formato 'normale'

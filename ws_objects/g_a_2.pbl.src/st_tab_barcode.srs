@@ -44,6 +44,7 @@ global type st_tab_barcode from structure
 	datetime		modgiri_data		descriptor "comment" = "data modifica giri"
 	string		modgiri_utente		descriptor "comment" = "utente che ha modificato i giri"
 	long		imptime_second		descriptor "comment" = "tempo tot in secondi impiegato nei cicli impianto"
+	datetime		data_join_plt		descriptor "comment" = "data di associazione con il bcode del pkl mittente"
 	datetime		x_datins
 	string		x_utente
 end type

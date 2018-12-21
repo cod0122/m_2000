@@ -11,9 +11,9 @@ table(column=(type=number updatewhereclause=yes name=wadoco dbname="f4801_adt.wa
 -- 	   ,0 as F4211_e1rorn
  	   ,to_number(nvl(f4801.warorn,'0')) as F4211_e1rorn
 -- 	   ,f4801.warorn as F4211_e1rorn
-from PRODDTA.F4801_ADT  f4801  inner join PRODDTA.F3111_ADT  f3111 on 
+from F4801_ADT  f4801  inner join F3111_ADT  f3111 on 
           					f4801.wadoco = f3111.wmdoco 
-											inner join PRODDTA.F4108_adt  f4108 on
+											inner join F4108_adt  f4108 on
           					f3111.wmlotn = f4108.iolotn 
 where 
    (:k_apid = '' or f4801.waapid = :k_apid)
@@ -27,7 +27,7 @@ group by f4801.wadoco
 union 
   select 0 as wadoco,
        sddoco as E1_SO_Number     -- numero del sales order
-from PRODDTA.F4211 inner join PRODDTA.F4101 on 
+from F4211 inner join F4101 on 
                  sdlitm = imlitm 
              and imprp7 = 'DEPOT'
 where sdnxtr = '532'

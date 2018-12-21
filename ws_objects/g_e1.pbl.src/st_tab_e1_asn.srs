@@ -2,10 +2,12 @@
 global type st_tab_e1_asn from structure
 	st_tab_g_0		st_tab_g_0
 	string		xxx		descriptor "comment" = "tabella ASN - F4801_ADT"
-	string		wammcu		descriptor "comment" = "codice azienda fisso: '         270'"
+	boolean		exist		descriptor "comment" = "TRUE = ASN trovato"
+	string		wammcu		descriptor "comment" = "codice azienda (facility) x Minerbio = '         270'"
 	long		wadoco		descriptor "comment" = "id Work order"
 	string		waapid		descriptor "comment" = "codice APID ovvero id_meca in formato string"
 	string		wasrst		descriptor "comment" = "stato del ASN"
+	long		watday		descriptor "comment" = "ora in cui c'è stato il cambio dell'ultimo stato (hhmmss)"
 	string		warorn		descriptor "comment" = "id SO (Sales Order)"
 	long		irdse		descriptor "comment" = "ottenuto da F553112T.IRDSE (formato juliano 1 + anno + nr.gg es 116238 25/8/16)"
 	long		irwwast		descriptor "comment" = "ottenuto da F553112T.IRWWAST (ora es. 131520)"

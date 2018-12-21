@@ -18,13 +18,15 @@ constant string kki_stato_ev01_lastUnload = "4"  	//ultimo barcode trattato
 constant string kki_stato_ev01_QTdata = "5"   		//dati dosimetrici lotto
 
 //--- definizione campo E1 tcicli_osmmcu x scambio dato Tipo-Cilco (Fila 1, Fila 2, Misto)
-constant string kki_tcicli_osmmcu_FILA1 = "27002"		//Fila 1 da E1 definito come IRRADIATOR A
-constant string kki_tcicli_osmmcu_FILA2 = "27005"		//Fila 2 da E1 definito come IRRADIATOR B
-constant string kki_tcicli_osmmcu_MISTO = "27006"		//File Miste da E1 definito come IRRADIATOR C
+//constant string kki_tcicli_osmmcu_FILA1 = "27002"		//Fila 1 da E1 definito come IRRADIATOR A
+//constant string kki_tcicli_osmmcu_FILA2 = "27005"		//Fila 2 da E1 definito come IRRADIATOR B
+//constant string kki_tcicli_osmmcu_MISTO = "27006"		//File Miste da E1 definito come IRRADIATOR C
+string kki_tcicli_osmmcu_FILA1 		//Fila 1 da E1 definito come IRRADIATOR A
+string kki_tcicli_osmmcu_FILA2 		//Fila 2 da E1 definito come IRRADIATOR B
+string kki_tcicli_osmmcu_MISTO 	//File Miste da E1 definito come IRRADIATOR C
 
 
 end variables
-
 forward prototypes
 public subroutine _readme ()
 public subroutine if_isnull (ref st_tab_e1_wo_f5548014 kst_tab_e1_wo_f5548014)
@@ -609,4 +611,11 @@ end on
 on kuf_e1_wo_f5548014.destroy
 call super::destroy
 end on
+
+event constructor;call super::constructor;//
+kki_tcicli_osmmcu_FILA1 = trim(kguo_g.E1MCU) + "02" //Fila 1 da E1 definito come IRRADIATOR A
+kki_tcicli_osmmcu_FILA2 = trim(kguo_g.E1MCU) + "05"//Fila 2 da E1 definito come IRRADIATOR B
+kki_tcicli_osmmcu_MISTO = trim(kguo_g.E1MCU) + "06" //File Miste da E1 definito come IRRADIATOR C
+
+end event
 

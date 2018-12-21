@@ -28,7 +28,7 @@ table(column=(type=char(12) update=yes updatewhereclause=yes name=barcode dbname
  column=(type=datetime updatewhereclause=yes name=k_dataora_lav_prev_fin_max dbname="k_dataora_lav_prev_fin_max" )
  column=(type=decimal(0) updatewhereclause=yes name=k_time_io_minute_max dbname="k_time_io_minute_max" )
  column=(type=char(16) updatewhereclause=yes name=stato dbname="stato" )
- retrieve="  SELECT   
+ retrieve="  SELECT  distinct 
          trim(pallet.barcode) as Pallet_Code,   
          pallet.F1AVP,   
          pallet.F2AVP,   
@@ -139,4 +139,3 @@ export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
 import.xml()
 export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" nativepdf.customsize=0 nativepdf.customorientation=0 nativepdf.pdfstandard=0 nativepdf.useprintspec=no )
 export.xhtml()
- 

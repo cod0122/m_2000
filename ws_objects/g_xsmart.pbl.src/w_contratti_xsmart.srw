@@ -40,6 +40,7 @@ public subroutine u_esporta ()
 public subroutine smista_funz (string k_par_in)
 protected subroutine inizializza_1 () throws uo_exception
 protected subroutine attiva_tasti_0 ()
+public function string u_get_filename_exp (string a_titolo) throws uo_exception
 end prototypes
 
 protected function string inizializza ();//======================================================================
@@ -107,14 +108,11 @@ protected subroutine attiva_menu ();//--- Attiva/Dis. Voci di menu
 end subroutine
 
 public subroutine u_esporta ();//
-string k_file, k_path, k_nulla="", k_ext="csv", k_path_orig, k_rcx 
-integer k_nr_rec, k_nrc, k_id_stampa
-boolean k_errore=false, k_elab=true
-string k_titolo, k_dato_base
+string k_file, k_rcx
+integer k_nr_rec
+string k_titolo
 datawindow kdw_1
 DataStore kds_1
-st_open_w k_st_open_w
-kuf_base kuf1_base
 kuf_file_explorer kuf1_file_explorer
 kuf_utility kuf1_utility
 
@@ -133,50 +131,9 @@ try
 			kdw_1 = tab_1.tabpage_2.dw_2
 	end choose
 	
-//	k_path = trim(kGuf_data_base.profilestring_leggi_scrivi(kGuf_data_base.ki_profilestring_operazione_leggi, "arch_esolver_anag", trim(GetCurrentDirectory ( )) + KKG.PATH_SEP + "esolver.csv"))
-	string k_esito=""
-	kuf1_base = create kuf_base
-	k_dato_base = "xsmart_" + kuf1_utility.u_stringa_compatta(k_titolo)
-	k_esito = kuf1_base.prendi_dato_base(k_dato_base)
-	if left(k_esito,1) <> "0" then
-		k_path = "" // ERRORE
-	else
-		k_path = trim(mid(k_esito,2))
-	end if
-	destroy kuf1_base
-	k_path_orig = k_path
+	k_file = u_get_filename_exp(k_titolo)
 	
-	do
-		k_nrc = GetFileSaveName("Nome del file per esportare '" + k_titolo + "' nel formato 'csv'" &
-               				, k_path, k_file, "csv", "Testo (*.csv),*.csv",k_path)
-		if k_nrc <= 0 then
-			k_elab = false
-		else
-			if fileexists(k_path) then
-				k_nrc = messagebox("Selezionato archivio",  "Archivio già presente.~n~r" + "File: " + trim(k_path) + "~n~r" &
-					  + "Vuoi Sovrascriverlo?",  question!, yesnocancel!, 2) 
-			else
-				k_nrc = messagebox("Esporta dati", "Estrazione '" + k_titolo + "'~n~r" + "File: " + trim(k_path), question!, yesnocancel!, 2) 
-			end if
-			if k_nrc = 1 then // scelto SI
-				k_errore = true
-			else
-				if k_nrc = 2 then // scelto CANCEL
-					k_elab = false
-				end if
-			end if
-
-		end if
-	
-	loop while not k_elab and k_errore
-	
-	if k_errore and k_elab then
-		if k_path_orig <> trim(k_path) then 
-			kGuf_data_base.profilestring_leggi_scrivi(kGuf_data_base.ki_profilestring_operazione_scrivi, k_dato_base, trim(k_path))
-		end if	
-	end if
-	
-	if k_errore then
+	if k_file > " " then
 		SetPointer(kkg.pointer_attesa)
 		kds_1 = create DataStore
 		kds_1.dataobject = kdw_1.dataobject
@@ -192,22 +149,22 @@ try
 		end choose
 		
 //--- Produzione del file CSV		
-		k_nr_rec = kuf1_utility.u_ds_to_csv(kds_1, k_path)
+		k_nr_rec = kuf1_utility.u_ds_to_csv(kds_1, k_file)
 		
 		SetPointer(kkg.pointer_default)
 //		if k_nr_rec > 0 then
 		if messagebox("Operazione terminata correttamente",  "Vuoi aprire subito il file contenente " + string(k_nr_rec) + " righe dei dati esportati~n~r"&
-									+ trim(k_path), Question!, yesno!, 1) = 1 then
+									+ trim(k_file), Question!, yesno!, 1) = 1 then
 			SetPointer(kkg.pointer_attesa)
 			kuf1_file_explorer = create kuf_file_explorer
-			kuf1_file_explorer.of_execute( trim(k_path))
+			kuf1_file_explorer.of_execute( trim(k_file))
 			destroy kuf1_file_explorer
 		end if
 //		end if		
 		
 		
 	else
-		messagebox("Estrazione Dati", "Nessuna esportazione Eseguita! ~n~r")
+		messagebox("Estrazione Dati", "Nessuna esportazione Eseguita!")
 	end if
 
 //--- Ripristina path di lavoro
@@ -217,7 +174,6 @@ catch(uo_exception kuo_exception)
 	kuo_exception.messaggio_utente( )
 
 finally
-	if isvalid(kuf1_utility) then destroy kuf1_utility
 	if isvalid(kds_1) then destroy kds_1
 
 end try
@@ -287,6 +243,77 @@ protected subroutine attiva_tasti_0 ();//
 	
 
 end subroutine
+
+public function string u_get_filename_exp (string a_titolo) throws uo_exception;//
+string k_return 
+string k_file, k_path
+string k_path_orig
+integer k_nrc
+boolean k_ok
+string k_dato_base
+kuf_base kuf1_base
+kuf_utility kuf1_utility
+
+
+try	
+	
+	kuf1_utility = create kuf_utility
+
+	
+//	k_path = trim(kGuf_data_base.profilestring_leggi_scrivi(kGuf_data_base.ki_profilestring_operazione_leggi, "arch_esolver_anag", trim(GetCurrentDirectory ( )) + KKG.PATH_SEP + "esolver.csv"))
+	string k_esito=""
+	kuf1_base = create kuf_base
+	k_dato_base = "xsmart_" + kuf1_utility.u_stringa_compatta(a_titolo)
+	k_esito = kuf1_base.prendi_dato_base(k_dato_base)
+	if left(k_esito,1) <> "0" then
+		k_path = "" // ERRORE
+	else
+		k_path = trim(mid(k_esito,2))
+	end if
+	destroy kuf1_base
+	k_path_orig = k_path
+	
+	do
+		k_nrc = GetFileSaveName("Nome del file per esportare '" + a_titolo + "' nel formato 'csv'" &
+               				, k_path, k_file, "csv", "Testo (*.csv),*.csv", k_path)
+		if k_nrc <= 0 then
+		else
+			if fileexists(k_path) then
+				k_nrc = messagebox("Selezionato archivio",  "Archivio già presente nella cartella.~n~r" + "File: " + trim(k_path) + "~n~r" &
+					  + "Vuoi Sovrascriverlo?",  question!, yesnocancel!, 2) 
+			else
+				k_nrc = messagebox("Esporta dati", "Eseguire l'estrazione '" + a_titolo + "'~n~r" + " nel File: " + trim(k_path), question!, yesnocancel!, 2) 
+			end if
+			if k_nrc = 1 then // scelto SI
+				k_ok = true
+			end if
+
+		end if
+	
+	loop while k_nrc = 2 
+	
+	if k_ok then
+		if k_path_orig <> trim(k_path) then 
+			kGuf_data_base.profilestring_leggi_scrivi(kGuf_data_base.ki_profilestring_operazione_scrivi, k_dato_base, trim(k_file))
+		end if	
+		
+		k_return = trim(k_path)
+		
+	end if
+	
+catch(uo_exception kuo_exception)
+	throw kuo_exception
+
+finally
+	if isvalid(kuf1_utility) then destroy kuf1_utility
+
+end try
+	
+	
+return k_return
+	
+
+end function
 
 on w_contratti_xsmart.create
 int iCurrent
@@ -508,7 +535,6 @@ end on
 type tabpage_1 from w_g_tab_3`tabpage_1 within tab_1
 integer width = 3003
 integer height = 1268
-long backcolor = 32435950
 string text = " Elenco Contratti"
 long tabtextcolor = 0
 long tabbackcolor = 33554431

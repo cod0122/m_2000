@@ -11,6 +11,6 @@ global type st_get_e1barcode from structure
 	string		lot2		descriptor "comment" = "CUST_pallet_it = barcode pallet sulla packing list"
 	string		apid		descriptor "comment" = "codice ASN (ID_MECA)"
 	string		srst		descriptor "comment" = "Stato del ASN"
-	string		mcu		descriptor "comment" = "codice azienda per E1 definito fiso per exGammarad a 270 (campo alfa di 12 allineato a destra!!!)"
+	string		mcu		descriptor "comment" = "codice azienda per E1 definito x MINERBIO a 270 (campo alfa di 12 allineato a destra!!!)"
 end type
 

@@ -44,9 +44,7 @@ private function long u_set_ds_pilota_queue_data_prev () throws uo_exception
 private function long u_set_dataora_lav_prev_fin () throws uo_exception
 private function long u_set_ds_queue_lav_xfila (ref datastore kds_1) throws uo_exception
 private function long u_set_temptable_pilota_prev_lav () throws uo_exception
-public function string batch_run_stat_u_m2000_avgtimeplant () throws uo_exception
 public function string get_id_programma (string k_flag_modalita)
-public function st_esito u_batch_run () throws uo_exception
 private function datastore u_get_ds_prev_dataora_lav_fin_fromdtpl () throws uo_exception
 private subroutine u_set_dataora_lav_prev_fin_1 (ref datastore ads_1, long a_riga) throws uo_exception
 public function integer u_esegui_u_m2000_avgtimeplant ()
@@ -774,78 +772,6 @@ return k_rigainsert
 
 end function
 
-public function string batch_run_stat_u_m2000_avgtimeplant () throws uo_exception;//
-string k_return = ""
-string k_esito = ""
-integer k_rc
-st_esito kst_esito
-st_errori_gestione kst_errori_gestione
-//kdsp_stat_start kdsp1_stat_start
-kuf_sp_stat_start kuf1_sp_stat_start
-
-try	
-
-	kst_esito.esito = kkg_esito.ok
-	kst_esito.sqlcode = 0
-	kst_esito.SQLErrText = ""
-
-//--- lancio spl (datastore)
-	kuf1_sp_stat_start = create kuf_sp_stat_start
-//	k_rc = kuf1_sp_stat_start.u_esegui_u_m2000_avgtimeplant( )
-	k_rc = u_esegui_u_m2000_avgtimeplant( )
-	k_esito = trim(ki_status)
-
-	if k_rc < 0 then
-		kst_esito.esito = kkg_esito.db_ko
-		kst_esito.sqlcode = -1
-		kst_esito.sqlerrtext = "Errore in Generazione dati Tempi Medi Giri Impianto: '" &
-									  + k_esito + "': esito " + string (k_rc) 
-	else
-		if k_rc = 0 then
-			kst_esito.esito = kkg_esito.ko
-			kst_esito.sqlcode = 0
-			kst_esito.sqlerrtext = "Anomalia in generazione dati Tempi Medi Giri Impianto ' " &
-										  + k_esito + " Nessun dato estratto! "
-		else
-			kst_esito.esito = kkg_esito.ok
-			kst_esito.sqlcode = 0
-			kst_esito.sqlerrtext = "Generazione dati Tempi Medi Giri Impianto terminata correttamente: " + k_esito
-
-		end if
-	end if
-//			if left(k_esito,2) <> "Ok" then
-//				kst_esito.esito = kkg_esito.ko
-//				kst_esito.sqlcode = 0
-//				kst_esito.sqlerrtext = "Anomalie in generazione Statistici ' " &
-//											  + trim(kdsp1_stat_start.dataobject) + "' err.:" + trim(k_esito)
-//			else
-//			end if
-
-//--- scrive l'errore su LOG
-	kst_errori_gestione.esito = kst_esito.esito
-	kst_errori_gestione.nome_oggetto = this.classname()
-	kst_errori_gestione.sqlsyntax = trim(kst_esito.sqlerrtext)
-	kst_errori_gestione.sqlerrtext = trim(kst_esito.SQLErrText)
-	kst_errori_gestione.sqldbcode = kst_esito.sqlcode
-	kst_errori_gestione.sqlca = kguo_sqlca_db_magazzino
-	kGuf_data_base.errori_gestione(kst_errori_gestione)
-				
-	
-catch(uo_exception kuo_exception)
-	throw kuo_exception
-
-finally
-//	if isvalid(kdsp1_stat_start) then destroy kdsp1_stat_start
-	if isvalid(kuf1_sp_stat_start) then destroy kuf1_sp_stat_start
-	
-	k_return = kst_esito.sqlerrtext 
-
-end try
-
-return k_return
-
-end function
-
 public function string get_id_programma (string k_flag_modalita);//
 string k_return
 kuf_parent kuf1_parent
@@ -859,40 +785,6 @@ k_return = kuf1_parent.get_id_programma(k_flag_modalita)
 destroy kuf1_parent
 
 return k_return
-end function
-
-public function st_esito u_batch_run () throws uo_exception;//---
-//--- Lancio operazioni Batch
-//---
-string k_string
-st_esito kst_esito
-
-
-try 
-
-	kst_esito.esito = kkg_esito.ok
-	kst_esito.sqlcode = 0
-	kst_esito.SQLErrText = ""
-	kst_esito.nome_oggetto = this.classname()
-
-//--- Genera tabella dei tempi di previsioni di lavorazione impianto
-	k_string = batch_run_stat_u_m2000_avgtimeplant( )
-	if trim(k_string) > " " then
-		kst_esito.SQLErrText = "Operazione conclusa correttamente." + k_string
-	else
-		kst_esito.SQLErrText = "Operazione conclusa. Nessun dato caricato in tabella Previsioni Tempi Impianto di irraggiamento."
-	end if
-
-
-catch (uo_exception kuo_exception)
-	throw kuo_exception
-	
-finally
-	
-end try
-
-
-return kst_esito
 end function
 
 private function datastore u_get_ds_prev_dataora_lav_fin_fromdtpl () throws uo_exception;//
@@ -1006,7 +898,7 @@ public function integer u_esegui_u_m2000_avgtimeplant ();//
 int k_return
 int k_rc
 
-	ki_status = ""
+	ki_status = "" 
 
 	DECLARE u_m2000_avgtimeplant PROCEDURE FOR
 			@li_rc = dbo.u_m2000_avgtimeplant

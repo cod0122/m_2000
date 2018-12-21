@@ -15,10 +15,6 @@ end type
 end forward
 
 global type w_g_tab from w_super
-integer x = 219
-integer y = 160
-integer width = 2405
-integer height = 2052
 string menuname = "m_main"
 boolean resizable = true
 windowtype windowtype = main!
@@ -157,8 +153,6 @@ boolean k_toolbar_window_stato
 		post set_window_size()	
 
 		IF IsValid (THIS.MenuID) then			// Menu Attached?
-		//ki_menu = ki_menu_0
- 		//this.ChangeMenu (ki_menu)
 			ki_menu = this.menuid
 			ki_menu.autorizza_menu( )
 			ki_menu.u_inizializza( )
@@ -207,28 +201,32 @@ event u_activate();//
 
 kGuo_g.kgw_attiva = this
 
-this.setredraw(false)
+if ki_st_open_w.flag_primo_giro = 'S' then
 
-//--- se ritorno da funzione esterna
-//--- funzione utile per sincronizzare i dati dell window
-if ki_st_open_w.flag_primo_giro <> "S" and ki_sincronizza_window_consenti then
-	if not ki_sincronizza_window_gia_check then 
-		ki_sincronizza_window_gia_check=true
-		if kiuf1_sync_window.u_window_get_funzione_aggiornata(kiw_this_window) then
-			aggiorna_window()
+else
+	
+	this.setredraw(false)
+
+	//--- se ritorno da funzione esterna
+	//--- funzione utile per sincronizzare i dati dell window
+	if ki_st_open_w.flag_primo_giro <> "S" and ki_sincronizza_window_consenti then
+		if not ki_sincronizza_window_gia_check then 
+			ki_sincronizza_window_gia_check=true
+			if kiuf1_sync_window.u_window_get_funzione_aggiornata(kiw_this_window) then
+				aggiorna_window()
+			end if
 		end if
 	end if
-end if
-
+	
 //--- se non c'e' alcun menu non faccio sta roba
-if isvalid(ki_menu) then
-	//ki_menu.reset_menu_strumenti( )
-	attiva_tasti()
-end if
-
-if not ki_salva_restore_gia_fatto then
-	ki_salva_restore_gia_fatto = true
-end if
+	if isvalid(ki_menu) then
+		//ki_menu.reset_menu_strumenti( )
+		attiva_tasti()
+	end if
+	
+	if not ki_salva_restore_gia_fatto then
+		ki_salva_restore_gia_fatto = true
+	end if
 
 ////--- attiva nella toolbar dei programmi aperti la voce 
 //if ki_toolbar_programmi_attiva_voce then
@@ -236,7 +234,8 @@ end if
 //	toolbar_programmi_attiva_voce()
 //end if
 
-this.setredraw(true)
+	this.setredraw(true)
+end if
 
 end event
 
@@ -672,7 +671,7 @@ protected subroutine attiva_tasti ();
 
 if ki_st_open_w.flag_primo_giro <> "S" and not ki_exit_si then
 	
-	attiva_menu_reset( )
+//	attiva_menu_reset( )
 	attiva_tasti_0()
  	attiva_menu()
 
@@ -719,6 +718,8 @@ if isvalid(ki_menu) then
 	else
 		ki_menu.m_filtro.enabled = false
 	end if
+	ki_menu.m_filtro.toolbaritemvisible = ki_menu.m_filtro.enabled 
+	
 	if ki_menu.m_trova.m_fin_filtra.enabled <> st_ordina_lista.enabled then
 		ki_menu.m_trova.m_fin_filtra.enabled = st_ordina_lista.enabled 
 	end if
@@ -900,6 +901,8 @@ choose case trim(ki_st_open_w.flag_modalita)
 end choose
 
 this.title += " " + trim(ki_win_titolo_custom)
+
+
 
 end subroutine
 
@@ -1312,11 +1315,9 @@ end on
 event activate;//---
 if not ki_exit_si and not kguo_g.kG_exit_si then
 	
-	if ki_st_open_w.flag_primo_giro <> 'S' then
 	
-		event u_activate( )
+	event u_activate( )
 	
-	end if
 	
 end if
 

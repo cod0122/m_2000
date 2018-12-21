@@ -13,7 +13,7 @@ type variables
 public:
 
 //--- Versione Procedura
-constant double VERSIONE=18.1113
+constant double VERSIONE=18.1221
 
 //--- icone risorse grafiche
 constant string PATH_SEP ="\" 
@@ -47,8 +47,6 @@ constant string ACAPO="~n~r"
 //--- Icona principale
 constant string MAIN_ICON = "main.ico"
 
-//--- E1: Codice della facility di Minerbio (         270)
-constant string E1MCU="         270"
 
 
 end variables

@@ -140,7 +140,6 @@ integer width = 219
 integer height = 3112
 string menuname = ""
 boolean clientedge = true
-boolean center = false
 boolean ki_esponi_msg_dati_modificati = false
 boolean ki_sincronizza_window_consenti = false
 st_1 st_1
@@ -220,18 +219,22 @@ protected function string inizializza () throws uo_exception
 protected subroutine attiva_menu ()
 protected subroutine attiva_tasti ()
 private subroutine u_toolbar_click (integer k_num_button)
-private subroutine u_toolbar_fin_set ()
 private subroutine u_toolbar_lib_click (integer k_num_button)
-private subroutine u_toolbar_lib_set ()
-private subroutine u_toolbar_set ()
 public subroutine u_inizializza ()
-private subroutine u_toolbar_t_set ()
 private subroutine u_toolbar_t_click (integer k_num_button)
 protected subroutine open_start_window ()
 public subroutine u_build_menu (ref m_main am_main)
 public subroutine u_resize_1 ()
-private function boolean u_set_ki_menu ()
 public subroutine u_resize ()
+private function boolean u_toolbar_lib_set ()
+private function boolean u_toolbar_set_pb (ref picturebutton apb_1, readonly menu amenuitem_1, ref statictext ast_1)
+private function boolean u_toolbar_lib_set_1 ()
+private function boolean u_toolbar_set ()
+private function boolean u_toolbar_t_set ()
+private function boolean u_toolbar_fin_set ()
+private function boolean u_resize_set_pb (ref picturebutton apb_1, ref statictext ast_1, ref integer a_nr_icone, ref integer k_x, ref integer k_y, integer k_start_x, integer k_st_width, integer k_st_y, integer k_st_x_delta, integer kpb_width, integer k_height)
+private function boolean u_resize_set_sep (ref roundrectangle ar_sep, ref integer k_x, ref integer k_y, integer k_start_x, integer k_st_x_delta, integer k_height)
+private function boolean u_set_ki_menu ()
 end prototypes
 
 protected function string inizializza () throws uo_exception;//
@@ -263,8 +266,6 @@ private subroutine u_toolbar_click (integer k_num_button);//
 string k_txt //, k_menu
 int k_pos
 
-
-this.enabled = false
 
 if u_set_ki_menu() then
 	
@@ -304,87 +305,6 @@ end if
 this.enabled = true
 
 
-end subroutine
-
-private subroutine u_toolbar_fin_set ();//
-string k_txt //, k_menu
-int k_pos
-
-
-//--- Aggiorna Lista / Stampa
-pb_8.enabled = ki_menu.m_finestra.m_fin_stampa.enabled
-pb_8.picturename = ki_menu.m_finestra.m_fin_stampa.toolbaritemname
-k_pos = pos(ki_menu.m_finestra.m_fin_stampa.toolbaritemtext, ",")
-pb_8.powertiptext = mid(ki_menu.m_finestra.m_fin_stampa.toolbaritemtext, k_pos + 1)
-st_8.text = left(ki_menu.m_finestra.m_fin_stampa.toolbaritemtext, k_pos - 1)
-//if cbx_txt.checked then
-	st_8.text = left(ki_menu.m_finestra.m_fin_stampa.toolbaritemtext, k_pos - 1)
-//end if
-
-pb_9.enabled = ki_menu.m_finestra.m_aggiornalista.enabled
-pb_9.picturename = ki_menu.m_finestra.m_aggiornalista.toolbaritemname
-k_pos = pos(ki_menu.m_finestra.m_aggiornalista.toolbaritemtext, ",")
-pb_9.powertiptext = mid(ki_menu.m_finestra.m_aggiornalista.toolbaritemtext, k_pos + 1)
-st_9.text = left(ki_menu.m_finestra.m_aggiornalista.toolbaritemtext, k_pos - 1)
-//if cbx_txt.checked then
-	st_9.text = left(ki_menu.m_finestra.m_aggiornalista.toolbaritemtext, k_pos - 1)
-//end if
-
-//--- Inizio SALVA/NUOVO/...
-pb_10.enabled = ki_menu.m_finestra.m_gestione.m_fin_conferma.enabled
-pb_10.picturename = ki_menu.m_finestra.m_gestione.m_fin_conferma.toolbaritemname
-pb_10.disabledname = ki_menu.m_finestra.m_gestione.m_fin_conferma.toolbaritemname
-k_pos = pos(ki_menu.m_finestra.m_gestione.m_fin_conferma.toolbaritemtext, ",")
-pb_10.powertiptext = mid(ki_menu.m_finestra.m_gestione.m_fin_conferma.toolbaritemtext, k_pos + 1)
-//if cbx_txt.checked then
-	st_10.text = left(ki_menu.m_finestra.m_gestione.m_fin_conferma.toolbaritemtext, k_pos - 1)
-//end if
-pb_11.enabled = ki_menu.m_finestra.m_gestione.m_fin_visualizza.enabled
-pb_11.picturename = ki_menu.m_finestra.m_gestione.m_fin_visualizza.toolbaritemname
-pb_11.disabledname = ki_menu.m_finestra.m_gestione.m_fin_visualizza.toolbaritemname
-k_pos = pos(ki_menu.m_finestra.m_gestione.m_fin_visualizza.toolbaritemtext, ",")
-pb_11.powertiptext = mid(ki_menu.m_finestra.m_gestione.m_fin_visualizza.toolbaritemtext, k_pos + 1)
-//if cbx_txt.checked then
-	st_11.text = left(ki_menu.m_finestra.m_gestione.m_fin_visualizza.toolbaritemtext, k_pos - 1)
-//end if
-pb_12.enabled = ki_menu.m_finestra.m_gestione.m_fin_modifica.enabled
-pb_12.picturename = ki_menu.m_finestra.m_gestione.m_fin_modifica.toolbaritemname
-pb_12.disabledname = ki_menu.m_finestra.m_gestione.m_fin_modifica.toolbaritemname
-k_pos = pos(ki_menu.m_finestra.m_gestione.m_fin_modifica.toolbaritemtext, ",")
-pb_12.powertiptext = mid(ki_menu.m_finestra.m_gestione.m_fin_modifica.toolbaritemtext, k_pos + 1)
-//if cbx_txt.checked then
-	st_12.text = left(ki_menu.m_finestra.m_gestione.m_fin_modifica.toolbaritemtext, k_pos - 1)
-//end if
-pb_13.enabled = ki_menu.m_finestra.m_gestione.m_fin_inserimento.enabled
-pb_13.picturename = ki_menu.m_finestra.m_gestione.m_fin_inserimento.toolbaritemname
-pb_13.disabledname = ki_menu.m_finestra.m_gestione.m_fin_inserimento.toolbaritemname
-k_pos = pos(ki_menu.m_finestra.m_gestione.m_fin_inserimento.toolbaritemtext, ",")
-pb_13.powertiptext = mid(ki_menu.m_finestra.m_gestione.m_fin_inserimento.toolbaritemtext, k_pos + 1)
-//if cbx_txt.checked then
-	st_13.text = left(ki_menu.m_finestra.m_gestione.m_fin_inserimento.toolbaritemtext, k_pos - 1)
-//end if
-pb_14.enabled = ki_menu.m_finestra.m_gestione.m_fin_elimina.toolbaritemvisible
-pb_14.picturename = ki_menu.m_finestra.m_gestione.m_fin_elimina.toolbaritemname
-pb_14.disabledname = ki_menu.m_finestra.m_gestione.m_fin_elimina.toolbaritemname
-k_pos = pos(ki_menu.m_finestra.m_gestione.m_fin_elimina.toolbaritemtext, ",")
-pb_14.powertiptext = mid(ki_menu.m_finestra.m_gestione.m_fin_elimina.toolbaritemtext, k_pos + 1)
-//if cbx_txt.checked then
-	st_14.text = left(ki_menu.m_finestra.m_gestione.m_fin_elimina.toolbaritemtext, k_pos - 1)
-//end if
-
-//pb_8.visible = pb_8.enabled
-//pb_9.visible = pb_9.enabled
-//pb_10.visible = pb_10.enabled
-//pb_11.visible = pb_11.enabled
-//pb_12.visible = pb_12.enabled
-//pb_13.visible = pb_13.enabled
-//st_8.visible = pb_8.enabled
-//st_9.visible = pb_9.enabled
-//st_10.visible = pb_10.enabled
-//st_11.visible = pb_11.enabled
-//st_12.visible = pb_12.enabled
-//st_13.visible = pb_13.enabled
-//
 end subroutine
 
 private subroutine u_toolbar_lib_click (integer k_num_button);//
@@ -429,198 +349,6 @@ end if
 
 end subroutine
 
-private subroutine u_toolbar_lib_set ();//
-string k_txt //, k_menu
-int k_pos
-
-//--- Inizio TOOLS LIB1-LIB10
-pb_l1.enabled = ki_menu.m_strumenti.m_fin_gest_libero1.enabled
-pb_l1.visible = (ki_menu.m_strumenti.m_fin_gest_libero1.enabled and ki_menu.m_strumenti.m_fin_gest_libero1.visible) //visible
-pb_l1.picturename = ki_menu.m_strumenti.m_fin_gest_libero1.toolbaritemname
-pb_l1.disabledname = ki_menu.m_strumenti.m_fin_gest_libero1.toolbaritemname
-k_pos = pos(ki_menu.m_strumenti.m_fin_gest_libero1.toolbaritemtext, ",")
-pb_l1.powertiptext = mid(ki_menu.m_strumenti.m_fin_gest_libero1.toolbaritemtext, k_pos + 1)
-//if cbx_txt.checked then
-	st_l1.text = left(ki_menu.m_strumenti.m_fin_gest_libero1.toolbaritemtext, k_pos - 1)
-//end if
-pb_l2.enabled = ki_menu.m_strumenti.m_fin_gest_libero2.enabled
-pb_l2.visible = (ki_menu.m_strumenti.m_fin_gest_libero2.enabled and ki_menu.m_strumenti.m_fin_gest_libero2.visible) //visible
-pb_l2.picturename = ki_menu.m_strumenti.m_fin_gest_libero2.toolbaritemname
-pb_l2.disabledname = ki_menu.m_strumenti.m_fin_gest_libero2.toolbaritemname
-k_pos = pos(ki_menu.m_strumenti.m_fin_gest_libero2.toolbaritemtext, ",")
-pb_l2.powertiptext = mid(ki_menu.m_strumenti.m_fin_gest_libero2.toolbaritemtext, k_pos + 1)
-//if cbx_txt.checked then
-	st_l2.text = left(ki_menu.m_strumenti.m_fin_gest_libero2.toolbaritemtext, k_pos - 1)
-//end if
-pb_l3.enabled = ki_menu.m_strumenti.m_fin_gest_libero3.enabled
-pb_l3.visible = (ki_menu.m_strumenti.m_fin_gest_libero3.enabled and ki_menu.m_strumenti.m_fin_gest_libero3.visible) //visible
-pb_l3.picturename = ki_menu.m_strumenti.m_fin_gest_libero3.toolbaritemname
-pb_l3.disabledname = ki_menu.m_strumenti.m_fin_gest_libero3.toolbaritemname
-k_pos = pos(ki_menu.m_strumenti.m_fin_gest_libero3.toolbaritemtext, ",")
-pb_l3.powertiptext = mid(ki_menu.m_strumenti.m_fin_gest_libero3.toolbaritemtext, k_pos + 1)
-//if cbx_txt.checked then
-	st_l3.text = left(ki_menu.m_strumenti.m_fin_gest_libero3.toolbaritemtext, k_pos - 1)
-//end if
-pb_l4.enabled = ki_menu.m_strumenti.m_fin_gest_libero4.enabled
-pb_l4.visible = (ki_menu.m_strumenti.m_fin_gest_libero4.enabled and ki_menu.m_strumenti.m_fin_gest_libero4.visible) //visible
-pb_l4.picturename = ki_menu.m_strumenti.m_fin_gest_libero4.toolbaritemname
-pb_l4.disabledname = ki_menu.m_strumenti.m_fin_gest_libero4.toolbaritemname
-k_pos = pos(ki_menu.m_strumenti.m_fin_gest_libero4.toolbaritemtext, ",")
-pb_l4.powertiptext = mid(ki_menu.m_strumenti.m_fin_gest_libero4.toolbaritemtext, k_pos + 1)
-//if cbx_txt.checked then
-	st_l4.text = left(ki_menu.m_strumenti.m_fin_gest_libero4.toolbaritemtext, k_pos - 1)
-//end if
-pb_l5.enabled = ki_menu.m_strumenti.m_fin_gest_libero5.enabled
-pb_l5.visible = (ki_menu.m_strumenti.m_fin_gest_libero5.enabled and ki_menu.m_strumenti.m_fin_gest_libero5.visible) //visible
-pb_l5.picturename = ki_menu.m_strumenti.m_fin_gest_libero5.toolbaritemname
-pb_l5.disabledname = ki_menu.m_strumenti.m_fin_gest_libero5.toolbaritemname
-k_pos = pos(ki_menu.m_strumenti.m_fin_gest_libero5.toolbaritemtext, ",")
-pb_l5.powertiptext = mid(ki_menu.m_strumenti.m_fin_gest_libero5.toolbaritemtext, k_pos + 1)
-//if cbx_txt.checked then
-	st_l5.text = left(ki_menu.m_strumenti.m_fin_gest_libero5.toolbaritemtext, k_pos - 1)
-//end if
-pb_l6.enabled = ki_menu.m_strumenti.m_fin_gest_libero6.enabled
-pb_l6.visible = (ki_menu.m_strumenti.m_fin_gest_libero6.enabled and ki_menu.m_strumenti.m_fin_gest_libero6.visible) //visible
-pb_l6.picturename = ki_menu.m_strumenti.m_fin_gest_libero6.toolbaritemname
-pb_l6.disabledname = ki_menu.m_strumenti.m_fin_gest_libero6.toolbaritemname
-k_pos = pos(ki_menu.m_strumenti.m_fin_gest_libero6.toolbaritemtext, ",")
-pb_l6.powertiptext = mid(ki_menu.m_strumenti.m_fin_gest_libero6.toolbaritemtext, k_pos + 1)
-//if cbx_txt.checked then
-	st_l6.text = left(ki_menu.m_strumenti.m_fin_gest_libero6.toolbaritemtext, k_pos - 1)
-//end if
-pb_l8.enabled = ki_menu.m_strumenti.m_fin_gest_libero8.enabled
-pb_l8.visible = (ki_menu.m_strumenti.m_fin_gest_libero8.enabled and ki_menu.m_strumenti.m_fin_gest_libero8.visible) //visible
-pb_l8.picturename = ki_menu.m_strumenti.m_fin_gest_libero8.toolbaritemname
-pb_l8.disabledname = ki_menu.m_strumenti.m_fin_gest_libero8.toolbaritemname
-k_pos = pos(ki_menu.m_strumenti.m_fin_gest_libero8.toolbaritemtext, ",")
-pb_l8.powertiptext = mid(ki_menu.m_strumenti.m_fin_gest_libero8.toolbaritemtext, k_pos + 1)
-//if cbx_txt.checked then
-	st_l8.text = left(ki_menu.m_strumenti.m_fin_gest_libero8.toolbaritemtext, k_pos - 1)
-//end if
-pb_l9.enabled = ki_menu.m_strumenti.m_fin_gest_libero9.enabled
-pb_l9.visible = (ki_menu.m_strumenti.m_fin_gest_libero9.enabled and ki_menu.m_strumenti.m_fin_gest_libero9.visible) //visible
-pb_l9.picturename = ki_menu.m_strumenti.m_fin_gest_libero9.toolbaritemname
-pb_l9.disabledname = ki_menu.m_strumenti.m_fin_gest_libero9.toolbaritemname
-k_pos = pos(ki_menu.m_strumenti.m_fin_gest_libero9.toolbaritemtext, ",")
-pb_l9.powertiptext = mid(ki_menu.m_strumenti.m_fin_gest_libero9.toolbaritemtext, k_pos + 1)
-//if cbx_txt.checked then
-	st_l9.text = left(ki_menu.m_strumenti.m_fin_gest_libero9.toolbaritemtext, k_pos - 1)
-//end if
-pb_l10.enabled = ki_menu.m_strumenti.m_fin_gest_libero10.enabled
-pb_l10.visible = (ki_menu.m_strumenti.m_fin_gest_libero10.enabled and ki_menu.m_strumenti.m_fin_gest_libero10.visible) //visible
-pb_l10.picturename = ki_menu.m_strumenti.m_fin_gest_libero10.toolbaritemname
-pb_l10.disabledname = ki_menu.m_strumenti.m_fin_gest_libero10.toolbaritemname
-k_pos = pos(ki_menu.m_strumenti.m_fin_gest_libero10.toolbaritemtext, ",")
-pb_l10.powertiptext = mid(ki_menu.m_strumenti.m_fin_gest_libero10.toolbaritemtext, k_pos + 1)
-//if cbx_txt.checked then
-	st_l10.text = left(ki_menu.m_strumenti.m_fin_gest_libero10.toolbaritemtext, k_pos - 1)
-//end if
-
-pb_l71.enabled = ki_menu.m_strumenti.m_fin_gest_libero7.libero1.enabled
-pb_l71.visible = (ki_menu.m_strumenti.m_fin_gest_libero7.libero1.enabled and ki_menu.m_strumenti.m_fin_gest_libero7.libero1.visible) //visible
-pb_l71.picturename = ki_menu.m_strumenti.m_fin_gest_libero7.libero1.toolbaritemname
-pb_l71.disabledname = ki_menu.m_strumenti.m_fin_gest_libero7.libero1.toolbaritemname
-k_pos = pos(ki_menu.m_strumenti.m_fin_gest_libero7.libero1.toolbaritemtext, ",")
-pb_l71.powertiptext = mid(ki_menu.m_strumenti.m_fin_gest_libero7.libero1.toolbaritemtext, k_pos + 1)
-//if cbx_txt.checked then
-	st_l71.text = left(ki_menu.m_strumenti.m_fin_gest_libero7.libero1.toolbaritemtext, k_pos - 1)
-//end if
-pb_l72.enabled = ki_menu.m_strumenti.m_fin_gest_libero7.libero2.enabled
-pb_l72.visible = (ki_menu.m_strumenti.m_fin_gest_libero7.libero2.enabled and ki_menu.m_strumenti.m_fin_gest_libero7.libero2.visible) //visible
-pb_l72.picturename = ki_menu.m_strumenti.m_fin_gest_libero7.libero2.toolbaritemname
-pb_l72.disabledname = ki_menu.m_strumenti.m_fin_gest_libero7.libero2.toolbaritemname
-k_pos = pos(ki_menu.m_strumenti.m_fin_gest_libero7.libero2.toolbaritemtext, ",")
-pb_l72.powertiptext = mid(ki_menu.m_strumenti.m_fin_gest_libero7.libero2.toolbaritemtext, k_pos + 1)
-//if cbx_txt.checked then
-	st_l72.text = left(ki_menu.m_strumenti.m_fin_gest_libero7.libero2.toolbaritemtext, k_pos - 1)
-//end if
-pb_l73.enabled = ki_menu.m_strumenti.m_fin_gest_libero7.libero3.enabled
-pb_l73.visible = (ki_menu.m_strumenti.m_fin_gest_libero7.libero3.enabled and ki_menu.m_strumenti.m_fin_gest_libero7.libero3.visible) //visible
-pb_l73.picturename = ki_menu.m_strumenti.m_fin_gest_libero7.libero3.toolbaritemname
-pb_l73.disabledname = ki_menu.m_strumenti.m_fin_gest_libero7.libero3.toolbaritemname
-k_pos = pos(ki_menu.m_strumenti.m_fin_gest_libero7.libero3.toolbaritemtext, ",")
-pb_l73.powertiptext = mid(ki_menu.m_strumenti.m_fin_gest_libero7.libero3.toolbaritemtext, k_pos + 1)
-//if cbx_txt.checked then
-	st_l73.text = left(ki_menu.m_strumenti.m_fin_gest_libero7.libero3.toolbaritemtext, k_pos - 1)
-//end if
-pb_l74.enabled = ki_menu.m_strumenti.m_fin_gest_libero7.libero4.enabled
-pb_l74.visible = (ki_menu.m_strumenti.m_fin_gest_libero7.libero4.enabled and ki_menu.m_strumenti.m_fin_gest_libero7.libero4.visible) //visible
-pb_l74.picturename = ki_menu.m_strumenti.m_fin_gest_libero7.libero4.toolbaritemname
-pb_l74.disabledname = ki_menu.m_strumenti.m_fin_gest_libero7.libero4.toolbaritemname
-k_pos = pos(ki_menu.m_strumenti.m_fin_gest_libero7.libero4.toolbaritemtext, ",")
-pb_l74.powertiptext = mid(ki_menu.m_strumenti.m_fin_gest_libero7.libero4.toolbaritemtext, k_pos + 1)
-//if cbx_txt.checked then
-	st_l74.text = left(ki_menu.m_strumenti.m_fin_gest_libero7.libero4.toolbaritemtext, k_pos - 1)
-//end if
-pb_l75.enabled = ki_menu.m_strumenti.m_fin_gest_libero7.libero5.enabled
-pb_l75.visible = (ki_menu.m_strumenti.m_fin_gest_libero7.libero5.enabled and ki_menu.m_strumenti.m_fin_gest_libero7.libero5.visible) //visible
-pb_l75.picturename = ki_menu.m_strumenti.m_fin_gest_libero7.libero5.toolbaritemname
-pb_l75.disabledname = ki_menu.m_strumenti.m_fin_gest_libero7.libero5.toolbaritemname
-k_pos = pos(ki_menu.m_strumenti.m_fin_gest_libero7.libero5.toolbaritemtext, ",")
-pb_l75.powertiptext = mid(ki_menu.m_strumenti.m_fin_gest_libero7.libero5.toolbaritemtext, k_pos + 1)
-//if cbx_txt.checked then
-	st_l75.text = left(ki_menu.m_strumenti.m_fin_gest_libero7.libero5.toolbaritemtext, k_pos - 1)
-//end if
-
-end subroutine
-
-private subroutine u_toolbar_set ();//
-string k_txt //, k_menu
-int k_pos
-
-//--- Funzioni NAVIGATORE/CLIENTI/...
-pb_1.enabled = ki_menu.m_magazzino.m_mag_navigatore.enabled
-pb_1.picturename = ki_menu.m_magazzino.m_mag_navigatore.toolbaritemname
-k_pos = pos(ki_menu.m_magazzino.m_mag_navigatore.toolbaritemtext, ",")
-pb_1.powertiptext = mid(ki_menu.m_magazzino.m_mag_navigatore.toolbaritemtext, k_pos + 1)
-//if cbx_txt.checked then
-	st_1.text = left(ki_menu.m_magazzino.m_mag_navigatore.toolbaritemtext, k_pos - 1)
-//end if
-pb_2.enabled = ki_menu.m_archivi.m_anagrafiche.m_lista_anag.enabled
-pb_2.picturename = ki_menu.m_archivi.m_anagrafiche.m_lista_anag.toolbaritemname
-k_pos = pos(ki_menu.m_archivi.m_anagrafiche.m_lista_anag.toolbaritemtext, ",")
-pb_2.powertiptext = mid(ki_menu.m_archivi.m_anagrafiche.m_lista_anag.toolbaritemtext, k_pos + 1)
-//if cbx_txt.checked then
-	st_2.text = left(ki_menu.m_archivi.m_anagrafiche.m_lista_anag.toolbaritemtext, k_pos - 1)
-//end if
-pb_3.enabled = ki_menu.m_magazzino.m_pianidilavorazione.enabled
-pb_3.picturename = ki_menu.m_magazzino.m_pianidilavorazione.toolbaritemname
-k_pos = pos(ki_menu.m_magazzino.m_pianidilavorazione.toolbaritemtext, ",")
-pb_3.powertiptext = mid(ki_menu.m_magazzino.m_pianidilavorazione.toolbaritemtext, k_pos + 1)
-//if cbx_txt.checked then
-	st_3.text = left(ki_menu.m_magazzino.m_pianidilavorazione.toolbaritemtext, k_pos - 1)
-//end if
-pb_4.enabled = ki_menu.m_archivi.m_listino.enabled
-pb_4.picturename = ki_menu.m_archivi.m_listino.toolbaritemname
-k_pos = pos(ki_menu.m_archivi.m_listino.toolbaritemtext, ",")
-pb_4.powertiptext = mid(ki_menu.m_archivi.m_listino.toolbaritemtext, k_pos + 1) //+ " [" + string(ki_menu.m_archivi.m_listino.shortcut) + "]"
-//if cbx_txt.checked then
-	st_4.text = left(ki_menu.m_archivi.m_listino.toolbaritemtext, k_pos - 1)
-//end if
-pb_5.enabled = ki_menu.m_archivi.m_contratti.enabled
-pb_5.picturename = ki_menu.m_archivi.m_contratti.toolbaritemname
-k_pos = pos(ki_menu.m_archivi.m_contratti.toolbaritemtext, ",")
-pb_5.powertiptext = mid(ki_menu.m_archivi.m_contratti.toolbaritemtext, k_pos + 1)
-//if cbx_txt.checked then
-	st_5.text = left(ki_menu.m_archivi.m_contratti.toolbaritemtext, k_pos - 1)
-//end if
-pb_6.enabled = ki_menu.m_interrogazioni.m_report.enabled
-pb_6.picturename = ki_menu.m_interrogazioni.m_report.toolbaritemname
-k_pos = pos(ki_menu.m_interrogazioni.m_report.toolbaritemtext, ",")
-pb_6.powertiptext = mid(ki_menu.m_interrogazioni.m_report.toolbaritemtext, k_pos + 1)
-//if cbx_txt.checked then
-	st_6.text = left(ki_menu.m_interrogazioni.m_report.toolbaritemtext, k_pos - 1)
-//end if
-pb_7.enabled = ki_menu.m_stat.m_st_produz.enabled
-pb_7.picturename = ki_menu.m_stat.m_st_produz.toolbaritemname
-k_pos = pos(ki_menu.m_stat.m_st_produz.toolbaritemtext, ",")
-pb_7.powertiptext = mid(ki_menu.m_stat.m_st_produz.toolbaritemtext, k_pos + 1)
-//if cbx_txt.checked then
-	st_7.text = left(ki_menu.m_stat.m_st_produz.toolbaritemtext, k_pos - 1)
-//end if
-
-end subroutine
-
 public subroutine u_inizializza ();//
 try
 	
@@ -630,42 +358,6 @@ catch (uo_exception kuo_exception)
 	kuo_exception.messaggio_utente()
 	
 end try
-end subroutine
-
-private subroutine u_toolbar_t_set ();//
-string k_txt //, k_menu
-int k_pos
-
-//--- Inizio TROVA/FILTRO...
-pb_t1.enabled = ki_menu.m_trova.m_fin_cerca.enabled
-pb_t1.visible = ki_menu.m_trova.m_fin_cerca.enabled //visible
-pb_t1.picturename = ki_menu.m_trova.m_fin_cerca.toolbaritemname
-pb_t1.disabledname = ki_menu.m_trova.m_fin_cerca.toolbaritemname
-k_pos = pos(ki_menu.m_trova.m_fin_cerca.toolbaritemtext, ",")
-pb_t1.powertiptext = mid(ki_menu.m_trova.m_fin_cerca.toolbaritemtext, k_pos + 1)
-//if cbx_txt.checked then
-	st_t1.text = left(ki_menu.m_trova.m_fin_cerca.toolbaritemtext, k_pos - 1)
-//end if
-pb_t2.enabled = ki_menu.m_trova.m_fin_ordina.enabled
-pb_t2.visible = ki_menu.m_trova.m_fin_ordina.enabled //visible
-pb_t2.picturename = ki_menu.m_trova.m_fin_ordina.toolbaritemname
-pb_t2.disabledname = ki_menu.m_trova.m_fin_ordina.toolbaritemname
-k_pos = pos(ki_menu.m_trova.m_fin_ordina.toolbaritemtext, ",")
-pb_t2.powertiptext = mid(ki_menu.m_trova.m_fin_ordina.toolbaritemtext, k_pos + 1)
-//if cbx_txt.checked then
-	st_t2.text = left(ki_menu.m_trova.m_fin_ordina.toolbaritemtext, k_pos - 1)
-//end if
-pb_t3.enabled = ki_menu.m_filtro.enabled
-pb_t3.visible = ki_menu.m_filtro.enabled //visible
-pb_t3.picturename = ki_menu.m_filtro.toolbaritemname
-pb_t3.disabledname = ki_menu.m_filtro.toolbaritemname
-k_pos = pos(ki_menu.m_filtro.toolbaritemtext, ",")
-pb_t3.powertiptext = mid(ki_menu.m_filtro.toolbaritemtext, k_pos + 1)
-//if cbx_txt.checked then
-	st_t3.text = left(ki_menu.m_filtro.toolbaritemtext, k_pos - 1)
-//end if
-
-
 end subroutine
 
 private subroutine u_toolbar_t_click (integer k_num_button);//
@@ -710,37 +402,61 @@ public subroutine u_build_menu (ref m_main am_main);//
 //--- Imposta le voci di menu 
 //--- Inp: il menu da 'trattare'
 //
+boolean k_changed
 
+this.setredraw(false)
 
-if not u_set_ki_menu() then
-	ki_menu = am_main 
-end if
+	if not u_set_ki_menu() then
+		if NOT isnull(am_main) then
+			if isvalid(am_main) then 
+				ki_menu = am_main 
+			end if
+		end if
+	end if
 
-if isvalid(ki_menu) then
+	if not isnull(ki_menu) and isvalid(ki_menu) then
+	else
+		if not isnull(w_main.ki_menu_0) and isvalid(w_main.ki_menu_0) then
+			ki_menu = w_main.ki_menu_0
+		end if
+	end if
+		
+	if not isnull(ki_menu) and isvalid(ki_menu) then
+		
+		m_main = ki_menu
 	
-	m_main = ki_menu
-//	this.changemenu(ki_menu)
+		if u_toolbar_set() then
+			k_changed = true
+		end if
+		if u_toolbar_fin_set() then
+			k_changed = true
+		end if
+		if u_toolbar_t_set() then
+			k_changed = true
+		end if
+		if u_toolbar_lib_set() then
+			k_changed = true
+		end if
+		
+		if k_changed then
+			u_resize( )
+		end if
+	
+	end if
 
-	u_toolbar_set()
-	u_toolbar_fin_set()
-	u_toolbar_t_set()
-	u_toolbar_lib_set()
-	u_resize( )
 
-end if
-
+this.setredraw(true)
   
 end subroutine
 
 public subroutine u_resize_1 ();//
-int k_x, k_y, k_st_y, kpb_width, k_st_width, k_st_widthx2, k_height, k_st_x_delta, k_cbx_x, k_start_y, k_start_x
+int k_x, k_y, k_st_y, kpb_width, k_st_width, k_st_widthx2, k_height, k_st_x_delta, k_cbx_x, k_start_x
 int k_nr_icone
 int k_appon
-boolean k_spazio_bianco = false
+boolean k_spazio_bianco
 
-//int kpb_height
 
-this.setredraw(false)
+//this.setredraw(false)
 
 //--- conta le icone da aprire
 if pb_1.enabled then	k_nr_icone ++
@@ -752,17 +468,17 @@ if pb_6.enabled then	k_nr_icone ++
 if pb_7.enabled then	k_nr_icone ++
 if pb_8.enabled then	k_nr_icone ++
 if pb_9.enabled then	k_nr_icone ++
-//--- Inizio di SALVA/NUOVO/...
+//--- pb di SALVA/NUOVO/...
 if pb_10.enabled then k_nr_icone ++
 if pb_11.enabled then k_nr_icone ++
 if pb_12.enabled then k_nr_icone ++
 if pb_13.enabled then k_nr_icone ++
-if pb_14.enabled then k_nr_icone ++
-//--- Inizio di TROVA/FILTRO
+//if pb_14.enabled then k_nr_icone ++  NO LA DELETE
+//--- pb di TROVA/FILTRO
 if pb_t1.enabled then k_nr_icone ++
 if pb_t2.enabled then k_nr_icone ++
 if pb_t3.enabled then k_nr_icone ++
-//--- Inizio di TOOLS: LIB1-LIB10
+//--- pb di TOOLS: LIB1-LIB10
 if pb_l1.enabled then k_nr_icone ++
 if pb_l2.enabled then k_nr_icone ++
 if pb_l3.enabled then k_nr_icone ++
@@ -807,7 +523,7 @@ k_st_x_delta = (k_st_width - pb_1.width) / 2  //* 0.25
 kpb_width = pb_1.width * 0.15 
 k_st_y = pb_1.height
 
-k_start_y = 1 //(pb_1.height - st_1.height) / 2
+//k_start_y = 1 //(pb_1.height - st_1.height) / 2
 k_start_x = k_x
 
 //	kpb_height = pb_1.height * 0.10
@@ -822,7 +538,7 @@ k_nr_icone = this.width / k_st_width
 k_nr_icone --
 if k_nr_icone > 0 then 
 	k_x += k_st_width + 10 //kpb_width
-	k_y = k_start_y
+	k_y = 1
 else
 	k_y = pb_1.height
 //	k_y += st_1.height * 2
@@ -830,487 +546,88 @@ else
 end if
 
 //--- INIZIO FUNZIONI TIPO STAMPA 
-pb_7.visible = pb_7.enabled 
-if pb_8.enabled then
+if u_resize_set_pb(pb_8, st_8, k_nr_icone, k_x, k_y, k_start_x, k_st_width, k_st_y, k_st_x_delta,kpb_width, k_height) then
 	k_spazio_bianco = true
-	pb_8.x = k_x
-	pb_8.y = k_y
-	st_8.visible = cbx_txt.checked
-	st_8.width= k_st_width
-	st_8.x = k_x - k_st_x_delta
-	st_8.y = pb_8.y + k_st_y
-	k_nr_icone --
-	if k_nr_icone > 0 then
-		k_x += k_st_width + kpb_width
-	else
-		k_x = k_start_x
-		k_y += k_height //+ kpb_height
-		k_nr_icone = this.width / k_st_width 
-	end if
-else
-	st_8.visible = false
 end if
-pb_8.visible = pb_8.enabled 
-if pb_9.enabled then
+if u_resize_set_pb(pb_9, st_9, k_nr_icone, k_x, k_y, k_start_x, k_st_width, k_st_y, k_st_x_delta,kpb_width, k_height) then
 	k_spazio_bianco = true
-	pb_9.x = k_x
-	pb_9.y = k_y
-	st_9.visible = cbx_txt.checked
-	st_9.width= k_st_width
-	st_9.x = k_x - k_st_x_delta
-	st_9.y = pb_9.y + k_st_y
-	k_nr_icone --
-	if k_nr_icone > 0 then
-		k_x += k_st_width + kpb_width
-	else
-		k_x = k_start_x
-		k_y += k_height //+ kpb_height
-		k_nr_icone = this.width / k_st_width 
-	end if
-else
-	st_9.visible = false
 end if
-pb_9.visible = pb_9.enabled 
 
 //--- Inizio di SALVA/NUOVO/...
-if pb_10.enabled then
+if u_resize_set_pb(pb_10, st_10, k_nr_icone, k_x, k_y, k_start_x, k_st_width, k_st_y, k_st_x_delta,kpb_width, k_height) then
 	k_spazio_bianco = true
-	pb_10.x = k_x
-	pb_10.y = k_y
-	st_10.visible = cbx_txt.checked
-	st_10.width= k_st_width
-	st_10.x = k_x - k_st_x_delta
-	st_10.y = pb_10.y + k_st_y
-	k_nr_icone --
-	if k_nr_icone > 0 then
-		k_x += k_st_width + kpb_width
-	else
-		k_x = k_start_x
-		k_y += k_height //+ kpb_height
-		k_nr_icone = this.width / k_st_width 
-	end if
-else
-	st_10.visible = false
 end if
-pb_10.visible = pb_10.enabled 
-if pb_11.enabled then
+if u_resize_set_pb(pb_11, st_11, k_nr_icone, k_x, k_y, k_start_x, k_st_width, k_st_y, k_st_x_delta,kpb_width, k_height) then
 	k_spazio_bianco = true
-	pb_11.x = k_x
-	pb_11.y = k_y
-	st_11.visible = cbx_txt.checked
-	st_11.width= k_st_width
-	st_11.x = k_x - k_st_x_delta
-	st_11.y = pb_11.y + k_st_y
-	k_nr_icone --
-	if k_nr_icone > 0 then
-		k_x += k_st_width + kpb_width
-	else
-		k_x = k_start_x
-		k_y += k_height //+ kpb_height
-		k_nr_icone = this.width / k_st_width 
-	end if
-else
-	st_11.visible = false
 end if
-pb_11.visible = pb_11.enabled 
-if pb_12.enabled then
+if u_resize_set_pb(pb_12, st_12, k_nr_icone, k_x, k_y, k_start_x, k_st_width, k_st_y, k_st_x_delta,kpb_width, k_height) then
 	k_spazio_bianco = true
-	pb_12.x = k_x
-	pb_12.y = k_y
-	st_12.visible = cbx_txt.checked
-	st_12.width= k_st_width
-	st_12.x = k_x - k_st_x_delta
-	st_12.y = pb_12.y + k_st_y
-	k_nr_icone --
-	if k_nr_icone > 0 then
-		k_x += k_st_width + kpb_width
-	else
-		k_x = k_start_x
-		k_y += k_height //+ kpb_height
-		k_nr_icone = this.width / k_st_width 
-	end if
-else
-	st_12.visible = false
 end if
-pb_12.visible = pb_12.enabled 
-if pb_13.enabled then
+if u_resize_set_pb(pb_13, st_13, k_nr_icone, k_x, k_y, k_start_x, k_st_width, k_st_y, k_st_x_delta,kpb_width, k_height) then
 	k_spazio_bianco = true
-	pb_13.x = k_x
-	pb_13.y = k_y
-	st_13.visible = cbx_txt.checked
-	st_13.width= k_st_width
-	st_13.x = k_x - k_st_x_delta
-	st_13.y = pb_13.y + k_st_y
-	k_nr_icone --
-	if k_nr_icone > 0 then
-		k_x += k_st_width + kpb_width
-	else
-		k_x = k_start_x
-		k_y += k_height //+ kpb_height
-		k_nr_icone = this.width / k_st_width 
-	end if
-else
-	st_13.visible = false
 end if
-pb_13.visible = pb_13.enabled 
-if pb_14.enabled then
-	k_spazio_bianco = true
-	pb_14.x = k_x
-	pb_14.y = k_y
-	st_14.visible = cbx_txt.checked
-	st_14.width= k_st_width
-	st_14.x = k_x - k_st_x_delta
-	st_14.y = pb_14.y + k_st_y
-	k_nr_icone --
-	if k_nr_icone > 0 then
-		k_x += k_st_width + kpb_width
-	else
-		k_x = k_start_x
-		k_y += k_height //+ kpb_height
-		k_nr_icone = this.width / k_st_width 
-	end if
-else
-	st_14.visible = false
-end if
-pb_14.visible = pb_14.enabled 
+//NO ALLA DELETE if u_resize_set_pb(pb_14, st_14, k_nr_icone, k_x, k_y, k_start_x, k_st_width, k_st_y, k_st_x_delta,kpb_width, k_height)
 
-if	k_spazio_bianco and k_nr_icone = 1 then
-	if	k_x = k_start_x then
-		r_sep1.x = k_x  - k_st_x_delta; r_sep1.y = k_y - r_sep1.height //- k_height * 0.1
-		r_sep1.visible = true
-		k_y += k_height * 0.1 //+ kpb_height
-	else
-		r_sep1.visible = false
-	end if
+if k_spazio_bianco and k_nr_icone = 1 then
+	u_resize_set_sep(r_sep1, k_x, k_y, k_start_x, k_st_x_delta, k_height)
 else
 	r_sep1.visible = false
 end if
 
 //--- Inizio di TROVA/FILTRO
-if pb_t1.visible then
+if u_resize_set_pb(pb_t1, st_t1, k_nr_icone, k_x, k_y, k_start_x, k_st_width, k_st_y, k_st_x_delta,kpb_width, k_height) then
 	k_spazio_bianco = true
-	pb_t1.x = k_x
-	pb_t1.y = k_y
-	st_t1.visible = cbx_txt.checked
-	st_t1.width= k_st_width
-	st_t1.x = k_x - k_st_x_delta
-	st_t1.y = pb_t1.y + k_st_y
-	k_nr_icone --
-	if k_nr_icone > 0 then
-		k_x += k_st_width + kpb_width
-	else
-		k_x = k_start_x
-		k_y += k_height //+ kpb_height
-		k_nr_icone = this.width / k_st_width 
-	end if
-else
-	st_t1.visible = false
 end if
-if pb_t2.visible then
+if u_resize_set_pb(pb_t2, st_t2, k_nr_icone, k_x, k_y, k_start_x, k_st_width, k_st_y, k_st_x_delta,kpb_width, k_height) then
 	k_spazio_bianco = true
-	pb_t2.x = k_x
-	pb_t2.y = k_y
-	st_t2.visible = cbx_txt.checked
-	st_t2.width= k_st_width
-	st_t2.x = k_x - k_st_x_delta
-	st_t2.y = pb_t2.y + k_st_y
-	k_nr_icone --
-	if k_nr_icone > 0 then
-		k_x += k_st_width + kpb_width
-	else
-		k_x = k_start_x
-		k_y += k_height //+ kpb_height
-		k_nr_icone = this.width / k_st_width 
-	end if
-else
-	st_t2.visible = false
 end if
-if pb_t3.visible then
+if u_resize_set_pb(pb_t3, st_t3, k_nr_icone, k_x, k_y, k_start_x, k_st_width, k_st_y, k_st_x_delta,kpb_width, k_height) then
 	k_spazio_bianco = true
-	pb_t3.x = k_x
-	pb_t3.y = k_y
-	st_t3.visible = cbx_txt.checked
-	st_t3.width= k_st_width
-	st_t3.x = k_x - k_st_x_delta
-	st_t3.y = pb_t3.y + k_st_y
-	k_nr_icone --
-	if k_nr_icone > 0 then
-		k_x += k_st_width + kpb_width
-	else
-		k_x = k_start_x
-		k_y += k_height //+ kpb_height
-		k_nr_icone = this.width / k_st_width 
-	end if
-else
-	st_t3.visible = false
 end if
 
 //--- Inizio di TOOLS: LIB1-LIB10
-if pb_l1.visible then
+if u_resize_set_pb(pb_l1, st_l1, k_nr_icone, k_x, k_y, k_start_x, k_st_width, k_st_y, k_st_x_delta,kpb_width, k_height) then
 	k_spazio_bianco = true
-	pb_l1.x = k_x
-	pb_l1.y = k_y
-	st_l1.visible = cbx_txt.checked
-	st_l1.width= k_st_width
-	st_l1.x = k_x - k_st_x_delta
-	st_l1.y = pb_l1.y + k_st_y
-	k_nr_icone --
-	if k_nr_icone > 0 then
-		k_x += k_st_width + kpb_width
-	else
-		k_x = k_start_x
-		k_y += k_height //+ kpb_height
-		k_nr_icone = this.width / k_st_width 
-	end if
-else
-	st_l1.visible = false
 end if
-if pb_l2.visible then
+if u_resize_set_pb(pb_l2, st_l2, k_nr_icone, k_x, k_y, k_start_x, k_st_width, k_st_y, k_st_x_delta,kpb_width, k_height) then
 	k_spazio_bianco = true
-	pb_l2.x = k_x
-	pb_l2.y = k_y
-	st_l2.visible = cbx_txt.checked
-	st_l2.width= k_st_width
-	st_l2.x = k_x - k_st_x_delta
-	st_l2.y = pb_l2.y + k_st_y
-	k_nr_icone --
-	if k_nr_icone > 0 then
-		k_x += k_st_width + kpb_width
-	else
-		k_x = k_start_x
-		k_y += k_height //+ kpb_height
-		k_nr_icone = this.width / k_st_width 
-	end if
-else
-	st_l2.visible = false
 end if
-if pb_l3.visible then
+if u_resize_set_pb(pb_l3, st_l3, k_nr_icone, k_x, k_y, k_start_x, k_st_width, k_st_y, k_st_x_delta,kpb_width, k_height) then
 	k_spazio_bianco = true
-	pb_l3.x = k_x
-	pb_l3.y = k_y
-	st_l3.visible = cbx_txt.checked
-	st_l3.width= k_st_width
-	st_l3.x = k_x - k_st_x_delta
-	st_l3.y = pb_l3.y + k_st_y
-	k_nr_icone --
-	if k_nr_icone > 0 then
-		k_x += k_st_width + kpb_width
-	else
-		k_x = k_start_x
-		k_y += k_height //+ kpb_height
-		k_nr_icone = this.width / k_st_width 
-	end if
-else
-	st_l3.visible = false
 end if
-if pb_l4.visible then
+if u_resize_set_pb(pb_l4, st_l4, k_nr_icone, k_x, k_y, k_start_x, k_st_width, k_st_y, k_st_x_delta,kpb_width, k_height) then
 	k_spazio_bianco = true
-	pb_l4.x = k_x
-	pb_l4.y = k_y
-	st_l4.visible = cbx_txt.checked
-	st_l4.width= k_st_width
-	st_l4.x = k_x - k_st_x_delta
-	st_l4.y = pb_l4.y + k_st_y
-	k_nr_icone --
-	if k_nr_icone > 0 then
-		k_x += k_st_width + kpb_width
-	else
-		k_x = k_start_x
-		k_y += k_height //+ kpb_height
-		k_nr_icone = this.width / k_st_width 
-	end if
-else
-	st_l4.visible = false
 end if
-if pb_l5.visible then
+if u_resize_set_pb(pb_l5, st_l5, k_nr_icone, k_x, k_y, k_start_x, k_st_width, k_st_y, k_st_x_delta,kpb_width, k_height) then
 	k_spazio_bianco = true
-	pb_l5.x = k_x
-	pb_l5.y = k_y
-	st_l5.visible = cbx_txt.checked
-	st_l5.width= k_st_width
-	st_l5.x = k_x - k_st_x_delta
-	st_l5.y = pb_l5.y + k_st_y
-	k_nr_icone --
-	if k_nr_icone > 0 then
-		k_x += k_st_width + kpb_width
-	else
-		k_x = k_start_x
-		k_y += k_height //+ kpb_height
-		k_nr_icone = this.width / k_st_width 
-	end if
-else
-	st_l5.visible = false
 end if
-if pb_l6.visible then
+if u_resize_set_pb(pb_l6, st_l6, k_nr_icone, k_x, k_y, k_start_x, k_st_width, k_st_y, k_st_x_delta,kpb_width, k_height) then
 	k_spazio_bianco = true
-	pb_l6.x = k_x
-	pb_l6.y = k_y 
-	st_l6.visible = cbx_txt.checked
-	st_l6.width= k_st_width
-	st_l6.x = k_x - k_st_x_delta
-	st_l6.y = pb_l6.y + k_st_y
-	k_nr_icone --
-	if k_nr_icone > 0 then
-		k_x += k_st_width + kpb_width
-	else
-		k_x = k_start_x
-		k_y += k_height //+ kpb_height
-		k_nr_icone = this.width / k_st_width 
-	end if
-else
-	st_l6.visible = false
 end if
-if pb_l8.visible then
+if u_resize_set_pb(pb_l8, st_l8, k_nr_icone, k_x, k_y, k_start_x, k_st_width, k_st_y, k_st_x_delta,kpb_width, k_height) then
 	k_spazio_bianco = true
-	pb_l8.x = k_x
-	pb_l8.y = k_y 
-	st_l8.visible = cbx_txt.checked
-	st_l8.width= k_st_width
-	st_l8.x = k_x - k_st_x_delta
-	st_l8.y = pb_l8.y + k_st_y
-	k_nr_icone --
-	if k_nr_icone > 0 then
-		k_x += k_st_width + kpb_width
-	else
-		k_x = k_start_x
-		k_y += k_height //+ kpb_height
-		k_nr_icone = this.width / k_st_width 
-	end if
-else
-	st_l8.visible = false
 end if
-if pb_l9.visible then
+if u_resize_set_pb(pb_l9, st_l9, k_nr_icone, k_x, k_y, k_start_x, k_st_width, k_st_y, k_st_x_delta,kpb_width, k_height) then
 	k_spazio_bianco = true
-	pb_l9.x = k_x
-	pb_l9.y = k_y 
-	st_l9.visible = cbx_txt.checked
-	st_l9.width= k_st_width
-	st_l9.x = k_x - k_st_x_delta
-	st_l9.y = pb_l9.y + k_st_y
-	k_nr_icone --
-	if k_nr_icone > 0 then
-		k_x += k_st_width + kpb_width
-	else
-		k_x = k_start_x
-		k_y += k_height //+ kpb_height
-		k_nr_icone = this.width / k_st_width 
-	end if
-else
-	st_l9.visible = false
 end if
-if pb_l10.visible then
+if u_resize_set_pb(pb_l10, st_l10, k_nr_icone, k_x, k_y, k_start_x, k_st_width, k_st_y, k_st_x_delta,kpb_width, k_height) then
 	k_spazio_bianco = true
-	pb_l10.x = k_x
-	pb_l10.y = k_y
-	st_l10.visible = cbx_txt.checked
-	st_l10.width= k_st_width
-	st_l10.x = k_x - k_st_x_delta
-	st_l10.y = pb_l10.y + k_st_y
-	k_nr_icone --
-	if k_nr_icone > 0 then
-		k_x += k_st_width + kpb_width
-	else
-		k_x = k_start_x
-		k_y += k_height //+ kpb_height
-		k_nr_icone = this.width / k_st_width 
-	end if
-else
-	st_l10.visible = false
 end if
-if pb_l71.visible then
+
+if u_resize_set_pb(pb_l71, st_l71, k_nr_icone, k_x, k_y, k_start_x, k_st_width, k_st_y, k_st_x_delta,kpb_width, k_height) then
 	k_spazio_bianco = true
-	pb_l71.x = k_x
-	pb_l71.y = k_y
-	st_l71.visible = cbx_txt.checked
-	st_l71.width= k_st_width
-	st_l71.x = k_x - k_st_x_delta
-	st_l71.y = pb_l71.y + k_st_y
-	k_nr_icone --
-	if k_nr_icone > 0 then
-		k_x += k_st_width + kpb_width
-	else
-		k_x = k_start_x
-		k_y += k_height //+ kpb_height
-		k_nr_icone = this.width / k_st_width 
-	end if
-else
-	st_l71.visible = false
 end if
-if pb_l72.visible then
+if u_resize_set_pb(pb_l72, st_l72, k_nr_icone, k_x, k_y, k_start_x, k_st_width, k_st_y, k_st_x_delta,kpb_width, k_height) then
 	k_spazio_bianco = true
-	pb_l72.x = k_x
-	pb_l72.y = k_y 
-	st_l72.visible = cbx_txt.checked
-	st_l72.width= k_st_width
-	st_l72.x = k_x - k_st_x_delta
-	st_l72.y = pb_l72.y + k_st_y
-	k_nr_icone --
-	if k_nr_icone > 0 then
-		k_x += k_st_width + kpb_width
-	else
-		k_x = k_start_x
-		k_y += k_height //+ kpb_height
-		k_nr_icone = this.width / k_st_width 
-	end if
-else
-	st_l72.visible = false
 end if
-if pb_l73.visible then
+if u_resize_set_pb(pb_l73, st_l73, k_nr_icone, k_x, k_y, k_start_x, k_st_width, k_st_y, k_st_x_delta,kpb_width, k_height) then
 	k_spazio_bianco = true
-	pb_l73.x = k_x
-	pb_l73.y = k_y 
-	st_l73.visible = cbx_txt.checked
-	st_l73.width= k_st_width
-	st_l73.x = k_x - k_st_x_delta
-	st_l73.y = pb_l73.y + k_st_y
-	k_nr_icone --
-	if k_nr_icone > 0 then
-		k_x += k_st_width + kpb_width
-	else
-		k_x = k_start_x
-		k_y += k_height //+ kpb_height
-		k_nr_icone = this.width / k_st_width 
-	end if
-else
-	st_l73.visible = false
 end if
-if pb_l74.visible then
+if u_resize_set_pb(pb_l74, st_l74, k_nr_icone, k_x, k_y, k_start_x, k_st_width, k_st_y, k_st_x_delta,kpb_width, k_height) then
 	k_spazio_bianco = true
-	pb_l74.x = k_x
-	pb_l74.y = k_y 
-	st_l74.visible = cbx_txt.checked
-	st_l74.width= k_st_width
-	st_l74.x = k_x - k_st_x_delta
-	st_l74.y = pb_l74.y + k_st_y
-	k_nr_icone --
-	if k_nr_icone > 0 then
-		k_x += k_st_width + kpb_width
-	else
-		k_x = k_start_x
-		k_y += k_height //+ kpb_height
-		k_nr_icone = this.width / k_st_width 
-	end if
-else
-	st_l74.visible = false
 end if
-if pb_l75.visible then
+if u_resize_set_pb(pb_l75, st_l75, k_nr_icone, k_x, k_y, k_start_x, k_st_width, k_st_y, k_st_x_delta,kpb_width, k_height) then
 	k_spazio_bianco = true
-	pb_l75.x = k_x
-	pb_l75.y = k_y 
-	st_l75.visible = cbx_txt.checked
-	st_l75.width= k_st_width
-	st_l75.x = k_x - k_st_x_delta
-	st_l75.y = pb_l75.y + k_st_y
-	k_nr_icone --
-	if k_nr_icone > 0 then
-		k_x += k_st_width + kpb_width
-	else
-		k_x = k_start_x
-		k_y += k_height //+ kpb_height
-		k_nr_icone = this.width / k_st_width 
-	end if
-else
-	st_l75.visible = false
 end if
 
 //--- INIZIO APPLICAZIONI GENERICHE
@@ -1320,161 +637,286 @@ if k_spazio_bianco and k_nr_icone = 1 then
 	if k_y < k_appon then
 		k_y = k_appon
 	end if
-	if	k_x = k_start_x then
-//		k_y += k_height * 0.3 //+ kpb_height
-		r_sep2.x = k_x  - k_st_x_delta; r_sep2.y = k_y - r_sep2.height //- k_height * 0.1
-		r_sep2.visible = true
-		k_y += k_height * 0.1 //+ kpb_height
-	else
-		r_sep2.visible = false
-	end if
+	u_resize_set_sep(r_sep2, k_x, k_y, k_start_x, k_st_x_delta, k_height)
 else
 	r_sep2.visible = false
 end if
-if pb_1.enabled then
+
+if u_resize_set_pb(pb_1, st_1, k_nr_icone, k_x, k_y, k_start_x, k_st_width, k_st_y, k_st_x_delta,kpb_width, k_height) then
 	k_spazio_bianco = true
-	pb_1.x = k_x
-	pb_1.y = k_y 
-	st_1.visible = cbx_txt.checked
-	st_1.width = k_st_width
-	st_1.x = k_x - k_st_x_delta
-	st_1.y = pb_1.y + k_st_y
-	k_nr_icone --
-	if k_nr_icone > 0 then
-		k_x += k_st_width + kpb_width
-	else
-		k_x = k_start_x
-		k_y += k_height //+ kpb_height
-		k_nr_icone = this.width / k_st_width 
-	end if
-else
-	st_1.visible = false
 end if
-pb_1.visible = pb_1.enabled 
-if pb_2.enabled then
+if u_resize_set_pb(pb_2, st_2, k_nr_icone, k_x, k_y, k_start_x, k_st_width, k_st_y, k_st_x_delta,kpb_width, k_height) then
 	k_spazio_bianco = true
-	pb_2.x = k_x
-	pb_2.y = k_y 
-	st_2.visible = cbx_txt.checked
-	st_2.width= k_st_width
-	st_2.x = k_x - k_st_x_delta
-	st_2.y = pb_2.y + k_st_y
-	k_nr_icone --
-	if k_nr_icone > 0 then
-		k_x += k_st_width + kpb_width
-	else
-		k_x = k_start_x
-		k_y += k_height //+ kpb_height
-		k_nr_icone = this.width / k_st_width 
-	end if
-else
-	st_2.visible = false
 end if
-pb_2.visible = pb_2.enabled 
-if pb_3.enabled then
+if u_resize_set_pb(pb_3, st_3, k_nr_icone, k_x, k_y, k_start_x, k_st_width, k_st_y, k_st_x_delta,kpb_width, k_height) then
 	k_spazio_bianco = true
-	pb_3.x = k_x
-	pb_3.y = k_y
-	st_3.visible = cbx_txt.checked
-	st_3.width= k_st_width
-	st_3.x = k_x - k_st_x_delta
-	st_3.y = pb_3.y + k_st_y
-	k_nr_icone --
-	if k_nr_icone > 0 then
-		k_x += k_st_width + kpb_width
-	else
-		k_x = k_start_x
-		k_y += k_height //+ kpb_height
-		k_nr_icone = this.width / k_st_width 
-	end if
-else
-	st_3.visible = false
 end if
-pb_3.visible = pb_3.enabled 
-if pb_4.enabled then
+if u_resize_set_pb(pb_4, st_4, k_nr_icone, k_x, k_y, k_start_x, k_st_width, k_st_y, k_st_x_delta,kpb_width, k_height) then
 	k_spazio_bianco = true
-	pb_4.x = k_x
-	pb_4.y = k_y
-	st_4.visible = cbx_txt.checked
-	st_4.width= k_st_width
-	st_4.x = k_x - k_st_x_delta
-	st_4.y = pb_4.y + k_st_y
-	k_nr_icone --
-	if k_nr_icone > 0 then
-		k_x += k_st_width + kpb_width
-	else
-		k_x = k_start_x
-		k_y += k_height //+ kpb_height
-		k_nr_icone = this.width / k_st_width 
-	end if
-else
-	st_4.visible = false
 end if
-pb_4.visible = pb_4.enabled 
-if pb_5.enabled then
+if u_resize_set_pb(pb_5, st_5, k_nr_icone, k_x, k_y, k_start_x, k_st_width, k_st_y, k_st_x_delta,kpb_width, k_height) then
 	k_spazio_bianco = true
-	pb_5.x = k_x
-	pb_5.y = k_y
-	st_5.visible = cbx_txt.checked
-	st_5.width= k_st_width
-	st_5.x = k_x - k_st_x_delta
-	st_5.y = pb_5.y + k_st_y
-	k_nr_icone --
-	if k_nr_icone > 0 then
-		k_x += k_st_width + kpb_width
-	else
-		k_x = k_start_x
-		k_y += k_height //+ kpb_height
-		k_nr_icone = this.width / k_st_width 
-	end if
-else
-	st_5.visible = false
 end if
-pb_5.visible = pb_5.enabled 
-if pb_6.enabled then
+if u_resize_set_pb(pb_6, st_6, k_nr_icone, k_x, k_y, k_start_x, k_st_width, k_st_y, k_st_x_delta,kpb_width, k_height) then
 	k_spazio_bianco = true
-	pb_6.x = k_x
-	pb_6.y = k_y
-	st_6.visible = cbx_txt.checked
-	st_6.width= k_st_width
-	st_6.x = k_x - k_st_x_delta
-	st_6.y = pb_6.y + k_st_y
-	k_nr_icone --
-	if k_nr_icone > 0 then
-		k_x += k_st_width + kpb_width
-	else
-		k_x = k_start_x
-		k_y += k_height //+ kpb_height
-		k_nr_icone = this.width / k_st_width 
-	end if
-else
-	st_6.visible = false
 end if
-pb_6.visible = pb_6.enabled 
-if pb_7.enabled then
+if u_resize_set_pb(pb_7, st_7, k_nr_icone, k_x, k_y, k_start_x, k_st_width, k_st_y, k_st_x_delta,kpb_width, k_height) then
 	k_spazio_bianco = true
-	pb_7.x = k_x
-	pb_7.y = k_y
-	st_7.visible = cbx_txt.checked
-	st_7.width= k_st_width
-	st_7.x = k_x - k_st_x_delta
-	st_7.y = pb_7.y + k_st_y
-	k_nr_icone --
-	if k_nr_icone > 0 then
-		k_x += k_st_width + kpb_width
-	else
-		k_x = k_start_x
-		k_y += k_height //+ kpb_height
-		k_nr_icone = this.width / k_st_width 
-	end if
-else
-	st_7.visible = false
 end if
 
-
-this.setredraw(true)
+//this.setredraw(true)
 
 end subroutine
+
+public subroutine u_resize ();//
+u_resize_1( )
+
+end subroutine
+
+private function boolean u_toolbar_lib_set ();//
+boolean k_return 
+
+//--- Inizio TOOLS LIB1-LIB10
+//if pb_l1.visible <> (ki_menu.m_strumenti.m_fin_gest_libero1.enabled and ki_menu.m_strumenti.m_fin_gest_libero1.visible) &
+//		or 	st_l1.text <> left(ki_menu.m_strumenti.m_fin_gest_libero1.toolbaritemtext, (pos(ki_menu.m_strumenti.m_fin_gest_libero1.toolbaritemtext, ",")) - 1) &
+//		or pb_l2.visible <> (ki_menu.m_strumenti.m_fin_gest_libero2.enabled and ki_menu.m_strumenti.m_fin_gest_libero2.visible) &
+//		or	st_l2.text <> left(ki_menu.m_strumenti.m_fin_gest_libero2.toolbaritemtext, (pos(ki_menu.m_strumenti.m_fin_gest_libero1.toolbaritemtext, ",")) - 1) &
+//		or pb_l3.visible <> (ki_menu.m_strumenti.m_fin_gest_libero3.enabled and ki_menu.m_strumenti.m_fin_gest_libero3.visible) &
+//		or	st_l3.text <> left(ki_menu.m_strumenti.m_fin_gest_libero3.toolbaritemtext, (pos(ki_menu.m_strumenti.m_fin_gest_libero1.toolbaritemtext, ",")) - 1) &
+//		or pb_l4.visible <> (ki_menu.m_strumenti.m_fin_gest_libero4.enabled and ki_menu.m_strumenti.m_fin_gest_libero4.visible) &
+//		or	st_l4.text <> left(ki_menu.m_strumenti.m_fin_gest_libero4.toolbaritemtext, (pos(ki_menu.m_strumenti.m_fin_gest_libero1.toolbaritemtext, ",")) - 1) &
+//		or pb_l5.visible <> (ki_menu.m_strumenti.m_fin_gest_libero5.enabled and ki_menu.m_strumenti.m_fin_gest_libero5.visible) &
+//		or	st_l5.text <> left(ki_menu.m_strumenti.m_fin_gest_libero5.toolbaritemtext, (pos(ki_menu.m_strumenti.m_fin_gest_libero1.toolbaritemtext, ",")) - 1) &
+//		or pb_l6.visible <> (ki_menu.m_strumenti.m_fin_gest_libero6.enabled and ki_menu.m_strumenti.m_fin_gest_libero6.visible) &
+//		or 	st_l6.text <> left(ki_menu.m_strumenti.m_fin_gest_libero6.toolbaritemtext, (pos(ki_menu.m_strumenti.m_fin_gest_libero1.toolbaritemtext, ",")) - 1) &
+//		or pb_l8.visible <> (ki_menu.m_strumenti.m_fin_gest_libero8.enabled and ki_menu.m_strumenti.m_fin_gest_libero8.visible) &
+//		or 	st_l8.text <> left(ki_menu.m_strumenti.m_fin_gest_libero8.toolbaritemtext, (pos(ki_menu.m_strumenti.m_fin_gest_libero1.toolbaritemtext, ",")) - 1) &
+//		or pb_l9.visible <> (ki_menu.m_strumenti.m_fin_gest_libero9.enabled and ki_menu.m_strumenti.m_fin_gest_libero9.visible) &
+//		or	st_l9.text <> left(ki_menu.m_strumenti.m_fin_gest_libero9.toolbaritemtext, (pos(ki_menu.m_strumenti.m_fin_gest_libero1.toolbaritemtext, ",")) - 1) &
+//		or pb_l10.visible <> (ki_menu.m_strumenti.m_fin_gest_libero10.enabled and ki_menu.m_strumenti.m_fin_gest_libero10.visible) &
+//		or	st_l10.text <> left(ki_menu.m_strumenti.m_fin_gest_libero10.toolbaritemtext, (pos(ki_menu.m_strumenti.m_fin_gest_libero1.toolbaritemtext, ",")) - 1) &
+//		or pb_l71.visible <> (ki_menu.m_strumenti.m_fin_gest_libero7.libero1.enabled and ki_menu.m_strumenti.m_fin_gest_libero7.libero1.visible) &
+//		or	st_l71.text <> left(ki_menu.m_strumenti.m_fin_gest_libero7.libero1.toolbaritemtext, (pos(ki_menu.m_strumenti.m_fin_gest_libero1.toolbaritemtext, ",")) - 1) &
+//		or pb_l72.visible <> (ki_menu.m_strumenti.m_fin_gest_libero7.libero2.enabled and ki_menu.m_strumenti.m_fin_gest_libero7.libero2.visible) &
+//		or	st_l72.text <> left(ki_menu.m_strumenti.m_fin_gest_libero7.libero2.toolbaritemtext, (pos(ki_menu.m_strumenti.m_fin_gest_libero1.toolbaritemtext, ",")) - 1) &
+//		or pb_l73.visible <> (ki_menu.m_strumenti.m_fin_gest_libero7.libero3.enabled and ki_menu.m_strumenti.m_fin_gest_libero7.libero3.visible) &
+//		or	st_l73.text <> left(ki_menu.m_strumenti.m_fin_gest_libero7.libero3.toolbaritemtext, (pos(ki_menu.m_strumenti.m_fin_gest_libero1.toolbaritemtext, ",")) - 1) &
+//		or pb_l74.visible <> (ki_menu.m_strumenti.m_fin_gest_libero7.libero4.enabled and ki_menu.m_strumenti.m_fin_gest_libero7.libero4.visible) &
+//		or 	st_l74.text <> left(ki_menu.m_strumenti.m_fin_gest_libero7.libero4.toolbaritemtext, (pos(ki_menu.m_strumenti.m_fin_gest_libero1.toolbaritemtext, ",")) - 1) &
+//		or pb_l75.visible <> (ki_menu.m_strumenti.m_fin_gest_libero7.libero5.enabled and ki_menu.m_strumenti.m_fin_gest_libero7.libero5.visible) &
+//		or	st_l75.text <> left(ki_menu.m_strumenti.m_fin_gest_libero7.libero5.toolbaritemtext, (pos(ki_menu.m_strumenti.m_fin_gest_libero1.toolbaritemtext, ",")) - 1) then
+
+	k_return = u_toolbar_lib_set_1( )
+	
+//end if
+
+return k_return
+end function
+
+private function boolean u_toolbar_set_pb (ref picturebutton apb_1, readonly menu amenuitem_1, ref statictext ast_1);//
+//--- Imposta nel picture-button i dati dall'item del menu 
+//
+boolean k_return
+
+
+if apb_1.visible <> (amenuitem_1.enabled and (amenuitem_1.toolbaritemvisible or amenuitem_1.visible)) &
+		or 	apb_1.powertiptext <> mid(amenuitem_1.toolbaritemtext, (pos(amenuitem_1.toolbaritemtext, ",")) + 1) then
+
+	k_return = true
+
+	apb_1.visible = (amenuitem_1.enabled and (amenuitem_1.toolbaritemvisible or amenuitem_1.visible)) //visible
+	apb_1.enabled = amenuitem_1.enabled
+	apb_1.picturename = amenuitem_1.toolbaritemname
+	apb_1.disabledname = amenuitem_1.toolbaritemname
+//	k_pos = pos(amenuitem_1.toolbaritemtext, ",")
+	apb_1.powertiptext = mid(amenuitem_1.toolbaritemtext, (pos(amenuitem_1.toolbaritemtext, ",")) + 1)
+	ast_1.text = left(amenuitem_1.toolbaritemtext, (pos(amenuitem_1.toolbaritemtext, ",")) - 1)
+	
+end if
+	
+return k_return
+
+end function
+
+private function boolean u_toolbar_lib_set_1 ();//
+boolean k_return, k_changed
+
+
+//--- TOOLSBAR FUNZIONI DINAMICHE LIB1-LIB10
+k_changed = u_toolbar_set_pb(pb_l1, ki_menu.m_strumenti.m_fin_gest_libero1, st_l1)
+if k_changed then k_return = true
+k_changed = u_toolbar_set_pb(pb_l2, ki_menu.m_strumenti.m_fin_gest_libero2, st_l2)
+if k_changed then k_return = true
+k_changed = u_toolbar_set_pb(pb_l3, ki_menu.m_strumenti.m_fin_gest_libero3, st_l3)
+if k_changed then k_return = true
+k_changed = u_toolbar_set_pb(pb_l4, ki_menu.m_strumenti.m_fin_gest_libero4, st_l4)
+if k_changed then k_return = true
+k_changed = u_toolbar_set_pb(pb_l5, ki_menu.m_strumenti.m_fin_gest_libero5, st_l5)
+if k_changed then k_return = true
+k_changed = u_toolbar_set_pb(pb_l6, ki_menu.m_strumenti.m_fin_gest_libero6, st_l6)
+if k_changed then k_return = true
+k_changed = u_toolbar_set_pb(pb_l8, ki_menu.m_strumenti.m_fin_gest_libero8, st_l8)
+if k_changed then k_return = true
+k_changed = u_toolbar_set_pb(pb_l9, ki_menu.m_strumenti.m_fin_gest_libero9, st_l9)
+if k_changed then k_return = true
+k_changed = u_toolbar_set_pb(pb_l10, ki_menu.m_strumenti.m_fin_gest_libero10, st_l10)
+if k_changed then k_return = true
+
+k_changed = u_toolbar_set_pb(pb_l71, ki_menu.m_strumenti.m_fin_gest_libero7.libero1, st_l71)
+if k_changed then k_return = true
+k_changed = u_toolbar_set_pb(pb_l72, ki_menu.m_strumenti.m_fin_gest_libero7.libero2, st_l72)
+if k_changed then k_return = true
+k_changed = u_toolbar_set_pb(pb_l73, ki_menu.m_strumenti.m_fin_gest_libero7.libero3, st_l73)
+if k_changed then k_return = true
+k_changed = u_toolbar_set_pb(pb_l74, ki_menu.m_strumenti.m_fin_gest_libero7.libero4, st_l74)
+if k_changed then k_return = true
+k_changed = u_toolbar_set_pb(pb_l75, ki_menu.m_strumenti.m_fin_gest_libero7.libero5, st_l75)
+if k_changed then k_return = true
+
+return k_return
+
+
+end function
+
+private function boolean u_toolbar_set ();//
+boolean k_return, k_changed
+
+//--- Funzioni NAVIGATORE/CLIENTI/...
+k_changed = u_toolbar_set_pb(pb_1,  ki_menu.m_magazzino.m_mag_navigatore, st_1)
+if k_changed then k_return = true
+k_changed = u_toolbar_set_pb(pb_2,  ki_menu.m_archivi.m_anagrafiche.m_lista_anag, st_2)
+if k_changed then k_return = true
+k_changed = u_toolbar_set_pb(pb_3,  ki_menu.m_magazzino.m_pianidilavorazione, st_3)
+if k_changed then k_return = true
+k_changed = u_toolbar_set_pb(pb_4,  ki_menu.m_archivi.m_listino, st_4)
+if k_changed then k_return = true
+k_changed = u_toolbar_set_pb(pb_5,  ki_menu.m_archivi.m_contratti, st_5)
+if k_changed then k_return = true
+k_changed = u_toolbar_set_pb(pb_6,  ki_menu.m_interrogazioni.m_report, st_6)
+if k_changed then k_return = true
+k_changed = u_toolbar_set_pb(pb_7,  ki_menu.m_stat.m_st_produz, st_7)
+if k_changed then k_return = true
+
+//pb_1.enabled = ki_menu.m_magazzino.m_mag_navigatore.enabled
+//pb_1.picturename = ki_menu.m_magazzino.m_mag_navigatore.toolbaritemname
+//k_pos = pos(ki_menu.m_magazzino.m_mag_navigatore.toolbaritemtext, ",")
+//pb_1.powertiptext = mid(ki_menu.m_magazzino.m_mag_navigatore.toolbaritemtext, k_pos + 1)
+//	st_1.text = left(ki_menu.m_magazzino.m_mag_navigatore.toolbaritemtext, k_pos - 1)
+
+return k_return
+end function
+
+private function boolean u_toolbar_t_set ();//
+boolean k_return, k_changed
+
+
+//--- Inizio TROVA/FILTRO...
+k_changed = u_toolbar_set_pb(pb_t1,  ki_menu.m_trova.m_fin_cerca, st_t1)
+if k_changed then k_return = true
+k_changed = u_toolbar_set_pb(pb_t2,  ki_menu.m_trova.m_fin_ordina, st_t2)
+if k_changed then k_return = true
+k_changed = u_toolbar_set_pb(pb_t3,  ki_menu.m_filtro, st_t3)
+if k_changed then k_return = true
+
+//pb_t1.enabled = ki_menu.m_trova.m_fin_cerca.enabled
+//pb_t1.visible = ki_menu.m_trova.m_fin_cerca.enabled //visible
+//pb_t1.picturename = ki_menu.m_trova.m_fin_cerca.toolbaritemname
+//pb_t1.disabledname = ki_menu.m_trova.m_fin_cerca.toolbaritemname
+//k_pos = pos(ki_menu.m_trova.m_fin_cerca.toolbaritemtext, ",")
+//pb_t1.powertiptext = mid(ki_menu.m_trova.m_fin_cerca.toolbaritemtext, k_pos + 1)
+//	st_t1.text = left(ki_menu.m_trova.m_fin_cerca.toolbaritemtext, k_pos - 1)
+
+return k_return
+end function
+
+private function boolean u_toolbar_fin_set ();//
+boolean k_return, k_changed
+
+
+//--- Aggiorna Lista / Stampa
+k_changed = u_toolbar_set_pb(pb_8, ki_menu.m_finestra.m_fin_stampa, st_8)
+if k_changed then k_return = true
+k_changed = u_toolbar_set_pb(pb_9, ki_menu.m_finestra.m_aggiornalista, st_9)
+if k_changed then k_return = true
+k_changed = u_toolbar_set_pb(pb_10, ki_menu.m_finestra.m_gestione.m_fin_conferma, st_10)
+if k_changed then k_return = true
+k_changed = u_toolbar_set_pb(pb_11, ki_menu.m_finestra.m_gestione.m_fin_visualizza, st_11)
+if k_changed then k_return = true
+k_changed = u_toolbar_set_pb(pb_12, ki_menu.m_finestra.m_gestione.m_fin_modifica, st_12)
+if k_changed then k_return = true
+k_changed = u_toolbar_set_pb(pb_13, ki_menu.m_finestra.m_gestione.m_fin_inserimento, st_13)
+if k_changed then k_return = true
+//k_changed = u_toolbar_set_pb(pb_14, ki_menu.m_finestra.m_gestione.m_fin_elimina, st_14)
+//if k_changed then k_return = true
+
+
+//pb_8.enabled = ki_menu.m_finestra.m_fin_stampa.enabled
+//pb_8.picturename = ki_menu.m_finestra.m_fin_stampa.toolbaritemname
+//k_pos = pos(ki_menu.m_finestra.m_fin_stampa.toolbaritemtext, ",")
+//pb_8.powertiptext = mid(ki_menu.m_finestra.m_fin_stampa.toolbaritemtext, k_pos + 1)
+//st_8.text = left(ki_menu.m_finestra.m_fin_stampa.toolbaritemtext, k_pos - 1)
+////if cbx_txt.checked then
+//	st_8.text = left(ki_menu.m_finestra.m_fin_stampa.toolbaritemtext, k_pos - 1)
+////end if
+
+return k_return
+end function
+
+private function boolean u_resize_set_pb (ref picturebutton apb_1, ref statictext ast_1, ref integer a_nr_icone, ref integer k_x, ref integer k_y, integer k_start_x, integer k_st_width, integer k_st_y, integer k_st_x_delta, integer kpb_width, integer k_height);//
+//--- posiziona PB e ST del menu in x e y
+//
+//
+boolean k_spazio_bianco = false
+
+
+//--- INIZIO FUNZIONI TIPO STAMPA 
+//pb_7.visible = pb_7.enabled 
+if apb_1.visible then
+	k_spazio_bianco = true
+	apb_1.x = k_x
+	apb_1.y = k_y
+	ast_1.visible = cbx_txt.checked
+	ast_1.width = k_st_width
+	ast_1.x = k_x - k_st_x_delta
+	ast_1.y = apb_1.y + k_st_y
+	a_nr_icone --
+	if a_nr_icone > 0 then
+		k_x += k_st_width + kpb_width
+	else
+		k_x = k_start_x
+		k_y += k_height //+ kpb_height
+		a_nr_icone = this.width / k_st_width 
+	end if
+else
+	ast_1.visible = false
+end if
+
+return k_spazio_bianco
+
+
+end function
+
+private function boolean u_resize_set_sep (ref roundrectangle ar_sep, ref integer k_x, ref integer k_y, integer k_start_x, integer k_st_x_delta, integer k_height);//
+//--- posiziona Separatore del menu in x e y
+//
+//
+
+
+	if	k_x = k_start_x then
+//		k_y += k_height * 0.3 //+ kpb_height
+		ar_sep.x = k_x  - k_st_x_delta
+		ar_sep.y = k_y - ar_sep.height //- k_height * 0.1
+		ar_sep.visible = true
+		k_y += k_height * 0.1 //+ kpb_height
+	else
+		ar_sep.visible = false
+	end if
+	
+	
+return ar_sep.visible
+
+
+end function
 
 private function boolean u_set_ki_menu ();//
 boolean k_return = false
@@ -1484,11 +926,16 @@ w_g_tab kw_g_tab
 kw_g_tab = kGuf_data_base.prendi_win_attiva( )
 if isvalid(kw_g_tab) then
 	if NOT isnull(kw_g_tab) then
-		ki_menu = kw_g_tab.ki_menu
+		if NOT isnull(kw_g_tab.ki_menu) and isvalid(kw_g_tab.ki_menu) then 
+			ki_menu = kw_g_tab.ki_menu
+		else
+			ki_menu = kw_g_tab.menuid
+		end if
 	end if
 else
 	ki_menu = w_main.menuid
 end if
+
 
 if isvalid(ki_menu) then
 	k_return = true
@@ -1497,11 +944,6 @@ end if
 return k_return
 
 end function
-
-public subroutine u_resize ();//
-u_resize_1( )
-
-end subroutine
 
 on w_menu_tree.create
 int iCurrent
@@ -1782,7 +1224,7 @@ if not ki_exit_si and not kguo_g.kG_exit_si then
 			k_inizializza = false
 			ki_menu = w_main.ki_menu_0
 //---	rifà la toolbar!
-			w_main.ki_menu_0.reset_menu_all( )
+//			w_main.ki_menu_0.reset_menu_all( )
 			w_main.ki_menu_0.u_imposta_window_menu()		
 		end if
 	end if

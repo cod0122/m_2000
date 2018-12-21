@@ -4012,6 +4012,7 @@ kst_esito.nome_oggetto = this.classname()
 
 		kuf1_barcode = create kuf_barcode
 		kuf1_armo = create kuf_armo
+		kuf1_e1_wo_f5548014 = create kuf_e1_wo_f5548014
 
 ////--- set durata del trattamento							
 		kst_tab_barcode.id_meca = kst_tab_meca.id
@@ -4042,6 +4043,7 @@ kst_esito.nome_oggetto = this.classname()
 	finally
 		if isvalid(kuf1_armo) then destroy kuf1_armo
 		if isvalid(kuf1_barcode) then destroy kuf1_barcode
+		if isvalid(kuf1_e1_wo_f5548014) then destroy kuf1_e1_wo_f5548014
 
 end try
 
@@ -4071,6 +4073,7 @@ kst_esito.nome_oggetto = this.classname()
 
 		kuf1_barcode = create kuf_barcode
 		kuf1_armo = create kuf_armo
+		kuf1_e1_wo_f5548014 = create kuf_e1_wo_f5548014
 
 //--- set num giri del trattamento							
 		kst_tab_barcode.id_meca = kst_tab_meca.id
@@ -4098,6 +4101,7 @@ kst_esito.nome_oggetto = this.classname()
 	finally
 		if isvalid(kuf1_armo) then destroy kuf1_armo
 		if isvalid(kuf1_barcode) then destroy kuf1_barcode
+		if isvalid(kuf1_e1_wo_f5548014) then destroy kuf1_e1_wo_f5548014
 
 end try
 

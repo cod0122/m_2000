@@ -11,8 +11,8 @@ end type
 end forward
 
 global type w_meca_1 from w_g_tab_3
-integer width = 1234
-integer height = 1364
+integer width = 658
+integer height = 804
 string title = "Lotto"
 long backcolor = 67108864
 boolean ki_toolbar_window_presente = true
@@ -502,24 +502,7 @@ if tab_1.tabpage_1.dw_1.rowcount() = 0 then
 				kist_tab_meca_orig.id = tab_1.tabpage_1.dw_1.object.id_meca[1]
 				kist_tab_meca_orig.aperto = tab_1.tabpage_1.dw_1.object.meca_aperto[1]
 
-////--- Imposta lo STATO del ADN da E1
-//				if ki_e1_enabled then
-//					try
-//						kuf1_e1_asn = create kuf_e1_asn
-//						kst_tab_e1_asn.waapid = string(tab_1.tabpage_1.dw_1.object.id_meca[1])
-//						kst_tab_e1_asn.wammcu = kkg.E1MCU
-//						kst1_tab_e1_asn[1] = kst_tab_e1_asn
-//						kuf1_e1_asn.u_get_stato(kst1_tab_e1_asn[])
-//						kst_tab_e1_asn = kst1_tab_e1_asn[1]
-//						tab_1.tabpage_1.dw_1.setitem(1, "wasrst", kst_tab_e1_asn.wasrst)
-//					catch (uo_exception kuo_exception)
-//						kuo_exception.messaggio_utente()
-//					finally
-//						if isvalid(kuf1_e1_asn) then destroy kuf1_e1_asn
-//					end try
-//				end if
 
-//				attiva_tasti()
 		end choose
 
 	end if
@@ -1868,7 +1851,7 @@ if kst_e1_anteprima.apid > " " then
 	if kst_e1_anteprima.apid <> kst_e1_anteprima_prec.apid then
 
 		kguo_sqlca_db_e1.u_db_connetti(tab_1.tabpage_8.dw_8)  // connette e fa transobject
-		tab_1.tabpage_8.dw_8.retrieve(kst_e1_anteprima.apid, kkg.E1MCU )
+		tab_1.tabpage_8.dw_8.retrieve(kst_e1_anteprima.apid, kguo_g.E1MCU )
 
 //---- azzera il flag delle modifiche
 		tab_1.tabpage_8.dw_8.ResetUpdate ( ) 

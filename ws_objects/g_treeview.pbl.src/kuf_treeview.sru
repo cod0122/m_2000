@@ -44,8 +44,9 @@ private kuf_certif_file kiuf_certif_file
 private kuf_certif kiuf_certif
 private kuf_clienti kiuf_clienti
 
-end variables
+public date ki_data_certif_da_st_da, ki_data_certif_da_st_a
 
+end variables
 forward prototypes
 public function boolean u_sicurezza (st_tab_treeview kst_tab_treeview)
 public function st_esito u_imposta_treeview_icone (ref treeview ktv_1, ref listview klv_1)
@@ -4409,6 +4410,9 @@ integer k_return = 0
 kuf_artr kuf1_artr
 
 kuf1_artr = create kuf_artr
+
+kuf1_artr.ki_data_certif_da_st_da = ki_data_certif_da_st_da
+kuf1_artr.ki_data_certif_da_st_a = ki_data_certif_da_st_a
 
 k_return = kuf1_artr.u_tree_riempi_treeview( ki_this, k_tipo_oggetto )
 
@@ -12423,8 +12427,9 @@ kst_treeview_data.handle = 0
 	if ast_treeview_data.handle > 0 then
 
 		kitv_tv1.getitem(ast_treeview_data.handle, ktvi_treeviewitem)
-		kst_treeview_data = ktvi_treeviewitem.data
-					
+		if classname(ktvi_treeviewitem.data) = "st_treeview_data" then 
+			kst_treeview_data = ktvi_treeviewitem.data
+		end if
 	else
 //--- se non esiste seleziono il ROOT
 		kst_treeview_data.handle = kitv_tv1.finditem(RootTreeItem!, 0)

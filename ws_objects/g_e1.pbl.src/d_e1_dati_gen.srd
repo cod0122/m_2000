@@ -48,14 +48,14 @@ table(column=(type=char(12) update=yes updatewhereclause=yes name=ehapid dbname=
         ,nvl(f4801.wasrst, '') as wasrst
         ,nvl(f4801.wadoco,0) as e1doco
         ,nvl(f4801.warorn,0) as e1rorn
-        ,(select nvl(F4211.sddoco,0) from PRODDTA.F4211 
+        ,(select nvl(F4211.sddoco,0) from F4211 
            where    F5547013.EHAPID = F4211.sdir05
 							  and F4211.sdnxtr = '532'
 							  and F4211.sdlttr != '980'
 							  and F4211.sdlnty = 'S'
 							  and F4211.sdmcu = :k_mcu
             ) as f4211_e1rorn
-   FROM PRODDTA.F5547013 left outer join PRODDTA.F4801_ADT f4801 on 
+   FROM F5547013 left outer join F4801_ADT f4801 on 
                      F5547013.EHAPID = f4801.waapid and F5547013.ehmcu =  f4801.wamcu 
 where 
   F5547013.EHAPID = :k_apid  and F5547013.ehmcu = :k_mcu     

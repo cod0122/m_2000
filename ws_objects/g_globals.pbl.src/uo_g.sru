@@ -88,13 +88,16 @@ public st_tab_menu_window_oggetti kGst_tab_menu_window_oggetti[]
 //--- Uscita dalla PROCEDURA
 public boolean kG_exit_si = false
 
+//--- E1: Codice della facility di Minerbio (         270)
+public string E1MCU="         270"
+
+
 ////--- Array per il Docking
 //public st_w_docking kGst_w_Docking
 ////--- Nome di registro per le window modalità Docking (aggiungere il codice utente)
 //public string kG_DockingRegister   
 
 end variables
-
 forward prototypes
 public subroutine set_attiva_suoni (boolean a_attiva_suoni)
 public subroutine set_salva_liste (boolean a_salva_liste)

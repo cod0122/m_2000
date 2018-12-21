@@ -14,6 +14,7 @@ global type w_wm_pklist from w_g_tab_3
 integer width = 2651
 integer height = 2176
 string title = "Packing List"
+string pointer = "Arrow!"
 boolean ki_toolbar_window_presente = true
 boolean ki_fai_nuovo_dopo_update = false
 boolean ki_fai_nuovo_dopo_insert = false
@@ -93,12 +94,9 @@ long k_riga, k_rc
 st_tab_wm_pklist kst_tab_wm_pklist
 st_tab_wm_pklist_righe kst_tab_wm_pklist_righe
 st_esito kst_esito
-pointer kpointer_1
 
 
-kpointer_1 = setpointer(hourglass!) 
-
-
+setpointer(kkg.pointer_attesa) 
 
 //=== Aggiorna, se modificato, la TAB_1 o TAB_4	
 if tab_1.tabpage_1.dw_1.rowcount( ) > 0 and (tab_1.tabpage_1.dw_1.getnextmodified(0, primary!) > 0	or tab_1.tabpage_4.dw_4.getnextmodified(0, primary!) > 0 or  tab_1.tabpage_4.dw_4.deletedcount() > 0) then
@@ -233,7 +231,7 @@ if tab_1.tabpage_1.dw_1.rowcount( ) > 0 and (tab_1.tabpage_1.dw_1.getnextmodifie
 	
 end if
 
-setpointer(kpointer_1)
+setpointer(kkg.pointer_default)
 
 //=== errore : 0=tutto OK o NON RICHIESTA; 1=errore grave I-O;
 //=== 		 : 2=LIBERO
@@ -726,14 +724,13 @@ st_tab_wm_pklist kst_tab_wm_pklist
 st_tab_clienti kst_tab_clienti
 st_esito kst_esito
 uo_exception kuo_exception
-pointer oldpointer
 kuf_base kuf1_base
 kuf_utility kuf1_utility
 
 
 
 //=== Puntatore Cursore da attesa.....
-oldpointer = SetPointer(HourGlass!)
+SetPointer(kkg.pointer_attesa)
 
 kuo_exception = create uo_exception 
 
@@ -775,7 +772,7 @@ if tab_1.tabpage_1.dw_1.rowcount() = 0 then
 		choose case k_rc
 
 			case is < 0		
-				SetPointer(oldpointer)
+				SetPointer(kkg.pointer_default)
 				kuo_exception.set_tipo( kuo_exception.kk_st_uo_exception_tipo_err_int )
 				kuo_exception.setmessage(  &
 					"Mi spiace ma si è verificato un errore interno al programma~n~r" + &
@@ -789,7 +786,7 @@ if tab_1.tabpage_1.dw_1.rowcount() = 0 then
 				if ki_st_open_w.flag_modalita = kkg_flag_modalita.modifica then
 					ki_st_open_w.flag_modalita = kkg_flag_modalita.inserimento
 
-					SetPointer(oldpointer)
+					SetPointer(kkg.pointer_default)
 					kuo_exception.set_tipo( kuo_exception.kk_st_uo_exception_tipo_not_fnd )
 					kuo_exception.setmessage(  &
 						"Mi spiace ma il Documento non è in archivio ~n~r" + &
@@ -806,7 +803,7 @@ if tab_1.tabpage_1.dw_1.rowcount() = 0 then
 				kist_tab_wm_pklist_orig.id_wm_pklist = tab_1.tabpage_1.dw_1.getitemnumber(1, "id_wm_pklist")
 				
 				if ki_st_open_w.flag_modalita = kkg_flag_modalita.inserimento then
-					SetPointer(oldpointer)
+					SetPointer(kkg.pointer_default)
 					kuo_exception.set_tipo( kuo_exception.kk_st_uo_exception_tipo_allerta )
 					kuo_exception.setmessage(  &
 						"Attenzione, il Documento è già in archivio ~n~r" + &
@@ -891,7 +888,7 @@ if isvalid(kuo_exception) then destroy kuo_exception
 
 attiva_tasti()
 
-SetPointer(oldpointer)
+SetPointer(kkg.pointer_default)
 
 return "0"
 
@@ -2032,10 +2029,9 @@ private subroutine call_m_r_f ();//
 //
 st_tab_wm_pklist kist_tab_wm_pklist
 st_tab_clienti kst_tab_clienti
-pointer kp_oldpointer  // Declares a pointer variable
 
 
-kp_oldpointer = SetPointer(HourGlass!)
+SetPointer(kkg.pointer_attesa)
 
 
 	kist_tab_wm_pklist.clie_1 = tab_1.tabpage_1.dw_1.getitemnumber( 1, "clie_1")
@@ -2044,7 +2040,7 @@ kp_oldpointer = SetPointer(HourGlass!)
 		kiuf_clienti.elenco_m_r_f_3( kst_tab_clienti )
 	end if
 						
-SetPointer(kp_oldpointer)
+SetPointer(kkg.pointer_default)
 
 	
 
@@ -3073,7 +3069,6 @@ end type
 
 type dw_riga from uo_d_std_1 within w_wm_pklist
 event u_aggiungi ( )
-event u_posiziona ( )
 event u_visualizza ( )
 event u_intemchanged_riga_magazzino ( string k_campo )
 event u_modifica ( )
@@ -3106,16 +3101,6 @@ event u_aggiungi();//===========================================================
 
 	this.object.b_aggiungi.visible = true 
 	this.object.b_aggiorna.visible = false 
-
-
-end event
-
-event u_posiziona();//
-//--- posizione
-//
-this.x = parent.width / 4
-this.y = parent.height / 4
-//
 
 
 end event
@@ -3251,31 +3236,33 @@ end if
 
 end event
 
-event constructor;call super::constructor;//
-int k_rc
-datawindowchild  kdwc_1, kdwc_2
-
-
-	if ki_st_open_w.flag_modalita <> kkg_flag_modalita.visualizzazione then
-		
-
-		tab_1.tabpage_1.dw_1.getchild("gruppo", kdwc_1)
-		kdwc_1.settransobject(sqlca)
-		kdwc_1.reset() 
-		tab_1.tabpage_1.dw_1.getchild("gruppo_1", kdwc_2)
-		kdwc_2.settransobject(sqlca)
-
-		kdwc_1.retrieve()
-		kdwc_1.SetSort("codice A")
-		kdwc_1.sort( )
-		kdwc_1.insertrow(1)
-		
-		k_rc = kdwc_2.RowsCopy(1, kdwc_1.RowCount(), Primary!, kdwc_2, 1, Primary!)
-	
-	end if
-	
-
-	this.postevent( "u_posiziona")
+event constructor;call super::constructor;////
+//int k_rc
+//datawindowchild  kdwc_1, kdwc_2
+//
+//
+//	if ki_st_open_w.flag_modalita <> kkg_flag_modalita.visualizzazione then
+//		
+//
+//		tab_1.tabpage_1.dw_1.getchild("gruppo", kdwc_1)
+//		kdwc_1.settransobject(sqlca)
+//		kdwc_1.reset() 
+//		tab_1.tabpage_1.dw_1.getchild("gruppo_1", kdwc_2)
+//		kdwc_2.settransobject(sqlca)
+//
+//		kdwc_1.retrieve()
+//		kdwc_1.SetSort("codice A")
+//		kdwc_1.sort( )
+//		kdwc_1.insertrow(1)
+//		
+//		k_rc = kdwc_2.RowsCopy(1, kdwc_1.RowCount(), Primary!, kdwc_2, 1, Primary!)
+//	
+//	end if
+//	
+//
+//	this.postevent( "u_posiziona")
+this.x = parent.width / 4
+this.y = parent.height / 4
 
 end event
 

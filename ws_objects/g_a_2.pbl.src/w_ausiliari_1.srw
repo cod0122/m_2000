@@ -615,6 +615,14 @@ kuf_base kuf1_base
 			else
 				tab_1.tabpage_7.dw_7.setitem(k_riga, "data_fin", relativedate(tab_1.tabpage_7.dw_7.getitemdate(k_riga, "data_ini"),365))
 			end if
+			if tab_1.tabpage_7.dw_7.getitemnumber(k_riga, "tminute") > 0 then
+			else
+				tab_1.tabpage_7.dw_7.setitem(k_riga,  "tminute", 0)
+			end if
+			if tab_1.tabpage_7.dw_7.getitemnumber(k_riga, "tsecond") > 0 then
+			else
+				tab_1.tabpage_7.dw_7.setitem(k_riga,  "tsecond", 0)
+			end if
 		
 			k_riga = tab_1.tabpage_7.dw_7.getnextmodified(k_riga, primary!)
 		else

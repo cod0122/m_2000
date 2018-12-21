@@ -33,7 +33,6 @@ private kuf_armo kiuf_armo
 
 
 end variables
-
 forward prototypes
 public subroutine meca_if_isnull (st_tab_meca kst_tab_meca)
 public function integer u_tree_riempi_listview_testa (ref kuf_treeview kuf1_treeview, readonly string k_tipo_oggetto)
@@ -812,6 +811,7 @@ try
 
 	k_data_da = date(0)
 	k_data_a = date(0)
+
 	
 //--- Periodo di estrazione, se la data e' a zero allora anno nel num_int
 	kst_treeview_data_any = kst_treeview_data.struttura
@@ -5729,7 +5729,7 @@ public function integer u_tree_riempi_treeview_testa_e1asn (ref kuf_treeview kuf
 //--- Visualizza Treeview
 //
 integer k_return = 0, k_rc
-long k_handle_item = 0, k_handle_item_padre = 0, k_handle_item_figlio = 0, k_find
+long k_handle_item = 0, k_handle_item_padre = 0, k_handle_item_figlio = 0, k_find, k_tab_e1_asn_nrows
 integer k_ctr, k_pic_open, k_pic_close, k_mese, k_anno, k_pic_list
 string k_tipo_oggetto_padre, k_dataoggix, k_tipo_oggetto_figlio
 string k_query_select, k_query_where, k_query_order
@@ -5992,28 +5992,31 @@ try
 		kds_tree.SetTransObject(kguo_sqlca_db_magazzino)
 		k_righe = kds_tree.retrieve()		// Legge i record
 		if k_righe > 0 then
-//--- popola la taella solo con i Lotti da cercare			
+//--- popola la tabella solo con i Lotti da cercare			
 			for k_riga = 1 to k_righe
-				kst_tab_e1_asn[k_riga].wammcu = kkg.E1MCU
+				kst_tab_e1_asn[k_riga].wammcu = kguo_g.E1MCU
 				kst_tab_e1_asn[k_riga].waapid = string(kds_tree.getitemnumber(k_riga, 1)) //"meca_id"))
 			next
 //--- cerca lo stato del LOTTO 			
 			kuf1_e1_asn = create kuf_e1_asn
-//--- Get dello STATO del ASN su E1
-			kuf1_e1_asn.u_get_stato(kst_tab_e1_asn[])
+//--- Get dello STATO (e presenza) del ASN su E1
+			k_tab_e1_asn_nrows = kuf1_e1_asn.u_get_stato(kst_tab_e1_asn[])
+
+//--- popola il ds con gli STATI trovati dalla tabella
+			for k_riga = 1 to k_tab_e1_asn_nrows
+				k_find = kds_tree.find("#1 = " + trim(kst_tab_e1_asn[k_riga].waapid), 1, kds_tree.rowcount())
+				if k_find > 0 then
+					kds_tree.setitem(k_find, 26, kst_tab_e1_asn[k_riga].wasrst)  //"k_wasrst"
+				end if
+			next
+
 			
 //--- CICLO PRINCIPALE IMPOSTAZIONI TREEVIEW
 			for k_riga = 1 to k_righe
 				
-//--- rileva lo stato e la presenza del ASN	
-				k_esiste_asn = true
-				if kst_tab_e1_asn[k_riga].waapid > " " then
-					if kst_tab_e1_asn[k_riga].wasrst > " " then
-						k_find = kds_tree.find("#1 = " + trim(kst_tab_e1_asn[k_riga].waapid), 1, kds_tree.rowcount())
-						if k_find > 0 then
-							kds_tree.setitem(k_find, 26, kst_tab_e1_asn[k_riga].wasrst)  //"k_wasrst"
-						end if
-					end if
+//--- rileva la presenza del ASN	
+				if kds_tree.getitemstring(k_riga, 26) > " " then //"k_wasrst"
+					k_esiste_asn = true
 				else
 					k_esiste_asn = false
 				end if

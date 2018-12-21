@@ -152,8 +152,8 @@ end type
 end forward
 
 global type w_base_personale from w_g_tab_3
-integer width = 4110
-integer height = 1652
+integer width = 1829
+integer height = 780
 string title = "Proprietà Personali"
 long backcolor = 67108864
 string icon = "Form!"
@@ -367,18 +367,18 @@ kuf_armo kuf1_armo
 		k_riga = 1
 		if tab_1.tabpage_4.dw_4.getitemstatus( k_riga, 0, primary!) = DataModified! then
 		
-//--- controlla barcode 		
+//--- controllo codice barcode 		
 			kst_tab_base.dosimetro_ult_barcode = tab_1.tabpage_4.dw_4.getitemstring( k_riga, "dosimetro_ult_barcode") 
-			if len(trim(kst_tab_base.dosimetro_ult_barcode)) > 0 then
+			if trim(kst_tab_base.dosimetro_ult_barcode) > " " then
 				if left(kst_tab_base.dosimetro_ult_barcode, 2) <= "AA" and left(kst_tab_base.dosimetro_ult_barcode, 2) >= "ZZ" then
 					k_testo = trim(tab_1.tabpage_4.dw_4.object.dosimetro_ult_barcode_t.text)
-					k_return += tab_1.tabpage_1.text + ": Primi 2 caratteri non ammessi nel campo '" + k_testo + "', accetta solo da 'AA' a 'ZZ'" + "~n~r"
+					k_return += tab_1.tabpage_4.text + ": Primi 2 caratteri non ammessi nel campo '" + k_testo + "', accetta solo da 'AA' a 'ZZ'" + "~n~r"
 					k_errore = "2"
 					k_nr_errori++
 				end if
 				if not isnumber(trim(mid(kst_tab_base.dosimetro_ult_barcode,3,3))) then
 					k_testo = trim(tab_1.tabpage_4.dw_4.object.dosimetro_ult_barcode_t.text)
-					k_return += tab_1.tabpage_1.text + ": Ultimi 3 caratteri non ammessi nel campo '" + k_testo + "', accetta solo numeri 000 - 999" + "~n~r"
+					k_return += tab_1.tabpage_4.text + ": Ultimi 3 caratteri non ammessi nel campo '" + k_testo + "', accetta solo numeri 000 - 999" + "~n~r"
 					k_errore = "2"
 					k_nr_errori++
 				end if
@@ -386,69 +386,48 @@ kuf_armo kuf1_armo
 					k_rx = left(kst_tab_base.dosimetro_ult_barcode, 2) + string(integer(mid(kst_tab_base.dosimetro_ult_barcode,3,3)), "000")
 					tab_1.tabpage_4.dw_4.setitem( k_riga, "dosimetro_ult_barcode", k_rx) 
 				end if
-				
-				kst_tab_base.dosimetro_barcode_mask = tab_1.tabpage_4.dw_4.getitemstring( k_riga, "dosimetro_barcode_mask")
-				kst_tab_base.dosimetro_ult_barcode = tab_1.tabpage_4.dw_4.getitemstring( k_riga, "dosimetro_ult_barcode")
-				if len(trim(kst_tab_base.dosimetro_barcode_mask)) = 0 or isnull(kst_tab_base.dosimetro_barcode_mask) then kst_tab_base.dosimetro_barcode_mask = "DSM"
+			end if	
+			kst_tab_base.dosimetro_barcode_mask = tab_1.tabpage_4.dw_4.getitemstring( k_riga, "dosimetro_barcode_mask")
+			kst_tab_base.dosimetro_ult_barcode = tab_1.tabpage_4.dw_4.getitemstring( k_riga, "dosimetro_ult_barcode")
+			if len(trim(kst_tab_base.dosimetro_barcode_mask)) = 0 or isnull(kst_tab_base.dosimetro_barcode_mask) then kst_tab_base.dosimetro_barcode_mask = "DSM"
+			
+//--- controllo codice E1 		
+			kst_tab_base.e1mcu = tab_1.tabpage_4.dw_4.getitemstring( k_riga, "e1mcu") 
+			if trim(kst_tab_base.e1mcu) > " " then
+			else
+				k_testo = trim(tab_1.tabpage_4.dw_4.object.dosimetro_ult_barcode_t.text)
+				k_return += tab_1.tabpage_4.text + ": scegliere il codice E1" + "~n~r"
+				k_errore = "2"
+				k_nr_errori++
+			end if	
 
 //--- controlla periodo ORA LEGALE
-				kst_tab_base.oralegale_on = tab_1.tabpage_4.dw_4.object.oralegale_on[k_riga] 
-				kst_tab_base.oralegale_start = tab_1.tabpage_4.dw_4.object.oralegale_start[k_riga] 
-				kst_tab_base.oralegale_end = tab_1.tabpage_4.dw_4.object.oralegale_end[k_riga] 
-				kst_tab_base.anno = tab_1.tabpage_4.dw_4.object.anno[k_riga] 
-				
-				if kst_tab_base.oralegale_on = "S" then
-					if year(kst_tab_base.oralegale_start) < kst_tab_base.anno then
-						k_return += tab_1.tabpage_1.text + ": Impostare la data di Inizio dell'Ora Legale per l'anno " + string(kst_tab_base.anno) + "~n~r"
-						k_errore = "1"
-						k_nr_errori++
-					end if
-					if year(kst_tab_base.oralegale_end) < kst_tab_base.anno then
-						k_return += tab_1.tabpage_1.text + ": Impostare la data di Fine dell'Ora Legale per l'anno " + string(kst_tab_base.anno) + "~n~r"
-						k_errore = "1"
-						k_nr_errori++
-					end if
-					//--- l'anno deve essere uguale e le date congruenti
-					if year(kst_tab_base.oralegale_start) = year(kst_tab_base.oralegale_end) and kst_tab_base.oralegale_start < kst_tab_base.oralegale_end then
-					else
-						k_return += tab_1.tabpage_1.text + ": Periodo dell'Ora Legale non congruente, controllare le date di inizio e fine~n~r"
-						k_errore = "1"
-						k_nr_errori++
-					end if
-
-				end if
-				
-////--- controlla esistenza Barcode 
-//					try 
-//						kuf1_meca_dosim = create kuf_meca_dosim
-//						kuf1_armo = create kuf_armo
-//						kst_tab_armo.data_int = relativedate(kg_dataoggi, -90)
-//						kst_esito = get_id_meca_da_data(kst_tab_armo)  // becca il primo id lotto ad una certa data
-//						if kst_esito.esito = kkg_esito.ok then
-//							kst_tab_meca_dosim.barcode = trim(kst_tab_base.dosimetro_barcode_mask) + trim(kst_tab_base.dosimetro_ult_barcode )
-//							kst_tab_meca_dosim.id_meca = kst_tab_armo.id_meca
-//						
-//							if kuf1_meca_dosim.if_esiste(kst_tab_meca_dosim) then
-//								k_testo = trim(tab_1.tabpage_4.dw_4.object.dosimetro_ult_barcode_t.text)
-//								k_return += tab_1.tabpage_1.text + ": Barcode gia' presente in tabella, campo '" + k_testo + "', cambiare il valore " + "~n~r"
-//								k_errore = "2"
-//								k_nr_errori++
-//							end if
-//						end if
-//						
-//					catch (uo_exception kuo_exception)
-//						kst_esito = kuo_exception.get_st_esito()
-//						k_testo = trim(tab_1.tabpage_4.dw_4.object.dosimetro_ult_barcode_t.text)
-//						k_return += tab_1.tabpage_1.text + ": Controllo esistenza Barcode dosimetrico fallita, " + trim(kst_esito.sqlerrtext) + "~n~r"
-//						k_errore = "1"
-//						k_nr_errori++
-//						
-//					finally
-//						destroy kuf1_meca_dosim
-//						destroy kuf1_armo
-//						
-//					end try
-			end if
+//			kst_tab_base.oralegale_on = tab_1.tabpage_4.dw_4.object.oralegale_on[k_riga] 
+//			kst_tab_base.oralegale_start = tab_1.tabpage_4.dw_4.object.oralegale_start[k_riga] 
+//			kst_tab_base.oralegale_end = tab_1.tabpage_4.dw_4.object.oralegale_end[k_riga] 
+//			kst_tab_base.anno = tab_1.tabpage_4.dw_4.object.anno[k_riga] 
+//			
+//			if kst_tab_base.oralegale_on = "S" then
+//				if year(kst_tab_base.oralegale_start) < kst_tab_base.anno then
+//					k_return += tab_1.tabpage_1.text + ": Impostare la data di Inizio dell'Ora Legale per l'anno " + string(kst_tab_base.anno) + "~n~r"
+//					k_errore = "1"
+//					k_nr_errori++
+//				end if
+//				if year(kst_tab_base.oralegale_end) < kst_tab_base.anno then
+//					k_return += tab_1.tabpage_1.text + ": Impostare la data di Fine dell'Ora Legale per l'anno " + string(kst_tab_base.anno) + "~n~r"
+//					k_errore = "1"
+//					k_nr_errori++
+//				end if
+//				//--- l'anno deve essere uguale e le date congruenti
+//				if year(kst_tab_base.oralegale_start) = year(kst_tab_base.oralegale_end) and kst_tab_base.oralegale_start < kst_tab_base.oralegale_end then
+//				else
+//					k_return += tab_1.tabpage_1.text + ": Periodo dell'Ora Legale non congruente, controllare le date di inizio e fine~n~r"
+//					k_errore = "1"
+//					k_nr_errori++
+//				end if
+//
+//			end if
+			
 		end if
 	end if
 	
@@ -817,7 +796,6 @@ protected function string inizializza ();//
 //
 string k_scelta
 string k_stato = "0"
-//string  k_key
 int k_err_ins, k_rc
 kuf_base kuf1_base
 string k_record="0 ", k_stampanti
@@ -912,12 +890,12 @@ if k_errore = 0 then
 	else		
 		
 //--- S-protezione campi per riabilitare la modifica 
-      kuf1_utility.u_proteggi_dw("0", 0, tab_1.tabpage_1.dw_1)
+      	kuf1_utility.u_proteggi_dw("0", 0, tab_1.tabpage_1.dw_1)
 
 //--- legge le stampanti definitive
 		k_stampanti = kiuf_stampe.get_stampanti_dwddlb_values()
-      tab_1.tabpage_1.dw_1.object.stcert1.Values = k_stampanti
-      tab_1.tabpage_1.dw_1.object.stcert2.Values = k_stampanti
+     	tab_1.tabpage_1.dw_1.object.stcert1.Values = k_stampanti
+     	tab_1.tabpage_1.dw_1.object.stcert2.Values = k_stampanti
 
 	end if
 	destroy kuf1_utility
@@ -1220,6 +1198,8 @@ try
 		k_errore_1 = tab_1.tabpage_4.dw_4.update()
 	
 		if k_errore_1 > 0 then
+			
+			kguo_g.E1MCU = tab_1.tabpage_4.dw_4.object.e1mcu[1]   //imposta il codice (azienda) facility di E1
 			
 			kuf1_base = create kuf_base
 			
@@ -2516,8 +2496,8 @@ end type
 type tab_1 from w_g_tab_3`tab_1 within w_base_personale
 integer x = 23
 integer y = 0
-integer width = 3790
-integer height = 1532
+integer width = 2386
+integer height = 972
 integer taborder = 40
 boolean showtext = false
 boolean showpicture = false
@@ -2585,11 +2565,10 @@ destroy(this.tabpage_13)
 end on
 
 type tabpage_1 from w_g_tab_3`tabpage_1 within tab_1
-boolean visible = false
 integer x = 73
 integer y = 16
-integer width = 3698
-integer height = 1500
+integer width = 2295
+integer height = 940
 long backcolor = 67108864
 string text = "Personalizza"
 long tabbackcolor = 67108864
@@ -2605,6 +2584,7 @@ integer height = 1384
 string dataobject = "d_base"
 boolean controlmenu = true
 boolean hsplitscroll = false
+boolean livescroll = false
 end type
 
 event dw_1::buttonclicked;call super::buttonclicked;//
@@ -2621,8 +2601,8 @@ type tabpage_2 from w_g_tab_3`tabpage_2 within tab_1
 boolean visible = false
 integer x = 73
 integer y = 16
-integer width = 3698
-integer height = 1500
+integer width = 2295
+integer height = 940
 long backcolor = 67108864
 string text = " la mia Connessione"
 long tabbackcolor = 67108864
@@ -2644,8 +2624,8 @@ end type
 type tabpage_3 from w_g_tab_3`tabpage_3 within tab_1
 integer x = 73
 integer y = 16
-integer width = 3698
-integer height = 1500
+integer width = 2295
+integer height = 940
 long backcolor = 67108864
 string text = " Messaggi~r~n della Procedura"
 long tabbackcolor = 67108864
@@ -2688,8 +2668,8 @@ end type
 type tabpage_4 from w_g_tab_3`tabpage_4 within tab_1
 integer x = 73
 integer y = 16
-integer width = 3698
-integer height = 1500
+integer width = 2295
+integer height = 940
 long backcolor = 67108864
 string text = " Proprietà Procedura"
 long tabbackcolor = 67108864
@@ -2715,11 +2695,10 @@ type dw_4 from w_g_tab_3`dw_4 within tabpage_4
 integer x = 41
 integer y = 28
 integer width = 2939
-integer height = 1048
+integer height = 1440
 boolean enabled = true
 string dataobject = "d_base_gen"
 boolean hsplitscroll = false
-boolean livescroll = false
 end type
 
 event dw_4::buttonclicked;call super::buttonclicked;//
@@ -2878,8 +2857,8 @@ end type
 type tabpage_5 from w_g_tab_3`tabpage_5 within tab_1
 integer x = 73
 integer y = 16
-integer width = 3698
-integer height = 1500
+integer width = 2295
+integer height = 940
 string text = " Contatori Procedura"
 long tabbackcolor = 67108864
 string picturename = "Application!"
@@ -2913,8 +2892,8 @@ end type
 type tabpage_6 from w_g_tab_3`tabpage_6 within tab_1
 integer x = 73
 integer y = 16
-integer width = 3698
-integer height = 1500
+integer width = 2295
+integer height = 940
 boolean enabled = true
 long backcolor = 67108864
 string text = " DB Esterni~r~n (Pilota, E-ONE, Pk-List...) "
@@ -2999,8 +2978,8 @@ end type
 type tabpage_7 from w_g_tab_3`tabpage_7 within tab_1
 integer x = 73
 integer y = 16
-integer width = 3698
-integer height = 1500
+integer width = 2295
+integer height = 940
 long backcolor = 67108864
 long tabbackcolor = 67108864
 end type
@@ -3020,8 +2999,8 @@ end type
 type tabpage_8 from w_g_tab_3`tabpage_8 within tab_1
 integer x = 73
 integer y = 16
-integer width = 3698
-integer height = 1500
+integer width = 2295
+integer height = 940
 boolean enabled = true
 long backcolor = 16777215
 string text = " Ausiliari"
@@ -3156,8 +3135,8 @@ end type
 type tabpage_9 from w_g_tab_3`tabpage_9 within tab_1
 integer x = 73
 integer y = 16
-integer width = 3698
-integer height = 1500
+integer width = 2295
+integer height = 940
 boolean enabled = true
 long backcolor = 16777215
 string text = " E-Mail"
@@ -4478,8 +4457,8 @@ type tabpage_10 from userobject within tab_1
 boolean visible = false
 integer x = 73
 integer y = 16
-integer width = 3698
-integer height = 1500
+integer width = 2295
+integer height = 940
 long backcolor = 16777215
 string text = " Kit"
 long tabtextcolor = 33554432
@@ -4621,8 +4600,8 @@ type tabpage_11 from userobject within tab_1
 boolean visible = false
 integer x = 73
 integer y = 16
-integer width = 3698
-integer height = 1500
+integer width = 2295
+integer height = 940
 boolean enabled = false
 long backcolor = 16777215
 string text = "none"
@@ -4650,8 +4629,8 @@ type tabpage_12 from userobject within tab_1
 boolean visible = false
 integer x = 73
 integer y = 16
-integer width = 3698
-integer height = 1500
+integer width = 2295
+integer height = 940
 long backcolor = 16777215
 string text = "Log Segnalazioni"
 long tabtextcolor = 33554432
@@ -4702,8 +4681,8 @@ type tabpage_13 from userobject within tab_1
 boolean visible = false
 integer x = 73
 integer y = 16
-integer width = 3698
-integer height = 1500
+integer width = 2295
+integer height = 940
 long backcolor = 67108864
 string text = "Monitor"
 long tabtextcolor = 33554432

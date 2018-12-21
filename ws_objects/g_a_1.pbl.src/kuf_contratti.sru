@@ -20,14 +20,15 @@ public string k_cf_m_r_f_fatturato = "F"
 constant string kki_TIPO_standard = "S" // tipo contratto standard (x mat. da Trattare)
 constant string kki_TIPO_deposito = "N" // tipo contratto di solo deposito cmq di NON trattamento
 
-//
-//---- campo COSTI_ACCESSORI applicabili al Riferimento
-//constant string kki_COSTI_ACCESSORI_no = "N" 
-//constant string kki_COSTI_ACCESSORI_si = "S" 
-
-//---- campo ACCONTO flag che indica presenza di acconto per questo contratto (vedi cntratti_rd)
+//---- OBSOLETO campo ACCONTO flag che indica presenza di acconto per questo contratto (vedi contratti_rd)
 constant string kki_FLG_ACCONTO_no = "N" 
 constant string kki_FLG_ACCONTO_si = "S" 
+//--- OBSOLETO Flag attivazione fatturazione voci prezzi lotto dopo stampa attestato
+constant string kki_flg_fatt_dopo_valid_SI = "S"
+constant string kki_flg_fatt_dopo_valid_NO = "N"
+//---- campo DEPERIBILE flag che indica se materiale Deperibile (dato da passare al sito di PKLIST)
+constant string kki_FLG_DEPERIBILE_no = "N" 
+constant string kki_FLG_DEPERIBILE_si = "S" 
 
 //---- campo ET_DOSIMETRO - barcode da stampare insieme a quelli di Trattamento
 constant int kki_ET_DOSIMETRO_no = 0 
@@ -38,9 +39,6 @@ constant int kki_ET_DOSIMETRO_default = 1
 constant string kki_dw_elenco_contratti = "d_contratti_l_attivi_rid"
 constant string kki_dw_elenco_sc_cf_x_m_r_f = "d_sc_cf_l_x_m_r_f"
 
-//--- Flag attivazione fatturazione voci prezzi lotto dopo stampa attestato
-constant string kki_flg_fatt_dopo_valid_SI = "S"
-constant string kki_flg_fatt_dopo_valid_NO = "N"
 
 end variables
 
@@ -85,6 +83,7 @@ public function date get_data_scad_sc_cf (st_tab_contratti ast_tab_contratti) th
 public function long elenco_contratti_attivi_cliente (st_tab_contratti kst_tab_contratti)
 public function long get_codice_max () throws uo_exception
 public function st_esito get_codice_da_cf_co (ref st_tab_contratti kst_tab_contratti) throws uo_exception
+public subroutine set_data_scad (st_tab_contratti ast_tab_contratti) throws uo_exception
 end prototypes
 
 public function string tb_delete (long k_codice);//
@@ -2665,6 +2664,71 @@ return kst_esito
 
 
 end function
+
+public subroutine set_data_scad (st_tab_contratti ast_tab_contratti) throws uo_exception;//
+//--- Aggiorna la colonna data_scad 
+//--- Inp: st_tab_contratti.codice + data_scad
+//--- Out: 
+//--- 	  
+//
+st_tab_sl_pt kst_tab_sl_pt
+st_esito kst_esito
+
+
+	kst_esito.esito = kkg_esito.ok
+	kst_esito.sqlcode = 0
+	kst_esito.SQLErrText = ""
+	kst_esito.nome_oggetto = this.classname()
+	kguo_exception.inizializza()
+
+	if_sicurezza(kkg_flag_modalita.modifica)
+	
+	if ast_tab_contratti.codice > 0 then
+		
+		ast_tab_contratti.x_utente = kGuf_data_base.prendi_x_utente()
+		ast_tab_contratti.x_datins = kGuf_data_base.prendi_x_datins()
+	
+		update contratti
+			 set data_scad = :ast_tab_contratti.data_scad
+			 ,x_utente = :ast_tab_contratti.x_utente
+			 ,x_datins = :ast_tab_contratti.x_datins
+		where codice = :ast_tab_contratti.codice
+		using kguo_sqlca_db_magazzino;
+
+		if kguo_sqlca_db_magazzino.sqlcode = 0 then
+			if kst_tab_sl_pt.st_tab_g_0.esegui_commit = "N" then
+			else
+				kguo_sqlca_db_magazzino.db_commit()
+			end if
+		else
+			if kguo_sqlca_db_magazzino.sqlcode < 0 then
+				kst_esito.sqlcode = kguo_sqlca_db_magazzino.sqlcode
+				kst_esito.SQLErrText = "Errore in Aggiornamento tab CONTRATTI della data di scadenza, codice=" + string(ast_tab_contratti.codice) + "" &
+									+ "~n~rErrore: " + trim(kguo_sqlca_db_magazzino.SQLErrText)
+				kst_esito.esito = kkg_esito.db_ko
+				if kst_tab_sl_pt.st_tab_g_0.esegui_commit = "N" then
+				else
+					kguo_sqlca_db_magazzino.db_rollback()
+				end if
+				kguo_exception.inizializza( )
+				kguo_exception.set_esito(kst_esito)
+				throw kguo_exception
+			end if
+		end if
+	
+	else	
+		
+		kst_esito.sqlcode = 0
+		kst_esito.SQLErrText = "Errore in Aggiornamento tab CONTRATTI della data di scadenza. Manca il codice! "
+		kst_esito.esito = kkg_esito.no_esecuzione
+		kguo_exception.inizializza( )
+		kguo_exception.set_esito(kst_esito)
+		throw kguo_exception
+
+	end if
+
+
+end subroutine
 
 on kuf_contratti.create
 call super::create

@@ -334,8 +334,6 @@ type m_a_t2 from menu within m_archivi
 end type
 type m_vettori from menu within m_archivi
 end type
-type m_profis from menu within m_archivi
-end type
 type m_crm from menu within m_archivi
 end type
 type m_memo from menu within m_archivi
@@ -379,7 +377,6 @@ m_3 m_3
 m_websmart m_websmart
 m_a_t2 m_a_t2
 m_vettori m_vettori
-m_profis m_profis
 m_crm m_crm
 m_memo m_memo
 m_sicurezza m_sicurezza
@@ -730,6 +727,7 @@ end function
 
 public subroutine autorizza_menu ();//
 int k_item, k_item1, k_item2, k_ctr, k_ctr1, k_ctr2
+
 
 if isvalid(kguf_base_docking) then
 	this.m_finestra.m_abilitadockingpredefinito.checked = kguf_base_docking.ki_m_abilitadockingpredefinito
@@ -1202,7 +1200,7 @@ m_main km_main
 if isvalid(kguo_g.kgw_toolbar_programmi) then
 		
 	km_main = this
-	kguo_g.kgw_toolbar_programmi.u_build_menu(km_main)
+	kguo_g.kgw_toolbar_programmi.post u_build_menu(km_main)
 
 //m_main k_menu
 //	k_menu = w_main.menuid 
@@ -2142,14 +2140,14 @@ type m_generatabtempimedigiriimpianto from menu within m_ottimizzadb
 end type
 
 event clicked;//
-string k_return
-kuf_pilota_previsioni kuf1_pilota_previsioni
+st_esito kst_esito
+kuf_pilota_previsioni_batch kuf1_pilota_previsioni_batch
 
 
 setpointer(kkg.pointer_attesa)
 		
 try
-	kuf1_pilota_previsioni = create kuf_pilota_previsioni
+	kuf1_pilota_previsioni_batch = create kuf_pilota_previsioni_batch
 
 	if messagebox ("Genera Tabella Tempi Medi Giri Impianto", &
 						"L'operazione popola la tabella con i dati dei tempi medi giri impianto degli ultimi anni~n~r" &
@@ -2158,11 +2156,11 @@ try
 						+ "Vuoi procedere con l'esecuzione?" &
 						 ,question!, YesNo!, 2) = 1 then
 
-		k_return = kuf1_pilota_previsioni.batch_run_stat_u_m2000_avgtimeplant( )
-		messagebox ("Genera Tabella Tempi Medi Giri Impianto", &
-					"L'operazione è conclusa. " &
+		kst_esito = kuf1_pilota_previsioni_batch.u_batch_run( )
+		messagebox ("Operazione Conlusa", &
+					"Generati Tabella Tempi Medi Giri Impianto. " &
 					+ "Esito:~n~r" &
-					+ trim(k_return) &
+					+ trim(kst_esito.sqlerrtext) &
 					 ,Information!) 
 	
 	end if
@@ -2171,7 +2169,7 @@ catch (uo_exception kuo_exception)
 	kuo_exception.messaggio_utente()
 
 finally
-	destroy kuf1_pilota_previsioni
+	destroy kuf1_pilota_previsioni_batch
 
 end try
 
@@ -6735,7 +6733,6 @@ m_3 m_3
 m_websmart m_websmart
 m_a_t2 m_a_t2
 m_vettori m_vettori
-m_profis m_profis
 m_crm m_crm
 m_memo m_memo
 m_sicurezza m_sicurezza
@@ -6783,7 +6780,6 @@ this.m_3=create m_3
 this.m_websmart=create m_websmart
 this.m_a_t2=create m_a_t2
 this.m_vettori=create m_vettori
-this.m_profis=create m_profis
 this.m_crm=create m_crm
 this.m_memo=create m_memo
 this.m_sicurezza=create m_sicurezza
@@ -6809,7 +6805,6 @@ this.Item[UpperBound(this.Item)+1]=this.m_3
 this.Item[UpperBound(this.Item)+1]=this.m_websmart
 this.Item[UpperBound(this.Item)+1]=this.m_a_t2
 this.Item[UpperBound(this.Item)+1]=this.m_vettori
-this.Item[UpperBound(this.Item)+1]=this.m_profis
 this.Item[UpperBound(this.Item)+1]=this.m_crm
 this.Item[UpperBound(this.Item)+1]=this.m_memo
 this.Item[UpperBound(this.Item)+1]=this.m_sicurezza
@@ -6839,7 +6834,6 @@ destroy(this.m_3)
 destroy(this.m_websmart)
 destroy(this.m_a_t2)
 destroy(this.m_vettori)
-destroy(this.m_profis)
 destroy(this.m_crm)
 destroy(this.m_memo)
 destroy(this.m_sicurezza)
@@ -8184,68 +8178,6 @@ on m_vettori.destroy
 call super::destroy
 end on
 
-type m_profis from menu within m_archivi
-end type
-
-event clicked;//
-//
-//---17092008kuf_menu_window kuf1_menu_window
-kuf_prof kuf1_prof
-
-//=== Parametri : 
-//=== struttura st_open_w
-//=== dati particolare programma
-//
-//=== Si potrebbero passare:
-//=== key1=codice sl_pt;
-st_open_w k_st_open_w
-
-K_st_open_w.id_programma = kkg_id_programma.profis_l
-K_st_open_w.flag_primo_giro = "S"
-K_st_open_w.flag_modalita = kkg_flag_modalita.elenco
-K_st_open_w.flag_adatta_win = KKG.ADATTA_WIN
-K_st_open_w.flag_leggi_dw = " "
-K_st_open_w.key1 = " "
-K_st_open_w.key2 = kuf1_prof.kki_fattura_profis_cont_no
-K_st_open_w.key3 = " "
-K_st_open_w.key4 = " "
-K_st_open_w.flag_where = " "
-
-//---17092008kuf1_menu_window = create kuf_menu_window 
-kGuf_menu_window.open_w_tabelle(k_st_open_w)
-//---17092008destroy kuf1_menu_window
-
-
-end event
-
-on m_profis.create
-call super::create
-this.tag = "profis_l"
-this.text = "Contabilità"
-this.microhelp = "Esporta documenti per la Contabilità (Fatture/Note di Credito)"
-this.toolbaritemvisible = false
-this.menustyle = contemporarymenu!
-this.menubackcolor = 32567536
-this.menuhighlightcolor = 134217741
-this.textsize = -10
-this.weight = 400
-this.facename = "Verdana"
-this.titlebackcolor = 134217730
-this.bitmapbackcolor = 15780518
-this.menutitles = true
-this.menubitmaps = true
-this.titlegradient = true
-this.toolbarstyle = contemporarytoolbar!
-this.toolbartextcolor = 134217746
-this.toolbarbackcolor = 134217732
-this.toolbarhighlightcolor = 134217741
-this.bitmapgradient = true
-end on
-
-on m_profis.destroy
-call super::destroy
-end on
-
 type m_crm from menu within m_archivi
 end type
 
@@ -8267,6 +8199,7 @@ end event
 on m_crm.create
 call super::create
 this.tag = "m2000tocrm"
+this.visible = false
 this.text = "CRM"
 this.microhelp = "Esporta dati vesro il CRM"
 this.menustyle = contemporarymenu!
