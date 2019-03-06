@@ -888,7 +888,7 @@ double k_coeff_a_s=0
 	
 	if	k_coeff_a_s > 0 then
 		
-		ast_tab_meca_dosimbozza.dosim_rapp_a_s = round(k_coeff_a_s, 2)
+		ast_tab_meca_dosimbozza.dosim_rapp_a_s = round(k_coeff_a_s, 3)
 		
 	end if
 
@@ -1436,7 +1436,7 @@ choose case dwo.name
 
 //--- calolo Dose dalla 'curva' del lotto dosimetrico 
 	case "dosim_spessore", "dosim_assorb", "dosim_lotto_dosim" 
-		kst_tab_dosimetrie.coeff_a_s = 0.0
+		kst_tab_dosimetrie.coeff_a_s = 0.000
 		kst_tab_dosimetrie.dose = 0.0
 		if len(trim(data)) > 0 and isnumber(trim(data)) then 
 			if dwo.name = "dosim_spessore" then

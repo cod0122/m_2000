@@ -72,7 +72,7 @@ string k_titolo
 string k_dataoggix
 int k_ctr
 kuf_base kuf1_base
- 
+
 
 try
 //--- disattivo la toolbar
@@ -89,8 +89,16 @@ try
 	ki_menu_0.visible = false
 	ki_menu_0.autorizza_menu( )
 
+	kuf1_base = create kuf_base
+
 //--- memorizza l'anno di esercizio impostato sul BASE
-	kguo_g.set_anno_procedura( )
+	kguo_g.set_anno_procedura(integer(mid(kuf1_base.prendi_dato_base("anno"),2)))
+//--- ZOOM: con il tasto CTRL?
+	if mid(kuf1_base.prendi_dato_base(kuf1_base.kki_base_utenti_flagzoomctrl),2,1) = "S" then
+		kguo_g.set_flagZOOMctrl(true)
+	else
+		kguo_g.set_flagZOOMctrl(false)
+	end if		
 
 //--- set la path centrale sul SERVER
 //	kGuf_data_base.set_path_base_del_server( ) 
@@ -102,9 +110,6 @@ try
 	kg_path_base = kguo_path.get_base()
 //--- set PATH root dei doc elettronici
 	kguo_path.set_doc_root()
-
-
-	kuf1_base = create kuf_base
 
 //--- Verifica se interfaccia con E1 attivata
 	try
@@ -163,7 +168,7 @@ try
 		kg_dataoggi = date (k_dataoggix)
 	end if
 
-	post inizializza()	
+	inizializza()	
 
 catch (uo_exception kuo1_exception)
 	throw kuo1_exception
@@ -250,7 +255,7 @@ end subroutine
 public subroutine inizializza ();//
 int k_ctr=0
 string k_window_iniziale, k_versione="",k_rcx=""
-boolean k_upd_porgr
+boolean k_upd_porgr, k_exit
 st_esito kst_esito
 st_tab_sr_utenti kst_tab_sr_utenti
 kuf_utility kuf1_utility
@@ -287,14 +292,18 @@ kuf_sicurezza kuf1_sicurezza
 				k_versione = replace(k_versione, k_ctr, 1,'.')
 			end if
 			
-			if messagebox ("Aggiornamento Automatico della Procedura", &
-								"E' disponibile la nuova versione " + k_versione + " della Procedura procedere ora con l'aggiornamento?", &
+			if messagebox ("Aggiornamento Automatico del software", &
+								"E' disponibile la nuova versione " + k_versione + " del Programma, procedere ora con l'aggiornamento?", &
 								 question!, YesNo!, 1) = 1 then
-			 
-				kuf1_utility.u_aggiorna_procedura_diprova( )			
+
+			 	k_exit = true
+				kuf1_utility.post u_aggiorna_procedura_diprova( )			
 				
 			end if
-		else
+			
+		end if
+	
+		if not k_exit then
 	
 	//--- becco il valore del Tipo di modulo usato x la stampa dei barcode
 			k_rcx = trim(kuf1_base.prendi_dato_base("barcode_modulo"))
@@ -327,78 +336,38 @@ kuf_sicurezza kuf1_sicurezza
 			catch (uo_exception kuo_exception)
 				kuo_exception.messaggio_utente()
 			end try
-	
+
 //--- recupera tutte le window modalità docking
 			try
 				k_ctr = KGuf_base_docking.tb_popola_st_tab_base_docking()
 			catch (uo_exception kuo_exception3)
 				kuo_exception3.messaggio_utente()
 			end try
-		//	kguo_g.kG_DockingRegister = kguo_g.get_dockingregister( ) + trim(string(kguo_utente.get_id_utente( ))) + kkg.path_sep
-		//	k_ctr = this.LoadDockingState(kguo_g.kG_DockingRegister, kguo_g.kGst_w_Docking.k_type[], kguo_g.kGst_w_Docking.k_name[])  
-
-//--- Window in alto che da menu
-	//		if not kguo_g.if_w_toolbar_programmi( ) then
-	//			string k_w_persitsed= ""
-	//			kguo_g.kGst_open_w.window = "w_g_menu"
-	//			OpenSheetWithParmDocked(w_g_menu,  kguo_g.kGst_open_w, kguo_g.kGst_open_w.window, w_main, WindowDockTop!, k_w_persitsed )
-	//		end if
-	
-	//--- Imposta il menu su questa MAIN
-//			u_set_menu( )
-			
-	//--- Se NON utente MASTER
+		
+//--- Se NON utente MASTER
 			if kguo_utente.get_pwd() <> 9999 then
-	
-	////--- controllo se password scaduta o vuota
-	//			kst_tab_sr_utenti.codice = kguo_utente.get_codice()
-	//			kuf1_sicurezza = create kuf_sicurezza 
-	//			kst_esito = kuf1_sicurezza.check_password_scaduta(kst_tab_sr_utenti)
-	//		
-	//			if kst_esito.esito = "2" then	
-	//				
-	//				messagebox ("Accesso al Sistema", &
-	//								"Attenzione la password deve essere reimpostata!~n~r" &
-	//								+ trim(kst_esito.sqlerrtext) &
-	//								)
-	//				post imposta_password()
-	//	
-	//			else
-	//				kst_esito = kuf1_sicurezza.check_password_vuota(kst_tab_sr_utenti)
-	//				if kst_esito.esito <> kkg_esito.ok then	
-	//					messagebox ("Password mancante o invalida", &
-	//								"E' stato riscontrato il seguente errore:~n~r" &
-	//								+ "~n~r" &
-	//								+ trim(kst_esito.sqlerrtext) &
-	//								)
-	//					if kst_esito.esito = kkg_esito.err_logico then	
-	//						post imposta_password()
-	//					end if
-	//				else
-	
-	//--- Apro finestra di inizio se richiesto				
-						k_window_iniziale = trim(kuf1_base.prendi_dato_base(kuf1_base.kki_base_utenti_startfunz))
-						if left(k_window_iniziale, 1) <> "1" and MidA(k_window_iniziale, 2) <> "nullo" then
-			
-							k_window_iniziale = trim(mid(k_window_iniziale, 2))
-							
-							if k_window_iniziale > " " then
-					
-				//--- Apre la prima windows
-								apri_win_iniziale (k_window_iniziale)
-								
-							end if
+
+
+//--- Apro finestra di inizio se richiesto				
+					k_window_iniziale = trim(kuf1_base.prendi_dato_base(kuf1_base.kki_base_utenti_startfunz))
+					if left(k_window_iniziale, 1) <> "1" and MidA(k_window_iniziale, 2) <> "nullo" then
 		
-						end if
+						k_window_iniziale = trim(mid(k_window_iniziale, 2))
 						
-	//				end if
-	//			end if
-		
+						if k_window_iniziale > " " then
+				
+			//--- Apre la prima windows
+							apri_win_iniziale (k_window_iniziale)
+							
+						end if
+	
+					end if
+					
 			end if
-	
+
 			post u_open_toolbar( )
-	
-	//--- get e visualizza eventuali allarmi MEMO
+
+//--- get e visualizza eventuali allarmi MEMO
 //			u_allarme_utente( )
 
 //--- Alert di apertura M2000 x una qlc ragione non funzia
@@ -414,17 +383,16 @@ kuf_sicurezza kuf1_sicurezza
 //			finally
 //				//if isvalid(kuf1_alert) then destroy kuf1_alert
 //			end try
-	
+
 		end if
-	
+
 		this.changemenu( ki_menu_0 )
 	
 		if isvalid(kuf1_base) then destroy kuf1_base
 		if isvalid(kuf1_utility) then destroy kuf1_utility
 		
 		ki_flag_primo_giro = false
-		
-	end if
+	end if	
 
 end subroutine
 

@@ -1013,10 +1013,10 @@ kuf_armo kuf1_armo
 	if trim(kst_barcode_stampa.barcode_modulo) = barcode_modulo_1etichetta then
 		k_inizio_col = 2970 + k_delta_col
 	end if 
-	if LenA(trim(kst_barcode_stampa.consegna_data_cript)) > 0 then
-		k_inizio_col -= 200
-		printtext (ki_id_print_etichette, trim(kst_barcode_stampa.consegna_data_cript), k_inizio_col+kst_barcode_stampa.num_colonne, k_inizio_riga + 770+100 + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[2,1]) //data consegna criptata
-	end if
+//	if LenA(trim(kst_barcode_stampa.consegna_data_cript)) > 0 then
+//		k_inizio_col -= 200
+//		printtext (ki_id_print_etichette, trim(kst_barcode_stampa.consegna_data_cript), k_inizio_col+kst_barcode_stampa.num_colonne, k_inizio_riga + 770+100 + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[2,1]) //data consegna criptata
+//	end if
 
 //--- Sezione NUMERO BARCODE 
 	k_inizio_riga = 2600 //2730
@@ -1241,9 +1241,9 @@ kuf_armo kuf1_armo
 	printtext (ki_id_print_etichette, string(kst_barcode_stampa.conta_barcode,"####0") + "." 	+ string (kst_barcode_stampa.barcode_tot_lotto,"####0") &
 				, 920, 3450 + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[6,1])
 	//									, 920, 3450 + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[5,1])
-	if LenA(trim(kst_barcode_stampa.consegna_data_cript)) > 0 then
-		printtext (ki_id_print_etichette, trim(kst_barcode_stampa.consegna_data_cript), 3150 - 600, 3650 + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[2,1]) //data consegna criptata
-	end if
+//	if LenA(trim(kst_barcode_stampa.consegna_data_cript)) > 0 then
+//		printtext (ki_id_print_etichette, trim(kst_barcode_stampa.consegna_data_cript), 3150 - 600, 3650 + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[2,1]) //data consegna criptata
+//	end if
 	
 	//--- Sezione Destra MC-CC e SC.CF
 	k_inizio_col = 3550   
@@ -1826,19 +1826,19 @@ declare kc_listview cursor for
 						k_conta_barcode++
 					end if
 				
-//--- "cripto" la data di consegna
-					k_consegna_data_cript = ""
-           		if kst_tab_meca.consegna_data > date(0) then
-						k_consegna_data_cript = string(kst_tab_meca.consegna_data, "ddmmyy")
-						k_consegna_data_cript = k_data_cript[integer(MidA(k_consegna_data_cript,1,1))] &
-	                                       + k_data_cript[integer(MidA(k_consegna_data_cript,2,1))] & 					
-														+ "." &
-	                                       + k_data_cript[integer(MidA(k_consegna_data_cript,3,1))] & 					
-	                                       + k_data_cript[integer(MidA(k_consegna_data_cript,4,1))] & 					
-														+ "." &
-	                                       + k_data_cript[integer(MidA(k_consegna_data_cript,5,1))] & 					
-	                                       + k_data_cript[integer(MidA(k_consegna_data_cript,6,1))]  					
- 					end if
+////--- "cripto" la data di consegna
+//					k_consegna_data_cript = ""
+//           		if kst_tab_meca.consegna_data > date(0) then
+//						k_consegna_data_cript = string(kst_tab_meca.consegna_data, "ddmmyy")
+//						k_consegna_data_cript = k_data_cript[integer(MidA(k_consegna_data_cript,1,1))] &
+//	                                       + k_data_cript[integer(MidA(k_consegna_data_cript,2,1))] & 					
+//														+ "." &
+//	                                       + k_data_cript[integer(MidA(k_consegna_data_cript,3,1))] & 					
+//	                                       + k_data_cript[integer(MidA(k_consegna_data_cript,4,1))] & 					
+//														+ "." &
+//	                                       + k_data_cript[integer(MidA(k_consegna_data_cript,5,1))] & 					
+//	                                       + k_data_cript[integer(MidA(k_consegna_data_cript,6,1))]  					
+// 					end if
 
 					ki_num_etichetta_in_pag ++
 						

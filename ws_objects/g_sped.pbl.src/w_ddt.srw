@@ -752,7 +752,7 @@ try
 	//--- se sono entrato x cancellazione...				
 		ki_esci_dopo_cancella = true
 		kuf1_utility.u_proteggi_dw("1", 0, tab_1.tabpage_1.dw_1)
-		cb_cancella.event clicked( )
+		cb_cancella.post event clicked( )
 	
 	else
 		//--- se primo giro imposta la data di competenza di default

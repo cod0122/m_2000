@@ -238,6 +238,9 @@ boolean toolbartext = true
 string toolbarframetitle = "M2000 menu"
 string toolbarsheettitle = "menu contestuale"
 string displayname = "M2000"
+long richtextedittype = 0
+long richtexteditversion = 0
+string richtexteditkey = ""
 end type
 global m_2000 m_2000
 
@@ -608,15 +611,15 @@ st_esito kst_esito
 
 
 try
-	
+	//~n~r
 	kst_esito.esito = kkg_esito_ko
 	kst_esito.sqlcode = Error.number
-	kst_esito.sqlerrtext = "La procedura non riesce a catturare in automatico il tipo di errore interno pertanto il sistema potrebbe diventare instabile" &
-			  + "~n~rErrore: " + string (Error.number) + " " + trim(error.Text) & 
-			  + "~n~rWindow o menu: " + trim (Error.WindowMenu) & 
-			  + "~n~rOggetto: " + trim (Error.Object ) & 
-			  + "~n~revento: " + trim (Error.ObjectEvent  ) & 
-			  + "~n~ralla linea: " + string (Error.Line ) & 
+	kst_esito.sqlerrtext = "La procedura non riesce a catturare in automatico il tipo di errore interno pertanto il sistema potrebbe diventare instabile " &
+			  + " Errore: " + string (Error.number) + " " + trim(error.Text) & 
+			  + " Window o Menu: " + trim (Error.WindowMenu) & 
+			  + " Oggetto: " + trim (Error.Object ) & 
+			  + " Evento: " + trim (Error.ObjectEvent  ) & 
+			  + " Alla linea: " + string (Error.Line ) & 
 	
 	if not isvalid(kguo_exception) then kguo_exception = create uo_exception
 	kguo_exception.inizializza( )

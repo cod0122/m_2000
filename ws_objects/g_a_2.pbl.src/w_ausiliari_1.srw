@@ -721,16 +721,16 @@ kuf_ausiliari kuf1_dosimetrie
 	k_rcn=messagebox("Operazione di Importazione nuovo Lotto Dosimetrico", &
 					"Il file di importazione deve essere in formato CSV (colonne separate da ';'):~n~r" &
 					+"~n~r" &
-					+"la prima riga: 'nome lotto' + ';' + 'data in formato anno-mese-giorno' + ';' + 'note lotto in stampa su Attestato' ~n~r" &
+					+"la prima riga: 'nome lotto' + ';' + 'data in formato ANNO-MESE-GIORNO (es.2019-01-27)' + ';' + 'note lotto in stampa su Attestato' ~n~r" &
 					+"~n~r" &
-					+"le righe successive: 'coefficiente con 2 decimali' + ';' + 'dose con 2 decimali' + ';' ~n~r" &
+					+"le righe successive: 'coefficiente con 3 decimali' + ';' + 'dose con 1 decimale' + ';' ~n~r" &
 					+"~n~r ESEMPIO:" &
 					+"~n~r nome_Lotto;2007-07-25;Red Perspex 4034 Lotto: KK   " &
-					+"~n~r 0.70;5.00; " &
-					+"~n~r 0.71;5.10; " &
-					+"~n~r 0.72;5.20; " &
-					+"~n~r 0.73;5.20; " &
-					+"~n~r 0.74;5.30; " &
+					+"~n~r 0.701;5.0; " &
+					+"~n~r 0.712;5.1; " &
+					+"~n~r 0.723;5.2; " &
+					+"~n~r 0.734;5.2; " &
+					+"~n~r 0.745;5.3; " &
 					+"~n~r ....... " &
 					+"~n~r" &
 				   + "Proseguire con la scelta e l'analisi del file" &
@@ -776,6 +776,7 @@ kuf_ausiliari kuf1_dosimetrie
 									 )
 						try			 
 							tab_1.tabpage_2.dw_2.reset( )
+							cb_visualizza.event clicked( )
 							inizializza_1()
 						catch (uo_exception kuo_exception)
 						end try

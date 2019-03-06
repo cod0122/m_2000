@@ -4113,7 +4113,7 @@ try
 	
 	//--- controlla se utente autorizzato a cambiare la data di consegna
 	if u_autorizza_mod_consegna_data( ) then
-		dw_meca.Modify("meca_consegna_data.protect='0'")
+		dw_meca.Modify("meca_consegna_dataora.protect='0'")
 	end if
 	
 	if isvalid(kuf1_base) then destroy kuf1_base
@@ -5125,12 +5125,16 @@ return k_autorizza
 end function
 
 public subroutine u_aggiorna_data_consegna (st_tab_meca kst_tab_meca, long k_riga);//
+datetime k_dataora
+
 try
 	
-	
 	kiuf_armo.set_consegna_data(kst_tab_meca)
+	kiuf_armo.set_consegna_ora(kst_tab_meca)
 
-	dw_meca.setitem(k_riga, "meca_consegna_data", kst_tab_meca.consegna_data)
+	k_dataora = datetime(kst_tab_meca.consegna_data, kst_tab_meca.consegna_ora)
+
+	dw_meca.setitem(k_riga, "meca_consegna_dataora", k_dataora)
 
 catch (uo_exception kuo_exception)
 
@@ -7441,15 +7445,60 @@ end event
 event itemchanged;call super::itemchanged;//
 //
 st_tab_meca kst_tab_meca
-
+date k_date
+time k_time
+int k_yy, k_yy_now, k_mm, k_mm_now, k_dd, k_dd_now
 
 choose case dwo.name 
 
-	case "meca_consegna_data" 
+	case "meca_consegna_dataora" 
 
 		kst_tab_meca.id = this.getitemnumber(row, "id_meca")
-		kst_tab_meca.consegna_data = this.getitemdate(row, string(dwo.name))
-		post u_aggiorna_data_consegna(kst_tab_meca, row)		
+		if IsDate(left(trim(data),10)) then
+			
+			k_date = date(trim(data)) //this.getitemdatetime(row, string(dwo.name))
+			k_dd = day(k_date)
+			k_mm = month(k_date)
+			k_yy = year(k_date)
+			k_time = time(datetime(trim(data))) //this.getitemdatetime(row, string(dwo.name))
+			k_dd_now = day(kguo_g.get_dataoggi( ))
+			k_mm_now = month(kguo_g.get_dataoggi( ))
+			k_yy_now = year(kguo_g.get_dataoggi( ))
+			
+			if k_dd = 01 and k_mm = 01 and k_time = time("00:00") then
+				setnull(kst_tab_meca.consegna_data)
+				setnull(kst_tab_meca.consegna_ora)
+			else
+				if k_mm < k_mm_now then
+					if k_dd < k_dd_now then
+						k_mm = k_mm_now + 1
+					else
+						k_mm = k_mm_now
+					end if
+				end if
+				if k_yy < k_yy_now then
+					if month(kguo_g.get_dataoggi( )) > 9 then
+						if month(kguo_g.get_dataoggi( )) < k_mm then
+							k_yy = k_yy_now + 1
+						else
+							k_yy = k_yy_now
+							k_mm = month(kguo_g.get_dataoggi( ))
+						end if
+					else
+						k_yy = k_yy_now
+					end if
+				end if
+				kst_tab_meca.consegna_data = date(k_yy, k_mm, day(k_date))
+				kst_tab_meca.consegna_ora = time(k_time)
+			end if
+			post u_aggiorna_data_consegna(kst_tab_meca, row)		
+		else
+			if isnull(data) or (k_dd = 01 and k_mm = 01 and k_time = time("00:00")) then
+				setnull(kst_tab_meca.consegna_data)
+				setnull(kst_tab_meca.consegna_ora)
+				post u_aggiorna_data_consegna(kst_tab_meca, row)		
+			end if
+		end if
 
 end choose
 end event

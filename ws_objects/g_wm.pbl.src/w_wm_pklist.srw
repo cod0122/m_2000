@@ -2068,6 +2068,8 @@ SetPointer(kkg.pointer_attesa )
 		else
 			messagebox("Elenco Contratti", "Nessun contratto disponibile per il cliente "+ string(kst_tab_contratti.cod_cli) )
 		end if
+	else
+		messagebox("Elenco Contratti", "Manca il Cliente, scegliere prima l'anagrafica di fatturazione "+ string(kst_tab_contratti.cod_cli) )
 	end if
 						
 SetPointer(kkg.pointer_default)
@@ -2166,7 +2168,7 @@ try
 				ki_st_open_w.flag_modalita = kkg_flag_modalita.modifica
 				ki_st_open_w.key1= string(kst_tab_wm_pklist.id_wm_pklist)
 				inizializza()
-				messagebox("Duplicazione terminata", & 
+				messagebox("Packing-List Duplicato", & 
 					"Generato il nuovo Paking-List '"+ trim(tab_1.tabpage_1.dw_1.getitemstring(1, "idpkl")) &
 					+"' (id "+ ki_st_open_w.key1 +")", information!)
 			end if

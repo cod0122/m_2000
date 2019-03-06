@@ -2254,8 +2254,7 @@ end event
 
 on m_statistichegenerico.create
 call super::create
-this.text = "Statistiche generico~tCtrl+O"
-this.shortcut = 335
+this.text = "Statistiche generico"
 this.microhelp = "comando di ~'Update Statistics~'"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
@@ -4939,8 +4938,7 @@ end event
 on m_fatture.create
 call super::create
 this.tag = "fatture"
-this.text = "Fatture~tCtrl+F"
-this.shortcut = 326
+this.text = "Fatture"
 this.microhelp = "Elenco Fatture"
 this.toolbaritemvisible = false
 this.menuimage = "c:\gammarad\pb_gmmrd11\icone\fattura8x8.gif"
@@ -8230,8 +8228,7 @@ end type
 on m_memo.create
 call super::create
 this.tag = "memo_u"
-this.text = "Memo~tCtrl+M"
-this.shortcut = 333
+this.text = "Memo"
 this.microhelp = "Annotazioni e allegati a clienti e lotti"
 this.menuimage = "Comment!"
 this.menustyle = contemporarymenu!
@@ -8794,8 +8791,8 @@ end event
 on m_report.create
 call super::create
 this.tag = "int_1"
-this.text = "Generale~tCtrl+S"
-this.shortcut = 339
+this.text = "Report~tCtrl+R"
+this.shortcut = 338
 this.microhelp = "Interrogazioni generiche"
 this.toolbaritemname = "library!"
 this.toolbaritemtext = "Report,Report"
@@ -8984,9 +8981,9 @@ end event
 on m_fin_conferma.create
 call super::create
 this.tag = "co"
-this.text = "Salva dati in archivio~tF10"
+this.text = "Salva dati in archivio~tCtrl+S"
 this.enabled = false
-this.shortcut = 121
+this.shortcut = 339
 this.microhelp = "Registra ii dati in archivio operazione definitiva"
 this.toolbaritemname = "save!"
 this.toolbaritemtext = "Salva,Registra in archivio"
@@ -9036,9 +9033,9 @@ end event
 
 on m_fin_visualizza.create
 call super::create
-this.text = "Visualizza~tF2"
+this.text = "Visualizza~tCtrl+O"
 this.enabled = false
-this.shortcut = 113
+this.shortcut = 335
 this.microhelp = "Apri in modalità Visualizzazione dati"
 this.toolbaritemname = "preview!"
 this.toolbaritemtext = "Vis.,Visualizza dettaglio"
@@ -9089,9 +9086,9 @@ end event
 on m_fin_modifica.create
 call super::create
 this.tag = "mo"
-this.text = "Modifica~tAlt+F2"
+this.text = "Modifica~tCtrl+M"
 this.enabled = false
-this.shortcut = 625
+this.shortcut = 333
 this.microhelp = "Apri in modalità Modifica per aggiornare i dati"
 this.toolbaritemname = "inkedit!"
 this.toolbaritemtext = "Mod., Modifica"
@@ -9142,9 +9139,9 @@ end event
 on m_fin_inserimento.create
 call super::create
 this.tag = "in"
-this.text = "Nuovo~tF4"
+this.text = "Nuovo~tCtrl+N"
 this.enabled = false
-this.shortcut = 115
+this.shortcut = 334
 this.microhelp = "Apri per Inserire nuovi dati"
 this.toolbaritemname = "new!"
 this.toolbaritemtext = "Nuovo, Nuovo"
@@ -9227,9 +9224,9 @@ end event
 on m_fin_elimina.create
 call super::create
 this.tag = "el"
-this.text = "Elimina~tF6"
+this.text = "Elimina~tCtrl+Del"
 this.enabled = false
-this.shortcut = 117
+this.shortcut = 302
 this.microhelp = "Cancella i dati in archivio"
 this.toolbaritemvisible = false
 this.toolbaritemname = "custom021!"
@@ -9309,8 +9306,9 @@ end event
 on m_fin_stampa.create
 call super::create
 this.tag = "st"
-this.text = "Stampa"
+this.text = "Stampa~tCtrl+P"
 this.enabled = false
+this.shortcut = 336
 this.toolbaritemname = "print!"
 this.toolbaritemtext = "Stampa,Dati video in stampa"
 this.toolbaritemorder = 12
@@ -9386,9 +9384,9 @@ end event
 on m_aggiornalista.create
 call super::create
 this.tag = "ag"
-this.text = "Aggiorna elenco~tF11"
+this.text = "Aggiorna elenco~tF5"
 this.enabled = false
-this.shortcut = 122
+this.shortcut = 116
 this.microhelp = "Ricostruisce la Lista coi dati aggiornati rileggendo la Base Dati "
 this.toolbaritemname = "regenerate5!"
 this.toolbaritemtext = "Rilegge,Rilegge dati da DB"
@@ -10103,8 +10101,8 @@ end event
 on m_fin_cerca.create
 call super::create
 this.tag = "ce"
-this.text = "Trova~tF3"
-this.shortcut = 114
+this.text = "Trova~tCtrl+F"
+this.shortcut = 326
 this.microhelp = "Ricerca dati in elenco"
 this.toolbaritemname = "find!"
 this.toolbaritemtext = "Trova, Cerca in elenco"
@@ -10154,9 +10152,9 @@ end event
 on m_fin_cercaancora.create
 call super::create
 this.tag = "cn"
-this.text = "Trova ancora...~tCtrl+F3"
+this.text = "Trova ancora...~tCtrl+G"
 this.enabled = false
-this.shortcut = 370
+this.shortcut = 327
 this.microhelp = "Continua la ricerca in elenco"
 this.toolbaritemname = "findnext!"
 this.toolbaritemtext = "Trova+,Trova il successivo"
@@ -10246,9 +10244,9 @@ on m_fin_filtra.create
 call super::create
 this.tag = "fi"
 this.visible = false
-this.text = "Filtra righe in elenco~tAlt+F3"
+this.text = "Filtra righe in elenco~tAlt+F"
 this.enabled = false
-this.shortcut = 626
+this.shortcut = 582
 this.microhelp = "Permette di togliere dalla lista le righe che non intaressano   "
 this.toolbaritemname = "custom096!"
 this.toolbaritemtext = "Filtra,Filtra in elenco"

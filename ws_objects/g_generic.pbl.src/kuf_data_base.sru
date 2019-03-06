@@ -119,8 +119,12 @@ public function string get_nome_profile_base ()
 public function boolean u_if_run_dev_mode ()
 public function string u_change_nometab_xutente (string k_nome_tab) throws uo_exception
 public subroutine u_set_ds_change_name_tab (ref datastore kds_1, string k_nome_tab) throws uo_exception
-public subroutine u_set_ds_change_name_tab (ref datawindow kdw_1, string k_nome_tab) throws uo_exception
 public function string u_get_nometab_xutente (string k_nome_tab_suffisso) throws uo_exception
+private function string u_change_nometab_xutente_1 (string k_nome_tab, string k_id_utente) throws uo_exception
+public function string u_change_nometab_xutente (string k_nome_tab, string k_id_utente) throws uo_exception
+private subroutine u_set_ds_change_name_tab_1 (ref datawindow kdw_1, string k_nome_tab, string k_nome_tab_new) throws uo_exception
+public subroutine u_set_ds_change_name_tab (ref datawindow kdw_1, string k_nome_tab) throws uo_exception
+public subroutine u_set_ds_change_name_tab (ref datawindow kdw_1, string k_nome_tab, string k_id_utente) throws uo_exception
 end prototypes
 
 public function string db_commit ();//---
@@ -579,30 +583,41 @@ public function datetime prendi_dataora ();//
 //--- Torna data ora
 //
 datetime k_return
-int k_anno, k_anno_procedura
+int k_anno
 kuf_base kuf1_base
+
 
 
 k_return = kguo_g.get_datetime_current( )   // get la data corrente dal DB SERVER
 
 //--- Controllo se data congruente!!!!
-k_anno_procedura = kguo_g.kg_anno_procedura
-
-if k_anno_procedura > 0 then
-	//k_anno_procedura = kguo_g.get_anno( )
-	k_anno = year(date(k_return)) // integer(string(k_return, "yyyy"))
-	if k_anno = k_anno_procedura then
+if kguo_g.kg_anno_procedura > 0 then
+	
+	k_anno = year(date(k_return)) 
+	if k_anno = kguo_g.kg_anno_procedura then
 	else
-		if k_anno < k_anno_procedura then
+		
+		kuf1_base = create kuf_base
+
+		kguo_g.set_anno_procedura(integer(mid(kuf1_base.prendi_dato_base("anno"),2)))
+		
+		if isvalid(kuf1_base) then destroy kuf1_base
+		
+	end if
+	
+	if k_anno = kguo_g.kg_anno_procedura then
+	else
+		
+		if k_anno < kguo_g.kg_anno_procedura then
 			kguo_exception.set_tipo(kguo_exception.kk_st_uo_exception_tipo_ko)
-			kguo_exception.setmessage("Data Errata" , "Attenzione la data rilevata dal tuo PC " + string(k_return) + " non è congruente con l'anno " + string(k_anno_procedura) &
+			kguo_exception.setmessage("Data Errata" , "Attenzione la data rilevata dal tuo PC " + string(k_return) + " non è congruente con l'anno " + string(kguo_g.kg_anno_procedura) &
 			 				+ " indicato in Proprietà. USCIRE IMMEDIATAMENTE dalla Procedura! ")
 			kguo_exception.messaggio_utente( )
 		else
-			if (k_anno + 1) = k_anno_procedura then
+			if (k_anno + 1) = kguo_g.kg_anno_procedura then
 			else
 				kguo_exception.set_tipo(kguo_exception.kk_st_uo_exception_tipo_ko)
-				kguo_exception.setmessage("Data Errata" , "Attenzione la data rilevata dal tuo PC " + string(k_return) + " maggiore dell'anno di esercizio (" + string(k_anno_procedura) + ") indicato in Proprietà Azienda. NON COMPIERE OPERAZIONI Di AGGIORNAMENTO! ")
+				kguo_exception.setmessage("Data Errata" , "Attenzione la data rilevata dal tuo PC " + string(k_return) + " maggiore dell'anno di esercizio (" + string(kguo_g.kg_anno_procedura) + ") indicato in Proprietà Azienda. NON ESEGUIRE OPERAZIONI DI AGGIORNAMENTO! ")
 				kguo_exception.messaggio_utente( )
 			end if
 		end if
@@ -1144,7 +1159,7 @@ kst_esito.sqlerrtext += &
 						+ "; dbcode= " + string(kst_errori_gestione.SQLdbcode) &
                   + " - " + trim(kst_errori_gestione.SQLErrText) &
 						+ "; Query= " + trim(kst_errori_gestione.SQLsyntax) &
-						+ "; Utente= " + kGuo_utente.get_codice()
+						+ "; Utente= " + trim(kGuo_utente.get_codice())
 if kst_errori_gestione.sqlca.sqlcode <> 0 then 
 	kst_esito.sqlcode = kst_errori_gestione.sqlca.sqlcode
 else
@@ -1160,8 +1175,6 @@ else
 end if
 errori_scrivi_esito("W", kst_esito) 
 
-
-
 CHOOSE CASE kst_errori_gestione.SQLdbcode
 
 //	CASE -01,-02 
@@ -1171,7 +1184,7 @@ CHOOSE CASE kst_errori_gestione.SQLdbcode
 
 
 //informix	case -1811, -349, -1803, -25580 //--- manca connessione 
-	case 	-4060, -40197, -40501, -40613, -49918, -49919, -49920, -4221
+	case 	-4060, -40197, -40501, -40613, -49918, -49919, -49920, -4221, 10054, 64
 		
 		try 
 			kst_esito.sqlerrtext = "Tentativo di Ri-connessione al DB... " 
@@ -1193,16 +1206,15 @@ CHOOSE CASE kst_errori_gestione.SQLdbcode
 
 		end try
 		
-		
+//		"~n~r"
 	CASE -04  // errore strano interno
 		MessageBox("Codice programma errato",  &
 			"Probabile errore interno di programmazione. " &
-			+ "Non è possibile proseguire correttamente l'operazione!!" + "~n~r" &
-			+ trim(kst_errori_gestione.SQLErrText) + "~n~r" &
-			+ "oggetto: " + trim(kst_errori_gestione.nome_oggetto)  + "~n~r" &
-			+ "syntax: " + trim(kst_errori_gestione.sqlsyntax)  + "~n~r"  &
-			+ "dbcode: " + string(kst_errori_gestione.sqldbcode) + "~n~r" &
-			+ "sqlcode: " + string(kst_errori_gestione.sqlca))
+			+ "Non è possibile proseguire correttamente l'operazione!! " + trim(kst_errori_gestione.SQLErrText)  &
+			+ " oggetto: " + trim(kst_errori_gestione.nome_oggetto)   &
+			+ " syntax: " + trim(kst_errori_gestione.sqlsyntax)   &
+			+ " dbcode: " + string(kst_errori_gestione.sqldbcode)  &
+			+ " sqlcode: " + string(kst_errori_gestione.sqlca))
 
 
 END CHOOSE
@@ -3535,32 +3547,11 @@ public function string u_change_nometab_xutente (string k_nome_tab) throws uo_ex
 //--------------------------------------------------------------------------------------
 //
 //
-int k_rc, k_ctr1, k_ctr2
 string k_return
-	
-	try
 
-		k_ctr1 = pos(k_nome_tab, "_", 1)
-		if k_ctr1 > 0 then
-			k_ctr2 = pos(k_nome_tab, "_", k_ctr1 +1)
-			if k_ctr2 > 0 then
-				k_return =  left(k_nome_tab, k_ctr1)  + string(kguo_utente.get_id_utente( )) + mid(k_nome_tab, k_ctr2)
-			end if
-		end if
-		if k_ctr1 = 0 or k_ctr2 = 0 then 
-			kguo_exception.inizializza( )
-			kguo_exception.kist_esito.nome_oggetto = this.classname( )
-			kguo_exception.kist_esito.esito = kguo_exception.kk_st_uo_exception_tipo_err_int
-			kguo_exception.kist_esito.sqlerrtext = "Fallita normalizzazione nome tabella utente, nome passato: " + k_nome_tab
-			throw kguo_exception
-		end if
 
-	catch (uo_exception kuo_exception)
-		throw kuo_exception
+	k_return = u_change_nometab_xutente_1(k_nome_tab, string(kguo_utente.get_id_utente( )) )
 
-	finally
-
-	end try
 		
 return k_return 	
 
@@ -3613,52 +3604,6 @@ string k_sql_orig, k_string, k_stringn
 
 end subroutine
 
-public subroutine u_set_ds_change_name_tab (ref datawindow kdw_1, string k_nome_tab) throws uo_exception;//--------------------------------------------------------------------------------------
-//--- Cambia il nome della tabella nel ds come da standard
-//--- es.  vx_MAST_tabella_esempio ---> vx_0001_tabella_esempio
-//---     vx_ = prefisso del nome tabella quasi sempre fisso così
-//---     MAST = parte da cambiare
-//---     _nomeTabella = suffisso del nome tabella
-//--- Inp: datastore, nome tab completa ex "nomeTabella"
-//--------------------------------------------------------------------------------------
-//
-//
-int k_rc, k_ctr
-string k_sql_orig, k_string, k_stringn
-	
-	try
-
-		k_stringn = u_change_nometab_xutente(k_nome_tab)  // ritorna il nuovo nome tab x utente 
-		k_string =  k_nome_tab
-
-		k_sql_orig = kdw_1.Object.DataWindow.Table.Select 
-		k_ctr = Pos(k_sql_orig, k_string, 1)
-		DO WHILE k_ctr > 0 and trim(k_string) <> trim(k_stringn)  
-			k_sql_orig = Replace(k_sql_orig, k_ctr, LenA(k_string), (k_stringn))
-			k_ctr = Pos(k_sql_orig, k_string, k_ctr+LenA(k_string))
-		LOOP
-		kdw_1.Object.DataWindow.Table.Select = k_sql_orig
-		
-		k_sql_orig = kdw_1.Object.DataWindow.Table.update
-		if k_sql_orig <> "?" then
-			k_ctr = Pos(k_sql_orig, k_string, 1)
-			if k_ctr > 0 then
-				k_sql_orig = Replace(k_sql_orig, k_ctr, LenA(k_string), (k_stringn))
-				kdw_1.Object.DataWindow.Table.update = k_sql_orig	
-			end if
-		end if
-	
-	catch (uo_exception kuo_exception)
-		throw kuo_exception
-
-	finally
-
-	end try
-		
-	
-
-end subroutine
-
 public function string u_get_nometab_xutente (string k_nome_tab_suffisso) throws uo_exception;//
 //--------------------------------------------------------------------------------------
 //--- Torna il nome della tabella/view standard personalizzata utente 
@@ -3694,6 +3639,177 @@ string k_return
 return k_return 	
 
 end function
+
+private function string u_change_nometab_xutente_1 (string k_nome_tab, string k_id_utente) throws uo_exception;//
+//--------------------------------------------------------------------------------------
+//--- Cambia il nome della tabella da utente standard a utente vero
+//--- es.  vx_MAST_tabella_esempio ---> vx_0037_tabella_esempio
+//---     vx_ = prefisso del nome tabella quasi sempre fisso così
+//---     MAST = parte da cambiare x utente 37 
+//---     _nomeTabella = suffisso del nome tabella
+//--- Inp: nome tab completa ex "vx_MAST_nomeTabella"
+//---         id utente 'vero' da sostituire a quello finto 'standard' 
+//--------------------------------------------------------------------------------------
+//
+//
+int k_rc, k_ctr1, k_ctr2
+string k_return
+	
+	try
+
+		k_ctr1 = pos(k_nome_tab, "_", 1)
+		if k_ctr1 > 0 then
+			k_ctr2 = pos(k_nome_tab, "_", k_ctr1 +1)
+			if k_ctr2 > 0 then
+				k_return =  left(k_nome_tab, k_ctr1)  + k_id_utente  + mid(k_nome_tab, k_ctr2) // string(kguo_utente.get_id_utente( )) + mid(k_nome_tab, k_ctr2)
+			end if
+		end if
+		if k_ctr1 = 0 or k_ctr2 = 0 then 
+			kguo_exception.inizializza( )
+			kguo_exception.kist_esito.nome_oggetto = this.classname( )
+			kguo_exception.kist_esito.esito = kguo_exception.kk_st_uo_exception_tipo_err_int
+			kguo_exception.kist_esito.sqlerrtext = "Fallita normalizzazione nome tabella utente, nome passato: " + k_nome_tab
+			throw kguo_exception
+		end if
+
+	catch (uo_exception kuo_exception)
+		throw kuo_exception
+
+	finally
+
+	end try
+		
+return k_return 	
+
+end function
+
+public function string u_change_nometab_xutente (string k_nome_tab, string k_id_utente) throws uo_exception;//
+//--------------------------------------------------------------------------------------
+//--- Cambia il nome della tabella da utente standard a utente vero
+//--- es.  vx_MAST_tabella_esempio ---> vx_0037_tabella_esempio
+//---     vx_ = prefisso del nome tabella quasi sempre fisso così
+//---     MAST = parte da cambiare x utente 37 
+//---     _nomeTabella = suffisso del nome tabella
+//--- Inp: nome tab completa ex "vx_MAST_nomeTabella"
+//---         id utente 'vero' da sostituire a quello finto 'standard' 
+//--------------------------------------------------------------------------------------
+//
+//
+string k_return
+
+
+	k_return = u_change_nometab_xutente_1(k_nome_tab, k_id_utente)
+
+		
+return k_return 	
+
+end function
+
+private subroutine u_set_ds_change_name_tab_1 (ref datawindow kdw_1, string k_nome_tab, string k_nome_tab_new) throws uo_exception;//--------------------------------------------------------------------------------------
+//--- Cambia il nome della tabella nel ds come da standard
+//--- es.  vx_MAST_tabella_esempio ---> vx_0001_tabella_esempio
+//---     vx_ = prefisso del nome tabella quasi sempre fisso così
+//---     MAST = parte da cambiare
+//---     _nomeTabella = suffisso del nome tabella
+//--- Inp: datastore, nome tab da cambiare, nome tab nuovo
+//--------------------------------------------------------------------------------------
+//
+//
+int k_rc, k_ctr
+string k_sql_orig, k_string, k_stringn
+	
+	try
+
+		k_stringn = k_nome_tab_new
+		k_string =  k_nome_tab
+
+		k_sql_orig = kdw_1.Object.DataWindow.Table.Select 
+		k_ctr = Pos(k_sql_orig, k_string, 1)
+		DO WHILE k_ctr > 0 and trim(k_string) <> trim(k_stringn)  
+			k_sql_orig = Replace(k_sql_orig, k_ctr, LenA(k_string), (k_stringn))
+			k_ctr = Pos(k_sql_orig, k_string, k_ctr+LenA(k_string))
+		LOOP
+		kdw_1.Object.DataWindow.Table.Select = k_sql_orig
+		
+		k_sql_orig = kdw_1.Object.DataWindow.Table.update
+		if k_sql_orig <> "?" then
+			k_ctr = Pos(k_sql_orig, k_string, 1)
+			if k_ctr > 0 then
+				k_sql_orig = Replace(k_sql_orig, k_ctr, LenA(k_string), (k_stringn))
+				kdw_1.Object.DataWindow.Table.update = k_sql_orig	
+			end if
+		end if
+	
+	catch (uo_exception kuo_exception)
+		throw kuo_exception
+
+	finally
+
+	end try
+		
+	
+
+end subroutine
+
+public subroutine u_set_ds_change_name_tab (ref datawindow kdw_1, string k_nome_tab) throws uo_exception;//--------------------------------------------------------------------------------------
+//--- Cambia il nome della tabella nel ds come da standard
+//--- es.  vx_MAST_tabella_esempio ---> vx_0001_tabella_esempio
+//---     vx_ = prefisso del nome tabella quasi sempre fisso così
+//---     MAST = parte da cambiare
+//---     _nomeTabella = suffisso del nome tabella
+//--- Inp: datastore, nome tab completa ex "nomeTabella"
+//--------------------------------------------------------------------------------------
+//
+//
+string k_nome_tab_new
+	
+	
+	try
+
+		k_nome_tab_new = u_change_nometab_xutente(k_nome_tab)  // ritorna il nuovo nome tab x utente 
+
+		u_set_ds_change_name_tab_1(kdw_1, k_nome_tab, k_nome_tab_new)
+		
+	catch (uo_exception kuo_exception)
+		throw kuo_exception
+
+	finally
+
+	end try
+		
+	
+
+end subroutine
+
+public subroutine u_set_ds_change_name_tab (ref datawindow kdw_1, string k_nome_tab, string k_id_utente) throws uo_exception;//--------------------------------------------------------------------------------------
+//--- Cambia il nome della tabella nel ds come da standard
+//--- es.  vx_MAST_tabella_esempio ---> vx_0001_tabella_esempio
+//---     vx_ = prefisso del nome tabella quasi sempre fisso così
+//---     MAST = parte da cambiare
+//---     _nomeTabella = suffisso del nome tabella
+//--- Inp: datastore, nome tab da cambiare, id utente x completare il nome nuovo
+//--------------------------------------------------------------------------------------
+//
+//
+string k_nome_tab_new
+	
+	
+	try
+
+		k_nome_tab_new = u_change_nometab_xutente(k_nome_tab, k_id_utente)  // ritorna il nuovo nome tab x utente 
+
+		u_set_ds_change_name_tab_1(kdw_1, k_nome_tab, k_nome_tab_new)
+		
+	catch (uo_exception kuo_exception)
+		throw kuo_exception
+
+	finally
+
+	end try
+		
+	
+
+end subroutine
 
 on kuf_data_base.create
 call super::create

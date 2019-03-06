@@ -279,6 +279,12 @@ on w_armo_nt.destroy
 call super::destroy
 end on
 
+event u_open;call super::u_open;//
+	this.x = this.workspacewidth( ) - this.width / 2 
+	this.y = this.workspaceheight( ) - this.height / 2 
+
+end event
+
 type st_ritorna from w_g_tab0`st_ritorna within w_armo_nt
 end type
 

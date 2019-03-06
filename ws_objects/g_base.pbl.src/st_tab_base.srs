@@ -98,8 +98,8 @@ global type st_tab_base from structure
 	date		oralegale_start		descriptor "comment" = "inizio ora legale"
 	date		oralegale_end		descriptor "comment" = "fine ora legale"
 	string		e1mcu		descriptor "comment" = "E1 codice facility x minerbio è '         270'"
-	string		e1_codart_dosim_cost_toF554701		descriptor "comment" = "S=passa il numero dosimetri da produrre in tab F5547014 (in creazione ASN)"
-	string		e1_codart_dosim_cost		descriptor "comment" = "E1 articolo di costo da caricare "
+	string		e1_id_listino_dsm_tof554701_f		descriptor "comment" = "S=passa id_listino con il numero dosimetri da produrre x il lotto in tab F5547014 (in creazione ASN)"
+	long		e1_id_listino_dsm_tof554701		descriptor "comment" = "E1 articolo di costo da caricare (id_listino no dose) in E1"
 	datetime		x_datins
 	string		x_utente
 end type

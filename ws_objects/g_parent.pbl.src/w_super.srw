@@ -6,7 +6,7 @@ end forward
 
 global type w_super from window
 boolean visible = false
-integer x = 29999
+integer x = 29998
 integer y = 30000
 integer width = 3538
 integer height = 1624

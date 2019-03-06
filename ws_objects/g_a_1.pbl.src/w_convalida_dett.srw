@@ -356,7 +356,7 @@ pointer kp_oldpointer
 				kst_esito = kuf1_ausiliari.tb_dosimetrie_select(kst_tab_dosimetrie)
 				destroy kuf1_ausiliari
 				
-				if kst_esito.esito = "0" and kst_tab_dosimetrie.coeff_a_s > 0 then
+				if kst_esito.esito = "0" and kst_tab_dosimetrie.coeff_a_s > 0.000 then
 					
 					if k_assorbanza > 0 then
 						k_rc_d = k_assorbanza / kst_tab_dosimetrie.coeff_a_s
@@ -415,7 +415,7 @@ private subroutine calcola_coeff_a_s ();//
 //--- 
 //
 long k_riga, k_riga_dwc
-double k_coeff_a_s=0
+double k_coeff_a_s
 string k_lotto_dosim="" 
 pointer kp_oldpointer 
 st_esito kst_esito
@@ -450,7 +450,7 @@ kuf_ausiliari kuf1_ausiliari
 	if	k_coeff_a_s > 0 then
 		
 		kst_tab_dosimetrie.lotto_dosim = k_lotto_dosim
-		kst_tab_dosimetrie.coeff_a_s = round(k_coeff_a_s, 2)
+		kst_tab_dosimetrie.coeff_a_s = round(k_coeff_a_s, 3)
 		
 //--- legge archivio delle dosimetrie x reperire la dose	di lavorazione	
 		kuf1_ausiliari = create kuf_ausiliari

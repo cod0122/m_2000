@@ -151,7 +151,6 @@ public function long get_nr_barcode_da_non_trattare_x_id_armo (readonly st_tab_b
 public function string get_barcode_lav (readonly st_tab_barcode kst_tab_barcode) throws uo_exception
 public function long get_nr_barcode_x_id_armo (readonly st_tab_barcode kst_tab_barcode) throws uo_exception
 public subroutine set_flg_dosimetro_reset (st_tab_barcode ast_tab_barcode) throws uo_exception
-public subroutine set_flg_dosimetro_all (st_tab_barcode ast_tab_barcode) throws uo_exception
 public function long get_nr_barcode_stampati (readonly st_tab_barcode kst_tab_barcode) throws uo_exception
 private function st_esito tb_delete_barcode (ref st_tab_barcode kst_tab_barcode)
 public function st_esito tb_delete (ref st_tab_barcode kst_tab_barcode)
@@ -176,6 +175,8 @@ public function long get_barcode_da_id_meca (ref st_tab_barcode kst_tab_barcode[
 public function boolean if_barcode_figlio (ref st_tab_barcode ast_tab_barcode) throws uo_exception
 public function boolean if_da_trattare (st_tab_barcode ast_tab_barcode) throws uo_exception
 public function long get_pl_barcode (st_tab_barcode kst_tab_barcode) throws uo_exception
+public function integer set_flg_dosimetro (ref st_tab_barcode ast_tab_barcode, ref datastore ads_1) throws uo_exception
+public function integer set_flg_dosimetro_all (st_tab_barcode ast_tab_barcode) throws uo_exception
 end prototypes
 
 public function string togli_pl_barcode (ref st_tab_barcode kst_tab_barcode);//
@@ -4445,141 +4446,6 @@ end try
 
 end subroutine
 
-public subroutine set_flg_dosimetro_all (st_tab_barcode ast_tab_barcode) throws uo_exception;//
-//====================================================================
-//=== Imposta in automatico il flag_dosimetro sul Barcode x Lotto
-//=== 
-//=== Input:  st_tab_barcode.id_meca 
-//===
-//=== lancia EXCEPTION
-//=== 
-//====================================================================
-//
-double k_resto                    
-int k_num, k_ctr, k_righe_barcode
-//int k_pari_si
-string K_barcode_update=""
-kuf_armo kuf1_armo
-kuf_sl_pt kuf1_sl_pt
-st_tab_sl_pt kst_tab_sl_pt
-st_tab_armo kst_tab_armo
-st_esito kst_esito 
-datastore kds_1
-
-
-try
-	
-	kst_esito.esito = kkg_esito.ok
-	kst_esito.sqlcode = 0
-	kst_esito.SQLErrText = ""
-	kst_esito.nome_oggetto = this.classname()
-	kst_esito.st_tab_g_0 = ast_tab_barcode.st_tab_g_0 
-
-//	if_sicurezza(kkg_flag_modalita.inserimento) 
-
-	k_righe_barcode = 0
-
-	if ast_tab_barcode.id_meca > 0 then 
-               
-//#--- Pulizia dei vecchi flag in tutto il LOTTO 
-//		set_flg_dosimetro_reset(ast_tab_barcode)
-
-//--- 20/7/15 leggo i barcode del lotto x impostare il flag del dosimetro
-		kds_1 = create datastore
-		kds_1.dataobject = "ds_barcode_set_flg_dosimetro"
-		kds_1.settransobject(kguo_sqlca_db_magazzino)
-		k_righe_barcode = kds_1.retrieve(ast_tab_barcode.id_meca)
-
-	else
-		kst_esito.esito = kkg_esito.no_esecuzione
-		kst_esito.sqlcode = 0
-		kst_esito.sqlerrtext = "Impostazione indicatore dosimetro Barcode non eseguito, id Lotto non indicato"
-		kguo_exception.inizializza()
-		kguo_exception.set_esito(kst_esito)
-		throw kguo_exception
-	
-	end if
-	
-	if k_righe_barcode > 0 then
-
-//--- get del codice PT per leggere i dati di dove mettere i Dosimetri
-		kuf1_armo = create kuf_armo
-		kst_tab_armo.id_armo = kds_1.getitemnumber(1, "id_armo")
-		kst_tab_sl_pt.cod_sl_pt = kuf1_armo.get_cod_sl_pt(kst_tab_armo)
-//--- get dei dati da PT circa il nr dosimetri		
-		kuf1_sl_pt = create kuf_sl_pt
-		if trim(kst_tab_sl_pt.cod_sl_pt) > " " then
-			kuf1_sl_pt.get_dosim_dati(kst_tab_sl_pt)
-		else
-			kst_tab_sl_pt.dosim_delta_bcode = 0 
-		end if
-
-//--- piazza il dosimetro ogni tot di barcode 
-		if kst_tab_sl_pt.dosim_delta_bcode > 0 then
-			k_ctr = 1
-			do while k_ctr <= k_righe_barcode
-				kds_1.setitem(k_ctr, "flg_dosimetro", ki_flg_dosimetro_si)    // flegga il dosimetro
-				k_ctr += kst_tab_sl_pt.dosim_delta_bcode
-			loop
-		end if
-
-//#--- 20/7/2010 se il numero colli e' pari o dispari? devo mettere il dosimetro sull'ultimo pari
-		if k_righe_barcode > 1 then
-			k_num = k_righe_barcode / 2
-			k_resto = k_righe_barcode / 2 - k_num
-		else
-			k_resto = 0   // se c'e' solo UN collo allora piazzo il dosimetro qui
-		end if
-		if k_resto = 0 then
-			kds_1.setitem(k_righe_barcode, "flg_dosimetro", ki_flg_dosimetro_si)    // flegga il dosimetro sull'ultimo
-		else
-			kds_1.setitem((k_righe_barcode - 1), "flg_dosimetro", ki_flg_dosimetro_si)    // flegga il dosimetro sul pen'ultimo
-		end if
- 
- 		k_ctr = kds_1.update( )			// AGGIORNA I FLAG!!!
-		
-		
-		if k_ctr >= 0 then
-			if ast_tab_barcode.st_tab_g_0.esegui_commit <> "N" or isnull(ast_tab_barcode.st_tab_g_0.esegui_commit) then
-				kst_esito = kguo_sqlca_db_magazzino.db_commit()
-			end if
-		else
-			kst_esito.esito = kkg_esito.db_ko
-			kst_esito.sqlcode = k_ctr
-			kst_esito.sqlerrtext = "Errore in impostazione/rimozione dai barcode della presenza Dosimetro sul Lotto con id " + string(ast_tab_barcode.id_meca) 
-			if ast_tab_barcode.st_tab_g_0.esegui_commit <> "N" or isnull(ast_tab_barcode.st_tab_g_0.esegui_commit) then
-				kguo_sqlca_db_magazzino.db_rollback()
-			end if
-			kguo_exception.inizializza()
-			kguo_exception.set_esito(kst_esito)
-			throw kguo_exception
-		end if
- 
-
-	else
-		kst_esito.esito = kkg_esito.no_esecuzione
-		kst_esito.sqlcode = 0
-		kst_esito.sqlerrtext = "Impostazione presenza/rimozione dosimetro dal Barcode non eseguito, per il Lotto con id " + string(ast_tab_barcode.id_meca)
-		kguo_exception.inizializza()
-		kguo_exception.set_esito(kst_esito)
-//		throw kguo_exception    // il problema non scatena un messaggio di errore poichè probabilmente NON è un errore
-	end if
-	
-catch (uo_exception kuo_exception)
-	throw kuo_exception
-
-finally
-	if isvalid(kds_1) then destroy kds_1
-	if isvalid(kuf1_sl_pt) then destroy kuf_sl_pt
-	if isvalid(kuf1_armo) then destroy kuf1_armo
-
-end try
-
-
-
-
-end subroutine
-
 public function long get_nr_barcode_stampati (readonly st_tab_barcode kst_tab_barcode) throws uo_exception;//
 //====================================================================
 //=== Conta il numero dei Barcode STAMPATI per  ID_MECA
@@ -6090,6 +5956,196 @@ end try
 	
 
 return k_return
+end function
+
+public function integer set_flg_dosimetro (ref st_tab_barcode ast_tab_barcode, ref datastore ads_1) throws uo_exception;//
+//====================================================================
+//=== Imposta in automatico il flag_dosimetro sul Barcode x Lotto
+//=== 
+//=== Input:  st_tab_barcode.id_meca, datastore = 'ds_barcode_set_flg_dosimetro' 
+//=== out: ds ds_barcode_set_flg_dosimetro tutti i barcode con impostato la col flg_dosimetro
+//=== ret: nr dosimetri impostati 
+//===
+//=== lancia EXCEPTION
+//=== 
+//====================================================================
+//
+integer k_return, k_resto
+//decimal{2} k_resto                    
+int k_num, k_ctr, k_righe_barcode
+kuf_armo kuf1_armo
+kuf_sl_pt kuf1_sl_pt
+st_tab_sl_pt kst_tab_sl_pt
+st_tab_armo kst_tab_armo
+st_esito kst_esito 
+
+
+try
+	
+	kst_esito.esito = kkg_esito.ok
+	kst_esito.sqlcode = 0
+	kst_esito.SQLErrText = ""
+	kst_esito.nome_oggetto = this.classname()
+	kst_esito.st_tab_g_0 = ast_tab_barcode.st_tab_g_0 
+
+	k_righe_barcode = ads_1.rowcount()
+
+	if k_righe_barcode > 0 then
+
+//--- get del codice PT per leggere i dati di dove mettere i Dosimetri
+		kuf1_armo = create kuf_armo
+		kst_tab_armo.id_armo = ads_1.getitemnumber(1, "id_armo")
+		kst_tab_sl_pt.cod_sl_pt = kuf1_armo.get_cod_sl_pt(kst_tab_armo)
+//--- get dei dati da PT circa il nr dosimetri		
+		kuf1_sl_pt = create kuf_sl_pt
+		if trim(kst_tab_sl_pt.cod_sl_pt) > " " then
+			kuf1_sl_pt.get_dosim_dati(kst_tab_sl_pt)
+		else
+			kst_tab_sl_pt.dosim_delta_bcode = 0 
+		end if
+
+//--- piazza il dosimetro ogni tot di barcode 
+		if kst_tab_sl_pt.dosim_delta_bcode > 0 then
+			k_ctr = 1
+			do while k_ctr <= k_righe_barcode
+				ads_1.setitem(k_ctr, "flg_dosimetro", ki_flg_dosimetro_si)    // flegga il dosimetro
+				k_ctr += kst_tab_sl_pt.dosim_delta_bcode
+				k_return += kst_tab_sl_pt.dosim_x_bcode  // i dosimetri x barcode possono essere anche più di 1
+			loop
+		end if
+
+//#--- 20/7/2010 se il numero colli e' pari o dispari? devo mettere il dosimetro sull'ultimo pari
+		if k_righe_barcode = 1 then
+			k_ctr = 1
+		else
+			k_resto = mod(k_righe_barcode, 2)
+//			k_num = k_righe_barcode / 2
+//			k_resto = k_righe_barcode / 2 - k_num
+
+			if k_resto = 0 then  // pari
+				k_ctr = k_righe_barcode			// flegga il dosimetro sull'ultimo
+			else
+				k_ctr = k_righe_barcode - 1		// flegga il dosimetro sul penultimo
+			end if
+		end if
+
+//--- conrollo se è già stato marcato
+		if ads_1.getitemstring(k_ctr, "flg_dosimetro") = ki_flg_dosimetro_si then
+		else
+			ads_1.setitem(k_ctr, "flg_dosimetro", ki_flg_dosimetro_si)    
+			k_return += kst_tab_sl_pt.dosim_x_bcode  // incrementa i dosimetri sul barcode finale
+		end if		
+
+
+	end if
+
+catch (uo_exception kuo_exception)
+	throw kuo_exception
+
+finally
+	if isvalid(kuf1_sl_pt) then destroy kuf_sl_pt
+	if isvalid(kuf1_armo) then destroy kuf1_armo
+
+end try
+
+
+return k_return 
+end function
+
+public function integer set_flg_dosimetro_all (st_tab_barcode ast_tab_barcode) throws uo_exception;//
+//====================================================================
+//=== Imposta in automatico il flag_dosimetro sul Barcode x Lotto
+//=== 
+//=== Input:  st_tab_barcode.id_meca 
+//=== out:
+//=== ret:  nr dosimetri impostati 
+//===
+//=== lancia EXCEPTION
+//=== 
+//====================================================================
+//
+long k_righe_barcode
+int k_ctr, k_nr_dosimetri
+string K_barcode_update=""
+st_esito kst_esito 
+datastore kds_1
+
+
+try
+	
+	kst_esito.esito = kkg_esito.ok
+	kst_esito.sqlcode = 0
+	kst_esito.SQLErrText = ""
+	kst_esito.nome_oggetto = this.classname()
+	kst_esito.st_tab_g_0 = ast_tab_barcode.st_tab_g_0 
+
+//	if_sicurezza(kkg_flag_modalita.inserimento) 
+
+	if ast_tab_barcode.id_meca > 0 then 
+               
+//--- 20/7/15 leggo i barcode del lotto x impostare il flag del dosimetro
+		kds_1 = create datastore
+		kds_1.dataobject = "ds_barcode_set_flg_dosimetro"
+		kds_1.settransobject(kguo_sqlca_db_magazzino)
+		k_righe_barcode = kds_1.retrieve(ast_tab_barcode.id_meca)
+
+	else
+		kst_esito.esito = kkg_esito.no_esecuzione
+		kst_esito.sqlcode = 0
+		kst_esito.sqlerrtext = "Impostazione Dosimetro sul Barcode non eseguito, id Lotto non indicato"
+		kguo_exception.inizializza()
+		kguo_exception.set_esito(kst_esito)
+		throw kguo_exception
+	end if
+	
+	if k_righe_barcode > 0 then
+
+		k_nr_dosimetri = set_flg_dosimetro(ast_tab_barcode, kds_1)
+
+		if k_nr_dosimetri > 0 then
+	 
+			k_ctr = kds_1.update( )			// AGGIORNA I FLAG!!!
+			
+			if k_ctr >= 0 then
+				if ast_tab_barcode.st_tab_g_0.esegui_commit <> "N" or isnull(ast_tab_barcode.st_tab_g_0.esegui_commit) then
+					kst_esito = kguo_sqlca_db_magazzino.db_commit()
+				end if
+			else
+				kst_esito.esito = kkg_esito.db_ko
+				kst_esito.sqlcode = k_ctr
+				kst_esito.sqlerrtext = "Errore in aggiornamento impostazione Dosimetro sui Barcode del Lotto con id " + string(ast_tab_barcode.id_meca) 
+				if ast_tab_barcode.st_tab_g_0.esegui_commit <> "N" or isnull(ast_tab_barcode.st_tab_g_0.esegui_commit) then
+					kguo_sqlca_db_magazzino.db_rollback()
+				end if
+				kguo_exception.inizializza()
+				kguo_exception.set_esito(kst_esito)
+				throw kguo_exception
+			end if
+	 
+		end if
+
+	else
+		kst_esito.esito = kkg_esito.no_esecuzione
+		kst_esito.sqlcode = 0
+		kst_esito.sqlerrtext = "Impostazione Dosimetro sul Barcode non necessario per il Lotto con id " + string(ast_tab_barcode.id_meca)
+		kguo_exception.inizializza()
+		kguo_exception.set_esito(kst_esito)
+//		throw kguo_exception    // il problema non scatena un messaggio di errore poichè probabilmente NON è un errore
+	end if
+
+	
+	
+catch (uo_exception kuo_exception)
+	throw kuo_exception
+
+finally
+	if isvalid(kds_1) then destroy kds_1
+
+end try
+
+return k_nr_dosimetri
+
+
 end function
 
 on kuf_barcode.create

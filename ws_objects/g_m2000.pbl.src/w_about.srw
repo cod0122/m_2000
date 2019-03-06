@@ -2,9 +2,9 @@
 forward
 global type w_about from window
 end type
-type cb_1 from picturebutton within w_about
+type st_informa from multilineedit within w_about
 end type
-type st_informa from statictext within w_about
+type cb_1 from picturebutton within w_about
 end type
 type dw_1 from datawindow within w_about
 end type
@@ -25,8 +25,8 @@ boolean clientedge = true
 boolean center = true
 event u_key pbm_keydown
 event ue_open ( )
-cb_1 cb_1
 st_informa st_informa
+cb_1 cb_1
 dw_1 dw_1
 end type
 global w_about w_about
@@ -270,10 +270,13 @@ try
 		kguo_utente.set_pwd (0) 
 		kst_esito = kiuf_sr_sicurezza.tb_select(kst_tab_sr_utenti)
 		if kst_esito.esito = kkg_esito.ok then 
-			messagebox("Accesso non Autorizzato", "Password non riconosciuta, sono rimasti " + string(kst_tab_sr_utenti.tentativi_max - kst_tab_sr_utenti.tentativi_ko) + " tentativi.", information!)
+			st_informa.text = "Accesso non Autorizzato, password non riconosciuta, sono rimasti " + string(kst_tab_sr_utenti.tentativi_max - kst_tab_sr_utenti.tentativi_ko) + " tentativi."
+			//messagebox("Accesso non Autorizzato", "Password non riconosciuta, sono rimasti " + string(kst_tab_sr_utenti.tentativi_max - kst_tab_sr_utenti.tentativi_ko) + " tentativi.", information!)
 		else
-			messagebox("Accesso non Autorizzato", "Provare a ripetere le credenziali di accesso")
+			st_informa.text = "Accesso non Autorizzato, provare a ripetere le credenziali di accesso"
+//			messagebox("Accesso non Autorizzato", "Provare a ripetere le credenziali di accesso")
 		end if
+		st_informa.visible = true
 	end if
 
 catch (uo_exception kuo_exception)
@@ -303,9 +306,10 @@ catch (uo_exception kuo_exception)
 			imposta_password()
 
 		case else
-			messagebox ("Controllo Password", trim(kst_esito.sqlerrtext), information!)
-//						"E' stato riscontrato il seguente errore:~n~r" &
-//						+ "~n~r" &
+			st_informa.text = "Accesso non Autorizzato" +CHAR(13) + CHAR(10)  + trim(kst_esito.sqlerrtext)
+			st_informa.visible = true
+			//messagebox ("Controllo Password", trim(kst_esito.sqlerrtext), information!)
+						
 
 	end choose	
 	
@@ -325,12 +329,12 @@ pointer oldpointer  // Declares a pointer variable
 
 
 
-	if messagebox ("Aggiorna M2000", "Vuoi eseguire l'aggiornamento programmi della Procedura?", &
+	if messagebox ("Aggiornamento del software", "Eseguire l'aggiornamento dei programmi di M2000?", &
 					 question!, YesNo!, 2) = 1 then
 
 		this.enabled = false
 		cb_1.enabled = false
-		st_informa.text = "Aggiorna M2000:  Chiusura archivi in esecuzione...."
+		st_informa.text = "Aggiornamento software:  chiusura archivi in esecuzione...."
 		st_informa.visible = true
 		
 		oldpointer = SetPointer(HourGlass!)
@@ -350,10 +354,13 @@ pointer oldpointer  // Declares a pointer variable
 			kst_esito =kuo_exception.get_st_esito( )
 			kuf1_utility = create kuf_utility
 			if kuf1_utility.u_check_network() then
-				messagebox("Problemi di connessione con il DB", trim(kst_esito.sqlerrtext ))
+				st_informa.text = "Problemi di connessione con il DB " + trim(kst_esito.sqlerrtext)
+//				messagebox("Problemi di connessione con il DB", trim(kst_esito.sqlerrtext ))
 			else
-				messagebox("Connessione al DB", "Attenzione connessione non effettuata, ~r~nmanca la connessione al Server di Rete")
+				st_informa.text = "Attenzione tentativo di connessione dati al Database Server fallita"
+				//messagebox("Connessione al DB", "Attenzione tentativo di connessione dati al Database Server fallita")
 			end if
+			st_informa.visible = true
 			destroy kuf1_utility		
 			
 		finally	
@@ -382,16 +389,16 @@ kuf_base kuf1_base
 st_tab_base kst_tab_base
 
 
-setpointer(kkg.pointer_attesa)
-
-kst_esito.esito = kkg_esito.ok
-kst_esito.sqlcode = 0
-kst_esito.sqlerrtext = " "
-kst_esito.nome_oggetto = this.classname() 
-
-
 try
 
+	setpointer(kkg.pointer_attesa)
+	
+	kst_esito.esito = kkg_esito.ok
+	kst_esito.sqlcode = 0
+	kst_esito.sqlerrtext = " "
+	kst_esito.nome_oggetto = this.classname() 
+	
+	kuf1_base = create kuf_base
 
 //--- acquisisce user e password per accedere al DB		
 	k_utente = trim(dw_1.getitemstring(1, "sle_utente"))
@@ -428,7 +435,7 @@ try
 								    + " Utente presunto: " + kguo_utente.get_codice()
 		kGuf_data_base.errori_scrivi_esito("I", kst_esito) 
 
-		kguo_g.set_anno_procedura( )
+		kguo_g.set_anno_procedura(integer(mid(kuf1_base.prendi_dato_base("anno"),2)))
 		u_check_date( )  // controlla che la data di lavoro sia coerente
 
 
@@ -439,16 +446,19 @@ try
 catch (uo_exception kuo_exception)
 		
 	setpointer(kkg.pointer_default)
+	kuf1_utility = create kuf_utility
 	
 	kst_esito = kuo_exception.get_st_esito( )
 
-	kuf1_utility = create kuf_utility
 	kguo_exception.inizializza( )
 	if kuf1_utility.u_check_network() then
-		kguo_exception.messaggio_utente("Problemi di connessione con il DB", trim(kst_esito.sqlerrtext ))
+		//kguo_exception.messaggio_utente("Problemi di connessione con il DB", trim(kst_esito.sqlerrtext ))
+		st_informa.text = "Accesso non Riuscito controlla utente e password" + CHAR(13) + CHAR(10)  + trim(kst_esito.sqlerrtext)
 	else
-		kguo_exception.messaggio_utente("Connessione al DB", "Attenzione connessione non effettuata, ~r~nconnessione al Server di rete Assente ! ")
+		//kguo_exception.messaggio_utente("Connessione al DB", "Attenzione connessione ai dati del Server di Rete fallita !")
+		st_informa.text = "Accesso non Riuscito per problemi di connessione al Database Server"
 	end if
+	st_informa.visible = true
 	destroy kuf1_utility		
 
 finally
@@ -500,14 +510,12 @@ else
 		end if
 
 //--- Salvo in INI il nome utente collegato e la data-ora
-		kuf1_base = create kuf_base
 		kst_tab_base.key = "ultimo_utente_login_nome" 
 		kst_tab_base.key1 = kguo_utente.get_codice() 
 		kuf1_base.metti_dato_base(kst_tab_base)
 		kst_tab_base.key = "ultimo_utente_login_data" 
 		kst_tab_base.key1 = string(now(), "dd/mm/yy  hh:mm")
 		kuf1_base.metti_dato_base(kst_tab_base)
-		destroy kuf1_base
 
 ////---- compatta il codice Utente
 //		kg_utente_comp = kguo_utente.get_comp()
@@ -517,17 +525,19 @@ else
 		dw_1.setitem(1, "sle_password", "")
 		dw_1.setcolumn("sle_password")
 
-//--- Segnala il logon dell'applicazione (I=messaggio Informativo)
+//--- Segnala il login dell'applicazione (I=messaggio Informativo)
 		kst_esito.esito = kkg_esito.ok
 		kst_esito.sqlcode = KGuo_sqlca_db_magazzino.sqlcode
 		kst_esito.sqlerrtext = "Connessione alla Procedura M2000 RESPINTA!. " &
-								    + " Tantativo da Utente: " + kguo_utente.get_codice()
+								    + " Tantato da Utente: " + kguo_utente.get_codice()
 		kGuf_data_base.errori_scrivi_esito("I", kst_esito) 
 		
 	end if
 		
 end if
-	
+
+if isvalid(kuf1_base) then destroy kuf1_base
+
 setpointer(kkg.pointer_default)
 	
 if k_chiudi then
@@ -569,7 +579,7 @@ if not k_return then
 	kguo_exception.set_tipo(kguo_exception.kk_st_uo_exception_tipo_dati_anomali)
 	kguo_exception.setmessage( "ATTENZIONE DATA ERRATA", "La data " + string(k_datetime, "[ShortDate]") &
 					+ " rilevata su questo terminale non è conguente con l'anno " + string(k_anno_base) + " indicato in Proprità Azienda come Anno di esercizio." &
-					+ "~n~rATTENZIONE qualunque modifica potrebbe causare danni ai dati.")
+					+ "~n~rATTENZIONE qualunque modifica ai dati potrebbe essere dannosa.")
 	kguo_exception.messaggio_utente( )
 end if
 
@@ -596,17 +606,17 @@ kuf_menu kuf1_menu
 end subroutine
 
 on w_about.create
-this.cb_1=create cb_1
 this.st_informa=create st_informa
+this.cb_1=create cb_1
 this.dw_1=create dw_1
-this.Control[]={this.cb_1,&
-this.st_informa,&
+this.Control[]={this.st_informa,&
+this.cb_1,&
 this.dw_1}
 end on
 
 on w_about.destroy
-destroy(this.cb_1)
 destroy(this.st_informa)
+destroy(this.cb_1)
 destroy(this.dw_1)
 end on
 
@@ -651,6 +661,28 @@ event close;//
 if isvalid(kiuf_sr_sicurezza) then destroy kiuf_sr_sicurezza
 end event
 
+type st_informa from multilineedit within w_about
+boolean visible = false
+integer x = 37
+integer y = 724
+integer width = 1952
+integer height = 176
+integer taborder = 20
+integer textsize = -9
+integer weight = 400
+fontcharset fontcharset = ansi!
+fontpitch fontpitch = variable!
+fontfamily fontfamily = swiss!
+string facename = "Verdana"
+long textcolor = 128
+long backcolor = 12632256
+string text = "none"
+boolean border = false
+boolean autovscroll = true
+alignment alignment = center!
+boolean displayonly = true
+end type
+
 type cb_1 from picturebutton within w_about
 boolean visible = false
 integer x = 1774
@@ -677,28 +709,6 @@ u_start()
 
 end event
 
-type st_informa from statictext within w_about
-boolean visible = false
-integer x = 27
-integer y = 776
-integer width = 1961
-integer height = 116
-integer textsize = -9
-integer weight = 400
-fontcharset fontcharset = ansi!
-fontpitch fontpitch = variable!
-fontfamily fontfamily = swiss!
-string facename = "Arial"
-boolean italic = true
-long textcolor = 8388608
-long backcolor = 15780518
-string text = "none"
-alignment alignment = center!
-boolean border = true
-long bordercolor = 255
-boolean focusrectangle = false
-end type
-
 type dw_1 from datawindow within w_about
 event u_enter pbm_dwnprocessenter
 integer y = 4
@@ -720,6 +730,8 @@ event buttonclicked;//
 string k_nome
 
 	this.accepttext( )
+
+	st_informa.visible = false
 
 	k_nome = lower(trim(dwo.name))
 
@@ -743,6 +755,8 @@ event clicked;//
 string k_nome
 
 	this.accepttext( )
+
+	st_informa.visible = false
 
 	k_nome = lower(trim(dwo.name))
 

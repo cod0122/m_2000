@@ -3,6 +3,8 @@ global type st_tab_contratti_rd from structure
 	st_tab_g_0		st_tab_g_0
 	long		contati
 	long		id_contratto_rd
+	string		quotazione_cod		descriptor "comment" = "codice Quotazione: es. BS-SI.STE.M-VAL-19-001"
+	string		quotazione_tipo		descriptor "comment" = "es. VAL = SD,  IRR= CO"
 	integer		anno
 	integer		magazzino		descriptor "comment" = "vedi variabile kkg_magazzino. (di solito = 6)"
 	date		offerta_data
@@ -16,6 +18,7 @@ global type st_tab_contratti_rd from structure
 	string		id_clie_settore
 	integer		gruppo
 	string		art
+	string		cliente_desprod		descriptor "comment" = "Prodotto: descrizione in stampa"
 	long		id_cliente
 	long		id_docprod
 	string		nome_contatto
@@ -70,7 +73,7 @@ global type st_tab_contratti_rd from structure
 	integer		abi
 	integer		cab
 	integer		acconto_perc		descriptor "comment" = "% di acconto su importo al netto degli sconti"
-	decimal{2}		acconto_imp		descriptor "comment" = "importo acconto"
+	decimal { 2 }		acconto_imp		descriptor "comment" = "importo acconto"
 	integer		acconto_cod_pag		descriptor "comment" = "codice di pagamento per l'acconto"
 	string		fattura_da
 	string		altre_condizioni

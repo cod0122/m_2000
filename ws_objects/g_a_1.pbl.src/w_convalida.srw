@@ -7,6 +7,7 @@ end type
 end forward
 
 global type w_convalida from w_g_tab0
+integer x = 29999
 integer width = 3634
 integer height = 2100
 string title = "Elenco CO"
@@ -665,7 +666,7 @@ end subroutine
 private function double calcola_coeff_a_s (st_tab_meca_dosimbozza ast_tab_meca_dosimbozza);//
 //--- 
 //
-double k_coeff_a_s=0
+double k_coeff_a_s=0.00
 
 
 	if ast_tab_meca_dosimbozza.dosim_assorb > 0 and ast_tab_meca_dosimbozza.dosim_spessore > 0 then
@@ -676,7 +677,7 @@ double k_coeff_a_s=0
 	
 	if	k_coeff_a_s > 0 then
 		
-		ast_tab_meca_dosimbozza.dosim_rapp_a_s = round(k_coeff_a_s, 2)
+		ast_tab_meca_dosimbozza.dosim_rapp_a_s = round(k_coeff_a_s, 3)
 		
 	end if
 
@@ -1215,40 +1216,6 @@ datawindowchild kdwc_x, kdwc_x_sl_pt
 
 choose case dwo.name
 
-//	case "RAG_SOC_10" 
-//		if isnull(data) = false and Len(trim(data)) > 0 then
-//			k_rc = this.getchild("rag_soc_10", kdwc_x)
-//			k_rag_soc = Trim(data)
-//			if isnumber(k_rag_soc) then
-//				k_riga = kdwc_x.find("id_cliente = " + k_rag_soc + " ",0,kdwc_x.rowcount())
-//				if k_riga > 0  then
-//					k_rag_soc = kdwc_x.getitemstring(k_riga, "rag_soc_1")
-//				end if
-//				k_riga = kdwc_x.find("rag_soc_1 =~""+ trim(k_rag_soc)+"~"",0,kdwc_x.rowcount())
-//			else
-//				k_riga = kdwc_x.find("rag_soc_1 like ~"%"+trim(k_rag_soc)+"%~"",0,kdwc_x.rowcount())
-//				if k_riga <= 0 or isnull(k_riga) then
-//					k_riga = kdwc_x.find("rag_soc_1 like ~"%"+trim(k_rag_soc)+"%~"",0,kdwc_x.rowcount()) // seconda ricerca approssimativa
-//				end if
-//			end if
-//		
-//			if k_riga <= 0 or isnull(k_riga) then
-//				k_return = 2
-//				this.setitem(row, "rag_soc_10", (k_rag_soc)+" - NON TROVATO -")
-//				this.setitem(row, "cod_cli", 0)
-//			else
-//
-////				this.setitem(row, "rag_soc_10", kdwc_x.getitemstring(k_riga, "rag_soc_1"))
-////				this.setitem(row, "cod_cli", kdwc_x.getitemnumber(k_riga, "id_cliente"))
-//				kst_tab_clienti.rag_soc_10 = kdwc_x.getitemstring(k_riga, "rag_soc_1")
-//				kst_tab_clienti.codice = kdwc_x.getitemnumber(k_riga, "id_cliente")
-//				post put_video_cliente(kst_tab_clienti)
-//			end if
-//		else
-//			this.setitem(row, "rag_soc_10", "")
-//			this.setitem(row, "cod_cli", 0)
-//		end if
-
 //--- calolo Dose dalla 'curva' del lotto dosimetrico 
 	case "dosim_spessore", "dosim_assorb", "dosim_lotto_dosim" 
 		kst_tab_dosimetrie.coeff_a_s = 0.0
@@ -1270,7 +1237,7 @@ choose case dwo.name
 		end if
 		if kst_tab_meca_dosimbozza.dosim_spessore > 0 and kst_tab_meca_dosimbozza.dosim_assorb > 0 then
 			kst_tab_dosimetrie.coeff_a_s = calcola_coeff_a_s(kst_tab_meca_dosimbozza)
-			kst_tab_dosimetrie.dose = 0.0
+			kst_tab_dosimetrie.dose = 0.000
 			if trim(kst_tab_dosimetrie.lotto_dosim) > " " then
 		//--- get della DOSE attraverso il coff_a_s nella tabella DOSIMETRIE(la curva) x fare la convalida
 				kst_esito = kiuf_ausiliari.tb_dosimetrie_select(kst_tab_dosimetrie) 
@@ -1292,8 +1259,6 @@ choose case dwo.name
 end choose
 
 return k_return
-
-
 
 end event
 

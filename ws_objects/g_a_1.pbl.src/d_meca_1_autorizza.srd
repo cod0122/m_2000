@@ -31,7 +31,7 @@ table(column=(type=long updatewhereclause=yes key=yes identity=yes name=id_meca 
  column=(type=long updatewhereclause=yes name=meca_dosim_assorb dbname="dosim_assorb" )
  column=(type=long updatewhereclause=yes name=meca_dosim_spessore dbname="dosim_spessore" )
  column=(type=char(16) updatewhereclause=yes name=meca_dosim_lotto_dosim dbname="dosim_lotto_dosim" )
- column=(type=decimal(2) updatewhereclause=yes name=meca_dosim_rapp_a_s dbname="dosim_rapp_a_s" )
+ column=(type=decimal(3) updatewhereclause=yes name=meca_dosim_rapp_a_s dbname="dosim_rapp_a_s" )
  column=(type=long updatewhereclause=yes name=meca_dosim_dosim_temperatura dbname="dosim_temperatura" )
  column=(type=long updatewhereclause=yes name=meca_dosim_dosim_umidita dbname="dosim_umidita" )
  column=(type=char(12) updatewhereclause=yes name=x_utente_dosim_verifica dbname="x_utente_dosim_verifica" )
@@ -310,4 +310,3 @@ export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
 import.xml()
 export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" nativepdf.customsize=0 nativepdf.customorientation=0 nativepdf.pdfstandard=0 nativepdf.useprintspec=no )
 export.xhtml()
- 

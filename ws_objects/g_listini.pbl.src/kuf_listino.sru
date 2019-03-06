@@ -3276,7 +3276,7 @@ st_esito kst_esito
 	kst_esito.SQLErrText = ""
 	kst_esito.nome_oggetto = this.classname()
 
-	SELECT listino.e1litm
+	SELECT coalesce(trim(listino.e1litm), '')
 		 	 into
 	  			:ast_tab_listino.e1litm
       	 FROM listino
@@ -3294,7 +3294,7 @@ st_esito kst_esito
 		end if
 	end if
 
-	if trim(ast_tab_listino.e1litm) > " " then
+	if ast_tab_listino.e1litm > " " then
 		k_return = ast_tab_listino.e1litm
 	end if
 

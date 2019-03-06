@@ -82,6 +82,7 @@ public subroutine u_mousemove (unsignedlong flags, double xpos, double ypos)
 public function integer u_retrieve (string a_dataobject)
 public function boolean u_dati_modif_dw ()
 protected function string dati_modif (string k_titolo)
+public subroutine u_resize_1 ()
 end prototypes
 
 protected function integer cancella ();//
@@ -1808,6 +1809,20 @@ dati_modif_figlio_fine(k_return)
 return k_return
 end function
 
+public subroutine u_resize_1 ();//
+super::u_resize_1( )
+tab_1.tabpage_1.dw_11.resize(tab_1.tabpage_1.dw_1.width, tab_1.tabpage_1.dw_1.height)
+tab_1.tabpage_2.dw_12.resize(tab_1.tabpage_2.dw_2.width, tab_1.tabpage_2.dw_2.height)
+tab_1.tabpage_3.dw_13.resize(tab_1.tabpage_3.dw_3.width, tab_1.tabpage_3.dw_3.height)
+tab_1.tabpage_4.dw_14.resize(tab_1.tabpage_4.dw_4.width, tab_1.tabpage_4.dw_4.height)
+tab_1.tabpage_5.dw_15.resize(tab_1.tabpage_5.dw_5.width, tab_1.tabpage_5.dw_5.height)
+tab_1.tabpage_6.dw_16.resize(tab_1.tabpage_6.dw_6.width, tab_1.tabpage_6.dw_6.height)
+tab_1.tabpage_7.dw_17.resize(tab_1.tabpage_7.dw_7.width, tab_1.tabpage_7.dw_7.height)
+tab_1.tabpage_8.dw_18.resize(tab_1.tabpage_8.dw_8.width, tab_1.tabpage_8.dw_8.height)
+tab_1.tabpage_9.dw_19.resize(tab_1.tabpage_9.dw_9.width, tab_1.tabpage_9.dw_9.height)
+
+end subroutine
+
 on w_ausiliari.create
 int iCurrent
 call super::create
@@ -1958,8 +1973,9 @@ end event
 type tab_1 from w_g_tab_3`tab_1 within w_ausiliari
 integer x = 46
 integer width = 1833
+integer textsize = -9
 fontcharset fontcharset = ansi!
-string facename = "Verdana"
+boolean fixedwidth = true
 boolean multiline = true
 boolean perpendiculartext = true
 tabposition tabposition = tabsonleft!
@@ -1983,9 +1999,9 @@ call super::destroy
 end on
 
 type tabpage_1 from w_g_tab_3`tabpage_1 within tab_1
-integer x = 585
+integer x = 1061
 integer y = 16
-integer width = 1230
+integer width = 754
 integer height = 1112
 long backcolor = 32501743
 string text = "codici IVA"
@@ -2037,9 +2053,9 @@ type st_1_retrieve from w_g_tab_3`st_1_retrieve within tabpage_1
 end type
 
 type tabpage_2 from w_g_tab_3`tabpage_2 within tab_1
-integer x = 585
+integer x = 1061
 integer y = 16
-integer width = 1230
+integer width = 754
 integer height = 1112
 long backcolor = 553648127
 string text = "Tipi Pagamento"
@@ -2081,9 +2097,9 @@ end type
 
 type tabpage_3 from w_g_tab_3`tabpage_3 within tab_1
 boolean visible = true
-integer x = 585
+integer x = 1061
 integer y = 16
-integer width = 1230
+integer width = 754
 integer height = 1112
 long backcolor = 32501743
 string text = "Misure"
@@ -2124,9 +2140,9 @@ end type
 
 type tabpage_4 from w_g_tab_3`tabpage_4 within tab_1
 boolean visible = true
-integer x = 585
+integer x = 1061
 integer y = 16
-integer width = 1230
+integer width = 754
 integer height = 1112
 long backcolor = 32501743
 string text = "Gruppi"
@@ -2169,9 +2185,9 @@ end type
 
 type tabpage_5 from w_g_tab_3`tabpage_5 within tab_1
 boolean visible = true
-integer x = 585
+integer x = 1061
 integer y = 16
-integer width = 1230
+integer width = 754
 integer height = 1112
 long backcolor = 32501743
 string text = "Causali di ~r~nSpedizione"
@@ -2214,9 +2230,9 @@ end type
 
 type tabpage_6 from w_g_tab_3`tabpage_6 within tab_1
 boolean visible = true
-integer x = 585
+integer x = 1061
 integer y = 16
-integer width = 1230
+integer width = 754
 integer height = 1112
 boolean enabled = true
 long backcolor = 32501743
@@ -2259,9 +2275,9 @@ end event
 
 type tabpage_7 from w_g_tab_3`tabpage_7 within tab_1
 boolean visible = true
-integer x = 585
+integer x = 1061
 integer y = 16
-integer width = 1230
+integer width = 754
 integer height = 1112
 boolean enabled = true
 long backcolor = 32501743
@@ -2301,9 +2317,9 @@ end event
 
 type tabpage_8 from w_g_tab_3`tabpage_8 within tab_1
 boolean visible = true
-integer x = 585
+integer x = 1061
 integer y = 16
-integer width = 1230
+integer width = 754
 integer height = 1112
 boolean enabled = true
 long backcolor = 32501743
@@ -2343,9 +2359,9 @@ end event
 
 type tabpage_9 from w_g_tab_3`tabpage_9 within tab_1
 boolean visible = true
-integer x = 585
+integer x = 1061
 integer y = 16
-integer width = 1230
+integer width = 754
 integer height = 1112
 boolean enabled = true
 long backcolor = 32501743
@@ -2423,8 +2439,6 @@ integer height = 400
 integer taborder = 30
 boolean bringtotop = true
 boolean enabled = true
-boolean hscrollbar = true
-boolean vscrollbar = true
 boolean ki_link_standard_sempre_possibile = true
 boolean ki_dw_visibile_in_open_window = false
 end type
@@ -2467,8 +2481,6 @@ integer height = 400
 integer taborder = 30
 boolean bringtotop = true
 boolean enabled = true
-boolean hscrollbar = true
-boolean vscrollbar = true
 boolean ki_link_standard_sempre_possibile = true
 boolean ki_dw_visibile_in_open_window = false
 end type
@@ -2511,8 +2523,6 @@ integer height = 400
 integer taborder = 30
 boolean bringtotop = true
 boolean enabled = true
-boolean hscrollbar = true
-boolean vscrollbar = true
 boolean ki_link_standard_sempre_possibile = true
 boolean ki_dw_visibile_in_open_window = false
 end type
@@ -2555,8 +2565,6 @@ integer height = 400
 integer taborder = 30
 boolean bringtotop = true
 boolean enabled = true
-boolean hscrollbar = true
-boolean vscrollbar = true
 boolean ki_link_standard_sempre_possibile = true
 boolean ki_dw_visibile_in_open_window = false
 end type
@@ -2599,8 +2607,6 @@ integer height = 400
 integer taborder = 30
 boolean bringtotop = true
 boolean enabled = true
-boolean hscrollbar = true
-boolean vscrollbar = true
 boolean ki_link_standard_sempre_possibile = true
 boolean ki_dw_visibile_in_open_window = false
 end type
@@ -2643,8 +2649,6 @@ integer height = 400
 integer taborder = 30
 boolean bringtotop = true
 boolean enabled = true
-boolean hscrollbar = true
-boolean vscrollbar = true
 boolean ki_link_standard_sempre_possibile = true
 boolean ki_dw_visibile_in_open_window = false
 end type
@@ -2687,8 +2691,6 @@ integer height = 400
 integer taborder = 30
 boolean bringtotop = true
 boolean enabled = true
-boolean hscrollbar = true
-boolean vscrollbar = true
 boolean ki_link_standard_sempre_possibile = true
 boolean ki_dw_visibile_in_open_window = false
 end type
@@ -2731,8 +2733,6 @@ integer height = 400
 integer taborder = 30
 boolean bringtotop = true
 boolean enabled = true
-boolean hscrollbar = true
-boolean vscrollbar = true
 boolean ki_link_standard_sempre_possibile = true
 boolean ki_dw_visibile_in_open_window = false
 end type
@@ -2775,8 +2775,6 @@ integer height = 400
 integer taborder = 30
 boolean bringtotop = true
 boolean enabled = true
-boolean hscrollbar = true
-boolean vscrollbar = true
 boolean ki_link_standard_sempre_possibile = true
 boolean ki_dw_visibile_in_open_window = false
 end type

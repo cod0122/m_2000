@@ -462,7 +462,6 @@ type dw_lista_0 from w_g_tab0`dw_lista_0 within w_sv_skedula
 integer x = 41
 integer y = 56
 string dataobject = "d_sv_skedula_l"
-boolean ki_d_std_1_attiva_sort = false
 end type
 
 type dw_guida from w_g_tab0`dw_guida within w_sv_skedula

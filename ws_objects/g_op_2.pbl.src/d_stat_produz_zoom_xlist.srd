@@ -19,19 +19,19 @@ table(column=(type=long updatewhereclause=yes name=id_meca dbname="s_armo.id_mec
  column=(type=long updatewhereclause=yes name=id_listino dbname="vx_mast5_statp_meca.id_listino" )
  column=(type=char(25) updatewhereclause=yes name=e1litm dbname="e1litm" )
  retrieve="  SELECT  
- 		s_armo.id_meca as id_meca,
-          s_armo.num_int as num_int,   
-          s_armo.data_ent as data_ent,   
-          sum(dati.colli_entrati) as colli_entrati,
-         concat(s_armo.clie_1, ' ', clienti_a.rag_soc_10) as mandante,
-         concat(s_armo.clie_2, ' ', clienti_b.rag_soc_10) as ricevente,
-         concat(s_armo.clie_3 , ' ', clienti_c.rag_soc_10) as fatturato
- 	    ,sum(dati.colli_trattati) as colli_trattati
- 		,r.gruppo as gruppo
- 		,r.clie_3 as clie_3
-         ,sum(dati.imp_x_collo) as imp_x_collo
-         ,r.id_listino as id_listino
-         ,COALESCE(listino.e1litm, '') as e1litm 
+ 		s_armo.id_meca  id_meca,
+          s_armo.num_int  num_int,   
+          s_armo.data_ent  data_ent,   
+          sum(dati.colli_entrati)  colli_entrati,
+         concat(s_armo.clie_1, ' ', clienti_a.rag_soc_10)  mandante,
+         concat(s_armo.clie_2, ' ', clienti_b.rag_soc_10)  ricevente,
+         concat(s_armo.clie_3 , ' ', clienti_c.rag_soc_10)  fatturato
+ 	    ,sum(dati.colli_trattati)  colli_trattati
+ 		,r.gruppo  gruppo
+ 		,r.clie_3  clie_3
+         ,sum(dati.imp_x_collo)  imp_x_collo
+         ,r.id_listino  id_listino
+         ,COALESCE(listino.e1litm, '')  e1litm 
     from  vx_MAST5_statp_meca as r inner join vx_MAST5_statp_colli as dati  ON 
           r.id_armo = dati.id_armo  
  			  INNER JOIN s_armo on
@@ -51,9 +51,9 @@ table(column=(type=long updatewhereclause=yes name=id_meca dbname="s_armo.id_mec
          concat(s_armo.clie_1, ' ', clienti_a.rag_soc_10),
          concat(s_armo.clie_2, ' ', clienti_b.rag_soc_10),
          concat(s_armo.clie_3 , ' ', clienti_c.rag_soc_10)
- 		,r.gruppo as gruppo
- 		,r.clie_3 as clie_3
-         ,r.id_listino as id_listino
+ 		,r.gruppo 
+ 		,r.clie_3 
+         ,r.id_listino 
          ,listino.e1litm
 
 " )

@@ -64,8 +64,10 @@ end forward
 
 global type w_stampe from w_g_tab
 boolean visible = true
-integer width = 1317
-integer height = 1528
+integer x = 100
+integer y = 100
+integer width = 1335
+integer height = 1544
 string menuname = ""
 boolean minbox = false
 boolean maxbox = false
@@ -74,6 +76,8 @@ windowtype windowtype = response!
 long backcolor = 32567536
 string icon = "Report5!"
 string pointer = "Arrow!"
+boolean clientedge = true
+boolean center = true
 boolean ki_toolbar_window_presente = true
 boolean ki_sincronizza_window_consenti = false
 event set_window_size ( )

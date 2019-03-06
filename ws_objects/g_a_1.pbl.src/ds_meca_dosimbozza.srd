@@ -15,7 +15,7 @@ table(column=(type=long update=yes updatewhereclause=yes key=yes identity=yes na
  column=(type=decimal(2) update=yes updatewhereclause=yes name=dosim_dose dbname="meca_dosimbozza.dosim_dose" )
  column=(type=long update=yes updatewhereclause=yes name=dosim_assorb dbname="meca_dosimbozza.dosim_assorb" )
  column=(type=long update=yes updatewhereclause=yes name=dosim_spessore dbname="meca_dosimbozza.dosim_spessore" )
- column=(type=decimal(2) update=yes updatewhereclause=yes name=dosim_rapp_a_s dbname="meca_dosimbozza.dosim_rapp_a_s" )
+ column=(type=decimal(3) update=yes updatewhereclause=yes name=dosim_rapp_a_s dbname="meca_dosimbozza.dosim_rapp_a_s" )
  column=(type=char(16) update=yes updatewhereclause=yes name=dosim_lotto_dosim dbname="meca_dosimbozza.dosim_lotto_dosim" )
  column=(type=long update=yes updatewhereclause=yes name=dosim_temperatura dbname="meca_dosimbozza.dosim_temperatura" )
  column=(type=long update=yes updatewhereclause=yes name=dosim_umidita dbname="meca_dosimbozza.dosim_umidita" )
@@ -79,4 +79,3 @@ export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
 import.xml()
 export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
 export.xhtml()
- 

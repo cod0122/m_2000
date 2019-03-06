@@ -151,7 +151,7 @@ pointer kp_oldpointer
 			kuf1_armo = create kuf_armo
 			kst_tab_armo.num_int = dw_conv.getitemnumber(k_riga, "num_int") 
 			kst_tab_armo.data_int = dw_conv.getitemdate(k_riga, "data_int") 
-			kst_tab_armo.dose = 0
+			kst_tab_armo.dose = 0.0
 			kst_esito = kuf1_armo.leggi_riga("D", kst_tab_armo)
 			destroy kuf1_armo
 			
@@ -159,14 +159,14 @@ pointer kp_oldpointer
 				dw_conv.setitem(k_riga, "data_int", kst_tab_armo.data_int) 
 				
 				k_lotto_dosim = trim(dw_conv.getitemstring(k_riga, "dosim_lotto_dosim"))
-				kst_tab_dosimetrie.coeff_a_s = 0
+				kst_tab_dosimetrie.coeff_a_s = 0.00
 				kst_tab_dosimetrie.dose = kst_tab_armo.dose
 				kst_tab_dosimetrie.lotto_dosim = k_lotto_dosim
 				kuf1_ausiliari = create kuf_ausiliari
 				kst_esito = kuf1_ausiliari.tb_dosimetrie_select(kst_tab_dosimetrie)
 				destroy kuf1_ausiliari
 				
-				if kst_esito.esito = "0" and kst_tab_dosimetrie.coeff_a_s > 0 then
+				if kst_esito.esito = "0" and kst_tab_dosimetrie.coeff_a_s > 0.00 then
 					
 					if k_assorbanza > 0 then
 						k_rc_d = k_assorbanza / kst_tab_dosimetrie.coeff_a_s
@@ -225,7 +225,7 @@ private subroutine calcola_coeff_a_s ();//
 //--- 
 //
 long k_riga, k_riga_dwc
-double k_coeff_a_s=0
+double k_coeff_a_s
 string k_lotto_dosim="" 
 pointer kp_oldpointer 
 st_esito kst_esito
@@ -250,12 +250,12 @@ kuf_ausiliari kuf1_ausiliari
 				  dw_conv.getitemnumber(k_riga, "dosim_spessore") 
 	end if
 	
-	kst_tab_dosimetrie.dose = 0
+	kst_tab_dosimetrie.dose = 0.0
 	
-	if	k_coeff_a_s > 0 then
+	if	k_coeff_a_s > 0.00 then
 		
 		kst_tab_dosimetrie.lotto_dosim = k_lotto_dosim
-		kst_tab_dosimetrie.coeff_a_s = round(k_coeff_a_s, 2)
+		kst_tab_dosimetrie.coeff_a_s = round(k_coeff_a_s, 3)
 		
 //--- legge archivio delle dosimetrie x reperire la dose	di lavorazione	
 		kuf1_ausiliari = create kuf_ausiliari
@@ -263,7 +263,7 @@ kuf_ausiliari kuf1_ausiliari
 		destroy kuf_ausiliari
 		
 		if kst_esito.esito <> "0" then
-			kst_tab_dosimetrie.dose = 0
+			kst_tab_dosimetrie.dose = 0.0
 		end if
 		
 	end if

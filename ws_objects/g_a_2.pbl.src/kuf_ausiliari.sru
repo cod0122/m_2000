@@ -924,6 +924,8 @@ st_esito kst_esito
 	kst_esito.SQLErrText = ""
 	kst_esito.nome_oggetto = this.classname()
 
+	kst_tab_dosimetrie.coeff_a_s = round(kst_tab_dosimetrie.coeff_a_s, 3)
+
 	declare c_tb_dosim_last cursor for 
 	  SELECT dosimetrie.id,   
 				dosimetrie.attivo,   

@@ -2854,7 +2854,7 @@ int k_lencolmax
 	end if
 
 	k_lencolmax = kguo_sqlca_db_magazzino.u_get_col_len( "wm_pklist", "nrddt") //get max size colonna su db
-	if k_lencolmax > 0 and len(trim(kst_tab_wm_pklist.mc_co)) > k_lencolmax then
+	if k_lencolmax > 0 and len(trim(kst_tab_wm_pklist.nrddt)) > k_lencolmax then
 
 		kguo_exception.kist_esito.sqlcode = 0
 		kguo_exception.kist_esito.SQLErrText = &

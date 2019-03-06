@@ -423,14 +423,19 @@ kuf1_utility = create kuf_utility
 	 + "  	colli_entrati ,    " &
 	 + "  	colli_trattati,    " &
 	 + "  	colli_groupage,    " &
-	 + "  	(colli_danontrattare + colli_NoMag),    " &
+	+ " CASE     " &
+	+ "   WHEN colli_NoMag > 0 THEN colli_NoMag   " &
+	+ "   ELSE colli_danontrattare    " &
+	+ " END,   " &
 	 + "  	(colli_trattati  + colli_danontrattare + colli_NoMag - colli_sped) as colli_dasped,   " & 
 	 + "  	colli_sped,   " &
 	 + "  	e1doco, " &
 	 + "  	e1rorn " &
     + " ,e1srst " &
 	 + "  FROM " + kguf_data_base.u_get_nometab_xutente("merce_da_sped_elenco_l_1") 
-	 
+
+	 //	 + "  	(colli_danontrattare + colli_NoMag),    " &
+
 	kst_esito = kguo_sqlca_db_magazzino.db_crea_view(1, k_view, k_sql)		
 
 	destroy kuf1_utility
@@ -452,7 +457,7 @@ end subroutine
 
 private subroutine db_crea_view_lotti_nomag (st_report_merce_da_sped kst_report_merce_da_sped) throws uo_exception;//
 //--- Crea View con numero di colli per:
-//--- 		lotti entrati ma hanno causale di entrata con il flag ddt da spdire senza avere avuti alcun trattamento (solo in transito) 
+//--- 		lotti entrati ma hanno causale di entrata con il flag ddt da spedire senza avere avuto alcun trattamento (solo in transito) 
 //--- 		lotti entrati ma non di magazzino 2
 //
 int k_ctr

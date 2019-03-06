@@ -15,7 +15,7 @@ table(column=(type=date updatewhereclause=yes name=data_int dbname="meca_dosim.d
  column=(type=date updatewhereclause=yes name=data_bolla_in dbname="meca_dosim.data_bolla_in" dbalias=".data_bolla_in" )
  column=(type=long updatewhereclause=yes name=dosim_assorb dbname="dosim_assorb" )
  column=(type=long updatewhereclause=yes name=dosim_spessore dbname="dosim_spessore" )
- column=(type=decimal(2) updatewhereclause=yes name=rapp_a_s dbname="dosim_rapp_a_s" )
+ column=(type=decimal(3) updatewhereclause=yes name=rapp_a_s dbname="dosim_rapp_a_s" )
  column=(type=char(16) updatewhereclause=yes name=dosim_lotto_dosim dbname="dosim_lotto_dosim" )
  column=(type=date updatewhereclause=yes name=dosim_data dbname="dosim_data" )
  column=(type=char(1) updatewhereclause=yes name=err_lav_ok dbname="meca_dosim.err_lav_ok" dbalias=".err_lav_ok" values="da Convalidare	 /KO da Autorizz.	K/da Autorizzare	A/Autorizzato	2/KO da Sbloccare	B/KO Sbloccato	1/da Convalidare	/" )

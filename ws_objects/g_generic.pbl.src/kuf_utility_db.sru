@@ -1162,6 +1162,7 @@ pointer oldpointer  // Declares a pointer variable
          + " num_bolla_in,    " & 
          + " data_bolla_in,   " & 
          + " consegna_data, " & 
+         + " consegna_dataora, " & 
 			+ " pl_barcode, " &
          + " fila_1,    " & 
          + " fila_2,    " & 
@@ -1196,7 +1197,8 @@ pointer oldpointer  // Declares a pointer variable
          + " meca.clie_3,    " & 
          + " meca.num_bolla_in,    " & 
          + " meca.data_bolla_in,   " & 
-         + " meca.consegna_data, " & 
+         + " consegna_data, " & 
+         + " CONVERT(DATETIME, CONVERT(CHAR(8), consegna_data, 112) + ' ' + CONVERT(CHAR(8), coalesce(consegna_ora, '00:00:00'), 108)) , " &
 			+ " coalesce(barcode.pl_barcode, 0), " &
          + " barcode.fila_1,    " & 
          + " barcode.fila_2,    " & 
@@ -1237,6 +1239,7 @@ pointer oldpointer  // Declares a pointer variable
          + " meca.num_bolla_in,  "  &
          + " meca.data_bolla_in, "  &
          + " meca.consegna_data, " &
+         + " meca.consegna_ora, " &
 		   + " barcode.pl_barcode, " &
          + " barcode.fila_1,   " &
          + " barcode.fila_2,  "  &
@@ -1247,51 +1250,12 @@ pointer oldpointer  // Declares a pointer variable
          + " ,meca.e1doco " & 
          + " ,meca.e1rorn " &
          + " ,meca.e1srst " 
-        // + " ,27 " &
-        // + " ,28 " &
 
-//          + " INNER JOIN armo       ON barcode.id_armo = armo.id_armo " & 
-//	    + "  and armo.magazzino = 2 " & 
 
-//          + " LEFT OUTER JOIN meca_dosim  meca_dosim ON meca.id = meca_dosim.id_meca " & 
-//	+ " ORDER BY " &
-//       + "   meca.consegna_data asc, " &
-//        + "  meca.data_int asc,  "  &
-//        + "  meca.num_int asc   "
+//         + " coalesce(CONVERT(DATETIME, CONVERT(CHAR(8), consegna_data, 112) + ' ' + CONVERT(CHAR(8), consegna_ora, 108)), convert(datetime, '01.01.1900 00:00:00')) , " &
+//         + " meca.consegna_data, " & 
+///         + " coalesce(meca.consegna_ora, convert(time, '00:00')), " & 
 
-//         + " k_mandante ,    " & 
-//         + " k_ricevente ,    " & 
-//         + " k_fatturato ,    " & 
-//          + " LEFT OUTER JOIN clienti                 clienti_a  ON meca.clie_1 = clienti_a.codice  " & 
-//          + " LEFT OUTER JOIN clienti                 clienti_b  ON meca.clie_3 = clienti_b.codice   " & 
-//          + " LEFT OUTER JOIN clienti                 clienti_c  ON meca.clie_2 = clienti_c.codice   " & 
-//         + " trim(clienti_a.rag_soc_10) + '  (' + meca.clie_1 + ')' as k_mandante ,    " & 
-//         + " trim(clienti_c.rag_soc_10) + '  (' + meca.clie_2 + ')' as k_ricevente ,    " & 
-//         + " trim(clienti_b.rag_soc_10) + '  (' + meca.clie_3 + ')' as k_fatturato ,    " & 
-//			+ " armo.colli_2 , " & 
-//			+ " armo.peso_kg , " & 
-//			+ " armo.pedane , " & 
-//         + " armo.dose " &
-//         + " ,armo.note_2" &
-//         + " ,37, 38 " 
-//			+ " armo_colli_2, " & 
-//         + " pedane, " & 
-//         + " dose,  " & 
-//         + " peso_kg,  " & 
-//         + " ,note_2  " & 
-//         + " ,dim_m3  " & 
-//         + " ,densita  " & 
-//         + " clienti_a.rag_soc_10,   " &
-//         + " clienti_c.rag_soc_10,   " &
-//         + " clienti_b.rag_soc_10,   " &
-////			
-//			+ " armo.colli_2 , " & 
-//         + " (armo.pedane / armo.colli_2) * count (*)  as pedane, " & 
-//         + " armo.dose,  " & 
-//         + " (armo.peso_kg / armo.colli_2) * count (*) as peso_kg,  " & 
-//         + " ,armo.note_2 as note_2  " & 
-//         + " ,(armo.alt_2 / 1000 * armo.lung_2 / 1000 * armo.larg_2 / 1000) as dim_m3  " & 
-// 			+ " ,(coalesce((armo.peso_kg / armo.colli_2 / (armo.alt_2 / 1000 * armo.lung_2 / 1000 * armo.larg_2 / 1000)) / 1000, 0.00)) as densita " &
 
 	EXECUTE IMMEDIATE "drop VIEW v_meca_pl_v1 " using sqlca;
 
@@ -1540,14 +1504,14 @@ try
           + " f3111.wmlotn , " & 
           + " f4108.iolot2 , " & 
           + " f4801.waapid " & 
-     + " FROM  PRODDTA.F4801_ADT  f4801   " & 
-          + " INNER JOIN PRODDTA.F3111_ADT  f3111 on ON f4801.wadoco = f3111.wmdoco  " & 
-          + " inner join PRODDTA.F4108_adt  f4108 on f3111.wmlotn = f4108.iolotn  " & 
+     + " FROM  F4801_ADT  f4801   " & 
+          + " INNER JOIN F3111_ADT  f3111 on ON f4801.wadoco = f3111.wmdoco  " & 
+          + " inner join F4108_adt  f4108 on f3111.wmlotn = f4108.iolotn  " & 
    + " WHERE  " & 
         + "  f3111.wmlnty = 'S'   " &
 		+ "   and f4801.wasrst = '08'  " &
-		+ "  and f4801.wamcu = '" + kkg.E1MCU + "'  " &
-		+ "  and f4108.iomcu = '" + kkg.E1MCU + "'  "
+		+ "  and f4801.wamcu = '" + kguo_g.E1MCU + "'  " &
+		+ "  and f4108.iomcu = '" + kguo_g.E1MCU + "'  "
 
 //	k_sql = kuf1_e1_conn_cfg.u_sql_set_schema_nome(k_sql)  // imposta il giusto nome schema
 

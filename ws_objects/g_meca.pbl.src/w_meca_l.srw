@@ -160,7 +160,10 @@ pointer oldpointer  // Declares a pointer variable
 		if kist_tab_meca.id > 0 or kist_tab_meca.clie_1 > 0 or ki_st_open_w.flag_primo_giro <> "S" then
 
 			if kist_tab_meca.id > 0 then
-				dw_guida.setitem(1,"codice", string(kist_tab_meca.id ))
+				if trim(dw_guida.getitemstring(1,"codice")) > " " then
+				else
+					dw_guida.setitem(1,"codice", "id" + string(kist_tab_meca.id ))
+				end if
 			end if
 
 			dw_guida.event ue_buttonclicked( )

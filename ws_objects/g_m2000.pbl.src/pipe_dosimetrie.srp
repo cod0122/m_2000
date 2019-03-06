@@ -9,7 +9,7 @@ DESTINATION(name="dosimetrie",COLUMN(type=long,name="id",dbtype="SERIAL",nulls_a
  COLUMN(type=char,name="lotto_dosim",dbtype="CHAR(16)",nulls_allowed=no,initial_value="spaces")
  COLUMN(type=date,name="data",dbtype="DATE",nulls_allowed=no,initial_value="today")
  COLUMN(type=char,name="attivo",dbtype="CHAR(1)",nulls_allowed=yes)
- COLUMN(type=decimal,name="coeff_a_s",dbtype="DECIMAL(7,2)",nulls_allowed=yes)
+ COLUMN(type=decimal,name="coeff_a_s",dbtype="DECIMAL(7,3)",nulls_allowed=yes)
  COLUMN(type=char,name="note",dbtype="CHAR(25)",nulls_allowed=yes)
  COLUMN(type=datetime,name="x_datins",dbtype="DATETIME YEAR TO FRACTION(5)",nulls_allowed=no,initial_value="today")
  COLUMN(type=char,name="x_utente",dbtype="CHAR(12)",nulls_allowed=no,initial_value="spaces"))

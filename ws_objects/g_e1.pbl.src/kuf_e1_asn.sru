@@ -33,7 +33,6 @@ public function datastore get_righe (st_tab_f5547014 ast_tab_f5547014) throws uo
 public function integer tb_add_righe (kds_e1_asn_rows ads1_e1_asn_rows) throws uo_exception
 public function integer tb_add_testata (kds_e1_asn_header ads1_e1_asn_header) throws uo_exception
 public function boolean if_esiste (st_tab_f5547013 ast_tab_f5547013) throws uo_exception
-public function integer u_crea_asn (st_tab_f5547013 ast_tab_f5547013) throws uo_exception
 private function integer u_crea_asn_esegui (kds_e1_asn_header ads1_e1_asn_header, kds_e1_asn_rows ads1_e1_asn_rows, boolean a_commit) throws uo_exception
 public function integer u_crea_asn_batch () throws uo_exception
 public function boolean if_barcode_creati (ref st_get_e1barcode kst_get_e1barcode) throws uo_exception
@@ -46,6 +45,10 @@ public function boolean if_accettato_in_l (ref st_get_e1barcode kst_get_e1barcod
 public function boolean if_ready_to_schedule_in_l (ref st_get_e1barcode kst_get_e1barcode) throws uo_exception
 public function long u_get_stato (ref st_tab_e1_asn ast_tab_e1_asn[]) throws uo_exception
 public function datetime u_get_date_received (st_tab_e1_asn ast_tab_e1_asn) throws uo_exception
+public function kds_e1_asn_rows u_crea_asn_detail (st_tab_f5547013 ast_tab_f5547013, ref kuf_armo auf_armo) throws uo_exception
+public function integer u_crea_asn_old (st_tab_f5547013 ast_tab_f5547013) throws uo_exception
+public function integer u_crea_asn (st_tab_f5547013 ast_tab_f5547013) throws uo_exception
+public function kds_e1_asn_header u_crea_asn_header (st_tab_f5547013 ast_tab_f5547013, ref kuf_armo auf_armo, long a_detail_nrows) throws uo_exception
 end prototypes
 
 public subroutine _readme ();//--- oltre al PARENT
@@ -400,220 +403,6 @@ catch (uo_exception kuo_exception)
 
 finally
 	if isvalid(kds1_e1_asn_esiste) then destroy kds1_e1_asn_esiste
-	
-end try
-
-return k_return
-
-end function
-
-public function integer u_crea_asn (st_tab_f5547013 ast_tab_f5547013) throws uo_exception;//------------------------------------------------------------------------------------------------------
-//--- Crea un nuovo ASN 
-//--- 
-//--- inp: st_tab_f5547013 apid (id_meca convertito in alfa)
-//--- Ritorna: numero righe inserite (0=nessuna)
-//--- 
-//------------------------------------------------------------------------------------------------------
-int k_return = 0
-int k_righe=0, k_righe_testa
-int k_ctr, k_riga, k_riga_insert, k_riga_pkl, k_righe_dett
-boolean k_commit
-st_tab_meca kst_tab_meca
-st_tab_clienti kst_tab_clienti
-st_tab_m_r_f kst_tab_m_r_f
-st_tab_listino kst_tab_listino
-st_tab_wm_pklist kst_tab_wm_pklist
-st_tab_armo kst_tab_armo[]
-st_esito kst_esito
-datastore kds_wm_pklist_righe_l_barcode
-kds_e1_asn_header kds1_e1_asn_header
-kds_e1_asn_rows kds1_e1_asn_rows
-kuf_listino kuf1_listino
-kuf_clienti kuf1_clienti
-kuf_armo kuf1_armo
-kuf_wm_pklist_testa kuf1_wm_pklist_testa
-
-
-try
-	kst_esito.esito = kkg_esito.ok
-	kst_esito.sqlcode = 0
-	kst_esito.SQLErrText = ""
-	kst_esito.nome_oggetto = this.classname()
-	
-	kds1_e1_asn_header = create kds_e1_asn_header
-	kds1_e1_asn_rows = create kds_e1_asn_rows
-
-	kuf1_listino = create kuf_listino
-	kuf1_clienti = create kuf_clienti
-	kuf1_armo = create kuf_armo
-	kuf1_wm_pklist_testa = create kuf_wm_pklist_testa
-
-	if isnumber(ast_tab_f5547013.ehapid) then
-	else
-		kguo_exception.inizializza()
-		kst_esito.esito = kkg_esito.no_esecuzione
-		if isnull(ast_tab_f5547013.ehapid) then ast_tab_f5547013.ehapid = ""
-		kst_esito.SQLErrText = "Id Lotto non indicato o non numerico ('" + trim(ast_tab_f5547013.ehapid) + "'), non è possibile generare i dati ASN per E-ONE"
-		kguo_exception.set_esito(kst_esito)
-		throw kguo_exception
-	end if
-
-//--- già caricato?
-	if if_esiste(ast_tab_f5547013) then
-		kguo_exception.inizializza()
-		kst_esito.esito = kkg_esito.no_esecuzione
-		if isnull(ast_tab_f5547013.ehapid) then ast_tab_f5547013.ehapid = ""
-		kst_esito.SQLErrText = "Lotto '" + trim(ast_tab_f5547013.ehapid) + "' già presente su E1, non è possibile procedere a un nuovo carico."
-		kguo_exception.set_esito(kst_esito)
-		throw kguo_exception
-	end if
-
-//--- get dati del pkl
-	kst_tab_meca.id = long(ast_tab_f5547013.ehapid)
-	kst_tab_meca.id_wm_pklist = kuf1_armo.get_id_wm_pklist(kst_tab_meca)
-	if kst_tab_meca.id_wm_pklist > 0  then
-	else
-		kguo_exception.inizializza()
-		kst_esito.esito = kkg_esito.no_esecuzione
-		kst_esito.SQLErrText = "Lotto senza il codice del Packing List, non è possibile generare i dati ASN per E-ONE"
-		kguo_exception.set_esito(kst_esito)
-		throw kguo_exception
-	end if
-
-//--- get cliente
-	kuf1_armo.get_clie(kst_tab_meca) 		// legge CLIE_1 /2 / 3
-
-////--- get eventuale prefisso dei barcode (pklbcodepref)
-//	if kst_tab_meca.clie_1 > 0 then
-//		kst_tab_clienti.codice = kst_tab_meca.clie_1
-//		kst_tab_clienti.pklbcodepref = kuf1_clienti.get_pklbcodepref(kst_tab_clienti)
-//	else
-//		kst_tab_clienti.pklbcodepref = ""
-//	end if
-
-	ast_tab_f5547013.ehapid = trim(ast_tab_f5547013.ehapid)
-	kst_tab_wm_pklist.id_wm_pklist = kst_tab_meca.id_wm_pklist
-	kst_tab_wm_pklist.customerlot = kuf1_wm_pklist_testa.get_customerlot(kst_tab_wm_pklist) // get del codice lotto caricato dal cliente in testata
-	kst_tab_wm_pklist.idpkl = kuf1_wm_pklist_testa.get_idpkl(kst_tab_wm_pklist) // get del codice packing-list
-
-	//kst_tab_armo.colli_2 = get_totale_colli( )
-	kds_wm_pklist_righe_l_barcode = create datastore
-	kds_wm_pklist_righe_l_barcode.dataobject = "ds_wm_pklist_righe_l_barcode"
-	kds_wm_pklist_righe_l_barcode.settransobject(kguo_sqlca_db_magazzino)
-		
-//--- carica i BARCODE cliente su DW per E-ONE 
-	kst_tab_armo[1].id_meca = long(ast_tab_f5547013.ehapid)
-	k_righe_dett = kuf1_armo.get_righe(kst_tab_armo[])
-	for k_riga = 1  to k_righe_dett
-
-		kst_tab_armo[k_riga].colli_2 = kuf1_armo.get_colli_entrati_riga_datrattare(kst_tab_armo[k_riga])   // conta il numero colli da TRATTARE
-		kst_tab_armo[k_riga].colli_2 += kuf1_armo.get_colli_entrati_conto_deposito(kst_tab_armo[k_riga])	// somma il numero colli in CONTO DEPOSITO
-		if kst_tab_armo[k_riga].colli_2 > 0 then
-	
-			k_riga_pkl = kds_wm_pklist_righe_l_barcode.retrieve(kst_tab_wm_pklist.id_wm_pklist)  // leggo i barcode cliente
-			kuf1_armo.get_id_listino(kst_tab_armo[k_riga]) //tab_1.tabpage_4.dw_4.getitemnumber( k_riga, "id_listino")
-			kst_tab_listino.id = kst_tab_armo[k_riga].id_listino
-			if kst_tab_listino.id > 0 then
-				kst_tab_listino.e1litm = kuf1_listino.get_e1litm(kst_tab_listino)
-			else
-				kst_tab_listino.e1litm = "" //"NOT_FOUND!"
-			end if
-			if trim(kst_tab_listino.e1litm) > " " then
-			else
-				kguo_exception.inizializza( )
-				kguo_exception.kist_esito.sqlcode = 0
-				kguo_exception.kist_esito.esito = kkg_esito.no_esecuzione
-				kguo_exception.kist_esito.sqlerrtext = "Generazione ASN su E1 bloccata, listino senza codice Item E1: (id Listino " + string(kst_tab_listino.id) + ", id Lotto/ASN: " + ast_tab_f5547013.ehapid + ")"
-				throw kguo_exception
-			end if
-			
-			for k_ctr = 1 to k_riga_pkl
-				
-				k_riga_insert = kds1_e1_asn_rows.insertrow(0)
-				kds1_e1_asn_rows.setitem( k_riga_insert, "EDAPID", ast_tab_f5547013.ehapid)
-				kds1_e1_asn_rows.setitem( k_riga_insert, "EDLNID", k_riga_insert * 1000)
-				kds1_e1_asn_rows.setitem( k_riga_insert, "EDUORG", 1)
-				kds1_e1_asn_rows.setitem( k_riga_insert, "EDLITM", trim(kst_tab_listino.e1litm))
-				
-				if trim(kds_wm_pklist_righe_l_barcode.getitemstring(k_ctr, "idlotto_clie")) > " " then  //--- se caricate le righe cusomerlot sui singoli barcode 
-					kst_tab_wm_pklist.customerlot = trim(kds_wm_pklist_righe_l_barcode.getitemstring(k_ctr, "idlotto_clie"))
-				end if
-				if trim(kst_tab_wm_pklist.customerlot) > " " then
-					kds1_e1_asn_rows.setitem( k_riga_insert, "EDIR02", trim(left(kst_tab_wm_pklist.customerlot,30)))
-				else
-					kds1_e1_asn_rows.setitem( k_riga_insert, "EDIR02", trim(left(kst_tab_wm_pklist.idpkl,30)))
-				end if
-				
-				kds1_e1_asn_rows.setitem( k_riga_insert, "EDIR01", trim(kds_wm_pklist_righe_l_barcode.getitemstring(k_ctr, "wm_barcode")))
-			next
-		end if
-							
-	next
-
-//--- carica testata lotto da caricare su E-ONE 
-	if kds1_e1_asn_rows.rowcount( ) > 0 then
-		k_riga_insert = kds1_e1_asn_header.insertrow(0)
-		kds1_e1_asn_header.setitem( k_riga_insert, "EHAPID", ast_tab_f5547013.ehapid)
-		
-		if kst_tab_meca.clie_3 > 0 then
-			kst_tab_clienti.codice = kst_tab_meca.clie_3
-			kst_tab_clienti.e1an = kuf1_clienti.get_e1an(kst_tab_clienti)
-		else
-			kst_tab_clienti.e1an = 0
-		end if
-		kds1_e1_asn_header.setitem( k_riga_insert, "EHAN8", kst_tab_clienti.e1an)
-		
-		if kst_tab_meca.clie_2 > 0 then
-//--- prima tenta di prendere il codice x E1 del Ricevente dalla tabella 'legami' M_R_F			
-			kst_tab_m_r_f.clie_1 = kst_tab_meca.clie_1
-			kst_tab_m_r_f.clie_2 = kst_tab_meca.clie_2
-			kst_tab_m_r_f.clie_3 = kst_tab_meca.clie_3
-			kst_tab_clienti.e1an = kuf1_clienti.get_mrf_e1an(kst_tab_m_r_f)
-			if kst_tab_clienti.e1an > 0 then
-			else
-//--- .... se non trovato tenta di prendere il codice x E1 dall'anagrafica del Ricevente 			
-				kst_tab_clienti.codice = kst_tab_meca.clie_2
-				kst_tab_clienti.e1an = kuf1_clienti.get_e1an(kst_tab_clienti)
-			end if
-			if isnull(kst_tab_clienti.e1an) then kst_tab_clienti.e1an = 0
-		else
-			kst_tab_clienti.e1an = 0
-		end if
-		kds1_e1_asn_header.setitem( k_riga_insert, "EHSHAN",  kst_tab_clienti.e1an)
-		
-		kuf1_armo.get_num_bolla_in(kst_tab_meca)
-		if isnull(kst_tab_meca.num_bolla_in) then
-			kst_tab_meca.num_bolla_in = ""
-		end if
-		kds1_e1_asn_header.setitem( k_riga_insert, "EHVR01", kst_tab_meca.num_bolla_in) // tab_1.tabpage_1.dw_1.getitemstring(1, "num_bolla_in"))
-		kds1_e1_asn_header.setitem( k_riga_insert, "EHA801", kGuf_data_base.get_e1_dateformat(RelativeDate(kguo_g.get_dataoggi( ), 1)))
-		kds1_e1_asn_header.setitem( k_riga_insert, "EHUORG", kds1_e1_asn_rows.rowcount() )
-	end if
-	
-	if kds1_e1_asn_header.rowcount( ) > 0 and kds1_e1_asn_rows.rowcount( ) > 0 then
-		if ast_tab_f5547013.st_tab_g_0.esegui_commit = "S" or isnull(ast_tab_f5547013.st_tab_g_0.esegui_commit) then
-			k_commit = true
-		else
-			k_commit = false
-		end if
-		k_return = u_crea_asn_esegui(kds1_e1_asn_header, kds1_e1_asn_rows, k_commit)   	// AGGIUNGE LOTTO ASN SU E-ONE
-	else
-		kst_esito.sqlcode = 0
-		kst_esito.esito = kkg_esito.no_esecuzione
-		kst_esito.sqlerrtext = "Nessuna riga del Lotto da registrare in E-ONE!"
-		kguo_exception.inizializza( )
-		kguo_exception.set_esito(kst_esito)
-		throw kguo_exception
-	end if
-		
-
-catch (uo_exception kuo_exception)
-	throw kuo_exception
-
-finally
-	if isvalid(kuf1_listino) then destroy kuf1_listino
-	if isvalid(kuf1_clienti) then destroy kuf1_clienti
-	if isvalid(kuf1_armo) then destroy kuf1_armo
 	
 end try
 
@@ -1241,6 +1030,580 @@ catch (uo_exception kuo_exception)
 end try
 
 return k_return
+
+end function
+
+public function kds_e1_asn_rows u_crea_asn_detail (st_tab_f5547013 ast_tab_f5547013, ref kuf_armo auf_armo) throws uo_exception;//------------------------------------------------------------------------------------------------------
+//--- Crea un nuovo ASN righe di dettaglio
+//--- 
+//--- inp: st_tab_f5547013 apid (id_meca convertito in alfa)
+//--- Ritorna: datastore kds1_e1_asn_rows
+//--- 
+//------------------------------------------------------------------------------------------------------
+long k_righe_barcode
+int k_ctr, k_riga, k_riga_insert, k_riga_pkl, k_righe_dett, k_nr_dosimetri
+string k_ret_base
+st_tab_meca kst_tab_meca
+st_tab_listino kst_tab_listino
+st_tab_wm_pklist kst_tab_wm_pklist
+st_tab_armo kst_tab_armo[]
+st_esito kst_esito
+st_tab_barcode kst_tab_barcode
+datastore kds_wm_pklist_righe_l_barcode
+kds_e1_asn_rows kds1_e1_asn_rows
+kuf_listino kuf1_listino
+kuf_wm_pklist_testa kuf1_wm_pklist_testa
+kuf_base kuf1_base
+kuf_barcode kuf1_barcode
+datastore kds_1
+
+
+try
+	kst_esito.esito = kkg_esito.ok
+	kst_esito.sqlcode = 0
+	kst_esito.SQLErrText = ""
+	kst_esito.nome_oggetto = this.classname()
+	
+	kds1_e1_asn_rows = create kds_e1_asn_rows
+	kuf1_listino = create kuf_listino
+	kuf1_wm_pklist_testa = create kuf_wm_pklist_testa
+	kuf1_base = create kuf_base
+	kuf1_barcode = create kuf_barcode
+	kds_1 = create datastore
+	kds_1.dataobject = "ds_barcode_set_flg_dosimetro"
+
+//--- get dati del pkl
+	kst_tab_meca.id = long(ast_tab_f5547013.ehapid)
+	kst_tab_meca.id_wm_pklist = auf_armo.get_id_wm_pklist(kst_tab_meca)
+	if kst_tab_meca.id_wm_pklist > 0  then
+	else
+		kguo_exception.inizializza()
+		kst_esito.esito = kkg_esito.no_esecuzione
+		kst_esito.SQLErrText = "Lotto senza il codice del Packing List, non è possibile generare i dati ASN per E-ONE"
+		kguo_exception.set_esito(kst_esito)
+		throw kguo_exception
+	end if
+
+	ast_tab_f5547013.ehapid = trim(ast_tab_f5547013.ehapid)
+	kst_tab_wm_pklist.id_wm_pklist = kst_tab_meca.id_wm_pklist
+	kst_tab_wm_pklist.customerlot = kuf1_wm_pklist_testa.get_customerlot(kst_tab_wm_pklist) // get del codice lotto caricato dal cliente in testata
+	kst_tab_wm_pklist.idpkl = kuf1_wm_pklist_testa.get_idpkl(kst_tab_wm_pklist) // get del codice packing-list
+
+	//kst_tab_armo.colli_2 = get_totale_colli( )
+	kds_wm_pklist_righe_l_barcode = create datastore
+	kds_wm_pklist_righe_l_barcode.dataobject = "ds_wm_pklist_righe_l_barcode"
+	kds_wm_pklist_righe_l_barcode.settransobject(kguo_sqlca_db_magazzino)
+		
+//--- carica i BARCODE cliente su DW per E-ONE 
+	kst_tab_armo[1].id_meca = long(ast_tab_f5547013.ehapid)
+	k_righe_dett = auf_armo.get_righe(kst_tab_armo[])
+	for k_riga = 1  to k_righe_dett
+
+		kst_tab_armo[k_riga].colli_2 = auf_armo.get_colli_entrati_riga_datrattare(kst_tab_armo[k_riga])   // conta il numero colli da TRATTARE
+		kst_tab_armo[k_riga].colli_2 += auf_armo.get_colli_entrati_conto_deposito(kst_tab_armo[k_riga])	// somma il numero colli in CONTO DEPOSITO
+		if kst_tab_armo[k_riga].colli_2 > 0 then
+	
+			k_riga_pkl = kds_wm_pklist_righe_l_barcode.retrieve(kst_tab_wm_pklist.id_wm_pklist)  // leggo i barcode cliente
+			auf_armo.get_id_listino(kst_tab_armo[k_riga]) //tab_1.tabpage_4.dw_4.getitemnumber( k_riga, "id_listino")
+			kst_tab_listino.id = kst_tab_armo[k_riga].id_listino
+			if kst_tab_listino.id > 0 then
+				kst_tab_listino.e1litm = kuf1_listino.get_e1litm(kst_tab_listino)
+			else
+				kst_tab_listino.e1litm = "" //"NOT_FOUND!"
+			end if
+			if trim(kst_tab_listino.e1litm) > " " then
+			else
+				kguo_exception.inizializza( )
+				kguo_exception.kist_esito.sqlcode = 0
+				kguo_exception.kist_esito.esito = kkg_esito.no_esecuzione
+				kguo_exception.kist_esito.sqlerrtext = "Generazione ASN su E1 bloccata, listino senza codice Item E1: (id Listino " + string(kst_tab_listino.id) + ", id Lotto/ASN: " + ast_tab_f5547013.ehapid + ")"
+				throw kguo_exception
+			end if
+			
+			for k_ctr = 1 to k_riga_pkl
+				
+				k_riga_insert = kds1_e1_asn_rows.insertrow(0)
+				kds1_e1_asn_rows.setitem( k_riga_insert, "EDAPID", ast_tab_f5547013.ehapid)
+				kds1_e1_asn_rows.setitem( k_riga_insert, "EDLNID", k_riga_insert * 1000)
+				kds1_e1_asn_rows.setitem( k_riga_insert, "EDUORG", 1)
+				kds1_e1_asn_rows.setitem( k_riga_insert, "EDLITM", trim(kst_tab_listino.e1litm))
+				
+				if trim(kds_wm_pklist_righe_l_barcode.getitemstring(k_ctr, "idlotto_clie")) > " " then  //--- se caricate le righe cusomerlot sui singoli barcode 
+					kst_tab_wm_pklist.customerlot = trim(kds_wm_pklist_righe_l_barcode.getitemstring(k_ctr, "idlotto_clie"))
+				end if
+				if trim(kst_tab_wm_pklist.customerlot) > " " then
+					kds1_e1_asn_rows.setitem( k_riga_insert, "EDIR02", trim(left(kst_tab_wm_pklist.customerlot,30)))
+				else
+					kds1_e1_asn_rows.setitem( k_riga_insert, "EDIR02", trim(left(kst_tab_wm_pklist.idpkl,30)))
+				end if
+				
+				kds1_e1_asn_rows.setitem( k_riga_insert, "EDIR01", trim(kds_wm_pklist_righe_l_barcode.getitemstring(k_ctr, "wm_barcode")))
+
+//--- prepara il ds per il calcolo del numero dosimetri che avrà il Lotto
+				k_righe_barcode = kds_1.insertrow(0)
+				kds_1.setitem(k_righe_barcode, "id_armo", 	kst_tab_armo[k_riga].id_armo)
+				kds_1.setitem(k_righe_barcode, "barcode", trim(kds_wm_pklist_righe_l_barcode.getitemstring(k_ctr, "wm_barcode")))  // metto un valore fittizio 
+				
+			next
+			
+		end if
+							
+	next
+
+//--- aggiungo il numero dosimetri e il relativo codice prodotto E1 da listino
+	k_nr_dosimetri = 0
+	k_ret_base = kuf1_base.prendi_dato_base( "e1_id_listino_dsm_tof554701")
+	if left(k_ret_base,1) <> "0" then
+		kst_esito.nome_oggetto = this.classname()
+		kst_esito.esito = kkg_esito.db_ko  
+		kst_esito.sqlcode = 0
+		kst_esito.SQLErrText = mid(k_ret_base,2)
+		kguo_exception.inizializza( )
+		kguo_exception.set_esito(kst_esito)
+	else
+		kst_tab_listino.id = long(mid(k_ret_base,2))
+	
+		if kst_tab_listino.id > 0 then
+			kst_tab_listino.e1litm = kuf1_listino.get_e1litm(kst_tab_listino)
+		else
+			kst_tab_listino.e1litm = "" //"NOT_FOUND!"
+		end if
+		if trim(kst_tab_listino.e1litm) > " " then
+			//--- get del numero dosimetri che saranno prodotti per questo Lotto
+			if k_righe_barcode > 0 then
+				kst_tab_barcode.id_meca = kst_tab_meca.id 
+				k_nr_dosimetri = kuf1_barcode.set_flg_dosimetro(kst_tab_barcode, kds_1)
+				
+				if k_nr_dosimetri > 0 then
+					
+					//k_nr_dosimetri = 0  //UFO alberto pezza in attesa di risposta KAREN
+					
+					k_riga_insert = kds1_e1_asn_rows.insertrow(0)
+					kds1_e1_asn_rows.setitem( k_riga_insert, "EDAPID", ast_tab_f5547013.ehapid)
+					kds1_e1_asn_rows.setitem( k_riga_insert, "EDLNID", k_riga_insert * 1000)
+					kds1_e1_asn_rows.setitem( k_riga_insert, "EDUORG", k_nr_dosimetri)
+					kds1_e1_asn_rows.setitem( k_riga_insert, "EDLITM", trim(kst_tab_listino.e1litm))
+					if trim(kst_tab_wm_pklist.customerlot) > " " then
+						kds1_e1_asn_rows.setitem( k_riga_insert, "EDIR02", trim(left(kst_tab_wm_pklist.customerlot,30)))
+					else
+						kds1_e1_asn_rows.setitem( k_riga_insert, "EDIR02", trim(left(kst_tab_wm_pklist.idpkl,30)))
+					end if
+					kds1_e1_asn_rows.setitem( k_riga_insert, "EDIR01", "")
+				end if			
+			end if			
+		else
+			kguo_exception.inizializza( )
+			kguo_exception.kist_esito.sqlcode = 0
+			kguo_exception.kist_esito.esito = kkg_esito.no_esecuzione
+			kguo_exception.kist_esito.sqlerrtext = "Generazione ASN su E1 senza Numero Dosimetri, listino senza codice Item E1: (id Listino " + string(kst_tab_listino.id) + ", id Lotto/ASN: " + ast_tab_f5547013.ehapid + ")"
+			kguo_exception.scrivi_log( )
+		end if
+	end if	
+	kst_tab_meca.dosimprev = k_nr_dosimetri
+	auf_armo.set_dosimprev(kst_tab_meca)    // add numero dosimetri previsto e passato a E1
+
+
+catch (uo_exception kuo_exception)
+	throw kuo_exception
+
+finally
+	if isvalid(kuf1_listino) then destroy kuf1_listino
+	if isvalid(kuf1_wm_pklist_testa) then destroy kuf1_wm_pklist_testa
+	if isvalid(kuf1_base) then destroy kuf1_base
+	if isvalid(kuf1_barcode) then destroy kuf1_barcode
+	if isvalid(kds_1) then destroy kds_1
+	
+	
+end try
+
+return kds1_e1_asn_rows
+
+end function
+
+public function integer u_crea_asn_old (st_tab_f5547013 ast_tab_f5547013) throws uo_exception;//------------------------------------------------------------------------------------------------------
+//--- Crea un nuovo ASN 
+//--- 
+//--- inp: st_tab_f5547013 apid (id_meca convertito in alfa)
+//--- Ritorna: numero righe inserite (0=nessuna)
+//--- 
+//------------------------------------------------------------------------------------------------------
+int k_return = 0
+int k_righe=0, k_righe_testa
+int k_ctr, k_riga, k_riga_insert, k_riga_pkl, k_righe_dett
+boolean k_commit
+st_tab_meca kst_tab_meca
+st_tab_clienti kst_tab_clienti
+st_tab_m_r_f kst_tab_m_r_f
+st_tab_listino kst_tab_listino
+st_tab_wm_pklist kst_tab_wm_pklist
+st_tab_armo kst_tab_armo[]
+st_esito kst_esito
+datastore kds_wm_pklist_righe_l_barcode
+kds_e1_asn_header kds1_e1_asn_header
+kds_e1_asn_rows kds1_e1_asn_rows
+kuf_listino kuf1_listino
+kuf_clienti kuf1_clienti
+kuf_armo kuf1_armo
+kuf_wm_pklist_testa kuf1_wm_pklist_testa
+
+
+try
+	kst_esito.esito = kkg_esito.ok
+	kst_esito.sqlcode = 0
+	kst_esito.SQLErrText = ""
+	kst_esito.nome_oggetto = this.classname()
+	
+	kds1_e1_asn_header = create kds_e1_asn_header
+	kds1_e1_asn_rows = create kds_e1_asn_rows
+
+	kuf1_listino = create kuf_listino
+	kuf1_clienti = create kuf_clienti
+	kuf1_armo = create kuf_armo
+	kuf1_wm_pklist_testa = create kuf_wm_pklist_testa
+
+	if isnumber(ast_tab_f5547013.ehapid) then
+	else
+		kguo_exception.inizializza()
+		kst_esito.esito = kkg_esito.no_esecuzione
+		if isnull(ast_tab_f5547013.ehapid) then ast_tab_f5547013.ehapid = ""
+		kst_esito.SQLErrText = "Id Lotto non indicato o non numerico ('" + trim(ast_tab_f5547013.ehapid) + "'), non è possibile generare i dati ASN per E-ONE"
+		kguo_exception.set_esito(kst_esito)
+		throw kguo_exception
+	end if
+
+//--- già caricato?
+	if if_esiste(ast_tab_f5547013) then
+		kguo_exception.inizializza()
+		kst_esito.esito = kkg_esito.no_esecuzione
+		if isnull(ast_tab_f5547013.ehapid) then ast_tab_f5547013.ehapid = ""
+		kst_esito.SQLErrText = "Lotto '" + trim(ast_tab_f5547013.ehapid) + "' già presente su E1, non è possibile procedere a un nuovo carico."
+		kguo_exception.set_esito(kst_esito)
+		throw kguo_exception
+	end if
+
+//--- get dati del pkl
+	kst_tab_meca.id = long(ast_tab_f5547013.ehapid)
+	kst_tab_meca.id_wm_pklist = kuf1_armo.get_id_wm_pklist(kst_tab_meca)
+	if kst_tab_meca.id_wm_pklist > 0  then
+	else
+		kguo_exception.inizializza()
+		kst_esito.esito = kkg_esito.no_esecuzione
+		kst_esito.SQLErrText = "Lotto senza il codice del Packing List, non è possibile generare i dati ASN per E-ONE"
+		kguo_exception.set_esito(kst_esito)
+		throw kguo_exception
+	end if
+
+//--- get cliente
+	kuf1_armo.get_clie(kst_tab_meca) 		// legge CLIE_1 /2 / 3
+
+////--- get eventuale prefisso dei barcode (pklbcodepref)
+//	if kst_tab_meca.clie_1 > 0 then
+//		kst_tab_clienti.codice = kst_tab_meca.clie_1
+//		kst_tab_clienti.pklbcodepref = kuf1_clienti.get_pklbcodepref(kst_tab_clienti)
+//	else
+//		kst_tab_clienti.pklbcodepref = ""
+//	end if
+
+	ast_tab_f5547013.ehapid = trim(ast_tab_f5547013.ehapid)
+	kst_tab_wm_pklist.id_wm_pklist = kst_tab_meca.id_wm_pklist
+	kst_tab_wm_pklist.customerlot = kuf1_wm_pklist_testa.get_customerlot(kst_tab_wm_pklist) // get del codice lotto caricato dal cliente in testata
+	kst_tab_wm_pklist.idpkl = kuf1_wm_pklist_testa.get_idpkl(kst_tab_wm_pklist) // get del codice packing-list
+
+	//kst_tab_armo.colli_2 = get_totale_colli( )
+	kds_wm_pklist_righe_l_barcode = create datastore
+	kds_wm_pklist_righe_l_barcode.dataobject = "ds_wm_pklist_righe_l_barcode"
+	kds_wm_pklist_righe_l_barcode.settransobject(kguo_sqlca_db_magazzino)
+		
+//--- carica i BARCODE cliente su DW per E-ONE 
+	kst_tab_armo[1].id_meca = long(ast_tab_f5547013.ehapid)
+	k_righe_dett = kuf1_armo.get_righe(kst_tab_armo[])
+	for k_riga = 1  to k_righe_dett
+
+		kst_tab_armo[k_riga].colli_2 = kuf1_armo.get_colli_entrati_riga_datrattare(kst_tab_armo[k_riga])   // conta il numero colli da TRATTARE
+		kst_tab_armo[k_riga].colli_2 += kuf1_armo.get_colli_entrati_conto_deposito(kst_tab_armo[k_riga])	// somma il numero colli in CONTO DEPOSITO
+		if kst_tab_armo[k_riga].colli_2 > 0 then
+	
+			k_riga_pkl = kds_wm_pklist_righe_l_barcode.retrieve(kst_tab_wm_pklist.id_wm_pklist)  // leggo i barcode cliente
+			kuf1_armo.get_id_listino(kst_tab_armo[k_riga]) //tab_1.tabpage_4.dw_4.getitemnumber( k_riga, "id_listino")
+			kst_tab_listino.id = kst_tab_armo[k_riga].id_listino
+			if kst_tab_listino.id > 0 then
+				kst_tab_listino.e1litm = kuf1_listino.get_e1litm(kst_tab_listino)
+			else
+				kst_tab_listino.e1litm = "" //"NOT_FOUND!"
+			end if
+			if trim(kst_tab_listino.e1litm) > " " then
+			else
+				kguo_exception.inizializza( )
+				kguo_exception.kist_esito.sqlcode = 0
+				kguo_exception.kist_esito.esito = kkg_esito.no_esecuzione
+				kguo_exception.kist_esito.sqlerrtext = "Generazione ASN su E1 bloccata, listino senza codice Item E1: (id Listino " + string(kst_tab_listino.id) + ", id Lotto/ASN: " + ast_tab_f5547013.ehapid + ")"
+				throw kguo_exception
+			end if
+			
+			for k_ctr = 1 to k_riga_pkl
+				
+				k_riga_insert = kds1_e1_asn_rows.insertrow(0)
+				kds1_e1_asn_rows.setitem( k_riga_insert, "EDAPID", ast_tab_f5547013.ehapid)
+				kds1_e1_asn_rows.setitem( k_riga_insert, "EDLNID", k_riga_insert * 1000)
+				kds1_e1_asn_rows.setitem( k_riga_insert, "EDUORG", 1)
+				kds1_e1_asn_rows.setitem( k_riga_insert, "EDLITM", trim(kst_tab_listino.e1litm))
+				
+				if trim(kds_wm_pklist_righe_l_barcode.getitemstring(k_ctr, "idlotto_clie")) > " " then  //--- se caricate le righe cusomerlot sui singoli barcode 
+					kst_tab_wm_pklist.customerlot = trim(kds_wm_pklist_righe_l_barcode.getitemstring(k_ctr, "idlotto_clie"))
+				end if
+				if trim(kst_tab_wm_pklist.customerlot) > " " then
+					kds1_e1_asn_rows.setitem( k_riga_insert, "EDIR02", trim(left(kst_tab_wm_pklist.customerlot,30)))
+				else
+					kds1_e1_asn_rows.setitem( k_riga_insert, "EDIR02", trim(left(kst_tab_wm_pklist.idpkl,30)))
+				end if
+				
+				kds1_e1_asn_rows.setitem( k_riga_insert, "EDIR01", trim(kds_wm_pklist_righe_l_barcode.getitemstring(k_ctr, "wm_barcode")))
+			next
+			
+		end if
+							
+	next
+
+//--- carica testata lotto da caricare su E-ONE 
+	if kds1_e1_asn_rows.rowcount( ) > 0 then
+		k_riga_insert = kds1_e1_asn_header.insertrow(0)
+		kds1_e1_asn_header.setitem( k_riga_insert, "EHAPID", ast_tab_f5547013.ehapid)
+		
+		if kst_tab_meca.clie_3 > 0 then
+			kst_tab_clienti.codice = kst_tab_meca.clie_3
+			kst_tab_clienti.e1an = kuf1_clienti.get_e1an(kst_tab_clienti)
+		else
+			kst_tab_clienti.e1an = 0
+		end if
+		kds1_e1_asn_header.setitem( k_riga_insert, "EHAN8", kst_tab_clienti.e1an)
+		
+		if kst_tab_meca.clie_2 > 0 then
+//--- prima tenta di prendere il codice x E1 del Ricevente dalla tabella 'legami' M_R_F			
+			kst_tab_m_r_f.clie_1 = kst_tab_meca.clie_1
+			kst_tab_m_r_f.clie_2 = kst_tab_meca.clie_2
+			kst_tab_m_r_f.clie_3 = kst_tab_meca.clie_3
+			kst_tab_clienti.e1an = kuf1_clienti.get_mrf_e1an(kst_tab_m_r_f)
+			if kst_tab_clienti.e1an > 0 then
+			else
+//--- .... se non trovato tenta di prendere il codice x E1 dall'anagrafica del Ricevente 			
+				kst_tab_clienti.codice = kst_tab_meca.clie_2
+				kst_tab_clienti.e1an = kuf1_clienti.get_e1an(kst_tab_clienti)
+			end if
+			if isnull(kst_tab_clienti.e1an) then kst_tab_clienti.e1an = 0
+		else
+			kst_tab_clienti.e1an = 0
+		end if
+		kds1_e1_asn_header.setitem( k_riga_insert, "EHSHAN",  kst_tab_clienti.e1an)
+		
+		kuf1_armo.get_num_bolla_in(kst_tab_meca)
+		if isnull(kst_tab_meca.num_bolla_in) then
+			kst_tab_meca.num_bolla_in = ""
+		end if
+		kds1_e1_asn_header.setitem( k_riga_insert, "EHVR01", kst_tab_meca.num_bolla_in) // tab_1.tabpage_1.dw_1.getitemstring(1, "num_bolla_in"))
+		kds1_e1_asn_header.setitem( k_riga_insert, "EHA801", kGuf_data_base.get_e1_dateformat(RelativeDate(kguo_g.get_dataoggi( ), 1)))
+		kds1_e1_asn_header.setitem( k_riga_insert, "EHUORG", kds1_e1_asn_rows.rowcount() )
+	end if
+	
+	if kds1_e1_asn_header.rowcount( ) > 0 and kds1_e1_asn_rows.rowcount( ) > 0 then
+		if ast_tab_f5547013.st_tab_g_0.esegui_commit = "S" or isnull(ast_tab_f5547013.st_tab_g_0.esegui_commit) then
+			k_commit = true
+		else
+			k_commit = false
+		end if
+		k_return = u_crea_asn_esegui(kds1_e1_asn_header, kds1_e1_asn_rows, k_commit)   	// AGGIUNGE LOTTO ASN SU E-ONE
+	else
+		kst_esito.sqlcode = 0
+		kst_esito.esito = kkg_esito.no_esecuzione
+		kst_esito.sqlerrtext = "Nessuna riga del Lotto da registrare in E-ONE!"
+		kguo_exception.inizializza( )
+		kguo_exception.set_esito(kst_esito)
+		throw kguo_exception
+	end if
+		
+
+catch (uo_exception kuo_exception)
+	throw kuo_exception
+
+finally
+	if isvalid(kuf1_listino) then destroy kuf1_listino
+	if isvalid(kuf1_clienti) then destroy kuf1_clienti
+	if isvalid(kuf1_armo) then destroy kuf1_armo
+	
+end try
+
+return k_return
+
+end function
+
+public function integer u_crea_asn (st_tab_f5547013 ast_tab_f5547013) throws uo_exception;//------------------------------------------------------------------------------------------------------
+//--- Crea un nuovo ASN 
+//--- 
+//--- inp: st_tab_f5547013 apid (id_meca convertito in alfa)
+//--- Ritorna: numero righe inserite (0=nessuna)
+//--- 
+//------------------------------------------------------------------------------------------------------
+int k_return = 0
+boolean k_commit
+st_esito kst_esito
+kds_e1_asn_header kds1_e1_asn_header
+kds_e1_asn_rows kds1_e1_asn_rows
+kuf_armo kuf1_armo
+
+
+try
+	kst_esito.esito = kkg_esito.ok
+	kst_esito.sqlcode = 0
+	kst_esito.SQLErrText = ""
+	kst_esito.nome_oggetto = this.classname()
+	
+
+	if isnumber(ast_tab_f5547013.ehapid) then
+	else
+		kguo_exception.inizializza()
+		kst_esito.esito = kkg_esito.no_esecuzione
+		if isnull(ast_tab_f5547013.ehapid) then ast_tab_f5547013.ehapid = ""
+		kst_esito.SQLErrText = "Id Lotto non indicato o non numerico ('" + trim(ast_tab_f5547013.ehapid) + "'), non è possibile generare i dati ASN per E-ONE"
+		kguo_exception.set_esito(kst_esito)
+		throw kguo_exception
+	end if
+
+//--- già caricato?
+	if if_esiste(ast_tab_f5547013) then
+		kguo_exception.inizializza()
+		kst_esito.esito = kkg_esito.no_esecuzione
+		if isnull(ast_tab_f5547013.ehapid) then ast_tab_f5547013.ehapid = ""
+		kst_esito.SQLErrText = "Lotto '" + trim(ast_tab_f5547013.ehapid) + "' già presente su E1, non è possibile procedere a un nuovo carico."
+		kguo_exception.set_esito(kst_esito)
+		throw kguo_exception
+	end if
+
+
+	kuf1_armo = create kuf_armo
+	
+//--- carica dettaglio lotto da caricare su E-ONE 
+	kds1_e1_asn_rows = u_crea_asn_detail(ast_tab_f5547013, kuf1_armo)
+
+	if kds1_e1_asn_rows.rowcount( ) > 0 then
+//--- carica testata lotto da caricare su E-ONE 
+		kds1_e1_asn_header = u_crea_asn_header(ast_tab_f5547013, kuf1_armo, kds1_e1_asn_rows.rowcount() )
+	
+		if kds1_e1_asn_header.rowcount( ) > 0 then
+			if ast_tab_f5547013.st_tab_g_0.esegui_commit = "S" or isnull(ast_tab_f5547013.st_tab_g_0.esegui_commit) then
+				k_commit = true
+			else
+				k_commit = false
+			end if
+			
+			k_return = u_crea_asn_esegui(kds1_e1_asn_header, kds1_e1_asn_rows, k_commit)   	// AGGIUNGE LOTTO ASN SU E-ONE
+
+		end if
+	end if
+		
+	if k_return > 0 then
+	else
+		kst_esito.sqlcode = 0
+		kst_esito.esito = kkg_esito.no_esecuzione
+		kst_esito.sqlerrtext = "Nessuna riga del Lotto da registrare in E-ONE!"
+		kguo_exception.inizializza( )
+		kguo_exception.set_esito(kst_esito)
+		throw kguo_exception
+	end if
+		
+
+catch (uo_exception kuo_exception)
+	throw kuo_exception
+
+finally
+	if isvalid(kuf1_armo) then destroy kuf1_armo
+	
+end try
+
+return k_return
+
+end function
+
+public function kds_e1_asn_header u_crea_asn_header (st_tab_f5547013 ast_tab_f5547013, ref kuf_armo auf_armo, long a_detail_nrows) throws uo_exception;//------------------------------------------------------------------------------------------------------
+//--- Crea un nuovo ASN 
+//--- 
+//--- inp: st_tab_f5547013 apid (id_meca convertito in alfa)
+//--- 			a_detail_nrows = nr righe di dettaglio caricate  
+//--- Ritorna: kds_e1_asn_header
+//--- 
+//------------------------------------------------------------------------------------------------------
+int k_riga_insert
+st_tab_meca kst_tab_meca
+st_tab_clienti kst_tab_clienti
+st_tab_m_r_f kst_tab_m_r_f
+st_esito kst_esito
+kds_e1_asn_header kds1_e1_asn_header
+kuf_clienti kuf1_clienti
+
+
+try
+	kst_esito.esito = kkg_esito.ok
+	kst_esito.sqlcode = 0
+	kst_esito.SQLErrText = ""
+	kst_esito.nome_oggetto = this.classname()
+	
+	kds1_e1_asn_header = create kds_e1_asn_header
+	kuf1_clienti = create kuf_clienti
+
+	kst_tab_meca.id = long(ast_tab_f5547013.ehapid)
+
+//--- get cliente
+	auf_armo.get_clie(kst_tab_meca) 		// legge CLIE_1 /2 / 3
+
+	ast_tab_f5547013.ehapid = trim(ast_tab_f5547013.ehapid)
+
+//--- carica testata lotto da caricare su E-ONE 
+	k_riga_insert = kds1_e1_asn_header.insertrow(0)
+	kds1_e1_asn_header.setitem( k_riga_insert, "EHAPID", ast_tab_f5547013.ehapid)
+	
+	if kst_tab_meca.clie_3 > 0 then
+		kst_tab_clienti.codice = kst_tab_meca.clie_3
+		kst_tab_clienti.e1an = kuf1_clienti.get_e1an(kst_tab_clienti)
+	else
+		kst_tab_clienti.e1an = 0
+	end if
+	kds1_e1_asn_header.setitem( k_riga_insert, "EHAN8", kst_tab_clienti.e1an)
+	
+	if kst_tab_meca.clie_2 > 0 then
+//--- prima tenta di prendere il codice x E1 del Ricevente dalla tabella 'legami' M_R_F			
+		kst_tab_m_r_f.clie_1 = kst_tab_meca.clie_1
+		kst_tab_m_r_f.clie_2 = kst_tab_meca.clie_2
+		kst_tab_m_r_f.clie_3 = kst_tab_meca.clie_3
+		kst_tab_clienti.e1an = kuf1_clienti.get_mrf_e1an(kst_tab_m_r_f)
+		if kst_tab_clienti.e1an > 0 then
+		else
+//--- .... se non trovato tenta di prendere il codice x E1 dall'anagrafica del Ricevente 			
+			kst_tab_clienti.codice = kst_tab_meca.clie_2
+			kst_tab_clienti.e1an = kuf1_clienti.get_e1an(kst_tab_clienti)
+		end if
+		if isnull(kst_tab_clienti.e1an) then kst_tab_clienti.e1an = 0
+	else
+		kst_tab_clienti.e1an = 0
+	end if
+	kds1_e1_asn_header.setitem( k_riga_insert, "EHSHAN",  kst_tab_clienti.e1an)
+	
+	auf_armo.get_num_bolla_in(kst_tab_meca)
+	if isnull(kst_tab_meca.num_bolla_in) then
+		kst_tab_meca.num_bolla_in = ""
+	end if
+	kds1_e1_asn_header.setitem( k_riga_insert, "EHVR01", kst_tab_meca.num_bolla_in) // tab_1.tabpage_1.dw_1.getitemstring(1, "num_bolla_in"))
+	kds1_e1_asn_header.setitem( k_riga_insert, "EHA801", kGuf_data_base.get_e1_dateformat(RelativeDate(kguo_g.get_dataoggi( ), 1)))
+	kds1_e1_asn_header.setitem( k_riga_insert, "EHUORG", a_detail_nrows )
+	
+
+catch (uo_exception kuo_exception)
+	throw kuo_exception
+
+finally
+	if isvalid(kuf1_clienti) then destroy kuf1_clienti
+	
+	
+end try
+
+return kds1_e1_asn_header
 
 end function
 

@@ -33,7 +33,7 @@ table(column=(type=long updatewhereclause=yes key=yes identity=yes name=id_meca 
  column=(type=long updatewhereclause=yes name=meca_dosim_assorb dbname="meca_dosim.dosim_assorb" )
  column=(type=long updatewhereclause=yes name=meca_dosim_spessore dbname="meca_dosim.dosim_spessore" )
  column=(type=char(16) updatewhereclause=yes name=meca_dosim_lotto_dosim dbname="meca_dosim.dosim_lotto_dosim" )
- column=(type=decimal(2) updatewhereclause=yes name=meca_dosim_rapp_a_s dbname="meca_dosim.dosim_rapp_a_s" )
+ column=(type=decimal(3) updatewhereclause=yes name=meca_dosim_rapp_a_s dbname="meca_dosim.dosim_rapp_a_s" )
  column=(type=long updatewhereclause=yes name=meca_dosim_dosim_temperatura dbname="meca_dosim.dosim_temperatura" )
  column=(type=long updatewhereclause=yes name=meca_dosim_dosim_umidita dbname="meca_dosim.dosim_umidita" )
  column=(type=char(12) updatewhereclause=yes name=x_utente_dosim_verifica dbname="x_utente_dosim_verifica" )

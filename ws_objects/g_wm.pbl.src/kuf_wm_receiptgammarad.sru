@@ -3384,7 +3384,7 @@ else
 		kuo1_sqlca_db_0 = set_connessione(true)
 	
 		if isvalid(kdw_anteprima)  then
-			if kdw_anteprima.dataobject = "d_wm_receiptgammarad_l"  then
+			if kdw_anteprima.dataobject = "d_wm_receiptgammarad" then //"d_wm_receiptgammarad_l"  then
 				if kdw_anteprima.object.packinglistcode [1] = kst_tab_wm_receiptgammarad.packinglistcode   then
 					kst_tab_wm_receiptgammarad.packinglistcode  = "" 
 				end if
@@ -3393,7 +3393,7 @@ else
 	
 		if len(trim(kst_tab_wm_receiptgammarad.packinglistcode))  > 0 then
 		
-			kdw_anteprima.dataobject = "d_wm_receiptgammarad_l"		
+			kdw_anteprima.dataobject = "d_wm_receiptgammarad"		
 			kdw_anteprima.settransobject(kuo1_sqlca_db_0)
 		
 //			kuf1_utility = create kuf_utility

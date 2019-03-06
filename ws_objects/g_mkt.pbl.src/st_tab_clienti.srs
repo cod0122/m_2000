@@ -52,6 +52,8 @@ global type st_tab_clienti from structure
 	long		e1an		descriptor "comment" = "codice anagrafica da E1"
 	string		e1ancodrs		descriptor "comment" = "codice abbreviato della ragione sociale da E1"
 	string		pklbcodepref		descriptor "comment" = "prefisso codici barcode clienti del packing-list es. x goglio è 00 (codice internazionale = pallet)"
+	integer		delivery_dd_after		descriptor "comment" = "previsione n.giorni di consegna del lotto dall'entrata merce  "
+	time		delivery_hour		descriptor "comment" = "previsione ora di consegna del lotto"
 	datetime		x_datins
 	string		x_utente
 end type

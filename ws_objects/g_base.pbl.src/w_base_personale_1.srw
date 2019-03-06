@@ -56,7 +56,6 @@ integer height = 2768
 boolean raggedright = false
 boolean boldselectedtext = false
 boolean perpendiculartext = false
-tabposition tabposition = tabsonbottom!
 end type
 
 on tab_1.create
@@ -81,14 +80,13 @@ call super::destroy
 end on
 
 type tabpage_1 from w_base_personale`tabpage_1 within tab_1
-integer x = 18
-integer width = 3008
-integer height = 2704
+integer x = 128
+integer width = 2898
+integer height = 2736
 end type
 
 type dw_1 from w_base_personale`dw_1 within tabpage_1
 integer x = 14
-integer y = 0
 integer height = 2732
 boolean controlmenu = false
 end type
@@ -97,9 +95,10 @@ type st_1_retrieve from w_base_personale`st_1_retrieve within tabpage_1
 end type
 
 type tabpage_2 from w_base_personale`tabpage_2 within tab_1
-integer x = 18
-integer width = 3008
-integer height = 2704
+boolean visible = true
+integer x = 128
+integer width = 2898
+integer height = 2736
 end type
 
 type dw_2 from w_base_personale`dw_2 within tabpage_2
@@ -109,9 +108,10 @@ type st_2_retrieve from w_base_personale`st_2_retrieve within tabpage_2
 end type
 
 type tabpage_3 from w_base_personale`tabpage_3 within tab_1
-integer x = 18
-integer width = 3008
-integer height = 2704
+boolean visible = true
+integer x = 128
+integer width = 2898
+integer height = 2736
 end type
 
 type dw_3 from w_base_personale`dw_3 within tabpage_3
@@ -130,9 +130,9 @@ type cb_3 from w_base_personale`cb_3 within tabpage_3
 end type
 
 type tabpage_4 from w_base_personale`tabpage_4 within tab_1
-integer x = 18
-integer width = 3008
-integer height = 2704
+integer x = 128
+integer width = 2898
+integer height = 2736
 end type
 
 type dw_4 from w_base_personale`dw_4 within tabpage_4
@@ -145,9 +145,9 @@ type st_non_auth_4 from w_base_personale`st_non_auth_4 within tabpage_4
 end type
 
 type tabpage_5 from w_base_personale`tabpage_5 within tab_1
-integer x = 18
-integer width = 3008
-integer height = 2704
+integer x = 128
+integer width = 2898
+integer height = 2736
 end type
 
 type dw_5 from w_base_personale`dw_5 within tabpage_5
@@ -160,9 +160,9 @@ type st_non_auth_5 from w_base_personale`st_non_auth_5 within tabpage_5
 end type
 
 type tabpage_6 from w_base_personale`tabpage_6 within tab_1
-integer x = 18
-integer width = 3008
-integer height = 2704
+integer x = 128
+integer width = 2898
+integer height = 2736
 end type
 
 type st_6_retrieve from w_base_personale`st_6_retrieve within tabpage_6
@@ -208,9 +208,9 @@ type st_26 from w_base_personale`st_26 within tabpage_6
 end type
 
 type tabpage_7 from w_base_personale`tabpage_7 within tab_1
-integer x = 18
-integer width = 3008
-integer height = 2704
+integer x = 128
+integer width = 2898
+integer height = 2736
 end type
 
 type st_7_retrieve from w_base_personale`st_7_retrieve within tabpage_7
@@ -220,9 +220,9 @@ type dw_7 from w_base_personale`dw_7 within tabpage_7
 end type
 
 type tabpage_8 from w_base_personale`tabpage_8 within tab_1
-integer x = 18
-integer width = 3008
-integer height = 2704
+integer x = 128
+integer width = 2898
+integer height = 2736
 end type
 
 type st_8_retrieve from w_base_personale`st_8_retrieve within tabpage_8
@@ -307,9 +307,9 @@ type st_28 from w_base_personale`st_28 within tabpage_8
 end type
 
 type tabpage_9 from w_base_personale`tabpage_9 within tab_1
-integer x = 18
-integer width = 3008
-integer height = 2704
+integer x = 128
+integer width = 2898
+integer height = 2736
 end type
 
 type st_9_retrieve from w_base_personale`st_9_retrieve within tabpage_9
@@ -331,9 +331,9 @@ type cb_5 from w_base_personale`cb_5 within tabpage_9
 end type
 
 type tabpage_10 from w_base_personale`tabpage_10 within tab_1
-integer x = 18
-integer width = 3008
-integer height = 2704
+integer x = 128
+integer width = 2898
+integer height = 2736
 end type
 
 type st_27 from w_base_personale`st_27 within tabpage_10
@@ -352,27 +352,27 @@ type dw_10 from w_base_personale`dw_10 within tabpage_10
 end type
 
 type tabpage_11 from w_base_personale`tabpage_11 within tab_1
-integer x = 18
-integer width = 3008
-integer height = 2704
+integer x = 128
+integer width = 2898
+integer height = 2736
 end type
 
 type dw_11 from w_base_personale`dw_11 within tabpage_11
 end type
 
 type tabpage_12 from w_base_personale`tabpage_12 within tab_1
-integer x = 18
-integer width = 3008
-integer height = 2704
+integer x = 128
+integer width = 2898
+integer height = 2736
 end type
 
 type dw_12 from w_base_personale`dw_12 within tabpage_12
 end type
 
 type tabpage_13 from w_base_personale`tabpage_13 within tab_1
-integer x = 18
-integer width = 3008
-integer height = 2704
+integer x = 128
+integer width = 2898
+integer height = 2736
 end type
 
 type st_esiti_operazioni from w_base_personale`st_esiti_operazioni within tabpage_13

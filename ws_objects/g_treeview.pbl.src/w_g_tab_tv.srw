@@ -29,6 +29,7 @@ end type
 end forward
 
 global type w_g_tab_tv from w_g_tab
+integer x = 29999
 integer width = 681
 integer height = 440
 string title = "Navigatore"
@@ -125,6 +126,7 @@ protected subroutine set_titolo_window_personalizza ()
 public subroutine u_wtitolo_path (st_treeview_data ast_treeview_data)
 public subroutine u_resize_1 ()
 private subroutine u_set_data_certif_da_st ()
+protected subroutine stampa_anteprima ()
 end prototypes
 
 protected function integer u_dammi_item_padre_da_list ();//
@@ -245,7 +247,7 @@ boolean k_flg_lotto=false
 	end if
 	if ki_menu.m_finestra.m_fin_stampa.enabled <> st_stampa.enabled then
 		ki_menu.m_finestra.m_fin_stampa.enabled = st_stampa.enabled
-		ki_menu.m_finestra.m_fin_stampa.text = "Stampa"
+		ki_menu.m_finestra.m_fin_stampa.text = "Stampa documento"
 		ki_menu.m_finestra.m_fin_stampa.microhelp = "Stampa"
 		ki_menu.m_finestra.m_fin_stampa.toolbaritemVisible = ki_menu.m_finestra.m_fin_stampa.enabled
 		ki_menu.m_finestra.m_fin_stampa.toolbaritemText = "Stampa,"+ki_menu.m_finestra.m_fin_stampa.text
@@ -804,6 +806,9 @@ if k_attiva_funzione then
 	if kst_esito.esito <> kkg_esito.ok then
 	
 		if k_operazione = kkg_flag_richiesta.stampa then
+			
+			stampa_anteprima()
+			
 //			if messagebox("Operazione non Eseguita", &
 //					"Stampa per la riga selezionata non operativa.~n~r"  &
 //					  + "E' possibile stampare l'elenco delle righe del Navigatore con un altro pulsante.~n~r" &
@@ -1033,23 +1038,9 @@ choose case kigrf_x_trova.classname( )
 		end if
 		
 	case else
-		if dw_anteprima.visible then
-			if dw_anteprima.rowcount( ) > 0 then
-				dw_stampa.dataobject = dw_anteprima.dataobject
-				dw_anteprima.rowscopy( 1, dw_anteprima.rowcount(), primary!, dw_stampa, 1, primary!)
-				ast_stampe.dw_print = dw_stampa
-				lv_1.getitem( lv_1.selectedindex( ) ,1, ast_stampe.titolo) 
-				ast_stampe.titolo = Right(trim(trim(this.title)+ast_stampe.titolo), 60)
-			
-				if ast_stampe.dw_print.rowcount() > 0 then
-				
-					ast_stampe.dw_syntax = trim(dw_stampa.describe("DataWindow.Syntax"))
-					
-					kGuf_data_base.stampa_dw(ast_stampe)
-				
-				end if
-			end if
-		end if
+		
+		stampa_anteprima()
+
 end choose
 
 
@@ -1691,6 +1682,35 @@ int k_rc
 	dw_data1.visible = true
 	dw_data1.enabled = true
 	dw_data1.setfocus()
+end subroutine
+
+protected subroutine stampa_anteprima ();//
+
+ st_stampe kst_stampe
+
+
+		if dw_anteprima.visible then
+			if dw_anteprima.rowcount( ) > 0 then
+				dw_stampa.dataobject = dw_anteprima.dataobject
+				dw_anteprima.rowscopy( 1, dw_anteprima.rowcount(), primary!, dw_stampa, 1, primary!)
+				kst_stampe.dw_print = dw_stampa
+				lv_1.getitem( lv_1.selectedindex( ) ,1, kst_stampe.titolo) 
+				kst_stampe.titolo = Right(trim(trim(this.title)+kst_stampe.titolo), 60)
+			
+				if kst_stampe.dw_print.rowcount() > 0 then
+				
+					kst_stampe.dw_syntax = trim(dw_stampa.describe("DataWindow.Syntax"))
+					
+					kGuf_data_base.stampa_dw(kst_stampe)
+				
+				end if
+			end if
+		end if
+
+
+
+
+	
 end subroutine
 
 on w_g_tab_tv.create

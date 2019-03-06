@@ -17,6 +17,7 @@ forward prototypes
 public function long u_set_data_ent () throws uo_exception
 public function long u_set_data_ent_lotto (ref st_tab_meca ast_tab_meca) throws uo_exception
 public function st_esito u_batch_run () throws uo_exception
+public function string u_set_consegna_data_ora (st_tab_meca kst_tab_meca) throws uo_exception
 end prototypes
 
 public function long u_set_data_ent () throws uo_exception;//
@@ -66,6 +67,11 @@ try
 				kst_tab_meca.st_tab_g_0.esegui_commit = "S"
 				kiuf_armo.set_data_ent(kst_tab_meca)
 				k_return ++
+
+				kst_tab_meca.clie_3 = kds_1.getitemnumber( k_riga, "clie_3")
+				u_set_consegna_data_ora(kst_tab_meca)
+				
+				
 			end if
 		end if
 		
@@ -192,6 +198,29 @@ end try
 
 
 return kst_esito
+end function
+
+public function string u_set_consegna_data_ora (st_tab_meca kst_tab_meca) throws uo_exception;//
+//--- Calcola la Data e l'ora prevista di Consegna del Materiale
+//
+string k_msg_warning
+
+
+k_msg_warning = kiuf_armo.u_get_consegna_tempi(kst_tab_meca)
+
+if trim(k_msg_warning) > " " then
+	kguo_exception.inizializza( )
+	kguo_exception.setmessage(k_msg_warning)
+else
+	
+	kiuf_armo.set_consegna_data(kst_tab_meca)
+	kiuf_armo.set_consegna_ora(kst_tab_meca)
+	
+end if
+
+return k_msg_warning
+
+
 end function
 
 on kuf_meca_set_data_ent.create

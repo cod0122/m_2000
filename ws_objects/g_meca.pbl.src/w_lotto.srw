@@ -15,8 +15,9 @@ end type
 end forward
 
 global type w_lotto from w_g_tab_3
-integer width = 4672
-integer height = 2340
+integer x = 29999
+integer width = 891
+integer height = 712
 string title = "Documento "
 boolean ki_toolbar_window_presente = true
 boolean ki_esponi_msg_dati_modificati = false
@@ -178,6 +179,7 @@ protected subroutine attiva_tasti_0 ()
 public subroutine u_write_avvertenze (string a_avvertenze)
 public function boolean u_if_esiste_e1an ()
 private function integer u_e1_crea_asn_0 () throws uo_exception
+public function string u_get_consegna_tempi (ref st_tab_meca kst_tab_meca) throws uo_exception
 end prototypes
 
 protected function string aggiorna ();//
@@ -202,7 +204,12 @@ catch (uo_exception kuo_execption)
 	setpointer(kkg.pointer_default)
 	kst_esito = kuo_execption.get_st_esito()
 	k_return = trim(kst_esito.esito) + trim(kst_esito.sqlerrtext)
-	messagebox("Aggiornamento non Completatato", "Errore durante aggiornamento archivi" +"~n~r"+ trim(kst_esito.sqlerrtext))
+	if k_return > " " then
+		messagebox("Aggiornamento in Errore", "Aggiornamento archivi Lotto non completatato" +"~n~r"+ k_return)
+	else
+		k_return = "1Errore in Aggiornamento Lotto, operazione non completata."
+		messagebox("Aggiornamento in Errore", "Aggiornamento archivi Lotto non completatato")
+	end if
 
 finally
 //	attiva_tasti()
@@ -2789,12 +2796,15 @@ try
 	kst_tab_meca.area_mag  =  tab_1.tabpage_1.dw_1.getitemstring(k_riga, "area_mag")
 	kst_tab_meca.id_wm_pklist = tab_1.tabpage_1.dw_1.getitemnumber(k_riga, "id_wm_pklist")
 	kst_tab_meca.contratto = tab_1.tabpage_1.dw_1.getitemnumber(k_riga, "contratto")
-	kst_tab_meca.consegna_data = tab_1.tabpage_1.dw_1.getitemdate(k_riga, "consegna_data")
 //	kst_tab_meca.data_lav_fin = tab_1.tabpage_1.dw_1.getitemdate(k_riga, "data_lav_fin")
 	kst_tab_meca.stato_in_attenzione = tab_1.tabpage_1.dw_1.getitemnumber(k_riga, "stato_in_attenzione")
 	kst_tab_meca.e1doco  =  tab_1.tabpage_1.dw_1.getitemnumber(k_riga, "e1doco")
 	kst_tab_meca.e1rorn  =  tab_1.tabpage_1.dw_1.getitemnumber(k_riga, "e1rorn")
 	kst_tab_meca.e1srst  =  tab_1.tabpage_1.dw_1.getitemstring(k_riga, "e1srst")
+
+	kst_tab_meca.consegna_data = tab_1.tabpage_1.dw_1.getitemdate(k_riga, "consegna_data")
+	kst_tab_meca.consegna_ora = tab_1.tabpage_1.dw_1.getitemtime(k_riga, "consegna_ora")
+	u_get_consegna_tempi(kst_tab_meca)
 		
 //--- espone in testata il toto colli 
 	kst_tab_armo.colli_2 = get_totale_colli( )
@@ -5210,6 +5220,34 @@ return k_return
 
 end function
 
+public function string u_get_consegna_tempi (ref st_tab_meca kst_tab_meca) throws uo_exception;//
+//====================================================================
+//=== Calcola data e ora di Consegna 
+//=== 
+//===  lancia EXCEPTION
+//===                                     
+//====================================================================
+//
+string k_return
+
+
+try
+
+	kst_tab_meca.data_ent = tab_1.tabpage_1.dw_1.getitemdatetime(1, "data_ent")
+	kst_tab_meca.clie_3 = tab_1.tabpage_1.dw_1.getitemnumber(1, "clie_3")
+
+	k_return = 	kiuf_armo.u_get_consegna_tempi(kst_tab_meca)
+		
+
+catch (uo_exception kuo_exception)
+	throw kuo_exception
+	
+end try
+
+return k_return
+
+end function
+
 on w_lotto.create
 int iCurrent
 call super::create
@@ -5594,7 +5632,9 @@ end event
 event dw_1::clicked;call super::clicked;//
 //=== Premuto pulsante nella DW
 //
-string k_nome
+string k_nome, k_err
+st_tab_meca kst_tab_meca
+
 
 	this.accepttext( )
 
@@ -5631,7 +5671,28 @@ string k_nome
 			else
 				messagebox("Operazione bloccata", "Funzione non attiva per questa modalità", Information!)
 			end if
-		
+
+//--- calcolo tempi previsiti di Consegna materiale
+		case "b_consegna"
+			if ki_st_open_w.flag_modalita = kkg_flag_modalita.inserimento or ki_st_open_w.flag_modalita =  kkg_flag_modalita.modifica then
+				try
+					k_err = u_get_consegna_tempi(kst_tab_meca)
+					
+					if trim(k_err) >  " " then
+						messagebox("Data di Consegna Non Rilevata", k_err, stopsign!)
+					else					
+						if kst_tab_meca.consegna_data > date(0) then
+							this.setitem( row, "consegna_data", kst_tab_meca.consegna_data)
+						end if
+						if kst_tab_meca.consegna_ora > time("00:00") then
+							this.setitem( row, "consegna_ora", kst_tab_meca.consegna_ora)
+						end if
+					end if
+
+				catch(uo_exception kuo_exception)
+					kuo_exception.messaggio_utente()
+				end try
+			end if
 			
 ////--- pdf
 //		case "p_img_lettera_vedi" 

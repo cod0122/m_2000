@@ -13,7 +13,7 @@ table(column=(type=char(13) update=yes updatewhereclause=yes name=barcode_lav db
  column=(type=decimal(2) updatewhereclause=yes name=dosim_dose dbname="meca_dosim.dosim_dose" )
  column=(type=long updatewhereclause=yes name=dosim_assorb dbname="meca_dosim.dosim_assorb" )
  column=(type=long updatewhereclause=yes name=dosim_spessore dbname="meca_dosim.dosim_spessore" )
- column=(type=decimal(2) updatewhereclause=yes name=dosim_rapp_a_s dbname="meca_dosim.dosim_rapp_a_s" )
+ column=(type=decimal(3) updatewhereclause=yes name=dosim_rapp_a_s dbname="meca_dosim.dosim_rapp_a_s" )
  column=(type=char(16) updatewhereclause=yes name=dosim_lotto_dosim dbname="meca_dosim.dosim_lotto_dosim" )
  column=(type=long updatewhereclause=yes name=dosim_temperatura dbname="meca_dosim.dosim_temperatura" )
  column=(type=long updatewhereclause=yes name=dosim_umidita dbname="meca_dosim.dosim_umidita" )
@@ -63,4 +63,3 @@ export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
 import.xml()
 export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" nativepdf.customsize=0 nativepdf.customorientation=0 )
 export.xhtml()
- 

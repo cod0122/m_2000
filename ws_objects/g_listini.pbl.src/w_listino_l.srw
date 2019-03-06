@@ -814,6 +814,8 @@ if dw_lista_0.rowcount( ) > 0 then
 			else
 				k_rag_soc_10 = "Listino senza Cliente " 
 			end if
+			dw_box_duplica_listini.x = (width - dw_box_duplica_listini.width) / 2 
+			dw_box_duplica_listini.y = (height - dw_box_duplica_listini.height) / 3 
 			dw_box_duplica_listini.object.b_dup_singolo.text = "Duplica Listino " + string(kst_tab_listino.id, "#") + " di " + trim(k_rag_soc_10)
 			dw_box_duplica_listini.visible = true
 		end if
@@ -829,8 +831,6 @@ end subroutine
 public subroutine u_resize ();//
 super::u_resize()
 
-dw_box_duplica_listini.x = (width - dw_box_duplica_listini.width) / 2 
-dw_box_duplica_listini.y = (height - dw_box_duplica_listini.height) / 3 
 
 end subroutine
 
@@ -910,6 +910,12 @@ if IsValid(MenuID) then destroy(MenuID)
 destroy(this.dw_data)
 destroy(this.dw_box_duplica_listini)
 end on
+
+event u_open;call super::u_open;//
+	dw_data.move( 8000, 8000)
+	dw_box_duplica_listini.move( 8000, 8000)
+
+end event
 
 type st_ritorna from w_g_tab0`st_ritorna within w_listino_l
 end type
@@ -1464,5 +1470,7 @@ else
 	end if
 end if
 this.visible = false
+this.move( 8000, 8000)
+
 end event
 

@@ -31,6 +31,7 @@ boolean ki_conferma=false, ki_disattiva_exit=false, ki_attendi_u_ricevi_da_elenc
 kuf_utility kiuf_utility
 tab kitab_1
 end variables
+
 forward prototypes
 public subroutine u_zoom_meno ()
 public subroutine u_zoom_off ()
@@ -566,7 +567,8 @@ end event
 
 event clicked;call super::clicked;//
 //kiw_g_tab_elenco.u_attiva_tasti()
-//parent.triggerevent(clicked!)
+kitab_1.post triggerevent(clicked!)
+//parent "u_attiva_tasti"
 
 end event
 

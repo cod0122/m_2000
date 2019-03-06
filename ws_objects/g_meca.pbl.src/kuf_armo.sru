@@ -202,6 +202,9 @@ public function boolean if_convalidato (st_tab_meca ast_tab_meca) throws uo_exce
 public function integer meca_non_conforme_blocca_sblocca (st_tab_meca kst_tab_meca) throws uo_exception
 private function integer meca_non_conforme_blocca_sblocca_upd (st_tab_meca kst_tab_meca) throws uo_exception
 public function string get_stato_descrizione_std (st_tab_meca ast_tab_meca) throws uo_exception
+public function string u_get_consegna_tempi (ref st_tab_meca kst_tab_meca) throws uo_exception
+public subroutine set_consegna_ora (st_tab_meca kst_tab_meca) throws uo_exception
+public function integer set_dosimprev (ref st_tab_meca kst_tab_meca) throws uo_exception
 end prototypes
 
 public function st_esito setta_errore_lav (st_tab_meca kst_tab_meca);//
@@ -318,6 +321,8 @@ if isnull(kst_tab_meca.e1doco) then kst_tab_meca.e1doco = 0
 if isnull(kst_tab_meca.e1rorn) then kst_tab_meca.e1rorn = 0
 if isnull(kst_tab_meca.e1srst) then kst_tab_meca.e1srst = ""
 
+if isnull(kst_tab_meca.dosimprev) then kst_tab_meca.dosimprev = 0
+
 if isnull(kst_tab_meca.x_datins_blk) then	kst_tab_meca.x_datins_blk = datetime(date(0))
 if isnull(kst_tab_meca.x_utente_blk) then	kst_tab_meca.x_utente_blk = ""
 if isnull(kst_tab_meca.x_datins_sblk) then kst_tab_meca.x_datins_sblk = datetime(date(0))
@@ -326,6 +331,7 @@ if isnull(kst_tab_meca.x_utente_sblk) then kst_tab_meca.x_utente_sblk = ""
 
 if isnull(kst_tab_meca.area_mag) then	kst_tab_meca.area_mag = ""
 //if isnull(kst_tab_meca.consegna_data) then kst_tab_meca.consegna_data = date(0)  
+//if isnull(kst_tab_meca.consegna_ora) then kst_tab_meca.consegna_ora = time("00:00")  
 if isnull(kst_tab_meca.contratto) then kst_tab_meca.contratto = 0  
 if isnull(kst_tab_meca.aperto) then kst_tab_meca.aperto = "S"  
 if isnull(kst_tab_meca.id_meca_causale) then kst_tab_meca.id_meca_causale = 0   
@@ -5669,6 +5675,7 @@ kst_esito.nome_oggetto = this.classname()
 					  num_bolla_in,   
 					  data_bolla_in,   
 					  consegna_data,   
+					  consegna_ora,   
 					  clie_1,   
 					  clie_2,   
 					  clie_3,   
@@ -5704,6 +5711,7 @@ kst_esito.nome_oggetto = this.classname()
 						  :kst_tab_meca.num_bolla_in,   
 						  :kst_tab_meca.data_bolla_in,   
 						  :kst_tab_meca.consegna_data,   
+						  :kst_tab_meca.consegna_ora,   
 						  :kst_tab_meca.clie_1,   
 						  :kst_tab_meca.clie_2,   
 						  :kst_tab_meca.clie_3,   
@@ -5749,6 +5757,7 @@ kst_esito.nome_oggetto = this.classname()
 					  num_bolla_in = :kst_tab_meca.num_bolla_in ,   
 					  data_bolla_in = :kst_tab_meca.data_bolla_in ,   
 					  consegna_data = :kst_tab_meca.consegna_data ,   
+					  consegna_ora = :kst_tab_meca.consegna_ora ,   
 					  clie_1 = :kst_tab_meca.clie_1 ,   
 					  clie_2 = :kst_tab_meca.clie_2 ,   
 					  clie_3 = :kst_tab_meca.clie_3 ,   
@@ -7272,7 +7281,7 @@ public subroutine set_consegna_data (st_tab_meca kst_tab_meca) throws uo_excepti
 //--- Aggiorna il numero colli FATTURATI
 //--- 
 //--- Input: st_tab_meca     id
-//---                        consegna_data
+//---                        consegna_data 
 //---
 //--- Lancia Exception x errore
 //--- 
@@ -7290,9 +7299,9 @@ kst_esito.nome_oggetto = this.classname()
 
 if kst_tab_meca.id > 0 then
 	
-	if isnull(kst_tab_meca.consegna_data) then
-		 kst_tab_meca.consegna_data = date(0)
-	end if
+//	if isnull(kst_tab_meca.consegna_data) then
+//		 kst_tab_meca.consegna_data = date(0)
+//	end if
 	
 	UPDATE meca  
 			SET 	consegna_data = :kst_tab_meca.consegna_data
@@ -9784,6 +9793,237 @@ int  k_riga
 
 
 return k_return 
+
+end function
+
+public function string u_get_consegna_tempi (ref st_tab_meca kst_tab_meca) throws uo_exception;//
+//--------------------------------------------------------------------
+//--- Calcola data e ora di Consegna 
+//--- 
+//--- Inp:  kst_tab_meca.data_ent, clie_3
+//--- Out: kst_tab_meca.consegna_data, consegna_ora
+//--- Rit: diverso da space = messaggio di errore non grave 
+//---                                     
+//---  lancia EXCEPTION
+//---                                     
+//--------------------------------------------------------------------
+//
+string k_return
+int k_dd_after
+st_esito kst_esito
+st_tab_clienti kst_tab_clienti
+kuf_clienti kuf1_clienti
+kuf_utility kuf1_utility
+
+
+try
+
+	kst_esito.esito = kkg_esito.ok
+	kst_esito.sqlcode = 0
+	kst_esito.SQLErrText = ""
+	kst_esito.nome_oggetto = this.classname()
+
+	if date(kst_tab_meca.data_ent) > date(0) then 
+		
+		kuf1_clienti = create kuf_clienti
+		kuf1_utility = create kuf_utility
+		
+		kst_tab_clienti.codice = kst_tab_meca.clie_3
+		kuf1_clienti.get_delivery(kst_tab_clienti)
+	
+		if kst_tab_meca.consegna_data > date(0) then
+		else
+			if kst_tab_clienti.delivery_dd_after > 0 then
+				
+//--- Nuova data con aggiunta dei solo gg feriali				
+				kst_tab_meca.consegna_data = kuf1_utility.u_datetime_after_ddnowe(date(kst_tab_meca.data_ent), kst_tab_clienti.delivery_dd_after)
+				
+//--- Nuova data con giorni previsti se cade nel we sposta a lunedì
+//				kst_tab_meca.consegna_data = relativedate(date(kst_tab_meca.data_ent), kst_tab_clienti.delivery_dd_after)
+//				//--- se cade nel week-end avanza di tot giorni
+//				if dayNumber ( kst_tab_meca.consegna_data ) = 1 then
+//					k_dd_after = 1
+//				else
+//					if dayNumber ( kst_tab_meca.consegna_data ) = 7 then
+//						k_dd_after = 2
+//					end if
+//				end if
+//				if k_dd_after > 0 then
+//					kst_tab_meca.consegna_data = relativedate(date(kst_tab_meca.consegna_data), k_dd_after)
+//				end if
+					
+				
+			else
+				k_return = 	"Manca sul cliente " + string(kst_tab_clienti.codice) + " il numero dei giorni di Consegna, operazione interrotta"
+				//messagebox("Data di Consegna Non Rilevata", k_return, stopsign!)
+				
+			end if
+		end if
+		
+		if kst_tab_clienti.delivery_hour > time("00:00") then
+			if kst_tab_meca.consegna_ora > time("00:00") then
+			else
+				kst_tab_meca.consegna_ora = kst_tab_clienti.delivery_hour
+			end if
+		end if
+		
+	else
+		
+		k_return = 	"Data di entrata di questo Lotto non indicata, operazione interrotta"
+		//messagebox("Data di Consegna Non Rilevata", k_return, stopsign!)
+		
+	end if
+
+catch (uo_exception kuo_exception)
+	throw kuo_exception
+	
+finally
+	if isvalid(kuf1_clienti) then destroy kuf1_clienti
+	if isvalid(kuf1_utility) then destroy kuf1_utility
+	
+	
+end try
+
+return k_return
+
+end function
+
+public subroutine set_consegna_ora (st_tab_meca kst_tab_meca) throws uo_exception;//
+//------------------------------------------------------------------------------------------------
+//--- Aggiorna il numero colli FATTURATI
+//--- 
+//--- Input: st_tab_meca     id
+//---                        consegna_ora
+//---
+//--- Lancia Exception x errore
+//--- 
+//------------------------------------------------------------------------------------------------
+long k_rcn
+boolean k_rc
+st_esito kst_esito
+
+
+
+kst_esito.esito = kkg_esito.ok
+kst_esito.sqlcode = 0
+kst_esito.SQLErrText = ""
+kst_esito.nome_oggetto = this.classname()
+
+if kst_tab_meca.id > 0 then
+	
+//	if isnull(kst_tab_meca.consegna_ora) then
+//		 kst_tab_meca.consegna_ora = time("00:00")
+//	end if
+	
+	UPDATE meca  
+			SET 	consegna_ora = :kst_tab_meca.consegna_ora
+			WHERE meca.id = :kst_tab_meca.id   
+			using kguo_sqlca_db_magazzino;
+			
+	if kguo_sqlca_db_magazzino.sqlcode < 0 then
+		kst_esito.sqlcode = kguo_sqlca_db_magazzino.sqlcode
+		kst_esito.SQLErrText = "Errore in aggiornamento Ora prevista di Ritiro (Consegna) Lotto (meca), ID:" + string(kst_tab_meca.id) + "~n~r"  + trim(kguo_sqlca_db_magazzino.SQLErrText)
+		kst_esito.esito = kkg_esito.db_ko
+	end if
+			
+//---- COMMIT....	
+	if kst_esito.esito = kkg_esito.db_ko then
+		if kst_tab_meca.st_tab_g_0.esegui_commit <> "N" or isnull(kst_tab_meca.st_tab_g_0.esegui_commit) then
+			kguo_sqlca_db_magazzino.db_rollback()
+		end if
+		kguo_exception.inizializza( )
+		kguo_exception.set_esito(kst_esito)
+		throw kguo_exception
+	else
+		if kst_tab_meca.st_tab_g_0.esegui_commit <> "N" or isnull(kst_tab_meca.st_tab_g_0.esegui_commit) then
+			kguo_sqlca_db_magazzino.db_commit()
+		end if
+	end if
+
+else
+	kst_esito.SQLErrText = "Manca ID Lotto per eseguire l'aggiornamento dell'ora di Consegna"
+	kst_esito.esito = kkg_esito.no_esecuzione
+	kguo_exception.inizializza( )
+	kguo_exception.set_esito(kst_esito)
+	throw kguo_exception
+end if
+
+
+
+end subroutine
+
+public function integer set_dosimprev (ref st_tab_meca kst_tab_meca) throws uo_exception;//
+//====================================================================
+//=== Imposta Il numero Dosimetri previsto per il Lotto
+//=== 
+//=== Input : kst_tab_meca.id e dosimprev
+//=== boolean  numero aggiornato
+//=== Exception se errore con st_esito valorizzato
+//===					
+//===   
+//====================================================================
+int k_return
+st_tab_meca kst_tab_meca_appo
+st_esito kst_esito
+
+
+try
+	kst_esito.esito = kkg_esito.ok  
+	kst_esito.sqlcode = 0
+	kst_esito.SQLErrText = ""
+	kst_esito.nome_oggetto = this.classname()
+
+
+	if kst_tab_meca.id > 0 then
+	else
+		kst_esito.esito = kkg_esito.no_esecuzione  
+		kst_esito.sqlcode = 0
+		kst_esito.SQLErrText = "Errore in aggiornamento del Numero Dosimetri Previsti per il Lotto. Manca ID Lotto"
+		kGuo_exception.inizializza( )
+		kGuo_exception.set_esito( kst_esito )
+		throw kGuo_exception
+	end if
+
+	kst_tab_meca.x_datins = kGuf_data_base.prendi_x_datins()
+	kst_tab_meca.x_utente = kGuf_data_base.prendi_x_utente()
+
+	if isnull(kst_tab_meca.dosimprev) then
+		kst_tab_meca.dosimprev = 0
+	end if
+
+//--- aggiorna la testa del lotto
+	update meca
+				set dosimprev = :kst_tab_meca.dosimprev
+					,x_datins = :kst_tab_meca.x_datins
+					,x_utente = :kst_tab_meca.x_utente
+				where ID = :kst_tab_meca.ID
+			using kguo_sqlca_db_magazzino;
+		
+	if kguo_sqlca_db_magazzino.sqlcode < 0 then
+		kst_esito.esito = kkg_esito.db_ko  
+		kst_esito.sqlcode = kguo_sqlca_db_magazzino.sqlcode
+		kst_esito.SQLErrText = "Errore in aggiornamento Numero Dosimetri Previsti (" +  string(kst_tab_meca.dosimprev) + ") in testata Lotto, ID: " + string(kst_tab_meca.ID) + "~n~r" + trim(sqlca.SQLErrText)
+		kGuo_exception.inizializza( )
+		kGuo_exception.set_esito( kst_esito )
+		throw kGuo_exception
+	end if
+		
+//--- se arriva qui tutto OK	
+	k_return = kst_tab_meca.dosimprev
+	if kst_tab_meca.st_tab_g_0.esegui_commit <> "N" or isnull(kst_tab_meca.st_tab_g_0.esegui_commit) then
+		kguo_sqlca_db_magazzino.db_commit( )
+	end if
+	
+catch (uo_exception kuo_exception)
+	if kst_tab_meca.st_tab_g_0.esegui_commit <> "N" or isnull(kst_tab_meca.st_tab_g_0.esegui_commit) then
+		kguo_sqlca_db_magazzino.db_rollback( )
+	end if
+	throw kuo_exception
+	
+end try
+
+
+return k_return
 
 end function
 

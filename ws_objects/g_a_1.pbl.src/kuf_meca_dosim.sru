@@ -2006,12 +2006,12 @@ public subroutine if_isnull (ref st_tab_meca_dosim kst_tab_meca_dosim);//---
 
 if isnull(kst_tab_meca_dosim.dosim_assorb) then	kst_tab_meca_dosim.dosim_assorb = 0
 if isnull(kst_tab_meca_dosim.dosim_spessore) then	kst_tab_meca_dosim.dosim_spessore = 0
-if isnull(kst_tab_meca_dosim.dosim_rapp_a_s) then	kst_tab_meca_dosim.dosim_rapp_a_s = 0 
+if isnull(kst_tab_meca_dosim.dosim_rapp_a_s) then	kst_tab_meca_dosim.dosim_rapp_a_s = 0.000 
 if isnull(kst_tab_meca_dosim.dosim_lotto_dosim) then	kst_tab_meca_dosim.dosim_lotto_dosim = ""
 if isnull(kst_tab_meca_dosim.dosim_temperatura) then	kst_tab_meca_dosim.dosim_temperatura = 0 	
 if isnull(kst_tab_meca_dosim.dosim_umidita) then	kst_tab_meca_dosim.dosim_umidita = 0 	
 if isnull(kst_tab_meca_dosim.dosim_data) then	kst_tab_meca_dosim.dosim_data = date(0)
-if isnull(kst_tab_meca_dosim.dosim_dose) then	kst_tab_meca_dosim.dosim_dose = 0
+if isnull(kst_tab_meca_dosim.dosim_dose) then	kst_tab_meca_dosim.dosim_dose = 0.0
 if isnull(kst_tab_meca_dosim.x_data_dosim_verifica) then	kst_tab_meca_dosim.x_data_dosim_verifica = datetime(date(0))
 if isnull(kst_tab_meca_dosim.x_utente_dosim_verifica) then	kst_tab_meca_dosim.x_utente_dosim_verifica = ""
 if isnull(kst_tab_meca_dosim.x_data_dosim_sblocco_ko) then	kst_tab_meca_dosim.x_data_dosim_verifica = datetime(date(0))
@@ -2762,11 +2762,11 @@ try
 			if isnull(kst_tab_prodotti.gruppo) then kst_tab_prodotti.gruppo = 0
 
 //--- Verifica la DOSE			
-			if (kst_tab_dosimetrie.dose >= k_dose_min and kst_tab_dosimetrie.dose <= k_dose_max) &
-							OR (kst_tab_prodotti.gruppo = 17  &
-								OR kst_tab_prodotti.gruppo = 85  &
-								OR kst_tab_prodotti.gruppo = 209)  &
-							then   // TOGLIERE L'ECCEZIONE IL PRIMA POSSIBILE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			if (kst_tab_dosimetrie.dose >= k_dose_min and kst_tab_dosimetrie.dose <= k_dose_max) then
+//							OR (kst_tab_prodotti.gruppo = 17  &
+//								OR kst_tab_prodotti.gruppo = 85  &
+//								OR kst_tab_prodotti.gruppo = 209)  &
+//							then   // TOGLIERE L'ECCEZIONE IL PRIMA POSSIBILE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 				k_errore = false
 				kst_tab_meca_dosim.note_lav_ok = "Verifica dosimetrica convalidata "
 //					tab_1.tabpage_1.dw_1.setitem(k_riga, "err_lav_ok", kuf_armo.ki_err_lav_ok_conv_da_aut)

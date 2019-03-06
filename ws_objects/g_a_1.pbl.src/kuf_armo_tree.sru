@@ -33,6 +33,7 @@ private kuf_armo kiuf_armo
 
 
 end variables
+
 forward prototypes
 public subroutine meca_if_isnull (st_tab_meca kst_tab_meca)
 public function integer u_tree_riempi_listview_testa (ref kuf_treeview kuf1_treeview, readonly string k_tipo_oggetto)
@@ -2791,7 +2792,7 @@ kuf_armo kuf1_armo
 					kst_tab_treeview.descrizione = trim(kst_tab_treeview.descrizione) + "   Dati dosim. " & 
 											  + " ass." + string(kst_tab_meca.st_tab_meca_dosim.dosim_assorb, "##,###") &
 											  + " / sp." + string(kst_tab_meca.st_tab_meca_dosim.dosim_spessore, "##,###") &
-											  + " = " + string(kst_tab_meca.st_tab_meca_dosim.dosim_rapp_a_s, "##,##0.00") &
+											  + " = " + string(kst_tab_meca.st_tab_meca_dosim.dosim_rapp_a_s, "##,##0.000") &
 											  + " del " + string(kst_tab_meca.st_tab_meca_dosim.dosim_data, "dd.mm.yy") &
 											  + " lotto " + trim(kst_tab_meca.st_tab_meca_dosim.dosim_lotto_dosim) 
 					if kst_tab_meca.st_tab_meca_dosim.dosim_dose > 0 then
@@ -3975,7 +3976,7 @@ declare kc_treeview cursor for
 						kst_tab_treeview.descrizione = trim(kst_tab_treeview.descrizione) + "   Dati dosim. " & 
 												  + " ass." + string(kst_tab_meca.st_tab_meca_dosim.dosim_assorb, "##,###") &
 												  + " / sp." + string(kst_tab_meca.st_tab_meca_dosim.dosim_spessore, "##,###") &
-												  + " = " + string(kst_tab_meca.st_tab_meca_dosim.dosim_rapp_a_s, "##,##0.00") &
+												  + " = " + string(kst_tab_meca.st_tab_meca_dosim.dosim_rapp_a_s, "##,##0.000") &
 												  + " del " + string(kst_tab_meca.st_tab_meca_dosim.dosim_data, "dd.mm.yy") &
 												  + " lotto " + trim(kst_tab_meca.st_tab_meca_dosim.dosim_lotto_dosim) 
 						if kst_tab_meca.st_tab_meca_dosim.dosim_dose > 0 then
@@ -6172,8 +6173,8 @@ long k_handle_item = 0, k_handle_item_padre = 0, k_handle_item_corrente, k_handl
 integer k_ctr, k_pictureindex
 string k_label, k_oggetto_corrente, k_oggetto_padre, k_label_1
 int k_ind
-string k_campo[15]
-alignment k_align[15]
+string k_campo[17]
+alignment k_align[17]
 alignment k_align_1
 treeviewitem ktvi_treeviewitem
 listviewitem klvi_listviewitem
@@ -6230,16 +6231,16 @@ kuf_armo kuf1_armo
 		choose case k_tipo_oggetto
 //--- Lotti che non hanno ancora generato il ASN (ma abili) 
 			case kuf1_treeview.kist_treeview_oggetto.meca_no_e1asn_dett 
-				k_label_1 = "Lotto senza ASN"
+				k_label_1 = "ASN da generare"
 //--- Lotti nello stato di Accettato (materiale appena entrato)
 			case kuf1_treeview.kist_treeview_oggetto.meca_no_e1accettato_dett 
-				k_label_1 = "Lotto da ricevere"
+				k_label_1 = "ASN da ricevere"
 //--- Lotti ancora senza BARCODE ma già con il ASN 
 			case kuf1_treeview.kist_treeview_oggetto.meca_no_e1bcode_dett 
-				k_label_1 = "Lotto senza barcode"
+				k_label_1 = "ASN senza barcode"
 //--- Lotti che non hanno ancora lo stato a '20' (non associati)
 			case kuf1_treeview.kist_treeview_oggetto.meca_no_e1bcodeass_dett
-				k_label_1 = "Lotto da associare"
+				k_label_1 = "ASN da associare"
 			case else
 				k_label_1 = ""
 		end choose
@@ -6250,6 +6251,12 @@ kuf_armo kuf1_armo
 			kuf1_treeview.kilv_lv1.DeleteColumns ( )
 			k_ind=1
 			k_campo[k_ind] = k_label_1
+			k_align[k_ind] = left!
+			k_ind++
+			k_campo[k_ind] = "Numero Lotto"
+			k_align[k_ind] = left!
+			k_ind++
+			k_campo[k_ind] = "Data Lotto"
 			k_align[k_ind] = left!
 			k_ind++
 			k_campo[k_ind] = "Entrato"
@@ -6336,11 +6343,19 @@ kuf_armo kuf1_armo
 			klvi_listviewitem.selected = false
 
 			k_ctr = kuf1_treeview.kilv_lv1.additem(klvi_listviewitem)
-			k_ind=1
+			k_ind=0
 
-			kst_tab_treeview.voce = string(kst_treeview_data_any.st_tab_meca.num_int, "####0") &
-										  + "  " + string(kst_treeview_data_any.st_tab_meca.data_int, "dd mmm") &
- 										  + "  " + trim(kst_treeview_data_any.st_tab_clienti.rag_soc_10) 
+			kst_tab_treeview.voce = string(kst_treeview_data_any.st_tab_meca.id)
+			k_ind++
+			kuf1_treeview.kilv_lv1.setitem(k_ctr, k_ind, trim(kst_tab_treeview.voce) )
+			
+			kst_tab_treeview.voce = string(kst_treeview_data_any.st_tab_meca.num_int, "####0") 
+			k_ind++
+			kuf1_treeview.kilv_lv1.setitem(k_ctr, k_ind, trim(kst_tab_treeview.voce) )
+
+			kst_tab_treeview.voce = string(kst_treeview_data_any.st_tab_meca.data_int, "dd mmm yy") 
+// 										  + "  " + trim(kst_treeview_data_any.st_tab_clienti.rag_soc_10) 
+			k_ind++
 			kuf1_treeview.kilv_lv1.setitem(k_ctr, k_ind, trim(kst_tab_treeview.voce) )
 
 			if date(kst_treeview_data_any.st_tab_meca.data_ent) > kkg.data_zero then

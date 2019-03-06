@@ -646,8 +646,11 @@ kuf_base kuf1_base
 
 this.get_art50_dati_base( )
 
-if isnull(kist_tab_base.art50_anno) or kist_tab_base.art50_anno = 0 then kist_tab_base.art50_anno = year(kg_dataoggi)
-if isnull(kist_tab_base.art50_mese) or kist_tab_base.art50_mese = 0 then kist_tab_base.art50_mese = month(kg_dataoggi)
+if isnull(kist_tab_base.art50_anno) or kist_tab_base.art50_anno = 0 then kist_tab_base.art50_anno = year(kguo_g.get_dataoggi())
+if isnull(kist_tab_base.art50_mese) or kist_tab_base.art50_mese = 0 then kist_tab_base.art50_mese = month(kguo_g.get_dataoggi())
+
+kst_report_regart50.k_anno = kist_tab_base.art50_anno
+kst_report_regart50.k_mese = kist_tab_base.art50_mese 
 
 if kist_tab_base.art50_mese = 12 then
 	kist_tab_base.art50_mese = 1
@@ -665,15 +668,11 @@ end if
 
 if isnull(kist_tab_base.art50_ult_nrpagina) or kist_tab_base.art50_ult_nrpagina = 0 then 
 	kist_tab_base.art50_ult_nrpagina = 1
-else
-	kist_tab_base.art50_ult_nrpagina ++
 end if
 kst_report_regart50.k_nrpagina = kist_tab_base.art50_ult_nrpagina
 
 if isnull(kist_tab_base.art50_ult_nrprot) or kist_tab_base.art50_ult_nrprot = 0 then 
 	kist_tab_base.art50_ult_nrprot = 1
-else
-	kist_tab_base.art50_ult_nrprot ++
 end if
 kst_report_regart50.k_nrprotocollo = kist_tab_base.art50_ult_nrprot
 
@@ -691,14 +690,14 @@ kuf_base kuf1_base
 
 
 if isnull(kst_report_regart50.k_data_a) then 
-	kist_tab_base.art50_anno = year(kg_dataoggi)
+	kist_tab_base.art50_anno = kguo_g.get_anno( )
 else
-	kist_tab_base.art50_anno = year(kst_report_regart50.k_data_a)
+	kist_tab_base.art50_anno = kst_report_regart50.k_anno
 end if
 if isnull(kst_report_regart50.k_data_a) then 
-	kist_tab_base.art50_mese = month(kg_dataoggi)
+	kist_tab_base.art50_mese = kguo_g.get_mese( )
 else
-	kist_tab_base.art50_mese = month(kst_report_regart50.k_data_a)
+	kist_tab_base.art50_mese = kst_report_regart50.k_mese
 end if
 
 if isnull(kist_tab_base.art50_ult_nrpagina) then

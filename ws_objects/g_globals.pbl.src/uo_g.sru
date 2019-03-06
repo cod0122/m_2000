@@ -32,6 +32,7 @@ long IDPROCEDURA=0 // handle della Procedura
 
 boolean ATTIVA_SUONI = false  //x attivare i suoni di open ecc... nelle windows
 boolean SALVA_LISTE = false  //x attivare lo speed-list ovvero il salvatagio su HD delle DW x visualizz + in fretta
+boolean flagZOOMctrl = false  //x attivare lo ZOOM con CLICK + CTRL 
 
 string NOME_COMPUTER = "" // nome del pc da cui si sta lavorando
 
@@ -98,6 +99,7 @@ public string E1MCU="         270"
 //public string kG_DockingRegister   
 
 end variables
+
 forward prototypes
 public subroutine set_attiva_suoni (boolean a_attiva_suoni)
 public subroutine set_salva_liste (boolean a_salva_liste)
@@ -119,7 +121,6 @@ public function date get_datazero ()
 public subroutine set_e1_enabled (boolean a_enabled)
 public function boolean if_e1_enabled ()
 public function datetime get_datetime_current ()
-public function integer set_anno_procedura ()
 public function string u_replace (string k_str, string k_char_old, string k_char)
 public subroutine set_oralegale_utc (datetime a_dataora_oggi) throws uo_exception
 public function boolean if_w_toolbar_programmi ()
@@ -133,6 +134,9 @@ public subroutine get_st_w_docking (string a_nome_window)
 public function boolean window_aperte_get_all (ref w_super aw_aperte[])
 public function datetime get_datetime_zero ()
 public function datetime get_datetime_current_old ()
+public function integer set_anno_procedura (integer a_anno)
+public subroutine set_flagzoomctrl (boolean a_flag)
+public function boolean get_flagzoomctrl ()
 end prototypes
 
 public subroutine set_attiva_suoni (boolean a_attiva_suoni);
@@ -293,30 +297,6 @@ uo_exception kuo_exception
 
 return k_return
 
-end function
-
-public function integer set_anno_procedura ();//--- Memorizza l'anno impostato in tab base (ritorna eventualmente il vecchio valore)
-int k_anno
-kuf_base kuf1_base
-
-
-k_anno = kG_anno_procedura
-
-//--- Controllo se data congruente!!!!
-kuf1_base = create kuf_base
-kG_anno_procedura = integer(mid(kuf1_base.prendi_dato_base("anno"),2))
-destroy kuf1_base
-
-if k_anno > 0 then
-else
-	k_anno = 0
-end if
-if kG_anno_procedura > 0 then
-else
-	kG_anno_procedura = k_anno
-end if
-
-return k_anno 
 end function
 
 public function string u_replace (string k_str, string k_char_old, string k_char);//
@@ -741,6 +721,36 @@ st_esito kst_esito
 	
 
 return k_return
+
+end function
+
+public function integer set_anno_procedura (integer a_anno);//--- Memorizza l'anno impostato in tab base (ritorna eventualmente il vecchio valore)
+int k_anno
+
+
+k_anno = kG_anno_procedura
+
+kG_anno_procedura = a_anno
+
+if k_anno > 0 then
+else
+	k_anno = 0
+end if
+if kG_anno_procedura > 0 then
+else
+	kG_anno_procedura = k_anno
+end if
+
+return k_anno 
+end function
+
+public subroutine set_flagzoomctrl (boolean a_flag);
+flagZOOMctrl = a_flag
+
+end subroutine
+
+public function boolean get_flagzoomctrl ();
+return flagZOOMctrl 
 
 end function
 

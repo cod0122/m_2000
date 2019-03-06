@@ -152,8 +152,8 @@ end type
 end forward
 
 global type w_base_personale from w_g_tab_3
-integer width = 1829
-integer height = 780
+integer width = 1669
+integer height = 584
 string title = "Proprietà Personali"
 long backcolor = 67108864
 string icon = "Form!"
@@ -200,7 +200,6 @@ public subroutine u_avvia_check_db ()
 public subroutine u_elenco_esiti (boolean k_visibile)
 private subroutine u_call_art_x_no_contratto ()
 public subroutine u_set_sv_call_vettore_id_listino (st_tab_listino ast_tab_listino)
-protected subroutine inizializza_lista ()
 public function string u_attiva_tab (integer a_tab_da_attivare)
 protected subroutine stampa_esegui (st_stampe ast_stampe)
 protected subroutine attiva_tasti_0 ()
@@ -713,6 +712,19 @@ if tab_1.tabpage_1.dw_1.rowcount( ) > 0 then
 		kst_tab_base.key1 = k_text
 		kuf1_base.metti_dato_base(kst_tab_base) // scrive i parametri di cui sopra in tab BASE_UTENTI
 	
+		k_text = tab_1.tabpage_1.dw_1.getitemstring(k_riga, "flag_zoom_ctrl")
+		if isnull(k_text) then
+			k_text=""
+		end if
+		kst_tab_base.key = kuf1_base.kki_base_utenti_flagZOOMctrl
+		kst_tab_base.key1 = k_text
+		kuf1_base.metti_dato_base(kst_tab_base) // scrive i parametri di cui sopra in tab BASE_UTENTI
+		if  k_text = "S" then
+			kguo_g.set_flagZOOMctrl(true)
+		else
+			kguo_g.set_flagZOOMctrl(false)
+		end if		
+	
 		destroy kuf1_base
 	
 	end if
@@ -839,7 +851,7 @@ if tab_1.tabpage_1.dw_1.rowcount() = 0 then
 
 		case is < 0				
 			k_errore = 1
-			messagebox("Dati non trovati", "Configurazione non Trovata~n~r" + " ")
+			messagebox("Dati non trovati", "Configurazione proprietà personali non Trovata")
 			
 
 		case 0
@@ -934,23 +946,8 @@ datawindowchild kdwc_menu
 kuf1_base = create kuf_base
 kst_esito = kuf1_base.leggi_base(kst_tab_base)
 
-//try
-//	kds1_current_datetime = create kds_current_datetime
-//	k_current = kds1_current_datetime.u_get_current()
-//catch (uo_exception kuo_exception)
-//	k_current = datetime(date(0))
-//finally
-//	destroy kds1_current_datetime
-//end try
-k_current = kGuf_data_base.prendi_dataora( )
-
-//if kst_esito.esito <> "0" then
-//	k_return=-1
-//else
-
+	k_current = kGuf_data_base.prendi_dataora( )
 	k_return=1
-	
-//	tab_1.tabpage_1.dw_1.insertrow(0)
 
 	tab_1.tabpage_1.dw_1.setitem(1, "nome", trim(kst_tab_base.st_tab_base_personale.nome))
 	tab_1.tabpage_1.dw_1.setitem(1, "titolo_main", trim(kst_tab_base.st_tab_base_personale.titolo_main))
@@ -962,7 +959,7 @@ k_current = kGuf_data_base.prendi_dataora( )
 	tab_1.tabpage_1.dw_1.setitem(1, "stcert2", trim(kst_tab_base.st_tab_base_personale.stcert2))
 	tab_1.tabpage_1.dw_1.setitem(1, "current", k_current)
 	tab_1.tabpage_1.dw_1.setitem(1, "path", trim(kGuo_path.get_procedura()))
- 
+	tab_1.tabpage_1.dw_1.setitem(1, "flag_zoom_ctrl", trim(kst_tab_base.st_tab_base_personale.flag_zoom_ctrl))
 
 	tab_1.tabpage_1.dw_1.getchild("finestra_inizio", kdwc_menu)
  	k_text = trim(kst_tab_base.st_tab_base_personale.finestra_inizio)
@@ -975,7 +972,6 @@ k_current = kGuf_data_base.prendi_dataora( )
 	tab_1.tabpage_1.dw_1.setitem(1, "finestra_inizio", trim(k_text))
 
 	tab_1.tabpage_1.dw_1.resetupdate()
-
 
 	if trim(kst_tab_base.st_tab_base_personale.titolo_main) > " " then
 	else
@@ -1228,6 +1224,8 @@ try
 				kst_tab_base.fatt_impon_minimo = tab_1.tabpage_4.dw_4.object.base_fatt_impon_minimo[1] 
 			end if
 			kst_tab_base.sv_call_vettore_id_listino = tab_1.tabpage_4.dw_4.object.base_fatt_sv_call_vettore_id_listino[1]
+			kst_tab_base.e1_id_listino_dsm_tof554701_f = tab_1.tabpage_4.dw_4.object.e1_id_listino_dsm_tof554701_f[1]
+			kst_tab_base.e1_id_listino_dsm_tof554701 = tab_1.tabpage_4.dw_4.object.e1_id_listino_dsm_tof554701[1]
 
 			kst_tab_base.st_tab_g_0.esegui_commit = "N" 
 			kst_esito = kuf1_base.tb_update_base_fatt(kst_tab_base) 
@@ -1798,10 +1796,19 @@ end if
 end subroutine
 
 public subroutine u_resize ();//
-constant long kk_width=0, kk_height=0
+long kk_width=0, kk_height= 0
 
 	super::u_resize()
  
+
+ //--- per un bug di PB sono costretto a fare questo per far vedere le barre
+	 	if tab_1.tabposition <> tabsonleft! and tab_1.height - tab_1.tabpage_10.height - 120 < 0 then 
+			kk_height = 120	
+		end if
+		if tab_1.tabposition = tabsonleft! and tab_1.width - tab_1.tabpage_10.width - 950 < 0 then 
+			kk_width = 950
+		end if
+	
 	if tab_1.tabpage_10.dw_10.enabled then
 		tab_1.tabpage_10.dw_10.width = tab_1.tabpage_10.width - kk_width
 		tab_1.tabpage_10.dw_10.height = tab_1.tabpage_10.height - kk_height
@@ -1997,148 +2004,6 @@ kuf_listino kuf1_listino
 		
 end subroutine
 
-protected subroutine inizializza_lista ();////---
-super::inizializza_lista( )
-////---
-////--- Innescata come Prima funzione (da NON personalizzare)
-////--- 
-////---
-//string k_errore="0 ", k_esito = "0", k_ret_u_attiva_tab=""
-//datawindow kdw_1
-//   
-//
-//
-//try
-//
-//	setpointer(kkg.pointer_attesa)	
-//	
-//	//=== Controllo se ho modificato dei dati nella DW DETTAGLIO
-//	if ki_st_open_w.flag_primo_giro <> 'S' then //se NO giro di prima volta
-//		if cb_inserisci.enabled or cb_aggiorna.enabled or cb_cancella.enabled = true then
-//	
-//			k_esito = dati_modif("")
-//			if len(k_esito) > 0 then 
-//			else
-//				k_esito = "0"
-//			end if
-//			if left(k_esito, 1) = "1" then 
-//	
-//	//=== Controllo congruenza dei dati caricati e Aggiornamento  
-//	//=== Ritorna 1 char : 0=tutto OK; 1=errore grave;
-//	//===                : 2=errore non grave dati aggiornati;
-//	//===			         : 3=LIBERO
-//	//===      il resto della stringa contiene la descrizione dell'errore   
-//				k_errore = aggiorna_dati()
-//				
-//			end if
-//		end if
-//	end if
-//	
-//
-//	setpointer(kkg.pointer_attesa)	
-//	
-//	//tab_1.visible = true
-//	
-//	if left(k_errore, 1) = "0" then
-//	
-//		riposiziona_cursore_salva_riga() // salva la posizione del cursore 
-//	
-////--- resetta i DW ma soprattutto chiama la INIZIALIZZ() da tab_1.selectionchanging 
-//		choose case tab_1.selectedtab 
-//			case 1 
-//				kdw_1 = tab_1.tabpage_1.dw_1
-//				tab_1.tabpage_1.dw_1.ki_flag_modalita = ki_st_open_w.flag_modalita
-//				tab_1.tabpage_1.st_1_retrieve.text = " "
-//				
-//				if tab_1.tabpage_1.dw_1.enabled then
-//					tab_1.tabpage_1.dw_1.visible = true 
-//				end if
-//
-//			case 2
-//				kdw_1 = tab_1.tabpage_2.dw_2
-//				tab_1.tabpage_2.st_2_retrieve.text = " "
-//
-//			case 3
-//				kdw_1 = tab_1.tabpage_3.dw_3
-//				tab_1.tabpage_3.st_3_retrieve.text = " "
-//
-//			case 4
-//				kdw_1 = tab_1.tabpage_4.dw_4
-//				tab_1.tabpage_4.st_4_retrieve.text = " "
-//
-//			case 5
-//				kdw_1 = tab_1.tabpage_5.dw_5
-//				tab_1.tabpage_5.st_5_retrieve.text = " "
-//
-//			case 6
-//				kdw_1 = tab_1.tabpage_6.dw_6
-//				tab_1.tabpage_6.st_6_retrieve.text = " "
-//
-//			case 7
-//				kdw_1 = tab_1.tabpage_7.dw_7
-//				tab_1.tabpage_7.st_7_retrieve.text = " "
-//
-//			case 8
-//				kdw_1 =  tab_1.tabpage_8.dw_8
-//				tab_1.tabpage_8.st_8_retrieve.text = " "
-//	
-//			case 9
-//				kdw_1 = tab_1.tabpage_9.dw_9
-//				tab_1.tabpage_9.st_9_retrieve.text = " "
-//				
-////			case 10
-////				kdw_1 = tab_1.tabpage_10.dw_10
-////				tab_1.tabpage_10.st_10_retrieve.text = " "
-//				
-//			case 11
-//				kdw_1 = tab_1.tabpage_11.dw_11
-////				tab_1.tabpage_11.st_11_retrieve.text = " "
-//
-//			case 11
-//				kdw_1 = tab_1.tabpage_12.dw_12
-////				tab_1.tabpage_11.st_11_retrieve.text = " "
-//
-//			case 13
-//				kdw_1 = tab_1.tabpage_13.dw_13
-////				tab_1.tabpage_11.st_11_retrieve.text = " "
-//
-//		end choose	
-//		if isvalid(kdw_1) then
-//			if kdw_1.visible then
-//				kidw_tabselezionato = kdw_1
-//			end if
-//	
-//			if isvalid(kidw_tabselezionato) then
-//				kidw_tabselezionato.SetRedraw (false)
-//				kidw_tabselezionato.reset()
-//				k_ret_u_attiva_tab = u_attiva_tab(tab_1.SelectedTab)   // Lancia  INIZIALIZZA_...
-//				kidw_tabselezionato.visible=true
-//				kidw_tabselezionato.SetRedraw (true)
-//			end if
-//		end if
-//	end if
-//
-//	if trim(k_ret_u_attiva_tab) = ki_UsitaImmediata then //USCITA IMMEDIATA
-//		cb_ritorna.post event clicked( )
-//	
-//	else
-////--- meglio non personalizzarla		
-//		inizializza_post()
-//
-//	end if
-//	
-//
-//catch (uo_exception kuo_exception)
-//	
-//finally
-//	setpointer(kkg.pointer_default)	
-//
-//
-//end try
-//	
-//
-end subroutine
-
 public function string u_attiva_tab (integer a_tab_da_attivare);//
 //--- Out: ""=OK;  "E" = Uscita Immediata
 //
@@ -2154,8 +2019,6 @@ try
 
 //=== Puntatore Cursore da attesa..... 
 		SetPointer(kkg.pointer_attesa)
-
-		tab_1.visible = true
 
 		choose case a_tab_da_attivare 
 			case 1 
@@ -2201,6 +2064,8 @@ try
 			
 			riposiziona_cursore()   // rimette la riga selezionata che c'era in precedenza
 		
+			tab_1.visible = true
+			
 			SetPointer(kkg.pointer_default)
 		end if
 		
@@ -2413,10 +2278,14 @@ string k_scheda = ""
 //--- Scheda da visualizzare (se nulla visualizza tutto)
 	k_scheda = trim(ki_st_open_w.key2)
 	if k_scheda = "utente" then
-		tab_1.showpicture = false
+		tab_1.showpicture = true
 		tab_1.showtext = false
 		tab_1.tabpage_1.visible = true
+		tab_1.tabpage_2.visible = true
+		tab_1.tabpage_3.visible = true
 	else
+		tab_1.showpicture = true
+		tab_1.showtext = true
 		tab_1.tabpage_1.visible = true
 		tab_1.tabpage_2.visible = true
 		tab_1.tabpage_3.visible = true
@@ -2430,8 +2299,6 @@ string k_scheda = ""
 		tab_1.tabpage_11.visible = false
 		tab_1.tabpage_12.visible = true
 		tab_1.tabpage_13.visible = true
-		tab_1.showpicture = true
-		tab_1.showtext = true
 	end if
 	
 
@@ -2495,12 +2362,11 @@ end type
 
 type tab_1 from w_g_tab_3`tab_1 within w_base_personale
 integer x = 23
-integer y = 0
 integer width = 2386
 integer height = 972
 integer taborder = 40
+boolean fixedwidth = true
 boolean showtext = false
-boolean showpicture = false
 boolean perpendiculartext = true
 tabposition tabposition = tabsonleft!
 tabpage_10 tabpage_10
@@ -2565,9 +2431,9 @@ destroy(this.tabpage_13)
 end on
 
 type tabpage_1 from w_g_tab_3`tabpage_1 within tab_1
-integer x = 73
+integer x = 146
 integer y = 16
-integer width = 2295
+integer width = 2222
 integer height = 940
 long backcolor = 67108864
 string text = "Personalizza"
@@ -2577,10 +2443,10 @@ string powertiptext = "impostazioni utente"
 end type
 
 type dw_1 from w_g_tab_3`dw_1 within tabpage_1
-integer x = 78
-integer y = 8
-integer width = 2784
-integer height = 1384
+integer x = 0
+integer y = 0
+integer width = 2217
+integer height = 932
 string dataobject = "d_base"
 boolean controlmenu = true
 boolean hsplitscroll = false
@@ -2598,10 +2464,9 @@ type st_1_retrieve from w_g_tab_3`st_1_retrieve within tabpage_1
 end type
 
 type tabpage_2 from w_g_tab_3`tabpage_2 within tab_1
-boolean visible = false
-integer x = 73
+integer x = 146
 integer y = 16
-integer width = 2295
+integer width = 2222
 integer height = 940
 long backcolor = 67108864
 string text = " la mia Connessione"
@@ -2610,9 +2475,10 @@ string picturename = "Database!"
 end type
 
 type dw_2 from w_g_tab_3`dw_2 within tabpage_2
-integer x = 64
-integer y = 24
-integer width = 2482
+integer x = 0
+integer y = 0
+integer width = 2295
+integer height = 832
 boolean enabled = true
 string dataobject = "d_base_2"
 boolean hsplitscroll = false
@@ -2622,9 +2488,10 @@ type st_2_retrieve from w_g_tab_3`st_2_retrieve within tabpage_2
 end type
 
 type tabpage_3 from w_g_tab_3`tabpage_3 within tab_1
-integer x = 73
+boolean visible = true
+integer x = 146
 integer y = 16
-integer width = 2295
+integer width = 2222
 integer height = 940
 long backcolor = 67108864
 string text = " Messaggi~r~n della Procedura"
@@ -2666,9 +2533,9 @@ type st_3_retrieve from w_g_tab_3`st_3_retrieve within tabpage_3
 end type
 
 type tabpage_4 from w_g_tab_3`tabpage_4 within tab_1
-integer x = 73
+integer x = 146
 integer y = 16
-integer width = 2295
+integer width = 2222
 integer height = 940
 long backcolor = 67108864
 string text = " Proprietà Procedura"
@@ -2771,7 +2638,7 @@ end event
 
 event dw_4::clicked;call super::clicked;//
 string k_upd_last_vers = " "
-double k_versione = 0.0
+double k_versione = 0.0000
 
 
 if dwo.name = "update_last_vers_1" then
@@ -2805,6 +2672,7 @@ int k_rc, k_errore=1
 long k_riga
 st_tab_email kst_tab_email
 st_tab_listino kst_tab_listino
+st_tab_prodotti kst_tab_prodotti
 datawindowchild kdwc_1
 
 
@@ -2812,8 +2680,6 @@ choose case lower(dwo.name)
 
 	case "email_codice" &
 			,"email_codice_1" 
-			
-
 	   	kst_tab_email.codice = RightTrim(data)
 		if not isnull(kst_tab_email.codice) and LenA(kst_tab_email.codice) > 0 then
 		
@@ -2846,6 +2712,28 @@ choose case lower(dwo.name)
 			end if
 		end if
 
+	case "e1_id_listino_dsm_tof554701"
+		if isnumber(data) then
+			kst_tab_listino.id = long(data)
+			k_rc = this.getchild(dwo.name, kdwc_1)
+			k_riga = kdwc_1.find("id_listino = "+ string(kst_tab_listino.id)+" ",0,kdwc_1.rowcount())
+			if k_riga <= 0 or isnull(k_riga) then
+				k_errore = 2
+				kst_tab_listino.id = 0
+				kst_tab_prodotti.des = ""
+				kst_tab_prodotti.codice = ""
+			else
+				kst_tab_listino.id = kdwc_1.getitemnumber(k_riga, "id_listino")
+				kst_tab_prodotti.des = kdwc_1.getitemstring(k_riga, "prodotti_des")
+				kst_tab_prodotti.codice = kdwc_1.getitemstring(k_riga, "cod_art")
+			end if
+		else
+			kst_tab_prodotti.des = ""
+			kst_tab_prodotti.codice = ""
+			kst_tab_listino.id = 0
+		end if
+		this.setitem(row, "prodotti_des", trim(kst_tab_prodotti.codice) + " - " + trim(kst_tab_prodotti.des) )
+
 end choose
 
 
@@ -2855,9 +2743,9 @@ type st_4_retrieve from w_g_tab_3`st_4_retrieve within tabpage_4
 end type
 
 type tabpage_5 from w_g_tab_3`tabpage_5 within tab_1
-integer x = 73
+integer x = 146
 integer y = 16
-integer width = 2295
+integer width = 2222
 integer height = 940
 string text = " Contatori Procedura"
 long tabbackcolor = 67108864
@@ -2890,9 +2778,9 @@ type st_5_retrieve from w_g_tab_3`st_5_retrieve within tabpage_5
 end type
 
 type tabpage_6 from w_g_tab_3`tabpage_6 within tab_1
-integer x = 73
+integer x = 146
 integer y = 16
-integer width = 2295
+integer width = 2222
 integer height = 940
 boolean enabled = true
 long backcolor = 67108864
@@ -2976,9 +2864,9 @@ boolean vscrollbar = false
 end type
 
 type tabpage_7 from w_g_tab_3`tabpage_7 within tab_1
-integer x = 73
+integer x = 146
 integer y = 16
-integer width = 2295
+integer width = 2222
 integer height = 940
 long backcolor = 67108864
 long tabbackcolor = 67108864
@@ -2997,9 +2885,9 @@ integer height = 152
 end type
 
 type tabpage_8 from w_g_tab_3`tabpage_8 within tab_1
-integer x = 73
+integer x = 146
 integer y = 16
-integer width = 2295
+integer width = 2222
 integer height = 940
 boolean enabled = true
 long backcolor = 16777215
@@ -3133,9 +3021,9 @@ boolean vscrollbar = false
 end type
 
 type tabpage_9 from w_g_tab_3`tabpage_9 within tab_1
-integer x = 73
+integer x = 146
 integer y = 16
-integer width = 2295
+integer width = 2222
 integer height = 940
 boolean enabled = true
 long backcolor = 16777215
@@ -4455,9 +4343,9 @@ end event
 
 type tabpage_10 from userobject within tab_1
 boolean visible = false
-integer x = 73
+integer x = 146
 integer y = 16
-integer width = 2295
+integer width = 2222
 integer height = 940
 long backcolor = 16777215
 string text = " Kit"
@@ -4598,9 +4486,9 @@ end type
 
 type tabpage_11 from userobject within tab_1
 boolean visible = false
-integer x = 73
+integer x = 146
 integer y = 16
-integer width = 2295
+integer width = 2222
 integer height = 940
 boolean enabled = false
 long backcolor = 16777215
@@ -4627,9 +4515,9 @@ end type
 
 type tabpage_12 from userobject within tab_1
 boolean visible = false
-integer x = 73
+integer x = 146
 integer y = 16
-integer width = 2295
+integer width = 2222
 integer height = 940
 long backcolor = 16777215
 string text = "Log Segnalazioni"
@@ -4679,9 +4567,9 @@ end event
 
 type tabpage_13 from userobject within tab_1
 boolean visible = false
-integer x = 73
+integer x = 146
 integer y = 16
-integer width = 2295
+integer width = 2222
 integer height = 940
 long backcolor = 67108864
 string text = "Monitor"

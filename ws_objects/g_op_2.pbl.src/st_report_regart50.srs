@@ -4,5 +4,7 @@ global type st_report_regart50 from structure
 	date		k_data_a
 	integer		k_nrpagina		descriptor "comment" = "numero pagina "
 	integer		k_nrprotocollo		descriptor "comment" = "numero protocollo "
+	integer		k_anno		descriptor "comment" = "anno"
+	integer		k_mese		descriptor "comment" = "mese"
 end type
 

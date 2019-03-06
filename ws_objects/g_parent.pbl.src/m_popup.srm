@@ -214,7 +214,7 @@ kgo_1 = getfocus()
 
 if isvalid(kgo_1) then
 	
-	m_impostazioni_utente.menuimage = "settings.png"
+	m_impostazioni_utente.menuimage = "settings16.png"
 	
 	if kgo_1.typeof( ) = MultiLineEdit! then
 		this.m_copiaabilitata.checked = true

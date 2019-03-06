@@ -1146,7 +1146,7 @@ try
 		catch (uo_exception kuo1_exception)
 			kst_esito_app = kuo1_exception.get_st_esito()
 			kst_esito.sqlerrtext += kst_esito_app.sqlerrtext
-			if kst_esito.sqlcode >= 0 then  // se ho già settato un err GRAVE non lo reimposta 
+			if kst_esito.esito = kkg_esito.ok or kst_esito.esito = kkg_esito.no_esecuzione then  // se ho già settato un err GRAVE non lo reimposta 
 				kst_esito.sqlcode = kst_esito_app.sqlcode 
 				kst_esito.esito = kst_esito_app.esito
 			end if
@@ -1160,14 +1160,16 @@ try
 			kst_esito.sqlerrtext = left(trim(kst_esito.sqlerrtext), 400) + "..."
 		end if
 		if k_return > 0 then
-			kst_esito.sqlerrtext = "Sono stati importati " + string(k_return) + " barcode. "
 			if trim(kst_esito.sqlerrtext) > " " then
-				kst_esito.sqlerrtext += "Fare attenzione alle ANOMALIE qui indicate ~n~r" + kst_esito.sqlerrtext
+				kst_esito.sqlerrtext = "Sono stati importati " + string(k_return) + " barcode. Ma fare attenzione alle ANOMALIE qui indicate ~n~r" + kst_esito.sqlerrtext
+			else
+				kst_esito.sqlerrtext = "Sono stati importati " + string(k_return) + " barcode. Ma è stata riscontrata una ANOMALIE (codice = " + kst_esito.esito + " " + string(kst_esito.sqlcode) + ")"
 			end if
 		else
-			kst_esito.sqlerrtext = "Non ci sono barcode da importare. "
 			if trim(kst_esito.sqlerrtext) > " " then
-				kst_esito.sqlerrtext += "Fare attenzione alle ANOMALIE qui indicate ~n~r" + kst_esito.sqlerrtext
+				kst_esito.sqlerrtext = "Non ci sono barcode da importare. Ma fare attenzione alle ANOMALIE qui indicate ~n~r" + kst_esito.sqlerrtext
+			else
+				kst_esito.sqlerrtext = "Non ci sono barcode da importare. Ma è stata riscontrata una ANOMALIE (codice = " + kst_esito.esito + " " + string(kst_esito.sqlcode) + ")"
 			end if
 		end if
 		kguo_exception.inizializza( )

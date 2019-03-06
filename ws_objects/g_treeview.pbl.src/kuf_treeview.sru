@@ -47,6 +47,7 @@ private kuf_clienti kiuf_clienti
 public date ki_data_certif_da_st_da, ki_data_certif_da_st_a
 
 end variables
+
 forward prototypes
 public function boolean u_sicurezza (st_tab_treeview kst_tab_treeview)
 public function st_esito u_imposta_treeview_icone (ref treeview ktv_1, ref listview klv_1)
@@ -2800,23 +2801,6 @@ st_open_w kst_open_w
 			end if
 		end if
 
-//		case treeview!
-//			k_rc = kitv_tv1.finditem(CurrentTreeItem!, 0)
-//			if k_rc > 0 then
-//				kitv_tv1.getitem(k_rc, ktvi_treeviewitem)
-//				kst_treeview_data = ktvi_treeviewitem.data  
-//				kst_treeview_data_any = kst_treeview_data.struttura
-////				kst_tab_meca = kst_treeview_data_any.st_tab_meca 
-//				kst_tab_clienti = kst_treeview_data_any.st_tab_clienti
-//				kst_tab_meca.num_int = kst_tab_clienti.num_inte
-//				kst_tab_meca.data_int = kst_tab_clienti.data_int
-//			end if
-//
-//		case else
-//			k_rc = 0
-//			
-//	end choose
-
 	if k_rc > 0 then		
 
 		if kst_tab_clienti.codice > 0 or k_modalita = kkg_flag_modalita.inserimento then
@@ -2838,7 +2822,8 @@ st_open_w kst_open_w
 //					end if
 				
 				
-				case else
+				case kkg_flag_modalita.modifica &
+					  , kkg_flag_modalita.visualizzazione &
 //=== Parametri : 
 //=== struttura st_open_w
 					kst_open_w.id_programma = kkg_id_programma.anag
@@ -2855,6 +2840,10 @@ st_open_w kst_open_w
 					kGuf_menu_window.open_w_tabelle(kst_open_w)
 					//destroy kuf1_menu_window
 
+
+				case else
+					k_return = 1
+					
 			end choose
 
 			
@@ -2862,7 +2851,6 @@ st_open_w kst_open_w
 			
 			k_return = 1
 //			messagebox("Accesso Anagrafica", "Valore non disponibile. ")
-			
 			
 		end if
 
@@ -7864,7 +7852,7 @@ listviewitem klvi_listviewitem
 		end if
 			
 		
-//--- se CANCELLAZIONE tolgo item stampato dalla lista			
+//--- se CANCELLAZIONE tolgo item selezionato dalla lista			
 		if k_esito = 0 then
 			kst_esito_return.esito = kkg_esito.ok
 			if k_modalita = kkg_flag_modalita.cancellazione then

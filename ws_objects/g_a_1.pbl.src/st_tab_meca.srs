@@ -16,7 +16,8 @@ global type st_tab_meca from structure
 	long		contratto
 	string		area_mag
 	string		aperto		descriptor "comment" = "S=aperto; N=chiuso; R=riaperto"
-	date		consegna_data
+	date		consegna_data		descriptor "comment" = "consegna: data prevista"
+	time		consegna_ora		descriptor "comment" = "consegna: ora prevista"
 	date		data_lav_fin
 	string		err_lav_fin
 	string		err_lav_ok		descriptor "comment" = "esito rilevazioni dosimetrie"
@@ -41,6 +42,7 @@ global type st_tab_meca from structure
 	long		e1doco		descriptor "comment" = "E1: work order number  "
 	long		e1rorn		descriptor "comment" = "E1: Sales_order number"
 	string		e1srst		descriptor "comment" = "E1: Stato da wasrst es 95 = chiuso"
+	integer		dosimprev		descriptor "comment" = "numero dosimetri previsti"
 	datetime		x_datins_blk
 	string		x_utente_blk
 	datetime		x_datins_sblk

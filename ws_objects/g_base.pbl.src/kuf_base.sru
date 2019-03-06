@@ -33,10 +33,10 @@ constant string kki_base_utenti_tel = "tel"   // telefono
 constant string kki_base_utenti_email = "e_mail"   // e_mail 
 constant string kki_base_utenti_nome = "nome"   // nome o pseudonimo utente 
 constant string kki_base_utenti_titolo_main = "titolo_main"   // titolo 
+constant string kki_base_utenti_flagZOOMctrl = "flagzoomctrl"  // S=attiva ZOOM con il CLICK+CTRL
 
 
 end variables
-
 forward prototypes
 public function string check_pwd (string k_pwd)
 public function long dammi_rec (ref st_tab_base k_st_tab_base)
@@ -391,6 +391,8 @@ try
 
 	kst_tab_base.st_tab_base_personale.stcert1 = get_dato_personale(kki_base_utenti_codice_stcert1)
 	kst_tab_base.st_tab_base_personale.stcert2 = get_dato_personale(kki_base_utenti_codice_stcert2)
+	
+	kst_tab_base.st_tab_base_personale.flag_ZOOM_ctrl = get_dato_personale(kki_base_utenti_flagZOOMctrl)
 
 //--- per i campi vuoti prova nel confdb.ini
 if kst_tab_base.st_tab_base_personale.finestra_inizio > " " then
@@ -426,19 +428,6 @@ else
 	kst_tab_base.st_tab_base_personale.nome = trim(kst_profilestring_ini.valore)
 end if
 	
-//	kst_profilestring_ini.file = "base_personale"
-//	kst_profilestring_ini.titolo = "conf_personale"
-//	kst_profilestring_ini.nome = "flag_salva_liste"
-//	kst_profilestring_ini.operazione = "1"
-//	k_rcx = kGuf_data_base.profilestring_ini(kst_profilestring_ini)
-//	if kst_profilestring_ini.esito <> "0" then
-//		kst_esito.esito = "1" 
-//		kst_esito.sqlcode = 0
-//		kst_esito.SQLErrText = "Dato 'Speed Elenco' non registrato. Errore: " &
-//									  + trim(kst_profilestring_ini.esito)
-//	end if
-//	kst_tab_base.st_tab_base_personale.flag_salva_liste = trim(kst_profilestring_ini.valore)
-
 
 if kst_tab_base.st_tab_base_personale.flag_suoni > " " then
 else
@@ -1110,7 +1099,8 @@ st_esito kst_esito
 				,kki_base_utenti_flagsuoni & 
 				,kki_base_utenti_tel &
 				,kki_base_utenti_email &
-				,kki_base_utenti_nome 
+				,kki_base_utenti_nome &
+				,kki_base_utenti_flagZOOMctrl
 				
 			k_long = kguo_utente.get_id_utente( )
 			//--- update o insert?
@@ -2482,6 +2472,20 @@ kuf_stampe kuf1_stampe
 			k_lungo = len(k_record)
 			k_trim_no = true
 
+//--- codice listino per Prodotto E1 su cui caricare il numero dosimetri lotto nel ASN
+		case "e1_id_listino_dsm_tof554701"
+			select e1_id_listino_dsm_tof554701
+				 into :k_long
+				 from base_fatt
+				 where e1_id_listino_dsm_tof554701_f = "S";
+			k_record = string(k_long)
+			if isnull(k_long) then
+				k_record = "0"
+			end if
+			k_record = trim(k_record)
+			k_pos_ini = 1
+			k_lungo = len(k_record)
+
 //---- Ultima spiaggia cerco dentro ai dati personali
 		case else
 			try
@@ -3128,6 +3132,9 @@ if len(trim(ast_tab_base.id_base)) > 0 then
 			kds_1.setitem(1, "ddt_qtna_note", ast_tab_base.ddt_qtna_note)
 			kds_1.setitem(1, "ddt_blk_lotti_senza_attestato", ast_tab_base.ddt_blk_lotti_senza_attestato)
 			kds_1.setitem(1, "sv_call_vettore_id_listino", ast_tab_base.sv_call_vettore_id_listino)
+			kds_1.setitem(1, "e1_id_listino_dsm_tof554701_f", ast_tab_base.e1_id_listino_dsm_tof554701_f)
+			kds_1.setitem(1, "e1_id_listino_dsm_tof554701", ast_tab_base.e1_id_listino_dsm_tof554701)
+
 			kds_1.setitem(1, "x_datins", ast_tab_base.x_datins)
 			kds_1.setitem(1, "x_utente", ast_tab_base.x_utente)
 
@@ -3299,7 +3306,8 @@ st_profilestring_ini kst_profilestring_ini
 				,kki_base_utenti_flagsuoni & 
 				,kki_base_utenti_tel &
 				,kki_base_utenti_email &
-				,kki_base_utenti_nome 
+				,kki_base_utenti_nome &
+				,kki_base_utenti_flagZOOMctrl
 				
 			k_id_utente = kguo_utente.get_id_utente( )
 

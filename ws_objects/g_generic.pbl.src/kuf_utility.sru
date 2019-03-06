@@ -114,6 +114,7 @@ private function datetime u_datetime_after (datetime a_datetime, long a_time, st
 public function datetime u_datetime_after_hour (datetime a_datetime, long a_nr_hour)
 public function datetime u_datetime_after_minute (datetime a_datetime, long a_nr_minute)
 public function date u_data_get_lastmonthday (date a_date)
+public function date u_datetime_after_ddnowe (date a_date, integer a_dd)
 end prototypes
 
 public function unsignedinteger u_sound (string k_suono, unsignedinteger k_umodule, unsignedlong k_flag);//
@@ -4715,7 +4716,7 @@ return k_return_stringa
 end function
 
 public subroutine u_dw_guida_estrazione (ref st_dw_guida_estrazione ast_dw_guida_estrazione) throws uo_exception;////---
-string k_codice_x, k_numero_x, k_anno_x, k_cliente_x, k_upper
+string k_codice_x, k_numero_x, k_anno_x, k_cliente_x, k_upper, k_ricerca
 long k_codice, k_id_cliente
 st_tab_armo kst_tab_armo
 kuf_armo kuf1_armo
@@ -4734,32 +4735,43 @@ try
 		
 	else
 		
-//--- se inzia subito con una lettera dovrebbe essere un cliente
+//--- se non inzia con un numero potrebbe essere il cliente o il ASN/ID_MECA
 		if not isnumber(left(k_codice_x, 1)) then
 
-//--- se la stringa di ricerca è C poi un numero allora è il codice cliente
-			if upper(left(k_codice_x, 1)) = "C" then
-				if isnumber(mid(k_codice_x,2)) then
-					ast_dw_guida_estrazione.id_cliente = long(mid(k_codice_x,2))
-				end if
-			end if
-		
-//--- se ancora niente forse è il nome cliente
-			if ast_dw_guida_estrazione.id_cliente = 0 then
-				kuf1_clienti = create kuf_clienti
-				k_upper = upper(k_codice_x)
-				k_id_cliente = kuf1_clienti.get_codice_da_rag_soc(k_upper)
-				if k_id_cliente > 0 then
-					ast_dw_guida_estrazione.id_cliente = k_id_cliente
-					k_cliente_x = string(k_id_cliente)
-					k_codice_x = "C" + k_cliente_x
-				else
-					kguo_exception.inizializza( )
-					kguo_exception.setmessage("Testo non riconosciuto", "Digitare: num. lotto o il numero e anno separati da un '/' o il codice ID lotto, o il codice Anagrafica preceduto da una 'C' (es. C37) o il nominativo")
-					throw kguo_exception
-				end if
-			end if
+//--- se inzia subito con "id" e segue un numero allora è il ID_MECA
+			if upper(left(k_codice_x,2)) =  "ID" and isnumber(mid(trim(k_codice_x),3)) then
+				
+				ast_dw_guida_estrazione.id_meca = long(mid(trim(k_codice_x),3))
+				k_ricerca = "Lotto n. ASN/ID " + string(ast_dw_guida_estrazione.id_meca) 
+				
+			else
 
+	//--- se la stringa di ricerca è C poi un numero allora è il codice cliente
+				if upper(left(k_codice_x, 1)) = "C" then
+					if isnumber(mid(k_codice_x,2)) then
+						ast_dw_guida_estrazione.id_cliente = long(mid(k_codice_x,2))
+						k_ricerca = "Cliente " + string(ast_dw_guida_estrazione.id_cliente)
+					end if
+				end if
+			
+	//--- se ancora niente forse è il nome cliente
+				if ast_dw_guida_estrazione.id_cliente = 0 then
+					kuf1_clienti = create kuf_clienti
+					k_upper = upper(k_codice_x)
+					k_id_cliente = kuf1_clienti.get_codice_da_rag_soc(k_upper)
+					k_ricerca = "Cliente " + trim(k_upper)
+					if k_id_cliente > 0 then
+						ast_dw_guida_estrazione.id_cliente = k_id_cliente
+						k_cliente_x = string(k_id_cliente)
+						k_codice_x = "C" + k_cliente_x
+					else
+						kguo_exception.inizializza( )
+						kguo_exception.setmessage("Testo non riconosciuto", "Digitare: num. lotto o il numero e anno separati da un '/' o il codice ID lotto, o il codice Anagrafica preceduto da una 'C' (es. C37) o il nominativo")
+						throw kguo_exception
+					end if
+				end if
+
+			end if
 		else
 				
 //--- Vediamo se ho passato il Numero o Id del Lotto
@@ -4783,6 +4795,8 @@ try
 				kguo_exception.setmessage("Testo non riconosciuto", "Digitare: num. lotto o il numero e anno separati da un '/' o il codice ID lotto, o il codice Anagrafica preceduto da una 'C' (es. C37) o il nominativo")
 				throw kguo_exception
 			end if				
+			k_ricerca = "Lotto n. " + trim(k_numero_x) + " anno " + k_anno_x
+			
 //--- valuta in modo empirico se codice è un ID o un numero Lotto
 			k_codice = long(k_codice_x)
 			if k_codice > 0 and k_codice < 50000 then // se minore di 50 mila sicuramente si tratta di un numero lotto o codice cliente altrimentise > 5000 di un ID lotto 
@@ -4793,15 +4807,17 @@ try
 				ast_dw_guida_estrazione.id_meca = kst_tab_armo.id_meca
 			else
 				ast_dw_guida_estrazione.id_meca = k_codice
+				k_ricerca = "Lotto ASN/ID " + string(ast_dw_guida_estrazione.id_meca) 
 			end if
+			
 		end if	
 		
 //--- se ancora non ho trovato nulla segnalo!
 		if ast_dw_guida_estrazione.id_cliente = 0 and ast_dw_guida_estrazione.id_meca = 0 then
-				kguo_exception.inizializza( )
-				kguo_exception.setmessage("Ricerca non trovata", "La ricerca per i dati inseriti non ha prodotto risultati, se volevi cercare un Cliente ricorda di anteporre una 'C' al codice")
-				throw kguo_exception
-			end if
+			kguo_exception.inizializza( )
+			kguo_exception.setmessage("Ricerca non trovata", "La ricerca per " + k_ricerca + " non ha prodotto risultati, per cercare un Cliente ricorda di anteporre una 'C' al codice")
+			throw kguo_exception
+		end if
 	end if
 
 	ast_dw_guida_estrazione.output = k_codice_x
@@ -5237,6 +5253,46 @@ k_return = date(li_year,li_month,1)
 // extract the last day of the previous month
 k_return = RelativeDate(k_return, -1)
 
+
+return k_return
+end function
+
+public function date u_datetime_after_ddnowe (date a_date, integer a_dd);//
+//--- Calcola un datetime add o sub in giorni lavorativi
+//
+int k_dd, k_ctr, k_day_segno = 1
+string ls_sql  
+date k_return, k_date 
+
+
+	if isnull(a_date) or isnull(a_dd)   then
+		return date(0)
+	end if
+	if a_dd = 0   then
+		return a_date
+	end if
+
+	if a_dd < 0 then 
+		a_dd = a_dd * -1   //cmq lavoro sul dato positivo
+		k_day_segno = -1
+	end if
+		
+	k_date = a_date
+	
+	k_ctr = 0
+	do 
+		
+		k_date = relativedate(k_date, k_day_segno) 
+		k_dd = dayNumber (k_date) 
+		if k_dd = 1 or k_dd  = 7 then  // week-end
+		else  // gg feriale 
+			k_ctr ++
+		end if
+		
+	loop while k_ctr < a_dd
+		
+	k_return = k_date
+	
 
 return k_return
 end function

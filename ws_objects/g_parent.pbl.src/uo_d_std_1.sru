@@ -1338,7 +1338,7 @@ boolean k_return=false
 string k_nome_link_button = " "
 string k_protect = "", k_taborder="", k_valore=""
 int k_taborder_n = 0
-boolean k_zoom_ok = false 
+boolean k_zoom_ok = false, k_press_KeyControl
 kuf_link_zoom kuf1_link_zoom
 
 
@@ -1352,6 +1352,8 @@ try
 		
 		kuf1_link_zoom = create kuf_link_zoom
 		
+		if KeyDown(KeyControl!) then k_press_KeyControl = true
+		
 //--- se ho cliccato su un BUTTON o SIMILARE converto nel link tradizionale 
 		k_nome_link_button = kuf1_link_zoom.get_link_da_button (a_nome_link)
 		
@@ -1361,15 +1363,22 @@ try
 
 //--- valutazione se 'lanciare lo ZOOM'
 		k_zoom_ok = true
-		if k_nome_link_button > " " then  // se è un button allora allora ZOOM ok
+		if k_nome_link_button > " " or k_press_KeyControl then  // se è un button allora allora ZOOM ok
+		
 		else
-//--- Verifica valore da cercare se OK
-			if NOT ki_link_standard_attivi then // se NO link standard attivo allora ok
+
+			if kguo_g.get_flagZOOMctrl() and not k_press_KeyControl then // se richiesto il tasto CTRL ma non premuto
 				k_zoom_ok = FALSE 
-			else
-				if a_riga > 0 and trim(a_nome_link) > " " then
-					k_valore = trim(u_getitemstring(adw_link, a_nome_link, a_riga))
-					if k_valore > " " then
+			end if
+			
+			if k_zoom_ok and not k_press_KeyControl and NOT ki_link_standard_attivi then // se NO link standard attivo allora ok
+				k_zoom_ok = FALSE 
+			end if
+			
+			if k_zoom_ok and a_riga > 0 and trim(a_nome_link) > " " then
+				k_valore = trim(u_getitemstring(adw_link, a_nome_link, a_riga))
+				if k_valore > " " then
+					if not k_press_KeyControl then
 						k_protect = adw_link.Describe(a_nome_link + ".Protect") // campo protetto
 						if k_protect = "0" then // se campo protetto ovvero diverso da ZERO allora ZOOM ok
 							k_taborder = adw_link.Describe(a_nome_link + ".TabSequence")
@@ -1379,12 +1388,12 @@ try
 								end if
 							end if
 						end if
-					else
-						k_zoom_ok = FALSE // non passo perchè campo senza VALORE 25.5.2015
 					end if
 				else
-					k_zoom_ok = FALSE // non passo perchè campo senza NOME
+					k_zoom_ok = FALSE // non passo perchè campo senza VALORE 25.5.2015
 				end if
+			else
+				k_zoom_ok = FALSE // non passo perchè campo senza NOME
 			end if
 
 		end if
@@ -1629,6 +1638,9 @@ kist_errori_gestione.sqlsyntax = trim(sqlsyntax)
 kist_errori_gestione.sqlerrtext = trim(sqlerrtext)
 kist_errori_gestione.sqldbcode = sqldbcode
 kist_errori_gestione.sqlca = sqlca
+if sqldbcode < 0 then
+	kist_errori_gestione.esito = kkg_esito.db_ko
+end if
 
 if isvalid(kGuf_data_base) then kGuf_data_base.errori_gestione(kist_errori_gestione)
 

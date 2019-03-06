@@ -170,6 +170,7 @@ public function string get_tipo (st_tab_clienti kst_tab_clienti) throws uo_excep
 public function long get_codice_da_e1an (st_tab_clienti kst_tab_clienti) throws uo_exception
 public function long get_id_cliente_memo_max () throws uo_exception
 public function long get_codice_max () throws uo_exception
+public subroutine get_delivery (ref st_tab_clienti kst_tab_clienti) throws uo_exception
 end prototypes
 
 public function st_esito conta_p_iva (ref st_tab_clienti kst_tab_clienti);//====================================================================
@@ -662,6 +663,8 @@ if isnull(kst_tab_clienti.id_meca_causale) then kst_tab_clienti.id_meca_causale 
 if isnull(kst_tab_clienti.e1an) then kst_tab_clienti.e1an = 0
 if isnull(kst_tab_clienti.e1ancodrs) then kst_tab_clienti.e1ancodrs = ""
 if isnull(kst_tab_clienti.pklbcodepref) then kst_tab_clienti.pklbcodepref = ""
+if isnull(kst_tab_clienti.delivery_dd_after) then kst_tab_clienti.delivery_dd_after = 0
+if isnull(kst_tab_clienti.delivery_hour) then kst_tab_clienti.delivery_hour = time("00:00")
 if isnull(kst_tab_clienti.x_datins) then kst_tab_clienti.x_datins = datetime(date(0))
 if isnull(kst_tab_clienti.x_utente) then kst_tab_clienti.x_utente  = " "
 
@@ -7844,6 +7847,51 @@ st_esito kst_esito
 return k_return
 
 end function
+
+public subroutine get_delivery (ref st_tab_clienti kst_tab_clienti) throws uo_exception;//
+//---------------------------------------------------------------------------------------------
+//--- Torna campi delivey (n. giorni e ora)
+//--- 
+//--- Inp: st_tab_clienti.codice
+//--- Out: st_tab_clienti delivery_dd_after, delivery_hour                  
+//--- Lancia errore UO_EXCEPTION
+//--- 
+//---------------------------------------------------------------------------------------------
+//
+st_esito kst_esito
+
+
+try
+	kst_esito.esito = kkg_esito.ok
+	kst_esito.sqlcode = 0
+	kst_esito.SQLErrText = ""
+	kst_esito.nome_oggetto = this.classname()
+
+	SELECT coalesce(delivery_dd_after, 0)
+	           , coalesce(delivery_hour, convert(time, '00:00'))
+       into :kst_tab_clienti.delivery_dd_after
+		    ,:kst_tab_clienti.delivery_hour
+		 FROM clienti
+		 where codice = :kst_tab_clienti.codice
+			using kguo_sqlca_db_magazzino;
+	
+	if kguo_sqlca_db_magazzino.sqlcode < 0 then
+		kst_esito.esito = kkg_esito.db_ko
+		kst_esito.sqlcode = kguo_sqlca_db_magazzino.sqlcode
+		kst_esito.SQLErrText = "Errore in ricerca dati Consegna in Anagrafica (codice " &
+					+ string(kst_tab_clienti.codice) + ")~n~r" + trim(kguo_sqlca_db_magazzino.SQLErrText)
+		kguo_exception.inizializza()
+		kguo_exception.set_esito( kst_esito )
+		throw kguo_exception
+	end if
+
+
+catch (uo_exception kuo_exception)
+	throw kuo_exception
+	
+end try
+
+end subroutine
 
 on kuf_clienti.create
 call super::create

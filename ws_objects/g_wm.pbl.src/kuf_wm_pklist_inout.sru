@@ -915,7 +915,7 @@ try
 		kst_esito.sqlcode = 0
 		kst_esito.esito = kkg_esito.no_esecuzione
 		kst_esito.SQLErrText = &
-	"Errore in duplicazione Packing-List per duplica, manca il codice da duplicare" //~n~r" &
+	"Errore in duplicazione Packing-List, manca il codice da duplicare" //~n~r" &
 		kguo_exception.inizializza( )
 		kguo_exception.set_esito(kst_esito)
 		throw kguo_exception
@@ -973,6 +973,9 @@ try
 	kds_testa.setitem(1, "x_utente_elim", "") 		
 	kds_testa.setitem(1, "x_datins", kGuf_data_base.prendi_x_datins()) 		
 	kds_testa.setitem(1, "x_utente", kGuf_data_base.prendi_x_utente()) 		
+	kds_testa.setitem(1, "tpimportazione", kki_TPIMPORTAZIONE_MANUALE) 		
+	kds_testa.setitem(1, "dtimportazione", kGuf_data_base.prendi_x_datins()) 	 		
+
 	kds_testa.resetupdate( )
 	kds_testa.SetItemStatus(1, 0, Primary!, NewModified!)
 	k_rcn = kds_testa.update()

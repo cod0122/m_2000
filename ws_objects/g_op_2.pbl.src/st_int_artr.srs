@@ -1,5 +1,6 @@
 ﻿$PBExportHeader$st_int_artr.srs
 global type st_int_artr from structure
+	integer		report		descriptor "comment" = "scelta report "
 	string		utente
 	date		upd_data_fin
 	date		upd_data_ok

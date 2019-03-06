@@ -189,7 +189,6 @@ protected function string inizializza () throws uo_exception
 protected subroutine u_set_dw_obsoleto ()
 protected subroutine attiva_tasti_0 ()
 public subroutine u_resize_1 ()
-public subroutine u_obj_visible_0 ()
 protected function string aggiorna_dw_0 (datawindow adw_1, string a_titolo, string a_return)
 protected function boolean dati_modif_dw (ref uo_d_std_1 auo_d_std_1)
 end prototypes
@@ -809,26 +808,25 @@ try
 //				kidw_tabselezionato = kidw_selezionata
 //			end if
 	
-			if isvalid(kidw_selezionata) then
-				kidw_selezionata.reset()
-				if ki_st_open_w.flag_modalita = kkg_flag_modalita.cancellazione then
-					u_resize()
-					kidw_selezionata.visible=true
-					kidw_selezionata.SetRedraw (true)
-					tab_1.visible = true
-				else
-					kidw_selezionata.SetRedraw (false)
-				end if
-				k_ret_u_attiva_tab = u_attiva_tab(tab_1.SelectedTab)   // Lancia  INIZIALIZZA_...
+		if isvalid(kidw_selezionata) then
+			kidw_selezionata.reset()
+			if ki_st_open_w.flag_modalita = kkg_flag_modalita.cancellazione then
+				u_resize()
 				kidw_selezionata.visible=true
 				kidw_selezionata.SetRedraw (true)
+				tab_1.visible = true
 			else
-				if ki_st_open_w.flag_modalita = kkg_flag_modalita.cancellazione then
-					u_resize()
-					tab_1.visible = true
-				end if
-				k_ret_u_attiva_tab = u_attiva_tab(tab_1.SelectedTab)   // Lancia  INIZIALIZZA_...
+				kidw_selezionata.SetRedraw (false)
 			end if
+			k_ret_u_attiva_tab = u_attiva_tab(tab_1.SelectedTab)   // Lancia  INIZIALIZZA_...
+			kidw_selezionata.visible=true
+			kidw_selezionata.SetRedraw (true)
+		else
+			if ki_st_open_w.flag_modalita = kkg_flag_modalita.cancellazione then
+				u_resize()
+			end if
+			k_ret_u_attiva_tab = u_attiva_tab(tab_1.SelectedTab)   // Lancia  INIZIALIZZA_...
+		end if
 //		end if
 	end if
 
@@ -841,6 +839,7 @@ try
 		if isvalid(kidw_selezionata) then
 			kidw_selezionata.ki_flag_modalita = ki_st_open_w.flag_modalita
 		end if
+		tab_1.visible = true
 	end if
 	
 
@@ -1756,13 +1755,24 @@ public subroutine u_resize_1 ();//
 		this.setredraw(false)
 	
 	//=== Dimensione dw nella window 
-		tab_1.resize(this.width - 2, this.height - 2)
+		tab_1.resize(this.width - 1, this.height - 1)
+		tab_1.tabpage_1.resize(tab_1.width, tab_1.height)
 	
 	//--- Posiziona dw nella window 
-		tab_1.move(1, 1) 
+		tab_1.move(0, 0) 
 		
-		constant int kk_width = 1 //50
-		constant int kk_height = 1 //150
+		this.setredraw(true)
+		this.setredraw(false)
+	
+		int kk_width = 1 //50
+		int kk_height = 0
+ //--- per un bug di PB sono costretto a fare questo per far vedere le barre
+	 	if tab_1.tabposition <> tabsonleft! and tab_1.height - tab_1.tabpage_1.height - 120 < 0 then 
+			kk_height = 120	
+		end if
+		if tab_1.tabposition = tabsonleft! and tab_1.width - tab_1.tabpage_1.width - 900 < 0 then 
+			kk_width = 900
+		end if
 	
 	//=== Dimensiona dw nel tab
 		tab_1.tabpage_1.dw_1.resize(tab_1.tabpage_1.width - kk_width, tab_1.tabpage_1.height - kk_height)
@@ -1806,11 +1816,6 @@ public subroutine u_resize_1 ();//
 	
 	
 	
-
-end subroutine
-
-public subroutine u_obj_visible_0 ();//
-	tab_1.visible = true
 
 end subroutine
 
@@ -2174,8 +2179,6 @@ type tab_1 from tab within w_g_tab_3
 event ue_rbuttondown pbm_rbuttondown
 event ue_rbuttonup pbm_rbuttonup
 boolean visible = false
-integer x = 5
-integer y = 8
 integer width = 1842
 integer height = 1144
 integer taborder = 10

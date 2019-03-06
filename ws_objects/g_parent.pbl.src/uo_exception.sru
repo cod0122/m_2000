@@ -68,11 +68,15 @@ ki_st_uo_exception.tipo = get_tipo()
 if trim(getmessage()) > ' ' then
 else
 	kst_esito = get_st_esito()
+	if trim(kst_esito.sqlerrtext) > " " then
+	else
+		kst_esito.sqlerrtext = "Programma in anomalia."
+	end if
 	if kst_esito.sqlcode <> 0 then
-		kst_esito.sqlerrtext = trim(kst_esito.sqlerrtext) + "~n~rCodice: " + string(kst_esito.sqlcode)
+		kst_esito.sqlerrtext = trim(kst_esito.sqlerrtext) + " ~n~rCodice: " + string(kst_esito.sqlcode)
 	end if
 	if trim(kst_esito.nome_oggetto) > " " then
-		kst_esito.sqlerrtext = trim(kst_esito.sqlerrtext) + "~n~rOggetto:  " + trim(kst_esito.nome_oggetto)
+		kst_esito.sqlerrtext = trim(kst_esito.sqlerrtext) + " ~n~rOggetto:  " + trim(kst_esito.nome_oggetto)
 	end if
 	setmessage(trim(kst_esito.sqlerrtext))
 end if
@@ -109,30 +113,30 @@ else
 			k_titolo = "Operazione Interrotta"
 	end choose
 end if
-
+//~n~r~n~r
 //--- Espone il msg all'utente
 choose case ki_st_uo_exception.tipo
 	case KK_st_uo_exception_tipo_generico
-		messaggio_utente (k_titolo,  "Prego, fare attenzione alle seguenti Avvertenze:~n~r~n~r " + getmessage())
+		messaggio_utente (k_titolo,  "Prego, fare attenzione alle seguenti Avvertenze: " + getmessage())
 	case KK_st_uo_exception_tipo_dati_non_eseguito
 		messaggio_utente (k_titolo,  getmessage())
 	case KK_st_uo_exception_tipo_dati_anomali, KK_st_uo_exception_tipo_dati_wrn
-		messaggio_utente (k_titolo, "Prego, fare attenzione alle seguenti Avvertenze:~n~r~n~r " + getmessage())
+		messaggio_utente (k_titolo, "Prego, fare attenzione alle seguenti Avvertenze: " + getmessage())
 	case KK_st_uo_exception_tipo_dati_utente &
 		, KK_st_uo_exception_tipo_noAUT
 		messaggio_utente (k_titolo, getmessage())
 	case KK_st_uo_exception_tipo_db_ko
-		messaggio_utente (k_titolo, "Attenzione si è verificato il seguente Errore:~n~r~n~r " + getmessage())
+		messaggio_utente (k_titolo, "Attenzione si è verificato il seguente Errore: " + getmessage())
 	case KK_st_uo_exception_tipo_ko
-		messaggio_utente (k_titolo, "Attenzione si è verificato il seguente Errore:~n~r~n~r " + getmessage())
+		messaggio_utente (k_titolo, "Attenzione si è verificato il seguente Errore: " + getmessage())
 	case KK_st_uo_exception_tipo_not_fnd
-		messaggio_utente (k_titolo, "Prego fare attenzione alle seguenti Avvertenze:~n~r~n~r " +  getmessage())
+		messaggio_utente (k_titolo, "Prego fare attenzione alle seguenti Avvertenze: " +  getmessage())
 	case KK_st_uo_exception_tipo_err_int
-		messaggio_utente (k_titolo, "Attenzione si è verificato il seguente Errore:~n~r~n~r " + getmessage())
+		messaggio_utente (k_titolo, "Attenzione si è verificato il seguente Errore: " + getmessage())
 	case KK_st_uo_exception_tipo_allerta
-		messaggio_utente (k_titolo,  "Prego, fare attenzione alle seguenti Avvertenze:~n~r ~n~r" + getmessage())
+		messaggio_utente (k_titolo,  "Prego, fare attenzione alle seguenti Avvertenze: " + getmessage())
 	case KK_st_uo_exception_tipo_dati_insufficienti, KK_st_uo_exception_tipo_dati_insufficienti1
-		messaggio_utente (k_titolo,  "Prego, fare attenzione alle seguenti Avvertenze:~n~r~n~r" + getmessage())
+		messaggio_utente (k_titolo,  "Prego, fare attenzione alle seguenti Avvertenze: " + getmessage())
 	case KK_st_uo_exception_tipo_OK
 		messaggio_utente (k_titolo,  trim(getmessage()))
 	case else
@@ -195,6 +199,13 @@ end subroutine
 public subroutine setmessage (string newmessage);//
 kist_esito.sqlerrtext = trim(newmessage)
 
+if trim(kist_esito.esito) > " " then
+	kist_esito.esito = this.kk_st_uo_exception_tipo_dati_wrn
+end if
+
+scrivi_log( )
+
+	
 
 end subroutine
 
@@ -439,7 +450,8 @@ end function
 
 public subroutine setmessage (string a_titolo, string newmessage);//
 ki_titolo = trim(a_titolo)
-kist_esito.sqlerrtext = trim(newmessage)
+setmessage(newmessage)
+//kist_esito.sqlerrtext = trim(newmessage)
 
 
 end subroutine
@@ -461,7 +473,7 @@ if trim(kst_esito.sqlerrtext) > " " then
 		a_msg = trim(kst_esito.sqlerrtext)
 	end if
 	if trim(kst_esito.nome_oggetto) > " " then
-		a_msg += "~n~r(" +  trim(kst_esito.nome_oggetto) + ") "
+		a_msg += " ~n~r(" +  trim(kst_esito.nome_oggetto) + ") "
 	end if
 end if
 

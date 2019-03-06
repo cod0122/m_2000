@@ -11,7 +11,7 @@ RETRIEVE(statement="PBSELECT(TABLE(NAME=~"dosimetrie_app~") COLUMN(NAME=~"dosime
 DESTINATION(name="dosimetrie_app",COLUMN(type=long,name="id",dbtype="INTEGER",nulls_allowed=yes)
  COLUMN(type=string,name="lotto_dosim",dbtype="TEXT",nulls_allowed=yes)
  COLUMN(type=date,name="data",dbtype="DATE",nulls_allowed=yes)
- COLUMN(type=decimal,name="coeff_a_s",dbtype="DECIMAL(7,2)",nulls_allowed=yes)
+ COLUMN(type=decimal,name="coeff_a_s",dbtype="DECIMAL(7,3)",nulls_allowed=yes)
  COLUMN(type=decimal,name="dose",dbtype="DECIMAL(7,2)",nulls_allowed=yes)
  COLUMN(type=string,name="note",dbtype="TEXT",nulls_allowed=yes)
  COLUMN(type=char,name="attivo",dbtype="CHAR(255)",nulls_allowed=yes))

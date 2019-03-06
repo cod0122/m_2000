@@ -949,7 +949,7 @@ public subroutine if_isnull (ref st_tab_meca_dosimbozza kst_tab_meca_dosimbozza)
 if isnull(kst_tab_meca_dosimbozza.id_meca_dosimbozza) then	kst_tab_meca_dosimbozza.id_meca_dosimbozza = 0
 if isnull(kst_tab_meca_dosimbozza.id_meca) then	kst_tab_meca_dosimbozza.id_meca = 0
 if isnull(kst_tab_meca_dosimbozza.dosim_spessore) then	kst_tab_meca_dosimbozza.dosim_spessore = 0
-if isnull(kst_tab_meca_dosimbozza.dosim_rapp_a_s) then	kst_tab_meca_dosimbozza.dosim_rapp_a_s = 0 
+if isnull(kst_tab_meca_dosimbozza.dosim_rapp_a_s) then	kst_tab_meca_dosimbozza.dosim_rapp_a_s = 0.000 
 if isnull(kst_tab_meca_dosimbozza.dosim_lotto_dosim) then	kst_tab_meca_dosimbozza.dosim_lotto_dosim = ""
 if isnull(kst_tab_meca_dosimbozza.dosim_temperatura) then	kst_tab_meca_dosimbozza.dosim_temperatura = 0 	
 if isnull(kst_tab_meca_dosimbozza.dosim_umidita) then	kst_tab_meca_dosimbozza.dosim_umidita = 0 	
