@@ -3032,9 +3032,9 @@ st_tab_wm_receiptgammarad kst_tab_wm_receiptgammarad_null
 //--- altri dati circa il singolo barcode
 					kst_tab_wm_receiptgammarad[k_ind].customerItem = upper(trim(kds_receiptgammarad_l.getitemstring(k_file_ind, "customerItem")) )
 
-					kst_tab_wm_receiptgammarad[1].note_3 = ""
-					kst_tab_wm_receiptgammarad[1].note_2 = ""
-					kst_tab_wm_receiptgammarad[1].note_1 = ""
+					kst_tab_wm_receiptgammarad[k_ind].note_3 = ""
+					kst_tab_wm_receiptgammarad[k_ind].note_2 = ""
+					kst_tab_wm_receiptgammarad[k_ind].note_1 = ""
 					
 				end if					
 			end if				

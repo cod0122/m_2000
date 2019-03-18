@@ -141,10 +141,17 @@ try
 
 		choose case tab_1.selectedtab 
 			case 1 
+//--- Filtra solo le righe con il Listino E1
+				kds_1.setfilter("e1litm > ' '")
+				if kds_1.filter( ) > 0 then
 //--- queste colonne non voglio che escano in CSV		
-				k_rcx = kds_1.Modify("cod_cli_t.text='Id_cliente'")
-				k_rcx = kds_1.Modify("data.visible='0'")
-				k_rcx = kds_1.Modify("attivo.visible='0'")
+					k_rcx = kds_1.Modify("cod_cli_t.text='Id_cliente'")
+					k_rcx = kds_1.Modify("data.visible='0'")
+					k_rcx = kds_1.Modify("attivo.visible='0'")
+					k_rcx = kds_1.Modify("e1litm.visible='0'")
+					k_rcx = kds_1.Modify("id_listino.visible='0'")
+				end if
+				
 			case 2
 		end choose
 		
@@ -505,8 +512,6 @@ string k_errore="0"
 end event
 
 type tab_1 from w_g_tab_3`tab_1 within w_contratti_xsmart
-integer x = 0
-integer y = 0
 integer width = 3040
 integer height = 1396
 integer taborder = 0

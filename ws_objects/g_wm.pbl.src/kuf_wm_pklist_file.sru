@@ -722,7 +722,7 @@ end function
 public function long importa_wm_pklist_file () throws uo_exception;//
 //------------------------------------------------------------------------------------------------------------------------------------
 //---
-//--- 	Importa Packing-List da file XML nella Tabella RECEIPTGAMMARAD 
+//--- 	Importa Packing-List da file TXT nella Tabella RECEIPTGAMMARAD 
 //---	ReceiptGammarad
 //---
 //---	inp: kst_tab_wm_receiptgammarad. 
@@ -737,15 +737,16 @@ boolean k_semaforo_ROSSO=false
 st_tab_wm_pklist kst_tab_wm_pklist
 st_esito kst_esito
 kuf_wm_pklist_cfg kuf1_wm_pklist_cfg
-kuf_wm_pklist_inout kuf1_wm_pklist_inout
+//kuf_wm_pklist_inout kuf1_wm_pklist_inout
 					
 
 try
 		
 		
 		
-		kiuf_wm_pklist_web = create kuf_wm_pklist_web
-		kiuf_wm_receiptgammarad = create kuf_wm_receiptgammarad
+		if not isvalid(kiuf_wm_pklist_web) then kiuf_wm_pklist_web = create kuf_wm_pklist_web
+		if not isvalid(kiuf_wm_receiptgammarad) then kiuf_wm_receiptgammarad = create kuf_wm_receiptgammarad
+		
 		kuf1_wm_pklist_cfg = create kuf_wm_pklist_cfg
 
 //--- SEMAFORO ROSSO: importazione già in esecuzione
@@ -786,9 +787,7 @@ finally
 	if k_semaforo_ROSSO then
 		kuf1_wm_pklist_cfg.set_importazione_ts_ini_off()  // SEMAFORO VERDE
 	end if
-	if isvalid(kiuf_wm_pklist_web) then destroy kiuf_wm_pklist_web
-	if isvalid(kiuf_wm_receiptgammarad) then destroy kiuf_wm_receiptgammarad
-	if isvalid(kuf1_wm_pklist_inout) then destroy kuf1_wm_pklist_inout
+//	if isvalid(kuf1_wm_pklist_inout) then destroy kuf1_wm_pklist_inout
 	if isvalid(kuf1_wm_pklist_cfg) then destroy kuf1_wm_pklist_cfg
 
 end try
@@ -859,6 +858,12 @@ event constructor;call super::constructor;//
 //--- operazioni iniziali
 //
 ki_nomeOggetto = trim(this.classname( ))
+
+end event
+
+event destructor;call super::destructor;//
+	if isvalid(kiuf_wm_pklist_web) then destroy kiuf_wm_pklist_web
+	if isvalid(kiuf_wm_receiptgammarad) then destroy kiuf_wm_receiptgammarad
 
 end event
 

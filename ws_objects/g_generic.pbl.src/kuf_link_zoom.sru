@@ -177,6 +177,7 @@ string k_num_colonne, k_nome
 					, "email", "email1", "email2", "sito_web", "sito_web1" &
 					, "id_contratto_rd" &
 					, "id_contratto_co" &
+					, "id_contratto_doc" &
 					, "id_wm_pklist" &
 					, "id_wm_pklist_padre" &
 					, "idpkl" &

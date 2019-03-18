@@ -568,7 +568,6 @@ end event
 event clicked;call super::clicked;//
 //kiw_g_tab_elenco.u_attiva_tasti()
 kitab_1.post triggerevent(clicked!)
-//parent "u_attiva_tasti"
 
 end event
 

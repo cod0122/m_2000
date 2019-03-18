@@ -10,7 +10,6 @@ global type w_clienti from w_g_tab_3
 integer width = 814
 integer height = 980
 string title = "Anagrafica "
-long backcolor = 32435950
 boolean ki_toolbar_window_presente = true
 boolean ki_sincronizza_window_consenti = false
 boolean ki_fai_nuovo_dopo_update = false
@@ -95,6 +94,7 @@ st_tab_clienti_mkt kst_tab_clienti_mkt
 st_tab_clienti_web kst_tab_clienti_web
 kuf_utility kuf1_utility
 
+ 
 //=== Aggiorna, se modificato, la TAB_1	
 if tab_1.tabpage_1.dw_1.getnextmodified(0, primary!) > 0	then
 
@@ -3295,7 +3295,6 @@ type tabpage_1 from w_g_tab_3`tabpage_1 within tab_1
 integer y = 176
 integer width = 3333
 integer height = 1364
-long backcolor = 32435950
 string text = " Anagrafica"
 string picturename = "C:\GAMMARAD\PB_GMMRD125\ICONE\cliente.gif"
 end type
@@ -3622,7 +3621,6 @@ boolean visible = true
 integer y = 176
 integer width = 3333
 integer height = 1364
-long backcolor = 32435950
 string text = " Marketing~r~n & Web"
 string picturename = "Custom073!"
 end type
@@ -3957,7 +3955,6 @@ integer y = 176
 integer width = 3333
 integer height = 1364
 boolean enabled = true
-long backcolor = 32435950
 string text = " Movimenti ~r~n Magazzino"
 string picturename = "Graph!"
 end type
@@ -3989,7 +3986,6 @@ type tabpage_7 from w_g_tab_3`tabpage_7 within tab_1
 integer y = 176
 integer width = 3333
 integer height = 1364
-long backcolor = 32435950
 string text = " Fatture non di Magazzino~r~n (senza Lotto di Entrata) "
 long tabbackcolor = 32435950
 string powertiptext = "elenco articoli senza lotto di entrata"
