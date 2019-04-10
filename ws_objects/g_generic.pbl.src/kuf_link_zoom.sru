@@ -216,30 +216,6 @@ string k_num_colonne, k_nome
 									  ".pointer = 'HyperLink!' " )
 					  end if
 
-				
-//				case "barcode", "cod_sl_pt", "sl_pt", "contratto", "sc_cf"
-//					
-////--- se e' del tipo grid o tabular link sul valore alrimenti sul testo		
-//					if adw_1.Object.DataWindow.Type <> "Form" then
-//						
-//						adw_1.Modify("#" + trim(string(k_ctr,"###"))+&
-//									  ".Font.Underline = 1")
-//						adw_1.Modify("#" + trim(string(k_ctr,"###"))+&
-//									  ".Color = '" + string(kkg_colore.blu)+"' ")
-//						adw_1.Modify("#" + trim(string(k_ctr,"###"))+&
-//									  ".pointer = 'HyperLink!' " )
-//					else
-////--- ..... alrimenti sul testo		
-//						adw_1.Modify(k_nome + "_t" + trim(string(k_ctr,"###"))+&
-//									  ".Font.Underline = 1")
-//						adw_1.Modify(k_nome + "_t" + trim(string(k_ctr,"###"))+&
-//									  ".Color = '" + string(kkg_colore.blu)+"' ")
-//						adw_1.Modify(k_nome + "_t" + trim(string(k_ctr,"###"))+&
-//									  ".pointer = 'HyperLink!' " )
-//					  end if
-//	      	k_lista = tab_1.tabpage_9.dw_9.Object.DataWindow.Processing se "1"=GRID
-
-				
 				case  "mc_co",  "contratti_codice"
 					
 					if adw_1.Object.DataWindow.Type <> "Form" then
@@ -263,28 +239,6 @@ string k_num_colonne, k_nome
 					end if
 
 				
-//				case "barcode_figli"
-//					
-////--- se e' del tipo grid o tabular link sul valore alrimenti sul testo		
-//					if adw_1.Object.DataWindow.Type <> "Form" then
-//						
-//						adw_1.Modify("#" + trim(string(k_ctr,"###"))+&
-//									  ".Font.Underline = 1")
-//						adw_1.Modify("#" + trim(string(k_ctr,"###"))+&
-//									  ".Color = '" + string(kkg_colore.blu)+"' ")
-//						adw_1.Modify("#" + trim(string(k_ctr,"###"))+&
-//									  ".pointer = 'HyperLink!' " )
-//					else
-////--- ..... alrimenti sul testo		
-//						adw_1.Modify(k_nome + "_t" + trim(string(k_ctr,"###"))+&
-//									  ".Font.Underline = 1")
-//						adw_1.Modify(k_nome + "_t" + trim(string(k_ctr,"###"))+&
-//									  ".Color = '" + string(kkg_colore.blu)+"' ")
-//						adw_1.Modify(k_nome + "_t" + trim(string(k_ctr,"###"))+&
-//									  ".pointer = 'HyperLink!' " )
-//					  end if
-//								  
-								  
 				case "num_int"
 //--- per farlo diventare un link ho bisogno anche del campo "id_meca"
 
@@ -346,44 +300,6 @@ public function boolean link_standard_call_p (ref datawindow adw_link, string a_
 //--- Output: boolean TRUE = ok e' entrato in funzione; FALSE=non ha fatto niente
 //
 boolean k_return=true
-//st_esito kst_esito
-//st_tab_meca kst_tab_meca
-//st_tab_barcode kst_tab_barcode
-//st_tab_certif kst_tab_certif
-//st_tab_arfa kst_tab_arfa
-//st_tab_sl_pt kst_tab_sl_pt
-//st_tab_armo kst_tab_armo
-//st_tab_clienti kst_tab_clienti
-//st_tab_contratti kst_tab_contratti
-//st_tab_prodotti kst_tab_prodotti
-//st_tab_listino kst_tab_listino
-//st_tab_listino_pregruppo kst_tab_listino_pregruppo
-//st_tab_listino_link_pregruppi kst_tab_listino_link_pregruppi
-//st_tab_sr_utenti kst_tab_sr_utenti
-//st_tab_ricevute kst_tab_ricevute
-//st_tab_prof kst_tab_prof
-//kuf_armo_tree kuf1_armo_tree
-
-//kuf_barcode_tree kuf1_barcode_tree
-//kuf_sped kuf1_sped
-//kuf_fatt kuf1_fatt
-//kuf_certif kuf1_certif
-//kuf_clienti kuf1_clienti
-////kuf_sl_pt kuf1_sl_pt
-//kuf_contratti kuf1_contratti 
-//kuf_contratti_rd kuf1_contratti_rd 
-//kuf_prodotti kuf1_prodotti 
-//kuf_listino kuf1_listino
-//kuf_listino_pregruppo kuf1_listino_pregruppo
-//kuf_listino_link_pregruppi kuf1_listino_link_pregruppi
-//kuf_sr_sicurezza kuf1_sr_sicurezza
-//kuf_ricevute kuf1_ricevute
-//kuf_prof kuf1_prof
-////kuf_ausiliari kuf1_ausiliari
-////kuf_wm_pklist kuf1_wm_pklist
-//kuf_contratti_co kuf1_contratti_co
-////kuf_esito_operazioni kuf1_esito_operazioni
-//kuf_docprod kuf1_docprod
 kuf_parent kuf1_parent
 pointer kp_oldpointer
 
@@ -428,6 +344,9 @@ choose case a_nome_link
 		
 	case "id_contratto_co" 
 		kuf1_parent = create using "kuf_contratti_co"
+		
+	case "id_contratto_doc" 
+		kuf1_parent = create using "kuf_contratti_doc"
 		
 	case "num_certif"  &
 			,"b_certif_lotto" &

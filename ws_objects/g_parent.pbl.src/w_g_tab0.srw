@@ -20,6 +20,8 @@ type dw_lista_0 from uo_d_std_1 within w_g_tab0
 end type
 type dw_guida from uo_d_std_guida within w_g_tab0
 end type
+type st_duplica from statictext within w_g_tab0
+end type
 end forward
 
 global type w_g_tab0 from w_g_tab
@@ -35,6 +37,7 @@ dw_dett_0 dw_dett_0
 st_orizzontal st_orizzontal
 dw_lista_0 dw_lista_0
 dw_guida dw_guida
+st_duplica st_duplica
 end type
 global w_g_tab0 w_g_tab0
 
@@ -54,6 +57,7 @@ protected boolean ki_msg_dopo_save_ok=false
 protected boolean ki_consenti_modifica=true
 protected boolean ki_consenti_inserisci=true
 protected boolean ki_consenti_visualizza=true
+protected boolean ki_consenti_duplica=false
 
 private long ki_riga_selezionata=0
 //private boolean ki_risize=true
@@ -99,6 +103,7 @@ public subroutine u_obj_visible_0 ()
 public subroutine u_resize_1 ()
 public subroutine u_win_ripri_video ()
 public function boolean u_window_control_restore ()
+public function boolean u_duplica () throws uo_exception
 end prototypes
 
 protected function string check_dati ();//======================================================================
@@ -742,6 +747,11 @@ choose case k_par_in
 		if cb_modifica.enabled = true then
 			cb_modifica.postevent(clicked!)
 		end if
+
+	case KKG_FLAG_RICHIESTA.duplica		//richiesta Duplica
+		if st_duplica.enabled = true then
+			st_duplica.postevent(clicked!)
+		end if
 		
 	case KKG_FLAG_RICHIESTA.MOSTRA_NASCONDI_DW_DETT		//Mostra/Nascsondi la dw_dett_0
 		mostra_nascondi_dw()
@@ -1014,6 +1024,10 @@ if ki_st_open_w.flag_primo_giro <> "S" then
 		
 		if ki_menu.m_finestra.m_gestione.m_fin_visualizza.enabled <> cb_visualizza.enabled then
 			ki_menu.m_finestra.m_gestione.m_fin_visualizza.enabled = cb_visualizza.enabled
+		end if
+
+		if ki_menu.m_finestra.m_gestione.m_fin_duplica.enabled <> st_duplica.enabled then
+			ki_menu.m_finestra.m_gestione.m_fin_duplica.enabled = st_duplica.enabled 
 		end if
 		
 		if ki_menu.m_finestra.m_fin_stampa.enabled <> st_stampa.enabled then
@@ -1447,136 +1461,150 @@ int k_esito_funzione=0
 string k_errore="0 ", k_esito_funzioneX="0", k_dati_modificati="0", k_esito=""
 st_open_w kst_open_w
 
-
-kst_open_w = ki_st_open_w
-kst_open_w.flag_modalita = ast_open_w.flag_modalita
-
-//--- controlla se utente autorizzato alla funzione in atto
-if sicurezza(kst_open_w) then
-
-//--- disabilito i link automatici se MODIFICA o INSERIMENTO
-	dw_dett_0.ki_link_standard_attivi = true
+try
 	
-//--- Abilito la DW Dettaglio se disabilitata (x il giro di prima volta)
-	if not dw_dett_0.enabled and dw_dett_0.rowcount( ) > 0 then
+	kst_open_w = ki_st_open_w
+	kst_open_w.flag_modalita = ast_open_w.flag_modalita
+	
+	//--- controlla se utente autorizzato alla funzione in atto
+	if sicurezza(kst_open_w) then
+	
+	//--- disabilito i link automatici se MODIFICA o INSERIMENTO
+		dw_dett_0.ki_link_standard_attivi = true
 		
-		dw_dett_0.enabled = true
-		
-	else 
-		
-		if dw_dett_0.rowcount( ) > 0 then
+	//--- Abilito la DW Dettaglio se disabilitata (x il giro di prima volta)
+		if not dw_dett_0.enabled and dw_dett_0.rowcount( ) > 0 then
 			
-//--- Controllo se ho modificato dei dati nella DW DETTAGLIO (0=nessun agg., 1=aggiornare, 2=non aggiornare, 3=Annulla operazione)
-			k_esito = dati_modif(trim(kiw_this_window.title))
-			if len(k_esito) > 0 then 
-				k_dati_modificati = left(k_esito, 1)
-			end if
-			if k_dati_modificati = "1" then //Fare gli aggiornamenti
-	
-//--- Controllo congruenza dei dati caricati e Aggiornamento  
-//--- Ritorna 1 char : 0=tutto OK; 1=errore grave;
-//---                      : 2=errore non grave dati aggiornati;
-//---			          : 3=
-//---                      il resto della stringa contiene la descrizione dell'errore   
-				k_errore = aggiorna_dati()
-	
+			dw_dett_0.enabled = true
+			
+		else 
+			
+			if dw_dett_0.rowcount( ) > 0 then
+				
+	//--- Controllo se ho modificato dei dati nella DW DETTAGLIO (0=nessun agg., 1=aggiornare, 2=non aggiornare, 3=Annulla operazione)
+				k_esito = dati_modif(trim(kiw_this_window.title))
+				if len(k_esito) > 0 then 
+					k_dati_modificati = left(k_esito, 1)
+				end if
+				if k_dati_modificati = "1" then //Fare gli aggiornamenti
+		
+	//--- Controllo congruenza dei dati caricati e Aggiornamento  
+	//--- Ritorna 1 char : 0=tutto OK; 1=errore grave;
+	//---                      : 2=errore non grave dati aggiornati;
+	//---			          : 3=
+	//---                      il resto della stringa contiene la descrizione dell'errore   
+					k_errore = aggiorna_dati()
+		
+				end if
 			end if
 		end if
-	end if
-	
-	
-//----	se Operazione di Aggiornamento OK  and  NON devo annullare tutta l'Operazione
-	if Left(k_errore, 1) = "0" and k_dati_modificati <> "3" then
-
 		
-		choose case kst_open_w.flag_modalita
 		
-			case kkg_flag_modalita.inserimento
-
-				dw_dett_0.reset()
-				inserisci( )
-				k_return = true
-				
-				if dw_dett_0.enabled then
-					ki_resize_dw_dett = true
-					u_resize()
+	//----	se Operazione di Aggiornamento OK  and  NON devo annullare tutta l'Operazione
+		if Left(k_errore, 1) = "0" and k_dati_modificati <> "3" then
+	
+			
+			choose case kst_open_w.flag_modalita
+			
+				case kkg_flag_modalita.inserimento
+	
+					dw_dett_0.reset()
+					inserisci( )
+					k_return = true
+					
+					if dw_dett_0.enabled then
+						ki_resize_dw_dett = true
+						u_resize()
+						dw_dett_0.setfocus()		
+		
+						u_personalizza_dw ()
+					end if
+					
+				case kkg_flag_modalita.duplica
+					k_return = u_duplica()
+					if k_return then
+						ki_st_open_w.flag_modalita = kkg_flag_modalita.inserimento
+					else
+						ki_st_open_w.flag_modalita = kkg_flag_modalita.visualizzazione
+					end if
 					dw_dett_0.setfocus()		
-	
 					u_personalizza_dw ()
-				end if
+					
+				case kkg_flag_modalita.modifica
+					if dw_lista_0.rowcount( ) > 0 or (not dw_lista_0.enabled and dw_dett_0.enabled and dw_dett_0.rowcount( ) > 0)  then 
+						dw_dett_0.reset()
+						if modifica( ) > 0 then
+							k_return = true
+							
+							if dw_dett_0.rowcount( ) > 0 and dw_dett_0.enabled then
+								ki_resize_dw_dett = true
+								u_resize()
+								dw_dett_0.setfocus()		
 				
-				
-			case kkg_flag_modalita.modifica
-				if dw_lista_0.rowcount( ) > 0 or (not dw_lista_0.enabled and dw_dett_0.enabled and dw_dett_0.rowcount( ) > 0)  then 
-					dw_dett_0.reset()
-					if modifica( ) > 0 then
-						k_return = true
-						
-						if dw_dett_0.rowcount( ) > 0 and dw_dett_0.enabled then
-							ki_resize_dw_dett = true
-							u_resize()
-							dw_dett_0.setfocus()		
-			
-							u_personalizza_dw ()
-							dw_dett_0.resetupdate( )
-
-//--- posizionamento della riga in modo che si veda							
-							if dw_lista_0.getrow( ) > 0 then
-								dw_lista_0.scrolltorow(dw_lista_0.getrow( ))
-							end if
-						end if
-					else
-						kguo_exception.inizializza( )
-						kguo_exception.messaggio_utente( "Operazione fallita", "Dati non trovati in archivio~n~r" +&
-																		"Provare a riaggiornare l'elenco e rifare l'operazione appena tentata")
-					end if
-				end if
-				
-			case kkg_flag_modalita.visualizzazione
-				if dw_lista_0.rowcount( ) > 0 or (not dw_lista_0.enabled and dw_dett_0.enabled and dw_dett_0.rowcount( ) > 0)  then 
-					dw_dett_0.reset()
-					if visualizza() > 0 then
-						k_return = true
-						
-						if dw_dett_0.rowcount( ) > 0 and dw_dett_0.enabled then
-							ki_resize_dw_dett = true
-							u_resize()
-							dw_dett_0.setfocus()		
-			
-							u_personalizza_dw ()
-//--- posizionamento della riga in modo che si veda							
-							if dw_lista_0.getrow( ) > 0 then
-								dw_lista_0.scrolltorow(dw_lista_0.getrow( ))
-							end if
-						end if
-					else
-						kguo_exception.inizializza( )
-						kguo_exception.messaggio_utente( "Operazione fallita", "Dati non trovati in archivio~n~r" +&
-																		"Provare a riaggiornare l'elenco e rifare l'operazione appena tentata")
-					end if
-				end if
-				
-			case kkg_flag_modalita.cancellazione
-				if dw_lista_0.rowcount( ) > 0 or (not dw_lista_0.enabled and dw_dett_0.enabled and dw_dett_0.rowcount( ) > 0)  then 
-					k_esito_funzioneX = cancella( )
-					if len(trim(k_esito_funzioneX)) > 0 then
-						if left(k_esito_funzioneX,1) = "0" then
-//--- funzione utile alla sincronizzazione con la window di ritorno (come il navigatore)
-							kiuf1_sync_window.u_window_set_funzione_aggiornata(ki_st_open_w)
-						end if
-					end if
-				end if
-		
-				
-		end choose
-		
-
-		attiva_tasti()
-		
-	end if
+								u_personalizza_dw ()
+								dw_dett_0.resetupdate( )
 	
-end if	
+	//--- posizionamento della riga in modo che si veda							
+								if dw_lista_0.getrow( ) > 0 then
+									dw_lista_0.scrolltorow(dw_lista_0.getrow( ))
+								end if
+							end if
+						else
+							kguo_exception.inizializza( )
+							kguo_exception.messaggio_utente( "Operazione fallita", "Dati non trovati in archivio~n~r" +&
+																			"Provare a riaggiornare l'elenco e rifare l'operazione appena tentata")
+						end if
+					end if
+					
+				case kkg_flag_modalita.visualizzazione
+					if dw_lista_0.rowcount( ) > 0 or (not dw_lista_0.enabled and dw_dett_0.enabled and dw_dett_0.rowcount( ) > 0)  then 
+						dw_dett_0.reset()
+						if visualizza() > 0 then
+							k_return = true
+							
+							if dw_dett_0.rowcount( ) > 0 and dw_dett_0.enabled then
+								ki_resize_dw_dett = true
+								u_resize()
+								dw_dett_0.setfocus()		
+				
+								u_personalizza_dw ()
+	//--- posizionamento della riga in modo che si veda							
+								if dw_lista_0.getrow( ) > 0 then
+									dw_lista_0.scrolltorow(dw_lista_0.getrow( ))
+								end if
+							end if
+						else
+							kguo_exception.inizializza( )
+							kguo_exception.messaggio_utente( "Operazione fallita", "Dati non trovati in archivio~n~r" +&
+																			"Provare a riaggiornare l'elenco e rifare l'operazione appena tentata")
+						end if
+					end if
+					
+				case kkg_flag_modalita.cancellazione
+					if dw_lista_0.rowcount( ) > 0 or (not dw_lista_0.enabled and dw_dett_0.enabled and dw_dett_0.rowcount( ) > 0)  then 
+						k_esito_funzioneX = cancella( )
+						if len(trim(k_esito_funzioneX)) > 0 then
+							if left(k_esito_funzioneX,1) = "0" then
+	//--- funzione utile alla sincronizzazione con la window di ritorno (come il navigatore)
+								kiuf1_sync_window.u_window_set_funzione_aggiornata(ki_st_open_w)
+							end if
+						end if
+					end if
+			
+					
+			end choose
+			
+	
+			attiva_tasti()
+			
+		end if
+		
+	end if	
 
+catch (uo_exception kuo_exception)
+	kuo_exception.messaggio_utente()
+	
+end try
 
 return k_return
 
@@ -1604,6 +1632,7 @@ cb_aggiorna.visible = false
 cb_modifica.visible = false
 cb_cancella.visible = false
 cb_visualizza.visible = false
+st_duplica.visible = false
 
 cb_ritorna.enabled = true
 if ki_nessun_tasto_funzionale then
@@ -1615,6 +1644,7 @@ cb_aggiorna.enabled = false
 cb_modifica.enabled = false
 cb_cancella.enabled = false
 cb_visualizza.enabled = false
+st_duplica.enabled = false
 
 if not ki_nessun_tasto_funzionale then
 	
@@ -1649,8 +1679,13 @@ if not ki_nessun_tasto_funzionale then
 			if ki_st_open_w.flag_modalita <> kkg_flag_modalita.visualizzazione then
 				cb_cancella.enabled = true
 				if ki_st_open_w.flag_modalita = kkg_flag_modalita.inserimento &
-					or ki_st_open_w.flag_modalita = kkg_flag_modalita.modifica then
+							or ki_st_open_w.flag_modalita = kkg_flag_modalita.modifica then
 					cb_aggiorna.enabled = dati_modif_1()
+				end if
+				if ki_consenti_duplica &
+						and (ki_st_open_w.flag_modalita = kkg_flag_modalita.modifica &
+				    				or ki_st_open_w.flag_modalita = kkg_flag_modalita.visualizzazione) then
+					st_duplica.enabled = true
 				end if
 			end if
 		end if
@@ -1776,6 +1811,21 @@ boolean k_return = false
 return k_return	
 end function
 
+public function boolean u_duplica () throws uo_exception;//
+//--- Operazioni di duplica che sono particolari per ogni funzione
+//
+
+try
+	
+catch (uo_exception kuo_exception)
+	
+finally
+	
+end try
+
+return true
+end function
+
 event closequery;call super::closequery;//
 //=== Controllo prima della chiusura della Windows
 //
@@ -1823,6 +1873,7 @@ this.dw_dett_0=create dw_dett_0
 this.st_orizzontal=create st_orizzontal
 this.dw_lista_0=create dw_lista_0
 this.dw_guida=create dw_guida
+this.st_duplica=create st_duplica
 iCurrent=UpperBound(this.Control)
 this.Control[iCurrent+1]=this.cb_visualizza
 this.Control[iCurrent+2]=this.cb_modifica
@@ -1833,6 +1884,7 @@ this.Control[iCurrent+6]=this.dw_dett_0
 this.Control[iCurrent+7]=this.st_orizzontal
 this.Control[iCurrent+8]=this.dw_lista_0
 this.Control[iCurrent+9]=this.dw_guida
+this.Control[iCurrent+10]=this.st_duplica
 end on
 
 on w_g_tab0.destroy
@@ -1847,6 +1899,7 @@ destroy(this.dw_dett_0)
 destroy(this.st_orizzontal)
 destroy(this.dw_lista_0)
 destroy(this.dw_guida)
+destroy(this.st_duplica)
 end on
 
 event key;//
@@ -2221,4 +2274,35 @@ integer height = 80
 integer taborder = 10
 boolean bringtotop = true
 end type
+
+type st_duplica from statictext within w_g_tab0
+boolean visible = false
+integer x = 2519
+integer y = 1172
+integer width = 402
+integer height = 72
+boolean bringtotop = true
+integer textsize = -10
+integer weight = 400
+fontcharset fontcharset = ansi!
+fontpitch fontpitch = variable!
+fontfamily fontfamily = swiss!
+string facename = "Arial"
+long textcolor = 33554432
+long backcolor = 12632256
+boolean enabled = false
+string text = "duplica"
+boolean focusrectangle = false
+end type
+
+event clicked;//
+st_open_w kst_open_w
+
+
+kst_open_w.flag_modalita = kkg_flag_modalita.duplica
+u_lancia_funzione_imvc(kst_open_w)
+
+
+
+end event
 

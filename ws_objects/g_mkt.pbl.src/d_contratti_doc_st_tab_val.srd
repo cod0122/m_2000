@@ -1,0 +1,222 @@
+﻿$PBExportHeader$d_contratti_doc_st_tab_val.srd
+release 17;
+datawindow(units=0 timer_interval=0 color=1073741824 brushmode=0 transparency=0 gradient.angle=0 gradient.color=8421504 gradient.focus=0 gradient.repetition.count=0 gradient.repetition.length=100 gradient.repetition.mode=0 gradient.scale=100 gradient.spread=100 gradient.transparency=0 picture.blur=0 picture.clip.bottom=0 picture.clip.left=0 picture.clip.right=0 picture.clip.top=0 picture.mode=0 picture.scale.x=100 picture.scale.y=100 picture.transparency=0 processing=1 HTMLDW=yes print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes print.background=no print.preview.background=no print.preview.outline=yes hidegrayline=no showbackcoloronxp=no picture.file="" grid.lines=0 selected.mouse=no )
+header(height=452 color="536870912" transparency="0" gradient.color="8421504" gradient.transparency="0" gradient.angle="0" brushmode="0" gradient.repetition.mode="0" gradient.repetition.count="0" gradient.repetition.length="100" gradient.focus="0" gradient.scale="100" gradient.spread="100" )
+summary(height=220 color="536870912" transparency="0" gradient.color="8421504" gradient.transparency="0" gradient.angle="0" brushmode="0" gradient.repetition.mode="0" gradient.repetition.count="0" gradient.repetition.length="100" gradient.focus="0" gradient.scale="100" gradient.spread="100" )
+footer(height=0 color="536870912" transparency="0" gradient.color="8421504" gradient.transparency="0" gradient.angle="0" brushmode="0" gradient.repetition.mode="0" gradient.repetition.count="0" gradient.repetition.length="100" gradient.focus="0" gradient.scale="100" gradient.spread="100" )
+detail(height=88 color="536870912" transparency="0" gradient.color="8421504" gradient.transparency="0" gradient.angle="0" brushmode="0" gradient.repetition.mode="0" gradient.repetition.count="0" gradient.repetition.length="100" gradient.focus="0" gradient.scale="100" gradient.spread="100" )
+table(column=(type=char(4000) updatewhereclause=yes name=v_descr_xctr dbname="v_descr_xctr" )
+ column=(type=number updatewhereclause=yes name=voce_prezzo dbname="v_contratti_doc.voce_prezzo" )
+ column=(type=number updatewhereclause=yes name=voce_qta dbname="v_contratti_doc.voce_qta" )
+ column=(type=number updatewhereclause=yes name=voce_prezzo_tot dbname="v_contratti_doc.voce_prezzo_tot" )
+ column=(type=char(4000) updatewhereclause=yes name=rif_interno dbname="rif_interno" )
+ column=(type=char(2) updatewhereclause=yes name=stampa_tradotta dbname="v_contratti_doc.stampa_tradotta" )
+ column=(type=number updatewhereclause=yes name=totale_contratto dbname="totale_contratto" )
+ column=(type=char(4000) updatewhereclause=yes name=note dbname="note" )
+ retrieve=" SELECT 
+          case ctr.stampa_tradotta
+              when 'EN' then  trim(ctr.descr_1) 
+               else trim(ctr.descr_1)     
+          end  v_descr_xctr
+         ,ctr.voce_prezzo_1  voce_prezzo
+         ,ctr.voce_qta_1  voce_qta
+         ,ctr.voce_prezzo_tot_1  voce_prezzo_tot
+         ,(trim(ctr.quotazione_tipo) + ' ' + trim(cast(id_contratto_doc as varchar)) + '/' +  trim(cast(ctr.anno as varchar))) rif_interno
+         , ctr.stampa_tradotta stampa_tradotta 
+         , COALESCE(ctr.totale_contratto,0)  totale_contratto
+         , trim(COALESCE(ctr.note,''))  note        
+		FROM v_contratti_doc as ctr 
+   WHERE ctr.id_contratto_doc = :k_id_contratto_doc    
+            and  (ctr.flg_st_voce_1 <> 'N' or ctr.flg_st_voce_1 is null)
+            and ctr.descr_1 > ' '
+union all
+ SELECT 
+          case ctr.stampa_tradotta
+              when 'EN' then  trim(ctr.descr_2) 
+               else trim(ctr.descr_2)     
+          end  v_descr_xctr
+         ,ctr.voce_prezzo_2  voce_prezzo
+         ,ctr.voce_qta_2  voce_qta
+         ,ctr.voce_prezzo_tot_1  voce_prezzo_tot
+         ,(trim(ctr.quotazione_tipo) + ' ' + trim(cast(id_contratto_doc as varchar)) + '/' +  trim(cast(ctr.anno as varchar))) rif_interno
+         , ctr.stampa_tradotta stampa_tradotta 
+         , COALESCE(ctr.totale_contratto,0)  totale_contratto
+         , trim(COALESCE(ctr.note,''))  note        
+		FROM v_contratti_doc as ctr 
+   WHERE ctr.id_contratto_doc = :k_id_contratto_doc    
+            and  (ctr.flg_st_voce_2 <> 'N' or ctr.flg_st_voce_2 is null)
+            and ctr.descr_2 > ' '
+union all
+ SELECT 
+          case ctr.stampa_tradotta
+              when 'EN' then  trim(ctr.descr_3) 
+               else trim(ctr.descr_3)     
+          end  v_descr_xctr
+         ,ctr.voce_prezzo_3  voce_prezzo
+         ,ctr.voce_qta_3  voce_qta
+         ,ctr.voce_prezzo_tot_1  voce_prezzo_tot
+         ,(trim(ctr.quotazione_tipo) + ' ' + trim(cast(id_contratto_doc as varchar)) + '/' +  trim(cast(ctr.anno as varchar))) rif_interno
+         , ctr.stampa_tradotta stampa_tradotta 
+         , COALESCE(ctr.totale_contratto,0)  totale_contratto
+         , trim(COALESCE(ctr.note,''))  note        
+		FROM v_contratti_doc as ctr 
+   WHERE ctr.id_contratto_doc = :k_id_contratto_doc    
+            and  (ctr.flg_st_voce_3 <> 'N' or ctr.flg_st_voce_3 is null)
+            and ctr.descr_3 > ' '
+union all
+ SELECT 
+          case ctr.stampa_tradotta
+              when 'EN' then  trim(ctr.descr_4) 
+               else trim(ctr.descr_4)     
+          end  v_descr_xctr
+         ,ctr.voce_prezzo_4  voce_prezzo
+         ,ctr.voce_qta_4  voce_qta
+         ,ctr.voce_prezzo_tot_1  voce_prezzo_tot
+         ,(trim(ctr.quotazione_tipo) + ' ' + trim(cast(id_contratto_doc as varchar)) + '/' +  trim(cast(ctr.anno as varchar))) rif_interno
+         , ctr.stampa_tradotta stampa_tradotta 
+         , COALESCE(ctr.totale_contratto,0)  totale_contratto
+         , trim(COALESCE(ctr.note,''))  note        
+		FROM v_contratti_doc as ctr 
+   WHERE ctr.id_contratto_doc = :k_id_contratto_doc    
+            and  (ctr.flg_st_voce_4 <> 'N' or ctr.flg_st_voce_4 is null)
+            and ctr.descr_4 > ' '
+union all
+ SELECT 
+          case ctr.stampa_tradotta
+              when 'EN' then  trim(ctr.descr_5) 
+               else trim(ctr.descr_5)     
+          end  v_descr_xctr
+         ,ctr.voce_prezzo_5  voce_prezzo
+         ,ctr.voce_qta_5  voce_qta
+         ,ctr.voce_prezzo_tot_1  voce_prezzo_tot
+         ,(trim(ctr.quotazione_tipo) + ' ' + trim(cast(id_contratto_doc as varchar)) + '/' +  trim(cast(ctr.anno as varchar))) rif_interno
+         , ctr.stampa_tradotta stampa_tradotta 
+         , COALESCE(ctr.totale_contratto,0)  totale_contratto
+         , trim(COALESCE(ctr.note,''))  note        
+		FROM v_contratti_doc as ctr 
+   WHERE ctr.id_contratto_doc = :k_id_contratto_doc    
+            and  (ctr.flg_st_voce_5 <> 'N' or ctr.flg_st_voce_5 is null)
+            and ctr.descr_5 > ' '
+union all
+ SELECT 
+          case ctr.stampa_tradotta
+              when 'EN' then  trim(ctr.descr_6) 
+               else trim(ctr.descr_6)     
+          end  v_descr_xctr
+         ,ctr.voce_prezzo_6  voce_prezzo
+         ,ctr.voce_qta_6  voce_qta
+         ,ctr.voce_prezzo_tot_1  voce_prezzo_tot
+         ,(trim(ctr.quotazione_tipo) + ' ' + trim(cast(id_contratto_doc as varchar)) + '/' +  trim(cast(ctr.anno as varchar))) rif_interno
+         , ctr.stampa_tradotta stampa_tradotta 
+         , COALESCE(ctr.totale_contratto,0)  totale_contratto
+         , trim(COALESCE(ctr.note,''))  note        
+		FROM v_contratti_doc as ctr 
+   WHERE ctr.id_contratto_doc = :k_id_contratto_doc    
+            and  (ctr.flg_st_voce_6 <> 'N' or ctr.flg_st_voce_6 is null)
+            and ctr.descr_6 > ' '
+union all
+ SELECT 
+          case ctr.stampa_tradotta
+              when 'EN' then  trim(ctr.descr_7) 
+               else trim(ctr.descr_7)     
+          end  v_descr_xctr
+         ,ctr.voce_prezzo_7  voce_prezzo
+         ,ctr.voce_qta_7  voce_qta
+         ,ctr.voce_prezzo_tot_1  voce_prezzo_tot
+         ,(trim(ctr.quotazione_tipo) + ' ' + trim(cast(id_contratto_doc as varchar)) + '/' +  trim(cast(ctr.anno as varchar))) rif_interno
+         , ctr.stampa_tradotta stampa_tradotta 
+         , COALESCE(ctr.totale_contratto,0)  totale_contratto
+         , trim(COALESCE(ctr.note,''))  note        
+		FROM v_contratti_doc as ctr 
+   WHERE ctr.id_contratto_doc = :k_id_contratto_doc    
+            and  (ctr.flg_st_voce_7 <> 'N' or ctr.flg_st_voce_7 is null)
+            and ctr.descr_7 > ' '
+union all
+ SELECT 
+          case ctr.stampa_tradotta
+              when 'EN' then  trim(ctr.descr_8) 
+               else trim(ctr.descr_8)     
+          end  v_descr_xctr
+         ,ctr.voce_prezzo_8  voce_prezzo
+         ,ctr.voce_qta_8  voce_qta
+         ,ctr.voce_prezzo_tot_1  voce_prezzo_tot
+         ,(trim(ctr.quotazione_tipo) + ' ' + trim(cast(id_contratto_doc as varchar)) + '/' +  trim(cast(ctr.anno as varchar))) rif_interno
+         , ctr.stampa_tradotta stampa_tradotta 
+         , COALESCE(ctr.totale_contratto,0)  totale_contratto
+         , trim(COALESCE(ctr.note,''))  note        
+		FROM v_contratti_doc as ctr 
+   WHERE ctr.id_contratto_doc = :k_id_contratto_doc    
+            and  (ctr.flg_st_voce_8 <> 'N' or ctr.flg_st_voce_8 is null)
+            and ctr.descr_8 > ' '
+union all
+ SELECT 
+          case ctr.stampa_tradotta
+              when 'EN' then  trim(ctr.descr_9) 
+               else trim(ctr.descr_9)     
+          end  v_descr_xctr
+         ,ctr.voce_prezzo_9  voce_prezzo
+         ,ctr.voce_qta_9  voce_qta
+         ,ctr.voce_prezzo_tot_1  voce_prezzo_tot
+         ,(trim(ctr.quotazione_tipo) + ' ' + trim(cast(id_contratto_doc as varchar)) + '/' +  trim(cast(ctr.anno as varchar))) rif_interno
+         , ctr.stampa_tradotta stampa_tradotta 
+         , COALESCE(ctr.totale_contratto,0)  totale_contratto
+         , trim(COALESCE(ctr.note,''))  note        
+		FROM v_contratti_doc as ctr 
+   WHERE ctr.id_contratto_doc = :k_id_contratto_doc    
+            and  (ctr.flg_st_voce_9 <> 'N' or ctr.flg_st_voce_9 is null)
+            and ctr.descr_9 > ' '
+union all
+ SELECT 
+          case ctr.stampa_tradotta
+              when 'EN' then  trim(ctr.descr_10) 
+               else trim(ctr.descr_10)     
+          end  v_descr_xctr
+         ,ctr.voce_prezzo_10  voce_prezzo
+         ,ctr.voce_qta_10  voce_qta
+         ,ctr.voce_prezzo_tot_1  voce_prezzo_tot
+         ,(trim(ctr.quotazione_tipo) + ' ' + trim(cast(id_contratto_doc as varchar)) + '/' +  trim(cast(ctr.anno as varchar))) rif_interno
+         , ctr.stampa_tradotta stampa_tradotta 
+         , COALESCE(ctr.totale_contratto,0)  totale_contratto
+         , trim(COALESCE(ctr.note,''))  note        
+		FROM v_contratti_doc as ctr 
+   WHERE ctr.id_contratto_doc = :k_id_contratto_doc    
+            and  (ctr.flg_st_voce_10 <> 'N' or ctr.flg_st_voce_10 is null)
+            and ctr.descr_10 > ' '
+
+ 
+" arguments=(("k_id_contratto_doc", number)) )
+text(band=header alignment="2" text="V Descr Xctr
+~tif ( stampa_tradotta = 'EN', string(~"ACTIVITY DESCRIPTION~"), string(~"DESCRIZIONE ATTIVITA'~"))" border="0" color="33554432" x="14" y="332" height="112" width="1861" html.valueishtml="0"  name=v_descr_xctr_t visible="1"  font.face="Calibri" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0" )
+text(band=header alignment="2" text="Voce Prezzo
+€~tif ( stampa_tradotta = 'EN', string(~"Unit. Price €~"), string(~"Prezzo Unit. €~"))" border="0" color="33554432" x="1888" y="332" height="112" width="283" html.valueishtml="0"  name=voce_prezzo_t visible="1"  font.face="Calibri" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0" )
+text(band=header alignment="2" text="Voce Qta
+~tif ( stampa_tradotta = 'EN', string(~"Q.ty~"), string(~"Q.tà~"))" border="0" color="33554432" x="2185" y="332" height="112" width="187" html.valueishtml="0"  name=voce_qta_t visible="1"  font.face="Calibri" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0" )
+text(band=header alignment="2" text="Voce Prezzo Tot
+~tif ( stampa_tradotta = 'EN', string(~"Total €~"), string(~"Totale €~"))" border="0" color="33554432" x="2386" y="332" height="112" width="343" html.valueishtml="0"  name=voce_prezzo_tot_t visible="1"  font.face="Calibri" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0" )
+text(band=header alignment="2" text="Rif Interno
+~tif ( stampa_tradotta = ~"EN~", string(~"Sterigenics Italy ~~internal rreference~"), string(~"Rif. Interno ~~rSterigenics Italy~"))" border="0" color="33554432" x="2743" y="332" height="112" width="539" html.valueishtml="0"  name=rif_interno_t visible="1"  font.face="Calibri" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0" )
+column(band=detail id=5 alignment="2" tabsequence=32766 border="0" color="33554432" x="2743" y="8" height="72" width="539" format="[general]" html.valueishtml="0"  name=rif_interno visible="1" edit.limit=4000 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Calibri" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="0" color="33554432" x="14" y="8" height="72" width="1861" format=" [general]" html.valueishtml="0"  name=v_descr_xctr visible="1" height.autosize=yes edit.limit=4000 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Calibri" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0" )
+column(band=detail id=3 alignment="2" tabsequence=32766 border="0" color="33554432" x="2185" y="8" height="72" width="187" format="[general]" html.valueishtml="0"  name=voce_qta visible="1" edit.limit=4000 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Calibri" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0" )
+text(band=summary alignment="2" text="text~tif ( stampa_tradotta = 'EN', string(~"TOTAL €~"), string(~"TOTALE €~"))" border="0" color="33554432" x="1883" y="8" height="56" width="288" html.valueishtml="0"  name=t_1 visible="1"  font.face="Calibri" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0" )
+compute(band=foreground alignment="0" expression="if ( stampa_tradotta = 'EN', string(~"Note: ~"), string(~" Note: ~")) +  string(~"~~n ~") + note"border="2" color="33554432" x="18" y="804" height="68" width="3237" format=" [GENERAL]" html.valueishtml="0"  name=compute_1 visible="1"  slideup=allabove  font.face="Calibri" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0"  height.autosize=yes)
+text(band=foreground alignment="2" text="
+" border="0" color="16777215" x="9" y="0" height="296" width="3255" html.valueishtml="0"  name=t_3 visible="1"  slideup=directlyabove  font.face="Tahoma" font.height="-16" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="8388608" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0" )
+text(band=foreground alignment="2" text="text
+~tif ( stampa_tradotta = 'EN', string(~"STERIGENICS ITALY SPA
+TREATMENT OF VALIDATION~"), string(~"STERIGENICS ITALY SPA
+ATTIVITA' DI VALIDAZIONE~"))" border="0" color="16777215" x="23" y="52" height="200" width="3223" html.valueishtml="0"  name=t_2 visible="1"  slideup=directlyabove  font.face="Tahoma" font.height="-16" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="8388608" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0" )
+column(band=detail id=2 alignment="2" tabsequence=32766 border="0" color="33554432" x="1888" y="8" height="72" width="283" format="#,##0.00" html.valueishtml="0"  name=voce_prezzo visible="1" edit.limit=4000 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Calibri" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0" )
+column(band=detail id=4 alignment="2" tabsequence=32766 border="0" color="33554432" x="2386" y="8" height="72" width="343" format="#,##0.00" html.valueishtml="0"  name=voce_prezzo_tot visible="1" edit.limit=4000 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Calibri" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0" )
+column(band=summary id=7 alignment="2" tabsequence=32766 border="0" color="33554432" x="2386" y="8" height="56" width="343" format="#,##0.00" html.valueishtml="0"  name=totale_contratto visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no  font.face="Calibri" font.height="-9" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" pagingmethod=0 generatedddwframes="1" )
+xhtmlgen() cssgen(sessionspecific="0" )
+xmlgen(inline="0" )
+xsltgen()
+jsgen()
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" nativepdf.customsize=0 nativepdf.customorientation=0 nativepdf.pdfstandard=0 nativepdf.useprintspec=no )
+export.xhtml()
+ 

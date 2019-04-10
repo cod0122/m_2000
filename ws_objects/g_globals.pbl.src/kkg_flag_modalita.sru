@@ -16,6 +16,7 @@ constant string INSERIMENTO="in"     //menu funz.=i
 constant string MODIFICA="mo"        //menu funz.=m
 constant string CANCELLAZIONE="ca"   //menu funz.=c
 constant string VISUALIZZAZIONE="vi" //menu funz.=v
+constant string DUPLICA="dp" //menu funz.=i
 constant string STAMPA="st"       	 //menu funz.=s
 constant string INTERROGAZIONE="qy"  //menu funz.=q
 constant string CHIUDI_PL="cp"       //menu funz.=p
@@ -31,6 +32,7 @@ constant string DES_INSERIMENTO="Nuovo"     //menu funz.=i
 constant string DES_MODIFICA="Modifica"        //menu funz.=m
 constant string DES_CANCELLAZIONE="Rimuove"   //menu funz.=c
 constant string DES_VISUALIZZAZIONE="Visualizza" //menu funz.=v
+constant string DES_DUPLICA="Duplica" //menu funz.=i
 constant string DES_STAMPA="Stampa"       	 //menu funz.=s
 constant string DES_INTERROGAZIONE="Interroga"  //menu funz.=q
 constant string DES_CHIUDI_PL="Chiude Piano di Trattamento"       //menu funz.=p
@@ -41,7 +43,6 @@ constant string DES_MEMO="MEMO"       	 //funz. particolare di memo allegati
 constant string DES_ALTRO="non precisata"       	 //da usare solo se devo fare qls di mooolto strano
 
 end variables
-
 on kkg_flag_modalita.create
 call super::create
 TriggerEvent( this, "constructor" )

@@ -1014,7 +1014,10 @@ st_profilestring_ini kst_profilestring_ini
 			k_campo[k_ind] = "Entrato"
 			k_align[k_ind] = left!
 			k_ind++
-			k_campo[k_ind] = "W.O. / S.O."
+			k_campo[k_ind] = "W.O."
+			k_align[k_ind] = left!
+			k_ind++
+			k_campo[k_ind] = "S.O."
 			k_align[k_ind] = left!
 			k_ind++
 			k_campo[k_ind] = "Stampato"
@@ -1113,14 +1116,16 @@ st_profilestring_ini kst_profilestring_ini
 			kuf1_treeview.kilv_lv1.setitem(k_ctr, k_ind, trim(kst_tab_treeview.voce) )
 
 			if kst_treeview_data_any.st_tab_meca.e1doco > 0 then
-				kst_tab_treeview.voce = string(kst_treeview_data_any.st_tab_meca.e1doco, "#") + " / "
+				kst_tab_treeview.voce = string(kst_treeview_data_any.st_tab_meca.e1doco, "#") 
 			else
-				kst_tab_treeview.voce = "- / "
+				kst_tab_treeview.voce = "-"
 			end if
+			k_ind++
+			kuf1_treeview.kilv_lv1.setitem(k_ctr, k_ind, kst_tab_treeview.voce)
 			if kst_treeview_data_any.st_tab_meca.e1rorn > 0 then
-				kst_tab_treeview.voce += string(kst_treeview_data_any.st_tab_meca.e1rorn, "#") 
+				kst_tab_treeview.voce = string(kst_treeview_data_any.st_tab_meca.e1rorn, "#") 
 			else
-				kst_tab_treeview.voce += "-"
+				kst_tab_treeview.voce = "-"
 			end if
 			k_ind++
 			kuf1_treeview.kilv_lv1.setitem(k_ctr, k_ind, kst_tab_treeview.voce)

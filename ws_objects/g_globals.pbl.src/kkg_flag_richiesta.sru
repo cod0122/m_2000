@@ -15,6 +15,7 @@ constant string INSERIMENTO="in"
 constant string MODIFICA="mo"  
 constant string CANCELLAZIONE="ca"  
 constant string VISUALIZZAZIONE="vi" 
+constant string DUPLICA="dp"
 constant string STAMPA="st"  
 constant string CONFERMA="co" 
 constant string REFRESH="ag"  
@@ -46,7 +47,6 @@ constant string LIBERO10="la"
 constant string PROPRIETA="pr" 
 
 end variables
-
 on kkg_flag_richiesta.create
 call super::create
 TriggerEvent( this, "constructor" )

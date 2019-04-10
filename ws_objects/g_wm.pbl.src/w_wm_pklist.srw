@@ -73,11 +73,11 @@ private subroutine importa_pklist_ext ()
 private subroutine call_m_r_f ()
 private subroutine call_elenco_contratti ()
 public subroutine u_set_k_e1litm_ok ()
-private subroutine u_duplica_pklist ()
 protected subroutine inizializza_4 () throws uo_exception
 public subroutine u_modifica_barcode ()
 protected subroutine attiva_tasti_0 ()
 protected function string check_dati_x_importa ()
+public function boolean u_duplica () throws uo_exception
 end prototypes
 
 protected function string aggiorna ();//
@@ -1059,7 +1059,7 @@ protected subroutine attiva_menu ();//
 boolean k_attiva
 
 
-//--- solo se sono im caricamento posso importare nuove PKL grezze
+//--- solo se sono in caricamento posso importare nuove PKL grezze
 	if ki_st_open_w.flag_modalita = kkg_flag_modalita.inserimento and ki_tab_1_index_new = 1 then
 		k_attiva = true
 	else
@@ -1102,26 +1102,21 @@ boolean k_attiva
 			ki_menu.m_strumenti.m_fin_gest_libero2.toolbaritemVisible = true
 		end if
 		
-
-		if tab_1.tabpage_1.dw_1.getitemnumber(1, "id_wm_pklist") > 0 &
-					and ki_st_open_w.flag_modalita = kkg_flag_modalita.modifica &
-					and ki_tab_1_index_new = 1 then
-			k_attiva = true
-		else
-			k_attiva = false
-		end if
-		if ki_menu.m_strumenti.m_fin_gest_libero3.enabled <> k_attiva then
-			ki_menu.m_strumenti.m_fin_gest_libero3.text = "Duplica Packing-list"
-			ki_menu.m_strumenti.m_fin_gest_libero3.microhelp = "Crea una duplica da questo Packing-list"
-			ki_menu.m_strumenti.m_fin_gest_libero3.visible = true
-
-			ki_menu.m_strumenti.m_fin_gest_libero3.toolbaritemText = "Duplica,Crea un nuovo Packing-list da questo "
-			ki_menu.m_strumenti.m_fin_gest_libero3.toolbaritembarindex=2
-		
-			ki_menu.m_strumenti.m_fin_gest_libero3.enabled = k_attiva
-			ki_menu.m_strumenti.m_fin_gest_libero3.toolbaritemname = "ViewPainter!" 
-			ki_menu.m_strumenti.m_fin_gest_libero3.toolbaritemVisible = true
-		end if
+		ki_menu.m_finestra.m_gestione.m_fin_duplica.text = "Duplica Packing-list"
+		ki_menu.m_finestra.m_gestione.m_fin_duplica.microhelp = "Crea una duplica da questo Packing-list"
+		ki_menu.m_finestra.m_gestione.m_fin_duplica.toolbaritemText = "Duplica,Crea un nuovo Packing-list da questo "
+//		if ki_menu.m_strumenti.m_fin_gest_libero3.enabled <> k_attiva then
+//			ki_menu.m_strumenti.m_fin_gest_libero3.text = "Duplica Packing-list"
+//			ki_menu.m_strumenti.m_fin_gest_libero3.microhelp = "Crea una duplica da questo Packing-list"
+//			ki_menu.m_strumenti.m_fin_gest_libero3.visible = true
+//
+//			ki_menu.m_strumenti.m_fin_gest_libero3.toolbaritemText = "Duplica,Crea un nuovo Packing-list da questo "
+//			ki_menu.m_strumenti.m_fin_gest_libero3.toolbaritembarindex=2
+//		
+//			ki_menu.m_strumenti.m_fin_gest_libero3.enabled = k_attiva
+//			ki_menu.m_strumenti.m_fin_gest_libero3.toolbaritemname = "ViewPainter!" 
+//			ki_menu.m_strumenti.m_fin_gest_libero3.toolbaritemVisible = true
+//		end if
 
 		if tab_1.tabpage_1.dw_1.getitemnumber(1, "id_wm_pklist") > 0 &
 					and ki_st_open_w.flag_modalita = kkg_flag_modalita.modifica then
@@ -1144,44 +1139,7 @@ boolean k_attiva
 		
 	end if
 
-//		if ki_st_open_w.flag_modalita <> kkg_flag_modalita.visualizzazione &
-//				and ki_st_open_w.flag_modalita <> kkg_flag_modalita.cancellazione &
-//				and tab_1.tabpage_4.enabled then
-//			ki_menu.m_strumenti.m_fin_gest_libero5.text = "Aggiungi Riga Merce senza trattamento "
-//			ki_menu.m_strumenti.m_fin_gest_libero5.microhelp = "Aggiungi Riga Merce da non trattare (no-dose)"
-//			ki_menu.m_strumenti.m_fin_gest_libero5.visible = true
-//	
-//			ki_menu.m_strumenti.m_fin_gest_libero5.toolbaritemVisible = true
-//			ki_menu.m_strumenti.m_fin_gest_libero5.toolbaritemText = 	"Merce, Nuova Riga senza Trattamento "
-//			ki_menu.m_strumenti.m_fin_gest_libero5.toolbaritembarindex=2
-//	
-//			ki_menu.m_strumenti.m_fin_gest_libero5.enabled = true
-//		else
-//			ki_menu.m_strumenti.m_fin_gest_libero5.toolbaritemVisible = false
-//			ki_menu.m_strumenti.m_fin_gest_libero5.enabled = false
-//		end if
 
-//		this.settoolbar( 2, true)
-//	else
-//		this.settoolbar( 2, false)
-//		ki_menu.m_strumenti.m_fin_gest_libero1.visible = false
-//		ki_menu.m_strumenti.m_fin_gest_libero2.visible = false
-//		ki_menu.m_strumenti.m_fin_gest_libero3.visible = false
-//		ki_menu.m_strumenti.m_fin_gest_libero4.visible = false
-//		ki_menu.m_strumenti.m_fin_gest_libero5.visible = false
-//		ki_menu.m_strumenti.m_fin_gest_libero1.toolbaritemVisible = false
-//		ki_menu.m_strumenti.m_fin_gest_libero2.toolbaritemVisible = false
-//		ki_menu.m_strumenti.m_fin_gest_libero3.toolbaritemVisible = false
-//		ki_menu.m_strumenti.m_fin_gest_libero4.toolbaritemVisible = false
-//		ki_menu.m_strumenti.m_fin_gest_libero5.toolbaritemVisible = false
-//	end if
-//
-//	if ki_st_open_w.flag_primo_giro = 'S' then
-//		ki_menu.m_strumenti.m_fin_gest_libero2.toolbaritemName = "ScriptYes!"
-//		ki_menu.m_strumenti.m_fin_gest_libero3.toolbaritemName = "Custom048!"
-//		ki_menu.m_strumenti.m_fin_gest_libero4.toolbaritemName = "DataManip!"
-//		ki_menu.m_strumenti.m_fin_gest_libero5.toolbaritemName = kGuo_path.get_risorse() + "\lotto16x16.gif"
-//	end if
 
 //--- Attiva/Dis. Voci di menu
 	super::attiva_menu()
@@ -1204,9 +1162,9 @@ choose case LeftA(k_par_in, 2)
 
 	case "l2"		//Genera Lotto Riferimento dal Packing-List 
 		importa_pklist()
-
-	case "l3"		//Duplica
-		u_duplica_pklist( )
+//
+//	case "l3"		//Duplica
+//		u_duplica_pklist( )
 
 	case "l4"		//modifica barcode
 		u_modifica_barcode( )
@@ -2130,64 +2088,6 @@ end try
 
 end subroutine
 
-private subroutine u_duplica_pklist ();//---
-//---  Duplica questo Packing-List 
-//---
-long k_ctr=0
-kuf_wm_pklist_inout kuf1_wm_pklist_inout
-st_tab_wm_pklist kst_tab_wm_pklist
-st_esito kst_esito
-
-
-try
-	
-	kuf1_wm_pklist_inout = create kuf_wm_pklist_inout
-
-	ki_aggiorna_richiesta_conferma = false  // evita la richiesta della conferma, salva automaticamente
-
-	if messagebox("Duplicazione del Packing-List", & 
-			"Vuoi generare un nuovo Packing-List identico e collegato a questo?", question!, yesno!, 2) = 1 then  //~n~r
-
-//--- prima salva e se OK allora poi parte la duplica						
-		if left(aggiorna_dati(),1) = "0" then
-					
-			kst_tab_wm_pklist.id_wm_pklist = tab_1.tabpage_1.dw_1.getitemnumber(1, "id_wm_pklist")
-			
-			k_ctr = kuf1_wm_pklist_inout.u_duplica_pklist(kst_tab_wm_pklist, "") 
-	
-			if k_ctr > 0 then
-				kst_tab_wm_pklist.id_wm_pklist = k_ctr
-					
-	//--- funzione utile alla sincronizzazione con la window di ritorno (come il navigatore)
-				kiuf1_sync_window.u_window_set_funzione_aggiornata(ki_st_open_w)
-	
-	//--- Resetta vecchi pannelli e visualizza il Packing appena creato	
-				tab_1.tabpage_1.dw_1.reset()
-				tab_1.tabpage_4.dw_4.reset( )
-				tab_1.tabpage_5.dw_5.reset()
-				ki_st_open_w.flag_modalita = kkg_flag_modalita.modifica
-				ki_st_open_w.key1= string(kst_tab_wm_pklist.id_wm_pklist)
-				inizializza()
-				messagebox("Packing-List Duplicato", & 
-					"Generato il nuovo Paking-List '"+ trim(tab_1.tabpage_1.dw_1.getitemstring(1, "idpkl")) &
-					+"' (id "+ ki_st_open_w.key1 +")", information!)
-			end if
-		end if
-		
-	end if
-					
-catch (uo_exception kuo_exception)
-	kst_esito = kuo_exception.get_st_esito()
-	kuo_exception.messaggio_utente( ) 
-	
-finally
-	ki_aggiorna_richiesta_conferma = true
-	if isvalid(kuf_wm_pklist_inout) then destroy kuf_wm_pklist_inout
-	
-end try
-
-end subroutine
-
 protected subroutine inizializza_4 () throws uo_exception;//======================================================================
 //=== Inizializzazione del TAB 5 controllandone i valori se gia' presenti
 //======================================================================
@@ -2235,8 +2135,17 @@ protected subroutine attiva_tasti_0 ();//
 //=== impostati
 //=========================================================================
 
-
 super::attiva_tasti_0()
+
+
+if tab_1.tabpage_1.dw_1.getitemnumber(1, "id_wm_pklist") > 0 &
+			and (ki_st_open_w.flag_modalita = kkg_flag_modalita.modifica &
+						or ki_st_open_w.flag_modalita = kkg_flag_modalita.visualizzazione) &
+			and ki_tab_1_index_new = 1 then
+	ki_consenti_duplica = true
+else
+	ki_consenti_duplica = false
+end if
 
 tab_1.tabpage_2.enabled = false
 tab_1.tabpage_3.enabled = false
@@ -2587,6 +2496,69 @@ st_tab_listino kst_tab_listino[]
 return k_errore + k_return
 
 
+end function
+
+public function boolean u_duplica () throws uo_exception;//---
+//---  Duplica questo Packing-List 
+//---
+boolean k_return=false
+long k_ctr=0
+kuf_wm_pklist_inout kuf1_wm_pklist_inout
+st_tab_wm_pklist kst_tab_wm_pklist
+st_esito kst_esito
+
+
+try
+	
+	kuf1_wm_pklist_inout = create kuf_wm_pklist_inout
+
+	ki_aggiorna_richiesta_conferma = false  // evita la richiesta della conferma, salva automaticamente
+
+	if messagebox("Duplicazione del Packing-List", & 
+			"Vuoi generare un nuovo Packing-List identico e collegato a questo?", question!, yesno!, 2) = 1 then  //~n~r
+
+//--- prima salva e se OK allora poi parte la duplica						
+		if left(aggiorna_dati(),1) = "0" then
+					
+			kst_tab_wm_pklist.id_wm_pklist = tab_1.tabpage_1.dw_1.getitemnumber(1, "id_wm_pklist")
+			
+			k_ctr = kuf1_wm_pklist_inout.u_duplica_pklist(kst_tab_wm_pklist, "") 
+	
+			if k_ctr > 0 then
+				kst_tab_wm_pklist.id_wm_pklist = k_ctr
+					
+	//--- funzione utile alla sincronizzazione con la window di ritorno (come il navigatore)
+				kiuf1_sync_window.u_window_set_funzione_aggiornata(ki_st_open_w)
+	
+	//--- Resetta vecchi pannelli e visualizza il Packing appena creato	
+				tab_1.tabpage_1.dw_1.reset()
+				tab_1.tabpage_4.dw_4.reset( )
+				tab_1.tabpage_5.dw_5.reset()
+				ki_st_open_w.flag_modalita = kkg_flag_modalita.modifica
+				ki_st_open_w.key1= string(kst_tab_wm_pklist.id_wm_pklist)
+				inizializza()
+				messagebox("Packing-List Duplicato", & 
+					"Generato il nuovo Paking-List '"+ trim(tab_1.tabpage_1.dw_1.getitemstring(1, "idpkl")) &
+					+"' (id "+ ki_st_open_w.key1 +")", information!)
+					
+				k_return = true
+				
+			end if
+		end if
+		
+	end if
+					
+catch (uo_exception kuo_exception)
+	kst_esito = kuo_exception.get_st_esito()
+	throw kuo_exception //.messaggio_utente( ) 
+	
+finally
+	ki_aggiorna_richiesta_conferma = true
+	if isvalid(kuf_wm_pklist_inout) then destroy kuf_wm_pklist_inout
+	
+end try
+
+return k_return
 end function
 
 on w_wm_pklist.create
@@ -3051,6 +3023,31 @@ end type
 
 type dw_9 from w_g_tab_3`dw_9 within tabpage_9
 end type
+
+type st_duplica from w_g_tab_3`st_duplica within w_wm_pklist
+end type
+
+event st_duplica::clicked;//
+boolean k_duplica
+st_open_w kst_open_w
+
+
+try
+	k_duplica = u_duplica()
+	if k_duplica then
+		ki_st_open_w.flag_modalita = kkg_flag_modalita.modifica
+	else
+		ki_st_open_w.flag_modalita = kkg_flag_modalita.visualizzazione
+	end if
+	kidw_selezionata.setfocus()		
+	u_personalizza_dw ()
+	
+catch (uo_exception kuo_exception)
+	kuo_exception.messaggio_utente()
+	
+end try
+
+end event
 
 type dw_x_copia from uo_d_std_1 within w_wm_pklist
 integer x = 123

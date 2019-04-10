@@ -3257,7 +3257,8 @@ public function integer stampa_dw (st_stampe kst_stampe);//
 int k_return = 0
 int k_file, k_rcn=0 
 int k_bytes, k_pos_start
-string k_path, k_nome_file, k_riga, k_argomenti
+string k_path
+string k_nome_file, k_riga, k_argomenti
 st_open_w kst_open_w
 st_esito kst_esito
 pointer oldpointer  // Declares a pointer variable

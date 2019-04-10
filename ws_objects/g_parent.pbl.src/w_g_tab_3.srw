@@ -115,17 +115,20 @@ tabpage_7 tabpage_7
 tabpage_8 tabpage_8
 tabpage_9 tabpage_9
 end type
+type st_duplica from statictext within w_g_tab_3
+end type
 end forward
 
 global type w_g_tab_3 from w_g_tab
-integer width = 2331
-integer height = 1688
+integer width = 2409
+integer height = 1576
 cb_visualizza cb_visualizza
 cb_modifica cb_modifica
 cb_aggiorna cb_aggiorna
 cb_cancella cb_cancella
 cb_inserisci cb_inserisci
 tab_1 tab_1
+st_duplica st_duplica
 end type
 global w_g_tab_3 w_g_tab_3
 
@@ -146,6 +149,7 @@ protected integer ki_tab_1_index_old=0
 protected boolean ki_tabpage_visible[10] // memorizza i tabpage visibili e no 
 //protected uo_d_std_1 kidw_tabselezionato  // in inizializza_lista viene impostato il DW attivo
 protected string ki_UsitaImmediata="E"  // da impostare soprattutto nelle INIZIALIZZA se si vuole uscire subito 
+protected boolean ki_consenti_duplica=false
 
 end variables
 
@@ -191,6 +195,7 @@ protected subroutine attiva_tasti_0 ()
 public subroutine u_resize_1 ()
 protected function string aggiorna_dw_0 (datawindow adw_1, string a_titolo, string a_return)
 protected function boolean dati_modif_dw (ref uo_d_std_1 auo_d_std_1)
+public function boolean u_duplica () throws uo_exception
 end prototypes
 
 protected function string check_dati ();//======================================================================
@@ -502,6 +507,11 @@ choose case k_par_in
 	case KKG_FLAG_RICHIESTA.conferma		//richiesta conferma
 		if cb_aggiorna.enabled = true then
 			cb_aggiorna.triggerevent(clicked!)
+		end if
+
+	case KKG_FLAG_RICHIESTA.duplica		//richiesta Duplica
+		if st_duplica.enabled = true then
+			st_duplica.postevent(clicked!)
 		end if
 
 	case else
@@ -894,6 +904,9 @@ if ki_st_open_w.flag_primo_giro <> 'S' then
 		end if
 		if ki_menu.m_finestra.m_fin_stampa.enabled <> st_stampa.enabled then
 			ki_menu.m_finestra.m_fin_stampa.enabled = st_stampa.enabled
+		end if
+		if ki_menu.m_finestra.m_gestione.m_fin_duplica.enabled <> st_duplica.enabled then
+			ki_menu.m_finestra.m_gestione.m_fin_duplica.enabled = st_duplica.enabled 
 		end if
 	
 	//--- attiva voci menu standard
@@ -1624,6 +1637,7 @@ else
 	cb_cancella.enabled = false
 	cb_visualizza.enabled = false
 end if
+st_duplica.enabled = false
 
 //cb_modifica.default = false
 
@@ -1690,7 +1704,9 @@ if not ki_nessun_tasto_funzionale then
 			end if
 			st_aggiorna_lista.enabled = true
 			st_ordina_lista.enabled = false
-	
+			if ki_consenti_duplica  then
+				st_duplica.enabled = true
+			end if
 				
 		case kkg_flag_modalita.inserimento 
 			cb_inserisci.enabled = true
@@ -1727,6 +1743,9 @@ if not ki_nessun_tasto_funzionale then
 				st_ordina_lista.enabled = true
 			else
 				st_ordina_lista.enabled = false
+			end if
+			if ki_consenti_duplica  then
+				st_duplica.enabled = true
 			end if
 	
 			
@@ -1867,12 +1886,27 @@ return k_boolean
 
 end function
 
+public function boolean u_duplica () throws uo_exception;//
+//--- Operazioni di duplica che sono particolari per ogni funzione
+//
+
+try
+	
+catch (uo_exception kuo_exception)
+	
+finally
+	
+end try
+
+return true
+end function
+
 event closequery;call super::closequery;//
 //=== Controllo prima della chiusura della Windows
 //
 int k_errore=0
 
-
+ 
 cb_ritorna.enabled = false
 
 //=== Verifico DATI_MODIF solo se tasti di modif. abilitati
@@ -1910,6 +1944,7 @@ this.cb_aggiorna=create cb_aggiorna
 this.cb_cancella=create cb_cancella
 this.cb_inserisci=create cb_inserisci
 this.tab_1=create tab_1
+this.st_duplica=create st_duplica
 iCurrent=UpperBound(this.Control)
 this.Control[iCurrent+1]=this.cb_visualizza
 this.Control[iCurrent+2]=this.cb_modifica
@@ -1917,6 +1952,7 @@ this.Control[iCurrent+3]=this.cb_aggiorna
 this.Control[iCurrent+4]=this.cb_cancella
 this.Control[iCurrent+5]=this.cb_inserisci
 this.Control[iCurrent+6]=this.tab_1
+this.Control[iCurrent+7]=this.st_duplica
 end on
 
 on w_g_tab_3.destroy
@@ -1928,9 +1964,11 @@ destroy(this.cb_aggiorna)
 destroy(this.cb_cancella)
 destroy(this.cb_inserisci)
 destroy(this.tab_1)
+destroy(this.st_duplica)
 end on
 
 event u_open;call super::u_open;//
+u_resize()
 if ki_utente_abilitato then
 
 	inizializza_lista()
@@ -1938,8 +1976,7 @@ if ki_utente_abilitato then
 end if 
 fine_primo_giro()
 
-//kGuo_g.kgw_attiva = this
-u_resize()
+//u_resize()
 	
  
 end event
@@ -3022,5 +3059,47 @@ end event
 
 event ue_dwnkey;call super::ue_dwnkey;//
 tab_1.event key(key, keyflags)
+end event
+
+type st_duplica from statictext within w_g_tab_3
+boolean visible = false
+integer x = 78
+integer y = 1304
+integer width = 402
+integer height = 72
+boolean bringtotop = true
+integer textsize = -10
+integer weight = 400
+fontcharset fontcharset = ansi!
+fontpitch fontpitch = variable!
+fontfamily fontfamily = swiss!
+string facename = "Arial"
+long textcolor = 33554432
+long backcolor = 12632256
+boolean enabled = false
+string text = "duplica"
+boolean focusrectangle = false
+end type
+
+event clicked;//
+boolean k_duplica
+st_open_w kst_open_w
+
+
+try
+	k_duplica = u_duplica()
+	if k_duplica then
+		ki_st_open_w.flag_modalita = kkg_flag_modalita.inserimento
+	else
+		ki_st_open_w.flag_modalita = kkg_flag_modalita.visualizzazione
+	end if
+	kidw_selezionata.setfocus()		
+	u_personalizza_dw ()
+	
+catch (uo_exception kuo_exception)
+	kuo_exception.messaggio_utente()
+	
+end try
+
 end event
 

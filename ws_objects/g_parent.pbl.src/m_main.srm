@@ -310,6 +310,8 @@ type m_ct_rd_l from menu within m_archivi
 end type
 type m_commerciale from menu within m_archivi
 end type
+type m_quotazioni from menu within m_archivi
+end type
 type m_a_t11 from menu within m_archivi
 end type
 type m_capitolati from menu within m_archivi
@@ -365,6 +367,7 @@ m_a_t1 m_a_t1
 m_contodeposito m_contodeposito
 m_ct_rd_l m_ct_rd_l
 m_commerciale m_commerciale
+m_quotazioni m_quotazioni
 m_a_t11 m_a_t11
 m_capitolati m_capitolati
 m_contratti m_contratti
@@ -406,6 +409,8 @@ type m_fin_modifica from menu within m_gestione
 end type
 type m_fin_inserimento from menu within m_gestione
 end type
+type m_fin_duplica from menu within m_gestione
+end type
 type m_4 from menu within m_gestione
 end type
 type m_fin_elimina from menu within m_gestione
@@ -415,6 +420,7 @@ m_fin_conferma m_fin_conferma
 m_fin_visualizza m_fin_visualizza
 m_fin_modifica m_fin_modifica
 m_fin_inserimento m_fin_inserimento
+m_fin_duplica m_fin_duplica
 m_4 m_4
 m_fin_elimina m_fin_elimina
 end type
@@ -1175,6 +1181,7 @@ end function
 public subroutine u_inizializza ();//
 m_filtro.menuimage = "filtro.png"
 m_filtro.toolbaritemname = "filtro.png"
+m_archivi.m_quotazioni.menuimage = "contract16.png"
 
 reset_menu_strumenti( )
 
@@ -1218,22 +1225,15 @@ public subroutine reset_menu_all ();//
 	
 	//	m_finestra.m_fin_stampa.visible = false
 		m_finestra.m_fin_stampa.enabled = false
-	//	m_finestra.m_aggiornalista.visible = false
 		m_finestra.m_aggiornalista.enabled = false
-	//	m_finestra.m_gestione.m_fin_conferma.visible = false
 		m_finestra.m_gestione.m_fin_conferma.enabled = false
-	//	m_finestra.m_gestione.m_fin_visualizza.visible = false
 		m_finestra.m_gestione.m_fin_visualizza.enabled = false
-	//	m_finestra.m_gestione.m_fin_modifica.visible = false
 		m_finestra.m_gestione.m_fin_modifica.enabled = false
-	//	m_finestra.m_gestione.m_fin_inserimento.visible = false
 		m_finestra.m_gestione.m_fin_inserimento.enabled = false
+		m_finestra.m_gestione.m_fin_duplica.enabled = false
 
-	//	m_trova.m_fin_cerca.visible = false
 		m_trova.m_fin_cerca.enabled = false
-	//	m_trova.m_fin_ordina.visible = false
 		m_trova.m_fin_ordina.enabled = false
-	//	m_filtro.visible = false
 		m_filtro.enabled = false
 
 
@@ -1453,6 +1453,13 @@ destroy(this.m_filtro)
 destroy(this.m_strumenti)
 destroy(this.m_help)
 end on
+
+event clicked;//
+m_filtro.menuimage = "filtro.png"
+m_filtro.toolbaritemname = "filtro.png"
+m_archivi.m_quotazioni.menuimage = "contract16.png"
+
+end event
 
 type m_file from menu within m_main
 m_setupstampante m_setupstampante
@@ -3871,39 +3878,15 @@ type m_lotti from menu within m_magazzino
 end type
 
 event clicked;//
-kuf_menu_window kuf1_menu_window 
 kuf_armo kuf1_armo
-st_open_w k_st_open_w
+string k_modalita = kkg_flag_modalita.elenco
 
 
-kuf1_armo = create kuf_armo
-kuf1_menu_window = create kuf_menu_window
+	kuf1_armo = create kuf_armo
 
+	kuf1_armo.u_open(k_modalita)
 
-//
-//=== Parametri : 
-//=== struttura st_open_w
-//=== dati particolare programma
-//
-//=== Si potrebbero passare:
-//=== key= vedi sotto
-
-	k_st_open_w.flag_modalita = kkg_flag_modalita.elenco
-	K_st_open_w.id_programma = kuf1_armo.get_id_programma(k_st_open_w.flag_modalita)
-	K_st_open_w.flag_primo_giro = "S"
-	K_st_open_w.flag_adatta_win = KKG.ADATTA_WIN
-	K_st_open_w.flag_leggi_dw = " "
-	K_st_open_w.flag_cerca_in_lista = " "
-	K_st_open_w.key1 = " " // id_meca
-	K_st_open_w.key2 = " " // mandante/cliente 
-	K_st_open_w.key3 = " " // data da
-	K_st_open_w.key4 = " " // 
-	K_st_open_w.key5 = " " // 
-	K_st_open_w.key6 = " " // 
-	K_st_open_w.flag_where = " "
-	
-	kGuf_menu_window.open_w_tabelle(k_st_open_w)
-								
+	destroy kuf1_armo
 
 end event
 
@@ -6719,6 +6702,7 @@ m_a_t1 m_a_t1
 m_contodeposito m_contodeposito
 m_ct_rd_l m_ct_rd_l
 m_commerciale m_commerciale
+m_quotazioni m_quotazioni
 m_a_t11 m_a_t11
 m_capitolati m_capitolati
 m_contratti m_contratti
@@ -6766,6 +6750,7 @@ this.m_a_t1=create m_a_t1
 this.m_contodeposito=create m_contodeposito
 this.m_ct_rd_l=create m_ct_rd_l
 this.m_commerciale=create m_commerciale
+this.m_quotazioni=create m_quotazioni
 this.m_a_t11=create m_a_t11
 this.m_capitolati=create m_capitolati
 this.m_contratti=create m_contratti
@@ -6791,6 +6776,7 @@ this.Item[UpperBound(this.Item)+1]=this.m_a_t1
 this.Item[UpperBound(this.Item)+1]=this.m_contodeposito
 this.Item[UpperBound(this.Item)+1]=this.m_ct_rd_l
 this.Item[UpperBound(this.Item)+1]=this.m_commerciale
+this.Item[UpperBound(this.Item)+1]=this.m_quotazioni
 this.Item[UpperBound(this.Item)+1]=this.m_a_t11
 this.Item[UpperBound(this.Item)+1]=this.m_capitolati
 this.Item[UpperBound(this.Item)+1]=this.m_contratti
@@ -6820,6 +6806,7 @@ destroy(this.m_a_t1)
 destroy(this.m_contodeposito)
 destroy(this.m_ct_rd_l)
 destroy(this.m_commerciale)
+destroy(this.m_quotazioni)
 destroy(this.m_a_t11)
 destroy(this.m_capitolati)
 destroy(this.m_contratti)
@@ -7355,34 +7342,17 @@ type m_contodeposito from menu within m_archivi
 end type
 
 event clicked;//
+//
+string k_modalita = kkg_flag_modalita.elenco
 kuf_contratti_dp kuf1_contratti_dp
 
-//
-//=== Parametri : 
-//=== struttura st_open_w
-//=== dati particolare programma
-//
-	st_open_w k_st_open_w
 
-	kuf1_contratti_dp = create kuf_contratti_dp
-	
-	K_st_open_w.flag_modalita = kkg_flag_modalita.elenco
-	K_st_open_w.id_programma = kuf1_contratti_dp.get_id_programma( K_st_open_w.flag_modalita ) 
-	K_st_open_w.flag_primo_giro = "S"
-	K_st_open_w.flag_adatta_win = KKG.ADATTA_WIN
-	K_st_open_w.flag_leggi_dw = " "
-	K_st_open_w.flag_cerca_in_lista = " "
-	K_st_open_w.key1 = " " 
-	K_st_open_w.key2 = " " //
-	K_st_open_w.key3 = " " // 
-	K_st_open_w.key4 = " " // 
-	K_st_open_w.key5 = " " //
-	K_st_open_w.key6 = " " //
-	K_st_open_w.flag_where = " "
-	
-	kGuf_menu_window.open_w_tabelle(k_st_open_w)
-								
-	destroy kuf1_contratti_dp
+kuf1_contratti_dp = create kuf_contratti_dp
+
+kuf1_contratti_dp.u_open(k_modalita)
+
+destroy kuf1_contratti_dp
+
 end event
 
 on m_contodeposito.create
@@ -7418,34 +7388,12 @@ end type
 event clicked;//
 //
 kuf_contratti_rd kuf1_contratti_rd
-
-//
-//=== Parametri : 
-//=== struttura st_open_w
-//=== dati particolare programma
-//
-//=== Si potrebbero passare:
-//=== key= vedi sotto
-	st_open_w k_st_open_w
+string k_modalita = kkg_flag_modalita.elenco
 
 	kuf1_contratti_rd = create kuf_contratti_rd
-	
-	K_st_open_w.flag_modalita = kkg_flag_modalita.elenco
-	K_st_open_w.id_programma = kuf1_contratti_rd.get_id_programma( K_st_open_w.flag_modalita ) 
-	K_st_open_w.flag_primo_giro = "S"
-	K_st_open_w.flag_adatta_win = KKG.ADATTA_WIN
-	K_st_open_w.flag_leggi_dw = " "
-	K_st_open_w.flag_cerca_in_lista = " "
-	K_st_open_w.key1 = " " 
-	K_st_open_w.key2 = " " //
-	K_st_open_w.key3 = " " // 
-	K_st_open_w.key4 = " " // 
-	K_st_open_w.key5 = " " //
-	K_st_open_w.key6 = " " //
-	K_st_open_w.flag_where = " "
-	
-	kGuf_menu_window.open_w_tabelle(k_st_open_w)
-								
+
+	kuf1_contratti_rd.u_open(k_modalita)
+
 	destroy kuf1_contratti_rd
 end event
 
@@ -7482,39 +7430,14 @@ type m_commerciale from menu within m_archivi
 end type
 
 event clicked;//
-//
-//---17092008kuf_menu_window kuf1_menu_window
 kuf_contratti_co kuf1_contratti_co
+string k_modalita = kkg_flag_modalita.elenco
 
-//
-//=== Parametri : 
-//=== struttura st_open_w
-//=== dati particolare programma
-//
-//=== Si potrebbero passare:
-//=== key= vedi sotto
-	st_open_w k_st_open_w
 
 	kuf1_contratti_co = create kuf_contratti_co
-	
-	K_st_open_w.flag_modalita = kkg_flag_modalita.elenco
-	K_st_open_w.id_programma = kuf1_contratti_co.get_id_programma( K_st_open_w.flag_modalita ) 
-	K_st_open_w.flag_primo_giro = "S"
-	K_st_open_w.flag_adatta_win = KKG.ADATTA_WIN
-	K_st_open_w.flag_leggi_dw = " "
-	K_st_open_w.flag_cerca_in_lista = " "
-	K_st_open_w.key1 = " " 
-	K_st_open_w.key2 = " " //
-	K_st_open_w.key3 = " " // 
-	K_st_open_w.key4 = " " // 
-	K_st_open_w.key5 = " " //
-	K_st_open_w.key6 = " " //
-	K_st_open_w.flag_where = " "
-	
-	//---17092008kuf1_menu_window = create kuf_menu_window 
-	kGuf_menu_window.open_w_tabelle(k_st_open_w)
-	//---17092008destroy kuf1_menu_window
-								
+
+	kuf1_contratti_co.u_open(k_modalita)
+
 	destroy kuf1_contratti_co
 end event
 
@@ -7546,6 +7469,49 @@ end on
 on m_commerciale.destroy
 call super::destroy
 end on
+
+type m_quotazioni from menu within m_archivi
+end type
+
+on m_quotazioni.create
+call super::create
+this.tag = "ct_doc_l"
+this.text = "Quotazioni"
+this.microhelp = "Contratti Quotazioni "
+this.menuimage = "contract16.png"
+this.menustyle = contemporarymenu!
+this.menubackcolor = 32567536
+this.menuhighlightcolor = 134217741
+this.textsize = -10
+this.weight = 400
+this.facename = "Verdana"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_quotazioni.destroy
+call super::destroy
+end on
+
+event clicked;//
+string k_modalita = kkg_flag_modalita.elenco
+kuf_contratti_doc kuf1_contratti_doc
+
+
+kuf1_contratti_doc = create kuf_contratti_doc
+
+kuf1_contratti_doc.u_open(k_modalita)
+
+destroy kuf1_contratti_doc
+end event
 
 type m_a_t11 from menu within m_archivi
 end type
@@ -8911,6 +8877,7 @@ m_fin_conferma m_fin_conferma
 m_fin_visualizza m_fin_visualizza
 m_fin_modifica m_fin_modifica
 m_fin_inserimento m_fin_inserimento
+m_fin_duplica m_fin_duplica
 m_4 m_4
 m_fin_elimina m_fin_elimina
 end type
@@ -8940,12 +8907,14 @@ this.m_fin_conferma=create m_fin_conferma
 this.m_fin_visualizza=create m_fin_visualizza
 this.m_fin_modifica=create m_fin_modifica
 this.m_fin_inserimento=create m_fin_inserimento
+this.m_fin_duplica=create m_fin_duplica
 this.m_4=create m_4
 this.m_fin_elimina=create m_fin_elimina
 this.Item[UpperBound(this.Item)+1]=this.m_fin_conferma
 this.Item[UpperBound(this.Item)+1]=this.m_fin_visualizza
 this.Item[UpperBound(this.Item)+1]=this.m_fin_modifica
 this.Item[UpperBound(this.Item)+1]=this.m_fin_inserimento
+this.Item[UpperBound(this.Item)+1]=this.m_fin_duplica
 this.Item[UpperBound(this.Item)+1]=this.m_4
 this.Item[UpperBound(this.Item)+1]=this.m_fin_elimina
 end on
@@ -8956,6 +8925,7 @@ destroy(this.m_fin_conferma)
 destroy(this.m_fin_visualizza)
 destroy(this.m_fin_modifica)
 destroy(this.m_fin_inserimento)
+destroy(this.m_fin_duplica)
 destroy(this.m_4)
 destroy(this.m_fin_elimina)
 end on
@@ -9170,6 +9140,51 @@ end on
 on m_fin_inserimento.destroy
 call super::destroy
 end on
+
+type m_fin_duplica from menu within m_gestione
+end type
+
+on m_fin_duplica.create
+call super::create
+this.visible = false
+this.text = "Duplica"
+this.enabled = false
+this.toolbaritemname = "viewpainter!"
+this.toolbaritemtext = "Duplica,Duplica"
+this.toolbaritembarindex = 3
+this.toolbaritemorder = 17
+this.toolbaritemspace = 1
+this.menuimage = "ViewPainter!"
+this.menustyle = contemporarymenu!
+this.menubackcolor = 32567536
+this.menuhighlightcolor = 134217741
+this.textsize = -10
+this.weight = 400
+this.facename = "Verdana"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_fin_duplica.destroy
+call super::destroy
+end on
+
+event clicked;//
+IF IsValid(kguo_g.kgw_attiva) THEN
+	if kguo_g.kgw_attiva.event ue_menu(KKG_FLAG_RICHIESTA.DUPLICA) < 0 then
+		messagebox("Operazione non eseguita", "Funzione di Duplica non Abilitata")
+	end if
+end if
+
+end event
 
 type m_4 from menu within m_gestione
 end type

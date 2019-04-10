@@ -47,7 +47,7 @@ public subroutine inizializza ()
 private subroutine set_visualizza_allarme ()
 private subroutine u_mostra_allarme ()
 public function boolean u_attiva_alert (st_alert ast_alert) throws uo_exception
-public function boolean u_open (ref st_open_w ast_open_w)
+public function st_esito u_open (ref st_open_w ast_open_w)
 end prototypes
 
 private subroutine u_open_window (string a_titolo);
@@ -242,25 +242,27 @@ return k_return
 
 end function
 
-public function boolean u_open (ref st_open_w ast_open_w);//---
+public function st_esito u_open (ref st_open_w ast_open_w);//---
 //--- Apre la Window x le diverse funzioni
 //---
 //--- Input: st_open_w
 //--- Out: TRUE = finestra aperta; FASE=operazione non eseguita
 //---
-boolean k_return = false
-//string k_rc = ""
-//kuf_menu_window kuf1_menu_window
+//boolean k_return = false
+st_esito kst_esito
 
+	kst_esito.esito = kkg_esito.ok
+	kst_esito.sqlcode = 0
+	kst_esito.SQLErrText = ""
 	
 	//kuf1_menu_window = create kuf_menu_window 
 	kGuf_menu_window.open_w_tabelle(ast_open_w)
 	//destroy kuf1_menu_window
 	//if k_rc = "1" then	
-	k_return = true
+	//k_return = true
 
 
-return k_return
+return kst_esito
 
 
 end function

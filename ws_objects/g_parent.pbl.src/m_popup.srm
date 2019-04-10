@@ -52,9 +52,11 @@ type m_conferma from menu within m_popup
 end type
 type m_visualizza from menu within m_popup
 end type
+type m_modifica from menu within m_popup
+end type
 type m_inserisci from menu within m_popup
 end type
-type m_modifica from menu within m_popup
+type m_duplica from menu within m_popup
 end type
 type m_t_modifica from menu within m_popup
 end type
@@ -122,8 +124,9 @@ m_lib_10 m_lib_10
 m_t_lib_8 m_t_lib_8
 m_conferma m_conferma
 m_visualizza m_visualizza
-m_inserisci m_inserisci
 m_modifica m_modifica
+m_inserisci m_inserisci
+m_duplica m_duplica
 m_t_modifica m_t_modifica
 m_stampa m_stampa
 m_t_stampa m_t_stampa
@@ -173,8 +176,9 @@ m_lib_10 m_lib_10
 m_t_lib_8 m_t_lib_8
 m_conferma m_conferma
 m_visualizza m_visualizza
-m_inserisci m_inserisci
 m_modifica m_modifica
+m_inserisci m_inserisci
+m_duplica m_duplica
 m_t_modifica m_t_modifica
 m_stampa m_stampa
 m_t_stampa m_t_stampa
@@ -215,6 +219,7 @@ kgo_1 = getfocus()
 if isvalid(kgo_1) then
 	
 	m_impostazioni_utente.menuimage = "settings16.png"
+//	m_duplica.menuimage = "duplicate16.png"
 	
 	if kgo_1.typeof( ) = MultiLineEdit! then
 		this.m_copiaabilitata.checked = true
@@ -303,8 +308,9 @@ this.m_lib_10=create m_lib_10
 this.m_t_lib_8=create m_t_lib_8
 this.m_conferma=create m_conferma
 this.m_visualizza=create m_visualizza
-this.m_inserisci=create m_inserisci
 this.m_modifica=create m_modifica
+this.m_inserisci=create m_inserisci
+this.m_duplica=create m_duplica
 this.m_t_modifica=create m_t_modifica
 this.m_stampa=create m_stampa
 this.m_t_stampa=create m_t_stampa
@@ -350,8 +356,9 @@ this.Item[UpperBound(this.Item)+1]=this.m_lib_10
 this.Item[UpperBound(this.Item)+1]=this.m_t_lib_8
 this.Item[UpperBound(this.Item)+1]=this.m_conferma
 this.Item[UpperBound(this.Item)+1]=this.m_visualizza
-this.Item[UpperBound(this.Item)+1]=this.m_inserisci
 this.Item[UpperBound(this.Item)+1]=this.m_modifica
+this.Item[UpperBound(this.Item)+1]=this.m_inserisci
+this.Item[UpperBound(this.Item)+1]=this.m_duplica
 this.Item[UpperBound(this.Item)+1]=this.m_t_modifica
 this.Item[UpperBound(this.Item)+1]=this.m_stampa
 this.Item[UpperBound(this.Item)+1]=this.m_t_stampa
@@ -401,8 +408,9 @@ destroy(this.m_lib_10)
 destroy(this.m_t_lib_8)
 destroy(this.m_conferma)
 destroy(this.m_visualizza)
-destroy(this.m_inserisci)
 destroy(this.m_modifica)
+destroy(this.m_inserisci)
+destroy(this.m_duplica)
 destroy(this.m_t_modifica)
 destroy(this.m_stampa)
 destroy(this.m_t_stampa)
@@ -1385,6 +1393,50 @@ on m_visualizza.destroy
 call super::destroy
 end on
 
+type m_modifica from menu within m_popup
+end type
+
+on clicked;//
+//w_g_tab  kw_attiva
+
+//=== Prende la window attiva in quel momento
+//kw_attiva = w_main.GetActiveSheet( )
+//=== Controlla se il valore e' valido
+IF IsValid(kguo_g.kgw_attiva) THEN
+	kguo_g.kgw_attiva.event ue_menu(KKG_FLAG_RICHIESTA.MODIFICA)	
+end if
+
+end on
+
+on m_modifica.create
+call super::create
+this.tag = "[Ctrl+F2]"
+this.visible = false
+this.text = "Modifica"
+this.microhelp = "Modifica"
+this.menuimage = "inkedit!"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_modifica.destroy
+call super::destroy
+end on
+
 type m_inserisci from menu within m_popup
 end type
 
@@ -1429,28 +1481,15 @@ on m_inserisci.destroy
 call super::destroy
 end on
 
-type m_modifica from menu within m_popup
+type m_duplica from menu within m_popup
 end type
 
-on clicked;//
-//w_g_tab  kw_attiva
-
-//=== Prende la window attiva in quel momento
-//kw_attiva = w_main.GetActiveSheet( )
-//=== Controlla se il valore e' valido
-IF IsValid(kguo_g.kgw_attiva) THEN
-	kguo_g.kgw_attiva.event ue_menu(KKG_FLAG_RICHIESTA.MODIFICA)	
-end if
-
-end on
-
-on m_modifica.create
+on m_duplica.create
 call super::create
-this.tag = "[Ctrl+F2]"
 this.visible = false
-this.text = "Modifica"
-this.microhelp = "Modifica"
-this.menuimage = "DosEdit!"
+this.text = "Duplica"
+this.microhelp = "Duplica"
+this.menuimage = "ViewPainter!"
 this.menustyle = contemporarymenu!
 this.menutextcolor = 134217735
 this.menubackcolor = 134217732
@@ -1469,9 +1508,15 @@ this.toolbargradient = true
 this.bitmapgradient = true
 end on
 
-on m_modifica.destroy
+on m_duplica.destroy
 call super::destroy
 end on
+
+event clicked;IF IsValid(kguo_g.kgw_attiva) THEN
+	kguo_g.kgw_attiva.event ue_menu(KKG_FLAG_RICHIESTA.DUPLICA)	
+end if
+
+end event
 
 type m_t_modifica from menu within m_popup
 end type

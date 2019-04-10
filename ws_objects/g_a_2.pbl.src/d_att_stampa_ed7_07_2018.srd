@@ -22,7 +22,7 @@ table(column=(type=long updatewhereclause=yes identity=yes name=certif_id dbname
  column=(type=char(12) updatewhereclause=yes name=mc_co dbname="mc_co" )
  column=(type=char(254) updatewhereclause=yes name=certif_note dbname="note" )
  column=(type=char(254) updatewhereclause=yes name=certif_note_1 dbname="note_1" )
- column=(type=char(254) updatewhereclause=yes name=certif_note_2 dbname="note_2" )
+ column=(type=char(512) updatewhereclause=yes name=certif_note_2 dbname="note_2" )
  column=(type=char(12) updatewhereclause=yes name=contratti_sc_cf dbname="sc_cf" )
  column=(type=date updatewhereclause=yes name=sc_cf_data dbname="data" )
  column=(type=char(50) updatewhereclause=yes name=sc_cf_descr dbname="descr" )
@@ -39,7 +39,7 @@ table(column=(type=long updatewhereclause=yes identity=yes name=certif_id dbname
  column=(type=char(12) updatewhereclause=yes name=certif_x_utente dbname="x_utente" )
  column=(type=datetime updatewhereclause=yes name=certif_x_datins dbname="x_datins" )
  column=(type=long updatewhereclause=yes name=contratto dbname="contratto" )
- column=(type=char(16) updatewhereclause=yes name=meca_dosim_lotto_dosim dbname="dosim_lotto_dosim" )
+ column=(type=char(16) updatewhereclause=yes name=meca_dosim_lotto_dosim dbname="meca_dosim_lotto_dosim" )
  column=(type=long updatewhereclause=yes name=id_wm_pklist dbname="id_wm_pklist" )
  column=(type=char(4) updatewhereclause=yes name=k_note dbname="k_note" )
  column=(type=char(1) updatewhereclause=yes name=k_test dbname="k_test" )
@@ -52,7 +52,7 @@ table(column=(type=long updatewhereclause=yes identity=yes name=certif_id dbname
  column=(type=char(1) updatewhereclause=yes name=k_ragsoc_base_2 dbname="k_ragsoc_base_2" )
  column=(type=long updatewhereclause=yes name=e1doco dbname="e1doco" )
  column=(type=long updatewhereclause=yes name=e1rorn dbname="e1rorn" )
- retrieve="  SELECT distinct certif.id,   
+ retrieve="  SELECT certif.id,   
          certif.data_stampa,   
          certif.num_certif,   
          certif.data,   
@@ -86,7 +86,7 @@ table(column=(type=long updatewhereclause=yes identity=yes name=certif_id dbname
          certif.x_utente,   
          certif.x_datins,   
          meca.contratto,
-         meca_dosim.dosim_lotto_dosim,
+         max(meca_dosim.dosim_lotto_dosim) as meca_dosim_lotto_dosim,
          meca.id_wm_pklist,
          'note' as k_note,
          '1' as k_test 
@@ -120,6 +120,50 @@ table(column=(type=long updatewhereclause=yes identity=yes name=certif_id dbname
                         meca.id_wm_pklist = wm_pklist.id_wm_pklist)
  
    WHERE  certif.num_certif = :k_num_certif_ini 
+group by 
+		meca.id,   
+		certif.id,   
+         certif.data_stampa,   
+         certif.num_certif,   
+         certif.data,   
+        meca.data_int,
+        meca.num_int,
+         meca.clie_1,   
+         clienti_a.rag_soc_10, 
+         meca.num_bolla_in,   
+         meca.data_bolla_in,   
+         certif.colli,   
+         certif.clie_2,   
+         meca.clie_2,   
+         clienti_b.rag_soc_10, 
+         meca.clie_3,   
+         clienti_c.rag_soc_10,  
+         contratti.mc_co,   
+         certif.note,
+		certif.note_1,
+         certif.note_2, 
+         contratti.sc_cf,   
+         sc_cf.data,   
+         sc_cf.descr,   
+         certif.dose,   
+         certif.dose_min,   
+         certif.dose_max,   
+         certif.lav_data_ini,   
+         certif.lav_data_fin,   
+         certif.st_dose_min,
+         certif.st_dose_max,
+         certif.st_data_ini,
+         certif.st_data_fin,
+         certif.st_dati_bolla_in,
+         certif.x_utente,   
+         certif.x_datins,   
+         meca.contratto,
+         meca.id_wm_pklist
+		,certif.id_meca
+        ,dosimetrie.note
+        ,wm_pklist.idpkl
+        ,meca.e1doco
+        ,meca.e1rorn
 	order by 
          certif.data_stampa,   
          certif.num_certif

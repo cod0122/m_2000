@@ -63,7 +63,6 @@ public function boolean if_abilitare_pdf ()
 public function st_esito ddlb_set_stampanti (ref dropdownlistbox kddlb_out)
 public function string get_stampanti ()
 private subroutine dw_copia_attributi (ref datastore k_ds_source, ref datawindow k_dw_target)
-private subroutine dw_copia_attributi_innestate (ref datawindow k_dw_padre, ref datawindowchild k_dwc_iinnestata)
 private subroutine olddw_estrae_nomi_col ()
 private function string get_stampanti_definite ()
 public function string get_stampanti_dwddlb_values ()
@@ -72,6 +71,7 @@ public function string get_path_tempemail ()
 private function string dw_set_fzoom_invisibili (string a_datawindow_syntax)
 private function string u_get_dw_nomi_col (string a_datawindow_syntax)
 public function string u_dw_sintax_pulizia (string a_datawindow_syntax)
+private subroutine dw_copia_attributi_innestate (ref datawindow k_dw_padre, ref datawindowchild k_dwc_innestata)
 end prototypes
 
 public subroutine salva_personalizzazioni (ref datawindow kdw_print);//
@@ -220,7 +220,7 @@ public function string smista_stampe (ref datawindow kdw_print);//
 //
 //
 string k_return, k_ls_err
-string k_scelta, k_size, k_msg, k_nome_dw, k_appox
+string k_scelta, k_size, k_msg, k_nome_dw, k_appox, k_dwc_name
 long k_nr_rek
 int k_rc
 long k_rcl
@@ -346,7 +346,7 @@ pointer oldpointer
 				k_nr_rek = kist_stampe.ds_print.rowcount() 
 
 				k_dwc_num=1
-				k_rc_dwc = kist_stampe.ds_print.GetChild("dw_"+string(k_dwc_num), kdwc_source) 
+				k_rc_dwc = kist_stampe.ds_print.GetChild("dw_"+string(k_dwc_num, "#"), kdwc_source) 
 				if k_rc_dwc > 0 then
 
 //------------------------------------------------------------------------
@@ -357,11 +357,13 @@ pointer oldpointer
 
 //--- Imposta le Risorse grafiche anche delle DW innestate (composite dw)	
 					k_dwc_num=1
-					k_rc = kdw_print.GetChild("dw_"+string(k_dwc_num), kdwc_source) 
+					k_dwc_name = "dw_" + string(k_dwc_num, "#")
+					k_rc = kdw_print.GetChild(k_dwc_name, kdwc_source) 
 					do while k_rc = 1
 						dw_copia_attributi_innestate(kdw_print, kdwc_source)   //--- copio attributi Pictures da DS nella dw_print come il nomefile del logo
 						k_dwc_num ++
-						k_rc = kdw_print.GetChild("dw_"+string(k_dwc_num), kdwc_source) 
+						k_dwc_name = "dw_" + string(k_dwc_num, "#")
+						k_rc = kdw_print.GetChild(k_dwc_name, kdwc_source) 
 					loop
 //---------------------------------------------------------------------------					
 				else
@@ -2205,81 +2207,6 @@ boolean k_colonna_valorizzata
 
 end subroutine
 
-private subroutine dw_copia_attributi_innestate (ref datawindow k_dw_padre, ref datawindowchild k_dwc_iinnestata);//---
-//--- Copia su DW innestate gli attributi come il nomefile delle Pictures
-//--- 
-//---
-//--- parametri di input:
-//--- 
-//---    k_dw_padre  la datawindow padre
-//---    k_dwc_iinnestata  la datawindowchild in cui operare
-//---
-//---
-long k_rc
-string  k_rcx, k_rc1x, k_str, k_path, k_string, k_xx, k_nome, k_str_modify="" //, k_nome_testata, k_type, k_strx, k_knome
-long k_ctr, k_ctr1, k_ctr2, k_ctr3, k_ctr4, k_max_nr_oggetti, k_colcount, k_riga, k_len_max
-long k_num, k_righe, k_start_pos=0
-string k_visible, k_dw_syntax, k_filename
-boolean k_colonna_valorizzata
-
-
-
-
-//--- copia Proprieta' PRINT ORIENTATIONE della dw
-	k_rcx=k_dwc_iinnestata.modify("DataWindow.Print.Orientation= '" + trim(k_dw_padre.describe("DataWindow.Print.Orientation")) + "'")
-
-	
-//--- controlla se ci sono delle immagini da fare vedere con la tecnica del campo TXT che riporta in nome del file --------------
-//--- estrazione dell'intero contenuto del dw
-	k_path = kguo_path.get_risorse( )  + kkg.path_sep
-	k_dw_syntax = k_dwc_iinnestata.describe("DataWindow.Syntax")
-	k_len_max = len(k_dw_syntax) - 10
-//--- estrazione dei nomi dei txt
-	k_ctr = 1
-	k_max_nr_oggetti = 1
-	k_ctr = pos(k_dw_syntax, "name=", k_ctr)    //cerca stringa 'name' ovvero tutti gli oggetti nel dw 
-	DO WHILE k_ctr > 0 and k_max_nr_oggetti < 100
-		k_ctr1 = k_ctr 
-		if k_ctr1 < k_len_max then
-//			k_ctr1 = k_ctr1 + 5
-			k_ctr2 = pos(k_dw_syntax, "txt_p_img", k_ctr1)
-			if k_ctr2 <= 0 then k_ctr2 = pos(k_dw_syntax, "txt_p_", k_ctr1)
-			if k_ctr2 > 0 then
-				k_ctr = k_ctr2
-				k_ctr2 = pos(k_dw_syntax, "_", k_ctr2)  + 1  // piglia la pos di "_" che segue txt
-				k_ctr4 = pos(k_dw_syntax, "~"", k_ctr2) - k_ctr2   // piglia len del "p_img_" es. "p_img_lente" se carattere doppi apici
-				k_ctr3 = pos(k_dw_syntax, " ", k_ctr2) - k_ctr2   // piglia len del "p_img_" es. "p_img_lente"
-				if k_ctr3 > k_ctr4 then k_ctr3 = k_ctr4  // se c'e' prima doppi apici allora sistema la posizione
-               k_nome = mid(k_dw_syntax, k_ctr2, k_ctr3 ) // carica il nime del file jpg o bmp o ecc....
-//--- recupera il nome dell'immagine
-				k_string = "txt_" + k_nome + ".text"
-				k_filename = trim(k_dwc_iinnestata.Describe(k_string))
-				if k_filename <> "!" and k_filename <> "?" then
-//--- set l'immagine
-					k_str_modify += k_nome + ".filename='" + k_path + k_filename + "'" + " "
-					k_str_modify += k_nome + ".width=" + k_dwc_iinnestata.Describe(k_nome + ".width") + " "
-					k_str_modify += k_nome + ".height=" + k_dwc_iinnestata.Describe(k_nome + ".height") + " "
-//					k_str=k_dwc_iinnestata.Modify(k_nome + ".filename='" + k_path + k_filename + "'")
-//					k_str=k_dwc_iinnestata.Modify(k_nome + ".width='" + k_dwc_iinnestata.Describe(k_nome + ".width")  + "' ")
-//					k_str=k_dwc_iinnestata.Modify(k_nome + ".height='" + k_dwc_iinnestata.Describe(k_nome + ".height")  + "' ")
-					
-				end if
-			  	k_max_nr_oggetti++
-			end if
-		end if
-		k_ctr++
-		k_ctr = pos(k_dw_syntax, "name=", k_ctr)
-	LOOP	
-	
-//--- se ho trovato qls applica le modifiche tutte insieme	
-	if k_str_modify > " " then 
-		k_str = k_dwc_iinnestata.Modify(k_str_modify)
-		k_str_modify=""
-	end if
-
-
-end subroutine
-
 private subroutine olddw_estrae_nomi_col ();//---
 //--- Estrae da dw i nomi dei testi con indicazione di 'visible'
 //--- input: impostare in kist_stampe_add_testata il Titolo e dw_print
@@ -2725,6 +2652,86 @@ boolean k_colonna_valorizzata
 return trim(k_str_modify)
 
 end function
+
+private subroutine dw_copia_attributi_innestate (ref datawindow k_dw_padre, ref datawindowchild k_dwc_innestata);//---
+//--- Copia su DW innestate gli attributi come il nomefile delle Pictures
+//--- 
+//---
+//--- parametri di input:
+//--- 
+//---    k_dw_padre  la datawindow padre
+//---    k_dwc_innestata  la datawindowchild in cui operare
+//---
+//---
+long k_rc
+string  k_rcx, k_rc1x, k_str, k_path, k_xx, k_nome, k_str_modify //, k_nome_testata, k_type, k_strx, k_knome
+long k_punt_txt, k_punt_iniz
+long k_ctr_pos, k_ctr_2, k_ctr3, k_ctr4, k_max_nr_oggetti, k_colcount, k_riga, k_len_max
+long k_num, k_righe, k_start_pos=0
+string k_visible, k_dw_syntax, k_filename
+boolean k_colonna_valorizzata
+
+
+
+
+//--- copia Proprieta' PRINT ORIENTATIONE della dw
+	k_rcx=k_dwc_innestata.modify("DataWindow.Print.Orientation= '" + trim(k_dw_padre.describe("DataWindow.Print.Orientation")) + "'")
+
+	
+//--- controlla se ci sono delle immagini da fare vedere con la tecnica del campo TXT che riporta in nome del file --------------
+//--- estrazione dell'intero contenuto del dw
+	k_path = kguo_path.get_risorse( )  + kkg.path_sep
+	k_dw_syntax = k_dwc_innestata.describe("DataWindow.Syntax")
+	k_len_max = len(k_dw_syntax) - 10
+//--- estrazione dei nomi dei txt
+	k_punt_txt = 1
+	k_max_nr_oggetti = 1
+	k_punt_iniz = pos(k_dw_syntax, "name=", 1)    //cerca stringa 'name' ovvero tutti gli oggetti nel dw 
+	k_punt_txt = k_punt_iniz
+	DO WHILE k_punt_txt > 0 and k_max_nr_oggetti < 100
+		k_ctr_pos = k_punt_txt 
+		if k_ctr_pos < k_len_max then
+//			k_ctr1 = k_ctr1 + 5
+			k_ctr_2 = pos(k_dw_syntax, "txt_p_img", k_ctr_pos)
+			if k_ctr_2 <= 0 then k_ctr_2 = pos(k_dw_syntax, "txt_p_", k_ctr_pos)
+			if k_ctr_2 > 0 then
+				k_punt_txt = k_ctr_2
+				k_ctr_2 = pos(k_dw_syntax, "_", k_ctr_2)  + 1  // piglia la pos di "_" che segue txt
+				k_ctr4 = pos(k_dw_syntax, "~"", k_ctr_2) - k_ctr_2   // piglia len del "p_img_" es. "p_img_lente" se carattere doppi apici
+				k_ctr3 = pos(k_dw_syntax, " ", k_ctr_2) - k_ctr_2   // piglia len del "p_img_" es. "p_img_lente"
+				if k_ctr3 > k_ctr4 then k_ctr3 = k_ctr4  // se c'e' prima doppi apici allora sistema la posizione
+               	k_nome = mid(k_dw_syntax, k_ctr_2, k_ctr3 ) // carica il nome dell'oggetto IMG che esporrà il file jpg o bmp o ecc.... es. txt_p_img_10 è p_img_10
+//--- recupera il nome dell'immagine
+				k_str = "txt_" + k_nome + ".text"
+				k_filename = trim(k_dwc_innestata.Describe(k_str))
+				if k_filename <> "!" and k_filename <> "?" then
+//--- set l'immagine
+					k_str = k_nome + ".filename='" + k_path + k_filename + "'" &
+										+ " " + k_nome + ".x=" + k_dwc_innestata.Describe(k_nome + ".x") &
+										+ " " + k_nome + ".y=" + k_dwc_innestata.Describe(k_nome + ".y") &
+										+ " " + k_nome + ".width=" + k_dwc_innestata.Describe(k_nome + ".width") &
+										+ " " + k_nome + ".height=" + k_dwc_innestata.Describe(k_nome + ".height") 
+					k_str_modify += k_str
+//					k_str=k_dwc_innestata.Modify(k_nome + ".filename='" + k_path + k_filename + "'")
+//					k_str=k_dwc_innestata.Modify(k_nome + ".width='" + k_dwc_innestata.Describe(k_nome + ".width")  + "' ")
+//					k_str=k_dwc_innestata.Modify(k_nome + ".height='" + k_dwc_innestata.Describe(k_nome + ".height")  + "' ")
+					
+				end if
+			  	k_max_nr_oggetti++
+			end if
+		end if
+		k_punt_txt++
+		k_punt_txt = pos(k_dw_syntax, "name=", k_punt_txt)
+	LOOP	
+	
+//--- se ho trovato qls applica le modifiche tutte insieme	
+	if k_str_modify > " " then 
+		k_str = k_dwc_innestata.Modify(k_str_modify)
+		k_str_modify=""
+	end if
+
+
+end subroutine
 
 on kuf_stampe.create
 call super::create

@@ -97,6 +97,7 @@ if k_ctr <= k_ctr_idx then
 				k_ctr = Pos ( upper(kGst_tab_menu_window[k_ctr_save].funzioni), upper(ki_cancellazione) )
 			end if
 			
+		case kkg_flag_modalita.duplica
 		case kkg_flag_modalita.inserimento
 			k_ctr = Pos ( upper(kGst_tab_menu_window[k_ctr].funzioni), upper(ki_inserimento)  )
 			

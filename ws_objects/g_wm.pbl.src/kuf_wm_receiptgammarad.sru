@@ -1127,7 +1127,8 @@ if upperbound(kst_tab_wm_receiptgammarad) > 0 then
 
 			kst_open_w.flag_modalita = k_modalita			
 			kst_tab_g_0[1].id = kst_tab_wm_receiptgammarad[1].id
-			if not this.u_open( kst_tab_g_0[], kst_open_w ) then  //Apre le Varie Funzioni
+			kst_esito = this.u_open( kst_tab_g_0[], kst_open_w )   //Apre le Varie Funzioni
+	         if kst_esito.esito = kkg_esito.ok then 
 				k_return = 1
 				
 				kguo_exception.setmessage( "Operazione di Accesso al Packing List fallita. ")

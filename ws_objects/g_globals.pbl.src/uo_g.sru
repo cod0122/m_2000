@@ -121,7 +121,6 @@ public function date get_datazero ()
 public subroutine set_e1_enabled (boolean a_enabled)
 public function boolean if_e1_enabled ()
 public function datetime get_datetime_current ()
-public function string u_replace (string k_str, string k_char_old, string k_char)
 public subroutine set_oralegale_utc (datetime a_dataora_oggi) throws uo_exception
 public function boolean if_w_toolbar_programmi ()
 public subroutine window_aperta_add (ref w_super aw_da_aprire)
@@ -137,6 +136,7 @@ public function datetime get_datetime_current_old ()
 public function integer set_anno_procedura (integer a_anno)
 public subroutine set_flagzoomctrl (boolean a_flag)
 public function boolean get_flagzoomctrl ()
+public function string u_replace (string k_str, string k_char_old, string k_char_new)
 end prototypes
 
 public subroutine set_attiva_suoni (boolean a_attiva_suoni);
@@ -297,35 +297,6 @@ uo_exception kuo_exception
 
 return k_return
 
-end function
-
-public function string u_replace (string k_str, string k_char_old, string k_char);//
-//--- ricopre nella stringa k_str i caratteri k_char_old con k_char 
-//
-string k_return 
-int kstart_pos = 1
-
-// Find the first occurrence of old_str.
-
-kstart_pos = pos(k_str, k_char_old, kstart_pos)
-
-// Only enter the loop if you find old_str.
-
-DO WHILE kstart_pos > 0
-
-// Replace old_str with new_str.
-
-    k_str = ReplaceA(k_str, kstart_pos, len(k_char_old), k_char)
-
-// Find the next occurrence of old_str.
-
-    kstart_pos = pos(k_str, k_char_old, kstart_pos+len(k_char) )
-
-LOOP
-
-k_return = k_str
-
-return k_return
 end function
 
 public subroutine set_oralegale_utc (datetime a_dataora_oggi) throws uo_exception;//---
@@ -752,6 +723,35 @@ end subroutine
 public function boolean get_flagzoomctrl ();
 return flagZOOMctrl 
 
+end function
+
+public function string u_replace (string k_str, string k_char_old, string k_char_new);//
+//--- ricopre nella stringa k_str i caratteri k_char_old con k_char_new 
+//
+string k_return 
+int kstart_pos = 1
+
+// Find the first occurrence of old_str.
+
+kstart_pos = pos(k_str, k_char_old, kstart_pos)
+
+// Only enter the loop if you find old_str.
+
+DO WHILE kstart_pos > 0
+
+// Replace old_str with new_str.
+
+    k_str = ReplaceA(k_str, kstart_pos, len(k_char_old), k_char_new)
+
+// Find the next occurrence of old_str.
+
+    kstart_pos = pos(k_str, k_char_old, kstart_pos+len(k_char_new) )
+
+LOOP
+
+k_return = k_str
+
+return k_return
 end function
 
 on uo_g.create

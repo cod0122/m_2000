@@ -6647,8 +6647,9 @@ public function long get_codice_da_rag_soc (ref string a_rag_soc_10) throws uo_e
 //-----------------------------------------------------------------------------------------------
 //--- Torna CODICE da Ragione sociale (prima parte)
 //--- 
-//--- Input: ragione sociale   
-//--- ritorna: codice
+//--- Inp: ragione sociale   
+//--- Out: ragione sociale competa trovata
+//--- rit: codice
 //--- lancia Exception uo_exception
 //--- 
 //-----------------------------------------------------------------------------------------------
@@ -6669,24 +6670,31 @@ st_tab_clienti kst_tab_clienti
   	if trim(a_rag_soc_10) > " " then
 		
 		kst_tab_clienti.rag_soc_10 = "%" + trim(a_rag_soc_10) + "%" 
+		kst_tab_clienti.rag_soc_10 = kguo_g.u_replace(kst_tab_clienti.rag_soc_10, " ", "%")
 		kst_tab_clienti.stato = kki_cliente_stato_estinto
 		
-		SELECT min(codice)
+		SELECT codice, rag_soc_10
 			 into :kst_tab_clienti.codice
+			 	,  :kst_tab_clienti.rag_soc_10
+			 FROM clienti
+			 where codice in (
+		SELECT min(codice)
 			 FROM clienti
 			 where clienti.rag_soc_10 like :kst_tab_clienti.rag_soc_10 
-			      and clienti.stato <> :kst_tab_clienti.stato
-				using sqlca;
+			      and clienti.stato <> :kst_tab_clienti.stato)
+				using kguo_sqlca_db_magazzino ;
 	
-		if sqlca.sqlcode < 0 then
+		if kguo_sqlca_db_magazzino.sqlcode < 0 then
 			kst_esito.esito = kkg_esito.db_ko
-			kst_esito.sqlcode = sqlca.sqlcode
-			kst_esito.SQLErrText = "Errore in Lettura Clienti (ricerca codice da nome: " + trim(a_rag_soc_10) + ")  ~n~r:" + trim(sqlca.SQLErrText)
+			kst_esito.sqlcode = kguo_sqlca_db_magazzino.sqlcode
+			kst_esito.SQLErrText = "Errore in Lettura Clienti (ricerca codice da nome: " + trim(a_rag_soc_10) + "). Errore: " + trim(kguo_sqlca_db_magazzino.SQLErrText) //~n~r
 			kguo_exception.set_esito(kst_esito)
 			throw kguo_exception
 		else
-			if sqlca.sqlcode = 100 or isnull(kst_tab_clienti.codice) then
+			if kguo_sqlca_db_magazzino.sqlcode = 100 or isnull(kst_tab_clienti.codice) then
 				kst_tab_clienti.codice = 0
+			else
+				a_rag_soc_10 = trim(kst_tab_clienti.rag_soc_10)
 			end if
 		end if
 		

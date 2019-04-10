@@ -23,20 +23,21 @@ end variables
 forward prototypes
 public function string get_id_programma (string k_flag_modalita)
 public function boolean u_open_applicazione (ref st_tab_g_0 kst_tab_g_0, string k_flag_modalita)
-public function boolean u_open (st_tab_g_0 kst_tab_g_0[], st_open_w kst_open_w)
 public function boolean if_sicurezza (st_open_w ast_open_w) throws uo_exception
 public function boolean link_call (ref datawindow adw_link, string a_campo_link) throws uo_exception
 public function boolean if_sicurezza (string aflag_modalita) throws uo_exception
 public function st_esito u_check_dati (ref datastore ads_inp) throws uo_exception
 public function string get_descrizione (string a_flag_modalita)
-public function boolean u_open ()
 public function boolean u_open_ds (st_open_w ast_open_w) throws uo_exception
-public function boolean u_open (ref st_open_w ast_open_w)
 public function string u_get_errmsg_nontrovato (string a_modalita)
 public subroutine _readme ()
 public function boolean link_call (ref datastore ads_1, string a_campo_link) throws uo_exception
 public subroutine u_set_ki_nomeoggetto (any a_any)
 public function st_esito u_batch_run () throws uo_exception
+public function st_esito u_open () 
+public function st_esito u_open (ref st_open_w ast_open_w)
+public function st_esito u_open (string a_modalita)
+public function st_esito u_open (st_tab_g_0 kst_tab_g_0[], st_open_w kst_open_w)
 end prototypes
 
 public function string get_id_programma (string k_flag_modalita);//
@@ -104,47 +105,6 @@ end if
 
 return k_return
 
-
-end function
-
-public function boolean u_open (st_tab_g_0 kst_tab_g_0[], st_open_w kst_open_w);//
-//--- Chiama la giusta Funzionalità
-//---
-//--- Input: st_tab_.... con ID valorizzato se serve,  st_open_w.flag_modalita = tipo funzione da richiamare
-//---
-//
-boolean  k_return = true
-integer k_ind
-
-
-k_ind=1 
-
-		choose case kst_open_w.flag_modalita  
-				
-
-			case kkg_flag_modalita.stampa
-//				this.u_open_vmcs(kst_tab_sped[])		
-				
-			case kkg_flag_modalita.cancellazione
-				this.u_open_applicazione(kst_tab_g_0[k_ind], kkg_flag_modalita.cancellazione)
-				
-			case kkg_flag_modalita.modifica
-				this.u_open_applicazione(kst_tab_g_0[k_ind], kkg_flag_modalita.modifica)
-				
-			case kkg_flag_modalita.inserimento
-				this.u_open_applicazione(kst_tab_g_0[k_ind], kkg_flag_modalita.inserimento)
-				
-			case kkg_flag_modalita.visualizzazione
-				this.u_open_applicazione(kst_tab_g_0[k_ind], kkg_flag_modalita.visualizzazione)
-				
-			case else
-					
-					
-			end choose		
-			
- 
- 
-return k_return
 
 end function
 
@@ -491,24 +451,6 @@ string k_return=""
 return k_return
 end function
 
-public function boolean u_open ();//
-//--- Chiama la OPEN senza particolari funzioni
-//---
-//--- Input: 
-//---
-//
-boolean  k_return = true
-st_tab_g_0 kst_tab_g_0[]
-st_open_w kst_open_w
-
-kst_tab_g_0[1].id = 1
-
-k_return = this.u_open_applicazione(kst_tab_g_0[1], kkg_flag_modalita.visualizzazione)
- 
-return k_return
-
-end function
-
 public function boolean u_open_ds (st_open_w ast_open_w) throws uo_exception;//
 //--- Chiama la OPEN con nel key11 il ds con dentro i dati e key9 in nime del campo "id" della tabella 
 //--- (se ci sono particolarità è meglio ereditarla e modificarla)
@@ -557,42 +499,6 @@ end if
 
 return k_return
 
-
-
-end function
-
-public function boolean u_open (ref st_open_w ast_open_w);//---
-//--- Apre la Window x le diverse funzioni
-//---
-//--- Input: st_open_w
-//--- Out: TRUE = finestra aperta; FASE=operazione non eseguita
-//---
-boolean k_return = false
-string k_rc = ""
-st_esito kst_esito 
-//kuf_menu_window kuf1_menu_window
-
-	if trim(ast_open_w.flag_modalita) > " " then
-	else
-		ast_open_w.flag_modalita = kkg_flag_modalita.visualizzazione
-	end if
-	ast_open_w.id_programma = get_id_programma( ast_open_w.flag_modalita )
-	ast_open_w.flag_primo_giro = "S"
-	if trim(ast_open_w.flag_adatta_win) > " " then 
-	else
-		ast_open_w.flag_adatta_win = KKG.ADATTA_WIN
-	end if
-	if not isvalid(ast_open_w.key12_any) then ast_open_w.key12_any = this			// questo oggetto di gestione del trova
-
-	//kuf1_menu_window = create kuf_menu_window 
-	kGuf_menu_window.open_w_tabelle(ast_open_w)
-	//destroy kuf1_menu_window
-	//if k_rc = "1" then	
-		k_return = true
-	//end if
-
-
-return k_return
 
 
 end function
@@ -772,6 +678,149 @@ end try
 
 
 return kst_esito
+end function
+
+public function st_esito u_open ();//
+//--- Chiama la OPEN senza particolari funzioni
+//---
+//--- Input: 
+//---
+//
+boolean  k_return = true
+st_tab_g_0 kst_tab_g_0[]
+st_open_w kst_open_w
+st_esito kst_esito
+
+
+	kst_esito.esito = kkg_esito.ok
+	kst_esito.sqlcode = 0
+	kst_esito.SQLErrText = ""
+
+	kst_tab_g_0[1].id = 1
+	
+	k_return = this.u_open_applicazione(kst_tab_g_0[1], kkg_flag_modalita.visualizzazione)
+ 
+ 	if not k_return then
+		kst_esito.esito = kkg_esito.no_esecuzione
+		kst_esito.SQLErrText = "Funzione richiesta non Eseguita: (id programma: " &
+			               + trim(lower(get_id_programma(kkg_flag_modalita.visualizzazione)))+ ", modalita: " + trim(kkg_flag_modalita.visualizzazione) + ")~n~r"
+	end if	
+		
+
+return kst_esito
+
+end function
+
+public function st_esito u_open (ref st_open_w ast_open_w);//---
+//--- Apre la Window x le diverse funzioni
+//---
+//--- Input: st_open_w
+//--- Out: TRUE = finestra aperta; FASE=operazione non eseguita
+//---
+//boolean k_return = false
+string k_rc = ""
+st_esito kst_esito 
+//kuf_menu_window kuf1_menu_window
+
+
+	kst_esito.esito = kkg_esito.ok
+	kst_esito.sqlcode = 0
+	kst_esito.SQLErrText = ""
+
+	if trim(ast_open_w.flag_modalita) > " " then
+	else
+		ast_open_w.flag_modalita = kkg_flag_modalita.visualizzazione
+	end if
+	ast_open_w.id_programma = get_id_programma( ast_open_w.flag_modalita )
+	ast_open_w.flag_primo_giro = "S"
+	if trim(ast_open_w.flag_adatta_win) > " " then 
+	else
+		ast_open_w.flag_adatta_win = KKG.ADATTA_WIN
+	end if
+	if not isvalid(ast_open_w.key12_any) then ast_open_w.key12_any = this			// questo oggetto di gestione del trova
+
+	//kuf1_menu_window = create kuf_menu_window 
+	kGuf_menu_window.open_w_tabelle(ast_open_w)
+	//destroy kuf1_menu_window
+	//if k_rc = "1" then	
+	//	k_return = true
+	//end if
+
+
+return kst_esito
+
+
+end function
+
+public function st_esito u_open (string a_modalita);//---
+//--- Apre la Window x le diverse funzioni
+//---
+//--- Input: st_open_w
+//--- Out: TRUE = finestra aperta; FASE=operazione non eseguita
+//---
+boolean k_return = false
+st_open_w kst_open_w
+st_esito kst_esito
+
+
+	kst_esito.esito = kkg_esito.ok
+	kst_esito.sqlcode = 0
+	kst_esito.SQLErrText = ""
+
+	kst_open_w.flag_modalita = a_modalita
+
+	kst_esito = u_open(kst_open_w)
+
+
+return kst_esito
+
+end function
+
+public function st_esito u_open (st_tab_g_0 kst_tab_g_0[], st_open_w kst_open_w);//
+//--- Chiama la giusta Funzionalità
+//---
+//--- Input: st_tab_.... con ID valorizzato se serve,  st_open_w.flag_modalita = tipo funzione da richiamare
+//---
+//
+//boolean  k_return = true
+integer k_ind
+st_esito kst_esito
+
+
+	kst_esito.esito = kkg_esito.ok
+	kst_esito.sqlcode = 0
+	kst_esito.SQLErrText = ""
+
+
+	k_ind=1 
+
+		choose case kst_open_w.flag_modalita  
+				
+
+			case kkg_flag_modalita.stampa
+//				this.u_open_vmcs(kst_tab_sped[])		
+				
+			case kkg_flag_modalita.cancellazione
+				this.u_open_applicazione(kst_tab_g_0[k_ind], kkg_flag_modalita.cancellazione)
+				
+			case kkg_flag_modalita.modifica
+				this.u_open_applicazione(kst_tab_g_0[k_ind], kkg_flag_modalita.modifica)
+				
+			case kkg_flag_modalita.inserimento
+				this.u_open_applicazione(kst_tab_g_0[k_ind], kkg_flag_modalita.inserimento)
+				
+			case kkg_flag_modalita.visualizzazione
+				this.u_open_applicazione(kst_tab_g_0[k_ind], kkg_flag_modalita.visualizzazione)
+				
+			case else
+					
+					
+			end choose		
+			
+ 
+ 
+return kst_esito
+
 end function
 
 on kuf_parent.create

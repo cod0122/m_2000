@@ -565,6 +565,11 @@ st_open_w kst_open_w
 st_tab_g_0 kst_tab_g_0[]
 
 
+kst_esito.esito = kkg_esito.ok 
+kst_esito.sqlcode = 0
+kst_esito.SQLErrText = ""
+kst_esito.nome_oggetto = this.classname()
+
 if upperbound(kst_wm_pklist) > 0 then
 
    choose case k_modalita  
@@ -602,7 +607,8 @@ if upperbound(kst_wm_pklist) > 0 then
 
          kst_open_w.flag_modalita = k_modalita        
          kst_tab_g_0[1].id = kst_wm_pklist[1].st_wm_pkl_web.idpkl
-         if not this.u_open( kst_tab_g_0[], kst_open_w ) then  //Apre le Varie Funzioni
+		kst_esito = this.u_open( kst_tab_g_0[], kst_open_w )   //Apre le Varie Funzioni
+         if kst_esito.esito = kkg_esito.ok then 
             k_return = 1
             
             kguo_exception.setmessage( "Operazione di Accesso al Packing List Web fallita. ")

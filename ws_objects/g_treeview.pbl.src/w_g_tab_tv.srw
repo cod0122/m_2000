@@ -29,7 +29,6 @@ end type
 end forward
 
 global type w_g_tab_tv from w_g_tab
-integer x = 29999
 integer width = 681
 integer height = 440
 string title = "Navigatore"
@@ -127,6 +126,8 @@ public subroutine u_wtitolo_path (st_treeview_data ast_treeview_data)
 public subroutine u_resize_1 ()
 private subroutine u_set_data_certif_da_st ()
 protected subroutine stampa_anteprima ()
+public subroutine u_resize ()
+public subroutine u_resize_default ()
 end prototypes
 
 protected function integer u_dammi_item_padre_da_list ();//
@@ -998,6 +999,7 @@ try
 			ki_st_vertical = true
 			ki_st_orizzontal = true
 			u_resize_predefinita( )
+			u_resize_default( )
 	
 		case else
 			super::smista_funz(k_par_in)
@@ -1444,30 +1446,30 @@ public function boolean u_resize_predefinita ();//---
 
 		st_vertical.height = st_orizzontal.y
 
-		if st_vertical.visible then
-			lv_1.x = st_vertical.x + st_vertical.width 
-			st_vertical.bringtotop = true
-		end if
-		
-		if st_orizzontal.visible then
-			st_orizzontal.width = this.width
-			st_orizzontal.bringtotop = true
-			dw_anteprima.y = st_orizzontal.y + st_orizzontal.height
-			dw_anteprima.height = this.height - st_orizzontal.y - st_orizzontal.height //- 240 
-			dw_anteprima.width = st_orizzontal.width 
-			 lv_1.height = this.height - st_orizzontal.y 
-		end if
-	
-		lv_1.height = st_vertical.height
-		tv_root.height = st_vertical.height 
-
-		lv_1.visible = true
-		tv_root.visible = st_vertical.visible
-		dw_anteprima.visible = st_orizzontal.visible
+//		if st_vertical.visible then
+//			lv_1.x = st_vertical.x + st_vertical.width 
+//			st_vertical.bringtotop = true
+//		end if
+//		
+//		if st_orizzontal.visible then
+//			st_orizzontal.width = this.width
+//			st_orizzontal.bringtotop = true
+//			dw_anteprima.y = st_orizzontal.y + st_orizzontal.height
+//			dw_anteprima.height = this.height - st_orizzontal.y - st_orizzontal.height //- 240 
+//			dw_anteprima.width = st_orizzontal.width 
+//			 lv_1.height = this.height - st_orizzontal.y 
+//		end if
+//	
+//		lv_1.height = st_vertical.height
+//		tv_root.height = st_vertical.height 
+//
+//		lv_1.visible = true
+//		tv_root.visible = st_vertical.visible
+//		dw_anteprima.visible = st_orizzontal.visible
 	
 		this.setredraw(true)
 
-		this.visible = true
+//		this.visible = true
 
 return TRUE
 
@@ -1711,6 +1713,76 @@ protected subroutine stampa_anteprima ();//
 
 
 	
+end subroutine
+
+public subroutine u_resize ();//
+super::u_resize( )
+
+u_resize_default()
+end subroutine
+
+public subroutine u_resize_default ();//---
+long k_width_orig, k_height_orig
+
+
+	this.setredraw(false)
+
+	if ki_st_orizzontal then
+		k_width_orig = st_orizzontal.width
+		k_height_orig = st_orizzontal.y + st_orizzontal.height + dw_anteprima.height
+	else
+		k_height_orig = tv_root.height
+		if ki_st_vertical then
+			k_width_orig = st_vertical.X + st_vertical.width + lv_1.width
+		else
+			k_width_orig = tv_root.width
+		end if
+	end if
+		
+	if k_width_orig > 0 then
+		
+		if ki_st_vertical then
+			st_vertical.X = this.width * (((100 / k_width_orig) * st_vertical.X) / 100)
+		end if
+		if ki_st_orizzontal then
+			st_orizzontal.Y = this.height * (((100 / k_height_orig) * st_orizzontal.y) / 100)
+		end if
+		
+		if st_vertical.visible then
+			tv_root.width = st_vertical.X - st_vertical.width 
+			lv_1.width =  this.width - st_vertical.X - st_vertical.width // -70 
+		else
+			lv_1.width = this.width //- 75 
+		end if
+
+		if st_vertical.visible then
+			lv_1.x = st_vertical.x + st_vertical.width 
+			st_vertical.bringtotop = true
+		end if
+		st_vertical.height = st_orizzontal.y
+		
+		if st_orizzontal.visible then
+			st_orizzontal.width = this.width
+			st_orizzontal.bringtotop = true
+			dw_anteprima.y = st_orizzontal.y + st_orizzontal.height
+			dw_anteprima.height = this.height - st_orizzontal.y - st_orizzontal.height //- 240 
+			dw_anteprima.width = st_orizzontal.width 
+			 lv_1.height = this.height - st_orizzontal.y 
+		end if
+	
+		lv_1.height = st_vertical.height
+		tv_root.height = st_vertical.height 
+
+		lv_1.visible = true
+		tv_root.visible = st_vertical.visible
+		dw_anteprima.visible = st_orizzontal.visible
+	
+	end if
+	this.setredraw(true)
+
+		this.visible = true
+
+
 end subroutine
 
 on w_g_tab_tv.create

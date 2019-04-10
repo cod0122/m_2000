@@ -10,7 +10,7 @@ global kuf_convalida_calc kuf_convalida_calc
 
 forward prototypes
 public function boolean if_sicurezza (st_open_w ast_open_w) throws uo_exception
-public function boolean u_open (ref st_open_w ast_open_w)
+public function st_esito u_open (ref st_open_w ast_open_w)
 end prototypes
 
 public function boolean if_sicurezza (st_open_w ast_open_w) throws uo_exception;//
@@ -25,17 +25,22 @@ destroy kuf1_meca_dosim
 return k_return
 end function
 
-public function boolean u_open (ref st_open_w ast_open_w);//---
+public function st_esito u_open (ref st_open_w ast_open_w);//---
 //--- Apre la Window x le diverse funzioni
 //---
 //--- Input: st_open_w
 //--- Out: TRUE = finestra aperta; FASE=operazione non eseguita
 //---
-boolean k_return = false
+//boolean k_return = false
 string k_rc = ""
 st_esito kst_esito 
 kuf_menu_window kuf1_menu_window
 
+
+	kst_esito.esito = kkg_esito.ok
+	kst_esito.sqlcode = 0
+	kst_esito.SQLErrText = ""
+	
 	ast_open_w.flag_modalita = kkg_flag_modalita.visualizzazione
 	ast_open_w.id_programma = get_id_programma( ast_open_w.flag_modalita )
 	ast_open_w.flag_primo_giro = "S"
@@ -44,10 +49,10 @@ kuf_menu_window kuf1_menu_window
 	kuf1_menu_window = create kuf_menu_window 
 	kuf1_menu_window.open_conv_calc(ast_open_w)
 	destroy kuf1_menu_window
-	k_return = true
+	//k_return = true
 
 
-return k_return
+return kst_esito
 
 end function
 

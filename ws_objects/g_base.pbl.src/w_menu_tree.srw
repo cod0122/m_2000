@@ -297,6 +297,8 @@ if u_set_ki_menu() then
 		case 13
 			ki_menu.m_finestra.m_gestione.m_fin_inserimento.event clicked( )
 		case 14
+			ki_menu.m_finestra.m_gestione.m_fin_duplica.event clicked( )
+		case 15
 			ki_menu.m_finestra.m_gestione.m_fin_elimina.event clicked( )
 	end choose
 
@@ -473,7 +475,8 @@ if pb_10.enabled then k_nr_icone ++
 if pb_11.enabled then k_nr_icone ++
 if pb_12.enabled then k_nr_icone ++
 if pb_13.enabled then k_nr_icone ++
-//if pb_14.enabled then k_nr_icone ++  NO LA DELETE
+if pb_14.enabled then k_nr_icone ++
+//if pb_15.enabled then k_nr_icone ++  NO LA DELETE
 //--- pb di TROVA/FILTRO
 if pb_t1.enabled then k_nr_icone ++
 if pb_t2.enabled then k_nr_icone ++
@@ -566,7 +569,10 @@ end if
 if u_resize_set_pb(pb_13, st_13, k_nr_icone, k_x, k_y, k_start_x, k_st_width, k_st_y, k_st_x_delta,kpb_width, k_height) then
 	k_spazio_bianco = true
 end if
-//NO ALLA DELETE if u_resize_set_pb(pb_14, st_14, k_nr_icone, k_x, k_y, k_start_x, k_st_width, k_st_y, k_st_x_delta,kpb_width, k_height)
+if u_resize_set_pb(pb_14, st_14, k_nr_icone, k_x, k_y, k_start_x, k_st_width, k_st_y, k_st_x_delta,kpb_width, k_height) then
+	k_spazio_bianco = true
+end if
+//NO ALLA DELETE if u_resize_set_pb(pb_15, st_15, k_nr_icone, k_x, k_y, k_start_x, k_st_width, k_st_y, k_st_x_delta,kpb_width, k_height)
 
 if k_spazio_bianco and k_nr_icone = 1 then
 	u_resize_set_sep(r_sep1, k_x, k_y, k_start_x, k_st_x_delta, k_height)
@@ -846,7 +852,9 @@ k_changed = u_toolbar_set_pb(pb_12, ki_menu.m_finestra.m_gestione.m_fin_modifica
 if k_changed then k_return = true
 k_changed = u_toolbar_set_pb(pb_13, ki_menu.m_finestra.m_gestione.m_fin_inserimento, st_13)
 if k_changed then k_return = true
-//k_changed = u_toolbar_set_pb(pb_14, ki_menu.m_finestra.m_gestione.m_fin_elimina, st_14)
+k_changed = u_toolbar_set_pb(pb_14, ki_menu.m_finestra.m_gestione.m_fin_duplica, st_14)
+if k_changed then k_return = true
+//k_changed = u_toolbar_set_pb(pb_15, ki_menu.m_finestra.m_gestione.m_fin_elimina, st_15)
 //if k_changed then k_return = true
 
 

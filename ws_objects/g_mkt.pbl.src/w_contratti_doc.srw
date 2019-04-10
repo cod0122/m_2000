@@ -12,8 +12,10 @@ integer y = 148
 integer width = 3447
 integer height = 2000
 string title = "Quotazione"
+windowanimationstyle closeanimation = topslide!
 boolean ki_toolbar_window_presente = true
 boolean ki_fai_nuovo_dopo_update = false
+boolean ki_consenti_duplica = true
 end type
 global w_contratti_doc w_contratti_doc
 
@@ -52,6 +54,7 @@ private subroutine if_anag_attiva_no (st_tab_clienti ast_tab_clienti)
 private function boolean if_anag_attiva (st_tab_clienti ast_tab_clienti)
 private subroutine if_anag_bloccata (st_tab_clienti ast_tab_clienti)
 public function st_tab_contratti_doc u_set_st_tab_from_dw ()
+public function boolean u_duplica () throws uo_exception
 end prototypes
 
 private subroutine pulizia_righe ();////
@@ -360,8 +363,7 @@ if tab_1.tabpage_1.dw_1.rowcount() = 0 then
 		inserisci()
 	else
 //--- Se NO inserimento.... 
-		k_rc = tab_1.tabpage_1.dw_1.retrieve( 5008 ) 
-//		k_rc = tab_1.tabpage_1.dw_1.retrieve( kist_tab_contratti_doc.id_contratto_doc  ) 
+		k_rc = tab_1.tabpage_1.dw_1.retrieve( kist_tab_contratti_doc.id_contratto_doc  ) 
 		
 		choose case k_rc
 
@@ -419,7 +421,7 @@ if tab_1.tabpage_1.dw_1.rowcount() = 0 then
 	if ki_st_open_w.flag_modalita = kkg_flag_modalita.inserimento then
 	
 //	tab_1.tabpage_2.enabled = false
-		tab_1.tabpage_1.dw_1.setcolumn(1)
+		tab_1.tabpage_1.dw_1.setcolumn("quotazione_tipo")
 		tab_1.tabpage_1.dw_1.setfocus()
 	else
 		if ki_st_open_w.flag_modalita = kkg_flag_modalita.modifica then
@@ -1383,6 +1385,36 @@ kst_tab_contratti_doc.x_utente = tab_1.tabpage_1.dw_1.getitemstring( 1, "x_utent
 return kst_tab_contratti_doc
 end function
 
+public function boolean u_duplica () throws uo_exception;//
+//--- Duplica documento 
+//
+
+try
+	ki_st_open_w.flag_modalita = kkg_flag_modalita.inserimento
+	
+	tab_1.tabpage_1.dw_1.setitem(1, "contratti_doc_id_contratto_doc", 0)
+	tab_1.tabpage_1.dw_1.setitem(1, "anno", kguo_g.get_anno( ) )
+	tab_1.tabpage_1.dw_1.setitem(1, "quotazione_cod", "")
+	tab_1.tabpage_1.dw_1.setitem(1, "stato", "1")
+	tab_1.tabpage_1.dw_1.setitem(1, "data_stampa", kkg.data_zero )
+	tab_1.tabpage_1.dw_1.setitem(1, "offerta_data", kguo_g.get_dataoggi( ) )
+	tab_1.tabpage_1.dw_1.setitem(1, "data_inizio", kkg.data_zero )
+	tab_1.tabpage_1.dw_1.setitem(1, "data_fine", kkg.data_zero )
+	tab_1.tabpage_1.dw_1.setitem(1, "esito_operazioni_ts_operazione", kguo_g.get_datetime_zero( ) )
+	tab_1.tabpage_1.dw_1.setitem(1, "x_utente", "")
+	tab_1.tabpage_1.dw_1.setitem(1, "x_datins", kguo_g.get_datetime_zero( ) )
+	
+	tab_1.tabpage_1.dw_1.resetupdate( )
+	
+catch (uo_exception kuo_exception)
+	
+finally
+	
+end try
+
+return true
+end function
+
 on w_contratti_doc.create
 int iCurrent
 call super::create
@@ -1408,7 +1440,7 @@ int k_rc
 window k_window
 st_esito kst_esito
 st_tab_contratti  kst_tab_contratti 
-//st_tab_clienti kst_tab_clienti
+st_tab_clienti kst_tab_clienti
 //kuf_contratti kuf1_contratti
 kuf_menu_window kuf1_menu_window 
 kuf_sicurezza kuf1_sicurezza
@@ -1422,29 +1454,46 @@ kuf_sicurezza kuf1_sicurezza
 if isvalid(kst_open_w) then
 
 //--- Dalla finestra di Elenco Valori
-	if kst_open_w.id_programma = kkg_id_programma_elenco then
+	if kst_open_w.id_programma = kkg_id_programma_elenco &
+					and long(kst_open_w.key3) > 0 then
 	
 		if not isvalid(kdsi_elenco_input) then kdsi_elenco_input = create datastore
+		kdsi_elenco_input = kst_open_w.key12_any 
 		
+		if kdsi_elenco_input.rowcount() > 0 then
 		
-		choose case kst_open_w.key2
-
-			case "d_listino_pregruppo_l" 
-				if trim(ki_st_open_w.flag_modalita) = kkg_flag_modalita.inserimento or  trim(ki_st_open_w.flag_modalita) = kkg_flag_modalita.modifica then
-					if long(kst_open_w.key3) > 0 then
+			choose case kst_open_w.key2
 	
-						kdsi_elenco_input = kst_open_w.key12_any 
-						if kdsi_elenco_input.rowcount() > 0 then
-			
+				case "d_listino_pregruppo_l" 
+					if trim(ki_st_open_w.flag_modalita) = kkg_flag_modalita.inserimento or  trim(ki_st_open_w.flag_modalita) = kkg_flag_modalita.modifica then
+				
 							tab_1.tabpage_1.dw_1.setitem(1, "id_listino_pregruppo", &
 											 kdsi_elenco_input.getitemnumber(long(kst_open_w.key3), "id_listino_pregruppo"))
 							tab_1.tabpage_1.dw_1.setitem(1, "listino_pregruppo_descr", &
 												(trim(kdsi_elenco_input.getitemstring(long(kst_open_w.key3), "descr"))))
-								
+									
+
+					end if		
+
+				case  "d_clienti_l_rag_soc"  
+					if trim(ki_st_open_w.flag_modalita) = kkg_flag_modalita.inserimento or  trim(ki_st_open_w.flag_modalita) = kkg_flag_modalita.modifica then
+						kst_tab_clienti.codice = kdsi_elenco_input.getitemnumber(long(kst_open_w.key3), "id_cliente")
+						if kst_tab_clienti.codice > 0 then
+							kst_tab_clienti.rag_soc_10 = kdsi_elenco_input.getitemstring(long(kst_open_w.key3), "rag_soc_1")
+							kst_tab_clienti.loc_1 = kdsi_elenco_input.getitemstring(long(kst_open_w.key3), "localita")
+							kst_tab_clienti.prov_1 = kdsi_elenco_input.getitemstring(long(kst_open_w.key3), "prov")
+							kst_tab_clienti.id_nazione_1 = kdsi_elenco_input.getitemstring(long(kst_open_w.key3), "id_nazione_1")
+							
+							tab_1.tabpage_1.dw_1.setitem(1, "id_cliente", kst_tab_clienti.codice)
+							tab_1.tabpage_1.dw_1.setitem(1, "clienti_rag_soc_10", kst_tab_clienti.rag_soc_10)
+							tab_1.tabpage_1.dw_1.setitem(1, "clienti_loc_1", kst_tab_clienti.loc_1)
+							tab_1.tabpage_1.dw_1.setitem(1, "clienti_prov_1", kst_tab_clienti.prov_1)
+							tab_1.tabpage_1.dw_1.setitem(1, "clienti_id_nazione_1", kst_tab_clienti.id_nazione_1)
 						end if
-					end if					
-				end if				
-		end choose 
+					end if
+				
+			end choose 
+		end if
 							
 	end if
 
@@ -1751,7 +1800,7 @@ try
 				this.setitem(row, "acconto_cod_pag", "")
 			end if
 			
-	elseif k_nome = "stato" then
+	elseif left(k_nome, 5) = "stato" then
 			kst_tab_contratti_doc.stato = this.getitemstring( 1, "stato")
 			choose case trim(data) 
 				case kiuf_contratti_doc.kki_stato_riaperto 
@@ -2299,6 +2348,9 @@ end type
 
 type dw_9 from w_g_tab_3`dw_9 within tabpage_9
 string ki_flag_modalita = "vi"
+end type
+
+type st_duplica from w_g_tab_3`st_duplica within w_contratti_doc
 end type
 
 type ln_1 from line within tabpage_4

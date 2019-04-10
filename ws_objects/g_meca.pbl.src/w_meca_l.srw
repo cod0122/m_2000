@@ -759,8 +759,11 @@ try
 		return 
 	end if
 		
-	//--- se ricerca per ID LOTTO (idnnnnn)
+	//--- se ricerca per ID LOTTO (idnnnnn o ASNnnnnnnn)
 	k_pos = pos(lower(k_codice_x), "id", 1)  
+	if k_pos = 0 then
+		k_pos = pos(lower(k_codice_x), "asn", 1)  
+	end if
 	if k_pos > 0 then
 		k_numero_x = trim(mid(k_codice_x, k_pos + 2))
 		if isnumber(k_numero_x) then
@@ -841,6 +844,9 @@ end event
 event dw_guida::ue_dwnkey;//
 
 end event
+
+type st_duplica from w_g_tab0`st_duplica within w_meca_l
+end type
 
 type dw_data from uo_d_std_1 within w_meca_l
 event u_cb_ok ( )

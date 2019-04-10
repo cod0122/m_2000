@@ -18,7 +18,7 @@ forward prototypes
 public subroutine log_destroy ()
 public subroutine log_inizializza () throws uo_exception
 public function long u_chiudi (ref datastore ads_1, st_meca_chiudi ast_meca_chiudi) throws uo_exception
-public function boolean u_open ()
+public function st_esito u_open ()
 public function boolean u_chiudi_lotto (st_tab_meca ast_tab_meca) throws uo_exception
 public function long u_chiude_lotti_spediti () throws uo_exception
 public function st_esito u_batch_run () throws uo_exception
@@ -143,7 +143,7 @@ kuf_armo kuf1_armo
 return k_return
 end function
 
-public function boolean u_open ();//
+public function st_esito u_open ();//
 //--- Chiama la OPEN senza particolari funzioni
 //---
 //--- Input: 
@@ -152,24 +152,40 @@ public function boolean u_open ();//
 boolean  k_return = true
 st_tab_g_0 kst_tab_g_0[]
 st_open_w kst_open_w
+st_esito kst_esito
+string k_modalita
+
+
+kst_esito.esito = kkg_esito.ok
+kst_esito.sqlcode = 0
+kst_esito.SQLErrText = ""
 
 kst_tab_g_0[1].id = 1
 
 try 
 	if_sicurezza(kkg_flag_modalita.modifica )
 	k_return = this.u_open_applicazione(kst_tab_g_0[1], kkg_flag_modalita.modifica)
+	k_modalita = kkg_flag_modalita.modifica
 catch (uo_exception kuo_exception)
 	try 
 		if_sicurezza(kkg_flag_modalita.visualizzazione )
 		k_return = this.u_open_applicazione(kst_tab_g_0[1], kkg_flag_modalita.visualizzazione)
+		k_modalita = kkg_flag_modalita.visualizzazione
 	catch (uo_exception kuo1_exception)
 		k_return = false
 		kuo1_exception.messaggio_utente()
 	end try
 end try
-		
+
+if not k_return then
+	kst_esito.esito = kkg_esito.no_esecuzione
+	kst_esito.SQLErrText = "Funzione richiesta non Eseguita: (id programma: " &
+			               + trim(lower(get_id_programma(k_modalita)))+ ", modalita: " + trim(k_modalita) + ")~n~r"
+end if	
+
  
-return k_return
+//return k_return
+return kst_esito
 
 end function
 
