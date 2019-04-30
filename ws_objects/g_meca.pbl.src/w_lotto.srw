@@ -3882,7 +3882,7 @@ int k_rc
 	
 //--- Info x DRAG&DROP
 	if tab_1.tabpage_9.dw_9.rowcount() <= 0 and (ki_st_open_w.flag_modalita = kkg_flag_modalita.modifica or ki_st_open_w.flag_modalita = kkg_flag_modalita.visualizzazione) then
-		tab_1.tabpage_9.dw_9.dataobject = "d_dragdrp_info"
+		tab_1.tabpage_9.dw_9.dataobject = "d_memo_dragdrop_info"
 		tab_1.tabpage_6.st_6_retrieve.Text = "" // azzero per essere sicuro che al prx tentativo torna a fare la retrieve
 	end if
 

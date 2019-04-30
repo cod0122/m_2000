@@ -1585,7 +1585,7 @@ kuf_memo kuf1_memo
 	
 //--- Info x DRAG&DROP
 	if tab_1.tabpage_6.dw_6.rowcount() <= 0 and (ki_st_open_w.flag_modalita = kkg_flag_modalita.modifica or ki_st_open_w.flag_modalita = kkg_flag_modalita.visualizzazione) then
-		tab_1.tabpage_6.dw_6.dataobject = "d_dragdrp_info"
+		tab_1.tabpage_6.dw_6.dataobject = "d_memo_dragdrop_info"
 		tab_1.tabpage_6.st_6_retrieve.Text = "" // azzero per essere sicuro che al prx tentativo torna a fare la retrieve
 	end if
 
@@ -2160,7 +2160,7 @@ end event
 
 event key;call super::key;
 if kidw_selezionata.dataobject = "d_meca_1" or kidw_selezionata.dataobject = "d_meca_memo_l" &
-               or kidw_selezionata.dataobject = "d_armo_x_meca_1" or kidw_selezionata.dataobject = "d_dragdrp_info" then
+               or kidw_selezionata.dataobject = "d_armo_x_meca_1" or kidw_selezionata.dataobject = "d_memo_dragdrop_info" then
 //--- CTRL+V fa Incolla dei file
 	if key = KeyV! and keyflags = 2 then
 		u_drop_file(kiuf_file_dragdrop.kki_tipo_drag_incolla, handle(this))

@@ -18,6 +18,7 @@ boolean titlebar = false
 boolean controlmenu = false
 boolean minbox = false
 boolean maxbox = false
+windowtype windowtype = response!
 event u_open ( )
 cb_ritorna cb_ritorna
 cb_aggiorna cb_aggiorna
@@ -72,6 +73,9 @@ kuf_utility kuf1_utility
 	inizializza()
 	
 	ki_st_open_w.flag_primo_giro = "N"
+	
+	this.x =  this.width  / 2
+	this.y =  this.height
 	
 	setpointer(kpointer_orig)
 				

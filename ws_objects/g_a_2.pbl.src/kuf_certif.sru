@@ -14,11 +14,14 @@ private kds_certif_stampa_completa kids_certif_stampa_completa
 private kds_certif_stampa kids_certif_stampa
 private kds_certif_stampa_allegati kids_certif_stampa_allegati
 private datastore kids_certif_tree_stampati_xgiornomeseanno
-private datastore kids_certif_tree_stampati_xdata
+private kds_certif_tree_stampati_xdata kids_certif_tree_stampati_xdata
 public st_tab_certif kist_tab_certif
 //public boolean ki_flag_ristampa = false
 public boolean ki_flag_stampa_di_test = true
 public string ki_stampante[2] 
+
+
+
 end variables
 
 forward prototypes
@@ -68,6 +71,9 @@ public function long get_id_meca (ref st_tab_certif kst_tab_certif) throws uo_ex
 public function integer u_tree_riempi_treeview_x_giorno (ref kuf_treeview kuf1_treeview, readonly string k_tipo_oggetto)
 private function boolean stampa_1 (ref st_tab_certif ast_tab_certif) throws uo_exception
 public subroutine crea_certif_0 (ref st_tab_certif kst_tab_certif) throws uo_exception
+public function boolean set_flg_ristampa_xddt (st_tab_certif kst_tab_certif) throws uo_exception
+public function boolean set_flg_ristampa_xddt_on (st_tab_certif kst_tab_certif) throws uo_exception
+public function boolean set_flg_ristampa_xddt_off (st_tab_certif kst_tab_certif) throws uo_exception
 end prototypes
 
 public subroutine if_isnull (ref st_tab_certif kst_tab_certif);//---
@@ -1266,10 +1272,15 @@ st_tab_certif kst_tab_certif
 kuf_certif kuf1_certif
 
 
-
-
 	k_data_0 = date(0)		 
 
+
+	if isvalid(kids_certif_tree_stampati_xdata) then
+		kids_certif_tree_stampati_xdata.setfilter("")
+		k_rc = kids_certif_tree_stampati_xdata.filter( )
+	else
+		kids_certif_tree_stampati_xdata = create kds_certif_tree_stampati_xdata
+	end if
 		 
 //--- Ricavo l'oggetto figlio dal DB 
 	kst_tab_treeview.id = k_tipo_oggetto
@@ -1292,22 +1303,29 @@ kuf_certif kuf1_certif
 	k_data_0 = date(0)
 	k_data_a = date(0)
 	k_data_da = date(0)
+	k_dataoggi = kguo_g.get_dataoggi()
+	kst_treeview_data_any = kst_treeview_data.struttura
+
+//--- In questo caso la data parte da oggi meno 3 gg
+	if k_tipo_oggetto = kuf1_treeview.kist_treeview_oggetto.certif_uff_ddt_dett then
+		k_data_da = relativedate(k_dataoggi,-3)
+		k_data_a = date(9999,12,31)
+	else	
 	
 //--- Periodo di estrazione, se la data e' a zero allora calcolo in automatico -3 mesi
-	kst_treeview_data_any = kst_treeview_data.struttura
-	if (kst_treeview_data_any.st_tab_certif.data = date (0) or isnull(kst_treeview_data_any.st_tab_certif.data)) then
+		if (kst_treeview_data_any.st_tab_certif.data = date (0) or isnull(kst_treeview_data_any.st_tab_certif.data)) then
 
 //--- Ricavo la data da dataoggi e vado indietro per sicurezza di alcuni mesi
-		k_dataoggi = kguo_g.get_dataoggi()
-		k_data_da = date(string(relativedate(k_dataoggi,-90), "yyyy,mm,01"))
+			k_data_da = date(string(relativedate(k_dataoggi,-90), "yyyy,mm,01"))
 
-	else
+		else
 //--- prelevo il periodo da a 
-		k_data_da = kst_treeview_data_any.st_tab_certif.data
-		k_data_a = kst_treeview_data_any.st_tab_certif.data_stampa
+			k_data_da = kst_treeview_data_any.st_tab_certif.data
+			k_data_a = kst_treeview_data_any.st_tab_certif.data_stampa
 	
+		end if
 	end if
-		 
+	
 	k_handle_item_figlio = kuf1_treeview.kitv_tv1.finditem(ChildTreeItem!, k_handle_item_padre)
 
 //--- Procedo alla lettura della tab solo se non ho figli 
@@ -1325,59 +1343,13 @@ kuf_certif kuf1_certif
 			k_pic_list = kst_tab_treeview.pic_list 
 		end if
 
-
 //--- Cancello gli Item dalla tree prima di ripopolare
 		kuf1_treeview.u_delete_item_child(k_handle_item_padre)
 
-		if not isvalid(kids_certif_tree_stampati_xdata) then 
-			kids_certif_tree_stampati_xdata = create datastore
-			kids_certif_tree_stampati_xdata.dataobject = "ds_certif_tree_stampati_xdata"
-			kids_certif_tree_stampati_xdata.settransobject(kguo_sqlca_db_magazzino) 
-		end if
-			
-//		k_query_select = &
-//		"  	SELECT " &
-//		+ "	      certif.id, " &
-//		+ "	      certif.num_certif, " &
-//		+ "	      certif.data, " &
-//		+ "	      certif.id_meca, " &
-//		+ "	      certif.data_stampa, " &
-//		+ "	      certif.lav_data_ini, " &
-//		+ "	      certif.lav_data_fin, " &
-//		+ "	      certif.colli, " &
-//		+ "	      certif.dose, " &
-//		+ "	      certif.dose_min, " &
-//		+ "	      certif.dose_max, " &
-//		+ "	      certif.note, " &
-//		+ "	      certif.note_1, " &
-//		+ "	      certif.note_2, " &
-//		+ "	      certif.dose_max, " &
-//		+ "		meca.num_int, " &
-//		+ "		meca.data_int, " &
-//		+ "		meca.data_ent, " &
-//		+ "         meca.clie_1,  " &
-//		+ "         certif.clie_2,  " &
-//		+ "         meca.clie_3,  " &
-//		+ "		meca.num_bolla_in, " &
-//		+ "		meca.data_bolla_in, " &
-//		+ "		meca.contratto, " &
-//		+ "		contratti.mc_co, " &
-//		+ "		contratti.sc_cf, " &
-//		+ "  (select  c1.rag_soc_10 from  clienti c1 where meca.clie_1 = c1.codice) as c1_rag_soc_10, " &
-//		+ "  (select  c2.rag_soc_10 from  clienti c2 where certif.clie_2 = c2.codice) as c2_rag_soc_10, " &
-//		+ "  (select  c3.rag_soc_10 from  clienti c3 where meca.clie_3 = c3.codice) as c3_rag_soc_10 " &
-//		+ "	,meca.e1doco " &
-//		+ "	,meca.e1rorn " &
-//		+ "    FROM  (certif " &
-//		+ "	        INNER JOIN meca ON  " &
-//		+ "	     certif.id_meca = meca.id) " &
-//		+ "	        left outer JOIN contratti ON  " &
-//		+ "	     meca.contratto = contratti.codice " &
-
-		
 		choose case k_tipo_oggetto
 				
-			case kuf1_treeview.kist_treeview_oggetto.certif_st_dett
+			case kuf1_treeview.kist_treeview_oggetto.certif_st_dett &
+					,kuf1_treeview.kist_treeview_oggetto.certif_uff_ddt_dett
 //				k_query_where = " where " 
 				if k_data_da  <> k_data_a then
 					k_nr_righe = kids_certif_tree_stampati_xdata.retrieve(0, k_data_da, k_data_a)
@@ -1388,6 +1360,14 @@ kuf_certif kuf1_certif
 					k_nr_righe = kids_certif_tree_stampati_xdata.retrieve(0, k_data_da, k_data_da)
 //					k_query_where = k_query_where &
 //					+ " (certif.data = ?) " 
+				end if
+				//--- in questo caso filtro solo gli attestati non stampati da UFF. SPEDIZIONI
+				if k_nr_righe > 0 then
+					if k_tipo_oggetto = kuf1_treeview.kist_treeview_oggetto.certif_uff_ddt_dett then
+						kids_certif_tree_stampati_xdata.setfilter("flg_ristampa_xddt = 0")
+						k_rc = kids_certif_tree_stampati_xdata.filter( )
+						k_nr_righe = kids_certif_tree_stampati_xdata.rowcount( )
+					end if
 				end if
 					
 			case kuf1_treeview.kist_treeview_oggetto.meca_car_cert_dett
@@ -1401,75 +1381,10 @@ kuf_certif kuf1_certif
 					k_nr_righe = 0
 	
 		end choose
-	
-			
-//		k_query_order = &
-//		+ "	 order by " &
-//		+ "		 certif.data desc, certif.num_certif desc "
-
-	
-////--- Composizione della Query	
-//		if len(trim(k_query_where)) > 0 then
-//			declare kc_treeview dynamic cursor for SQLSA ;
-//			k_query_select = k_query_select + k_query_where + k_query_order
-//			prepare SQLSA from :k_query_select using sqlca;
-//		end if		
-//		
-//		choose case k_tipo_oggetto
-//				
-//			case kuf1_treeview.kist_treeview_oggetto.certif_st_dett
-//				if k_data_a  <> k_data_0 then
-//					open dynamic kc_treeview using :k_data_da, :k_data_a;
-//				else
-//					open dynamic kc_treeview using :k_data_da;
-//				end if
-//					
-//			case kuf1_treeview.kist_treeview_oggetto.meca_car_cert_dett
-//				open dynamic kc_treeview using :kst_treeview_data_any.st_tab_certif.num_certif;
-//					
-//			case else
-//				sqlca.sqlcode = 100
-//	
-//		end choose
 		
 		k_conta_rec=0
 		
 		if k_nr_righe > 0 then
-//		if sqlca.sqlcode = 0 then
-//			fetch kc_treeview 
-//				into
-//					:kst_tab_certif.id
-//			      ,:kst_tab_certif.num_certif
-//			      ,:kst_tab_certif.data
-//			      ,:kst_tab_certif.id_meca
-//			      ,:kst_tab_certif.data_stampa
-//			      ,:kst_tab_certif.lav_data_ini
-//			      ,:kst_tab_certif.lav_data_fin
-//			      ,:kst_tab_certif.colli
-//			      ,:kst_tab_certif.dose
-//			      ,:kst_tab_certif.dose_min
-//			      ,:kst_tab_certif.dose_max
-//			      ,:kst_tab_certif.note
-//			      ,:kst_tab_certif.note_1
-//			      ,:kst_tab_certif.note_2
-//			      ,:kst_tab_certif.dose_max
-//					,:kst_tab_meca.num_int
-//					,:kst_tab_meca.data_int
-//					,:kst_tab_meca.data_ent
-//					,:kst_tab_meca.clie_1
-//					,:kst_tab_certif.clie_2
-//					,:kst_tab_meca.clie_3
-//					,:kst_tab_meca.num_bolla_in
-//					,:kst_tab_meca.data_bolla_in
-//					,:kst_tab_meca.contratto
-//					,:kst_tab_contratti.mc_co
-//					,:kst_tab_contratti.sc_cf
-//					,:kst_tab_clienti.rag_soc_10 
-//					,:kst_tab_clienti.rag_soc_11 
-//					,:kst_tab_clienti.rag_soc_20 
-//					,:kst_tab_meca.e1doco
-//					,:kst_tab_meca.e1rorn
-//					;
 
 			kuf1_certif = create kuf_certif
 			
@@ -5652,6 +5567,120 @@ end try
 
 end subroutine
 
+public function boolean set_flg_ristampa_xddt (st_tab_certif kst_tab_certif) throws uo_exception;//
+//---------------------------------------------------------------------------------------------------------------
+//--- Set campo flg_ristampa_xddt
+//--- 
+//--- Inp: st_tab_certif.id  
+//--- Out:        
+//--- Ritorna: TRUE = OK
+//---           		
+//--- Lancia EXCEPTION x errore
+//--- 
+//---------------------------------------------------------------------------------------------------------------
+//
+boolean k_return = false
+st_esito kst_esito
+
+	
+kst_esito.esito = kkg_esito.ok
+kst_esito.sqlcode = 0
+kst_esito.SQLErrText = ""
+kst_esito.nome_oggetto = this.classname()
+	
+if kst_tab_certif.id > 0 then
+
+	kst_tab_certif.x_datins = kGuf_data_base.prendi_x_datins()
+	kst_tab_certif.x_utente = kGuf_data_base.prendi_x_utente()
+
+	UPDATE certif  
+		  SET flg_ristampa_xddt = :kst_tab_certif.flg_ristampa_xddt
+			,x_datins = :kst_tab_certif.x_datins
+			,x_utente = :kst_tab_certif.x_utente
+		WHERE certif.id = :kst_tab_certif.id
+		using kguo_sqlca_db_magazzino ;
+
+	if kguo_sqlca_db_magazzino.sqlcode < 0 then
+		kst_esito.sqlcode = kguo_sqlca_db_magazzino.sqlcode
+		kst_esito.SQLErrText = "Errore in aggiornamento 'flag di Attestato stampato da Ufficio Spedizioni'. ~n~r" &
+					+ "Id: " + string(kst_tab_certif.id, "####0") + "  " &
+					+ " ~n~rErrore-tab.certif:" + string(kguo_sqlca_db_magazzino.SQLcode) + ' ' + trim(kguo_sqlca_db_magazzino.SQLErrText) 
+		kst_esito.esito = kkg_esito.db_ko
+	end if
+	
+//---- COMMIT o ROLLBACK....	
+	if kst_esito.esito = kkg_esito.ok or kst_esito.esito = kkg_esito.db_wrn  then
+		if kst_tab_certif.st_tab_g_0.esegui_commit <> "N" or isnull(kst_tab_certif.st_tab_g_0.esegui_commit) then
+			kGuf_data_base.db_commit_1( )
+		end if
+	else
+		if kst_tab_certif.st_tab_g_0.esegui_commit <> "N" or isnull(kst_tab_certif.st_tab_g_0.esegui_commit) then
+			kGuf_data_base.db_rollback_1( )
+		end if
+		
+		kguo_exception.inizializza( )
+		kguo_exception.set_esito(kst_esito)
+		throw kguo_exception
+		
+	end if
+
+else
+	kst_esito.sqlcode = kguo_sqlca_db_magazzino.sqlcode
+	kst_esito.SQLErrText = "Imposibile aggiornare il flag 'stampa da Ufficio Spedizioni' in tabella Attestati, Manca Identificativo (id) !" 
+	kst_esito.esito = kkg_esito.no_esecuzione
+			
+end if	
+
+k_return = true
+
+return k_return
+
+end function
+
+public function boolean set_flg_ristampa_xddt_on (st_tab_certif kst_tab_certif) throws uo_exception;//
+//---------------------------------------------------------------------------------------------------------------
+//--- Set campo flg_ristampa_xddt a TRUE
+//--- 
+//--- Inp: st_tab_certif.id  
+//--- Out:        
+//--- Ritorna: TRUE = OK
+//---           		
+//--- Lancia EXCEPTION x errore
+//--- 
+//---------------------------------------------------------------------------------------------------------------
+//
+boolean k_return = false
+	
+
+kst_tab_certif.flg_ristampa_xddt = true
+k_return = set_flg_ristampa_xddt(kst_tab_certif)
+
+return k_return
+
+end function
+
+public function boolean set_flg_ristampa_xddt_off (st_tab_certif kst_tab_certif) throws uo_exception;//
+//---------------------------------------------------------------------------------------------------------------
+//--- Set campo flg_ristampa_xddt a FALSE
+//--- 
+//--- Inp: st_tab_certif.id  
+//--- Out:        
+//--- Ritorna: TRUE = OK
+//---           		
+//--- Lancia EXCEPTION x errore
+//--- 
+//---------------------------------------------------------------------------------------------------------------
+//
+boolean k_return = false
+	
+
+kst_tab_certif.flg_ristampa_xddt = false
+k_return = set_flg_ristampa_xddt(kst_tab_certif)
+
+return k_return
+
+end function
+
 on kuf_certif.create
 call super::create
 end on
@@ -5662,6 +5691,10 @@ end on
 
 event destructor;call super::destructor;
 if isvalid(kids_certif_stampa) then destroy kids_certif_stampa
+if isvalid(kids_certif_stampa_completa) then destroy kids_certif_stampa_completa 
+if isvalid(kids_certif_stampa_allegati) then destroy kids_certif_stampa_allegati 
+if isvalid(kids_certif_tree_stampati_xgiornomeseanno) then destroy kids_certif_tree_stampati_xgiornomeseanno 
+if isvalid(kids_certif_tree_stampati_xdata) then destroy kids_certif_tree_stampati_xdata 
 
 end event
 

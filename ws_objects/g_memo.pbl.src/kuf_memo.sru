@@ -20,10 +20,11 @@ private w_memo kiw_memo
 private kuf_clienti kiuf1_clienti
 private kuf_armo_inout kiuf1_armo_inout
 
-//--- tipo visualizzazione MEMO: x Utente, x Lotto, x Cliente
+//--- tipo visualizzazione MEMO: x Utente, x Lotto, x Cliente, x Attestato
 public constant string kki_tipovisualizza_xUTENTE = "U"
 public constant string kki_tipovisualizza_xMECA = "E"
 public constant string kki_tipovisualizza_xANAG = "A"
+public constant string kki_tipovisualizza_xCERTIF = "C"
 
 //--- flag x identificare range di stati 
 public constant string kki_memo_daleggere = "0"
@@ -33,7 +34,6 @@ public constant string kki_memo_attivi = "3"
 public constant string kki_memo_tutti = "4"
 
 end variables
-
 forward prototypes
 public function long get_ult_id_memo () throws uo_exception
 public function boolean if_esiste (st_tab_memo ast_tab_memo) throws uo_exception

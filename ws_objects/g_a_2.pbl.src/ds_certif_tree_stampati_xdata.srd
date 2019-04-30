@@ -19,7 +19,7 @@ table(column=(type=long updatewhereclause=yes identity=yes name=id dbname="contr
  column=(type=decimal(2) updatewhereclause=yes name=dose_max dbname="contratti.dose_max" dbalias=".dose_max" )
  column=(type=char(254) updatewhereclause=yes name=note dbname="contratti.note" dbalias=".note" )
  column=(type=char(254) updatewhereclause=yes name=note_1 dbname="contratti.note_1" dbalias=".note_1" )
- column=(type=char(254) updatewhereclause=yes name=note_2 dbname="contratti.note_2" dbalias=".note_2" )
+ column=(type=char(512) updatewhereclause=yes name=note_2 dbname="contratti.note_2" dbalias=".note_2" )
  column=(type=decimal(2) updatewhereclause=yes name=dose_max_1 dbname="contratti.dose_max" dbalias=".dose_max" )
  column=(type=long updatewhereclause=yes name=num_int dbname="contratti.num_int" dbalias=".num_int" )
  column=(type=date updatewhereclause=yes name=data_int dbname="contratti.data_int" dbalias=".data_int" )
@@ -35,9 +35,10 @@ table(column=(type=long updatewhereclause=yes identity=yes name=id dbname="contr
  column=(type=long updatewhereclause=yes name=e1doco dbname="contratti.e1doco" dbalias=".e1doco" )
  column=(type=long updatewhereclause=yes name=e1rorn dbname="contratti.e1rorn" dbalias=".e1rorn" )
  column=(type=datetime updatewhereclause=yes name=x_datins dbname="contratti.x_datins" dbalias=".x_datins" )
- column=(type=char(30) updatewhereclause=yes name=c1_rag_soc_10 dbname="compute_0031" )
- column=(type=char(30) updatewhereclause=yes name=c2_rag_soc_10 dbname="compute_0032" )
- column=(type=char(30) updatewhereclause=yes name=c3_rag_soc_10 dbname="compute_0033" )
+ column=(type=char(30) updatewhereclause=yes name=c1_rag_soc_10 dbname="c1_rag_soc_10" )
+ column=(type=char(30) updatewhereclause=yes name=c2_rag_soc_10 dbname="c2_rag_soc_10" )
+ column=(type=char(30) updatewhereclause=yes name=c3_rag_soc_10 dbname="c3_rag_soc_10" )
+ column=(type=long updatewhereclause=yes name=flg_ristampa_xddt dbname="flg_ristampa_xddt" )
  retrieve="SELECT 
 			      certif.id, 
 			      certif.num_certif, 
@@ -71,7 +72,8 @@ table(column=(type=long updatewhereclause=yes identity=yes name=id dbname="contr
 			certif.x_datins,
 		  (select  c1.rag_soc_10 from  clienti c1 where meca.clie_1 = c1.codice) as c1_rag_soc_10, 
 		  (select  c2.rag_soc_10 from  clienti c2 where certif.clie_2 = c2.codice) as c2_rag_soc_10, 
-		  (select  c3.rag_soc_10 from  clienti c3 where meca.clie_3 = c3.codice) as c3_rag_soc_10 
+		  (select  c3.rag_soc_10 from  clienti c3 where meca.clie_3 = c3.codice) as c3_rag_soc_10,
+			coalesce(certif.flg_ristampa_xddt, 0) flg_ristampa_xddt 
 		    FROM  (certif 
 			        INNER JOIN meca ON  
 			     certif.id_meca = meca.id) 
@@ -148,6 +150,8 @@ column(band=detail id=32 alignment="0" tabsequence=0 border="0" color="33554432"
 text(band=header alignment="0" text="C2 Rag Soc 10" enabled="0" border="0" color="0" x="22002" y="4" height="60" width="805" html.valueishtml="0"  name=c2_rag_soc_10_t visible="1"  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="1073741824" background.transparency="0" background.gradient.color="0" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="0" background.gradient.focus="0" background.gradient.scale="0" background.gradient.spread="0" tooltip.backcolor="0" tooltip.delay.initial="0" tooltip.delay.visible="0" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="0" tooltip.transparency="0" transparency="0" )
 column(band=detail id=33 alignment="0" tabsequence=0 border="0" color="33554432" x="22821" y="0" height="64" width="800" html.valueishtml="0"  name=c3_rag_soc_10 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no  font.face="Tahoma" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0" )
 text(band=header alignment="0" text="C3 Rag Soc 10" enabled="0" border="0" color="0" x="22816" y="4" height="60" width="805" html.valueishtml="0"  name=c3_rag_soc_10_t visible="1"  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="1073741824" background.transparency="0" background.gradient.color="0" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="0" background.gradient.focus="0" background.gradient.scale="0" background.gradient.spread="0" tooltip.backcolor="0" tooltip.delay.initial="0" tooltip.delay.visible="0" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="0" tooltip.transparency="0" transparency="0" )
+column(band=detail id=34 alignment="0" tabsequence=0 border="0" color="33554432" x="23634" y="0" height="64" width="206" html.valueishtml="0"  name=flg_ristampa_xddt visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no  font.face="Tahoma" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0" )
+text(band=header alignment="0" text="Flg Ristampa Xddt" enabled="0" border="0" color="0" x="23630" y="4" height="60" width="210" html.valueishtml="0"  name=flg_ristampa_xddt_t visible="1"  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="1073741824" background.transparency="0" background.gradient.color="0" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="0" background.gradient.focus="0" background.gradient.scale="0" background.gradient.spread="0" tooltip.backcolor="0" tooltip.delay.initial="0" tooltip.delay.visible="0" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="0" tooltip.transparency="0" transparency="0" )
 htmltable(border="1" )
 htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" pagingmethod=0 generatedddwframes="1" )
 xhtmlgen() cssgen(sessionspecific="0" )

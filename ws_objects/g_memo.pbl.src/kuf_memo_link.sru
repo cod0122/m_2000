@@ -922,7 +922,7 @@ try
 			if kguo_sqlca_db_magazzino.sqlcode < 0 then
 				kst_esito.esito = kkg_esito.db_ko
 				kst_esito.sqlcode = sqlca.sqlcode
-				kst_esito.SQLErrText = "Errore Aggiornamento MEMO~n~r" + trim(sqlca.SQLErrText) 
+				kst_esito.SQLErrText = "Errore Aggiornamento MEMO '" + trim(ast_tab_memo_link.titolo)+ "'~n~r" + trim(sqlca.SQLErrText) 
 				if ast_tab_memo_link.st_tab_g_0.esegui_commit <> "N" or isnull(ast_tab_memo_link.st_tab_g_0.esegui_commit) then
 					kguo_sqlca_db_magazzino.db_rollback( )
 				end if
@@ -1393,7 +1393,7 @@ try
 			if kguo_sqlca_db_magazzino.sqlcode < 0 then
 				kst_esito.esito = kkg_esito.db_ko
 				kst_esito.sqlcode = sqlca.sqlcode
-				kst_esito.SQLErrText = "Errore Aggiornamento MEMO~n~r" + trim(sqlca.SQLErrText) 
+				kst_esito.SQLErrText = "Errore Inserimento MEMO '" + trim(ast_tab_memo_link.titolo)+ "'~n~r" + trim(sqlca.SQLErrText) 
 				if ast_tab_memo_link.st_tab_g_0.esegui_commit <> "N" or isnull(ast_tab_memo_link.st_tab_g_0.esegui_commit) then
 					kguo_sqlca_db_magazzino.db_rollback( )
 				end if

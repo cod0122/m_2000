@@ -8,7 +8,7 @@ global type uo_dw_dragdrop from uo_d_std_1
 integer width = 1970
 integer height = 736
 boolean enabled = true
-string dataobject = "d_dragdrp_info"
+string dataobject = "d_memo_dragdrop_info"
 boolean border = true
 boolean hsplitscroll = false
 boolean livescroll = false

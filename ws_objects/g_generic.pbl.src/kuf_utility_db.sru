@@ -1659,7 +1659,7 @@ pointer oldpointer  // Declares a pointer variable
 //=== Puntatore Cursore da attesa.....
 	oldpointer = SetPointer(HourGlass!)
 
-k_sql = "create view v_contratti_doc  " &
+	k_sql = "create view v_contratti_doc  " &
 		+ " as SELECT ctr.id_contratto_doc " &
 		+ " ,ctr.offerta_data " &
 		+ " ,ctr.stampa_tradotta " & 
@@ -1667,58 +1667,49 @@ k_sql = "create view v_contratti_doc  " &
 		+ " ,ctr.data_stampa " & 
 		+ " ,form_di_stampa " & 
 		+ " ,ctr.esito_operazioni_ts_operazione " & 
-		+ " ,JSON_VALUE(ctr.dati_contratto, '$.anno') anno " & 
-		+ " ,JSON_VALUE(ctr.dati_contratto,'$.magazzino') magazzino " & 
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.anno') > '0' then convert(INTEGER, JSON_VALUE(ctr.dati_contratto ,'$.anno')) else 0 end anno " & 
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.magazzino') > '0' then convert(INTEGER, JSON_VALUE(ctr.dati_contratto ,'$.magazzino')) else 0 end magazzino " & 
 		+ " ,trim(JSON_VALUE(ctr.dati_contratto ,'$.offerta_validita')) offerta_validita " & 
 		+ " ,trim(JSON_VALUE(ctr.dati_contratto ,'$.oggetto')) oggetto " & 
-		+ " ,case  " & 
- 		+ " when JSON_VALUE(ctr.dati_contratto ,'$.id_cliente') > '0' then JSON_VALUE(ctr.dati_contratto ,'$.id_cliente')  " & 
-		+ " 	 else 0 " & 
-		+ " end id_cliente " & 
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.id_cliente') > '0' then convert(INTEGER, JSON_VALUE(ctr.dati_contratto ,'$.id_cliente'))  else 0  end id_cliente " & 
 		+ " ,JSON_VALUE(ctr.dati_contratto ,'$.id_clie_settore') id_clie_settore " & 
-		+ " ,JSON_VALUE(ctr.dati_contratto ,'$.gruppo') gruppo " & 
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.gruppo') > '0' then convert(INTEGER, JSON_VALUE(ctr.dati_contratto ,'$.gruppo'))  else 0  end gruppo " & 
 		+ " ,trim(JSON_VALUE(ctr.dati_contratto ,'$.nome_contatto')) nome_contatto " & 
 		+ " ,trim(JSON_VALUE(ctr.dati_contratto ,'$.note')) note " & 
 		+ " ,trim(JSON_VALUE(ctr.dati_contratto ,'$.note_audit')) note_audit " & 
 		+ " ,trim(JSON_VALUE(ctr.dati_contratto ,'$.note_fasi_operative')) note_fasi_operative " & 
 		+ " ,JSON_VALUE(ctr.dati_contratto ,'$.iva') iva " & 
-		+ " ,JSON_VALUE(ctr.dati_contratto ,'$.cod_pag') cod_pag " & 
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.cod_pag') > '0' then convert(INTEGER, JSON_VALUE(ctr.dati_contratto ,'$.cod_pag')) else 0 end cod_pag " & 
 		+ " ,trim(JSON_VALUE(ctr.dati_contratto ,'$.banca')) banca " & 
-		+ " ,JSON_VALUE(ctr.dati_contratto ,'$.abi') abi  " & 
-		+ " ,JSON_VALUE(ctr.dati_contratto ,'$.cab') cab " & 
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.abi') > '0' then convert(INTEGER, JSON_VALUE(ctr.dati_contratto ,'$.abi')) else 0 end abi " & 
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.cab') > '0' then convert(INTEGER, JSON_VALUE(ctr.dati_contratto ,'$.cab')) else 0 end cab " & 
 		+ " ,trim(JSON_VALUE(ctr.dati_contratto ,'$.altre_condizioni')) altre_condizioni " & 
-		+ " ,JSON_VALUE(ctr.dati_contratto ,'$.data_inizio') data_inizio  " & 
-		+ " ,JSON_VALUE(ctr.dati_contratto ,'$.data_fine') data_fine " & 
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.data_inizio') > '01.01.2019' then convert(DATE, JSON_VALUE(ctr.dati_contratto ,'$.data_inizio'))  else null  end data_inizio  " &
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.data_fine') > '01.01.2019' then convert(DATE, JSON_VALUE(ctr.dati_contratto ,'$.data_fine'))  else null  end data_fine  " &
 		+ " ,JSON_VALUE(ctr.dati_contratto ,'$.fattura_da') fattura_da " & 
 		+ " ,trim(JSON_VALUE(ctr.dati_contratto ,'$.art')) art " & 
-		+ " , JSON_VALUE(ctr.dati_contratto ,'$.id_listino_pregruppo') id_listino_pregruppo  " & 
-		+ " , JSON_VALUE(ctr.dati_contratto ,'$.voci[0].id_listino_voce') id_listino_voce_1 " & 
-		+ " , JSON_VALUE(ctr.dati_contratto ,'$.voci[1].id_listino_voce') id_listino_voce_2 " & 
-		+ " , JSON_VALUE(ctr.dati_contratto ,'$.voci[2].id_listino_voce') id_listino_voce_3 " & 
-		+ " , JSON_VALUE(ctr.dati_contratto ,'$.voci[3].id_listino_voce') id_listino_voce_4 " & 
-		+ " , JSON_VALUE(ctr.dati_contratto ,'$.voci[4].id_listino_voce') id_listino_voce_5 " & 
-		+ " , JSON_VALUE(ctr.dati_contratto ,'$.voci[5].id_listino_voce') id_listino_voce_6 " & 
-		+ " , JSON_VALUE(ctr.dati_contratto ,'$.voci[6].id_listino_voce') id_listino_voce_7 " & 
-		+ " , JSON_VALUE(ctr.dati_contratto ,'$.voci[7].id_listino_voce') id_listino_voce_8 " & 
-		+ " , JSON_VALUE(ctr.dati_contratto ,'$.voci[8].id_listino_voce') id_listino_voce_9 " & 
-		+ " , JSON_VALUE(ctr.dati_contratto ,'$.voci[9].id_listino_voce') id_listino_voce_10 " & 
-		+ " , case  " & 
- 		+ " when JSON_VALUE(ctr.dati_contratto ,'$.voci[0].voce_prezzo') > '0' then convert(float, JSON_VALUE(ctr.dati_contratto ,'$.voci[0].voce_prezzo'))  " & 
- 		+ " else 0.00 " & 
-		+ " end voce_prezzo_1 " & 
-		+ " , JSON_VALUE(ctr.dati_contratto ,'$.voci[1].voce_prezzo') voce_prezzo_2 " & 
-		+ " , JSON_VALUE(ctr.dati_contratto ,'$.voci[2].voce_prezzo') voce_prezzo_3 " & 
-		+ " , JSON_VALUE(ctr.dati_contratto ,'$.voci[3].voce_prezzo') voce_prezzo_4 " & 
-		+ " , JSON_VALUE(ctr.dati_contratto ,'$.voci[4].voce_prezzo') voce_prezzo_5 " & 
-		+ " , JSON_VALUE(ctr.dati_contratto ,'$.voci[5].voce_prezzo') voce_prezzo_6 " & 
-		+ " , JSON_VALUE(ctr.dati_contratto ,'$.voci[6].voce_prezzo') voce_prezzo_7 " & 
-		+ " , JSON_VALUE(ctr.dati_contratto ,'$.voci[7].voce_prezzo') voce_prezzo_8 " & 
-		+ " , JSON_VALUE(ctr.dati_contratto ,'$.voci[8].voce_prezzo') voce_prezzo_9 " & 
-		+ " , JSON_VALUE(ctr.dati_contratto ,'$.voci[9].voce_prezzo') voce_prezzo_10 " & 
-		+ " , case  " & 
-		+ "  when JSON_VALUE(ctr.dati_contratto ,'$.totale_contratto') > '0' then convert(float, JSON_VALUE(ctr.dati_contratto ,'$.totale_contratto'))  " & 
-		+ "  else 0.00 " & 
-		+ " end totale_contratto " & 
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.id_listino_pregruppo') > '0' then convert(INTEGER, JSON_VALUE(ctr.dati_contratto ,'$.id_listino_pregruppo')) else 0 end id_listino_pregruppo " & 
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.voci[0].id_listino_voce') > '0' then convert(INTEGER, JSON_VALUE(ctr.dati_contratto ,'$.voci[0].id_listino_voce')) else 0 end id_listino_voce_1 " & 
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.voci[1].id_listino_voce') > '0' then convert(INTEGER, JSON_VALUE(ctr.dati_contratto ,'$.voci[1].id_listino_voce')) else 0 end id_listino_voce_2 " & 
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.voci[2].id_listino_voce') > '0' then convert(INTEGER, JSON_VALUE(ctr.dati_contratto ,'$.voci[2].id_listino_voce')) else 0 end id_listino_voce_3 " & 
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.voci[3].id_listino_voce') > '0' then convert(INTEGER, JSON_VALUE(ctr.dati_contratto ,'$.voci[3].id_listino_voce')) else 0 end id_listino_voce_4 " & 
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.voci[4].id_listino_voce') > '0' then convert(INTEGER, JSON_VALUE(ctr.dati_contratto ,'$.voci[4].id_listino_voce')) else 0 end id_listino_voce_5 " & 
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.voci[5].id_listino_voce') > '0' then convert(INTEGER, JSON_VALUE(ctr.dati_contratto ,'$.voci[5].id_listino_voce')) else 0 end id_listino_voce_6 " & 
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.voci[6].id_listino_voce') > '0' then convert(INTEGER, JSON_VALUE(ctr.dati_contratto ,'$.voci[6].id_listino_voce')) else 0 end id_listino_voce_7 " & 
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.voci[7].id_listino_voce') > '0' then convert(INTEGER, JSON_VALUE(ctr.dati_contratto ,'$.voci[7].id_listino_voce')) else 0 end id_listino_voce_8 " & 
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.voci[8].id_listino_voce') > '0' then convert(INTEGER, JSON_VALUE(ctr.dati_contratto ,'$.voci[8].id_listino_voce')) else 0 end id_listino_voce_9 " & 
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.voci[9].id_listino_voce') > '0' then convert(INTEGER, JSON_VALUE(ctr.dati_contratto ,'$.voci[9].id_listino_voce')) else 0 end id_listino_voce_10 " & 
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.voci[0].voce_prezzo') > '0' then convert(float, JSON_VALUE(ctr.dati_contratto ,'$.voci[0].voce_prezzo')) else 0.00 end voce_prezzo_1 " & 
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.voci[1].voce_prezzo') > '0' then convert(float, JSON_VALUE(ctr.dati_contratto ,'$.voci[1].voce_prezzo')) else 0.00 end voce_prezzo_2 " & 
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.voci[2].voce_prezzo') > '0' then convert(float, JSON_VALUE(ctr.dati_contratto ,'$.voci[2].voce_prezzo')) else 0.00 end voce_prezzo_3 " & 
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.voci[3].voce_prezzo') > '0' then convert(float, JSON_VALUE(ctr.dati_contratto ,'$.voci[3].voce_prezzo')) else 0.00 end voce_prezzo_4 " & 
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.voci[4].voce_prezzo') > '0' then convert(float, JSON_VALUE(ctr.dati_contratto ,'$.voci[4].voce_prezzo')) else 0.00 end voce_prezzo_5 " & 
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.voci[5].voce_prezzo') > '0' then convert(float, JSON_VALUE(ctr.dati_contratto ,'$.voci[5].voce_prezzo')) else 0.00 end voce_prezzo_6 " & 
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.voci[6].voce_prezzo') > '0' then convert(float, JSON_VALUE(ctr.dati_contratto ,'$.voci[6].voce_prezzo')) else 0.00 end voce_prezzo_7 " & 
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.voci[7].voce_prezzo') > '0' then convert(float, JSON_VALUE(ctr.dati_contratto ,'$.voci[7].voce_prezzo')) else 0.00 end voce_prezzo_8 " & 
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.voci[8].voce_prezzo') > '0' then convert(float, JSON_VALUE(ctr.dati_contratto ,'$.voci[8].voce_prezzo')) else 0.00 end voce_prezzo_9 " & 
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.voci[9].voce_prezzo') > '0' then convert(float, JSON_VALUE(ctr.dati_contratto ,'$.voci[9].voce_prezzo')) else 0.00 end voce_prezzo_10 " & 
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.totale_contratto') > '0' then convert(float, JSON_VALUE(ctr.dati_contratto ,'$.totale_contratto')) else 0.00 end totale_contratto " & 
 		+ " , trim(JSON_VALUE(ctr.dati_contratto ,'$.voci[0].descr')) descr_1 " & 
 		+ " , trim(JSON_VALUE(ctr.dati_contratto ,'$.voci[1].descr')) descr_2 " & 
 		+ " , trim(JSON_VALUE(ctr.dati_contratto ,'$.voci[2].descr'))  descr_3 " &
@@ -1729,26 +1720,26 @@ k_sql = "create view v_contratti_doc  " &
 		+ " , trim(JSON_VALUE(ctr.dati_contratto ,'$.voci[7].descr'))  descr_8 " &
 		+ " , trim(JSON_VALUE(ctr.dati_contratto ,'$.voci[8].descr'))  descr_9 " &
 		+ " , trim(JSON_VALUE(ctr.dati_contratto ,'$.voci[9].descr'))  descr_10 " &
-		+ " , JSON_VALUE(ctr.dati_contratto ,'$.voci[0].voce_prezzo_tot') voce_prezzo_tot_1 " &
-		+ " , JSON_VALUE(ctr.dati_contratto ,'$.voci[1].voce_prezzo_tot') voce_prezzo_tot_2  " &
-		+ " , JSON_VALUE(ctr.dati_contratto ,'$.voci[2].voce_prezzo_tot') voce_prezzo_tot_3  " &
-		+ " , JSON_VALUE(ctr.dati_contratto ,'$.voci[3].voce_prezzo_tot') voce_prezzo_tot_4  " &
-		+ " , JSON_VALUE(ctr.dati_contratto ,'$.voci[4].voce_prezzo_tot') voce_prezzo_tot_5  " &
-		+ " , JSON_VALUE(ctr.dati_contratto ,'$.voci[5].voce_prezzo_tot') voce_prezzo_tot_6  " &
-		+ " , JSON_VALUE(ctr.dati_contratto ,'$.voci[6].voce_prezzo_tot') voce_prezzo_tot_7  " &
-		+ " , JSON_VALUE(ctr.dati_contratto ,'$.voci[7].voce_prezzo_tot') voce_prezzo_tot_8  " &
-		+ " , JSON_VALUE(ctr.dati_contratto ,'$.voci[8].voce_prezzo_tot') voce_prezzo_tot_9 " &
-		+ " , JSON_VALUE(ctr.dati_contratto ,'$.voci[9].voce_prezzo_tot ') voce_prezzo_tot_10 " &
-		+ " , JSON_VALUE(ctr.dati_contratto ,'$.voci[0].voce_qta') voce_qta_1 " &
-		+ " , JSON_VALUE(ctr.dati_contratto ,'$.voci[1].voce_qta') voce_qta_2 " &
-		+ " , JSON_VALUE(ctr.dati_contratto ,'$.voci[2].voce_qta') voce_qta_3 " &
-		+ " , JSON_VALUE(ctr.dati_contratto ,'$.voci[3].voce_qta') voce_qta_4 " &
-		+ " , JSON_VALUE(ctr.dati_contratto ,'$.voci[4].voce_qta') voce_qta_5 " &
-		+ " , JSON_VALUE(ctr.dati_contratto ,'$.voci[5].voce_qta') voce_qta_6 " &
-		+ " , JSON_VALUE(ctr.dati_contratto ,'$.voci[6].voce_qta') voce_qta_7 " &
-		+ " , JSON_VALUE(ctr.dati_contratto ,'$.voci[7].voce_qta') voce_qta_8 " &
-		+ " , JSON_VALUE(ctr.dati_contratto ,'$.voci[8].voce_qta') voce_qta_9 " &
-		+ " , JSON_VALUE(ctr.dati_contratto ,'$.voci[9].voce_qta') voce_qta_10 " &
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.voci[0].voce_prezzo_tot') > '0' then convert(float, JSON_VALUE(ctr.dati_contratto ,'$.voci[0].voce_prezzo_tot')) else 0.00 end voce_prezzo_tot_1 " & 
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.voci[1].voce_prezzo_tot') > '0' then convert(float, JSON_VALUE(ctr.dati_contratto ,'$.voci[1].voce_prezzo_tot')) else 0.00 end voce_prezzo_tot_2 " & 
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.voci[2].voce_prezzo_tot') > '0' then convert(float, JSON_VALUE(ctr.dati_contratto ,'$.voci[2].voce_prezzo_tot')) else 0.00 end voce_prezzo_tot_3 " & 
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.voci[3].voce_prezzo_tot') > '0' then convert(float, JSON_VALUE(ctr.dati_contratto ,'$.voci[3].voce_prezzo_tot')) else 0.00 end voce_prezzo_tot_4 " & 
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.voci[4].voce_prezzo_tot') > '0' then convert(float, JSON_VALUE(ctr.dati_contratto ,'$.voci[4].voce_prezzo_tot')) else 0.00 end voce_prezzo_tot_5 " & 
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.voci[5].voce_prezzo_tot') > '0' then convert(float, JSON_VALUE(ctr.dati_contratto ,'$.voci[5].voce_prezzo_tot')) else 0.00 end voce_prezzo_tot_6 " & 
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.voci[6].voce_prezzo_tot') > '0' then convert(float, JSON_VALUE(ctr.dati_contratto ,'$.voci[6].voce_prezzo_tot')) else 0.00 end voce_prezzo_tot_7 " & 
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.voci[7].voce_prezzo_tot') > '0' then convert(float, JSON_VALUE(ctr.dati_contratto ,'$.voci[7].voce_prezzo_tot')) else 0.00 end voce_prezzo_tot_8 " & 
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.voci[8].voce_prezzo_tot') > '0' then convert(float, JSON_VALUE(ctr.dati_contratto ,'$.voci[8].voce_prezzo_tot')) else 0.00 end voce_prezzo_tot_9 " & 
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.voci[9].voce_prezzo_tot') > '0' then convert(float, JSON_VALUE(ctr.dati_contratto ,'$.voci[9].voce_prezzo_tot')) else 0.00 end voce_prezzo_tot_10 " & 
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.voci[0].voce_qta') > '0' then convert(float, JSON_VALUE(ctr.dati_contratto ,'$.voci[0].voce_qta')) else 0 end voce_qta_1 " & 
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.voci[1].voce_qta') > '0' then convert(float, JSON_VALUE(ctr.dati_contratto ,'$.voci[1].voce_qta')) else 0 end voce_qta_2 " & 
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.voci[2].voce_qta') > '0' then convert(float, JSON_VALUE(ctr.dati_contratto ,'$.voci[2].voce_qta')) else 0 end voce_qta_3 " & 
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.voci[3].voce_qta') > '0' then convert(float, JSON_VALUE(ctr.dati_contratto ,'$.voci[3].voce_qta')) else 0 end voce_qta_4 " & 
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.voci[4].voce_qta') > '0' then convert(float, JSON_VALUE(ctr.dati_contratto ,'$.voci[4].voce_qta')) else 0 end voce_qta_5 " & 
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.voci[5].voce_qta') > '0' then convert(float, JSON_VALUE(ctr.dati_contratto ,'$.voci[5].voce_qta')) else 0 end voce_qta_6 " & 
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.voci[6].voce_qta') > '0' then convert(float, JSON_VALUE(ctr.dati_contratto ,'$.voci[6].voce_qta')) else 0 end voce_qta_7 " & 
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.voci[7].voce_qta') > '0' then convert(float, JSON_VALUE(ctr.dati_contratto ,'$.voci[7].voce_qta')) else 0 end voce_qta_8 " & 
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.voci[8].voce_qta') > '0' then convert(float, JSON_VALUE(ctr.dati_contratto ,'$.voci[8].voce_qta')) else 0 end voce_qta_9 " & 
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.voci[9].voce_qta') > '0' then convert(float, JSON_VALUE(ctr.dati_contratto ,'$.voci[9].voce_qta')) else 0 end voce_qta_10 " & 
 		+ " , JSON_VALUE(ctr.dati_contratto ,'$.voci[0].flg_st_voce') flg_st_voce_1 " & 
 		+ " , JSON_VALUE(ctr.dati_contratto ,'$.voci[1].flg_st_voce') flg_st_voce_2 " &  
 		+ " , JSON_VALUE(ctr.dati_contratto ,'$.voci[2].flg_st_voce') flg_st_voce_3 " &  
@@ -1760,15 +1751,47 @@ k_sql = "create view v_contratti_doc  " &
 		+ " , JSON_VALUE(ctr.dati_contratto ,'$.voci[8].flg_st_voce') flg_st_voce_9 " &
 		+ " , JSON_VALUE(ctr.dati_contratto ,'$.voci[9].flg_st_voce') flg_st_voce_10 " &  
 		+ " , JSON_VALUE(ctr.dati_contratto ,'$.flg_fatt_dopo_valid') flg_fatt_dopo_valid " &
-		+ " , JSON_VALUE(ctr.dati_contratto ,'$.id_meca_causale') id_meca_causale " &
-		+ " , JSON_VALUE(ctr.dati_contratto ,'$.acconto_perc') acconto_perc " &
-		+ " , JSON_VALUE(ctr.dati_contratto ,'$.acconto_imp') acconto_imp " &
-		+ " , JSON_VALUE(ctr.dati_contratto ,'$.acconto_cod_pag') acconto_cod_pag " &
-		+ " , JSON_VALUE(ctr.dati_contratto, '$.id_docprod') id_docprod " &
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.id_meca_causale') > '0' then convert(INTEGER, JSON_VALUE(ctr.dati_contratto ,'$.id_meca_causale')) else 0 end id_meca_causale " & 
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.acconto_perc') > '0' then convert(INTEGER, JSON_VALUE(ctr.dati_contratto ,'$.acconto_perc')) else 0 end acconto_perc " & 
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.acconto_imp') > '0' then convert(float, JSON_VALUE(ctr.dati_contratto ,'$.acconto_imp')) else 0.00 end acconto_imp " & 
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.acconto_cod_pag') > '0' then convert(INTEGER, JSON_VALUE(ctr.dati_contratto ,'$.acconto_cod_pag')) else 0 end acconto_cod_pag " & 
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.id_docprod') > '0' then convert(INTEGER, JSON_VALUE(ctr.dati_contratto ,'$.id_docprod')) else 0 end id_docprod " & 
 		+ " , JSON_VALUE(ctr.dati_contratto, '$.quotazione_tipo') quotazione_tipo " &
 		+ " , trim(JSON_VALUE(ctr.dati_contratto, '$.quotazione_cod')) quotazione_cod " &
 		+ " , trim(JSON_VALUE(ctr.dati_contratto, '$.cliente_desprod')) cliente_desprod " &
 		+ " , trim(JSON_VALUE(ctr.dati_contratto, '$.cliente_desprod_rid')) cliente_desprod_rid " &
+		+ " , trim(JSON_VALUE(ctr.dati_contratto, '$.unita_misura')) unita_misura " &
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.mis_x_1') > '0' then convert(INTEGER, JSON_VALUE(ctr.dati_contratto ,'$.mis_x_1')) else 0 end mis_x_1 " & 
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.mis_y_1') > '0' then convert(INTEGER, JSON_VALUE(ctr.dati_contratto ,'$.mis_y_1')) else 0 end mis_y_1 " & 
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.mis_z_1') > '0' then convert(INTEGER, JSON_VALUE(ctr.dati_contratto ,'$.mis_z_1')) else 0 end mis_z_1 " & 
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.peso_max_kg') > '0' then convert(float, JSON_VALUE(ctr.dati_contratto ,'$.peso_max_kg')) else 0.00 end peso_max_kg " & 
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.prezzo_1') > '0' then convert(float, JSON_VALUE(ctr.dati_contratto ,'$.prezzo_1')) else 0.00 end prezzo_1 " & 
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.impon_minimo') > '0' then convert(float, JSON_VALUE(ctr.dati_contratto ,'$.impon_minimo')) else 0.00 end impon_minimo " & 
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.dose_min') > '0' then convert(float, JSON_VALUE(ctr.dati_contratto ,'$.dose_min')) else 0.00 end dose_min " & 
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.dose_max') > '0' then convert(float, JSON_VALUE(ctr.dati_contratto ,'$.dose_max')) else 0.00 end dose_max " & 
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.dose') > '0' then convert(float, JSON_VALUE(ctr.dati_contratto ,'$.dose')) else 0.00 end dose " & 
+		+ " , trim(JSON_VALUE(ctr.dati_contratto, '$.note_qtax')) note_qtax " &
+		+ " , trim(JSON_VALUE(ctr.dati_contratto, '$.e1litm')) e1litm " &
+		+ " , trim(JSON_VALUE(ctr.dati_contratto, '$.e1itmdosim')) e1itmdosim " &
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.e1itmdosimprezzo') > '0' then convert(float, JSON_VALUE(ctr.dati_contratto ,'$.e1itmdosimprezzo')) else 0.00 end e1itmdosimprezzo " & 
+		+ " , trim(JSON_VALUE(ctr.dati_contratto, '$.contratti_des')) contratti_des " &
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.id_sd_md') > '0' then convert(INTEGER, JSON_VALUE(ctr.dati_contratto ,'$.id_sd_md')) else 0 end id_sd_md " & 
+		+ " , trim(JSON_VALUE(ctr.dati_contratto, '$.density_x')) density_x " &
+		+ " , trim(JSON_VALUE(ctr.dati_contratto, '$.note_interne')) note_interne " &
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.gest_doc_prezzo') > '0' then convert(float, JSON_VALUE(ctr.dati_contratto ,'$.gest_doc_prezzo')) else 0.00 end gest_doc_prezzo " & 
+		+ " , trim(JSON_VALUE(ctr.dati_contratto, '$.gest_doc_des')) gest_doc_des " &
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.dir_tecnico_prezzo') > '0' then convert(float, JSON_VALUE(ctr.dati_contratto ,'$.dir_tecnico_prezzo')) else 0.00 end dir_tecnico_prezzo " & 
+		+ " , trim(JSON_VALUE(ctr.dati_contratto, '$.dir_tecnico_des')) dir_tecnico_des " &
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.analisi_lab_prezzo') > '0' then convert(float, JSON_VALUE(ctr.dati_contratto ,'$.analisi_lab_prezzo')) else 0.00 end analisi_lab_prezzo " & 
+		+ " , trim(JSON_VALUE(ctr.dati_contratto, '$.analisi_lab_des')) analisi_lab_des " &
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.dosim_agg_prezzo') > '0' then convert(float, JSON_VALUE(ctr.dati_contratto ,'$.dosim_agg_prezzo')) else 0.00 end dosim_agg_prezzo " & 
+		+ " , trim(JSON_VALUE(ctr.dati_contratto, '$.dosim_agg_des')) dosim_agg_des " &
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.stoccaggio_prezzo') > '0' then convert(float, JSON_VALUE(ctr.dati_contratto ,'$.stoccaggio_prezzo')) else 0.00 end stoccaggio_prezzo " & 
+		+ " , trim(JSON_VALUE(ctr.dati_contratto, '$.stoccaggio_des')) stoccaggio_des " &
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.logistica_prezzo') > '0' then convert(float, JSON_VALUE(ctr.dati_contratto ,'$.logistica_prezzo')) else 0.00 end logistica_prezzo " & 
+		+ " , trim(JSON_VALUE(ctr.dati_contratto, '$.logistica_des')) logistica_des " &
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.altro_prezzo') > '0' then convert(float, JSON_VALUE(ctr.dati_contratto ,'$.altro_prezzo')) else 0.00 end altro_prezzo " & 
+		+ " , trim(JSON_VALUE(ctr.dati_contratto, '$.altro_des')) altro_des " &
 		+ " , ctr.x_datins " &
 		+ " , ctr.x_utente " &
 		+ " FROM contratti_doc as ctr " 

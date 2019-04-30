@@ -4174,7 +4174,8 @@ st_open_w kst_open_w
 
 				case kkg_flag_modalita.anteprima
 
-					if trim(kst_treeview_data_parent.oggetto) = kist_treeview_oggetto.certif_st_dett then
+					if trim(kst_treeview_data_parent.oggetto) = kist_treeview_oggetto.certif_st_dett &
+					                    or  trim(kst_treeview_data_parent.oggetto) = kist_treeview_oggetto.certif_uff_ddt_dett then
 						//kuf_certif = create kuf_certif
 						kst_esito = kiuf_certif.anteprima ( kidw_1, kst_treeview_data_any.st_tab_certif )
 						//destroy kuf1_certif
@@ -4208,6 +4209,7 @@ st_open_w kst_open_w
 //--- posso fare il certificato solo se sono sulla cartella giusta altrimenti solo ristampa
 								if trim(kst_treeview_data_parent.oggetto) = kist_treeview_oggetto.certif_da_st_dett &
 										or trim(kst_treeview_data_parent.oggetto) = kist_treeview_oggetto.certif_st_dett &
+										or trim(kst_treeview_data_parent.oggetto) = kist_treeview_oggetto.certif_uff_ddt_dett &
 										or kuo1_d_certif_stampa.ki_flag_ristampa then
 		
 									kiuf_certif.ki_flag_stampa_di_test = false  // stampa VERA!
@@ -4218,10 +4220,15 @@ st_open_w kst_open_w
 										
 										k_return = 1
 										kguo_exception.set_tipo(kguo_exception.kk_st_uo_exception_tipo_ko)
-										kguo_exception.messaggio_utente("Stampa Attestato non eseguita", "Si è verificato un errore durante la Stampa dell'Attestato " + string( kst_treeview_data_any.st_tab_certif.num_certif ))
+										kguo_exception.messaggio_utente("Stampa Attestato non eseguita", "Si è verificato un errore durante la Stampa dell'Attestato n. " + string( kst_treeview_data_any.st_tab_certif.num_certif ))
 										
 									else
-					
+
+//--- In questo caso imposta il flag di a già stampato da Uff.Spedizioni
+										if trim(kst_treeview_data_parent.oggetto) = kist_treeview_oggetto.certif_uff_ddt_dett then
+											kiuf_certif.set_flg_ristampa_xddt_on(kst_tab_certif[1])
+										end if
+										
 //--- se NON sono in ristampa cancello la riga dall'elenco
 										if not kuo1_d_certif_stampa.ki_flag_ristampa then
 
@@ -7750,7 +7757,7 @@ listviewitem klvi_listviewitem
 		kst_esito_return.SQLErrText = "Funzione richiesta non Abilitata~n~r("+ kst_esito.sqlerrtext+")~n~r"
 	else				
 	
-		if len(trim(kst_tab_treeview.open_programma)) > 0 then // vecchia modalità
+		if trim(kst_tab_treeview.open_programma) > " " then // vecchia modalità
 			
 //			kidw_1.dataobject = ""  // pulisco il valore in dw x evitare che romanga il vecchio in anteprima ad es. clienti
 
@@ -10662,7 +10669,7 @@ if kist_treeview_data_precedente <> kst_treeview_data or ki_forza_refresh = ki_f
 				,kist_treeview_oggetto.certif_da_st_farma_dett &
 				,kist_treeview_oggetto.certif_da_st_alimen_dett &
 				,kist_treeview_oggetto.certif_da_st_sd_dett &
-			   ,kist_treeview_oggetto.certif_err_dett
+			   ,kist_treeview_oggetto.certif_err_dett 
 				u_riempi_treeview_artr_dett &
 								 (kist_treeview_oggetto.oggetto)
 
@@ -10671,7 +10678,8 @@ if kist_treeview_data_precedente <> kst_treeview_data or ki_forza_refresh = ki_f
 				u_riempi_treeview_certif_mese &
 								 (kist_treeview_oggetto.oggetto)
 
-			case kist_treeview_oggetto.certif_st_dett
+			case kist_treeview_oggetto.certif_st_dett &
+				   ,kist_treeview_oggetto.certif_uff_ddt_dett
 				u_riempi_treeview_certif_dett &
 								 (kist_treeview_oggetto.oggetto)
 
@@ -10847,12 +10855,10 @@ if kist_treeview_data_precedente <> kst_treeview_data or ki_forza_refresh = ki_f
 				case  &
 					  kist_treeview_oggetto.armo &
 					 ,kist_treeview_oggetto.dosim_dett 
-					u_riempi_listview_armo &
-							 (kist_treeview_oggetto.oggetto)
+					u_riempi_listview_armo(kist_treeview_oggetto.oggetto)
 				case  &
 					  kist_treeview_oggetto.dosim  
-					u_riempi_listview_armo &
-							 (kist_treeview_oggetto.oggetto)
+					u_riempi_listview_armo(kist_treeview_oggetto.oggetto)
 	
 	
 	//--- Gestione Attestati
@@ -10862,12 +10868,11 @@ if kist_treeview_data_precedente <> kst_treeview_data or ki_forza_refresh = ki_f
 					,kist_treeview_oggetto.certif_da_st_farma_dett &
 					,kist_treeview_oggetto.certif_da_st_alimen_dett &
 					,kist_treeview_oggetto.certif_da_st_sd_dett &
-					,kist_treeview_oggetto.certif_err_dett
-					u_riempi_listview_artr_dett &
-							 (kist_treeview_oggetto.oggetto)
-				case kist_treeview_oggetto.certif_st_dett
-					u_riempi_listview_certif_dett &
-									 (kist_treeview_oggetto.oggetto)
+					,kist_treeview_oggetto.certif_err_dett 
+					u_riempi_listview_artr_dett(kist_treeview_oggetto.oggetto)
+				case kist_treeview_oggetto.certif_st_dett &
+				    ,kist_treeview_oggetto.certif_uff_ddt_dett
+					u_riempi_listview_certif_dett(kist_treeview_oggetto.oggetto)
 	
 	
 	//--- Gestione "ramo" SPEDIZIONI				
@@ -10886,11 +10891,9 @@ if kist_treeview_data_precedente <> kst_treeview_data or ki_forza_refresh = ki_f
 	//--- Gestione "ramo" FATTURE				
 				case kist_treeview_oggetto.fattura_testa &								  
 						,kist_treeview_oggetto.fattura_dett_da_st 
-					u_riempi_listview_fatt_testa &
-							 (kist_treeview_oggetto.oggetto)
+					u_riempi_listview_fatt_testa(kist_treeview_oggetto.oggetto)
 				case kist_treeview_oggetto.fattura_dett	
-					u_riempi_listview_fatt_dett &
-							 (kist_treeview_oggetto.oggetto)
+					u_riempi_listview_fatt_dett(kist_treeview_oggetto.oggetto)
 	
 	
 	//--- Gestione Anagrafiche
@@ -12622,6 +12625,7 @@ int k_i = 0
 	kist_treeview_oggetto.certif_da_conv_dett = "certif_da_conv_dett"
 	kist_treeview_oggetto.certif_da_st_farma_dett = "certif_da_st_farma_dett"
 	kist_treeview_oggetto.certif_da_st_alimen_dett = "certif_da_st_alimen_dett"
+	kist_treeview_oggetto.certif_uff_ddt_dett = "certif_uff_ddt_dett"
 
 //--- Sezione CLIENTI
 	kist_treeview_oggetto.anagrafiche = "anagrafiche"

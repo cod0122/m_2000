@@ -123,7 +123,7 @@ choose case a_button
 		, "b_contratti", "b_meca_causali_l", "b_art_l", "p_memo", "p_memo_link", "b_clienti","p_clienti_memo_elenco", "p_meca_memo_elenco", "p_id_memo_no" &
 		, "b_arfalistaxcontr", "b_qtna_note" &
 		, "b_barcode_dosim_l", "b_meca_dosim_barcode_l", "b_dosim_lotto_dosim_l"&
-		, "b_asn", "b_e1doco_lav", "b_e1apid_dett", "b_certif_stampa"
+		, "b_asn", "b_e1doco_lav", "b_e1apid_dett", "b_certif_stampa", "b_contratto_doc_dettaglio"
 		k_return = a_button
 		
 		
@@ -345,7 +345,7 @@ choose case a_nome_link
 	case "id_contratto_co" 
 		kuf1_parent = create using "kuf_contratti_co"
 		
-	case "id_contratto_doc" 
+	case "id_contratto_doc", "b_contratto_doc_dettaglio" 
 		kuf1_parent = create using "kuf_contratti_doc"
 		
 	case "num_certif"  &

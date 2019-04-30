@@ -1720,42 +1720,42 @@ end if
 
 end subroutine
 
-private subroutine call_elenco_fatture ();//
-string k_where
-long k_id_cliente
-string k_stato, k_tipo
-st_open_w k_st_open_w
-//kuf_menu_window kuf1_menu_window
-
-
-if tab_1.tabpage_1.dw_1.getrow() > 0 then
-
-	k_id_cliente = tab_1.tabpage_1.dw_1.getitemnumber( tab_1.tabpage_1.dw_1.getrow(), "codice") 
-
-//=== Parametri : 
-//=== struttura st_open_w
-//=== dati particolare programma
-	K_st_open_w.id_programma = kkg_id_programma_fatture_elenco
-	K_st_open_w.flag_primo_giro = "S"
-	K_st_open_w.flag_modalita = kkg_flag_modalita.elenco
-	K_st_open_w.flag_adatta_win = KKG.ADATTA_WIN
-	K_st_open_w.flag_leggi_dw = " "
-	K_st_open_w.flag_cerca_in_lista = " "
-	K_st_open_w.key1 = string(k_id_cliente, "0000000000") // cod cliente
-	K_st_open_w.key2 = " "  //data da  
-	K_st_open_w.key3 = " "  //data a
-	K_st_open_w.flag_where = " "
-	
-	//kuf1_menu_window = create kuf_menu_window 
-	kGuf_menu_window.open_w_tabelle(k_st_open_w)
-	//destroy kuf1_menu_window
-
-else
-
-	messagebox("Operazione non eseguita", "Selezionare una riga dalla lista")
-
-end if
-
+private subroutine call_elenco_fatture ();////
+//string k_where
+//long k_id_cliente
+//string k_stato, k_tipo
+//st_open_w k_st_open_w
+////kuf_menu_window kuf1_menu_window
+//
+//
+//if tab_1.tabpage_1.dw_1.getrow() > 0 then
+//
+//	k_id_cliente = tab_1.tabpage_1.dw_1.getitemnumber( tab_1.tabpage_1.dw_1.getrow(), "codice") 
+//
+////=== Parametri : 
+////=== struttura st_open_w
+////=== dati particolare programma
+//	K_st_open_w.id_programma = kkg_id_programma_fatture_elenco
+//	K_st_open_w.flag_primo_giro = "S"
+//	K_st_open_w.flag_modalita = kkg_flag_modalita.elenco
+//	K_st_open_w.flag_adatta_win = KKG.ADATTA_WIN
+//	K_st_open_w.flag_leggi_dw = " "
+//	K_st_open_w.flag_cerca_in_lista = " "
+//	K_st_open_w.key1 = string(k_id_cliente, "0000000000") // cod cliente
+//	K_st_open_w.key2 = " "  //data da  
+//	K_st_open_w.key3 = " "  //data a
+//	K_st_open_w.flag_where = " "
+//	
+//	//kuf1_menu_window = create kuf_menu_window 
+//	kGuf_menu_window.open_w_tabelle(k_st_open_w)
+//	//destroy kuf1_menu_window
+//
+//else
+//
+//	messagebox("Operazione non eseguita", "Selezionare una riga dalla lista")
+//
+//end if
+//
 
 end subroutine
 
@@ -1941,8 +1941,8 @@ choose case k_par_in
 	case kkg_flag_richiesta.libero3		//Listino...
 		call_elenco_listino()
 
-	case kkg_flag_richiesta.libero4		//Fatture...
-		call_elenco_fatture()
+//	case kkg_flag_richiesta.libero4		//Fatture...
+//		call_elenco_fatture()
 
 	case kkg_flag_richiesta.libero6		//cambia data di estrazione
 		cambia_periodo_elenco()
@@ -2003,16 +2003,16 @@ boolean k_insert = true
 		ki_menu.m_strumenti.m_fin_gest_libero3.toolbaritembarindex=2
 		ki_menu.m_strumenti.m_fin_gest_libero3.visible = true
 	
-		ki_menu.m_strumenti.m_fin_gest_libero4.text = "Elenco documenti di vendita "
-		ki_menu.m_strumenti.m_fin_gest_libero4.microhelp = &
-		"Fatture, Elenco documenti di vendita  "
-		ki_menu.m_strumenti.m_fin_gest_libero4.enabled = k_insert
-		ki_menu.m_strumenti.m_fin_gest_libero4.toolbaritemVisible = true
-		ki_menu.m_strumenti.m_fin_gest_libero4.toolbaritemText = "Fatture, Elenco documenti di vendita  "
-//		ki_menu.m_strumenti.m_fin_gest_libero4.toolbaritemName =kGuo_path.get_risorse() +  "\fattura16x16.gif"
-		ki_menu.m_strumenti.m_fin_gest_libero4.toolbaritemName ="fattura16x16.gif"
-		ki_menu.m_strumenti.m_fin_gest_libero4.toolbaritembarindex=2
-		ki_menu.m_strumenti.m_fin_gest_libero4.visible = false
+//		ki_menu.m_strumenti.m_fin_gest_libero4.text = "Elenco documenti di vendita "
+//		ki_menu.m_strumenti.m_fin_gest_libero4.microhelp = &
+//		"Fatture, Elenco documenti di vendita  "
+//		ki_menu.m_strumenti.m_fin_gest_libero4.enabled = k_insert
+//		ki_menu.m_strumenti.m_fin_gest_libero4.toolbaritemVisible = true
+//		ki_menu.m_strumenti.m_fin_gest_libero4.toolbaritemText = "Fatture, Elenco documenti di vendita  "
+////		ki_menu.m_strumenti.m_fin_gest_libero4.toolbaritemName =kGuo_path.get_risorse() +  "\fattura16x16.gif"
+//		ki_menu.m_strumenti.m_fin_gest_libero4.toolbaritemName ="fattura16x16.gif"
+//		ki_menu.m_strumenti.m_fin_gest_libero4.toolbaritembarindex=2
+//		ki_menu.m_strumenti.m_fin_gest_libero4.visible = false
 	
 		ki_menu.m_strumenti.m_fin_gest_libero6.text = "Cambia il periodo di estrazione scheda elenco Movimenti (data Lotto / Fattura)"
 		ki_menu.m_strumenti.m_fin_gest_libero6.microhelp =  "Cambia periodo di estrazione Movimenti"
@@ -2785,7 +2785,7 @@ ki_selectedtab = 2
 	
 //--- Info x DRAG&DROP
 	if tab_1.tabpage_2.dw_2.rowcount() <= 0 and (ki_st_open_w.flag_modalita = kkg_flag_modalita.modifica or ki_st_open_w.flag_modalita = kkg_flag_modalita.visualizzazione) then
-		tab_1.tabpage_2.dw_2.dataobject = "d_dragdrp_info"
+		tab_1.tabpage_2.dw_2.dataobject = "d_memo_dragdrop_info"
 		tab_1.tabpage_2.st_2_retrieve.Text = "" // azzero per essere sicuro che al prx tentativo torna a fare la retrieve
 	end if
 
@@ -2814,9 +2814,9 @@ try
 //	if kist_memo.st_tab_memo.id_memo  > 0 then
 
 		if a_file_nr = 1 then
-			k_risposta_load_memo_link = messagebox("Crea un MEMO", "Oltre al collegamento vuoi importare anche l'intero documento nel DB", Question!, yesnocancel!, k_risposta_load_memo_link)
+			k_risposta_load_memo_link = messagebox("Crea un MEMO", "Oltre al collegamento vuoi archiviare il documento nel DB", Question!, yesnocancel!, k_risposta_load_memo_link)
 		else
-			k_risposta_load_memo_link = messagebox("Crea un MEMO associato a " + string(a_file_nr) + " Allegati", "Oltre ai collegamenti vuoi importare anche tutti i documenti nel DB", Question!, yesnocancel!, k_risposta_load_memo_link)
+			k_risposta_load_memo_link = messagebox("Crea un MEMO associato a " + string(a_file_nr) + " Allegati", "Oltre ai collegamenti vuoi archiviare i documenti nel DB", Question!, yesnocancel!, k_risposta_load_memo_link)
 		end if
 
 		if k_risposta_load_memo_link = 3 then
@@ -3282,7 +3282,7 @@ end on
 
 event tab_1::key;call super::key;
 if kidw_selezionata.dataobject = "d_clienti_1" or kidw_selezionata.dataobject = "d_clienti_memo_l" &
-               or kidw_selezionata.dataobject = "d_clienti_mkt_web" or kidw_selezionata.dataobject = "d_dragdrp_info" then
+               or kidw_selezionata.dataobject = "d_clienti_mkt_web" or kidw_selezionata.dataobject = "d_memo_dragdrop_info" then
 //--- CTRL+V fa Incolla dei file
 	if key = KeyV! and keyflags = 2 then
 		u_drop_file(kiuf_file_dragdrop.kki_tipo_drag_incolla, handle(this))
@@ -4033,6 +4033,9 @@ type st_9_retrieve from w_g_tab_3`st_9_retrieve within tabpage_9
 end type
 
 type dw_9 from w_g_tab_3`dw_9 within tabpage_9
+end type
+
+type st_duplica from w_g_tab_3`st_duplica within w_clienti
 end type
 
 type dw_periodo from uo_dw_periodo within w_clienti

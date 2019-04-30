@@ -336,6 +336,7 @@ string k_flag
 
 	k_flag = "0" //non visibile
 
+	dw_lista_0.Modify("id_memo.Visible=" + k_flag)
 	dw_lista_0.Modify("id_cliente.Visible=" + k_flag)
 	dw_lista_0.Modify("e1ancodrs.Visible=" + k_flag)
 	dw_lista_0.Modify("e1an.Visible=" + k_flag)
@@ -356,7 +357,6 @@ string k_flag
 	dw_lista_0.Modify("x_datins.Visible=" + k_flag)
 	dw_lista_0.Modify("stato.Visible=" + k_flag)
 	dw_lista_0.Modify("id_meca_causale.Visible=" + k_flag)
-	dw_lista_0.Modify("allegato.Visible=" + k_flag)
 
 	k_flag = "1" // visibile
 
@@ -365,10 +365,10 @@ string k_flag
 	
 		st_elenco.tag = "estesa"
 			
+		dw_lista_0.Modify("id_memo.Visible=" + k_flag)
   	  	dw_lista_0.Modify("id_cliente.Visible=" + k_flag)
 		dw_lista_0.Modify("e1ancodrs.Visible=" + k_flag)
 		dw_lista_0.Modify("e1an.Visible=" + k_flag)
-		dw_lista_0.Modify("allegato.Visible=" + k_flag)
 		dw_lista_0.Modify("rag_soc_1.Visible=" + k_flag)
 		dw_lista_0.Modify("tel_num.Visible=" + k_flag)
 		dw_lista_0.Modify("fax_num.Visible=" + k_flag)
@@ -383,10 +383,10 @@ string k_flag
 	else
 		st_elenco.tag = "ridotta"
 		
+		dw_lista_0.Modify("id_memo.Visible=" + k_flag)
 		dw_lista_0.Modify("id_cliente.Visible=" + k_flag)
 		dw_lista_0.Modify("e1ancodrs.Visible=" + k_flag)
 		dw_lista_0.Modify("e1an.Visible=" + k_flag)
-		dw_lista_0.Modify("allegato.Visible=" + k_flag)
 		dw_lista_0.Modify("rag_soc_1.Visible=" + k_flag)
 		dw_lista_0.Modify("localita.Visible=" + k_flag)
 		dw_lista_0.Modify("prov.Visible=" + k_flag)
@@ -406,10 +406,10 @@ string k_flag
 		dw_lista_0.Modify("id_meca_causale.Visible=" + k_flag)
 	end if
 
+	dw_lista_0.Modify("id_memo_t.Visible=" + k_flag)
 	dw_lista_0.Modify("id_cliente_t.Visible=" + k_flag)
 	dw_lista_0.Modify("e1ancodrs_t.Visible=" + k_flag)
 	dw_lista_0.Modify("e1an_t.Visible=" + k_flag)
-	dw_lista_0.Modify("allegato_t.Visible=" + k_flag)
 	dw_lista_0.Modify("rag_soc_1_t.Visible=" + k_flag)
 	dw_lista_0.Modify("tel_num_t.Visible=" + k_flag)
 	dw_lista_0.Modify("fax_num_t.Visible=" + k_flag)
@@ -1244,6 +1244,9 @@ if k_campo = "rag_soc_1" and dw_guida.getitemnumber(1, "dinamico") = 1 then
 end if
 
 end event
+
+type st_duplica from w_g_tab0`st_duplica within w_clienti_l
+end type
 
 type cb_stat from commandbutton within w_clienti_l
 event clicked pbm_bnclicked

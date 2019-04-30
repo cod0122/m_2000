@@ -974,7 +974,7 @@ try
 		case KKG_FLAG_RICHIESTA.libero2		//collassa rami tree
 			treeview_collassa_tutti_i_rami()
 	
-		case KKG_FLAG_RICHIESTA.libero3	//Stampa datawindow attiva
+		case KKG_FLAG_RICHIESTA.libero3	//Stampa dw attiva
 			stampa()
 	
 		case KKG_FLAG_RICHIESTA.libero4	//Invia email (anzi open di outlook)
@@ -1918,8 +1918,8 @@ end event
 
 event u_open_preliminari;call super::u_open_preliminari;//
 // DA TOGLIERE APPENA TUTTI HANNO AGGIORNATO ALLA VER 18.0806 E IN TABELLA METTERE PERS.CONTROLLI PER TREEVIEW
-ki_st_open_w.st_tab_menu_window.salva_controlli = "S" 
-ki_salva_controlli = true
+//ki_st_open_w.st_tab_menu_window.salva_controlli = "S" 
+//ki_salva_controlli = true
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 end event

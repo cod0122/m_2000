@@ -7,7 +7,7 @@ global type st_treeview_oggetto from structure
 	string		id_padre
 	integer		pic_ritorna_item_padre
 	integer		pic_cartella		descriptor "comment" = "picture cartella"
-	string		oggetto		descriptor "comment" = "Oggetto attuale, ovvero il valore di uno deo campi qui sotto"
+	string		oggetto		descriptor "comment" = "Oggetto attuale, ovvero il valore di uno dei campi qui sotto"
 	string		barcode_root
 	string		barcode_mese
 	string		barcode_mese_dett
@@ -38,7 +38,7 @@ global type st_treeview_oggetto from structure
 	string		barcode_tutti
 	string		barcode_tutti_dett
 	string		barcode_dettaglio
-	string		certif
+	string		certif		descriptor "comment" = "attestati"
 	string		certif_dett
 	string		certif_in_lav_dett
 	string		certif_da_conv_dett
@@ -50,6 +50,7 @@ global type st_treeview_oggetto from structure
 	string		certif_st_mese
 	string		certif_st_giorno
 	string		certif_st_dett
+	string		certif_uff_ddt_dett
 	string		pl_barcode
 	string		pl_barcode_mese
 	string		pl_barcode_mese_dett

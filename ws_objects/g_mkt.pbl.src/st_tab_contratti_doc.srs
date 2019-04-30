@@ -49,6 +49,41 @@ global type st_tab_contratti_doc from structure
 	string		altre_condizioni
 	string		flg_fatt_dopo_valid		descriptor "comment" = "S=Fatturazione dopo la Validazione"
 	integer		id_meca_causale		descriptor "comment" = "codice Causale di Blocco"
+	string		unita_misura
+	integer		mis_x_1
+	integer		mis_y_1
+	integer		mis_z_1
+	double		peso_max_kg
+	decimal { 2 }		prezzo_1
+	string		note_qtax
+	string		note_fatt
+	decimal { 2 }		impon_minimo
+	decimal { 2 }		prezzo_dosim
+	string		contratti_des
+	long		id_sd_md		descriptor "comment" = "dose-mapping "
+	decimal { 2 }		dose_min
+	decimal { 2 }		dose_max
+	decimal { 2 }		dose
+	string		e1litm
+	string		density_x
+	string		e1itmdosim
+	decimal { 2 }		e1itmdosimprezzo
+	string		sk_dose_map_des
+	decimal { 2 }		gest_doc_prezzo		descriptor "comment" = " Gest. documentale"
+	string		gest_doc_des
+	decimal { 2 }		dir_tecnico_prezzo		descriptor "comment" = "Gest. Prod. Farmac."
+	string		dir_tecnico_des
+	decimal { 2 }		analisi_lab_prezzo		descriptor "comment" = "Gest. Controcampioni"
+	string		analisi_lab_des
+	decimal { 2 }		dosim_agg_prezzo		descriptor "comment" = "Dosim. Aggiuntive"
+	string		dosim_agg_des
+	decimal { 2 }		logistica_prezzo		descriptor "comment" = "Riconfezionamento"
+	string		logistica_des
+	decimal { 2 }		stoccaggio_prezzo		descriptor "comment" = "Ritiro oltre tot gg"
+	string		stoccaggio_des
+	decimal { 2 }		altro_prezzo
+	string		altro_des
+	string		note_interne		descriptor "comment" = "note non interne (non in stampa)"
 	datetime		x_datins
 	string		x_utente
 end type

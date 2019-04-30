@@ -24,6 +24,7 @@ global type st_tab_certif from structure
 	string		note_1
 	string		note_2
 	string		form_di_stampa
+	boolean		flg_ristampa_xddt		descriptor "comment" = "0/1 stampato da uff. x ddt (presente in cartella Attestati x ddt)"
 	datetime		x_datins
 	string		x_utente
 end type

@@ -7836,7 +7836,7 @@ try
 			if k_dw.dataobject = "d_report_23_idx_consegne_cli" then
 				k_cliente =  k_dw.getitemnumber(k_riga,"clie_3")
 			// x ciente allora mese, anno, cliente 
-				kst_open_w.key1 = "Lotti cliente " + string(k_cliente) + " oltre la data di Rilascio (consegna) prevista nel " + string( k_data, "mmm yyyy")
+				kst_open_w.key1 = "Tutti i Lotti del cliente " + string(k_cliente) + " su cui è indicata la data di Rilascio (consegna)"
 				k_rc = kst_open_w.key11_ds.retrieve(k_cliente, k_data)
 			else
 			// x data allora solo il mese e anno 
@@ -8823,6 +8823,9 @@ event dw_9::clicked;call super::clicked;//
 u_dw_report_clicked(trim(dwo.name), row)
 
 end event
+
+type st_duplica from w_g_tab_3`st_duplica within w_int_artr
+end type
 
 type ddplb_report from dropdownpicturelistbox within tabpage_1
 event u_constructor ( )

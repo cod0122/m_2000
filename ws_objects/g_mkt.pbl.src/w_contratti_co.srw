@@ -1472,6 +1472,7 @@ end on
 
 on w_contratti_co.destroy
 call super::destroy
+if IsValid(MenuID) then destroy(MenuID)
 end on
 
 event close;call super::close;//
@@ -2120,7 +2121,7 @@ boolean visible = false
 integer width = 3035
 integer height = 1256
 boolean enabled = false
-string text = "Movimenti"
+string text = " "
 string picturename = "Deploy!"
 string powertiptext = "Entrate-Uscite di magazzino"
 end type
@@ -2257,6 +2258,9 @@ type st_9_retrieve from w_g_tab_3`st_9_retrieve within tabpage_9
 end type
 
 type dw_9 from w_g_tab_3`dw_9 within tabpage_9
+end type
+
+type st_duplica from w_g_tab_3`st_duplica within w_contratti_co
 end type
 
 type ln_1 from line within tabpage_4

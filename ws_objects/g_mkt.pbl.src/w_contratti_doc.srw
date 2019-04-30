@@ -36,7 +36,6 @@ protected function string check_dati ()
 private subroutine riempi_id ()
 protected function string inizializza ()
 protected function integer inserisci ()
-private subroutine call_elenco_mandanti ()
 protected subroutine open_start_window ()
 private subroutine put_video_cliente (st_tab_clienti kst_tab_clienti)
 public subroutine set_iniz_dati_cliente (ref st_tab_clienti kst_tab_clienti)
@@ -53,8 +52,16 @@ public subroutine u_imposta_imp_acconto ()
 private subroutine if_anag_attiva_no (st_tab_clienti ast_tab_clienti)
 private function boolean if_anag_attiva (st_tab_clienti ast_tab_clienti)
 private subroutine if_anag_bloccata (st_tab_clienti ast_tab_clienti)
-public function st_tab_contratti_doc u_set_st_tab_from_dw ()
 public function boolean u_duplica () throws uo_exception
+protected subroutine inizializza_1 () throws uo_exception
+protected function integer u_dw_2_retrieve () throws uo_exception
+public function st_tab_contratti_doc u_set_st_tab_from_dw () throws uo_exception
+protected subroutine inizializza_2 () throws uo_exception
+protected function integer u_dw_3_retrieve () throws uo_exception
+public function st_tab_contratti_doc u_calcola_tot_val ()
+public function st_tab_contratti_doc u_calcola_tot_irr ()
+protected function integer inserisci_2 ()
+protected function integer inserisci_3 ()
 end prototypes
 
 private subroutine pulizia_righe ();////
@@ -99,19 +106,20 @@ string k_return="0 ", k_errore="0 ", k_errore1="0 "
 st_tab_contratti_doc kst_tab_contratti_doc
 
 
-//=== 
 choose case tab_1.selectedtab 
 
-	case 1 
+	case 1, 2, 3  
 
-		//=== Aggiorna, se modificato, la TAB_1	
-		if tab_1.tabpage_1.dw_1.getnextmodified(0, primary!) > 0 then
+		//=== Aggiorna, se modificato, la TAB_1/2	
+		if tab_1.tabpage_1.dw_1.getnextmodified(0, primary!) > 0 &
+							or tab_1.tabpage_2.dw_2.getnextmodified(0, primary!) > 0 &
+							or tab_1.tabpage_3.dw_3.getnextmodified(0, primary!) > 0 then
 		
-			kst_tab_contratti_doc = u_set_st_tab_from_dw( )
-			kst_tab_contratti_doc.x_datins = kGuf_data_base.prendi_x_datins()
-			kst_tab_contratti_doc.x_utente = kGuf_data_base.prendi_x_utente()
-			kst_tab_contratti_doc.id_contratto_doc = tab_1.tabpage_1.dw_1.getitemnumber(1, "contratti_doc_id_contratto_doc")
 			try 
+				kst_tab_contratti_doc = u_set_st_tab_from_dw( )   // popola st contratti
+				kst_tab_contratti_doc.x_datins = kGuf_data_base.prendi_x_datins()
+				kst_tab_contratti_doc.x_utente = kGuf_data_base.prendi_x_utente()
+				kst_tab_contratti_doc.id_contratto_doc = tab_1.tabpage_1.dw_1.getitemnumber(1, "contratti_doc_id_contratto_doc")
 				kst_tab_contratti_doc.st_tab_g_0.esegui_commit = "S"
 				//--- aggiorna
 				if kst_tab_contratti_doc.id_contratto_doc > 0 then
@@ -124,6 +132,8 @@ choose case tab_1.selectedtab
 				end if
 
 				tab_1.tabpage_1.dw_1.resetupdate( )
+				tab_1.tabpage_2.dw_2.resetupdate( )
+				tab_1.tabpage_3.dw_3.resetupdate( )
 				k_return ="0 "
 				
 			catch (uo_exception kuo_exception)
@@ -197,6 +207,12 @@ choose case tab_1.selectedtab
 					else
 						
 						tab_1.tabpage_1.dw_1.deleterow(k_riga)
+						if tab_1.tabpage_2.dw_2.rowcount( ) > 0 then
+							tab_1.tabpage_2.dw_2.deleterow(1)
+						end if
+						if tab_1.tabpage_3.dw_3.rowcount( ) > 0 then
+							tab_1.tabpage_3.dw_3.deleterow(k_riga)
+						end if
 		
 					end if
 		
@@ -228,7 +244,6 @@ choose case tab_1.selectedtab
 		end if
 
 
-//--- Cancella la Condizione
 	case 3 
 
 end choose	
@@ -273,6 +288,22 @@ try
 		kds_inp.dataobject = tab_1.tabpage_1.dw_1.dataobject
 		tab_1.tabpage_1.dw_1.rowscopy( 1,tab_1.tabpage_1.dw_1.rowcount( ) ,primary!, kds_inp, 1, primary!)
 		kst_esito = kiuf_contratti_doc.u_check_dati(kds_inp)
+	end if
+//--- Controllo il secondo tab con i dati VAL
+	if kst_esito.esito = kkg_esito.OK or kst_esito.esito = kkg_esito.DB_WRN or kst_esito.esito = kkg_esito.DATI_WRN then
+		if tab_1.tabpage_2.dw_2.rowcount() > 0 then
+			kds_inp.dataobject = tab_1.tabpage_2.dw_2.dataobject
+			tab_1.tabpage_2.dw_2.rowscopy( 1,tab_1.tabpage_2.dw_2.rowcount( ) ,primary!, kds_inp, 1, primary!)
+			kst_esito = kiuf_contratti_doc.u_check_dati_val(kds_inp)
+		end if
+	end if
+//--- Controllo il secondo tab con i dati IRR
+	if kst_esito.esito = kkg_esito.OK or kst_esito.esito = kkg_esito.DB_WRN or kst_esito.esito = kkg_esito.DATI_WRN then
+		if tab_1.tabpage_3.dw_3.rowcount() > 0 then
+			kds_inp.dataobject = tab_1.tabpage_3.dw_3.dataobject
+			tab_1.tabpage_3.dw_3.rowscopy( 1,tab_1.tabpage_3.dw_3.rowcount( ) ,primary!, kds_inp, 1, primary!)
+			kst_esito = kiuf_contratti_doc.u_check_dati_irr(kds_inp)
+		end if
 	end if
 	
 	
@@ -370,7 +401,7 @@ if tab_1.tabpage_1.dw_1.rowcount() = 0 then
 			case is < 0				
 				messagebox("Operazione fallita", &
 					"Mi spiace ma si e' verificato un errore interno al programma~n~r" + &
-					"(ID Contratto Studio e Svulippo cercato :" + trim(string(kist_tab_contratti_doc.id_contratto_doc)) + ")~n~r" )
+					"(ID Quotazione cercato :" + trim(string(kist_tab_contratti_doc.id_contratto_doc)) + ")~n~r" )
 				cb_ritorna.postevent(clicked!)
 
 			case 0
@@ -379,7 +410,7 @@ if tab_1.tabpage_1.dw_1.rowcount() = 0 then
 				attiva_tasti()
 
 				messagebox("Ricerca fallita", &
-						"Mi spiace, il codice 'Contratto Studio e Svulippo' non e' in archivio ~n~r" + &
+						"Mi spiace, il codice ID della 'Quotazione' non e' in archivio ~n~r" + &
 					"(ID cercato: "  &
 					 + trim(string(kist_tab_contratti_doc.id_contratto_doc)) + ")~n~r" )
 
@@ -450,81 +481,71 @@ end function
 protected function integer inserisci ();//
 int k_return=1, k_ctr, k_rc
 string k_errore="0 ", k_rcx
-//date k_data
 long k_riga 
 string k_record_base
-//int k_taborder
-//string k_rc1, k_style
-st_tab_contratti_doc kst_tab_contratti_doc
+//st_tab_contratti_doc kist_tab_contratti_doc
 st_tab_clienti kst_tab_clienti
 st_tab_clie_settori kst_tab_clie_settori
-
 kuf_ausiliari kuf1_ausiliari
-//window kw_window
 kuf_base kuf1_base
 kuf_utility kuf1_utility
 datawindowchild Kdwc_clie_des, kdwc_clie_cod, Kdwc_clie_contatti, kdwc_oggetto, kdwc_settori, kdwc_gru
 
-
-//=== Controllo se ho modificato dei dati nella DW DETTAGLIO
-//if left(dati_modif(""), 1) = "1" then //Richisto Aggiornamento
-
-//=== Controllo congruenza dei dati caricati e Aggiornamento  
-//=== Ritorna 1 char : 0=tutto OK; 1=errore grave;
-//===                : 2=errore non grave dati aggiornati;
-//===			         : 3=LIBERO
-//===      il resto della stringa contiene la descrizione dell'errore   
-//	k_errore = aggiorna_dati()
-
-//end if
-
-
-if LeftA(k_errore, 1) = "0" then
 
 
 //=== Aggiunge una riga al data windows
 	choose case tab_1.selectedtab 
 		case  1 
 
-//			kw_window = kGuf_data_base.prendi_win_attiva()
-//			kw_window.title = "Listino: Inserimento"
-	
-//			kst_tab_listino.cod_cli = long(trim(ki_st_open_w.key1))
-//			kst_tab_listino.cod_art = trim(ki_st_open_w.key2)
-			
 //--- legge tiutte le DWC			
 			leggi_liste()			
 			
 			if tab_1.tabpage_1.dw_1.rowcount() > 0 then
 				
 				k_riga = 1
-				kst_tab_contratti_doc.magazzino = tab_1.tabpage_1.dw_1.getitemnumber(k_riga, "magazzino")
-				kst_tab_contratti_doc.anno = tab_1.tabpage_1.dw_1.getitemnumber(k_riga, "anno")
-				kst_tab_contratti_doc.offerta_data = tab_1.tabpage_1.dw_1.getitemdate(k_riga, "offerta_data")
-				kst_tab_contratti_doc.offerta_validita = tab_1.tabpage_1.dw_1.getitemstring(k_riga, "offerta_validita")
-				kst_tab_contratti_doc.stampa_tradotta = tab_1.tabpage_1.dw_1.getitemstring(k_riga, "stampa_tradotta")
-				kst_tab_contratti_doc.oggetto = tab_1.tabpage_1.dw_1.getitemstring(k_riga, "oggetto")
-				kst_tab_contratti_doc.id_clie_settore = tab_1.tabpage_1.dw_1.getitemstring(k_riga, "id_clie_settore")
+				kist_tab_contratti_doc.magazzino = tab_1.tabpage_1.dw_1.getitemnumber(k_riga, "magazzino")
+				kist_tab_contratti_doc.anno = tab_1.tabpage_1.dw_1.getitemnumber(k_riga, "anno")
+				kist_tab_contratti_doc.offerta_data = tab_1.tabpage_1.dw_1.getitemdate(k_riga, "offerta_data")
+				kist_tab_contratti_doc.offerta_validita = tab_1.tabpage_1.dw_1.getitemstring(k_riga, "offerta_validita")
+				kist_tab_contratti_doc.stampa_tradotta = tab_1.tabpage_1.dw_1.getitemstring(k_riga, "stampa_tradotta")
+				kist_tab_contratti_doc.oggetto = tab_1.tabpage_1.dw_1.getitemstring(k_riga, "oggetto")
+				kist_tab_contratti_doc.id_clie_settore = tab_1.tabpage_1.dw_1.getitemstring(k_riga, "id_clie_settore")
 				kst_tab_clie_settori.descr = tab_1.tabpage_1.dw_1.getitemstring(k_riga, "clie_settori_descr")
-				kst_tab_contratti_doc.gruppo = tab_1.tabpage_1.dw_1.getitemnumber(k_riga, "gruppo")
-				kst_tab_contratti_doc.art = tab_1.tabpage_1.dw_1.getitemstring(k_riga, "art")
-				kst_tab_contratti_doc.data_inizio = tab_1.tabpage_1.dw_1.getitemdate(k_riga, "data_inizio")
-				kst_tab_contratti_doc.data_fine = tab_1.tabpage_1.dw_1.getitemdate(k_riga, "data_fine")
-				kst_tab_contratti_doc.id_listino_pregruppo = tab_1.tabpage_1.dw_1.getitemnumber(k_riga, "id_listino_pregruppo")
-				for k_ctr = 1 to 10
-					kst_tab_contratti_doc.id_listino_voce[k_ctr] = tab_1.tabpage_1.dw_1.getitemnumber(k_riga, "id_listino_voce_" + string(k_ctr,"#"))
-				next			
+				kist_tab_contratti_doc.gruppo = tab_1.tabpage_1.dw_1.getitemnumber(k_riga, "gruppo")
+				kist_tab_contratti_doc.art = tab_1.tabpage_1.dw_1.getitemstring(k_riga, "art")
+				kist_tab_contratti_doc.data_inizio = tab_1.tabpage_1.dw_1.getitemdate(k_riga, "data_inizio")
+				kist_tab_contratti_doc.data_fine = tab_1.tabpage_1.dw_1.getitemdate(k_riga, "data_fine")
+				
+				if tab_1.tabpage_2.dw_2.rowcount() > 0 then
+					kist_tab_contratti_doc.id_listino_pregruppo = tab_1.tabpage_2.dw_2.getitemnumber(k_riga, "id_listino_pregruppo")
+					for k_ctr = 1 to 10
+						kist_tab_contratti_doc.id_listino_voce[k_ctr] = tab_1.tabpage_2.dw_2.getitemnumber(k_riga, "id_listino_voce_" + string(k_ctr,"#"))
+					next			
+					tab_1.tabpage_2.dw_2.reset() 
+				end if
+				
+				if tab_1.tabpage_3.dw_3.rowcount() > 0 then
+					kist_tab_contratti_doc.unita_misura = tab_1.tabpage_3.dw_3.getitemstring(1, "unita_misura") 
+					kist_tab_contratti_doc.mis_x_1 = tab_1.tabpage_3.dw_3.getitemnumber(1, "mis_x_1")
+					kist_tab_contratti_doc.mis_y_1 = tab_1.tabpage_3.dw_3.getitemnumber(1, "mis_y_1")
+					kist_tab_contratti_doc.mis_z_1 = tab_1.tabpage_3.dw_3.getitemnumber(1, "mis_z_1")
+					kist_tab_contratti_doc.impon_minimo = tab_1.tabpage_3.dw_3.getitemnumber(1, "impon_minimo")
+					kist_tab_contratti_doc.e1itmdosim = tab_1.tabpage_3.dw_3.getitemstring(1, "e1itmdosim")
+					kist_tab_contratti_doc.e1itmdosimprezzo = tab_1.tabpage_3.dw_3.getitemnumber(1, "e1itmdosimprezzo")
+					tab_1.tabpage_3.dw_3.reset() 
+				end if
+				
 				tab_1.tabpage_1.dw_1.reset() 
 			else
 //--- piglia i dati di default dall'ultimo caricamento dell'anno in corso.... 				
-				kst_tab_contratti_doc.anno = year(kg_dataoggi)
-				kiuf_contratti_doc.get_dati_default( kst_tab_contratti_doc )
-				if kst_tab_contratti_doc.id_contratto_doc > 0 then // se non trovo nulla allora riprovo con anno meno 1
+				kist_tab_contratti_doc.anno = year(kg_dataoggi)
+				kiuf_contratti_doc.get_dati_default( kist_tab_contratti_doc )
+				if kist_tab_contratti_doc.id_contratto_doc > 0 then // se non trovo nulla allora riprovo con anno meno 1
 				else
-					kst_tab_contratti_doc.anno = year(kg_dataoggi) - 1
-					kiuf_contratti_doc.get_dati_default( kst_tab_contratti_doc )
-					if kst_tab_contratti_doc.anno = 0 then // se non trovo nulla allora riprovo con anno meno 1
-						kst_tab_contratti_doc.anno = year(kg_dataoggi) 
+					kist_tab_contratti_doc.anno = year(kg_dataoggi) - 1
+					kiuf_contratti_doc.get_dati_default( kist_tab_contratti_doc )
+					if kist_tab_contratti_doc.anno = 0 then // se non trovo nulla allora riprovo con anno meno 1
+						kist_tab_contratti_doc.anno = year(kg_dataoggi) 
 					end if				
 				end if			
 			end if
@@ -536,38 +557,38 @@ if LeftA(k_errore, 1) = "0" then
 			ki_st_open_w.flag_modalita = kkg_flag_modalita.inserimento
 
 //--- data redazione 			
-			if kst_tab_contratti_doc.anno > 0 then
-				tab_1.tabpage_1.dw_1.setitem(1, "anno", kst_tab_contratti_doc.anno)
+			if kist_tab_contratti_doc.anno > 0 then
+				tab_1.tabpage_1.dw_1.setitem(1, "anno", kist_tab_contratti_doc.anno)
 			else
 				tab_1.tabpage_1.dw_1.setitem(1, "anno", year(kg_dataoggi))
 			end if
-			if kst_tab_contratti_doc.offerta_data > date(0) then
-				tab_1.tabpage_1.dw_1.setitem(1, "offerta_data", kst_tab_contratti_doc.offerta_data)
+			if kist_tab_contratti_doc.offerta_data > date(0) then
+				tab_1.tabpage_1.dw_1.setitem(1, "offerta_data", kist_tab_contratti_doc.offerta_data)
 			else
 				tab_1.tabpage_1.dw_1.setitem(1, "offerta_data", kg_dataoggi)
 			end if
-			if len(trim(kst_tab_contratti_doc.offerta_validita)) > 0 then
-				tab_1.tabpage_1.dw_1.setitem(1, "offerta_validita", kst_tab_contratti_doc.offerta_validita)
+			if len(trim(kist_tab_contratti_doc.offerta_validita)) > 0 then
+				tab_1.tabpage_1.dw_1.setitem(1, "offerta_validita", kist_tab_contratti_doc.offerta_validita)
 			else
 				tab_1.tabpage_1.dw_1.setitem(1, "offerta_validita", "")
 			end if
-			if kst_tab_contratti_doc.magazzino > 0 then
-				tab_1.tabpage_1.dw_1.setitem(1, "magazzino", kst_tab_contratti_doc.magazzino)
+			if kist_tab_contratti_doc.magazzino > 0 then
+				tab_1.tabpage_1.dw_1.setitem(1, "magazzino", kist_tab_contratti_doc.magazzino)
 			else
 				tab_1.tabpage_1.dw_1.setitem(1, "magazzino", kkg_magazzino.rd )
 			end if
-			tab_1.tabpage_1.dw_1.setitem(1, "stato", kst_tab_contratti_doc.stato)
-			tab_1.tabpage_1.dw_1.setitem(1, "data_stampa", kst_tab_contratti_doc.data_stampa)
-			tab_1.tabpage_1.dw_1.setitem(1, "stampa_tradotta", kst_tab_contratti_doc.stampa_tradotta)
+			tab_1.tabpage_1.dw_1.setitem(1, "stato", kist_tab_contratti_doc.stato)
+			tab_1.tabpage_1.dw_1.setitem(1, "data_stampa", kist_tab_contratti_doc.data_stampa)
+			tab_1.tabpage_1.dw_1.setitem(1, "stampa_tradotta", kist_tab_contratti_doc.stampa_tradotta)
 
 //--- Imposta il periodo di default			
-			if kst_tab_contratti_doc.data_inizio > date(0) then
-				tab_1.tabpage_1.dw_1.setitem(1, "data_inizio", kst_tab_contratti_doc.data_inizio)
+			if kist_tab_contratti_doc.data_inizio > date(0) then
+				tab_1.tabpage_1.dw_1.setitem(1, "data_inizio", kist_tab_contratti_doc.data_inizio)
 			else
 				tab_1.tabpage_1.dw_1.setitem(1, "data_inizio", kg_dataoggi)
 			end if
-			if kst_tab_contratti_doc.data_fine > date(0) then
-				tab_1.tabpage_1.dw_1.setitem(1, "data_fine", kst_tab_contratti_doc.data_inizio)
+			if kist_tab_contratti_doc.data_fine > date(0) then
+				tab_1.tabpage_1.dw_1.setitem(1, "data_fine", kist_tab_contratti_doc.data_inizio)
 			else
 				tab_1.tabpage_1.dw_1.setitem(1, "data_fine", date(year(kg_dataoggi), 12, 31))
 			end if
@@ -627,8 +648,8 @@ if LeftA(k_errore, 1) = "0" then
 			end if
 
 //--- legge dwc Oggetti già utilizzati
-			if len(trim(kst_tab_contratti_doc.oggetto )) > 0 then
-				k_rc = tab_1.tabpage_1.dw_1.setitem(1, "oggetto", kst_tab_contratti_doc.oggetto  )
+			if len(trim(kist_tab_contratti_doc.oggetto )) > 0 then
+				k_rc = tab_1.tabpage_1.dw_1.setitem(1, "oggetto", kist_tab_contratti_doc.oggetto  )
 			else
 				k_rc = tab_1.tabpage_1.dw_1.setitem(1, "oggetto", "" )
 				k_rc = tab_1.tabpage_1.dw_1.getchild("oggetto", Kdwc_oggetto)
@@ -639,8 +660,8 @@ if LeftA(k_errore, 1) = "0" then
 			end if
 			
 //--- legge dwc Settori
-			if len(trim(kst_tab_contratti_doc.id_clie_settore )) > 0 then
-				k_rc = tab_1.tabpage_1.dw_1.setitem(1, "id_clie_settore", kst_tab_contratti_doc.id_clie_settore  )
+			if len(trim(kist_tab_contratti_doc.id_clie_settore )) > 0 then
+				k_rc = tab_1.tabpage_1.dw_1.setitem(1, "id_clie_settore", kist_tab_contratti_doc.id_clie_settore  )
 				k_rc = tab_1.tabpage_1.dw_1.setitem(1, "clie_settori_descr", trim(kst_tab_clie_settori.descr ) )
 			else
 				k_rc = tab_1.tabpage_1.dw_1.setitem(1, "id_clie_settore", "" )
@@ -672,12 +693,6 @@ if LeftA(k_errore, 1) = "0" then
 				k_rc = kdwc_gru.retrieve(kist_tab_contratti_doc.id_clie_settore)
 				kdwc_gru.insertrow(0)
 			end if
-			
-//--- Imposta Prezzi	
-			tab_1.tabpage_1.dw_1.setitem(k_riga, "id_listino_pregruppo",kst_tab_contratti_doc.id_listino_pregruppo)
-			for k_ctr = 1 to 10
-				tab_1.tabpage_1.dw_1.setitem(k_riga, "id_listino_voce_" + string(k_ctr,"#"),kst_tab_contratti_doc.id_listino_voce[k_ctr])
-			next			
 
 
 //--- S-protezione campi per abilitare l'inserimento
@@ -685,7 +700,6 @@ if LeftA(k_errore, 1) = "0" then
 	     	kuf1_utility.u_proteggi_dw("0", 0, tab_1.tabpage_1.dw_1)
 			destroy kuf1_utility
 		
-//			tab_1.tabpage_1.dw_1.resetupdate( )
 			tab_1.tabpage_1.dw_1.SetItemStatus( 1, 0, Primary!, NotModified!)
 			
 		case 2 
@@ -697,76 +711,12 @@ if LeftA(k_errore, 1) = "0" then
 
 	k_return = 0
 
-end if
 
 return (k_return)
 
 
 
 end function
-
-private subroutine call_elenco_mandanti ();////
-//st_tab_listino kst_tab_listino
-//st_tab_cond_fatt kst_tab_cond_fatt
-//st_open_w kst_open_w 
-//kuf_clienti kuf1_clienti
-//pointer kp_oldpointer  // Declares a pointer variable
-//
-//
-//	kp_oldpointer = SetPointer(HourGlass!)
-//
-//		kuf_menu_window kuf1_menu_window
-//		
-//		if not isvalid(kdsi_elenco_output) then kdsi_elenco_output = create datastore   //ds da passare alla windows di elenco
-//		
-//		kst_tab_cond_fatt.cod_cli = tab_1.tabpage_1.dw_1.getitemnumber(tab_1.tabpage_1.dw_1.getrow(), "cod_cli")
-//		if (kst_tab_cond_fatt.cod_cli) > 0 then
-//	
-//			kdsi_elenco_output.dataobject = kuf1_clienti.kk_dw_elenco_mand
-//			kdsi_elenco_output.settransobject ( sqlca )
-//			kdsi_elenco_output.retrieve(kst_tab_cond_fatt.cod_cli) 
-//			kst_open_w.key1 = "Elenco Mandanti del Cliente: " + string(kst_tab_cond_fatt.cod_cli)
-//
-//
-//			if kdsi_elenco_output.rowcount() > 0 then
-//				
-//			//--- chiamare la window di elenco
-//			//
-//			//=== Parametri : 
-//			//=== struttura st_open_w
-//				kst_open_w.id_programma =kkg_id_programma_elenco
-//				kst_open_w.flag_primo_giro = "S"
-//				kst_open_w.flag_modalita = kkg_flag_modalita.elenco
-//				kst_open_w.flag_adatta_win = KKG.ADATTA_WIN
-//				kst_open_w.flag_leggi_dw = " "
-//				kst_open_w.flag_cerca_in_lista = " "
-//				kst_open_w.key2 = trim(kdsi_elenco_output.dataobject)
-//				kst_open_w.key3 = "0"     //--- viene riempito con il nr di riga selezionata
-//				kst_open_w.key4 = trim(kiw_this_window.title)   //--- Titolo della Window di chiamata per riconoscerla
-//				kst_open_w.key6 = " "    //--- nome del campo cliccato
-//				kst_open_w.key7 = "S"    //--- dopo la scelta chiudere la Window di elenco
-//				kst_open_w.key12_any = kdsi_elenco_output
-//				kst_open_w.flag_where = " "
-//				kuf1_menu_window = create kuf_menu_window 
-//				kuf1_menu_window.open_w_tabelle(kst_open_w)
-//				destroy kuf1_menu_window
-//			
-//			else
-//				
-//				messagebox("Elenco Dati", &
-//							"Nessun valore disponibile. ")
-//				
-//				
-//			end if
-//		end if
-//
-//
-//
-//
-//SetPointer(kp_oldpointer)
-//
-//
-end subroutine
 
 protected subroutine open_start_window ();//
 int k_rc
@@ -869,7 +819,6 @@ st_esito kst_esito
 datawindowchild kdwc_1
 
 
-
 tab_1.tabpage_1.dw_1.modify( "id_cliente.Background.Color = '" + string(kkg_colore.BIANCO) + "' " ) 
 tab_1.tabpage_1.dw_1.modify( "clienti_rag_soc_10.Background.Color = '" + string(kkg_colore.BIANCO) + "' " ) 
 //tab_1.tabpage_1.dw_1.modify( "p_iva.Background.Color = '" + string(kkg_colore.BIANCO) + "' " ) 
@@ -958,98 +907,78 @@ return k_return
 
 end function
 
-protected subroutine leggi_liste ();//
-int k_rc
-datawindowchild  kdwc_clienti_des, kdwc_clienti, kdwc_clie_settori, kdwc_gru, kdwc_clie_tipo, kdwc_iva, kdwc_pag, kdwc_oggetto, kdwc_fattura_da, kdwc_1, kdwc_2
-
-//--- Attivo dw archivio Clienti
-	k_rc = tab_1.tabpage_1.dw_1.getchild("id_cliente", kdwc_clienti)
-	k_rc = kdwc_clienti.settransobject(sqlca)
-	k_rc = kdwc_clienti.retrieve("%")
-	k_rc = kdwc_clienti.insertrow(1)
-	kdwc_clienti_des.setsort( "id_cliente asc")
-	kdwc_clienti_des.sort( )
-
-	k_rc = tab_1.tabpage_1.dw_1.getchild("clienti_rag_soc_10", kdwc_clienti_des)
-	k_rc = kdwc_clienti_des.settransobject(sqlca)
-
-	kdwc_clienti.RowsCopy(kdwc_clienti.GetRow(), kdwc_clienti.RowCount(), Primary!, kdwc_clienti_des, 1, Primary!)
-	kdwc_clienti_des.setsort( "rag_soc_1 asc")
-	kdwc_clienti_des.sort( )
-
-//--- Attivo dw elenco Descrizioni  già usati
-	k_rc = tab_1.tabpage_1.dw_1.getchild("oggetto", kdwc_oggetto)
-	k_rc = kdwc_oggetto.settransobject(sqlca)
-	k_rc = kdwc_oggetto.retrieve()
-	k_rc = kdwc_oggetto.insertrow(1)
-//--- 
-	k_rc = tab_1.tabpage_1.dw_1.getchild("fattura_da", kdwc_fattura_da)
-	k_rc = kdwc_fattura_da.settransobject(sqlca)
-	k_rc = kdwc_fattura_da.retrieve()
-	k_rc = kdwc_fattura_da.insertrow(1)
-//--- Attivo dw archivio Clienti-contatti
-//	k_rc = tab_1.tabpage_1.dw_1.getchild("nome_contatto", kdwc_clie_tipo)
-//	k_rc = kdwc_clie_tipo.settransobject(sqlca)
-//	k_rc = kdwc_clie_tipo.retrieve()
-//	k_rc = kdwc_clie_tipo.insertrow(1)
-//--- Attivo dw archivio Settori
-	k_rc = tab_1.tabpage_1.dw_1.getchild("id_clie_settore", kdwc_clie_settori)
-	k_rc = kdwc_clie_settori.settransobject(sqlca)
-	k_rc = kdwc_clie_settori.retrieve()
-	k_rc = kdwc_clie_settori.insertrow(1)
-//--- Attivo dw archivio Gruppi
-	k_rc = tab_1.tabpage_1.dw_1.getchild("gruppo", kdwc_gru)
-	k_rc = kdwc_gru.settransobject(sqlca)
-//--- piglio il codice del settore xchè la query va fatta con il codice
-	if tab_1.tabpage_1.dw_1.rowcount( ) > 0 then
-		kist_tab_contratti_doc.id_clie_settore = tab_1.tabpage_1.dw_1.getitemstring(1, "id_clie_settore")
-		if len(trim(kist_tab_contratti_doc.id_clie_settore)) > 0 then
-			k_rc = kdwc_gru.retrieve(kist_tab_contratti_doc.id_clie_settore)
-		else
-			kdwc_gru.reset()
-		end if
-	end if
-	k_rc = kdwc_gru.insertrow(1)
-//--- Attivo dw archivio IVA
-	k_rc = tab_1.tabpage_1.dw_1.getchild("iva", kdwc_iva)
-	k_rc = kdwc_iva.settransobject(sqlca)
-	k_rc = kdwc_iva.retrieve()
-	k_rc = kdwc_iva.insertrow(1)
-//--- Attivo dw archivio Pagamenti
-	k_rc = tab_1.tabpage_1.dw_1.getchild("cod_pag", kdwc_pag)
-	k_rc = kdwc_pag.settransobject(sqlca)
-	k_rc = kdwc_pag.retrieve()
-	k_rc = kdwc_pag.insertrow(1)
- 	k_rc = tab_1.tabpage_1.dw_1.getchild("acconto_cod_pag", kdwc_2)
-	k_rc = kdwc_pag.ShareData( kdwc_2)			
-
-//--- Attivo dw archivio Gruppo-Prezzi
-	k_rc = tab_1.tabpage_1.dw_1.getchild("id_listino_pregruppo", kdwc_1)
-	k_rc = kdwc_1.settransobject(sqlca)
-	k_rc = kdwc_1.retrieve(0)
-	k_rc = kdwc_1.insertrow(1)
-//	k_rc = tab_1.tabpage_1.dw_1.getchild("id_listino_pregruppo_1", kdwc_2)
-//	kdwc_1.sharedata( kdwc_2)
-//	k_rc = tab_1.tabpage_1.dw_1.getchild("id_listino_pregruppo_2", kdwc_2)
-//	kdwc_1.sharedata( kdwc_2)
-//	k_rc = tab_1.tabpage_1.dw_1.getchild("id_listino_pregruppo_3", kdwc_2)
-//	kdwc_1.sharedata( kdwc_2)
-//	k_rc = tab_1.tabpage_1.dw_1.getchild("id_listino_pregruppo_4", kdwc_2)
-//	kdwc_1.sharedata( kdwc_2)
-//	k_rc = tab_1.tabpage_1.dw_1.getchild("id_listino_pregruppo_5", kdwc_2)
-//	kdwc_1.sharedata( kdwc_2)
-//	k_rc = tab_1.tabpage_1.dw_1.getchild("id_listino_pregruppo_6", kdwc_2)
-//	kdwc_1.sharedata( kdwc_2)
-//	k_rc = tab_1.tabpage_1.dw_1.getchild("id_listino_pregruppo_7", kdwc_2)
-//	kdwc_1.sharedata( kdwc_2)
-//	k_rc = tab_1.tabpage_1.dw_1.getchild("id_listino_pregruppo_8", kdwc_2)
-//	kdwc_1.sharedata( kdwc_2)
-//	k_rc = tab_1.tabpage_1.dw_1.getchild("id_listino_pregruppo_9", kdwc_2)
-//	kdwc_1.sharedata( kdwc_2)
-//	k_rc = tab_1.tabpage_1.dw_1.getchild("id_listino_pregruppo_10", kdwc_2)
-//	kdwc_1.sharedata( kdwc_2)
-
-
+protected subroutine leggi_liste ();////
+//int k_rc
+//datawindowchild  kdwc_clienti_des, kdwc_clienti, kdwc_clie_settori, kdwc_gru, kdwc_clie_tipo, kdwc_iva, kdwc_pag, kdwc_oggetto, kdwc_fattura_da, kdwc_1, kdwc_2
+//
+////--- Attivo dw archivio Clienti
+//	k_rc = tab_1.tabpage_1.dw_1.getchild("id_cliente", kdwc_clienti)
+//	k_rc = kdwc_clienti.settransobject(sqlca)
+//	k_rc = kdwc_clienti.retrieve("%")
+//	k_rc = kdwc_clienti.insertrow(1)
+//	kdwc_clienti_des.setsort( "id_cliente asc")
+//	kdwc_clienti_des.sort( )
+//
+//	k_rc = tab_1.tabpage_1.dw_1.getchild("clienti_rag_soc_10", kdwc_clienti_des)
+//	k_rc = kdwc_clienti_des.settransobject(sqlca)
+//
+//	kdwc_clienti.RowsCopy(kdwc_clienti.GetRow(), kdwc_clienti.RowCount(), Primary!, kdwc_clienti_des, 1, Primary!)
+//	kdwc_clienti_des.setsort( "rag_soc_1 asc")
+//	kdwc_clienti_des.sort( )
+//
+////--- Attivo dw elenco Descrizioni  già usati
+//	k_rc = tab_1.tabpage_1.dw_1.getchild("oggetto", kdwc_oggetto)
+//	k_rc = kdwc_oggetto.settransobject(sqlca)
+//	k_rc = kdwc_oggetto.retrieve()
+//	k_rc = kdwc_oggetto.insertrow(1)
+////--- 
+//	k_rc = tab_1.tabpage_1.dw_1.getchild("fattura_da", kdwc_fattura_da)
+//	k_rc = kdwc_fattura_da.settransobject(sqlca)
+//	k_rc = kdwc_fattura_da.retrieve()
+//	k_rc = kdwc_fattura_da.insertrow(1)
+////--- Attivo dw archivio Clienti-contatti
+////	k_rc = tab_1.tabpage_1.dw_1.getchild("nome_contatto", kdwc_clie_tipo)
+////	k_rc = kdwc_clie_tipo.settransobject(sqlca)
+////	k_rc = kdwc_clie_tipo.retrieve()
+////	k_rc = kdwc_clie_tipo.insertrow(1)
+////--- Attivo dw archivio Settori
+//	k_rc = tab_1.tabpage_1.dw_1.getchild("id_clie_settore", kdwc_clie_settori)
+//	k_rc = kdwc_clie_settori.settransobject(sqlca)
+//	k_rc = kdwc_clie_settori.retrieve()
+//	k_rc = kdwc_clie_settori.insertrow(1)
+////--- Attivo dw archivio Gruppi
+//	k_rc = tab_1.tabpage_1.dw_1.getchild("gruppo", kdwc_gru)
+//	k_rc = kdwc_gru.settransobject(sqlca)
+////--- piglio il codice del settore xchè la query va fatta con il codice
+//	if tab_1.tabpage_1.dw_1.rowcount( ) > 0 then
+//		kist_tab_contratti_doc.id_clie_settore = tab_1.tabpage_1.dw_1.getitemstring(1, "id_clie_settore")
+//		if len(trim(kist_tab_contratti_doc.id_clie_settore)) > 0 then
+//			k_rc = kdwc_gru.retrieve(kist_tab_contratti_doc.id_clie_settore)
+//		else
+//			kdwc_gru.reset()
+//		end if
+//	end if
+//	k_rc = kdwc_gru.insertrow(1)
+////--- Attivo dw archivio IVA
+//	k_rc = tab_1.tabpage_1.dw_1.getchild("iva", kdwc_iva)
+//	k_rc = kdwc_iva.settransobject(sqlca)
+//	k_rc = kdwc_iva.retrieve()
+//	k_rc = kdwc_iva.insertrow(1)
+////--- Attivo dw archivio Pagamenti
+//	k_rc = tab_1.tabpage_1.dw_1.getchild("cod_pag", kdwc_pag)
+//	k_rc = kdwc_pag.settransobject(sqlca)
+//	k_rc = kdwc_pag.retrieve()
+//	k_rc = kdwc_pag.insertrow(1)
+// 	k_rc = tab_1.tabpage_1.dw_1.getchild("acconto_cod_pag", kdwc_2)
+//	k_rc = kdwc_pag.ShareData( kdwc_2)			
+//
+////--- Attivo dw archivio Gruppo-Prezzi
+//	k_rc = tab_1.tabpage_1.dw_1.getchild("id_listino_pregruppo", kdwc_1)
+//	k_rc = kdwc_1.settransobject(sqlca)
+//	k_rc = kdwc_1.retrieve(0)
+//	k_rc = kdwc_1.insertrow(1)
+//
+//
 end subroutine
 
 private subroutine proteggi_campi ();//
@@ -1070,8 +999,10 @@ kuf_utility kuf1_utility
 		
 //--- Protezione tutti i campi 
 			kuf1_utility.u_proteggi_dw("1", 0, tab_1.tabpage_1.dw_1)
+			kuf1_utility.u_proteggi_dw("1", 0, tab_1.tabpage_2.dw_2)
+			kuf1_utility.u_proteggi_dw("1", 0, tab_1.tabpage_3.dw_3)
 			kuf1_utility.u_proteggi_dw("1", "contratti_doc_id_contratto_doc", tab_1.tabpage_1.dw_1)
-			kuf1_utility.u_proteggi_dw("1", "id_listino_pregruppo", tab_1.tabpage_1.dw_1)
+			kuf1_utility.u_proteggi_dw("1", "id_listino_pregruppo", tab_1.tabpage_2.dw_2)
 				
 //--- se sono in MODIFICA e Contratto già stampa definitiva allora inabilito tutti i campi all'infuori che lo Stato			
 			if ki_st_open_w.flag_modalita = kkg_flag_modalita.modifica &
@@ -1086,6 +1017,8 @@ kuf_utility kuf1_utility
 
 //--- S-protezione campi per riabilitare la modifica a parte la chiave
 			kuf1_utility.u_proteggi_dw("0", 0, tab_1.tabpage_1.dw_1)
+			kuf1_utility.u_proteggi_dw("0", 0, tab_1.tabpage_2.dw_2)
+			kuf1_utility.u_proteggi_dw("0", 0, tab_1.tabpage_3.dw_3)
 
 //--- Inabilita campo cliente per la modifica se Funzione MODIFICA
 			if trim(ki_st_open_w.flag_modalita) = kkg_flag_modalita.modifica then
@@ -1153,23 +1086,33 @@ public subroutine u_calcola_riga (string a_riga_imp);//
 //		
 st_tab_contratti_doc kst_tab_contratti_doc
 
-	a_riga_imp = trim(a_riga_imp)
-		
-	kst_tab_contratti_doc.voce_qta[1] = tab_1.tabpage_1.dw_1.getitemnumber(1, "voce_qta_" + a_riga_imp)
-	if kst_tab_contratti_doc.voce_qta[1] > 0 then
-		kst_tab_contratti_doc.voce_prezzo[1] = tab_1.tabpage_1.dw_1.getitemnumber(1, "voce_prezzo_" + a_riga_imp)
-		if kst_tab_contratti_doc.voce_prezzo[1] <> 0 then
-			kst_tab_contratti_doc.voce_prezzo_tot[1] = kst_tab_contratti_doc.voce_qta[1] * kst_tab_contratti_doc.voce_prezzo[1]
-		end if
-	else
-		kst_tab_contratti_doc.voce_prezzo_tot[1] = 0
-	end if
-	tab_1.tabpage_1.dw_1.setitem(1, "voce_prezzo_tot_" + a_riga_imp, kst_tab_contratti_doc.voce_prezzo_tot[1])
 
+	if tab_1.tabpage_2.dw_2.rowcount( ) > 0 then
+		a_riga_imp = trim(a_riga_imp)
+			
+		kst_tab_contratti_doc.voce_prezzo_tot[1] = tab_1.tabpage_2.dw_2.getitemnumber(1, "voce_prezzo_tot_" + a_riga_imp)
+		if isnull(kst_tab_contratti_doc.voce_prezzo_tot[1]) then 
+			kst_tab_contratti_doc.voce_prezzo_tot[1] = 0
+		end if
+		
+		kst_tab_contratti_doc.voce_qta[1] = tab_1.tabpage_2.dw_2.getitemnumber(1, "voce_qta_" + a_riga_imp)
+		if kst_tab_contratti_doc.voce_qta[1] > 0 then
+			kst_tab_contratti_doc.voce_prezzo[1] = tab_1.tabpage_2.dw_2.getitemnumber(1, "voce_prezzo_" + a_riga_imp)
+			if kst_tab_contratti_doc.voce_prezzo[1] <> 0 then
+				kst_tab_contratti_doc.voce_prezzo_tot[1] = kst_tab_contratti_doc.voce_qta[1] * kst_tab_contratti_doc.voce_prezzo[1]
+			end if
+		end if
+		
+		tab_1.tabpage_2.dw_2.setitem(1, "voce_prezzo_tot_" + a_riga_imp, kst_tab_contratti_doc.voce_prezzo_tot[1])
+		
+	end if
 end subroutine
 
 public subroutine u_set_imp_contratto (st_tab_contratti_doc kst_tab_contratti_doc);//
-tab_1.tabpage_1.dw_1.setitem(1, "totale_contratto", kst_tab_contratti_doc.totale_contratto)
+if tab_1.tabpage_2.dw_2.rowcount( ) > 0 then
+	tab_1.tabpage_2.dw_2.setitem(1, "totale_contratto", kst_tab_contratti_doc.totale_contratto)
+end if
+
 
 
 end subroutine
@@ -1181,58 +1124,21 @@ public subroutine u_set_imp_acconto (st_tab_contratti_doc kst_tab_contratti_doc)
 end subroutine
 
 public function st_tab_contratti_doc u_calcola_tot ();//
-int k_id = 0
-string k_idx =""
 st_tab_contratti_doc kst_tab_contratti_doc
-decimal {2} k_subtot=0.00
 
 
-kst_tab_contratti_doc.totale_contratto = 0
-kst_tab_contratti_doc.acconto_imp = 0
-
-//--- calcola tot documento
-for k_id = 1 to 10 
-	
-	k_idx = trim(string(k_id))
-	
-	kst_tab_contratti_doc.voce_prezzo_tot[1] = 0
+if tab_1.tabpage_2.dw_2.getitemstring(1, "quotazione_tipo") = "VAL" then 
 		
-	kst_tab_contratti_doc.flg_st_voce[1] = tab_1.tabpage_1.dw_1.getitemstring(1, "flg_st_voce_" + k_idx)
-	if kst_tab_contratti_doc.flg_st_voce[1] = "N" then
-	else
-		kst_tab_contratti_doc.voce_prezzo[1] = tab_1.tabpage_1.dw_1.getitemnumber(1, "voce_prezzo_" + k_idx)
-		if kst_tab_contratti_doc.voce_prezzo[1] <> 0 then
-			kst_tab_contratti_doc.voce_qta[1] = tab_1.tabpage_1.dw_1.getitemnumber(1, "voce_qta_" + k_idx)
-			if kst_tab_contratti_doc.voce_qta[1] > 0 then
-				kst_tab_contratti_doc.voce_prezzo_tot[1] = kst_tab_contratti_doc.voce_qta[1] * kst_tab_contratti_doc.voce_prezzo[1] 
-				if kst_tab_contratti_doc.voce_prezzo[1] <> 0 then
-					if k_id = 10 then  // lo SCONTO non è parte del Subtotale
-					else
-						k_subtot += kst_tab_contratti_doc.voce_qta[1] * kst_tab_contratti_doc.voce_prezzo[1] 
-					end if
-				end if
-			end if
-		end if
-	end if
+	kst_tab_contratti_doc = u_calcola_tot_val( )
 	
-	if k_id = 10 then  // lo SCONTO è sulla decima riga
-		kst_tab_contratti_doc.totale_contratto -= abs(kst_tab_contratti_doc.voce_prezzo_tot[1])
-	else
-		kst_tab_contratti_doc.totale_contratto += kst_tab_contratti_doc.voce_prezzo_tot[1]
-	end if
+elseif tab_1.tabpage_2.dw_2.getitemstring(1, "quotazione_tipo") = "IRR" then 
 	
+	kst_tab_contratti_doc = u_calcola_tot_irr( )
 
-end for
-
-//--- calcola eventuale Acconto
-kst_tab_contratti_doc.acconto_perc = tab_1.tabpage_1.dw_1.getitemnumber(1, "acconto_perc")
-if kst_tab_contratti_doc.acconto_perc > 0 then
-	kst_tab_contratti_doc.acconto_imp = k_subtot * (kst_tab_contratti_doc.acconto_perc / 100)
 end if
 
-
-
 return kst_tab_contratti_doc
+
 
 end function
 
@@ -1324,8 +1230,121 @@ kuf_ausiliari kuf1_ausiliari
 	destroy kuf1_ausiliari
 end subroutine
 
-public function st_tab_contratti_doc u_set_st_tab_from_dw ();//
-int k_idx
+public function boolean u_duplica () throws uo_exception;//
+//--- Duplica documento 
+//
+
+try
+	ki_st_open_w.flag_modalita = kkg_flag_modalita.inserimento
+	
+	tab_1.tabpage_1.dw_1.setitem(1, "contratti_doc_id_contratto_doc", 0)
+	tab_1.tabpage_1.dw_1.setitem(1, "anno", kguo_g.get_anno( ) )
+	tab_1.tabpage_1.dw_1.setitem(1, "quotazione_cod", "")
+	tab_1.tabpage_1.dw_1.setitem(1, "stato", "1")
+	tab_1.tabpage_1.dw_1.setitem(1, "data_stampa", kkg.data_zero )
+	tab_1.tabpage_1.dw_1.setitem(1, "offerta_data", kguo_g.get_dataoggi( ) )
+	tab_1.tabpage_1.dw_1.setitem(1, "data_inizio", kkg.data_zero )
+	tab_1.tabpage_1.dw_1.setitem(1, "data_fine", kkg.data_zero )
+	tab_1.tabpage_1.dw_1.setitem(1, "esito_operazioni_ts_operazione", kguo_g.get_datetime_zero( ) )
+	tab_1.tabpage_1.dw_1.setitem(1, "x_utente", "")
+	tab_1.tabpage_1.dw_1.setitem(1, "x_datins", kguo_g.get_datetime_zero( ) )
+	
+	tab_1.tabpage_1.dw_1.resetupdate( )
+	tab_1.tabpage_2.dw_2.resetupdate( )
+	tab_1.tabpage_3.dw_3.resetupdate( )
+	
+catch (uo_exception kuo_exception)
+	
+finally
+	
+end try
+
+return true
+end function
+
+protected subroutine inizializza_1 () throws uo_exception;//
+//======================================================================
+//=== Inizializzazione della Windows
+//=== Ripristino DW; tasti; e retrieve liste
+//======================================================================
+//
+string k_return="0 "
+int k_rc 
+st_esito kst_esito
+
+
+if tab_1.tabpage_2.dw_2.rowcount() = 0 then
+	
+//--- Se inserimento.... 
+   if trim(ki_st_open_w.flag_modalita) = kkg_flag_modalita.inserimento then
+		
+		inserisci_2( )
+		
+	else
+		
+		k_rc = u_dw_2_retrieve( )
+		
+	end if
+
+//--- protegge/sprotegge campi
+//	proteggi_campi()
+	
+	
+end if
+
+
+end subroutine
+
+protected function integer u_dw_2_retrieve () throws uo_exception;//
+//======================================================================
+//=== Inizializzazione della Windows
+//=== Ripristino DW; tasti; e retrieve liste
+//======================================================================
+//
+integer k_return
+
+try
+//=== Puntatore Cursore da attesa..... 
+	SetPointer(kkg.pointer_attesa)
+
+//--- Se NO inserimento.... 
+	k_return = tab_1.tabpage_2.dw_2.retrieve(tab_1.tabpage_1.dw_1.getitemnumber(1, "contratti_doc_id_contratto_doc")) 
+	
+	if k_return < 0 then
+		kguo_exception.inizializza( )
+		kguo_exception.kist_esito.nome_oggetto = this.classname( )
+		kguo_exception.kist_esito.esito = kkg_esito.db_ko
+		kguo_exception.kist_esito.sqlerrtext = "Ricerca Fallita dati " + trim(tab_1.tabpage_2.text) + ", errore dal DB"
+		kguo_exception.kist_esito.sqlcode = 0
+		kguo_exception.scrivi_log( )
+		throw kguo_exception
+	else
+		if k_return = 0 then
+		   if trim(ki_st_open_w.flag_modalita) = kkg_flag_modalita.inserimento or trim(ki_st_open_w.flag_modalita) = kkg_flag_modalita.modifica then
+				tab_1.tabpage_2.dw_2.insertrow(0)
+			end if
+		end if
+	end if
+		
+//--- ripropone eventaulemnete i link
+	tab_1.tabpage_2.dw_2.ki_flag_modalita = ki_st_open_w.flag_modalita
+	tab_1.tabpage_2.dw_2.event u_personalizza_dw()
+
+catch (uo_exception kuo_exception)
+	throw kuo_exception
+	
+finally
+	SetPointer(kkg.pointer_default)
+	
+end try
+
+
+return k_return 
+
+end function
+
+public function st_tab_contratti_doc u_set_st_tab_from_dw () throws uo_exception;//
+int k_idx, k_rc
 st_tab_contratti_doc kst_tab_contratti_doc
 
 
@@ -1351,19 +1370,8 @@ kst_tab_contratti_doc.cliente_desprod_rid = tab_1.tabpage_1.dw_1.getitemstring( 
 kst_tab_contratti_doc.id_cliente = tab_1.tabpage_1.dw_1.getitemnumber( 1, "id_cliente")
 //kst_tab_contratti_doc.id_docprod = tab_1.tabpage_1.dw_1.getitemnumber( 1, "id_docprod")
 kst_tab_contratti_doc.nome_contatto = tab_1.tabpage_1.dw_1.getitemstring( 1, "nome_contatto")
-kst_tab_contratti_doc.note_fasi_operative = tab_1.tabpage_1.dw_1.getitemstring( 1, "note_fasi_operative")
 kst_tab_contratti_doc.note = tab_1.tabpage_1.dw_1.getitemstring( 1, "note")
 //kst_tab_contratti_doc.note_audit = tab_1.tabpage_1.dw_1.getitemstring( 1, "note_audit")
-kst_tab_contratti_doc.id_listino_pregruppo = tab_1.tabpage_1.dw_1.getitemnumber( 1, "id_listino_pregruppo")
-for k_idx = 1 to 10 
-	kst_tab_contratti_doc.id_listino_voce[k_idx] = tab_1.tabpage_1.dw_1.getitemnumber( 1, "id_listino_voce_" + string(k_idx, "#"))
-	kst_tab_contratti_doc.descr[k_idx] = tab_1.tabpage_1.dw_1.getitemstring( 1, "descr_" + string(k_idx, "#"))
-	kst_tab_contratti_doc.voce_prezzo[k_idx] = tab_1.tabpage_1.dw_1.getitemnumber( 1, "voce_prezzo_" + string(k_idx, "#"))
-	kst_tab_contratti_doc.voce_prezzo_tot[k_idx] = tab_1.tabpage_1.dw_1.getitemnumber( 1, "voce_prezzo_tot_" + string(k_idx, "#"))		
-	kst_tab_contratti_doc.voce_qta[k_idx] = tab_1.tabpage_1.dw_1.getitemnumber( 1, "voce_qta_" + string(k_idx, "#"))
-	kst_tab_contratti_doc.flg_st_voce[k_idx] = tab_1.tabpage_1.dw_1.getitemstring( 1, "flg_st_voce_" + string(k_idx, "#"))		
-next
-kst_tab_contratti_doc.totale_contratto = tab_1.tabpage_1.dw_1.getitemnumber( 1, "totale_contratto")	
 kst_tab_contratti_doc.iva = tab_1.tabpage_1.dw_1.getitemnumber( 1, "iva")
 kst_tab_contratti_doc.cod_pag = tab_1.tabpage_1.dw_1.getitemnumber( 1, "cod_pag")
 kst_tab_contratti_doc.banca = tab_1.tabpage_1.dw_1.getitemstring( 1, "banca")
@@ -1378,41 +1386,334 @@ kst_tab_contratti_doc.esito_operazioni_ts_operazione = tab_1.tabpage_1.dw_1.geti
 //kst_tab_contratti_doc.form_di_stampa = tab_1.tabpage_1.dw_1.getitemstring( 1, "form_di_stampa")
 kst_tab_contratti_doc.flg_fatt_dopo_valid = tab_1.tabpage_1.dw_1.getitemstring( 1, "flg_fatt_dopo_valid")	
 kst_tab_contratti_doc.id_meca_causale = tab_1.tabpage_1.dw_1.getitemnumber( 1, "id_meca_causale")
+
+kst_tab_contratti_doc.note_interne = tab_1.tabpage_1.dw_1.getitemstring( 1, "note_interne")
+kst_tab_contratti_doc.gest_doc_prezzo = tab_1.tabpage_1.dw_1.getitemnumber( 1, "gest_doc_prezzo")	
+kst_tab_contratti_doc.gest_doc_des = tab_1.tabpage_1.dw_1.getitemstring( 1, "gest_doc_des")
+kst_tab_contratti_doc.dir_tecnico_prezzo = tab_1.tabpage_1.dw_1.getitemnumber( 1, "dir_tecnico_prezzo")	
+kst_tab_contratti_doc.dir_tecnico_des = tab_1.tabpage_1.dw_1.getitemstring( 1, "dir_tecnico_des")
+kst_tab_contratti_doc.analisi_lab_prezzo = tab_1.tabpage_1.dw_1.getitemnumber( 1, "analisi_lab_prezzo")	
+kst_tab_contratti_doc.analisi_lab_des = tab_1.tabpage_1.dw_1.getitemstring( 1, "analisi_lab_des")
+kst_tab_contratti_doc.dosim_agg_prezzo = tab_1.tabpage_1.dw_1.getitemnumber( 1, "dosim_agg_prezzo")	
+kst_tab_contratti_doc.dosim_agg_des = tab_1.tabpage_1.dw_1.getitemstring( 1, "dosim_agg_des")
+kst_tab_contratti_doc.logistica_prezzo = tab_1.tabpage_1.dw_1.getitemnumber( 1, "logistica_prezzo")	
+kst_tab_contratti_doc.logistica_des = tab_1.tabpage_1.dw_1.getitemstring( 1, "logistica_des")
+kst_tab_contratti_doc.stoccaggio_prezzo = tab_1.tabpage_1.dw_1.getitemnumber( 1, "stoccaggio_prezzo")	
+kst_tab_contratti_doc.stoccaggio_des = tab_1.tabpage_1.dw_1.getitemstring( 1, "stoccaggio_des")
+kst_tab_contratti_doc.altro_prezzo = tab_1.tabpage_1.dw_1.getitemnumber( 1, "altro_prezzo")	
+kst_tab_contratti_doc.altro_des = tab_1.tabpage_1.dw_1.getitemstring( 1, "altro_des")
+
+
 kst_tab_contratti_doc.x_datins = tab_1.tabpage_1.dw_1.getitemdatetime( 1, "x_datins")
 kst_tab_contratti_doc.x_utente = tab_1.tabpage_1.dw_1.getitemstring( 1, "x_utente")
 
+if tab_1.tabpage_2.dw_2.rowcount( ) = 0 then
+	k_rc = u_dw_2_retrieve( )
+end if
+if tab_1.tabpage_2.dw_2.rowcount( ) > 0 then
+	kst_tab_contratti_doc.note_fasi_operative = tab_1.tabpage_2.dw_2.getitemstring( 1, "note_fasi_operative")
+	kst_tab_contratti_doc.id_listino_pregruppo = tab_1.tabpage_2.dw_2.getitemnumber( 1, "id_listino_pregruppo")
+	for k_idx = 1 to 10 
+		kst_tab_contratti_doc.id_listino_voce[k_idx] = tab_1.tabpage_2.dw_2.getitemnumber( 1, "id_listino_voce_" + string(k_idx, "#"))
+		kst_tab_contratti_doc.descr[k_idx] = tab_1.tabpage_2.dw_2.getitemstring( 1, "descr_" + string(k_idx, "#"))
+		kst_tab_contratti_doc.voce_prezzo[k_idx] = tab_1.tabpage_2.dw_2.getitemnumber( 1, "voce_prezzo_" + string(k_idx, "#"))
+		kst_tab_contratti_doc.voce_prezzo_tot[k_idx] = tab_1.tabpage_2.dw_2.getitemnumber( 1, "voce_prezzo_tot_" + string(k_idx, "#"))		
+		kst_tab_contratti_doc.voce_qta[k_idx] = tab_1.tabpage_2.dw_2.getitemnumber( 1, "voce_qta_" + string(k_idx, "#"))
+		kst_tab_contratti_doc.flg_st_voce[k_idx] = tab_1.tabpage_2.dw_2.getitemstring( 1, "flg_st_voce_" + string(k_idx, "#"))		
+	next
+	kst_tab_contratti_doc.totale_contratto = tab_1.tabpage_2.dw_2.getitemnumber( 1, "totale_contratto")	
+end if
+
+if tab_1.tabpage_3.dw_3.rowcount( ) = 0 then
+	k_rc = u_dw_3_retrieve( )
+end if
+if tab_1.tabpage_3.dw_3.rowcount( ) > 0 then
+	kst_tab_contratti_doc.unita_misura = tab_1.tabpage_3.dw_3.getitemstring(1, "unita_misura") 
+	kst_tab_contratti_doc.mis_x_1 = tab_1.tabpage_3.dw_3.getitemnumber(1, "mis_x_1")
+	kst_tab_contratti_doc.mis_y_1 = tab_1.tabpage_3.dw_3.getitemnumber(1, "mis_y_1")
+	kst_tab_contratti_doc.mis_z_1 = tab_1.tabpage_3.dw_3.getitemnumber(1, "mis_z_1")
+	kst_tab_contratti_doc.impon_minimo = tab_1.tabpage_3.dw_3.getitemnumber(1, "impon_minimo")
+	kst_tab_contratti_doc.e1itmdosim = tab_1.tabpage_3.dw_3.getitemstring(1, "e1itmdosim")
+	kst_tab_contratti_doc.e1itmdosimprezzo = tab_1.tabpage_3.dw_3.getitemnumber(1, "e1itmdosimprezzo")
+	kst_tab_contratti_doc.peso_max_kg = tab_1.tabpage_3.dw_3.getitemnumber(1, "peso_max_kg")
+	kst_tab_contratti_doc.dose_min = tab_1.tabpage_3.dw_3.getitemnumber(1, "dose_min")
+	kst_tab_contratti_doc.dose_max = tab_1.tabpage_3.dw_3.getitemnumber(1, "dose_max")
+	kst_tab_contratti_doc.dose = tab_1.tabpage_3.dw_3.getitemnumber(1, "dose")
+	kst_tab_contratti_doc.density_x = tab_1.tabpage_3.dw_3.getitemstring(1, "density_x")
+	kst_tab_contratti_doc.e1litm = tab_1.tabpage_3.dw_3.getitemstring(1, "e1litm")
+	kst_tab_contratti_doc.prezzo_1 = tab_1.tabpage_3.dw_3.getitemnumber(1, "prezzo_1")
+	kst_tab_contratti_doc.note_qtax = tab_1.tabpage_3.dw_3.getitemstring(1, "note_qtax")
+	kst_tab_contratti_doc.contratti_des = tab_1.tabpage_3.dw_3.getitemstring(1, "contratti_des")
+	kst_tab_contratti_doc.id_sd_md = tab_1.tabpage_3.dw_3.getitemnumber(1, "id_sd_md")
+end if
 
 return kst_tab_contratti_doc
 end function
 
-public function boolean u_duplica () throws uo_exception;//
-//--- Duplica documento 
+protected subroutine inizializza_2 () throws uo_exception;//
+//======================================================================
+//=== Inizializzazione della Windows
+//=== Ripristino DW; tasti; e retrieve liste
+//======================================================================
 //
+string k_return="0 "
+int k_rc 
+st_esito kst_esito
+
+
+if tab_1.tabpage_3.dw_3.rowcount() = 0 then
+	
+
+//--- Se inserimento.... 
+   if trim(ki_st_open_w.flag_modalita) = kkg_flag_modalita.inserimento then
+		
+		inserisci_3( )
+
+	else
+		
+		k_rc = u_dw_3_retrieve( )
+		
+	end if
+
+//--- protegge/sprotegge campi
+//	proteggi_campi()
+	
+	
+end if
+
+
+end subroutine
+
+protected function integer u_dw_3_retrieve () throws uo_exception;//
+//======================================================================
+//=== Inizializzazione della Windows
+//=== Ripristino DW; tasti; e retrieve liste
+//======================================================================
+//
+integer k_return
 
 try
-	ki_st_open_w.flag_modalita = kkg_flag_modalita.inserimento
+//=== Puntatore Cursore da attesa..... 
+	SetPointer(kkg.pointer_attesa)
+
+//--- Se NO inserimento.... 
+	k_return = tab_1.tabpage_3.dw_3.retrieve(tab_1.tabpage_1.dw_1.getitemnumber(1, "contratti_doc_id_contratto_doc")) 
 	
-	tab_1.tabpage_1.dw_1.setitem(1, "contratti_doc_id_contratto_doc", 0)
-	tab_1.tabpage_1.dw_1.setitem(1, "anno", kguo_g.get_anno( ) )
-	tab_1.tabpage_1.dw_1.setitem(1, "quotazione_cod", "")
-	tab_1.tabpage_1.dw_1.setitem(1, "stato", "1")
-	tab_1.tabpage_1.dw_1.setitem(1, "data_stampa", kkg.data_zero )
-	tab_1.tabpage_1.dw_1.setitem(1, "offerta_data", kguo_g.get_dataoggi( ) )
-	tab_1.tabpage_1.dw_1.setitem(1, "data_inizio", kkg.data_zero )
-	tab_1.tabpage_1.dw_1.setitem(1, "data_fine", kkg.data_zero )
-	tab_1.tabpage_1.dw_1.setitem(1, "esito_operazioni_ts_operazione", kguo_g.get_datetime_zero( ) )
-	tab_1.tabpage_1.dw_1.setitem(1, "x_utente", "")
-	tab_1.tabpage_1.dw_1.setitem(1, "x_datins", kguo_g.get_datetime_zero( ) )
-	
-	tab_1.tabpage_1.dw_1.resetupdate( )
-	
+	if k_return < 0 then
+		kguo_exception.inizializza( )
+		kguo_exception.kist_esito.nome_oggetto = this.classname( )
+		kguo_exception.kist_esito.esito = kkg_esito.db_ko
+		kguo_exception.kist_esito.sqlerrtext = "Ricerca Fallita dati " + trim(tab_1.tabpage_3.text) + ", errore dal DB"
+		kguo_exception.kist_esito.sqlcode = 0
+		kguo_exception.scrivi_log( )
+		throw kguo_exception
+	else
+		if k_return = 0 then
+		   if trim(ki_st_open_w.flag_modalita) = kkg_flag_modalita.inserimento or trim(ki_st_open_w.flag_modalita) = kkg_flag_modalita.modifica then
+				tab_1.tabpage_3.dw_3.insertrow(0)
+			end if
+		end if
+	end if
+		
+//--- ripropone eventaulemnete i link
+	tab_1.tabpage_3.dw_3.ki_flag_modalita = ki_st_open_w.flag_modalita
+	tab_1.tabpage_3.dw_3.event u_personalizza_dw()
+
 catch (uo_exception kuo_exception)
+	throw kuo_exception
 	
 finally
+	SetPointer(kkg.pointer_default)
 	
 end try
 
-return true
+
+return k_return 
+
+end function
+
+public function st_tab_contratti_doc u_calcola_tot_val ();//
+int k_id = 0
+string k_idx =""
+st_tab_contratti_doc kst_tab_contratti_doc
+decimal {2} k_subtot=0.00
+
+
+kst_tab_contratti_doc.totale_contratto = 0
+kst_tab_contratti_doc.acconto_imp = 0
+
+if tab_1.tabpage_2.dw_2.rowcount( ) > 0 then
+//--- calcola tot documento
+	for k_id = 1 to 10 
+		
+		k_idx = trim(string(k_id))
+		
+		kst_tab_contratti_doc.flg_st_voce[1] = tab_1.tabpage_2.dw_2.getitemstring(1, "flg_st_voce_" + k_idx)
+		if kst_tab_contratti_doc.flg_st_voce[1] = "N" then
+		else
+			kst_tab_contratti_doc.voce_prezzo_tot[1] = tab_1.tabpage_2.dw_2.getitemnumber(1, "voce_prezzo_tot_" + k_idx)
+			kst_tab_contratti_doc.voce_prezzo[1] = tab_1.tabpage_2.dw_2.getitemnumber(1, "voce_prezzo_" + k_idx)
+			if kst_tab_contratti_doc.voce_prezzo[1] <> 0 then
+				kst_tab_contratti_doc.voce_qta[1] = tab_1.tabpage_2.dw_2.getitemnumber(1, "voce_qta_" + k_idx)
+				if kst_tab_contratti_doc.voce_qta[1] > 0 then
+					kst_tab_contratti_doc.voce_prezzo_tot[1] = kst_tab_contratti_doc.voce_qta[1] * kst_tab_contratti_doc.voce_prezzo[1] 
+					if k_id = 10 then  // lo SCONTO non è parte del Subtotale
+					else
+						k_subtot += kst_tab_contratti_doc.voce_qta[1] * kst_tab_contratti_doc.voce_prezzo[1] 
+					end if
+				end if
+			end if
+		end if
+		
+		if k_id = 10 then  // lo SCONTO è sulla decima riga
+			kst_tab_contratti_doc.totale_contratto -= abs(kst_tab_contratti_doc.voce_prezzo_tot[1])
+		else
+			kst_tab_contratti_doc.totale_contratto += kst_tab_contratti_doc.voce_prezzo_tot[1]
+		end if
+	
+	end for
+	
+end if
+
+//--- calcola eventuale Acconto
+kst_tab_contratti_doc.acconto_perc = tab_1.tabpage_1.dw_1.getitemnumber(1, "acconto_perc")
+if kst_tab_contratti_doc.acconto_perc > 0 then
+	kst_tab_contratti_doc.acconto_imp = k_subtot * (kst_tab_contratti_doc.acconto_perc / 100)
+end if
+
+return kst_tab_contratti_doc
+
+end function
+
+public function st_tab_contratti_doc u_calcola_tot_irr ();//
+int k_id = 0
+st_tab_contratti_doc kst_tab_contratti_doc
+
+
+kst_tab_contratti_doc.totale_contratto = 0
+kst_tab_contratti_doc.acconto_imp = 0
+
+if tab_1.tabpage_3.dw_3.rowcount( ) > 0 then
+	
+//--- calcola tot documento
+	kst_tab_contratti_doc.totale_contratto = tab_1.tabpage_3.dw_3.getitemnumber(1, "prezzo_1")
+		
+end if
+
+
+//--- calcola eventuale Acconto
+kst_tab_contratti_doc.acconto_perc = tab_1.tabpage_1.dw_1.getitemnumber(1, "acconto_perc")
+if kst_tab_contratti_doc.acconto_perc > 0 then
+	kst_tab_contratti_doc.acconto_imp = kst_tab_contratti_doc.totale_contratto * (kst_tab_contratti_doc.acconto_perc / 100)
+end if
+
+return kst_tab_contratti_doc
+
+end function
+
+protected function integer inserisci_2 ();//
+int k_return, k_ctr
+long k_riga = 1
+kuf_utility kuf1_utility
+
+
+	tab_1.tabpage_2.dw_2.insertrow(0)
+			
+//--- Imposta Prezzi	
+	tab_1.tabpage_2.dw_2.setitem(k_riga, "id_listino_pregruppo",kist_tab_contratti_doc.id_listino_pregruppo)
+	for k_ctr = 1 to 10
+		tab_1.tabpage_2.dw_2.setitem(k_riga, "id_listino_voce_" + string(k_ctr,"#"),kist_tab_contratti_doc.id_listino_voce[k_ctr])
+	next			
+
+//--- S-protezione campi per abilitare l'inserimento
+	kuf1_utility = create kuf_utility
+	kuf1_utility.u_proteggi_dw("0", 0, tab_1.tabpage_2.dw_2)
+	destroy kuf1_utility
+		
+	tab_1.tabpage_2.dw_2.SetItemStatus( 1, 0, Primary!, NotModified!)
+			
+	k_return = 0
+
+
+return (k_return)
+
+
+
+end function
+
+protected function integer inserisci_3 ();//
+int k_return, k_ctr, k_rc
+long k_riga 
+string k_record_base
+kuf_ausiliari kuf1_ausiliari
+kuf_base kuf1_base
+kuf_utility kuf1_utility
+
+				
+		k_riga = 1
+		tab_1.tabpage_3.dw_3.insertrow(0)
+			
+
+//--- IRR
+		if kist_tab_contratti_doc.unita_misura > " " then
+			tab_1.tabpage_3.dw_3.setitem(1, "unita_misura", kist_tab_contratti_doc.unita_misura ) 
+		else
+			tab_1.tabpage_3.dw_3.setitem(1, "unita_misura", "" ) 
+		end if
+		if kist_tab_contratti_doc.impon_minimo > 0 then
+			tab_1.tabpage_3.dw_3.setitem(1, "impon_minimo", kist_tab_contratti_doc.impon_minimo ) 
+		else
+			tab_1.tabpage_3.dw_3.setitem(1, "impon_minimo", 0.00 ) 
+		end if
+		if kist_tab_contratti_doc.e1itmdosim > " " then
+			tab_1.tabpage_3.dw_3.setitem(1, "e1itmdosim", kist_tab_contratti_doc.e1itmdosim ) 
+		else
+			tab_1.tabpage_3.dw_3.setitem(1, "e1itmdosim", "" ) 
+		end if
+		if kist_tab_contratti_doc.e1itmdosimprezzo > 0 then
+			tab_1.tabpage_3.dw_3.setitem(1, "e1itmdosimprezzo", kist_tab_contratti_doc.e1itmdosimprezzo ) 
+		else
+			tab_1.tabpage_3.dw_3.setitem(1, "e1itmdosimprezzo", 0.00 ) 
+		end if
+
+//--- Imposta Misure		
+		if isnull(kist_tab_contratti_doc.mis_x_1) then
+			kist_tab_contratti_doc.mis_x_1 = 0
+			kist_tab_contratti_doc.mis_y_1 = 0
+			kist_tab_contratti_doc.mis_z_1 = 0
+		end if
+			
+		if kist_tab_contratti_doc.mis_x_1 = 0 then
+			kuf1_base = create kuf_base
+			k_record_base = kuf1_base.prendi_dato_base ("mis_ped")
+			destroy kuf_base
+			if LeftA(k_record_base,1) = "0" then		
+				kist_tab_contratti_doc.mis_x_1 = integer(trim(MidA(k_record_base, 2, 5)))
+				kist_tab_contratti_doc.mis_y_1 = integer(trim(MidA(k_record_base, 7, 5)))
+				kist_tab_contratti_doc.mis_z_1 = integer(trim(MidA(k_record_base, 12, 5)))
+			else
+				kist_tab_contratti_doc.mis_x_1 = 0
+				kist_tab_contratti_doc.mis_y_1 = 0
+				kist_tab_contratti_doc.mis_z_1 = 0
+			end if
+			destroy kuf1_base
+		end if
+		tab_1.tabpage_3.dw_3.setitem(1, "mis_x_1", kist_tab_contratti_doc.mis_x_1 ) 		
+		tab_1.tabpage_3.dw_3.setitem(1, "mis_y_1", kist_tab_contratti_doc.mis_y_1 ) 		
+		tab_1.tabpage_3.dw_3.setitem(1, "mis_z_1", kist_tab_contratti_doc.mis_z_1 ) 		
+
+//--- S-protezione campi per abilitare l'inserimento
+		kuf1_utility = create kuf_utility
+     	kuf1_utility.u_proteggi_dw("0", 0, tab_1.tabpage_3.dw_3)
+		destroy kuf1_utility
+		
+		tab_1.tabpage_3.dw_3.SetItemStatus( 1, 0, Primary!, NotModified!)
+			
+
+return (k_return)
+
+
+
 end function
 
 on w_contratti_doc.create
@@ -1607,20 +1908,21 @@ type tabpage_1 from w_g_tab_3`tabpage_1 within tab_1
 integer width = 3218
 integer height = 1256
 long backcolor = 32172778
-string text = "R.& D."
+string text = "Quotazione"
 string picturename = "Window!"
 long picturemaskcolor = 553648127
 string powertiptext = "Quotazione"
 end type
 
 type dw_1 from w_g_tab_3`dw_1 within tabpage_1
-integer y = 36
+integer x = 14
 integer width = 3173
 integer height = 1220
 string dataobject = "d_contratti_doc"
 boolean minbox = true
 boolean maxbox = true
 boolean hsplitscroll = false
+borderstyle borderstyle = stylelowered!
 string ki_flag_modalita = "vi"
 boolean ki_colora_riga_aggiornata = false
 boolean ki_attiva_standard_select_row = false
@@ -1860,85 +2162,6 @@ try
 				post attiva_tasti()
 			end if
 			
-	
-	elseif k_nome = "id_listino_pregruppo" then
-			this.getchild("id_listino_voce_1", kdwc_1)
-			kdwc_1.reset( )
-			if Len(trim(data)) > 0 then
-				k_codice = RightTrim(data)
-				k_rc = this.getchild("id_listino_pregruppo", kdwc_x)
-				k_riga = kdwc_x.find("id_listino_pregruppo = "+ trim(k_codice)+" ",0,kdwc_x.rowcount())
-				if k_riga <= 0 or isnull(k_riga) then
-					k_errore = 2
-					this.setitem(row, "listino_pregruppo_descr", " - NON TROVATO -")
-				else
-					this.setitem(row, "listino_pregruppo_descr", kdwc_x.getitemstring(k_riga, "descr"))
-				end if
-			else
-				this.setitem(row, "pagam_des", "")
-				this.setitem(row, "cod_pag", "")
-			end if
-			
-	
-	elseif left(k_nome,16) = "id_listino_voce_" then
-			k_des = trim(mid(k_nome, 17))
-
-			if Len(trim(data)) > 0 then
-				k_codice = RightTrim(data)
-				k_rc = this.getchild(k_nome, kdwc_x)
-				k_riga = kdwc_x.find("id_listino_voce = "+ trim(k_codice)+" ",0,kdwc_x.rowcount())
-				if k_riga <= 0 or isnull(k_riga) then
-					k_errore = 2
-	//				this.setitem(row, "listino_voci_descr_" + k_des , " - NON TROVATO -")
-					this.setitem(row, "voce_prezzo_" + k_des , 0)
-					this.setitem(row, "listino_voci_tipo_listino_" + k_des , "")
-					this.setitem(row, "listino_voci_tipo_calcolo_" + k_des , "")
-					this.setitem(row, "descr_" + k_des , "")
-				else
-	//				this.setitem(row, "listino_voci_descr_" + k_des , kdwc_x.getitemstring(k_riga, "listino_voci_descr"))
-					if this.getitemnumber(row, "voce_prezzo_" + k_des ) <> 0 &
-							and kdwc_x.getitemnumber(k_riga, "listino_pregruppi_voci_prezzo") <> this.getitemnumber(row, "voce_prezzo_" + k_des ) then
-						kguo_exception.inizializza( )					
-						kguo_exception.set_tipo( kguo_exception.kk_st_uo_exception_tipo_dati_wrn )
-						kguo_exception.setmessage( "Attenzione è cambiato il prezzo da " + string(this.getitemnumber(row, "voce_prezzo_" + k_des ), "€0.00" ) &
-															+ " a " +  string(kdwc_x.getitemnumber(k_riga, "listino_pregruppi_voci_prezzo"), "€0.00" ) )	 
-						kguo_exception. post messaggio_utente( )
-					end if
-					this.setitem(row, "voce_prezzo_" + k_des , kdwc_x.getitemnumber(k_riga, "listino_pregruppi_voci_prezzo"))
-					this.setitem(row, "listino_voci_tipo_listino_" + k_des, kdwc_x.getitemstring(k_riga, "listino_voci_tipo_listino"))
-					this.setitem(row, "listino_voci_tipo_calcolo_" + k_des, kdwc_x.getitemstring(k_riga, "listino_voci_tipo_calcolo")) 
-					if this.getitemstring( row, "stampa_tradotta") = "EN" then
-						this.setitem(row, "descr_" + k_des, kdwc_x.getitemstring(k_riga, "listino_voci_descr_xctr_eng")) 
-					else
-						this.setitem(row, "descr_" + k_des, kdwc_x.getitemstring(k_riga, "listino_voci_descr_xctr")) 
-					end if
-				end if
-			else
-				this.setitem(row, dwo.name, "")
-				this.setitem(row, "voce_prezzo_" + k_des , 0)
-				this.setitem(row, "listino_voci_tipo_listino_" + k_des , "")
-				this.setitem(row, "listino_voci_tipo_calcolo_" + k_des, "")
-				this.setitem(row, "descr_" + k_des , "")
-			end if
-
-	
-	elseif left(k_nome, 12) = "voce_prezzo_" and left(k_nome, 16) <> "voce_prezzo_tot_" then
-			k_des = trim(mid(k_nome, 13))
-			post u_calcola_riga(k_des)
-			post u_imposta_tot_imp()
-
-	
-	elseif left(k_nome, 9) = "voce_qta_" then
-			k_des = trim(mid(k_nome, 10))
-			post u_calcola_riga(k_des)
-			post u_imposta_tot_imp()
-
-	
-	elseif left(k_nome, 12) = "flg_st_voce_" then
-			k_des = trim(mid(k_nome, 13))
-			post u_calcola_riga(k_des)
-			post u_imposta_tot_imp()
-
 
 	elseif k_nome = "acconto_perc" then
 			post u_imposta_imp_acconto()
@@ -2070,6 +2293,267 @@ choose case dwo.name
 		this.getchild("acconto_cod_pag", kdwc_2)
 		kdwc_x.ShareData( kdwc_2)			
 
+end choose
+
+
+end event
+
+event dw_1::clicked;call super::clicked;//
+long k_riga, k_id, k_rc
+datawindowchild kdwc_1, kdwc_2
+
+
+
+SetPointer(kkg.pointer_attesa)
+
+if ki_st_open_w.flag_modalita = kkg_flag_modalita.inserimento or  ki_st_open_w.flag_modalita = kkg_flag_modalita.modifica then
+
+	if dwo.name = "quotazione_cod" &
+					or dwo.name = "offerta_validita" &
+					or dwo.name = "oggetto" &
+					or dwo.name = "note" &
+					or dwo.name = "fattura_da" &
+					or dwo.name = "acconto_cod_pag" &
+					or dwo.name = "altre_condizioni" &
+					or dwo.name = "note_interne" &
+					or dwo.name = "gest_doc_des" &
+					or dwo.name = "dir_tecnico_des" &
+					or dwo.name = "analisi_lab_des" &
+					or dwo.name = "stoccaggio_des" &
+					or dwo.name = "logistica_des" &
+					or dwo.name = "altro_des" then
+			this.getchild(dwo.name, kdwc_1)
+			k_rc = kdwc_1.settransobject(sqlca)
+			if kdwc_1.rowcount() < 2 then
+				k_rc = kdwc_1.retrieve()
+				k_rc = kdwc_1.insertrow(1)
+			end if
+	elseif dwo.name = "nome_contatto" &
+					or dwo.name = "cliente_desprod" &
+					or dwo.name = "cliente_desprod_rid" &
+					 then
+			k_id = this.getitemnumber(row, "id_cliente")
+			this.getchild(dwo.name, kdwc_1)
+			if kdwc_1.rowcount() > 1 then
+				if k_id <> kdwc_1.getitemnumber(2, "id_cliente") then
+					kdwc_1.reset( )
+				end if
+			end if
+			if kdwc_1.rowcount() < 2 then
+				k_rc = kdwc_1.settransobject(sqlca)
+				k_rc = kdwc_1.retrieve(k_id)
+				k_rc = kdwc_1.insertrow(1)
+			end if
+	end if
+
+end if
+
+SetPointer(kkg.pointer_default)
+
+
+end event
+
+type st_1_retrieve from w_g_tab_3`st_1_retrieve within tabpage_1
+end type
+
+type tabpage_2 from w_g_tab_3`tabpage_2 within tab_1
+integer width = 3218
+integer height = 1256
+string text = "dati ~'VAL~'"
+string powertiptext = "Dati Quotazione tipo VAL"
+end type
+
+type dw_2 from w_g_tab_3`dw_2 within tabpage_2
+boolean visible = true
+integer x = 0
+integer width = 2981
+integer height = 1228
+boolean enabled = true
+string dataobject = "d_contratti_doc_val"
+string ki_flag_modalita = "vi"
+end type
+
+event dw_2::clicked;call super::clicked;//
+long k_riga, k_id, k_rc
+datawindowchild kdwc_1, kdwc_2
+pointer kp_oldpointer  // Declares a pointer variable
+
+
+
+kp_oldpointer = SetPointer(HourGlass!)
+
+if ki_st_open_w.flag_modalita = kkg_flag_modalita.inserimento or  ki_st_open_w.flag_modalita = kkg_flag_modalita.modifica then
+
+	if dwo.name = "note_fasi_operative" then
+			this.getchild(dwo.name, kdwc_1)
+			k_rc = kdwc_1.settransobject(sqlca)
+			if kdwc_1.rowcount() < 2 then
+				k_rc = kdwc_1.retrieve()
+				k_rc = kdwc_1.insertrow(1)
+			end if
+	elseif dwo.name = "id_listino_pregruppo" then
+			this.getchild("id_listino_pregruppo", kdwc_1)
+			kdwc_1.reset( )
+			k_rc = tab_1.tabpage_1.dw_1.getchild("id_listino_pregruppo", kdwc_1)
+			k_rc = kdwc_1.settransobject(sqlca)
+			k_rc = kdwc_1.retrieve(0)
+			k_rc = kdwc_1.insertrow(1)
+	elseif left(dwo.name, 15) = "id_listino_voce" then
+			k_id = this.getitemnumber(row, "id_listino_pregruppo")
+			this.getchild("id_listino_voce_1", kdwc_1)
+			kdwc_1.settransobject(sqlca)
+			if kdwc_1.rowcount() < 2 then
+				kdwc_1.retrieve(k_id)
+				kdwc_1.insertrow(1)
+				for k_riga = 2 to 10
+					this.getchild("id_listino_voce_" + string(k_riga, "#"), kdwc_2)
+					kdwc_1.ShareData( kdwc_2)			
+				next
+			end if
+	elseif left(dwo.name, 6) = "descr_" then
+			this.getchild("descr_1", kdwc_1)
+			kdwc_1.settransobject(sqlca)
+			if kdwc_1.rowcount() < 2 then
+				kdwc_1.retrieve()
+				kdwc_1.insertrow(1)
+				for k_riga = 2 to 10
+					this.getchild("descr_" + string(k_riga, "#"), kdwc_2)
+					kdwc_1.ShareData( kdwc_2)			
+				next
+			end if
+	end if
+
+end if
+
+
+SetPointer(kp_oldpointer)
+
+
+end event
+
+event dw_2::itemchanged;call super::itemchanged;//
+date k_data
+string k_codice, k_nome
+string k_des
+int k_errore=0
+long k_riga, k_rc
+st_esito kst_esito
+st_tab_contratti kst_tab_contratti
+st_tab_contratti_doc kst_tab_contratti_doc
+st_tab_clienti kst_tab_clienti
+kuf_contratti kuf1_contratti
+datawindowchild kdwc_1, kdwc_x, kdwc_x_des
+
+
+try
+	
+	k_nome = lower(dwo.name)
+	
+	if k_nome = "id_listino_pregruppo" then
+			this.getchild("id_listino_voce_1", kdwc_1)
+			kdwc_1.reset( )
+			if Len(trim(data)) > 0 then
+				k_codice = RightTrim(data)
+				k_rc = this.getchild("id_listino_pregruppo", kdwc_x)
+				k_riga = kdwc_x.find("id_listino_pregruppo = "+ trim(k_codice)+" ",0,kdwc_x.rowcount())
+				if k_riga <= 0 or isnull(k_riga) then
+					k_errore = 2
+					this.setitem(row, "listino_pregruppo_descr", " - NON TROVATO -")
+				else
+					this.setitem(row, "listino_pregruppo_descr", kdwc_x.getitemstring(k_riga, "descr"))
+				end if
+			else
+				this.setitem(row, "pagam_des", "")
+				this.setitem(row, "cod_pag", "")
+			end if
+			
+	
+	elseif left(k_nome,16) = "id_listino_voce_" then
+			k_des = trim(mid(k_nome, 17))
+
+			if Len(trim(data)) > 0 then
+				k_codice = RightTrim(data)
+				k_rc = this.getchild(k_nome, kdwc_x)
+				k_riga = kdwc_x.find("id_listino_voce = "+ trim(k_codice)+" ",0,kdwc_x.rowcount())
+				if k_riga <= 0 or isnull(k_riga) then
+					k_errore = 2
+	//				this.setitem(row, "listino_voci_descr_" + k_des , " - NON TROVATO -")
+					this.setitem(row, "voce_prezzo_" + k_des , 0)
+					this.setitem(row, "listino_voci_tipo_listino_" + k_des , "")
+					this.setitem(row, "listino_voci_tipo_calcolo_" + k_des , "")
+					this.setitem(row, "descr_" + k_des , "")
+				else
+	//				this.setitem(row, "listino_voci_descr_" + k_des , kdwc_x.getitemstring(k_riga, "listino_voci_descr"))
+					if this.getitemnumber(row, "voce_prezzo_" + k_des ) <> 0 &
+							and kdwc_x.getitemnumber(k_riga, "listino_pregruppi_voci_prezzo") <> this.getitemnumber(row, "voce_prezzo_" + k_des ) then
+						kguo_exception.inizializza( )					
+						kguo_exception.set_tipo( kguo_exception.kk_st_uo_exception_tipo_dati_wrn )
+						kguo_exception.setmessage( "Attenzione è cambiato il prezzo da " + string(this.getitemnumber(row, "voce_prezzo_" + k_des ), "€0.00" ) &
+															+ " a " +  string(kdwc_x.getitemnumber(k_riga, "listino_pregruppi_voci_prezzo"), "€0.00" ) )	 
+						kguo_exception. post messaggio_utente( )
+					end if
+					this.setitem(row, "voce_prezzo_" + k_des , kdwc_x.getitemnumber(k_riga, "listino_pregruppi_voci_prezzo"))
+					this.setitem(row, "listino_voci_tipo_listino_" + k_des, kdwc_x.getitemstring(k_riga, "listino_voci_tipo_listino"))
+					this.setitem(row, "listino_voci_tipo_calcolo_" + k_des, kdwc_x.getitemstring(k_riga, "listino_voci_tipo_calcolo")) 
+					if this.getitemstring( row, "stampa_tradotta") = "EN" then
+						this.setitem(row, "descr_" + k_des, kdwc_x.getitemstring(k_riga, "listino_voci_descr_xctr_eng")) 
+					else
+						this.setitem(row, "descr_" + k_des, kdwc_x.getitemstring(k_riga, "listino_voci_descr_xctr")) 
+					end if
+				end if
+			else
+				this.setitem(row, dwo.name, "")
+				this.setitem(row, "voce_prezzo_" + k_des , 0)
+				this.setitem(row, "listino_voci_tipo_listino_" + k_des , "")
+				this.setitem(row, "listino_voci_tipo_calcolo_" + k_des, "")
+				this.setitem(row, "descr_" + k_des , "")
+			end if
+
+	
+	elseif left(k_nome, 16) = "voce_prezzo_tot_" then
+		k_des = mid(k_nome, 17)
+		post u_calcola_riga(k_des)
+		post u_imposta_tot_imp()
+
+	elseif left(k_nome, 12) = "voce_prezzo_" then
+		k_des = mid(k_nome, 13)
+		post u_calcola_riga(k_des)
+		post u_imposta_tot_imp()
+
+	elseif left(k_nome, 9) = "voce_qta_" then
+		k_des = mid(k_nome, 10)
+		post u_calcola_riga(k_des)
+		post u_imposta_tot_imp()
+	
+	elseif left(k_nome, 12) = "flg_st_voce_" then
+		k_des = mid(k_nome, 13)
+		post u_calcola_riga(k_des)
+		post u_imposta_tot_imp()
+
+	end if 
+
+	if k_errore = 0 then
+		attiva_tasti()
+	end if
+
+catch (uo_exception kuo_exception)
+	kuo_exception.post messaggio_utente()
+	k_errore = 2
+	
+end try
+
+return k_errore
+	
+end event
+
+event dw_2::itemfocuschanged;call super::itemfocuschanged;int k_rc
+long k_cod_cli, k_cod_cli_old
+st_tab_contratti_doc kst_tab_contratti_doc
+datawindowchild  kdwc_x,  kdwc_x_des, kdwc_2
+
+
+choose case dwo.name
+
 
 //--- campo Gruppo Listino
 	case "id_listino_voce_1" &
@@ -2126,99 +2610,6 @@ end choose
 
 end event
 
-event dw_1::clicked;call super::clicked;//
-long k_riga, k_id, k_rc
-datawindowchild kdwc_1, kdwc_2
-pointer kp_oldpointer  // Declares a pointer variable
-
-
-
-kp_oldpointer = SetPointer(HourGlass!)
-
-
-choose case dwo.name
-
-	case "id_listino_pregruppo"
-		this.getchild("id_listino_pregruppo", kdwc_1)
-		kdwc_1.reset( )
-		k_rc = tab_1.tabpage_1.dw_1.getchild("id_listino_pregruppo", kdwc_1)
-		k_rc = kdwc_1.settransobject(sqlca)
-		k_rc = kdwc_1.retrieve(0)
-		k_rc = kdwc_1.insertrow(1)
-
-
-	case "id_listino_voce_1" &
-			, "id_listino_voce_2" &
-			, "id_listino_voce_3" &
-			, "id_listino_voce_4" &
-			, "id_listino_voce_5" &
-			, "id_listino_voce_6" &
-			, "id_listino_voce_7" &
-			, "id_listino_voce_8" &
-			, "id_listino_voce_9" &
-			, "id_listino_voce_10"
-
-		k_id = this.getitemnumber(row, "id_listino_pregruppo")
-
-		this.getchild("id_listino_voce_1", kdwc_1)
-		kdwc_1.settransobject(sqlca)
-		if kdwc_1.rowcount() < 2 then
-			kdwc_1.retrieve(k_id)
-			kdwc_1.insertrow(1)
-			this.getchild("id_listino_voce_2", kdwc_2)
-			kdwc_1.ShareData( kdwc_2)			
-			this.getchild("id_listino_voce_3", kdwc_2)
-			kdwc_1.ShareData( kdwc_2)			
-			this.getchild("id_listino_voce_4", kdwc_2)
-			kdwc_1.ShareData( kdwc_2)			
-			this.getchild("id_listino_voce_5", kdwc_2)
-			kdwc_1.ShareData( kdwc_2)			
-			this.getchild("id_listino_voce_6", kdwc_2)
-			kdwc_1.ShareData( kdwc_2)			
-			this.getchild("id_listino_voce_7", kdwc_2)
-			kdwc_1.ShareData( kdwc_2)			
-			this.getchild("id_listino_voce_8", kdwc_2)
-			kdwc_1.ShareData( kdwc_2)			
-			this.getchild("id_listino_voce_9", kdwc_2)
-			kdwc_1.ShareData( kdwc_2)			
-			this.getchild("id_listino_voce_10", kdwc_2)
-			kdwc_1.ShareData( kdwc_2)			
-		end if
-
-
-//	case "p_id_memo_no" &
-//		 ,"p_id_memo"
-//		call_memo()
-
-
-end choose
-
-SetPointer(kp_oldpointer)
-
-
-end event
-
-type st_1_retrieve from w_g_tab_3`st_1_retrieve within tabpage_1
-end type
-
-type tabpage_2 from w_g_tab_3`tabpage_2 within tab_1
-boolean visible = false
-integer width = 3218
-integer height = 1256
-boolean enabled = false
-string text = "tab"
-string powertiptext = "Entrate-Uscite di magazzino"
-end type
-
-type dw_2 from w_g_tab_3`dw_2 within tabpage_2
-boolean visible = true
-integer x = 0
-integer width = 2981
-integer height = 1228
-boolean enabled = true
-string ki_flag_modalita = "vi"
-end type
-
 type st_2_retrieve from w_g_tab_3`st_2_retrieve within tabpage_2
 integer x = 594
 integer y = 136
@@ -2226,17 +2617,88 @@ integer height = 144
 end type
 
 type tabpage_3 from w_g_tab_3`tabpage_3 within tab_1
+boolean visible = true
 integer width = 3218
 integer height = 1256
-boolean enabled = false
-string text = "tab"
+string text = "dati ~'IRR~'"
 end type
 
 type dw_3 from w_g_tab_3`dw_3 within tabpage_3
+boolean visible = true
 integer width = 2967
 integer height = 1232
+boolean enabled = true
+string dataobject = "d_contratti_doc_irr"
 string ki_flag_modalita = "vi"
 end type
+
+event dw_3::clicked;call super::clicked;//
+long k_riga, k_id, k_rc
+datawindowchild kdwc_1
+
+
+SetPointer(kkg.pointer_attesa)
+
+if ki_st_open_w.flag_modalita = kkg_flag_modalita.inserimento or  ki_st_open_w.flag_modalita = kkg_flag_modalita.modifica then
+
+	if dwo.name = "note_qtax" &
+		or dwo.name = "sd_md" then
+		this.getchild(dwo.name, kdwc_1)
+		k_rc = kdwc_1.settransobject(sqlca)
+		if kdwc_1.rowcount() < 2 then
+			k_rc = kdwc_1.retrieve()
+			k_rc = kdwc_1.insertrow(1)
+		end if
+	end if
+end if
+
+SetPointer(kkg.pointer_default)
+
+end event
+
+event dw_3::itemchanged;call super::itemchanged;//
+date k_data
+string k_codice
+int k_errore=0
+long k_riga, k_rc
+datawindowchild kdwc_1, kdwc_x
+
+
+try
+
+	choose case 	lower(dwo.name)
+	
+		case "sd_md" 
+			if Len(trim(data)) > 0 then
+				k_codice = RightTrim(data)
+				k_rc = this.getchild("sd_md", kdwc_x)
+				k_riga = kdwc_x.find("sd_md = '"+ trim(k_codice)+"' ",0,kdwc_x.rowcount())
+				if k_riga <= 0 or isnull(k_riga) then
+					k_errore = 2
+					this.setitem(row, "id_sd_md", 0)
+				else
+					this.setitem(row, "id_sd_md", kdwc_x.getitemnumber(k_riga, "id_sd_md"))
+				end if
+			else
+				this.setitem(row, "id_sd_md", 0)
+				this.setitem(row, "sd_md", "")
+			end if
+	
+	
+	end choose 
+	
+	
+catch (uo_exception kuo_exception)
+	kuo_exception.post messaggio_utente()
+	k_errore = 2
+	
+end try
+
+
+
+return k_errore
+	
+end event
 
 type st_3_retrieve from w_g_tab_3`st_3_retrieve within tabpage_3
 end type

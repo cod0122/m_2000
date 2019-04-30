@@ -743,7 +743,7 @@ kuf_utility kuf1_utility
 
 //--- Info x DRAG&DROP
 	if  tab_1.tabpage_3.dw_3.rowcount( ) <= 0 and (ki_st_open_w.flag_modalita = kkg_flag_modalita.modifica or ki_st_open_w.flag_modalita = kkg_flag_modalita.inserimento) then
-		tab_1.tabpage_3.dw_3.dataobject = "d_dragdrp_info"
+		tab_1.tabpage_3.dw_3.dataobject = "d_memo_dragdrop_info"
 		tab_1.tabpage_3.st_3_retrieve.Text = "" // azzero per essere sicuro che al prx tentativo torna a fare la retrieve
 	end if
 
