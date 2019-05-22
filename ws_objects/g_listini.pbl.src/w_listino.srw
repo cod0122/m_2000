@@ -2197,7 +2197,7 @@ if isvalid(kiuf_listino) then destroy 	kiuf_listino
 end event
 
 event u_ricevi_da_elenco;call super::u_ricevi_da_elenco;//
-//
+int k_return
 int k_rc
 long k_num_int, k_riga, k_riga_zoom
 date k_data_int
@@ -2243,6 +2243,7 @@ if isvalid(kst_open_w) then
 							kst_tab_cond_fatt.descr = kdsi_elenco_input.getitemstring( k_riga_zoom, "descr")
 						end if
 						
+						k_return = 1
 						choose case  kst_open_w.key6    //--- nome del campo che avevo cliccato
 								
 							case "b_cond_fatt_1"
@@ -2256,6 +2257,7 @@ if isvalid(kst_open_w) then
 								 tab_1.tabpage_1.dw_1.setitem( 1, "cf3_descr",kst_tab_cond_fatt.descr)
 								 
 						end choose
+						attiva_tasti()
 					end if
 					
 //--- Prezzi					
@@ -2276,8 +2278,11 @@ if isvalid(kst_open_w) then
 							choose case  kst_open_w.key6    //--- nome del campo che avevo cliccato
 									
 								case "b_cond_fatt_1"
+									k_return = 1
 									 tab_1.tabpage_2.dw_2.setitem( k_riga, "id_cond_fatt",kst_tab_cond_fatt.id)
 									 tab_1.tabpage_2.dw_2.setitem( k_riga, "cond_fatt_descr",kst_tab_cond_fatt.descr)
+
+									attiva_tasti()
 									 
 							end choose
 						end if
@@ -2290,6 +2295,7 @@ if isvalid(kst_open_w) then
 					
 					kst_tab_clienti.codice = kdsi_elenco_input.getitemnumber(k_riga_zoom, "id_cliente")
 		
+					k_return = 1
 					choose case  tab_1.tabpage_3.dw_3.getcolumnname( )    //--- nome del campo che avevo cliccato
 							
 						case "valore_1"
@@ -2307,6 +2313,7 @@ if isvalid(kst_open_w) then
 							 
 					end choose
 
+					attiva_tasti()
 	
 			end choose
 							
@@ -2315,7 +2322,8 @@ if isvalid(kst_open_w) then
 	end if
 
 end if
-//
+
+return k_return
 
 
 end event
@@ -3163,6 +3171,9 @@ end type
 type dw_9 from w_g_tab_3`dw_9 within tabpage_9
 end type
 
+type st_duplica from w_g_tab_3`st_duplica within w_listino
+end type
+
 type dw_10 from uo_d_std_1 within tabpage_2
 boolean visible = true
 integer x = 18
@@ -3175,8 +3186,6 @@ boolean enabled = true
 boolean titlebar = true
 string title = "Dettaglio Prezzi "
 string dataobject = "d_listino_voci_prezzi_l_2"
-boolean hscrollbar = true
-boolean vscrollbar = true
 boolean hsplitscroll = false
 end type
 

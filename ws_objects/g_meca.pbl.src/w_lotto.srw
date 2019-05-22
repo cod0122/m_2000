@@ -15,8 +15,7 @@ end type
 end forward
 
 global type w_lotto from w_g_tab_3
-integer x = 29999
-integer width = 891
+integer width = 2747
 integer height = 712
 string title = "Documento "
 boolean ki_toolbar_window_presente = true
@@ -49,6 +48,7 @@ private boolean ki_lotto_spedito=false
 private boolean ki_genera_barcode=false
 private boolean ki_apri_riga_prima_volta=true
 private boolean ki_autorizzaModificaE1SRST=false
+private boolean ki_certif_stampato=false
 //private boolean ki_armo_nt[]
 //private st_tab_armo_nt kist_tab_armo_nt[]
 
@@ -109,7 +109,6 @@ private subroutine run_app_lettera ()
 protected function string check_dati ()
 private function integer get_totale_colli ()
 public subroutine u_allarme_lotto (st_tab_meca ast_tab_meca) throws uo_exception
-public subroutine u_allarme_cliente (readonly st_tab_clienti ast_tab_clienti) throws uo_exception
 private subroutine call_elenco_causali ()
 private subroutine call_elenco_mandanti ()
 private subroutine put_video_clie_2 (st_tab_clienti kst_tab_clienti)
@@ -180,6 +179,8 @@ public subroutine u_write_avvertenze (string a_avvertenze)
 public function boolean u_if_esiste_e1an ()
 private function integer u_e1_crea_asn_0 () throws uo_exception
 public function string u_get_consegna_tempi (ref st_tab_meca kst_tab_meca) throws uo_exception
+public function integer u_allarme_cliente () throws uo_exception
+protected subroutine inizializza_7 () throws uo_exception
 end prototypes
 
 protected function string aggiorna ();//
@@ -748,7 +749,7 @@ if kist_tab_meca_orig.num_int <> kst_tab_meca_attuale.num_int &
 					u_inizializza_8( )
 
 //--- controllo se c'e' un Lotto con Allarme MEMO			
-					u_allarme_lotto(kist_tab_meca_orig)
+//					u_allarme_lotto(kist_tab_meca_orig)
 					
 				catch (uo_exception kuo_exception)
 					kuo_exception.messaggio_utente()
@@ -842,6 +843,12 @@ try
 					tab_1.tabpage_1.dw_1.object.p_img_elenco_contratti.visible = true
 				end if
 				tab_1.tabpage_1.dw_1.setcolumn("consegna_data")
+				
+//--- se Certif già stampato non si può modificare il mittente
+				if ki_certif_stampato then
+					kuf1_utility.u_proteggi_dw("1", "clie_1", tab_1.tabpage_1.dw_1)
+					kuf1_utility.u_proteggi_dw("1", "rag_soc_10", tab_1.tabpage_1.dw_1)
+				end if
 				
 			else
 			
@@ -1282,8 +1289,6 @@ try
 	
 	k_return = kiuf_clienti.leggi (kst_tab_clienti)
 	
-//--- Gestione di Allert per il cliente 	
-	u_allarme_cliente(kst_tab_clienti)
 	
 catch (uo_exception kuo_exception)
 	kuo_exception.messaggio_utente()
@@ -1505,6 +1510,7 @@ try
 					kst_tab_clienti.codice = kdw_source.getitemnumber(long(k_riga), "id_cliente")
 					kst_esito = kiuf_clienti.leggi_rag_soc(kst_tab_clienti)
 					put_video_clie_1(kst_tab_clienti)
+					u_allarme_cliente() //--- Gestione di Allert per il cliente 	
 				end if
 		
 //--- scelta da elenco Riceventi-Clienti
@@ -1522,6 +1528,7 @@ try
 						put_video_clie_3(kst_tab_clienti)
 						set_id_causale_da_clie_3()  // causale di blocco sul cliente ha la priorità
 					end if
+					u_allarme_cliente() //--- Gestione di Allert per il cliente 	
 				end if
 				if ki_zoom_ricevente_fatturato then
 					ki_zoom_ricevente_fatturato = false
@@ -1811,65 +1818,34 @@ return k_return
 
 end function
 
-public subroutine u_allarme_lotto (st_tab_meca ast_tab_meca) throws uo_exception;//
-boolean k_return = false
-st_memo_allarme kst_memo_allarme
-kuf_armo_inout kuf1_armo_inout
-
-try
-	
-//--- Gestione di Allert per Lotto (id) 	
-	if ast_tab_meca.id > 0 then
-		kiuf_armo.get_num_int(ast_tab_meca)
-		kst_memo_allarme.allarme = kguf_memo_allarme.kki_memo_allarme_meca
-		kst_memo_allarme.st_memo.st_tab_meca_memo.id_meca = ast_tab_meca.id
-		kst_memo_allarme.descr = "Avviso rilevato sul Lotto num. " + string(ast_tab_meca.num_int) + " del " + string(ast_tab_meca.data_int, "dd/mm/yy") + " id "+ string(ast_tab_meca.id) 
-		if kguf_memo_allarme.set_allarme_lotto(kst_memo_allarme) then
-			kguf_memo_allarme.u_attiva_memo_allarme()
-		end if
-	else
-		kguf_memo_allarme.inizializza()
-	end if
-	
-catch (uo_exception kuo_exception)
-	throw kuo_exception
-	
-
-finally
-	
-end try
-
-
-
-end subroutine
-
-public subroutine u_allarme_cliente (readonly st_tab_clienti ast_tab_clienti) throws uo_exception;//
-boolean k_return = false
-st_memo_allarme kst_memo_allarme
-
-
-try
-	
-//--- Gestione di Allert per il cliente 	
-	if ast_tab_clienti.codice > 0 then
-		kst_memo_allarme.allarme = kguf_memo_allarme.kki_memo_allarme_meca
-		kst_memo_allarme.st_memo.st_tab_clienti_memo.id_cliente = ast_tab_clienti.codice
-		kst_memo_allarme.descr = "Avviso rilevato sul Cliente " + string(ast_tab_clienti.codice) + ", num. Lotto: " + string(tab_1.tabpage_1.dw_1.getitemnumber(1, "num_int"))
-		if kguf_memo_allarme.set_allarme_cliente(kst_memo_allarme) then
-			kguf_memo_allarme.u_attiva_memo_allarme()
-		end if
-	else
-		kguf_memo_allarme.inizializza()
-	end if
-	
-catch (uo_exception kuo_exception)
-	throw kuo_exception
-	
-
-finally
-	
-end try
-
+public subroutine u_allarme_lotto (st_tab_meca ast_tab_meca) throws uo_exception;////
+//boolean k_return = false
+//st_memo_allarme kst_memo_allarme
+//kuf_armo_inout kuf1_armo_inout
+//
+//try
+//	
+////--- Gestione di Allert per Lotto (id) 	
+//	if ast_tab_meca.id > 0 then
+//		kiuf_armo.get_num_int(ast_tab_meca)
+//		kst_memo_allarme.allarme = kguf_memo_allarme.kki_memo_allarme_meca
+//		kst_memo_allarme.st_memo.st_tab_meca_memo.id_meca = ast_tab_meca.id
+//		kst_memo_allarme.descr = "Avviso rilevato sul Lotto num. " + string(ast_tab_meca.num_int) + " del " + string(ast_tab_meca.data_int, "dd/mm/yy") + " id "+ string(ast_tab_meca.id) 
+//		if kguf_memo_allarme.set_allarme_lotto(kst_memo_allarme) then
+//			kguf_memo_allarme.u_attiva_memo_allarme_on()
+//		end if
+//	else
+//		kguf_memo_allarme.inizializza()
+//	end if
+//	
+//catch (uo_exception kuo_exception)
+//	throw kuo_exception
+//	
+//
+//finally
+//	
+//end try
+//
 
 
 end subroutine
@@ -2435,6 +2411,9 @@ try
 	
 catch (uo_exception kuo_exception)
 	kuo_exception.messaggio_utente()
+	
+finally
+	u_allarme_cliente() //--- Gestione di Allert per il cliente 	
 	
 end try
 
@@ -3989,6 +3968,7 @@ try
 		put_video_clie_2(kst_tab_clienti)
 		kst_tab_clienti.codice = kst_tab_meca.clie_3
 		put_video_clie_3(kst_tab_clienti)
+		u_allarme_cliente() //--- Gestione di Allert per il cliente 	
 		
 	else	// se non congruente attiva l'elenco		
 		
@@ -4193,6 +4173,7 @@ kuf_menu_window kuf1_menu_window
 				put_video_clie_2(kst_tab_clienti)  
 				kst_tab_clienti.codice = kst_tab_meca.clie_3
 				put_video_clie_3(kst_tab_clienti)
+				u_allarme_cliente() //--- Gestione di Allert per il cliente 	
 
 			else
 				k_return = true
@@ -4796,7 +4777,9 @@ protected subroutine u_inizializza ();//
 //
 string k_msg
 int k_colli_sped=0, k_nr_barcode=0, k_nr_colli
+st_tab_certif kst_tab_certif
 kuf_sped kuf1_sped
+kuf_certif kuf1_certif
 
 
 //=== Puntatore Cursore da attesa.....
@@ -4813,7 +4796,7 @@ kuf_sped kuf1_sped
 			kguo_exception.inizializza()
 			kguo_exception.set_tipo( kguo_exception.kk_st_uo_exception_tipo_dati_non_eseguito )
 			kguo_exception.setmessage(  &
-				"Attenzione, il LOTTO non è 'APERTO', modifica non consentita! ~n~r" + &
+				"Attenzione, Lotto 'CHIUSO', modifiche non consentite! ~n~r" + &
 				"(ID lotto: " + string(kist_tab_meca.id) + ") " )
 			kguo_exception.messaggio_utente( )	
 		else
@@ -4823,7 +4806,12 @@ kuf_sped kuf1_sped
 				ki_lotto_spedito = true
 			end if
 
-//--- Lotto già Spedito niente modifiche!!!!!	
+//--- Verifica Lotto Certificato Stampato
+			kuf1_certif = create kuf_certif
+			kst_tab_certif.id_meca = kist_tab_meca.id
+			ki_certif_stampato = kuf1_certif.if_stampato_x_id_meca(kst_tab_certif)
+
+//--- Lotto già Spedito avvertenze
 			if ki_lotto_spedito then 
 				kguo_exception.inizializza()
 				kguo_exception.set_tipo( kguo_exception.kk_st_uo_exception_tipo_allerta )
@@ -4832,6 +4820,9 @@ kuf_sped kuf1_sped
 					"(ID lotto: " + string(kist_tab_meca.id) + ") " )
 				kguo_exception.messaggio_utente( )	
 			else
+				
+				u_allarme_cliente( )  // legge allarmi 
+				
 				ki_lotto_pianificato = kiuf_armo.if_lotto_pianificato(kist_tab_meca) 
 //--- Lotto già PIANIFICATO allora ATTENZIONE alle Modifiche	!!!!!	
 				if ki_lotto_pianificato then 
@@ -4884,6 +4875,8 @@ kuf_sped kuf1_sped
 			tab_1.tabpage_1.dw_1.setitem(1, "k_avvertenze", k_msg)
 			tab_1.tabpage_1.dw_1.SetItemStatus(1, "k_avvertenze", primary!, NotModified!) 
 		end if
+		if isvalid(kuf1_certif) then destroy kuf1_certif
+		if isvalid(kuf1_sped) then destroy kuf1_sped
 	end try
 
 
@@ -5248,6 +5241,83 @@ return k_return
 
 end function
 
+public function integer u_allarme_cliente () throws uo_exception;//
+int k_return 
+st_tab_meca kst_tab_meca
+kuf_memo_allarme kuf1_memo_allarme
+
+
+try
+	
+	if tab_1.tabpage_1.dw_1.rowcount( ) > 0 then
+		kst_tab_meca.clie_1 = tab_1.tabpage_1.dw_1.getitemnumber( 1, "clie_1")
+		kst_tab_meca.clie_2 = tab_1.tabpage_1.dw_1.getitemnumber( 1, "clie_2")
+		kst_tab_meca.clie_3 = tab_1.tabpage_1.dw_1.getitemnumber( 1, "clie_3")
+	end if
+	if kst_tab_meca.clie_1 > 0 then
+		k_return = tab_1.tabpage_8.dw_8.retrieve(kst_tab_meca.clie_1, kst_tab_meca.clie_2, kst_tab_meca.clie_3)
+	end if
+	
+	if tab_1.tabpage_8.dw_8.rowcount( ) > 0 then
+		if not tab_1.tabpage_8.visible then
+			tab_1.tabpage_8.visible = true
+			kGuf_data_base.POST suona_motivo(kuf1_memo_allarme.kki_suona_motivo_allarme, 0)
+		end if
+		tab_1.tabpage_8.text = " Allarmi Memo " + string(k_return) + ""
+	else
+		tab_1.tabpage_8.visible = false
+		tab_1.tabpage_8.text = "Allarmi Memo"
+	end if
+	
+	
+catch (uo_exception kuo_exception)
+	throw kuo_exception
+	
+
+finally
+	
+end try
+
+return k_return 
+
+//boolean k_return = false
+//st_memo_allarme kst_memo_allarme
+//
+//
+//try
+//	
+////--- Gestione di Allert per il cliente 	
+//	if ast_tab_clienti.codice > 0 then
+//		kst_memo_allarme.allarme = kguf_memo_allarme.kki_memo_allarme_meca
+//		kst_memo_allarme.st_memo.st_tab_clienti_memo.id_cliente = ast_tab_clienti.codice
+//		kst_memo_allarme.descr = "Avviso rilevato sul Cliente " + string(ast_tab_clienti.codice) + ", num. Lotto: " + string(tab_1.tabpage_1.dw_1.getitemnumber(1, "num_int"))
+//		if kguf_memo_allarme.set_allarme_cliente(kst_memo_allarme) then
+//			kguf_memo_allarme.u_attiva_memo_allarme_on()
+//		end if
+//	else
+//		kguf_memo_allarme.inizializza()
+//	end if
+//	
+//catch (uo_exception kuo_exception)
+//	throw kuo_exception
+//	
+//
+//finally
+//	
+//end try
+
+
+
+end function
+
+protected subroutine inizializza_7 () throws uo_exception;//
+tab_1.tabpage_8.dw_8.setfocus()
+
+attiva_tasti()
+	
+
+end subroutine
+
 on w_lotto.create
 int iCurrent
 call super::create
@@ -5263,7 +5333,7 @@ destroy(this.dw_x_copia)
 end on
 
 event u_ricevi_da_elenco;call super::u_ricevi_da_elenco;//
-//
+int k_return
 int k_rc
 long  k_riga, k_righe
 datastore kds_elenco_input_appo
@@ -5289,18 +5359,20 @@ if isvalid(kst_open_w) then
 				dw_x_copia.reset( )
 				k_righe = kids_elenco_input.rowcount()
 				if k_righe > 0 then
+					k_return = 1
 				
 					k_rc = kids_elenco_input.rowscopy(1, k_righe, Primary!, dw_x_copia, 1, Primary! )
 					dw_x_copia.selectrow(0, true)  //--- seleziono tutte le righe tanto devo trattarle tutte
 					dragdrop_dw_esterna( dw_x_copia, k_riga )
 					
+					attiva_tasti()
 				end if
 			end if
 		end if
 		
 end if
 
-attiva_tasti()
+return k_return
 
 
 
@@ -5660,9 +5732,14 @@ st_tab_meca kst_tab_meca
 //--- elenco riceventi-fatt per il mandante-contratto indicato
 		case "p_img_mrf"
 			if ki_st_open_w.flag_modalita = kkg_flag_modalita.inserimento or ki_st_open_w.flag_modalita =  kkg_flag_modalita.modifica then
-				call_elenco_mrf()
+				//--- se Certif già stampato non si può fare
+				if ki_certif_stampato then
+					messagebox("Operazione bloccata", "Attestato già Stampato Funzione non disponibile", Information!)
+				else
+					call_elenco_mrf()
+				end if
 			else
-				messagebox("Operazione bloccata", "Funzione non attiva per questa modalità", Information!)
+				messagebox("Operazione bloccata", "Funzione non attiva in modalità di " + kguo_g.get_descrizione( ki_st_open_w.flag_modalita), Information!)
 			end if
 
 		case "p_img_elenco_contratti"
@@ -6095,12 +6172,21 @@ end type
 type tabpage_8 from w_g_tab_3`tabpage_8 within tab_1
 integer width = 3159
 integer height = 1428
+boolean enabled = true
+string text = "Allarmi Memo"
+long tabtextcolor = 255
+long tabbackcolor = 32435950
+string picturename = "alert24.png"
+string powertiptext = "avvisi di allarmi memo"
 end type
 
 type st_8_retrieve from w_g_tab_3`st_8_retrieve within tabpage_8
 end type
 
 type dw_8 from w_g_tab_3`dw_8 within tabpage_8
+boolean visible = true
+boolean enabled = true
+string dataobject = "d_memo_allarme_nomeca"
 end type
 
 type tabpage_9 from w_g_tab_3`tabpage_9 within tab_1
@@ -6120,6 +6206,9 @@ boolean visible = true
 boolean enabled = true
 string dataobject = "d_meca_memo_l"
 boolean hsplitscroll = false
+end type
+
+type st_duplica from w_g_tab_3`st_duplica within w_lotto
 end type
 
 type dw_riga_0 from uo_d_std_1 within tabpage_4

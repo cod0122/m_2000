@@ -8711,46 +8711,40 @@ type m_report from menu within m_interrogazioni
 end type
 
 event clicked;//
-string k_anno
-date k_data
-st_open_w k_st_open_w
-//---17092008kuf_menu_window kuf1_menu_window
-
-//kuf_base kuf1_base
+//string k_anno
+//date k_data
+//st_open_w k_st_open_w
+kuf_int_artr kuf1_int_artr
 
 
-//kuf1_base = create kuf_base
-//k_anno = mid(kuf1_base.prendi_dato_base("anno"), 2) + space(4)
-//destroy kuf1_base
+kuf1_int_artr = create kuf_int_artr
+kuf1_int_artr.u_open()
+destroy kuf1_int_artr
 
 //
-//=== Situazione Lavorazioni (scelta (2)+ mandante(10) + libero (10)
-//===				KKG.ADATTA_WIN=adatta dim. wind.(1) + 
-//===          libero-standard-futuri (26) + libero personalizzazioni
-//===          stato lavorazione (N/I/F)+data inizio+data fine lav+cliente 1 e 2+dose+data da+data a
-k_data = date(0)
-
-K_st_open_w.id_programma = "int_1"
-K_st_open_w.flag_primo_giro = "S"
-K_st_open_w.flag_modalita = kkg_flag_modalita.interrogazione
-K_st_open_w.flag_adatta_win = KKG.ADATTA_WIN
-K_st_open_w.flag_leggi_dw = "N"
-K_st_open_w.flag_cerca_in_lista = "1"
-K_st_open_w.key1 = "0000000000" //mandante
-K_st_open_w.key2 = "*" // stato lavorazione (N/I/F)
-K_st_open_w.key3 = string(k_data,"dd/mm/yyyy")  //data inizio lav
-K_st_open_w.key4 = string(k_data,"dd/mm/yyyy")  //data fine lav
-K_st_open_w.key5 = "0000000000"  //cliente mand
-K_st_open_w.key5 = "0000000000"  //cliente ricev
-K_st_open_w.key5 = "0000000000"  //dose
-K_st_open_w.key4 = string(k_data,"dd/mm/yyyy")  //data da 
-K_st_open_w.key4 = string(k_data,"dd/mm/yyyy")  //data a 
-K_st_open_w.flag_where = " "
-							
-//---17092008kuf1_menu_window = create kuf_menu_window 
-kGuf_menu_window.open_w_tabelle(k_st_open_w)
-//---17092008destroy kuf1_menu_window
-
+//k_data = date(0)
+//
+//K_st_open_w.id_programma = kuf1_int_artr.get "int_1"
+//K_st_open_w.flag_primo_giro = "S"
+//K_st_open_w.flag_modalita = kkg_flag_modalita.interrogazione
+//K_st_open_w.flag_adatta_win = KKG.ADATTA_WIN
+//K_st_open_w.flag_leggi_dw = "N"
+//K_st_open_w.flag_cerca_in_lista = "1"
+//K_st_open_w.key1 = "0000000000" //mandante
+//K_st_open_w.key2 = "*" // stato lavorazione (N/I/F)
+//K_st_open_w.key3 = string(k_data,"dd/mm/yyyy")  //data inizio lav
+//K_st_open_w.key4 = string(k_data,"dd/mm/yyyy")  //data fine lav
+//K_st_open_w.key5 = "0000000000"  //cliente mand
+//K_st_open_w.key5 = "0000000000"  //cliente ricev
+//K_st_open_w.key5 = "0000000000"  //dose
+//K_st_open_w.key4 = string(k_data,"dd/mm/yyyy")  //data da 
+//K_st_open_w.key4 = string(k_data,"dd/mm/yyyy")  //data a 
+//K_st_open_w.flag_where = " "
+//							
+////---17092008kuf1_menu_window = create kuf_menu_window 
+//kGuf_menu_window.open_w_tabelle(k_st_open_w)
+////---17092008destroy kuf1_menu_window
+//
 
 end event
 

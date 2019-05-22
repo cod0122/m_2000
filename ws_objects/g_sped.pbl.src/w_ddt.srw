@@ -98,7 +98,6 @@ private subroutine riga_display_in_lista (integer k_riga, st_tab_arsp kst_tab_ar
 private function integer riga_nuova_in_lista_1 (ref st_tab_arsp ast_tab_arsp, st_tab_armo ast_tab_armo, st_tab_prodotti kst_tab_prodotti, st_tab_meca kst_tab_meca) throws uo_exception
 private function integer riga_modifica_in_lista (long a_riga, st_tab_arsp ast_tab_arsp, st_tab_armo ast_tab_armo, st_tab_prodotti ast_tab_prodotti, st_tab_meca kst_tab_meca) throws uo_exception
 private subroutine riga_modifica_display_note (st_tab_armo_nt ast_tab_armo_nt)
-public subroutine u_allarme_lotto (st_tab_meca ast_tab_meca) throws uo_exception
 public subroutine u_allarme_cliente (readonly st_tab_clienti ast_tab_clienti) throws uo_exception
 public subroutine u_get_numero_lotto ()
 private function long riga_nuova_in_lista_meca (st_tab_armo ast_tab_armo)
@@ -117,6 +116,10 @@ protected function string aggiorna_dati ()
 protected subroutine attiva_tasti_0 ()
 public subroutine u_num_bolla_inp_changed ()
 public subroutine u_message (uo_exception auo_exception)
+public subroutine u_if_allarme_memo ()
+protected subroutine inizializza_4 () throws uo_exception
+public function integer u_ddt_rows_retrieve ()
+public function integer u_allarme_lotto () throws uo_exception
 end prototypes
 
 protected function string aggiorna ();//
@@ -644,6 +647,9 @@ if tab_1.tabpage_1.dw_1.rowcount() = 0 then
 //	end if
 
 	tab_1.tabpage_4.dw_4.reset( ) // inizializzo le righe
+	tab_1.tabpage_4.text = "righe"
+	tab_1.tabpage_5.dw_5.visible = false
+	tab_1.tabpage_5.text = "Allarmi Memo"
 
 //--- SE INSERIMENTO
 	if ki_st_open_w.flag_modalita = kkg_flag_modalita.inserimento then
@@ -728,6 +734,8 @@ if tab_1.tabpage_1.dw_1.rowcount() = 0 then
 
 				end if
 
+				u_ddt_rows_retrieve()   // carica le righe nel DDT !!!!!!
+
 				tab_1.tabpage_1.dw_1.setfocus()
 //				tab_1.tabpage_1.dw_1.setcolumn("fat1_note_1")
 
@@ -781,7 +789,6 @@ try
 					kiuf_sped.get_id_sped(kist_tab_sped)
 				end if
 
-				
 //--- posso modificare il documento?
 				if not kiuf_sped.if_modifica(kist_tab_sped) then
 					ki_st_open_w.flag_modalita = kkg_flag_modalita.visualizzazione
@@ -1166,6 +1173,7 @@ protected subroutine open_start_window ();//
 
 	ki_toolbar_window_presente=true
 	
+	//tab_1.tabpage_5.picturename = 
 	
 	kist_tab_sped.id_sped  = 0
 	kist_tab_sped.clie_2 = 0
@@ -1401,7 +1409,7 @@ try
 	k_return = kiuf_clienti.leggi (kst_tab_clienti)
 	
 //--- Gestione di Allert per il cliente 	
-	u_allarme_cliente(kst_tab_clienti)
+//	post u_allarme_cliente(kst_tab_clienti)
 	
 catch (uo_exception kuo_exception)
 	kuo_exception.messaggio_utente()
@@ -1589,35 +1597,7 @@ if kst_tab_sped.id_sped > 0 then
 	
 	if kst_tab_sped.id_sped <> kst_tab_sped_prec.id_sped then
 
-//--- Inabilita campi alla modifica se Visualizzazione
-//		kuf1_utility = create kuf_utility 
-//		if trim(ki_st_open_w.flag_modalita) <> kkg_flag_modalita.modifica &
-//			  and trim(ki_st_open_w.flag_modalita) <> kkg_flag_modalita.inserimento then
-//		
-//			kuf1_utility.u_proteggi_dw("1", 0, tab_1.tabpage_4.dw_4)
-//		end if
-//		destroy kuf1_utility
-
-		if tab_1.tabpage_4.dw_4.retrieve(kst_tab_sped.id_sped) > 0 then  // cerca le righe nel DDT !!!!!!
-			if trim(ki_st_open_w.flag_modalita) = kkg_flag_modalita.modifica then
-				tab_1.tabpage_4.dw_4.setrow(1)
-				tab_1.tabpage_4.dw_4.selectrow(1,true)
-			end if
-			
-//		else
-//			k_nriga = 0
-			for k_ctr = 1 to tab_1.tabpage_4.dw_4.rowcount( ) 
-//				ki_progressivo_riga ++
-				tab_1.tabpage_4.dw_4.setitem(k_ctr, "k_progressivo", k_ctr)
-//				kst_tab_arfa.nriga = tab_1.tabpage_4.dw_4.getitemnumber( k_ctr, "nriga")
-//				if kst_tab_arfa.nriga = 0 then
-//					kst_tab_arfa.nriga = k_nriga + 10
-//				end if
-//				tab_1.tabpage_4.dw_4.setitem(k_ctr, "nriga", kst_tab_arfa.nriga)
-//				k_nriga = kst_tab_arfa.nriga 
-			end for
-
-		end if				
+		u_ddt_rows_retrieve()   // carica le righe nel DDT !!!!!!
 
 //---- azzera il flag delle modifiche
 		tab_1.tabpage_4.dw_4.resetupdate( )
@@ -2159,12 +2139,13 @@ try
 				kst_tab_meca.data_ent = kiuf_armo.get_data_ent(kst_tab_meca)
 				kiuf_armo.get_e1_dati(kst_tab_meca)
 
-//--- controllo se c'e' un Lotto con Allarme MEMO			
-				u_allarme_lotto(kst_tab_meca)
 			end if
 	
 //--- inserisce la riga in elenco	
 			k_riga = riga_nuova_in_lista_1 (kst_tab_arsp, kst_tab_armo, kst_tab_prodotti, kst_tab_meca)  
+
+//--- controllo se c'e' un Lotto con Allarme MEMO			
+			u_allarme_lotto()
 
 		end if
 	else
@@ -2676,64 +2657,32 @@ end if
 	
 end subroutine
 
-public subroutine u_allarme_lotto (st_tab_meca ast_tab_meca) throws uo_exception;//
-boolean k_return = false
-st_memo_allarme kst_memo_allarme
-kuf_armo_inout kuf1_armo_inout
-
-try
-	
-//--- Gestione di Allert per Lotto (id) 	
-	if ast_tab_meca.id > 0 then
-		kiuf_armo.get_num_int(ast_tab_meca)
-		kst_memo_allarme.allarme = kguf_memo_allarme.kki_memo_allarme_ddt
-		kst_memo_allarme.st_memo.st_tab_meca_memo.id_meca = ast_tab_meca.id
-		kst_memo_allarme.descr = "Avviso rilevato sul Lotto " + string(ast_tab_meca.num_int) + " " + string(ast_tab_meca.data_int, "dd/mm/yy") + " id "+ string(ast_tab_meca.id) + ", ddt: " + string(tab_1.tabpage_1.dw_1.getitemnumber(1, "num_bolla_out"))
-		if kguf_memo_allarme.set_allarme_lotto(kst_memo_allarme) then
-			kguf_memo_allarme.u_attiva_memo_allarme()
-		end if
-	else
-		kguf_memo_allarme.inizializza()
-	end if
-	
-catch (uo_exception kuo_exception)
-	throw kuo_exception
-	
-
-finally
-	
-end try
-
-
-
-end subroutine
-
-public subroutine u_allarme_cliente (readonly st_tab_clienti ast_tab_clienti) throws uo_exception;//
-boolean k_return = false
-st_memo_allarme kst_memo_allarme
-
-
-try
-	
-//--- Gestione di Allert per il cliente 	
-	if ast_tab_clienti.codice > 0 then
-		kst_memo_allarme.allarme = kguf_memo_allarme.kki_memo_allarme_ddt
-		kst_memo_allarme.st_memo.st_tab_clienti_memo.id_cliente = ast_tab_clienti.codice
-		kst_memo_allarme.descr = "Avviso rilevato sul Cliente " + string(ast_tab_clienti.codice) + ", ddt: " + string(tab_1.tabpage_1.dw_1.getitemnumber(1, "num_bolla_out"))
-		if kguf_memo_allarme.set_allarme_cliente(kst_memo_allarme) then
-			kguf_memo_allarme.u_attiva_memo_allarme()
-		end if
-	else
-		kguf_memo_allarme.inizializza()
-	end if
-	
-catch (uo_exception kuo_exception)
-	throw kuo_exception
-	
-
-finally
-	
-end try
+public subroutine u_allarme_cliente (readonly st_tab_clienti ast_tab_clienti) throws uo_exception;////
+//boolean k_return = false
+//st_memo_allarme kst_memo_allarme
+//
+//
+//try
+//	
+////--- Gestione di Allert per il cliente 	
+//	if ast_tab_clienti.codice > 0 then
+//		kst_memo_allarme.allarme = kguf_memo_allarme.kki_memo_allarme_ddt
+//		kst_memo_allarme.st_memo.st_tab_clienti_memo.id_cliente = ast_tab_clienti.codice
+//		kst_memo_allarme.descr = "Avviso rilevato sul Cliente " + string(ast_tab_clienti.codice) + ", ddt: " + string(tab_1.tabpage_1.dw_1.getitemnumber(1, "num_bolla_out"))
+//		if kguf_memo_allarme.set_allarme_cliente(kst_memo_allarme) then
+//			kguf_memo_allarme.u_attiva_memo_allarme_on()
+//		end if
+//	else
+//		kguf_memo_allarme.inizializza()
+//	end if
+//	
+//catch (uo_exception kuo_exception)
+//	throw kuo_exception
+//	
+//
+//finally
+//	
+//end try
 
 
 
@@ -2741,13 +2690,7 @@ end subroutine
 
 public subroutine u_get_numero_lotto ();//
 
-
-//--- se manca il CLIENTE allora chiedo il Numero Bolla per reperirlo
-	dw_anno_numero.title = "Compila DDT: indicare Num. Lotto "
-	dw_anno_numero.setcolumn( "numero")
-	dw_anno_numero.SelectText(1, Len(dw_anno_numero.GetText()))
-	dw_anno_numero.visible = true
-	dw_anno_numero.setfocus()
+	dw_anno_numero.post event u_attiva()
 
 
 
@@ -3246,6 +3189,10 @@ end if
 
 k_return = super::aggiorna_dati( )
 
+if left(k_return, 1) = "0" then
+	u_if_allarme_memo( )
+end if
+
 return k_return 
 
 end function
@@ -3297,11 +3244,11 @@ if ki_st_open_w.flag_modalita = kkg_flag_modalita.visualizzazione or ki_st_open_
 	cb_modifica.enabled = false
 end if
 
-if tab_1.tabpage_4.enabled and tab_1.tabpage_4.dw_4.rowcount() > 0 then
-	tab_1.tabpage_4.text = "righe " + string(tab_1.tabpage_4.dw_4.rowcount())
-else
-	tab_1.tabpage_4.text = "righe "
-end if
+//if tab_1.tabpage_4.enabled and tab_1.tabpage_4.dw_4.rowcount() > 0 then
+//	tab_1.tabpage_4.text = "righe " + string(tab_1.tabpage_4.dw_4.rowcount())
+//else
+//	tab_1.tabpage_4.text = "righe "
+//end if
 
 
 
@@ -3345,6 +3292,131 @@ public subroutine u_message (uo_exception auo_exception);//
 
 end subroutine
 
+public subroutine u_if_allarme_memo ();//
+st_tab_sped kst_tab_sped
+kuf_link_zoom kuf1_link_zoom
+
+try
+	kst_tab_sped.id_sped = tab_1.tabpage_1.dw_1.getitemnumber(1, "id_sped")
+	if kst_tab_sped.id_sped > 0 then
+		if kiuf_sped.if_ddt_allarme_memo(kst_tab_sped) then
+			if messagebox("Allarme MEMO", "E stato avvisato un Avviso di Allarme MEMO, vuoi aprirlo subito?", question!, yesno!, 1) = 1 then
+	//--- lancia visualizzazione dell'allarme memo
+				kuf1_link_zoom = create kuf_link_zoom
+				kuf1_link_zoom.link_standard_call_p (tab_1.tabpage_1.dw_1, "p_memo_alarm_ddt") 
+			end if 
+		end if
+	end if
+
+catch (uo_exception kuo_exception)
+	kuo_exception.messaggio_utente()
+	
+finally
+	if isvalid(kuf1_link_zoom) then destroy kuf1_link_zoom
+	
+end try
+end subroutine
+
+protected subroutine inizializza_4 () throws uo_exception;//======================================================================
+//=== Inizializzazione del TAB 5 controllandone i valori se gia' presenti
+//======================================================================
+//
+
+tab_1.tabpage_5.dw_5.setfocus()
+
+attiva_tasti()
+	
+
+end subroutine
+
+public function integer u_ddt_rows_retrieve ();//
+integer k_return
+integer k_row
+st_tab_sped kst_tab_sped
+
+
+try
+	kst_tab_sped.id_sped = tab_1.tabpage_1.dw_1.getitemnumber(1, "id_sped")	
+
+	k_return = tab_1.tabpage_4.dw_4.retrieve(kst_tab_sped.id_sped)
+	if k_return > 0 then  // carica le righe nel DDT !!!!!!
+		if trim(ki_st_open_w.flag_modalita) = kkg_flag_modalita.modifica then
+			tab_1.tabpage_4.dw_4.setrow(1)
+			tab_1.tabpage_4.dw_4.selectrow(1,true)
+		end if
+		
+		for k_row = 1 to k_return 
+			tab_1.tabpage_4.dw_4.setitem(k_row, "k_progressivo", k_row)
+		end for
+	end if				
+
+	tab_1.tabpage_4.text = string(k_return) + " righe"
+
+	u_allarme_lotto()
+
+catch (uo_exception kuo_exception)
+	kuo_exception.messaggio_utente()
+	
+end try
+
+return k_return
+end function
+
+public function integer u_allarme_lotto () throws uo_exception;//
+int k_return 
+//st_memo_allarme kst_memo_allarme
+//kuf_armo_inout kuf1_armo_inout
+kuf_memo_allarme kuf1_memo_allarme
+int k_riga, k_righe
+long k_id_meca[10]
+
+try
+	
+	k_righe = tab_1.tabpage_4.dw_4.rowcount( )
+	if k_righe > 10 then k_righe = 10
+	for k_riga = 1 to k_righe
+		k_id_meca[k_riga] = tab_1.tabpage_4.dw_4.getitemnumber( k_riga, "id_meca")
+	next
+	if k_id_meca[1] > 0 then
+		k_return = tab_1.tabpage_5.dw_5.retrieve(k_id_meca[1], k_id_meca[2], k_id_meca[3] &
+														,k_id_meca[4], k_id_meca[5], k_id_meca[6] &
+														,k_id_meca[7], k_id_meca[8], k_id_meca[9] &
+														,k_id_meca[10])
+	end if
+	
+	if tab_1.tabpage_5.dw_5.rowcount( ) > 0 then
+		if not tab_1.tabpage_5.visible then
+			tab_1.tabpage_5.visible = true
+			kGuf_data_base.POST suona_motivo(kuf1_memo_allarme.kki_suona_motivo_allarme, 0)
+		end if
+		tab_1.tabpage_5.text = " Allarmi Memo " + string(k_return) + ""
+	else
+		tab_1.tabpage_5.visible = false
+		tab_1.tabpage_5.text = "Allarmi Memo"
+	end if
+//		kiuf_armo.get_num_int(ast_tab_meca)
+//		kst_memo_allarme.allarme = kguf_memo_allarme.kki_memo_allarme_ddt
+//		kst_memo_allarme.st_memo.st_tab_meca_memo.id_meca = ast_tab_meca.id
+//		kst_memo_allarme.descr = "Avviso rilevato sul Lotto " + string(ast_tab_meca.num_int) + " " + string(ast_tab_meca.data_int, "dd/mm/yy") + " id "+ string(ast_tab_meca.id) + ", ddt: " + string(tab_1.tabpage_1.dw_1.getitemnumber(1, "num_bolla_out"))
+//		if kguf_memo_allarme.set_allarme_lotto(kst_memo_allarme) then
+//			kguf_memo_allarme.u_attiva_memo_allarme_on()
+//		end if
+//	else
+//		kguf_memo_allarme.inizializza()
+//	end if
+	
+catch (uo_exception kuo_exception)
+	throw kuo_exception
+	
+
+finally
+	
+end try
+
+return k_return 
+
+end function
+
 on w_ddt.create
 int iCurrent
 call super::create
@@ -3363,7 +3435,7 @@ destroy(this.dw_x_copia)
 end on
 
 event u_ricevi_da_elenco;call super::u_ricevi_da_elenco;//
-//
+int k_return
 int k_rc
 long  k_riga, k_righe
 datastore kds_elenco_input_appo
@@ -3389,20 +3461,21 @@ if isvalid(kst_open_w) then
 				dw_x_copia.reset( )
 				k_righe = kids_elenco_input.rowcount()
 				if k_righe > 0 then
+					k_return = 1
 				
 					k_rc = kids_elenco_input.rowscopy(1, k_righe, Primary!, dw_x_copia, 1, Primary! )
 					dw_x_copia.selectrow(0, true)  //--- seleziono tutte le righe tanto devo trattarle tutte
 					dragdrop_dw_esterna( dw_x_copia, k_riga )
 					
+					attiva_tasti()
 				end if
 			end if
+			
 		end if
 		
 end if
 
-
-
-attiva_tasti()
+return k_return
 
 
 
@@ -3512,7 +3585,6 @@ kuf_utility kuf1_utility
 end event
 
 type tab_1 from w_g_tab_3`tab_1 within w_ddt
-integer x = 55
 integer width = 3195
 integer height = 1556
 end type
@@ -3709,6 +3781,9 @@ try
 																+ trim(kst_tab_clienti.prov_1) + " " &
 																+ string(kst_tab_clienti.id_nazione_1)  &
 																		) 
+							//--- Gestione di Allert per il cliente 	
+//							post u_allarme_cliente(kst_tab_clienti)
+
 						else
 							this.modify(dwo.name + ".Background.Color = '" + string(KKG_COLORE.ERR_DATO) + "' ") 
 						end if
@@ -4024,14 +4099,22 @@ end type
 type tabpage_5 from w_g_tab_3`tabpage_5 within tab_1
 integer width = 3159
 integer height = 1428
-boolean enabled = false
-string text = "note_nt appoggio"
+long backcolor = 553648127
+string text = "Allarmi Memo"
+long tabtextcolor = 255
+long tabbackcolor = 32896
+string picturename = "alert24.png"
 long picturemaskcolor = 553648127
+string powertiptext = "avvisi di allarmi memo"
 end type
 
 type dw_5 from w_g_tab_3`dw_5 within tabpage_5
-integer width = 2153
+boolean visible = true
+integer x = 0
+integer width = 2318
 integer height = 1296
+boolean enabled = true
+string dataobject = "d_memo_allarme_noddt"
 end type
 
 type st_5_retrieve from w_g_tab_3`st_5_retrieve within tabpage_5
@@ -4095,6 +4178,9 @@ type st_9_retrieve from w_g_tab_3`st_9_retrieve within tabpage_9
 end type
 
 type dw_9 from w_g_tab_3`dw_9 within tabpage_9
+end type
+
+type st_duplica from w_g_tab_3`st_duplica within w_ddt
 end type
 
 type dw_riga_0 from uo_d_sped_riga within tabpage_4
@@ -4501,6 +4587,7 @@ end event
 type dw_anno_numero from datawindow within w_ddt
 event u_posiziona ( )
 event u_enter pbm_dwnprocessenter
+event u_attiva ( )
 boolean visible = false
 integer x = 818
 integer y = 240
@@ -4538,7 +4625,7 @@ try
 	kst_tab_meca.data_int = date (this.getitemnumber(1, "anno") , 01, 01)
 	if kst_tab_meca.num_int > 0 then
 		
-		if kst_tab_meca.num_int > 80000 then // probabilmente è un E1-SO
+		if kst_tab_meca.num_int > 100000 then // probabilmente è un E1-SO
 			kst_tab_meca.e1rorn = kst_tab_meca.num_int
 			kst_tab_meca.id = kiuf_armo.get_id_da_e1rorn(kst_tab_meca)
 		else
@@ -4554,25 +4641,38 @@ try
 catch (uo_exception kuo_exception)
 	kuo_exception.messaggio_utente()
 	
+finally
+//	this.reset( )
+	
 end try
 
 end event
 
-event buttonclicked;//
+event u_attiva();
+//--- Richiesta del Numero Lotto o SO
+	this.title = "Compila DDT: indicare N.Lotto/SO "
+	this.visible = true
+	this.setrow(1)
+	this.setcolumn( "numero")
+	this.SelectText(1, Len(this.GetText()))
+	this.enabled = true
+	this.setfocus()
 
 
-if dwo.name = "b_ok" then
-	
-	this.visible = false
-	
-	this.event u_enter( )
-
-end if
 end event
 
 event constructor;//
 post event u_posiziona()
 
+end event
+
+event clicked;//
+
+if dwo.name = "b_ok" then
+	
+	this.event u_enter( )
+
+end if
 end event
 
 type dw_x_copia from uo_d_std_1 within w_ddt

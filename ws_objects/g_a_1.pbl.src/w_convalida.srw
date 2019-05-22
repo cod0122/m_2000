@@ -7,7 +7,6 @@ end type
 end forward
 
 global type w_convalida from w_g_tab0
-integer x = 29999
 integer width = 3634
 integer height = 2100
 string title = "Elenco CO"
@@ -1113,9 +1112,8 @@ end event
 
 event u_ricevi_da_elenco;call super::u_ricevi_da_elenco;//
 //
+int k_return
 int k_rc
-window k_window
-kuf_menu_window kuf1_menu_window 
 
 
 
@@ -1130,7 +1128,10 @@ kuf_menu_window kuf1_menu_window
 		
 			if kdsi_elenco_input.rowcount() > 0 then
 
+				k_return = 1
 				dw_dett_0.setitem(1, "dosim_lotto_dosim",  kdsi_elenco_input.getitemstring(long(kst_open_w.key3), "lotto_dosim"))
+				
+				attiva_tasti()
 			
 			end if				
 		end if
@@ -1138,6 +1139,7 @@ kuf_menu_window kuf1_menu_window
 	end if
 
 
+return k_return
 
 
 
@@ -1475,6 +1477,9 @@ if k_campo = "flag_sino" then //and (dw_guida.getitemstring(1, "codice") > " " o
 end if
 
 end event
+
+type st_duplica from w_g_tab0`st_duplica within w_convalida
+end type
 
 type dw_data from uo_d_std_1 within w_convalida
 integer x = 2651

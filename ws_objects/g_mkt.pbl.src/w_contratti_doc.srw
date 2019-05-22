@@ -1735,22 +1735,11 @@ if isvalid(kiuf_clienti) then destroy 	kiuf_clienti
 end event
 
 event u_ricevi_da_elenco;call super::u_ricevi_da_elenco;//
-//
+int k_return
 int k_rc
-//string k_capitolati=""
-window k_window
-st_esito kst_esito
-st_tab_contratti  kst_tab_contratti 
 st_tab_clienti kst_tab_clienti
-//kuf_contratti kuf1_contratti
-kuf_menu_window kuf1_menu_window 
-kuf_sicurezza kuf1_sicurezza
 
 
-
-//st_open_w kst_open_w
-
-//kst_open_w = Message.PowerObjectParm	
 
 if isvalid(kst_open_w) then
 
@@ -1767,12 +1756,14 @@ if isvalid(kst_open_w) then
 	
 				case "d_listino_pregruppo_l" 
 					if trim(ki_st_open_w.flag_modalita) = kkg_flag_modalita.inserimento or  trim(ki_st_open_w.flag_modalita) = kkg_flag_modalita.modifica then
+						k_return = 1
 				
-							tab_1.tabpage_1.dw_1.setitem(1, "id_listino_pregruppo", &
+						tab_1.tabpage_1.dw_1.setitem(1, "id_listino_pregruppo", &
 											 kdsi_elenco_input.getitemnumber(long(kst_open_w.key3), "id_listino_pregruppo"))
-							tab_1.tabpage_1.dw_1.setitem(1, "listino_pregruppo_descr", &
+						tab_1.tabpage_1.dw_1.setitem(1, "listino_pregruppo_descr", &
 												(trim(kdsi_elenco_input.getitemstring(long(kst_open_w.key3), "descr"))))
 									
+						attiva_tasti()
 
 					end if		
 
@@ -1780,6 +1771,7 @@ if isvalid(kst_open_w) then
 					if trim(ki_st_open_w.flag_modalita) = kkg_flag_modalita.inserimento or  trim(ki_st_open_w.flag_modalita) = kkg_flag_modalita.modifica then
 						kst_tab_clienti.codice = kdsi_elenco_input.getitemnumber(long(kst_open_w.key3), "id_cliente")
 						if kst_tab_clienti.codice > 0 then
+							k_return = 1
 							kst_tab_clienti.rag_soc_10 = kdsi_elenco_input.getitemstring(long(kst_open_w.key3), "rag_soc_1")
 							kst_tab_clienti.loc_1 = kdsi_elenco_input.getitemstring(long(kst_open_w.key3), "localita")
 							kst_tab_clienti.prov_1 = kdsi_elenco_input.getitemstring(long(kst_open_w.key3), "prov")
@@ -1790,6 +1782,7 @@ if isvalid(kst_open_w) then
 							tab_1.tabpage_1.dw_1.setitem(1, "clienti_loc_1", kst_tab_clienti.loc_1)
 							tab_1.tabpage_1.dw_1.setitem(1, "clienti_prov_1", kst_tab_clienti.prov_1)
 							tab_1.tabpage_1.dw_1.setitem(1, "clienti_id_nazione_1", kst_tab_clienti.id_nazione_1)
+							attiva_tasti()
 						end if
 					end if
 				
@@ -1799,7 +1792,8 @@ if isvalid(kst_open_w) then
 	end if
 
 end if
-//
+
+return k_return
 
 
 end event

@@ -46,8 +46,9 @@ private kuf_clienti kiuf_clienti
 
 public date ki_data_certif_da_st_da, ki_data_certif_da_st_a
 
-end variables
+private integer ki_picture_alarm 
 
+end variables
 forward prototypes
 public function boolean u_sicurezza (st_tab_treeview kst_tab_treeview)
 public function st_esito u_imposta_treeview_icone (ref treeview ktv_1, ref listview klv_1)
@@ -144,6 +145,7 @@ public function integer u_open_email () throws uo_exception
 private function integer u_riempi_treeview_file (string k_tipo_oggetto)
 private function integer u_riempi_listview_file (string k_tipo_oggetto)
 public function st_treeview_data u_get_st_treeview_data (st_treeview_data ast_treeview_data)
+public function integer u_dammi_pic_tree_alert ()
 end prototypes
 
 public function boolean u_sicurezza (st_tab_treeview kst_tab_treeview);//
@@ -254,6 +256,11 @@ st_esito kst_esito
 				
 			k_rc = klv_1.addsmallpicture (trim(kst_tab_treeview_icone.nome))   
 			k_rc = klv_1.addlargepicture (trim(kst_tab_treeview_icone.nome))   
+		
+		//--- salva l'icona per gli Allarmi MEMO
+			if kst_tab_treeview_icone.tipo = 'A' then
+				ki_picture_alarm = kst_tab_treeview_icone.progressivo 
+			end if
 			
 			fetch kc_treeview_icone INTO 
 				 :kst_tab_treeview_icone.tipo
@@ -12434,6 +12441,10 @@ kst_treeview_data.handle = 0
 
 return kst_treeview_data
 
+end function
+
+public function integer u_dammi_pic_tree_alert ();//
+return ki_picture_alarm
 end function
 
 on kuf_treeview.create

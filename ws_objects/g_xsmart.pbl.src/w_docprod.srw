@@ -513,109 +513,13 @@ end on
 
 on w_docprod.destroy
 call super::destroy
+if IsValid(MenuID) then destroy(MenuID)
 end on
 
 event close;call super::close;//
 if isvalid(kiuf_docprod) then destroy 	kiuf_docprod
 if isvalid(kiuf_clienti) then destroy 	kiuf_clienti
 
-
-
-end event
-
-event u_ricevi_da_elenco;call super::u_ricevi_da_elenco;//
-//
-int k_rc
-long k_num_int, k_riga
-date k_data_int
-window k_window
-st_esito kst_esito
-st_tab_cond_fatt  kst_tab_cond_fatt 
-st_tab_clienti kst_tab_clienti
-kuf_menu_window kuf1_menu_window 
-kuf_sicurezza kuf1_sicurezza
-
-
-//
-////st_open_w kst_open_w
-//
-////kst_open_w = Message.PowerObjectParm	
-//
-//if isvalid(kst_open_w) then
-//
-////--- Dalla finestra di Elenco Valori
-//	if kst_open_w.id_programma = kkg_id_programma_elenco then
-//	
-//		if not isvalid(kdsi_elenco_input) then kdsi_elenco_input = create datastore
-//	
-//		kdsi_elenco_input = kst_open_w.key12_any 
-//	
-//		if kdsi_elenco_input.rowcount() > 0 then
-//
-//			choose case tab_1.selectedtab 
-//
-////--- 
-//				case 1 
-//				
-////--- Se dalla w di elenco doppio-click		
-//			 		if kst_open_w.key2 = kiuf_listino.kki_anteprima_cond_fatt_dw  and long(kst_open_w.key3) > 0 then
-//		
-//						kst_tab_cond_fatt.id = kdsi_elenco_input.getitemnumber( long(kst_open_w.key3), "id")
-//			
-//						if kst_tab_cond_fatt.id = 0 or isnull(kst_tab_cond_fatt.id) then
-//							kst_tab_cond_fatt.descr = "Nessuna condizione"	
-//						else			
-//							kst_tab_cond_fatt.descr = kdsi_elenco_input.getitemstring( long(kst_open_w.key3), "descr")
-//						end if
-//						
-//						choose case  kst_open_w.key6    //--- nome del campo che avevo cliccato
-//								
-//							case "b_cond_fatt_1"
-//								 tab_1.tabpage_1.dw_1.setitem( 1, "id_cond_fatt_1",kst_tab_cond_fatt.id)
-//								 tab_1.tabpage_1.dw_1.setitem( 1, "cf1_descr",kst_tab_cond_fatt.descr)
-//							case "b_cond_fatt_2"
-//								 tab_1.tabpage_1.dw_1.setitem( 1, "id_cond_fatt_2",kst_tab_cond_fatt.id)
-//								 tab_1.tabpage_1.dw_1.setitem( 1, "cf2_descr",kst_tab_cond_fatt.descr)
-//							case "b_cond_fatt_3"
-//								 tab_1.tabpage_1.dw_1.setitem( 1, "id_cond_fatt_3",kst_tab_cond_fatt.id)
-//								 tab_1.tabpage_1.dw_1.setitem( 1, "cf3_descr",kst_tab_cond_fatt.descr)
-//								 
-//						end choose
-//					end if
-//
-////--- Mandante
-//				case 3 
-//					
-//					k_riga =  tab_1.tabpage_3.dw_3.getrow( )
-//					
-//					kst_tab_clienti.codice = kdsi_elenco_input.getitemnumber( long(kst_open_w.key3), "id_cliente")
-//		
-//					choose case  tab_1.tabpage_3.dw_3.getcolumnname( )    //--- nome del campo che avevo cliccato
-//							
-//						case "valore_1"
-//							 tab_1.tabpage_3.dw_3.setitem( k_riga, "ipotesi_1",kiuf_listino.kki_cond_fatt_mand )
-//							 tab_1.tabpage_3.dw_3.setitem( k_riga, "segno_1","=")
-//							 tab_1.tabpage_3.dw_3.setitem( k_riga, "valore_1",string(kst_tab_clienti.codice))
-//						case "valore_2"
-//							 tab_1.tabpage_3.dw_3.setitem( k_riga, "ipotesi_2",kiuf_listino.kki_cond_fatt_mand )
-//							 tab_1.tabpage_3.dw_3.setitem( k_riga, "segno_2","=")
-//							 tab_1.tabpage_3.dw_3.setitem( k_riga, "valore_2",string(kst_tab_clienti.codice))
-//						case "valore_3"
-//							 tab_1.tabpage_3.dw_3.setitem( k_riga, "ipotesi_3",kiuf_listino.kki_cond_fatt_mand )
-//							 tab_1.tabpage_3.dw_3.setitem( k_riga, "segno_3","=")
-//							 tab_1.tabpage_3.dw_3.setitem( k_riga, "valore_3",string(kst_tab_clienti.codice))
-//							 
-//					end choose
-//
-//	
-//			end choose
-//							
-//		end if
-//
-//	end if
-//
-//end if
-////
 
 
 end event
@@ -701,22 +605,10 @@ type dw_1 from w_g_tab_3`dw_1 within tabpage_1
 integer y = 36
 integer width = 3013
 integer height = 1236
-string title = "none"
 string dataobject = "d_docprod"
 boolean minbox = true
 boolean maxbox = true
-string ki_icona_normale = "Application5!"
-string ki_icona_selezionata = "UserObject5!"
-boolean ki_disattiva_moment_cb_aggiorna = true
 string ki_flag_modalita = "vi"
-boolean ki_link_standard_attivi = true
-boolean ki_button_standard_attivi = true
-string ki_ultima_dataobject = " "
-boolean ki_colora_riga_aggiornata = true
-string ki_sqlsyntax = " "
-string ki_sqlerrtext = " "
-boolean ki_d_std_1_attiva_sort = true
-string ki_dragdrop_display = " "
 end type
 
 type st_1_retrieve from w_g_tab_3`st_1_retrieve within tabpage_1
@@ -736,24 +628,7 @@ integer x = 0
 integer width = 2981
 integer height = 1228
 boolean enabled = true
-string title = "none"
-string dataobject = "d_nulla"
-boolean hsplitscroll = true
-boolean livescroll = true
-string ki_icona_normale = "Application5!"
-string ki_icona_selezionata = "UserObject5!"
-boolean ki_disattiva_moment_cb_aggiorna = true
 string ki_flag_modalita = "vi"
-boolean ki_link_standard_attivi = true
-boolean ki_button_standard_attivi = true
-string ki_ultima_dataobject = " "
-boolean ki_colora_riga_aggiornata = true
-string ki_sqlsyntax = " "
-string ki_sqlerrtext = " "
-boolean ki_attiva_standard_select_row = true
-boolean ki_d_std_1_attiva_sort = true
-boolean ki_d_std_1_attiva_cerca = true
-string ki_dragdrop_display = " "
 end type
 
 type st_2_retrieve from w_g_tab_3`st_2_retrieve within tabpage_2
@@ -772,22 +647,7 @@ end type
 type dw_3 from w_g_tab_3`dw_3 within tabpage_3
 integer width = 2967
 integer height = 1232
-string title = "none"
-string dataobject = "d_nulla"
-boolean hsplitscroll = true
-boolean livescroll = true
-string ki_icona_normale = "Application5!"
-string ki_icona_selezionata = "UserObject5!"
 string ki_flag_modalita = "vi"
-boolean ki_link_standard_attivi = true
-boolean ki_button_standard_attivi = true
-string ki_ultima_dataobject = " "
-boolean ki_colora_riga_aggiornata = true
-string ki_sqlsyntax = " "
-string ki_sqlerrtext = " "
-boolean ki_d_std_1_attiva_sort = true
-boolean ki_d_std_1_attiva_cerca = true
-string ki_dragdrop_display = " "
 end type
 
 type st_3_retrieve from w_g_tab_3`st_3_retrieve within tabpage_3
@@ -819,24 +679,7 @@ integer y = 24
 integer width = 2939
 integer height = 1116
 integer taborder = 10
-string title = "none"
-string dataobject = "d_nulla"
-boolean hsplitscroll = true
-boolean livescroll = true
-string ki_icona_normale = "Application5!"
-string ki_icona_selezionata = "UserObject5!"
-boolean ki_disattiva_moment_cb_aggiorna = true
 string ki_flag_modalita = "vi"
-boolean ki_link_standard_attivi = true
-boolean ki_button_standard_attivi = true
-string ki_ultima_dataobject = " "
-boolean ki_colora_riga_aggiornata = true
-string ki_sqlsyntax = " "
-string ki_sqlerrtext = " "
-boolean ki_attiva_standard_select_row = true
-boolean ki_d_std_1_attiva_sort = true
-boolean ki_d_std_1_attiva_cerca = true
-string ki_dragdrop_display = " "
 end type
 
 event buttonclicked;//
@@ -865,24 +708,7 @@ end type
 type dw_5 from w_g_tab_3`dw_5 within tabpage_5
 integer width = 2935
 integer height = 1172
-string title = "none"
-string dataobject = "d_nulla"
-boolean hsplitscroll = true
-boolean livescroll = true
-string ki_icona_normale = "Application5!"
-string ki_icona_selezionata = "UserObject5!"
-boolean ki_disattiva_moment_cb_aggiorna = true
 string ki_flag_modalita = "vi"
-boolean ki_link_standard_attivi = true
-boolean ki_button_standard_attivi = true
-string ki_ultima_dataobject = " "
-boolean ki_colora_riga_aggiornata = true
-string ki_sqlsyntax = " "
-string ki_sqlerrtext = " "
-boolean ki_attiva_standard_select_row = true
-boolean ki_d_std_1_attiva_sort = true
-boolean ki_d_std_1_attiva_cerca = true
-string ki_dragdrop_display = " "
 end type
 
 type st_5_retrieve from w_g_tab_3`st_5_retrieve within tabpage_5
@@ -897,24 +723,7 @@ type st_6_retrieve from w_g_tab_3`st_6_retrieve within tabpage_6
 end type
 
 type dw_6 from w_g_tab_3`dw_6 within tabpage_6
-string title = "none"
-string dataobject = "d_nulla"
-boolean hsplitscroll = true
-boolean livescroll = true
-string ki_icona_normale = "Application5!"
-string ki_icona_selezionata = "UserObject5!"
-boolean ki_disattiva_moment_cb_aggiorna = true
 string ki_flag_modalita = "vi"
-boolean ki_link_standard_attivi = true
-boolean ki_button_standard_attivi = true
-string ki_ultima_dataobject = " "
-boolean ki_colora_riga_aggiornata = true
-string ki_sqlsyntax = " "
-string ki_sqlerrtext = " "
-boolean ki_attiva_standard_select_row = true
-boolean ki_d_std_1_attiva_sort = true
-boolean ki_d_std_1_attiva_cerca = true
-string ki_dragdrop_display = " "
 end type
 
 type tabpage_7 from w_g_tab_3`tabpage_7 within tab_1
@@ -926,25 +735,7 @@ type st_7_retrieve from w_g_tab_3`st_7_retrieve within tabpage_7
 end type
 
 type dw_7 from w_g_tab_3`dw_7 within tabpage_7
-integer height = 836
-string title = "none"
-string dataobject = "d_nulla"
-boolean hsplitscroll = true
-boolean livescroll = true
-string ki_icona_normale = "Application5!"
-string ki_icona_selezionata = "UserObject5!"
-boolean ki_disattiva_moment_cb_aggiorna = true
 string ki_flag_modalita = "vi"
-boolean ki_link_standard_attivi = true
-boolean ki_button_standard_attivi = true
-string ki_ultima_dataobject = " "
-boolean ki_colora_riga_aggiornata = true
-string ki_sqlsyntax = " "
-string ki_sqlerrtext = " "
-boolean ki_attiva_standard_select_row = true
-boolean ki_d_std_1_attiva_sort = true
-boolean ki_d_std_1_attiva_cerca = true
-string ki_dragdrop_display = " "
 end type
 
 type tabpage_8 from w_g_tab_3`tabpage_8 within tab_1
@@ -956,25 +747,7 @@ type st_8_retrieve from w_g_tab_3`st_8_retrieve within tabpage_8
 end type
 
 type dw_8 from w_g_tab_3`dw_8 within tabpage_8
-integer height = 836
-string title = "none"
-string dataobject = "d_nulla"
-boolean hsplitscroll = true
-boolean livescroll = true
-string ki_icona_normale = "Application5!"
-string ki_icona_selezionata = "UserObject5!"
-boolean ki_disattiva_moment_cb_aggiorna = true
 string ki_flag_modalita = "vi"
-boolean ki_link_standard_attivi = true
-boolean ki_button_standard_attivi = true
-string ki_ultima_dataobject = " "
-boolean ki_colora_riga_aggiornata = true
-string ki_sqlsyntax = " "
-string ki_sqlerrtext = " "
-boolean ki_attiva_standard_select_row = true
-boolean ki_d_std_1_attiva_sort = true
-boolean ki_d_std_1_attiva_cerca = true
-string ki_dragdrop_display = " "
 end type
 
 type tabpage_9 from w_g_tab_3`tabpage_9 within tab_1
@@ -986,25 +759,10 @@ type st_9_retrieve from w_g_tab_3`st_9_retrieve within tabpage_9
 end type
 
 type dw_9 from w_g_tab_3`dw_9 within tabpage_9
-integer height = 836
-string title = "none"
-string dataobject = "d_nulla"
-boolean hsplitscroll = true
-boolean livescroll = true
-string ki_icona_normale = "Application5!"
-string ki_icona_selezionata = "UserObject5!"
-boolean ki_disattiva_moment_cb_aggiorna = true
 string ki_flag_modalita = "vi"
-boolean ki_link_standard_attivi = true
-boolean ki_button_standard_attivi = true
-string ki_ultima_dataobject = " "
-boolean ki_colora_riga_aggiornata = true
-string ki_sqlsyntax = " "
-string ki_sqlerrtext = " "
-boolean ki_attiva_standard_select_row = true
-boolean ki_d_std_1_attiva_sort = true
-boolean ki_d_std_1_attiva_cerca = true
-string ki_dragdrop_display = " "
+end type
+
+type st_duplica from w_g_tab_3`st_duplica within w_docprod
 end type
 
 type ln_1 from line within tabpage_4

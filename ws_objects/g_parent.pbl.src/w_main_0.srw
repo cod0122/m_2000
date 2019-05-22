@@ -38,6 +38,7 @@ long tabbeddocumentinactivetabgradientbackcolor = 32238571
 long tabbeddocumentinactivetabtextcolor = 8421504
 long tabbeddocumentmouseovertabtextcolor = 32896
 event u_open ( ) throws uo_exception
+event u_show ( )
 mdi_1 mdi_1
 end type
 global w_main_0 w_main_0
@@ -53,6 +54,7 @@ window kiw_this_window
 
 m_main ki_menu_0
 
+constant string ki_suona_motivo_start = "Start.wav"
 
 end variables
 
@@ -72,6 +74,7 @@ string k_titolo
 string k_dataoggix
 int k_ctr
 kuf_base kuf1_base
+st_tab_base_personale kst_tab_base_personale
 
 
 try
@@ -100,8 +103,27 @@ try
 		kguo_g.set_flagZOOMctrl(false)
 	end if		
 
+//--- piglia dati standard personalizzati	
+	try
+		kst_tab_base_personale.flag_suoni = trim(kuf1_base.get_dato_personale("flag_suoni"))
+		kst_tab_base_personale.flag_salva_liste = trim(mid(kuf1_base.prendi_dato_base("flag_salva_liste"),2))
+	catch (uo_exception kuo_exception2)
+		kst_tab_base_personale.flag_suoni = ""
+	end try
+	if kst_tab_base_personale.flag_suoni = "S" then
+		kguo_g.set_attiva_suoni(true) 
+	else
+		kguo_g.set_attiva_suoni(false) 
+	end if
+	if kst_tab_base_personale.flag_salva_liste = "S" then
+		kguo_g.set_SALVA_LISTE(true) 
+	else
+		kguo_g.set_SALVA_LISTE(false) 
+	end if
+
 //--- set la path centrale sul SERVER
 //	kGuf_data_base.set_path_base_del_server( ) 
+	kguo_path.set_path_icone( )
 	kguo_path.set_path_base_del_server( ) 
 	KG_path_base_del_server = kguo_path.get_base_del_server( )
 	KG_PATH_BASE_DEL_SERVER_JOB = kguo_path.get_base_del_server_job( )
@@ -177,8 +199,15 @@ catch (uo_exception kuo1_exception)
 finally
 	if isvalid(kuf1_base) then destroy kuf1_base
 	SetPointer(kkg.pointer_default)
-
+	
 end try
+
+end event
+
+event u_show();//
+//--- Suona Motivo di attivazione programma
+	this.show( )
+	kGuf_data_base.suona_motivo(ki_suona_motivo_start, 0)
 
 end event
 
@@ -190,6 +219,9 @@ st_open_w k_st_open_w
 
 	
 	if trim(k_window_iniziale) > " " then 
+
+//20/05/2019 SOLO TEMPORANEAMENTE SE LA WINDOW INIZIALE E' IL REPORT ALLORA IMPOSTA ST_INT_ARTR PER I TURNISTI
+	
 	
 //=== Parametri : 
 //=== struttura st_open_w
@@ -368,7 +400,7 @@ kuf_sicurezza kuf1_sicurezza
 			post u_open_toolbar( )
 
 //--- get e visualizza eventuali allarmi MEMO
-//			u_allarme_utente( )
+			u_allarme_utente( )
 
 //--- Alert di apertura M2000 x una qlc ragione non funzia
 //			try
@@ -391,6 +423,8 @@ kuf_sicurezza kuf1_sicurezza
 		if isvalid(kuf1_base) then destroy kuf1_base
 		if isvalid(kuf1_utility) then destroy kuf1_utility
 		
+		post event u_show( )
+		
 		ki_flag_primo_giro = false
 	end if	
 
@@ -404,12 +438,13 @@ try
 	
 	if kguf_memo_allarme.set_allarme_utente(kst_memo_allarme) then
 		
-		kguf_memo_allarme.u_attiva_memo_allarme()
+		kguf_memo_allarme.u_attiva_memo_allarme_on()
 		
 		if kguf_memo_allarme.get_nr_avvisi( ) > 10 then
 			kguf_memo_allarme.set_visualizza_allarme( )
 		end if
-		
+	else
+		kguf_memo_allarme.u_attiva_memo_allarme_hide( )
 	end if
 	
 catch (uo_exception kuo_exception)
@@ -520,6 +555,8 @@ end on
 event open;//
 try
 
+	this.hide( )
+	
 	SetPointer(kkg.pointer_attesa)
 
 	this.icon = kkg.MAIN_ICON

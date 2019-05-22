@@ -1166,7 +1166,8 @@ on w_super.destroy
 end on
 
 event open;//
-
+	//NON SI PUO' SE E' UN MDI SHEET: this.hide( )
+	
 //--- Recupera i parametri passati con il WITHPARM
 	if isvalid(message.powerobjectparm) then 
 		ki_st_open_w = message.powerobjectparm
@@ -1184,6 +1185,8 @@ event open;//
 	ki_nome_save = trim(this.ClassName())
 
 	post u_win_open( )
+
+	//NON SE E' UN MDI SHEET: post event u_show()
 
 end event
 

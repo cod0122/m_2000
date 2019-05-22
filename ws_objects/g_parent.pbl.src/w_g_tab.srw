@@ -22,7 +22,7 @@ string icon = ""
 integer transparency = 100
 integer animationtime = 50
 boolean ki_utente_abilitato = false
-event u_ricevi_da_elenco ( st_open_w kst_open_w )
+event type integer u_ricevi_da_elenco ( st_open_w kst_open_w )
 event u_open ( )
 event u_activate ( )
 st_ritorna st_ritorna
@@ -132,10 +132,15 @@ public function boolean u_window_control_restore ()
 protected subroutine inizializza_lista ()
 end prototypes
 
-event u_ricevi_da_elenco(st_open_w kst_open_w);//---
+event type integer u_ricevi_da_elenco(st_open_w kst_open_w);//---
 //--- evento scatenato dalla Window di Elenco  (w_g_tab_elenco) quando scelgo con doppio click una riga
 //---
 //--- evento da implementare nelle singole window
+//---
+//--- Rit: 0 = nessun evento da fare
+//--- 
+return 0
+
 end event
 
 event u_open();//

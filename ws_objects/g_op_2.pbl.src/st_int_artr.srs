@@ -1,5 +1,8 @@
 ﻿$PBExportHeader$st_int_artr.srs
 global type st_int_artr from structure
+	integer		report_start		descriptor "comment" = "parte con il report"
+	boolean		report_start_only		descriptor "comment" = "true=solo report iniziale no altri report"
+	integer		report_autorefresh_min		descriptor "comment" = "minuti per fare il rileggi del report"
 	integer		report		descriptor "comment" = "scelta report "
 	string		utente
 	date		upd_data_fin

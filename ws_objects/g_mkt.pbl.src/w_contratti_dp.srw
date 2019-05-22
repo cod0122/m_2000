@@ -1251,6 +1251,7 @@ end on
 
 on w_contratti_dp.destroy
 call super::destroy
+if IsValid(MenuID) then destroy(MenuID)
 end on
 
 event close;call super::close;//
@@ -1262,22 +1263,9 @@ if isvalid(kiuf_clienti) then destroy 	kiuf_clienti
 end event
 
 event u_ricevi_da_elenco;call super::u_ricevi_da_elenco;//
-//
+int k_return
 int k_rc
-//string k_capitolati=""
-window k_window
-st_esito kst_esito
-st_tab_contratti  kst_tab_contratti 
-//st_tab_clienti kst_tab_clienti
-//kuf_contratti kuf1_contratti
-kuf_menu_window kuf1_menu_window 
-kuf_sicurezza kuf1_sicurezza
 
-
-
-//st_open_w kst_open_w
-
-//kst_open_w = Message.PowerObjectParm	
 
 if isvalid(kst_open_w) then
 
@@ -1296,11 +1284,13 @@ if isvalid(kst_open_w) then
 						kdsi_elenco_input = kst_open_w.key12_any 
 						if kdsi_elenco_input.rowcount() > 0 then
 			
+							k_return = 1
 							tab_1.tabpage_1.dw_1.setitem(1, "id_listino_pregruppo", &
 											 kdsi_elenco_input.getitemnumber(long(kst_open_w.key3), "id_listino_pregruppo"))
 							tab_1.tabpage_1.dw_1.setitem(1, "listino_pregruppo_descr", &
 												(trim(kdsi_elenco_input.getitemstring(long(kst_open_w.key3), "descr"))))
 								
+							attiva_tasti()
 						end if
 					end if
 				end if				
@@ -1310,8 +1300,8 @@ if isvalid(kst_open_w) then
 	end if
 
 end if
-//
 
+return k_return
 
 end event
 
@@ -2083,6 +2073,9 @@ type st_9_retrieve from w_g_tab_3`st_9_retrieve within tabpage_9
 end type
 
 type dw_9 from w_g_tab_3`dw_9 within tabpage_9
+end type
+
+type st_duplica from w_g_tab_3`st_duplica within w_contratti_dp
 end type
 
 type ln_1 from line within tabpage_4

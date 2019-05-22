@@ -27,7 +27,7 @@ string ki_syntaxquery
 uo_d_std_1 kidw_selezionata
 datastore kids_elenco, kids_elenco_orig
 st_open_w kist_open_w	
-boolean ki_conferma=false, ki_disattiva_exit=false, ki_attendi_u_ricevi_da_elenco=false
+boolean ki_conferma=false, ki_disattiva_exit=false, ki_u_ricevi_da_elenco_in_esec=false
 kuf_utility kiuf_utility
 tab kitab_1
 end variables
@@ -126,12 +126,13 @@ return dw_1
 end function
 
 public function string conferma_dati ();//
-//--- Operazione di Conferma della riga/rughe selezionate
+//--- Operazione di Conferma della riga/righe selezionate
+//
 string k_rc
 string k_processing 
 string k_return = ""
 long k_riga
-boolean k_windows_called
+boolean k_funzione_eseguita
 
 
 
@@ -145,31 +146,33 @@ if dw_1.ki_ultrigasel > 0 then
 	dw_1.setfocus()
 		
 //--- invia la riga selezionata alla windows che ha chiamato l'elenco	
-	k_windows_called = u_attiva_evento_in_win_origine()
+	k_funzione_eseguita = u_attiva_evento_in_win_origine()
 	
-	if NOT ki_disattiva_exit and k_windows_called then
-		if kist_open_w.key7 = "N" then
+	if k_funzione_eseguita then
+		if NOT ki_disattiva_exit then
+			if kist_open_w.key7 = "N" then
+			else
+				k_return = "EXIT"
+			end if
 		else
-			k_return = "EXIT"
-		end if
-	else
 	
 //--- Se è stata aperta come windows di "CONFERMA" oppure come da "inquary" ma è di tipo "GRID" o "TREEVIEW" allora 
 //--- x doppio click metto il record nella DW di appoggio 'dei selzionati'
-		if dw_1.rowcount() > 0 & 
+			if dw_1.rowcount() > 0 & 
 				and ( &
 					 (k_processing = "1" &
 						or k_processing = "8" &
 						or k_processing = "9") ) then
 
-			u_togli_righe_selezionate()
+				u_togli_righe_selezionate()
 
 //--- ripiglia il fuoco sul tab giusto
-			u_riposiziona_cursore()
+				u_riposiziona_cursore()
 
+			end if
+
+			ki_conferma = true
 		end if
-
-		ki_conferma = true
 	end if
 else
 	ki_conferma = true
@@ -405,13 +408,14 @@ string k_key
 		
 		if not isnull(kist_open_w.key10_window_chiamante) then
 			
-			if isvalid(kist_open_w.key10_window_chiamante) and not ki_attendi_u_ricevi_da_elenco then
-				k_return = true
-				ki_attendi_u_ricevi_da_elenco = true
-				kist_open_w.key10_window_chiamante.event u_ricevi_da_elenco (kist_open_w)
-				kist_open_w.key10_window_chiamante.setfocus( )
-				//kist_open_w.key10_window_chiamante.bringtotop	 = true
-				ki_attendi_u_ricevi_da_elenco = false
+			if isvalid(kist_open_w.key10_window_chiamante) and not ki_u_ricevi_da_elenco_in_esec then
+				ki_u_ricevi_da_elenco_in_esec = true
+				if kist_open_w.key10_window_chiamante.event u_ricevi_da_elenco (kist_open_w) > 0 then
+					k_return = true
+					kist_open_w.key10_window_chiamante.post setfocus( )
+					//kist_open_w.key10_window_chiamante.bringtotop	 = true
+				end if
+				ki_u_ricevi_da_elenco_in_esec = false
 			end if
 			
 		end if

@@ -2,6 +2,8 @@
 forward
 global type w_memo from w_g_tab_3
 end type
+type rte_1 from richtextedit within tabpage_1
+end type
 type ln_1 from line within tabpage_4
 end type
 end forward
@@ -15,6 +17,7 @@ string title = "Piano di Trattamento SL-PT"
 boolean ki_sincronizza_window_ok = true
 boolean ki_fai_nuovo_dopo_update = false
 boolean ki_fai_nuovo_dopo_insert = false
+boolean ki_fai_exit_dopo_update = true
 boolean ki_msg_dopo_update = false
 end type
 global w_memo w_memo
@@ -46,9 +49,7 @@ private datastore kids_elenco_input
 //
 private kuf_file_dragdrop kiuf_file_dragdrop
 
-private string ki_memo_rtf_orig = ""
-//private datastore ki_ds_rtf_orig
-
+//private string ki_memo_rtf_orig = ""
 private string ki_flag_modalita_orig=""
 
 end variables
@@ -81,6 +82,7 @@ private subroutine put_video_pt ()
 public subroutine u_proteggi_pt ()
 public subroutine u_clicked_fascicola_pt ()
 protected subroutine attiva_tasti_0 ()
+public subroutine u_resize_1 ()
 end prototypes
 
 private function integer inserisci ();//
@@ -104,24 +106,27 @@ try
 			kist_memo.st_tab_memo.id_memo = 0
 			kist_memo.st_tab_memo.x_datins = kGuf_data_base.prendi_x_datins( )			
 			kist_memo.st_tab_memo.x_utente = kGuf_data_base.prendi_x_utente( )
-			
-			if tab_1.tabpage_1.dw_1.rowcount() > 0 then
-				tab_1.tabpage_1.dw_1.reset() 
-			end if
-			k_ctr=tab_1.tabpage_1.dw_1.insertrow(0)
-			tab_1.tabpage_1.dw_1.setredraw( false)
-
 			if isnull(kist_memo.st_tab_memo.memo) then kist_memo.st_tab_memo.memo = blob("")
-			tab_1.tabpage_1.dw_1.SelectTextAll() // seleziona tutto
-			tab_1.tabpage_1.dw_1.pasteRtf(string(kist_memo.st_tab_memo.memo) ) // aggiunge testo alla fine dell'attuale, quindi RICOPRE
-			ki_memo_rtf_orig = string(kist_memo.st_tab_memo.memo) // memorizza il testo originale così da informare che è cambiato
+			
+//			if tab_1.tabpage_1.dw_1.rowcount() > 0 then
+//				tab_1.tabpage_1.dw_1.reset() 
+//			end if
+//			k_ctr=tab_1.tabpage_1.dw_1.insertrow(0)
+//			tab_1.tabpage_1.dw_1.setredraw( false)
+//			tab_1.tabpage_1.dw_1.SelectTextAll() // seleziona tutto
+//			tab_1.tabpage_1.dw_1.pasteRtf(string(kist_memo.st_tab_memo.memo) ) // aggiunge testo alla fine dell'attuale, quindi RICOPRE
+//			ki_memo_rtf_orig = string(kist_memo.st_tab_memo.memo) // memorizza il testo originale così da informare che è cambiato
+//			tab_1.tabpage_1.dw_1.setredraw( true)
+//			tab_1.tabpage_1.dw_1.SetItemStatus( 1, 0, Primary!, NotModified!)
 
-			tab_1.tabpage_1.dw_1.setredraw( true)
-
-			tab_1.tabpage_1.dw_1.SetItemStatus( 1, 0, Primary!, NotModified!)
+			tab_1.tabpage_1.rte_1.setredraw( false)
+			tab_1.tabpage_1.rte_1.SelectTextAll() // seleziona tutto
+			tab_1.tabpage_1.rte_1.pasteRtf(string(kist_memo.st_tab_memo.memo) ) // aggiunge testo alla fine dell'attuale, quindi RICOPRE
+			tab_1.tabpage_1.rte_1.setredraw( true)
+			tab_1.tabpage_1.rte_1.modified = false
 
 			ki_st_open_w.flag_modalita = kkg_flag_modalita.inserimento
-			tab_1.tabpage_1.dw_1.set_flag_modalita(ki_st_open_w.flag_modalita)
+			//tab_1.tabpage_1.dw_1.set_flag_modalita(ki_st_open_w.flag_modalita)
 			tab_1.tabpage_2.dw_2.set_flag_modalita(ki_st_open_w.flag_modalita)
 			
 			
@@ -167,7 +172,7 @@ try
 
 			
 			tab_1.tabpage_2.dw_2.SetItemStatus( 1, 0, Primary!, NotModified!)
-			tab_1.tabpage_1.dw_1.set_flag_modalita(ki_st_open_w.flag_modalita)
+			//tab_1.tabpage_1.dw_1.set_flag_modalita(ki_st_open_w.flag_modalita)
 			tab_1.tabpage_2.dw_2.set_flag_modalita(ki_st_open_w.flag_modalita)
 
 			if tab_1.tabpage_3.dw_3.rowcount() > 0 then
@@ -271,7 +276,8 @@ if ki_st_open_w.flag_modalita = kkg_flag_modalita.inserimento or ki_st_open_w.fl
 		end if
 		kst_tab_memo.tipo_sv = tab_1.tabpage_2.dw_2.getitemstring(1, "tipo_sv")
 		kst_tab_memo.permessi = tab_1.tabpage_2.dw_2.getitemnumber(1, "permessi")
-		k_memo_rtf = trim(tab_1.tabpage_1.dw_1.CopyRTF(false))
+		//k_memo_rtf = trim(tab_1.tabpage_1.dw_1.CopyRTF(false))
+		k_memo_rtf = trim(tab_1.tabpage_1.rte_1.CopyRTF(false))
 		kst_tab_memo.tipo_memo = kiuf_memo.kki_tipo_memo_rtf
 		kst_tab_memo.memo = blob(k_memo_rtf)
 
@@ -306,6 +312,7 @@ if ki_st_open_w.flag_modalita = kkg_flag_modalita.inserimento or ki_st_open_w.fl
 		kst_memo.st_tab_clienti_memo = kst_tab_clienti_memo
 		kst_memo.st_tab_meca_memo = kst_tab_meca_memo
 		kst_memo.st_tab_sl_pt_memo = kst_tab_sl_pt_memo
+		kst_memo.st_tab_memo.st_tab_g_0.esegui_commit = "S"
 		kist_memo.st_tab_memo.id_memo = kiuf_memo.aggiorna(kst_memo)  //AGGIORNA TUTTI I  DATI MEMO
 		
 	catch (uo_exception kuo_exception)
@@ -319,32 +326,18 @@ if ki_st_open_w.flag_modalita = kkg_flag_modalita.inserimento or ki_st_open_w.fl
 		k_return = "1" + "Archivio " + tab_1.tabpage_1.text + MidA(k_errore1, 2)
 			
 	else // Tutti i Dati Caricati in Archivio
-		ki_memo_rtf_orig = k_memo_rtf
-//		if isvalid(ki_ds_rtf_orig) then destroy ki_ds_rtf_orig
-//		ki_ds_rtf_orig = create datastore
-//		ki_ds_rtf_orig.pasteRtf(k_memo_rtf)
+//		ki_memo_rtf_orig = k_memo_rtf
 		
 		if kist_memo.st_tab_memo.id_memo > 0 then
-			tab_1.tabpage_1.dw_1.setitem(1, "id_memo", kist_memo.st_tab_memo.id_memo)
+			//tab_1.tabpage_1.dw_1.setitem(1, "id_memo", kist_memo.st_tab_memo.id_memo)
 			if tab_1.tabpage_2.dw_2.rowcount( ) > 0 then
 				tab_1.tabpage_2.dw_2.setitem(1, "id_memo", kist_memo.st_tab_memo.id_memo)
 			end if
 	
-//			try
-////--- Aggiorna archivi correlati
-//				aggiorna_altri_archivi()
-//				
-//			catch (uo_exception kuo1_exception)
-//				kst_esito = kuo1_exception.get_st_esito()
-//
-//				k_errore1 = "1" + string(kst_esito.sqlcode) + " " + kst_esito.sqlerrtext
-//				k_return = "1" + "Archivio " + tab_1.tabpage_1.text + MidA(k_errore1, 2)
-//				
-//			end try
-
 			k_return ="0 "
 	
-			tab_1.tabpage_1.dw_1.resetupdate( )
+			tab_1.tabpage_1.rte_1.modified = false
+			//tab_1.tabpage_1.dw_1.resetupdate( )
 			tab_1.tabpage_2.dw_2.resetupdate( )
 			tab_1.tabpage_3.dw_3.resetupdate( )
 			
@@ -386,21 +379,28 @@ kuf_utility kuf1_utility
 			if ki_st_open_w.flag_modalita <> kkg_flag_modalita.cancellazione then
 				if kist_memo.st_tab_memo.id_memo = 0 then
 					k_err_ins = inserisci()
-					tab_1.tabpage_1.dw_1.setfocus()
+					tab_1.tabpage_1.rte_1.setfocus()
+					//tab_1.tabpage_1.dw_1.setfocus()
 				else
 					if kiuf_memo.if_esiste(kist_memo.st_tab_memo) then
 				
 						k_memo_rtf = kiuf_memo.get_memo(kist_memo.st_tab_memo)  
 						if len(k_memo_rtf) > 0 then
-							tab_1.tabpage_1.dw_1.setitem( 1, "id_memo", kist_memo.st_tab_memo.id_memo)
-							tab_1.tabpage_1.dw_1.setredraw( false)
-							tab_1.tabpage_1.dw_1.pasteRtf( k_memo_rtf ) // mette il testo RTF a video
-							ki_memo_rtf_orig = k_memo_rtf  // salva il RTF originale
-//							ki_ds_rtf_orig.pasteRtf( k_memo_rtf ) // salva il RTF originale
-//							tab_1.tabpage_1.dw_rtf_orig.pasteRtf( k_memo_rtf ) // salva il RTF originale
-							tab_1.tabpage_1.dw_1.setredraw( true)
-							tab_1.tabpage_1.dw_1.SetItemStatus( 1, 0, Primary!, NotModified!)
-//							ki_memo_rtf = trim(tab_1.tabpage_1.dw_1.CopyRTF(false)) 
+							tab_1.tabpage_1.rte_1.SetRedraw(FALSE) 
+							tab_1.tabpage_1.rte_1.SelectTextAll()
+							tab_1.tabpage_1.rte_1.Clear()
+							tab_1.tabpage_1.rte_1.pasteRtf(k_memo_rtf)
+							tab_1.tabpage_1.rte_1.SetRedraw(TRUE)							
+							tab_1.tabpage_1.rte_1.SelectedStartPos = 1
+							
+							//tab_1.tabpage_1.dw_1.reset( )
+//							tab_1.tabpage_1.dw_1.insertrow(0)
+//							tab_1.tabpage_1.dw_1.setitem( 1, "id_memo", kist_memo.st_tab_memo.id_memo)
+//							tab_1.tabpage_1.dw_1.setredraw( false)
+//							tab_1.tabpage_1.dw_1.pasteRtf( k_memo_rtf ) // mette il testo RTF a video
+//							ki_memo_rtf_orig = k_memo_rtf  // salva il RTF originale
+//							tab_1.tabpage_1.dw_1.setredraw( true)
+//							tab_1.tabpage_1.dw_1.SetItemStatus( 1, 0, Primary!, NotModified!)
 						end if
 
 //--- leggo anche il tab 2 
@@ -411,8 +411,7 @@ kuf_utility kuf1_utility
 							k_return ="E"   //Uscita Immediata
 							messagebox("MEMO non Trovato ", &
 								"Il Memo non è stato trovato in Archivio ~n~r" + &
-								"(Codice cercato :" + string(kist_memo.st_tab_memo.id_memo) + ")~n~r" )
-							//ki_st_open_w.flag_modalita = kkg_flag_modalita.inserimento
+								"(Codice cercato :" + string(kist_memo.st_tab_memo.id_memo) + ")" ) //~n~r" )
 						end if
 					end if
 				end if
@@ -436,40 +435,46 @@ kuf_utility kuf1_utility
 	end if
 	
 	if trim(k_return) <> "E" then
-		tab_1.tabpage_1.dw_1.title = trim(kist_memo.st_tab_memo.titolo)
+		tab_1.tabpage_1.rte_1.modified = false
+		//tab_1.tabpage_1.dw_1.title = trim(kist_memo.st_tab_memo.titolo)
+		tab_1.tabpage_1.rte_1.DocumentName = trim(kist_memo.st_tab_memo.titolo)
 	
 		kuf1_utility = create kuf_utility
 		if ki_st_open_w.flag_modalita = kkg_flag_modalita.inserimento or ki_st_open_w.flag_modalita = kkg_flag_modalita.modifica then
-		//--- S-protezione campi 
-			tab_1.tabpage_1.dw_1.enabled = true
-		//	tab_1.tabpage_1.dw_1.Modify("DataWindow.ReadOnly='No'")
+		//--- S-protezione campi
+			tab_1.tabpage_1.rte_1.DisplayOnly = false
+			//tab_1.tabpage_1.dw_1.enabled = true
 			kuf1_utility.u_proteggi_dw("0", 0, tab_1.tabpage_2.dw_2)
 			u_proteggi_pt( ) // solo campo del PT
 		else
-			tab_1.tabpage_1.dw_1.resetupdate( )
+			//tab_1.tabpage_1.dw_1.resetupdate( )
 			tab_1.tabpage_2.dw_2.resetupdate( )
+			tab_1.tabpage_3.dw_3.resetupdate( )
 		//--- Protezione campi 
-			tab_1.tabpage_1.dw_1.enabled = false
-		//	tab_1.tabpage_1.dw_1.Modify("DataWindow.ReadOnly=Yes")
+			tab_1.tabpage_1.rte_1.DisplayOnly = true
+			//tab_1.tabpage_1.dw_1.enabled = false
 			kuf1_utility.u_proteggi_dw("1", 0, tab_1.tabpage_2.dw_2)
 		end if
 	
 		if ki_st_open_w.flag_primo_giro = "S" then
 			if tab_1.tabpage_2.dw_2.getitemnumber( 1, "id_cliente") > 0 or tab_1.tabpage_2.dw_2.getitemnumber( 1, "id_meca") > 0 then
-				tab_1.tabpage_1.dw_1.setcolumn(1)
-				tab_1.tabpage_1.dw_1.setfocus()
-	//			tab_1.selectedtab = 1
+				tab_1.tabpage_1.rte_1.setfocus()
+				//tab_1.tabpage_1.dw_1.setcolumn(1)
+				//tab_1.tabpage_1.dw_1.setfocus()
 			else
 				tab_1.tabpage_2.dw_2.setcolumn("titolo")
 				tab_1.tabpage_2.dw_2.setfocus()
 				tab_1.selectedtab = 2
 			end if
 		else
-			tab_1.tabpage_1.dw_1.setcolumn(1)
-			tab_1.tabpage_1.dw_1.setfocus()
+			tab_1.tabpage_1.rte_1.setfocus()
+			//tab_1.tabpage_1.dw_1.setcolumn(1)
+			//tab_1.tabpage_1.dw_1.setfocus()
 		end if
 
 		ki_flag_modalita_orig = ki_st_open_w.flag_modalita
+		
+		tab_1.tabpage_1.rte_1.visible = true
 	end if
 	
 
@@ -484,15 +489,10 @@ protected subroutine open_start_window ();//
 	kiuf_clienti = create kuf_clienti 
 	kiuf_memo = create kuf_memo 
 	kiuf_memo_utenti = create kuf_memo_utenti
-//	ki_ds_rtf_orig = create datastore
 	
 	
-//	kiuf_memo = ki_st_open_w.key12_any
-	kist_memo = ki_st_open_w.key12_any //kiuf_memo.get_st_memo()
+//	kist_memo = ki_st_open_w.key12_any 
 
-//		tab_1.tabpage_1.dw_rtf_orig.resetupdate( )
-//		tab_1.tabpage_1.dw_rtf_orig.pasteRtf("",detail!)
-//		tab_1.tabpage_1.dw_rtf_orig.pasteRtf(, detail!)
 
 
 end subroutine
@@ -619,7 +619,7 @@ st_tab_memo_utenti kst_tab_memo_utenti
 	kuf1_utility = create kuf_utility
 	if ki_st_open_w.flag_modalita = kkg_flag_modalita.inserimento or ki_st_open_w.flag_modalita = kkg_flag_modalita.modifica then
 	//--- S-protezione campi 
-		tab_1.tabpage_1.dw_1.enabled = true
+		tab_1.tabpage_2.dw_2.enabled = true
 
 		kuf1_utility.u_proteggi_dw("0", 0, tab_1.tabpage_2.dw_2)
 		u_proteggi_pt( ) // solo campo del PT
@@ -641,7 +641,7 @@ st_tab_memo_utenti kst_tab_memo_utenti
 		end if
 	else
 	//--- Protezione campi 
-		tab_1.tabpage_1.dw_1.enabled = false
+		tab_1.tabpage_2.dw_2.enabled = false
 		kuf1_utility.u_proteggi_dw("1", 0, tab_1.tabpage_2.dw_2)
 		kuf1_utility.u_proteggi_dw("1", "tipo_sv", tab_1.tabpage_2.dw_2)
 	end if
@@ -770,9 +770,11 @@ try
 
 		case 1, 2
 			ki_st_open_w.flag_modalita = kkg_flag_modalita.visualizzazione
-			tab_1.tabpage_1.dw_1.set_flag_modalita(ki_st_open_w.flag_modalita)
+			tab_1.tabpage_1.rte_1.modified = true
+			//tab_1.tabpage_1.dw_1.set_flag_modalita(ki_st_open_w.flag_modalita)
 			tab_1.tabpage_2.dw_2.set_flag_modalita(ki_st_open_w.flag_modalita)
-			inizializza_lista()
+			u_attiva_tab(ki_tab_1_index_new) 
+			//inizializza_lista()
 			
 		case 3
 			kuf1_memo_link = create kuf_memo_link
@@ -795,6 +797,9 @@ try
 catch (uo_exception kuo_exception)
 	throw kuo_exception
 	
+finally
+	attiva_tasti( )
+
 end try
 
 return 0
@@ -802,44 +807,45 @@ end function
 
 protected function boolean dati_modif_0 ();//
 boolean k_return = false
-string k_memo_rtf, k_memo_rtf_orig
-long k_memo_rtf_len, k_memo_rtf_orig_len
 
-
-if ki_flag_modalita_orig = kkg_flag_modalita.modifica then
-
-//	tab_1.tabpage_1.dw_rtf_orig.SelectTextAll()
-	if isnull(ki_memo_rtf_orig) then
-		k_memo_rtf_orig = ""
-		k_memo_rtf_orig_len = 0
-	else
-		k_memo_rtf_orig = trim(ki_memo_rtf_orig) // ki_ds_rtf_orig.CopyRTF(false)
-		k_memo_rtf_orig_len = len((k_memo_rtf_orig))
-	end if
-	k_memo_rtf = tab_1.tabpage_1.dw_1.CopyRTF(false)
-	if isnull(k_memo_rtf) then
-		k_memo_rtf = ""
-		k_memo_rtf_len = 0
-	else
-		k_memo_rtf = trim(k_memo_rtf) // ki_ds_rtf_orig.CopyRTF(false)
-		k_memo_rtf_len = len((k_memo_rtf))
-	end if
-	
-	if k_memo_rtf_len > 3 and k_memo_rtf_orig_len > 3 then
-		if trim(mid(k_memo_rtf_orig, 1, k_memo_rtf_orig_len - 3)) <> trim(mid(k_memo_rtf, 1, k_memo_rtf_len - 3)) then 
-			k_return = true
-			ki_dw_titolo_modif_1 = trim(tab_1.tabpage_1.dw_1.title)
-		end if
-	else	
-		if k_memo_rtf_len <> k_memo_rtf_orig_len then
-			k_return = true
-		end if
-	end if
-else
-	if ki_flag_modalita_orig = kkg_flag_modalita.inserimento then
-		k_return = true
-	end if
-end if
+	k_return = tab_1.tabpage_1.rte_1.modified 
+//string k_memo_rtf, k_memo_rtf_orig
+//long k_memo_rtf_len, k_memo_rtf_orig_len
+//
+//
+//if ki_flag_modalita_orig = kkg_flag_modalita.modifica then
+//
+//	if isnull(ki_memo_rtf_orig) then
+//		k_memo_rtf_orig = ""
+//		k_memo_rtf_orig_len = 0
+//	else
+//		k_memo_rtf_orig = trim(ki_memo_rtf_orig) 
+//		k_memo_rtf_orig_len = len((k_memo_rtf_orig))
+//	end if
+//	k_memo_rtf = tab_1.tabpage_1.dw_1.CopyRTF(false)
+//	if isnull(k_memo_rtf) then
+//		k_memo_rtf = ""
+//		k_memo_rtf_len = 0
+//	else
+//		k_memo_rtf = trim(k_memo_rtf) // ki_ds_rtf_orig.CopyRTF(false)
+//		k_memo_rtf_len = len((k_memo_rtf))
+//	end if
+//	
+//	if k_memo_rtf_len > 3 and k_memo_rtf_orig_len > 3 then
+//		if trim(mid(k_memo_rtf_orig, 1, k_memo_rtf_orig_len - 3)) <> trim(mid(k_memo_rtf, 1, k_memo_rtf_len - 3)) then 
+//			k_return = true
+//			ki_dw_titolo_modif_1 = trim(tab_1.tabpage_1.dw_1.title)
+//		end if
+//	else	
+//		if k_memo_rtf_len <> k_memo_rtf_orig_len then
+//			k_return = true
+//		end if
+//	end if
+//else
+//	if ki_flag_modalita_orig = kkg_flag_modalita.inserimento then
+//		k_return = true
+//	end if
+//end if
 
 return k_return
  
@@ -1039,7 +1045,9 @@ try
 					end if
 					
 				else
-					tab_1.tabpage_1.dw_1.deleterow(k_riga)
+					tab_1.tabpage_1.rte_1.SelectTextAll()
+					tab_1.tabpage_1.rte_1.clear()
+					//tab_1.tabpage_1.dw_1.deleterow(k_riga)
 				end if
 			end if
 
@@ -1089,7 +1097,9 @@ try
 			
 			choose case tab_1.selectedtab 
 				case 1, 2 
-					tab_1.tabpage_1.dw_1.reset( )
+					tab_1.tabpage_1.rte_1.SelectTextAll()
+					tab_1.tabpage_1.rte_1.clear()
+					//tab_1.tabpage_1.dw_1.reset( )
 					tab_1.tabpage_2.dw_2.reset( )
 					tab_1.tabpage_2.dw_2.reset( )
 					cb_ritorna.post event clicked( )
@@ -1108,7 +1118,9 @@ try
 	
 	choose case tab_1.selectedtab 
 		case 1 
-			tab_1.tabpage_1.dw_1.setfocus()
+			tab_1.tabpage_1.rte_1.SelectTextAll()
+			tab_1.tabpage_1.rte_1.clear()
+			//tab_1.tabpage_1.dw_1.setfocus()
 			tab_1.tabpage_1.dw_1.setcolumn(1)
 			tab_1.tabpage_1.dw_1.ResetUpdate ( ) 
 		case 3 
@@ -1124,8 +1136,7 @@ try
 catch (uo_exception kuo_exception)
 //		kst_esito = kuo_exception.get_st_esito()
 		k_errore = "1" + trim(kuo_exception.getmessage())
-		messagebox("Problemi durante Cancellazione - Operazione fallita !!", &
-								mid(k_errore1, 2) ) 	
+		messagebox("Problemi durante Cancellazione - Operazione fallita !!", mid(k_errore1, 2) ) 	
 
 finally
 	if tab_1.selectedtab = 3 then
@@ -1308,16 +1319,17 @@ public subroutine u_proteggi_pt ();//---
 kuf_utility kuf1_utility
 
 			
-	kuf1_utility = create kuf_utility 
+	if tab_1.tabpage_2.dw_2.rowcount( ) > 0 then
+		kuf1_utility = create kuf_utility 
 
-	if tab_1.tabpage_2.dw_2.getitemnumber( 1, "k_fascicola_pt") = 1 then
-		kuf1_utility.u_proteggi_dw("0", "cod_sl_pt", tab_1.tabpage_2.dw_2 )
-	else
-		kuf1_utility.u_proteggi_dw("1", "cod_sl_pt", tab_1.tabpage_2.dw_2 )
+		if tab_1.tabpage_2.dw_2.getitemnumber( 1, "k_fascicola_pt") = 1 then
+			kuf1_utility.u_proteggi_dw("0", "cod_sl_pt", tab_1.tabpage_2.dw_2 )
+		else
+			kuf1_utility.u_proteggi_dw("1", "cod_sl_pt", tab_1.tabpage_2.dw_2 )
+		end if
+
+		if isvalid(kuf1_utility) then destroy kuf1_utility
 	end if
-
-	if isvalid(kuf1_utility) then destroy kuf1_utility
-	
 end subroutine
 
 public subroutine u_clicked_fascicola_pt ();//		
@@ -1334,30 +1346,37 @@ end subroutine
 protected subroutine attiva_tasti_0 ();//
 super::attiva_tasti_0()		 
 
-//if ki_memo_rtf = trim(tab_1.tabpage_1.dw_1.CopyRTF(false)) then
-//	cb_aggiorna.enabled = true
-//end if
-if ki_tab_1_index_new = 1 or ki_tab_1_index_new = 2 then
-	cb_inserisci.enabled = true
-	cb_visualizza.enabled = true
-	cb_modifica.enabled = true
+cb_inserisci.enabled = true
+if ki_st_open_w.flag_modalita <> kkg_flag_modalita.visualizzazione then
+	if ki_tab_1_index_new = 3 and tab_1.tabpage_3.dw_3.rowcount( ) = 0 then
+	else
+		cb_visualizza.enabled = true
+	end if
+end if
+if ki_st_open_w.flag_modalita <> kkg_flag_modalita.modifica then
+	if ki_tab_1_index_new = 3 and tab_1.tabpage_3.dw_3.rowcount( ) = 0 then
+	else
+		cb_modifica.enabled = true
+	end if
+end if
+if ki_st_open_w.flag_modalita <> kkg_flag_modalita.inserimento then
 	cb_cancella.enabled = true
 end if
 
 if ki_st_open_w.flag_modalita = kkg_flag_modalita.inserimento or ki_st_open_w.flag_modalita = kkg_flag_modalita.modifica then
 	cb_aggiorna.enabled = true
-	cb_cancella.enabled = true
 end if
 
-if ki_tab_1_index_new = 3 then
-	cb_inserisci.enabled = true
-	if tab_1.tabpage_3.dw_3.rowcount( ) > 0 then
-		cb_modifica.enabled = true
-		cb_visualizza.enabled = true
-		cb_cancella.enabled = true
-	end if
-end if
 
+
+end subroutine
+
+public subroutine u_resize_1 ();//
+	super::u_resize_1()
+	tab_1.tabpage_1.rte_1.setredraw(false)
+	tab_1.tabpage_1.rte_1.resize(tab_1.tabpage_1.width, tab_1.tabpage_1.height )
+	tab_1.tabpage_1.rte_1.move(1,1)
+	tab_1.tabpage_1.rte_1.setredraw(true)
 
 end subroutine
 
@@ -1372,7 +1391,7 @@ if IsValid(MenuID) then destroy(MenuID)
 end on
 
 event u_ricevi_da_elenco;call super::u_ricevi_da_elenco;//
-//
+int k_return
 int k_rc
 long  k_riga, k_righe
 datastore kds_elenco_input_appo
@@ -1393,13 +1412,14 @@ if isvalid(kst_open_w) then
 				if not isvalid(kids_elenco_input) then kids_elenco_input = create datastore
 				kds_elenco_input_appo.rowscopy( 1, kds_elenco_input_appo.rowcount( ) , primary!,kids_elenco_input, 1,primary!)
 
-//				kids_elenco_input = kst_open_w.key12_any 
 				k_riga = long(kst_open_w.key3)
 
 				if kids_elenco_input.rowcount() > 0 and k_riga > 0 then
 				
+					k_return = 1
 					dragdrop_dw_esterna( kids_elenco_input, k_riga )
 					
+					attiva_tasti()
 				end if
 			end if
 		end if
@@ -1407,9 +1427,8 @@ if isvalid(kst_open_w) then
 		
 end if
 
+return k_return
 
-
-attiva_tasti()
 
 
 
@@ -1435,6 +1454,14 @@ catch (uo_exception kuo_exception)
 	
 	
 end try
+
+end event
+
+event u_open_preliminari;call super::u_open_preliminari;//
+if isvalid(ki_st_open_w.key12_any) and not isnull(ki_st_open_w.key12_any) then
+	kist_memo = ki_st_open_w.key12_any 
+end if
+
 
 end event
 
@@ -1482,15 +1509,16 @@ try
 		kguo_exception.set_tipo(kguo_exception.kk_st_uo_exception_tipo_noaut )
 		kguo_exception.setmessage("Autorizzazione apertura allegato non concessa. Tipo '" + kst_tab_memo.tipo_sv + "' ")
 		kguo_exception.messaggio_utente( )
-//		throw kguo_exception
 	else
+		
 		choose case ki_tab_1_index_new 
 	
 			case 1, 2
 				ki_st_open_w.flag_modalita = kkg_flag_modalita.modifica
 				tab_1.tabpage_1.dw_1.set_flag_modalita(ki_st_open_w.flag_modalita)
 				tab_1.tabpage_2.dw_2.set_flag_modalita(ki_st_open_w.flag_modalita)
-				inizializza_lista()
+				u_attiva_tab(ki_tab_1_index_new) 
+//				inizializza_lista()
 				
 			case 3
 				kuf1_memo_link = create kuf_memo_link
@@ -1510,10 +1538,13 @@ try
 				
 		end choose
 	end if
-	
+
 catch (uo_exception kuo_exception)
 	kuo_exception.messaggio_utente()
 //	throw kuo_exception
+
+finally
+	attiva_tasti( )
 	
 end try
 
@@ -1599,11 +1630,17 @@ on tab_1.destroy
 call super::destroy
 end on
 
-event tab_1::key;call super::key;
-if kidw_selezionata.dataobject = "d_memo" or kidw_selezionata.dataobject = "d_memo_link_l" then
-//--- CTRL+V fa Incolla dei file
-	if key = KeyV! and keyflags = 2 then
-		u_drop_file(kiuf_file_dragdrop.kki_tipo_drag_incolla, handle(this))
+event tab_1::key;call super::key;//
+if ki_st_open_w.flag_primo_giro <> "S" then
+
+	if isvalid(kidw_selezionata) then
+		
+		if kidw_selezionata.dataobject = "d_memo" or kidw_selezionata.dataobject = "d_memo_link_l" then
+		//--- CTRL+V fa Incolla dei file
+			if key = KeyV! and keyflags = 2 then
+				u_drop_file(kiuf_file_dragdrop.kki_tipo_drag_incolla, handle(this))
+			end if
+		end if
 	end if
 end if
 
@@ -1620,19 +1657,31 @@ end event
 type tabpage_1 from w_g_tab_3`tabpage_1 within tab_1
 integer width = 3003
 integer height = 1268
-long backcolor = 32435950
 string text = "Testo"
 long tabbackcolor = 32435950
 long picturemaskcolor = 32435950
+rte_1 rte_1
 end type
 
+on tabpage_1.create
+this.rte_1=create rte_1
+int iCurrent
+call super::create
+iCurrent=UpperBound(this.Control)
+this.Control[iCurrent+1]=this.rte_1
+end on
+
+on tabpage_1.destroy
+call super::destroy
+destroy(this.rte_1)
+end on
+
 type dw_1 from w_g_tab_3`dw_1 within tabpage_1
-boolean visible = true
 integer x = 59
 integer y = 60
 integer width = 1111
 integer height = 812
-string dataobject = "d_memo_rtf"
+boolean enabled = false
 boolean ki_link_standard_attivi = false
 boolean ki_button_standard_attivi = false
 boolean ki_colora_riga_aggiornata = false
@@ -1640,6 +1689,7 @@ boolean ki_attiva_standard_select_row = false
 boolean ki_d_std_1_attiva_sort = false
 boolean ki_d_std_1_attiva_cerca = false
 boolean ki_db_conn_standard = false
+boolean ki_dw_visibile_in_open_window = false
 end type
 
 event dw_1::clicked;//
@@ -1753,7 +1803,6 @@ end type
 type tabpage_2 from w_g_tab_3`tabpage_2 within tab_1
 integer width = 3003
 integer height = 1268
-long backcolor = 32435950
 string text = "Proprietà"
 long tabbackcolor = 32435950
 string picturename = "Properties!"
@@ -1805,8 +1854,8 @@ try
 				if kst_tab_clienti.codice > 0 then
 					get_dati_cliente(kst_tab_clienti)
 				else
-					tab_1.tabpage_1.dw_1.object.id_cliente[1] = 0
-					tab_1.tabpage_1.dw_1.modify( dwo.name + ".Background.Color = '" + string(kkg_colore.ERR_DATO) + "' ") 
+					this.object.id_cliente[1] = 0
+					this.modify( dwo.name + ".Background.Color = '" + string(kkg_colore.ERR_DATO) + "' ") 
 				end if
 			else
 				set_iniz_dati_cliente(kst_tab_clienti)
@@ -1821,7 +1870,7 @@ try
 				if kst_tab_clienti.codice > 0 then
 					get_dati_cliente(kst_tab_clienti)
 				else
-					tab_1.tabpage_1.dw_1.modify( dwo.name + ".Background.Color = '" + string(kkg_colore.ERR_DATO) + "' ") 
+					this.modify( dwo.name + ".Background.Color = '" + string(kkg_colore.ERR_DATO) + "' ") 
 				end if
 			else
 				set_iniz_dati_cliente(kst_tab_clienti)
@@ -2107,6 +2156,27 @@ type st_9_retrieve from w_g_tab_3`st_9_retrieve within tabpage_9
 end type
 
 type dw_9 from w_g_tab_3`dw_9 within tabpage_9
+end type
+
+type st_duplica from w_g_tab_3`st_duplica within w_memo
+end type
+
+type rte_1 from richtextedit within tabpage_1
+boolean visible = false
+integer width = 1422
+integer height = 756
+integer taborder = 30
+boolean bringtotop = true
+integer textsize = -10
+integer weight = 400
+fontpitch fontpitch = variable!
+fontfamily fontfamily = swiss!
+string facename = "Arial"
+boolean init_vscrollbar = true
+boolean init_rulerbar = true
+boolean init_tabbar = true
+boolean init_toolbar = true
+boolean init_popmenu = true
 end type
 
 type ln_1 from line within tabpage_4

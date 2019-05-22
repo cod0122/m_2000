@@ -1169,45 +1169,16 @@ if IsValid(MenuID) then destroy(MenuID)
 end on
 
 event u_ricevi_da_elenco;call super::u_ricevi_da_elenco;//
-//
+int k_return
 int k_rc
-long k_num_int, k_riga
-date k_data_int
-st_tab_prodotti kst_tab_prodotti
-window k_window
-kuf_menu_window kuf1_menu_window 
 
-
-//st_open_w kst_open_w
-
-//kst_open_w = Message.PowerObjectParm	
 
 if isvalid(kst_open_w) then
 
 //--- Dalla finestra di Elenco Valori
 	if kst_open_w.id_programma = "elenco" then
 	
-		if	not isvalid(kdsi_elenco_input) then kdsi_elenco_input = create datastore
-
-////--- Controllo che dalla window ELENCO non abbia premuto un tasto
-//		if kst_open_w.key5 = "normative_l_t" then
-//
-////--- popolo il datasore (dw non visuale) di ritorno da window elenco
-//			kdsi_elenco = create datastore
-////--- ricavo la data chiave dalla dw tornata dall'elenco
-//			kdsi_elenco = kst_open_w.key12_any 
-//			k_riga = long(kst_open_w.key3)
-//			kst_tab_prodotti.normative = trim(kdsi_elenco.getitemstring(k_riga, "normative"))
-//				
-////--- 
-//			
-//			
-//			destroy kdsi_elenco 
-//
-//		end if
-//			
-//			
-//	else
+		if not isvalid(kdsi_elenco_input) then kdsi_elenco_input = create datastore
 
 //--- Se dalla w di elenco non ho premuto un pulsante ma ad esempio doppio-click		
 		if kst_open_w.key2 = "d_prod_normative_l" and long(kst_open_w.key3) > 0 then
@@ -1216,16 +1187,18 @@ if isvalid(kst_open_w) then
 		
 			if kdsi_elenco_input.rowcount() > 0 then
 	
+				k_return = 1
 				tab_1.tabpage_1.dw_1.setitem(1, "normative", &
 								 kdsi_elenco_input.getitemstring(long(kst_open_w.key3), "normative"))
+				attiva_tasti()
 			end if
 		end if
 
 	end if
 
 end if
-//
 
+return k_return
 
 end event
 
@@ -1410,7 +1383,6 @@ end event
 
 type tab_1 from w_g_tab_3`tab_1 within w_prod
 boolean visible = true
-integer x = 0
 integer y = 4
 integer width = 2107
 integer height = 1396
@@ -2006,6 +1978,9 @@ string ki_sqlerrtext = ""
 boolean ki_attiva_standard_select_row = false
 boolean ki_d_std_1_attiva_cerca = false
 string ki_dragdrop_display = ""
+end type
+
+type st_duplica from w_g_tab_3`st_duplica within w_prod
 end type
 
 type ln_1 from line within tabpage_4

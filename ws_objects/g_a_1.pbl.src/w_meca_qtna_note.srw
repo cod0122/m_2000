@@ -109,7 +109,7 @@ try
 			messagebox("Rimozione QUARANTENA", "Operazione Interrotta dall'utente", stopsign!)
 		end if
 	else
-		messagebox("Rimozione QUARANTENA", "Operazione non possibile, Quarantena già movimentata", stopsign!)
+		messagebox("Rimozione QUARANTENA", "Operazione non disponibile, Quarantena già movimentata", stopsign!)
 	end if
 
 catch(uo_exception kuo_exception)
@@ -282,5 +282,8 @@ boolean enabled = false
 end type
 
 type dw_guida from w_g_tab0`dw_guida within w_meca_qtna_note
+end type
+
+type st_duplica from w_g_tab0`st_duplica within w_meca_qtna_note
 end type
 

@@ -1048,21 +1048,16 @@ if IsValid(MenuID) then destroy(MenuID)
 end on
 
 event u_ricevi_da_elenco;call super::u_ricevi_da_elenco;//
-//
+int k_return
 int k_rc
 long k_num_int, k_riga
 date k_data_int
 window k_window
 st_esito kst_esito
 st_tab_sr_prof_funz kst_tab_sr_prof_funz 
-kuf_menu_window kuf1_menu_window 
 kuf_sr_sicurezza kuf1_sr_sicurezza
 
 
-
-//st_open_w kst_open_w
-
-//kst_open_w = Message.PowerObjectParm	
 
 if isvalid(kst_open_w) then
 
@@ -1088,19 +1083,17 @@ if isvalid(kst_open_w) then
 							kdsi_elenco_input.getitemnumber(long(kst_open_w.key3), "id")
 		
 						if kst_tab_sr_prof_funz.id_funzioni > 0 then
+							k_return = 1
 							
 							kuf1_sr_sicurezza = create kuf_sr_sicurezza
 							kst_esito = kuf1_sr_sicurezza.tb_insert_sr_prof_funz (kst_tab_sr_prof_funz)
 							destroy kuf1_sr_sicurezza
 						
 	//--- torna a rileggere la lista					
-							inizializza_lista()
+							post inizializza_lista()
 							
 							if kst_esito.esito <> "0" then
-								messagebox("Operazione non riuscita", &
-											  + trim(kst_esito.sqlerrtext), &
-											  StopSign!&
-											 )   
+								messagebox("Operazione non riuscita", "Errore: " + trim(kst_esito.sqlerrtext), StopSign!)   
 							end if
 							
 						end if
@@ -1115,8 +1108,8 @@ if isvalid(kst_open_w) then
 					if kdsi_elenco_input.rowcount() > 0 then
 		
 						tab_1.tabpage_1.dw_1.setitem(1, "id_programma", trim(kdsi_elenco_input.getitemstring(long(kst_open_w.key3), "id")))
-//						tab_1.tabpage_1.dw_1.setitem(1, "id_programma_1", (trim(kdsi_elenco_input.getitemstring(long(kst_open_w.key3), "descr"))))
 
+						attiva_tasti()
 					end if
 				end if
 				
@@ -1126,7 +1119,9 @@ if isvalid(kst_open_w) then
 	end if
 
 end if
-//
+
+return k_return
+
 
 
 end event
@@ -1253,8 +1248,6 @@ end choose
 end event
 
 type tab_1 from w_g_tab_3`tab_1 within w_sr_funzioni
-integer x = 0
-integer y = 0
 integer width = 2066
 integer height = 1120
 long backcolor = 67108864
@@ -1436,5 +1429,8 @@ type st_9_retrieve from w_g_tab_3`st_9_retrieve within tabpage_9
 end type
 
 type dw_9 from w_g_tab_3`dw_9 within tabpage_9
+end type
+
+type st_duplica from w_g_tab_3`st_duplica within w_sr_funzioni
 end type
 

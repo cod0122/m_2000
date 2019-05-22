@@ -45,6 +45,7 @@ private function boolean stampa_etichetta_dosimetro (st_tab_barcode kst_tab_barc
 public function integer stampa_etichetta_riferimento_ristampa (string k_barcode, long k_id_meca)
 private subroutine stampa_testo_verticale (string a_testo_verticale, integer a_inizio_riga, integer a_inizio_col, integer a_col_riga, integer a_col_col)
 private function boolean stampa_etichetta_dosimetro_1 (st_tab_meca_dosim kst_tab_meca_dosim, st_tab_barcode kst_tab_barcode_padre, st_tab_base kst_tab_base, st_tab_sl_pt kst_tab_sl_pt, ref st_barcode_stampa kst_barcode_stampa, st_tab_sl_pt_dosimpos kst_tab_sl_pt_dosimpos)
+public function boolean stampa_etichetta_riferimento_1_4xpag_old (st_barcode_stampa kst_barcode_stampa)
 end prototypes
 
 private subroutine stampa_barcode (string k_barcode, long k_id_print, integer k_coord_x, integer k_coord_y, integer k_altezza_cb);//
@@ -987,19 +988,19 @@ kuf_armo kuf1_armo
 	printtext (ki_id_print_etichette, trim(kst_barcode_stampa.rag_soc_10) , k_inizio_col+850+kst_barcode_stampa.num_colonne, k_inizio_riga + 140 + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[3,1])
 
 //--- Sezione codici Riferimento
-	k_inizio_col =  450 + k_delta_col  //2750
+	k_inizio_col =  400 + k_delta_col  //2750
 	k_inizio_riga = 1100 //1480 
-	printtext (ki_id_print_etichette, "RIF: ", k_inizio_col+kst_barcode_stampa.num_colonne, k_inizio_riga + 100 + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[1,1])
-	printtext (ki_id_print_etichette, string(kst_barcode_stampa.num_int,"#") , k_inizio_col + 220+kst_barcode_stampa.num_colonne, k_inizio_riga - 150 + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[5,1])
+	printtext (ki_id_print_etichette, "RIF: ", k_inizio_col+kst_barcode_stampa.num_colonne, k_inizio_riga + 250 + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[1,1])
+	printtext (ki_id_print_etichette, string(kst_barcode_stampa.num_int,"#") , k_inizio_col + 185+kst_barcode_stampa.num_colonne, k_inizio_riga - 150 + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[5,1])
 //--- Collo 
-	printtext (ki_id_print_etichette, "Collo: ", k_inizio_col+kst_barcode_stampa.num_colonne+1900, k_inizio_riga + 100 + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[1,1])
+	printtext (ki_id_print_etichette, "Collo: ", k_inizio_col+kst_barcode_stampa.num_colonne+1700, k_inizio_riga + 250 + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[1,1])
 	printtext (ki_id_print_etichette, string(kst_barcode_stampa.conta_barcode,"####0") + "." + string (kst_barcode_stampa.barcode_tot_lotto,"####0") &
-																								   , k_inizio_col+kst_barcode_stampa.num_colonne+2250, k_inizio_riga - 150 + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[6,1])
+															 , k_inizio_col+kst_barcode_stampa.num_colonne+1965, k_inizio_riga - 55 + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[6,1])
 //--- Sezione codici E1-WO, E1-SO 
-	printtext (ki_id_print_etichette, "WO: ", k_inizio_col+kst_barcode_stampa.num_colonne + 3600, k_inizio_riga + 100 + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[1,1])
-	printtext (ki_id_print_etichette, string(kst_barcode_stampa.e1doco,"#") , k_inizio_col + 3800+kst_barcode_stampa.num_colonne, k_inizio_riga - 150 + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[6,1])
-	printtext (ki_id_print_etichette, "SO: ", k_inizio_col+kst_barcode_stampa.num_colonne + 3600, k_inizio_riga + 500 + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[1,1])
-	printtext (ki_id_print_etichette, string(kst_barcode_stampa.e1rorn,"#") , k_inizio_col + 3800+kst_barcode_stampa.num_colonne, k_inizio_riga + 280 + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[6,1])
+	printtext (ki_id_print_etichette, "WO: ", k_inizio_col+kst_barcode_stampa.num_colonne + 3080, k_inizio_riga + 200 + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[2,1])
+	printtext (ki_id_print_etichette, string(kst_barcode_stampa.e1doco,"#") , k_inizio_col + 3450+kst_barcode_stampa.num_colonne, k_inizio_riga - 150 + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[5,1])
+	printtext (ki_id_print_etichette, "SO: ", k_inizio_col+kst_barcode_stampa.num_colonne + 3700, k_inizio_riga + 550 + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[1,1])
+	printtext (ki_id_print_etichette, string(kst_barcode_stampa.e1rorn,"#") , k_inizio_col + 3950+kst_barcode_stampa.num_colonne, k_inizio_riga + 480 + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[2,1])
 
 //--- altri dati del Riferimento
 	k_inizio_col = 2750 + k_delta_col 
@@ -1061,7 +1062,7 @@ kuf_armo kuf1_armo
 	k_inizio_riga = 2480
 	k_inizio_col = 5130 + k_delta_col
 	if kst_barcode_stampa.alt_2 > 100 then
-		printtext (ki_id_print_etichette, "Altezza: ", k_inizio_col+kst_barcode_stampa.num_colonne, k_inizio_riga + 10 + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[1,1])
+		printtext (ki_id_print_etichette, "Altezza: ", k_inizio_col+kst_barcode_stampa.num_colonne, k_inizio_riga + 40 + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[1,1])
 		printtext (ki_id_print_etichette,  string((kst_barcode_stampa.alt_2 / 10),"####0"), k_inizio_col+350+kst_barcode_stampa.num_colonne, k_inizio_riga + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[9,1]) 
 	end if
 
@@ -1069,7 +1070,7 @@ kuf_armo kuf1_armo
 //--- Sezione codice modulo e revisione 
 	k_inizio_riga = 3680
 	k_inizio_col = 4300 + k_delta_col
-	printtext (ki_id_print_etichette, "Tag# MN-LT-OPS-001 Rev.2 del 21MAR2018", k_inizio_col+kst_barcode_stampa.num_colonne, k_inizio_riga + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[1,1])
+	printtext (ki_id_print_etichette, "Tag# MN-LT-OPS-001 Rev.3 del 29MAY2019", k_inizio_col+kst_barcode_stampa.num_colonne, k_inizio_riga + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[1,1])
 
 //--- Linea che chiude il BOX
 	k_inizio_riga = 2670
@@ -2756,6 +2757,180 @@ int k_len, k_ind
 
 
 	return k_return
+
+
+
+end function
+
+public function boolean stampa_etichetta_riferimento_1_4xpag_old (st_barcode_stampa kst_barcode_stampa);//
+// stampa 4 etichette di TRATTAMENTO con il codice a barre  
+// return:  TRUE = stampa OK
+//
+boolean k_return 
+int k_inizio_riga=0, k_inizio_col=0, k_inizio_col_barcode = 0, k_delta_col=0, k_delta_col_barcode
+kuf_armo kuf1_armo
+
+
+	SetPointer(kkg.pointer_attesa)
+
+	u_set_font_default( ) //--- Imposta i FONT di default
+
+//--- sposta la stampa di tot colonne 250=circa 10 mm
+	k_delta_col = -185
+	k_delta_col_barcode = -230
+
+// stampa il logo ad inizio foglio
+	k_inizio_riga = 1
+   k_inizio_col = 300 + k_delta_col
+	if trim(kst_barcode_stampa.barcode_modulo) = barcode_modulo_4xpagina then
+		PrintBitmap(ki_id_print_etichette, kGuo_path.get_risorse() + "\et_bcode_x4.bmp", k_inizio_col+kst_barcode_stampa.num_colonne, k_inizio_riga + kst_barcode_stampa.num_righe, 0, 0) 
+		//PrintBitmap(ki_id_print_etichette, "et_bcode_x4.bmp", k_inizio_col+kst_barcode_stampa.num_colonne, k_inizio_riga + kst_barcode_stampa.num_righe, 0, 0) 
+	else
+		PrintBitmap(ki_id_print_etichette, kGuo_path.get_risorse() + "\et_bcode_x1.jpg", k_inizio_col+kst_barcode_stampa.num_colonne, k_inizio_riga + kst_barcode_stampa.num_righe, 0, 0) 
+		//PrintBitmap(ki_id_print_etichette, "et_bcode_x1.jpg", k_inizio_col+kst_barcode_stampa.num_colonne, k_inizio_riga + kst_barcode_stampa.num_righe, 0, 0) 
+	end if
+	kst_barcode_stampa.num_righe += 30
+	PrintBitmap(ki_id_print_etichette, kGuo_path.get_risorse() + "\logo_barcode.jpg", k_inizio_col+ 50 +kst_barcode_stampa.num_colonne, k_inizio_riga - 80 + kst_barcode_stampa.num_righe, 1600, 500)  //2500, 500)
+	//PrintBitmap(ki_id_print_etichette, "logo_barcode.jpg", k_inizio_col+ 50 +kst_barcode_stampa.num_colonne, k_inizio_riga - 80 + kst_barcode_stampa.num_righe, 1600, 500)  //2500, 500)
+
+//--- Dicitura TESTATA
+	k_inizio_col = 1730
+	choose case kst_barcode_stampa.magazzino
+		case kuf1_armo.kki_magazzino_DATRATTARE
+			printtext (ki_id_print_etichette, "", k_inizio_col+kst_barcode_stampa.num_colonne, k_inizio_riga -100 + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[6,1])
+//	//--- Sezione Testata 'BOLLINO VIRANTE.....'
+//			printtext (ki_id_print_etichette, "BOLLINO VIRANTE", k_inizio_col+kst_barcode_stampa.num_colonne, k_inizio_riga -100  + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[6,1])
+//			printtext (ki_id_print_etichette, "Indicatore del trattamento con", k_inizio_col+kst_barcode_stampa.num_colonne, k_inizio_riga -50  + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[2,1])
+//			printtext (ki_id_print_etichette, "raggi gamma della merce del lotto", k_inizio_col+kst_barcode_stampa.num_colonne, k_inizio_riga -20  + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[2,1])
+		case kuf1_armo.kki_magazzino_dp
+			printtext (ki_id_print_etichette, "CONTO DEPOSITO", k_inizio_col+kst_barcode_stampa.num_colonne, k_inizio_riga -100 + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[6,1])
+		case kuf1_armo.kki_magazzino_rd
+			printtext (ki_id_print_etichette, "STUDIO&SVILUPPO", k_inizio_col+kst_barcode_stampa.num_colonne, k_inizio_riga -100 + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[6,1])
+		case else
+			printtext (ki_id_print_etichette, "MAG.NO TRATTAM.", k_inizio_col+kst_barcode_stampa.num_colonne, k_inizio_riga -100 + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[6,1])
+	end choose
+
+//--- Sezione Anagrafiche Clienti 
+	k_inizio_riga += 520  //720
+	k_inizio_col = 450 + k_delta_col
+	printtext (ki_id_print_etichette, "Cliente :", k_inizio_col+kst_barcode_stampa.num_colonne, k_inizio_riga + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[1,1])
+	printtext (ki_id_print_etichette, string(kst_barcode_stampa.clie_3,"####0") , k_inizio_col+550+kst_barcode_stampa.num_colonne, k_inizio_riga + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[1,1])
+	printtext (ki_id_print_etichette, trim(kst_barcode_stampa.rag_soc_20) , k_inizio_col+850+kst_barcode_stampa.num_colonne, k_inizio_riga - 70 + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[3,1])
+	printtext (ki_id_print_etichette, "Ricevente :", k_inizio_col+kst_barcode_stampa.num_colonne, k_inizio_riga +200 + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[1,1])
+	printtext (ki_id_print_etichette, string(kst_barcode_stampa.clie_2,"####0") , k_inizio_col+550+kst_barcode_stampa.num_colonne, k_inizio_riga + 200 + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[1,1])
+	printtext (ki_id_print_etichette, trim(kst_barcode_stampa.rag_soc_10) , k_inizio_col+850+kst_barcode_stampa.num_colonne, k_inizio_riga + 140 + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[3,1])
+
+//--- Sezione codici Riferimento
+	k_inizio_col =  450 + k_delta_col  //2750
+	k_inizio_riga = 1100 //1480 
+	printtext (ki_id_print_etichette, "RIF: ", k_inizio_col+kst_barcode_stampa.num_colonne, k_inizio_riga + 100 + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[1,1])
+	printtext (ki_id_print_etichette, string(kst_barcode_stampa.num_int,"#") , k_inizio_col + 220+kst_barcode_stampa.num_colonne, k_inizio_riga - 150 + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[5,1])
+//--- Collo 
+	printtext (ki_id_print_etichette, "Collo: ", k_inizio_col+kst_barcode_stampa.num_colonne+1900, k_inizio_riga + 100 + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[1,1])
+	printtext (ki_id_print_etichette, string(kst_barcode_stampa.conta_barcode,"####0") + "." + string (kst_barcode_stampa.barcode_tot_lotto,"####0") &
+																								   , k_inizio_col+kst_barcode_stampa.num_colonne+2250, k_inizio_riga - 150 + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[6,1])
+//--- Sezione codici E1-WO, E1-SO 
+	printtext (ki_id_print_etichette, "WO: ", k_inizio_col+kst_barcode_stampa.num_colonne + 3600, k_inizio_riga + 100 + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[1,1])
+	printtext (ki_id_print_etichette, string(kst_barcode_stampa.e1doco,"#") , k_inizio_col + 3800+kst_barcode_stampa.num_colonne, k_inizio_riga - 150 + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[6,1])
+	printtext (ki_id_print_etichette, "SO: ", k_inizio_col+kst_barcode_stampa.num_colonne + 3600, k_inizio_riga + 500 + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[1,1])
+	printtext (ki_id_print_etichette, string(kst_barcode_stampa.e1rorn,"#") , k_inizio_col + 3800+kst_barcode_stampa.num_colonne, k_inizio_riga + 280 + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[6,1])
+
+//--- altri dati del Riferimento
+	k_inizio_col = 2750 + k_delta_col 
+	k_inizio_riga = 1480 
+	if isnull(kst_barcode_stampa.et_bcode_st_dt_rif) or kst_barcode_stampa.et_bcode_st_dt_rif <> "N" then
+//		printtext (ki_id_print_etichette, string(kst_barcode_stampa.data_int,"dd/mm/yy") , k_inizio_col+kst_barcode_stampa.num_colonne, k_inizio_riga + 300+100 + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[2,1])
+		printtext (ki_id_print_etichette, string(kst_barcode_stampa.data_ent,"dd/mm/yy") , k_inizio_col+kst_barcode_stampa.num_colonne, k_inizio_riga + 300+100 + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[2,1])
+	end if
+
+//--- Sezione Lotto
+	if trim(kst_barcode_stampa.barcode_modulo) = barcode_modulo_1etichetta then
+		k_inizio_col = 2970 + k_delta_col
+	end if 
+//	if LenA(trim(kst_barcode_stampa.consegna_data_cript)) > 0 then
+//		k_inizio_col -= 200
+//		printtext (ki_id_print_etichette, trim(kst_barcode_stampa.consegna_data_cript), k_inizio_col+kst_barcode_stampa.num_colonne, k_inizio_riga + 770+100 + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[2,1]) //data consegna criptata
+//	end if
+
+//--- Sezione NUMERO BARCODE 
+	k_inizio_riga = 2600 //2730
+	if trim(kst_barcode_stampa.barcode_modulo) = barcode_modulo_1etichetta then
+		
+		k_inizio_col_barcode = k_delta_col_barcode + 420 //350
+		printtext (ki_id_print_etichette, string(trim(kst_barcode_stampa.barcode),"@@@ @@@@@"), k_inizio_col_barcode+kst_barcode_stampa.num_colonne, k_inizio_riga + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[7,1])
+		
+	else		
+		k_inizio_col_barcode = 270 + k_delta_col_barcode 
+		if isnumber(LeftA(kst_barcode_stampa.barcode,1)) then
+			printtext (ki_id_print_etichette, string(trim(kst_barcode_stampa.barcode),"@@@@@@@@"), k_inizio_col_barcode+kst_barcode_stampa.num_colonne, k_inizio_riga + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[7,1])
+		else							
+			printtext (ki_id_print_etichette, string(trim(kst_barcode_stampa.barcode),"@@@@@@@@"), k_inizio_col_barcode+kst_barcode_stampa.num_colonne, k_inizio_riga + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[7,1])
+		end if
+	end if
+
+//--- Sezione Destra MC-CC e SC.CF
+	k_inizio_riga = 1550
+	k_inizio_col = 3560 + k_delta_col  
+	//4000
+	if LenA(trim(kst_barcode_stampa.mc_co)) > 0 then
+		printtext (ki_id_print_etichette, "Contratto Comm.: ", k_inizio_col+kst_barcode_stampa.num_colonne, k_inizio_riga + 360 + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[1,1])
+		printtext (ki_id_print_etichette, trim(kst_barcode_stampa.mc_co), k_inizio_col+800+kst_barcode_stampa.num_colonne, k_inizio_riga + 300 + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[2,1])
+	end if
+	if LenA(trim(kst_barcode_stampa.sc_cf)) > 0 then
+		printtext (ki_id_print_etichette, "Capitolato di Forn.: ", k_inizio_col+kst_barcode_stampa.num_colonne, k_inizio_riga + 550 + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[1,1])
+		printtext (ki_id_print_etichette, trim(kst_barcode_stampa.sc_cf), k_inizio_col+800+kst_barcode_stampa.num_colonne, k_inizio_riga + 490 + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[2,1])
+	end if
+	if LenA(trim(kst_barcode_stampa.area_mag)) > 0 then
+		printtext (ki_id_print_etichette, "Area di Ubicazione: ", k_inizio_col+kst_barcode_stampa.num_colonne, k_inizio_riga + 800 + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[1,1])
+		printtext (ki_id_print_etichette, string(trim(kst_barcode_stampa.area_mag),"@@ @@@@@@@@@@"), k_inizio_col+800+kst_barcode_stampa.num_colonne, k_inizio_riga + 740 + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[2,1])
+	end if
+//--- Prodotto...
+	k_inizio_riga = 2480 //2560
+	k_inizio_col = 450 + k_delta_col
+	if LenA(trim(kst_barcode_stampa.normative)) > 0 then
+		printtext (ki_id_print_etichette, "Prodotto: ", k_inizio_col+kst_barcode_stampa.num_colonne, k_inizio_riga + 50 + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[1,1])
+		printtext (ki_id_print_etichette, trim(kst_barcode_stampa.normative), k_inizio_col+550+kst_barcode_stampa.num_colonne, k_inizio_riga + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[9,1]) //kist_barcode_stampa.font[2,1])
+	end if
+//--- Altezza Pallet...
+	k_inizio_riga = 2480
+	k_inizio_col = 5130 + k_delta_col
+	if kst_barcode_stampa.alt_2 > 100 then
+		printtext (ki_id_print_etichette, "Altezza: ", k_inizio_col+kst_barcode_stampa.num_colonne, k_inizio_riga + 10 + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[1,1])
+		printtext (ki_id_print_etichette,  string((kst_barcode_stampa.alt_2 / 10),"####0"), k_inizio_col+350+kst_barcode_stampa.num_colonne, k_inizio_riga + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[9,1]) 
+	end if
+
+
+//--- Sezione codice modulo e revisione 
+	k_inizio_riga = 3680
+	k_inizio_col = 4300 + k_delta_col
+	printtext (ki_id_print_etichette, "Tag# MN-LT-OPS-001 Rev.2 del 21MAR2018", k_inizio_col+kst_barcode_stampa.num_colonne, k_inizio_riga + kst_barcode_stampa.num_righe, kist_barcode_stampa.font[1,1])
+
+//--- Linea che chiude il BOX
+	k_inizio_riga = 2670
+   k_inizio_col = 331 + k_delta_col
+	if trim(kst_barcode_stampa.barcode_modulo) = barcode_modulo_4xpagina then
+//		PrintBitmap(ki_id_print_etichette, kGuo_path.get_risorse() + "\et_bcode_x4.bmp", k_inizio_col+kst_barcode_stampa.num_colonne, k_inizio_riga + kst_barcode_stampa.num_righe, 0, 0) 
+	else
+		PrintBitmap(ki_id_print_etichette, kGuo_path.get_risorse() + "\et_bcode_linea.jpg", k_inizio_col+kst_barcode_stampa.num_colonne, k_inizio_riga + kst_barcode_stampa.num_righe, 0, 0) 
+		//PrintBitmap(ki_id_print_etichette, "et_bcode_linea.jpg", k_inizio_col+kst_barcode_stampa.num_colonne, k_inizio_riga + kst_barcode_stampa.num_righe, 0, 0) 
+	end if
+	
+//--- Sezione BARCODE il codice a BARRE
+	k_inizio_col = 50 + k_delta_col 
+	stampa_barcode_f ( kst_barcode_stampa.barcode, ki_id_print_etichette, k_inizio_col +(kst_barcode_stampa.barcode_coord_x+kst_barcode_stampa.num_colonne), (kst_barcode_stampa.barcode_coord_y + kst_barcode_stampa.num_righe), kst_barcode_stampa.barcode_altezza, kist_barcode_stampa.font[1,1] )
+	//PrintDefineFont(ki_id_print_etichette, kist_barcode_stampa.font[1,1], "Arial", kist_barcode_stampa.font[1,2], kist_barcode_stampa.font[1,3], Fixed!, Modern!, FALSE, FALSE) //ripristino il font
+
+//--- se Etichettatrice (1 etich) allora stampa
+	if trim(kst_barcode_stampa.barcode_modulo) = barcode_modulo_1etichetta then
+		
+		PrintPage ( ki_id_print_etichette )  //--- FORZA salto pagina 
+		ki_num_etichetta_in_pag = 1
+		
+	end if
+
+	k_return = true
+
+return k_return
 
 
 

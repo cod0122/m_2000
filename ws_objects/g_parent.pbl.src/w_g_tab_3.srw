@@ -1982,7 +1982,9 @@ fine_primo_giro()
 end event
 
 event key;call super::key;//
-tab_1.event key(key, 0)
+if ki_st_open_w.flag_primo_giro <> "S" then
+	tab_1.event key(key, 0)
+end if
 
 end event
 
@@ -2275,47 +2277,56 @@ end on
 event key;//
 //=== Controllo quale tasto da tastiera ha premuto
 int k_ind
+boolean k_fai_paginate
 
+if ki_st_open_w.flag_primo_giro <> "S" then
 
-
-//--- se ho più di 5 righe non faccio tab avanti/indietro con pagGiù o pagSu ma lascio come paginata 
-if not isvalid(kidw_selezionata) or kidw_selezionata.rowcount( ) < 6 then
-
-	choose case key
-			
-		case keypagedown!
-			
-			if ki_tab_1_index_new < 9 then
-				k_ind = ki_tab_1_index_new + 1
-				for k_ind = k_ind to 9
-					if ki_tabpage_visible[k_ind] then
-						exit
-					end if
-				next
-				if ki_tabpage_visible[k_ind] then
-					this.selectedtab = k_ind
-				end if
-			end if
-			
+	//--- se ho più di 5 righe non faccio tab avanti/indietro con pagGiù o pagSu ma lascio come paginata 
+	if not isvalid(kidw_selezionata) then 
+		k_fai_paginate = true
+	else
+		if kidw_selezionata.rowcount( ) < 6 then
+			k_fai_paginate = true
+		end if
+	end if
 	
-		case keypageup!
-			
-			if ki_tab_1_index_new > 1 then
-				k_ind = ki_tab_1_index_new - 1
-				for k_ind = k_ind to 1 step -1
+	if k_fai_paginate then
+		
+		choose case key
+				
+			case keypagedown!
+				
+				if ki_tab_1_index_new < 9 then
+					k_ind = ki_tab_1_index_new + 1
+					for k_ind = k_ind to 9
+						if ki_tabpage_visible[k_ind] then
+							exit
+						end if
+					next
 					if ki_tabpage_visible[k_ind] then
-						exit
+						this.selectedtab = k_ind
 					end if
-				next
-				if ki_tabpage_visible[k_ind] then
-					this.selectedtab = k_ind
 				end if
-			end if
-			
-	end choose
-	
-end if
-
+				
+		
+			case keypageup!
+				
+				if ki_tab_1_index_new > 1 then
+					k_ind = ki_tab_1_index_new - 1
+					for k_ind = k_ind to 1 step -1
+						if ki_tabpage_visible[k_ind] then
+							exit
+						end if
+					next
+					if ki_tabpage_visible[k_ind] then
+						this.selectedtab = k_ind
+					end if
+				end if
+				
+		end choose
+		
+	end if
+end if	
 
 end event
 

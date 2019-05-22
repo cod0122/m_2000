@@ -21,6 +21,7 @@ global type st_treeview_data_any from structure
 	st_tab_wm_pklist_righe		st_tab_wm_pklist_righe
 	st_tab_wm_pklist		st_tab_wm_pklist
 	st_tab_wm_receiptgammarad		st_tab_wm_receiptgammarad
+	st_tab_memo		st_tab_memo
 	st_wm_pkl_web		st_wm_pkl_web		descriptor "comment" = "di puo' togliere da qui completato il passaggio a E-ONE"
 	st_wm_pkl_file		st_wm_pkl_file		descriptor "comment" = "nuovo contenitore file pkl (web-xmp e lineare-txt)"
 	st_tab_meca_qtna		st_tab_meca_qtna

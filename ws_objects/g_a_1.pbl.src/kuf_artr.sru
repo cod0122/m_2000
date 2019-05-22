@@ -1,10 +1,10 @@
 ﻿$PBExportHeader$kuf_artr.sru
 forward
-global type kuf_artr from nonvisualobject
+global type kuf_artr from kuf_parent
 end type
 end forward
 
-global type kuf_artr from nonvisualobject
+global type kuf_artr from kuf_parent
 end type
 global kuf_artr kuf_artr
 
@@ -964,7 +964,11 @@ kuf_meca_dosim kuf1_meca_dosim
 			kst_tab_treeview = kst_treeview_data_any.st_tab_treeview
 
 //--- imposto il pic corretto
-			klvi_listviewitem.pictureindex = kst_treeview_data.pic_list
+			if kst_treeview_data_any.st_tab_memo.id_memo > 0 then
+				klvi_listviewitem.pictureindex = kuf1_treeview.u_dammi_pic_tree_alert()
+			else
+				klvi_listviewitem.pictureindex = kst_treeview_data.pic_list
+			end if
 	
 			klvi_listviewitem.label = kst_treeview_data.label
 			klvi_listviewitem.data = kst_treeview_data
@@ -1154,7 +1158,7 @@ st_tab_clienti kst_tab_clienti
 st_tab_armo kst_tab_armo, kst_tab_armo_old
 st_tab_contratti kst_tab_contratti
 st_tab_certif kst_tab_certif
-st_tab_barcode kst_tab_barcode
+st_tab_memo kst_tab_memo
 kuf_artr kuf1_artr
 kuf_sl_pt kuf1_sl_pt
 kuf_armo kuf1_armo
@@ -1257,7 +1261,7 @@ try
 
 	
 		k_query_select = &
-		"  	SELECT " &
+		"  	SELECT top 1 " &
 		+ " artr.num_certif, " &
 		+ "  meca.id, " &
 		+ "  meca.num_int, " &
@@ -1280,6 +1284,12 @@ try
 		+ "  contratti.mc_co " &
 		+ " ,isnull(meca.e1doco,0) as e1doco" &
 		+ " ,isnull(meca.e1rorn,0) as e1rorn " &
+		+ " , (select  top 1 id_memo from  meca_memo mm " &
+      	+     " where meca.id = mm.id_meca and mm.allarme = 'A'  " &
+		+     " union all " &
+		+     " select  top 1 id_memo  from  clienti_memo cm  " &
+       	+       " where (meca.clie_1 = cm.id_cliente or meca.clie_2 = cm.id_cliente or meca.clie_3 = cm.id_cliente) " &
+    		+                     " and cm.allarme = 'A') as id_memo " &
 		+ " FROM  " &
 		+ "	   artr INNER JOIN armo ON  " &
 		+ "		  artr.id_armo = armo.id_armo " &
@@ -1289,7 +1299,7 @@ try
 		+	 "   inner JOIN clienti c2 on meca.clie_2 = c2.codice " &
 		+ 	"   inner JOIN clienti c3 on meca.clie_3 = c3.codice " &
 		+ 	"    LEFT OUTER JOIN contratti ON  " &
-		+    "  meca.contratto = contratti.codice  " &
+		+    "  meca.contratto = contratti.codice  " 
 		
 		choose case k_tipo_oggetto
 
@@ -1409,31 +1419,31 @@ try
 		end choose
 		
 		k_query_order = &
-		+ "	 group by " &
-		+ "	      artr.num_certif, " &
-		+ "	      meca.id, " &
-		+ "			meca.num_int, " &
-		+ "			meca.data_int, " &
-		+ "			meca.area_mag, " &
-		+ "         meca.clie_1,  " &
-		+ "         meca.clie_2,  " &
-		+ "         meca.clie_3,  " &
-		+ "			meca.num_bolla_in, " &
-		+ "			meca.data_bolla_in, " &
-		+ "         meca.data_lav_fin,   " & 
-      	+ "   		meca.err_lav_fin, " &    
-		+ "         meca.err_lav_ok,   " & 
-		+ "         meca.note_lav_ok,  " & 
-		+ "         meca.cert_forza_stampa,   " &
-		+ "			meca.contratto, " &
-		+ "         c1.rag_soc_10, " &
-		+ "         c2.rag_soc_10, " &
-		+ "         c3.rag_soc_10, " &
-		+ "         mc_co " &
-		+ "    ,meca.e1doco" &
-		+ "    ,meca.e1rorn " & 
-		+ "	 order by " &
+		 "	 order by " &
 		+ "		 artr.num_certif desc"
+//		 "	 group by " &
+//		+ "	      artr.num_certif, " &
+//		+ "	      meca.id, " &
+//		+ "			meca.num_int, " &
+//		+ "			meca.data_int, " &
+//		+ "			meca.area_mag, " &
+//		+ "         meca.clie_1,  " &
+//		+ "         meca.clie_2,  " &
+//		+ "         meca.clie_3,  " &
+//		+ "			meca.num_bolla_in, " &
+//		+ "			meca.data_bolla_in, " &
+//		+ "         meca.data_lav_fin,   " & 
+//      	+ "   		meca.err_lav_fin, " &    
+//		+ "         meca.err_lav_ok,   " & 
+//		+ "         meca.note_lav_ok,  " & 
+//		+ "         meca.cert_forza_stampa,   " &
+//		+ "			meca.contratto, " &
+//		+ "         c1.rag_soc_10, " &
+//		+ "         c2.rag_soc_10, " &
+//		+ "         c3.rag_soc_10, " &
+//		+ "         mc_co " &
+//		+ "    ,meca.e1doco" &
+//		+ "    ,meca.e1rorn " & 
 
 	
 //--- Composizione della Query	
@@ -1516,9 +1526,10 @@ try
 					,:kst_tab_clienti.rag_soc_11 
 					,:kst_tab_clienti.rag_soc_20 
 					,:kst_tab_contratti.mc_co 
-         		,:kst_tab_meca.e1doco   
-         		,:kst_tab_meca.e1rorn 
-               ;
+         			,:kst_tab_meca.e1doco   
+         			,:kst_tab_meca.e1rorn 
+					,:kst_tab_memo.id_memo
+ 				;
 
 			kst_tab_artr_old.colli = 0
 			kst_tab_artr_old.colli_trattati = 0
@@ -1634,6 +1645,7 @@ try
 						kst_treeview_data_any.st_tab_clienti = kst_tab_clienti
 						kst_treeview_data_any.st_tab_contratti = kst_tab_contratti
 						kst_treeview_data_any.st_tab_certif = kst_tab_certif
+						kst_treeview_data_any.st_tab_memo = kst_tab_memo
 
 						kst_treeview_data.struttura = kst_treeview_data_any
 						kst_treeview_data.oggetto = k_tipo_oggetto_figlio 
@@ -1708,6 +1720,7 @@ try
 					,:kst_tab_contratti.mc_co 
          			,:kst_tab_meca.e1doco   
          			,:kst_tab_meca.e1rorn 
+					,:kst_tab_memo.id_memo
                ;
 
 	

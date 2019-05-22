@@ -52,6 +52,7 @@ public function string get_doc_root_esterno ()
 public function boolean u_drectory_create (string k_path)
 public subroutine set_doc_root ()
 public subroutine set_arch_saveas ()
+public subroutine set_path_icone ()
 end prototypes
 
 public subroutine set_path ();//
@@ -76,17 +77,6 @@ if trim(ki_procedura) > " " then
 else
 	kst_esito.esito = kkg_esito.ko
 	kst_esito.SQLErrText = "La cartella Principale non è stata indicata in Proprietà della Procedura!!!  " 
-end if
-
-ki_risorse = trim(kGuf_data_base.profilestring_leggi_scrivi(kGuf_data_base.ki_profilestring_operazione_leggi, "arch_graf", " "))
-if trim(ki_risorse) > " " then
-	if not DirectoryExists(ki_risorse) then
-		kst_esito.esito = kkg_esito.ko
-		kst_esito.SQLErrText += "La cartella delle Risorse grafiche quali le ICONE della Procedura non è raggiungibile: " + ki_risorse
-	end if
-else
-	kst_esito.esito = kkg_esito.ko
-	kst_esito.SQLErrText += "La cartella delle Risorse grafiche quali le ICONE non è stata indicata in Proprietà della Procedura!!!  " 
 end if
 
 ki_help = trim(kGuf_data_base.profilestring_leggi_scrivi(kGuf_data_base.ki_profilestring_operazione_leggi, "path_help", " "))
@@ -173,6 +163,10 @@ uo_exception kuo_exception
 		if not DirectoryExists(ki_base_del_server) then
 			kst_esito.esito = kkg_esito.ko
 			kst_esito.SQLErrText = "La cartella Principale del Server della Procedura non è raggiungibile: " + ki_base_del_server
+		else
+			
+			set_path_icone( )
+			
 		end if
 	end if
 
@@ -447,6 +441,47 @@ if kst_esito.esito <> kkg_esito.ok then
 	kuo_exception.set_esito(kst_esito)
 	kuo_exception.messaggio_utente( )
 end if
+
+if isvalid(kuo_exception) then destroy kuo_exception
+
+end subroutine
+
+public subroutine set_path_icone ();//
+//=== Imposta il PATH digitato sul DB circa il SERVER 
+//
+//string k_path=" "
+//kuf_base kuf1_base
+st_esito kst_esito
+uo_exception kuo_exception
+
+
+	
+	kst_esito.esito = kkg_esito.ok
+	kst_esito.sqlcode = 0
+	kst_esito.SQLErrText = ""
+	kst_esito.nome_oggetto = this.classname()
+	
+	kuo_exception = create uo_exception
+
+//	kuf1_base = create kuf_base
+
+	ki_risorse = trim(kGuf_data_base.profilestring_leggi_scrivi(kGuf_data_base.ki_profilestring_operazione_leggi, "arch_graf", " "))
+	if trim(ki_risorse) > " " then
+		if not DirectoryExists(ki_risorse) then
+			kst_esito.esito = kkg_esito.ko
+			kst_esito.SQLErrText += "La cartella delle Risorse grafiche quali le ICONE della Procedura non è raggiungibile: " + ki_risorse
+		end if
+	else
+		kst_esito.esito = kkg_esito.ko
+		kst_esito.SQLErrText += "La cartella delle Risorse grafiche quali le ICONE non è stata indicata in Proprietà della Procedura!!!  " 
+	end if
+	
+
+	if kst_esito.esito <> kkg_esito.ok then
+		kuo_exception.inizializza()
+		kuo_exception.set_esito(kst_esito)
+		kuo_exception.messaggio_utente( )
+	end if
 
 if isvalid(kuo_exception) then destroy kuo_exception
 

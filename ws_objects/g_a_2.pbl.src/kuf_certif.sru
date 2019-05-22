@@ -74,6 +74,7 @@ public subroutine crea_certif_0 (ref st_tab_certif kst_tab_certif) throws uo_exc
 public function boolean set_flg_ristampa_xddt (st_tab_certif kst_tab_certif) throws uo_exception
 public function boolean set_flg_ristampa_xddt_on (st_tab_certif kst_tab_certif) throws uo_exception
 public function boolean set_flg_ristampa_xddt_off (st_tab_certif kst_tab_certif) throws uo_exception
+public function boolean if_stampato_x_id_meca (ref st_tab_certif kst_tab_certif) throws uo_exception
 end prototypes
 
 public subroutine if_isnull (ref st_tab_certif kst_tab_certif);//---
@@ -1092,7 +1093,11 @@ st_profilestring_ini kst_profilestring_ini
 			kst_tab_treeview = kst_treeview_data_any.st_tab_treeview
 
 //--- imposto il pic corretto
-			klvi_listviewitem.pictureindex = kst_treeview_data.pic_list
+			if kst_treeview_data_any.st_tab_memo.id_memo > 0 then
+				klvi_listviewitem.pictureindex = kuf1_treeview.u_dammi_pic_tree_alert()
+			else
+				klvi_listviewitem.pictureindex = kst_treeview_data.pic_list
+			end if
 	
 			klvi_listviewitem.label = kst_treeview_data.label
 			klvi_listviewitem.data = kst_treeview_data
@@ -1269,6 +1274,7 @@ st_tab_clienti kst_tab_clienti
 st_tab_armo kst_tab_armo
 st_tab_contratti kst_tab_contratti
 st_tab_certif kst_tab_certif
+st_tab_memo kst_tab_memo
 kuf_certif kuf1_certif
 
 
@@ -1423,9 +1429,8 @@ kuf_certif kuf1_certif
 				kst_tab_clienti.rag_soc_20 = kids_certif_tree_stampati_xdata.getitemstring(k_riga, "c3_rag_soc_10")
 				kst_tab_meca.e1doco = kids_certif_tree_stampati_xdata.getitemnumber(k_riga, "e1doco")
 				kst_tab_meca.e1rorn = kids_certif_tree_stampati_xdata.getitemnumber(k_riga, "e1rorn")
+				kst_tab_memo.id_memo = kids_certif_tree_stampati_xdata.getitemnumber(k_riga, "id_memo")
 	
-			//do while sqlca.sqlcode = 0
-
 //---toglie i NULL dai campi
 				kuf1_certif.if_isnull(kst_tab_certif)
 				if isnull(kst_tab_meca.contratto) then kst_tab_meca.contratto = 0
@@ -1443,6 +1448,7 @@ kuf_certif kuf1_certif
 				kst_treeview_data_any.st_tab_clienti = kst_tab_clienti
 				kst_treeview_data_any.st_tab_contratti = kst_tab_contratti
 				kst_treeview_data_any.st_tab_treeview = kst_tab_treeview 
+				kst_treeview_data_any.st_tab_memo = kst_tab_memo
 				
 //--- dati esposti nell'item	
 				kst_treeview_data.label = &
@@ -1474,43 +1480,6 @@ kuf_certif kuf1_certif
 				ktvi_treeviewitem.data = kst_treeview_data
 
 				kuf1_treeview.kitv_tv1.setitem(k_handle_item, ktvi_treeviewitem)
-
-	
-				
-//				fetch kc_treeview 
-//				into
-//					:kst_tab_certif.id
-//			      ,:kst_tab_certif.num_certif
-//			      ,:kst_tab_certif.data
-//			      ,:kst_tab_certif.id_meca
-//			      ,:kst_tab_certif.data_stampa
-//			      ,:kst_tab_certif.lav_data_ini
-//			      ,:kst_tab_certif.lav_data_fin
-//			      ,:kst_tab_certif.colli
-//			      ,:kst_tab_certif.dose
-//			      ,:kst_tab_certif.dose_min
-//			      ,:kst_tab_certif.dose_max
-//			      ,:kst_tab_certif.note
-//			      ,:kst_tab_certif.note_1
-//			      ,:kst_tab_certif.note_2
-//			      ,:kst_tab_certif.dose_max
-//					,:kst_tab_meca.num_int
-//					,:kst_tab_meca.data_int
-//					,:kst_tab_meca.data_ent
-//					,:kst_tab_meca.clie_1
-//					,:kst_tab_certif.clie_2
-//					,:kst_tab_meca.clie_3
-//					,:kst_tab_meca.num_bolla_in
-//					,:kst_tab_meca.data_bolla_in
-//					,:kst_tab_meca.contratto
-//					,:kst_tab_contratti.mc_co
-//					,:kst_tab_contratti.sc_cf
-//					,:kst_tab_clienti.rag_soc_10 
-//					,:kst_tab_clienti.rag_soc_11 
-//					,:kst_tab_clienti.rag_soc_20 
-//					,:kst_tab_meca.e1doco
-//					,:kst_tab_meca.e1rorn
-//					;
 
 
 //--- troppi record lista interrotta
@@ -5678,6 +5647,59 @@ kst_tab_certif.flg_ristampa_xddt = false
 k_return = set_flg_ristampa_xddt(kst_tab_certif)
 
 return k_return
+
+end function
+
+public function boolean if_stampato_x_id_meca (ref st_tab_certif kst_tab_certif) throws uo_exception;//
+//----------------------------------------------------------------------------------------------------------------
+//--- 
+//--- Controlla se Attestato stampato 
+//--- 
+//--- 
+//--- Inp: st_tab_certif.id_meca
+//--- Out: TRUE = stampato definitivamente
+//---
+//--- lancia exception
+//---
+//----------------------------------------------------------------------------------------------------------------
+//
+boolean k_return = false
+st_esito kst_esito
+
+
+
+kst_esito.esito = kkg_esito.ok
+kst_esito.sqlcode = 0
+kst_esito.SQLErrText = " "
+kst_esito.nome_oggetto = this.classname()
+
+
+//--- x ID certificato			
+	SELECT top 1 id
+			into :kst_tab_certif.id
+			 FROM certif  
+			 where  id_meca  = :kst_tab_certif.id_meca and data_stampa > '01.01.1990'
+			 using kguo_sqlca_db_magazzino;
+		
+	if kguo_sqlca_db_magazzino.sqlcode < 0 then
+		kst_esito.sqlcode = kguo_sqlca_db_magazzino.sqlcode
+		kst_esito.SQLErrText = "Errore in lettura Attestato (certif) per id Lotto '" + string(kst_tab_certif.id_meca) + "' " &
+						 + "~n~rErrore: " + trim(kguo_sqlca_db_magazzino.SQLErrText)
+									 
+		kst_esito.esito = KKG_ESITO.db_ko
+		
+		kguo_exception.inizializza( )
+		kguo_exception.set_esito(kst_esito)
+		throw kguo_exception
+		
+	else
+		if kst_tab_certif.id > 0 then k_return = true
+	end if
+	
+
+return k_return
+
+
 
 end function
 

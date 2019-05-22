@@ -2593,10 +2593,9 @@ if isvalid(kiuf_contratti  ) then destroy kiuf_contratti
 end event
 
 event u_ricevi_da_elenco;call super::u_ricevi_da_elenco;//
-//
+int k_return
 int k_rc
 long  k_riga, k_ind_selected, k_righe
-
 
 
 if isvalid(kst_open_w) then
@@ -2605,6 +2604,7 @@ if isvalid(kst_open_w) then
 	
 	if long(kst_open_w.key3) > 0 then 
 
+		k_return = 1
 		kdsi_elenco_input = kst_open_w.key12_any 
 		k_riga = long(kst_open_w.key3)
 
@@ -2626,11 +2626,11 @@ if isvalid(kst_open_w) then
 		
 		kdsi_elenco_input.selectrow( 0, false)
 		
+		attiva_tasti()
 	end if
 end if
 
-
-attiva_tasti()
+return k_return
 
 
 

@@ -147,7 +147,7 @@ st_esito kst_esito
 		if tb_cond_fatt_gia_associato(kst_tab_cond_fatt) then
 			kst_esito.esito = kkg_esito.no_esecuzione
 			kst_esito.sqlcode = sqlca.sqlcode
-			kst_esito.SQLErrText = "Cancellazione Condizione non possibile perche' gia associato a Prezzo in Listino~n~rPrego togliere prima la Condizione dai Prezzi." 
+			kst_esito.SQLErrText = "Cancellazione Condizione non possibile perche' gia associata a un Prezzo di Listino~n~rPrego togliere prima la Condizione dai Prezzi." 
 			
 		else
 			delete from cond_fatt
@@ -157,7 +157,7 @@ st_esito kst_esito
 				if sqlca.sqlcode < 0 then
 					kst_esito.esito = kkg_esito.db_ko
 					kst_esito.sqlcode = sqlca.sqlcode
-					kst_esito.SQLErrText = "Errore in Cancellaz.Condizione Prezzo (ID=" + string(kst_tab_cond_fatt.id)+")~n~r" + trim(sqlca.SQLErrText) 
+					kst_esito.SQLErrText = "Errore in Cancellaz. Condizione Prezzo (ID=" + string(kst_tab_cond_fatt.id)+")~n~r" + trim(sqlca.SQLErrText) 
 		
 				end if
 			end if

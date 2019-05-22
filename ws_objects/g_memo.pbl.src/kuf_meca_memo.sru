@@ -14,6 +14,7 @@ public function boolean u_open_applicazione (ref st_tab_g_0 kst_tab_g_0, string 
 public function boolean if_sicurezza (string aflag_modalita) throws uo_exception
 public function boolean if_esiste (st_tab_meca_memo ast_tab_meca_memo) throws uo_exception
 public function long get_id_meca_memo_max () throws uo_exception
+public function long get_id_meca (ref st_tab_meca_memo kst_tab_meca_memo) throws uo_exception
 end prototypes
 
 public function boolean if_sicurezza (st_open_w ast_open_w) throws uo_exception;//
@@ -138,6 +139,54 @@ st_esito kst_esito
 		k_return = 0
 	end if
 	
+
+return k_return
+
+end function
+
+public function long get_id_meca (ref st_tab_meca_memo kst_tab_meca_memo) throws uo_exception;//
+//--------------------------------------------------------------------
+//--- Torna il campo ID_MECA
+//--- 
+//--- Input: st_tab_clienti_memo.id_meca_memo 
+//--- Ritorna  id_meca 
+//--- 
+//--- x errore lancia exception
+//--------------------------------------------------------------------
+long k_return = 0
+st_esito kst_esito
+
+
+kst_esito.esito = kkg_esito.ok
+kst_esito.sqlcode = 0
+kst_esito.SQLErrText = ""
+kst_esito.nome_oggetto = this.classname()
+
+if kst_tab_meca_memo.id_meca_memo > 0 then
+	
+	select id_meca 
+	    into :kst_tab_meca_memo.id_meca
+			from meca_memo
+			WHERE id_meca_memo = :kst_tab_meca_memo.id_meca_memo
+			using kguo_sqlca_db_magazzino;
+			
+	if kguo_sqlca_db_magazzino.sqlcode <> 0 then
+		if kguo_sqlca_db_magazzino.sqlcode < 0 then
+			kst_esito.esito = kkg_esito.db_ko
+			kst_esito.sqlcode = kguo_sqlca_db_magazzino.sqlcode
+			kst_esito.SQLErrText = "Errore lettura codice 'Lotto' da avviso MEMO LOTTI (id " + string(kst_tab_meca_memo.id_meca_memo) + ")~n~r" + trim(kguo_sqlca_db_magazzino.SQLErrText) 
+
+			kguo_exception.inizializza( )
+			kguo_exception.set_esito( kst_esito)
+			throw kguo_exception
+		end if
+	else
+		if kst_tab_meca_memo.id_meca_memo > 0 then
+			k_return = kst_tab_meca_memo.id_meca_memo
+		end if
+	end if
+end if		
+
 
 return k_return
 

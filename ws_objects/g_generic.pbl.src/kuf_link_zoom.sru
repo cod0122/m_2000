@@ -120,10 +120,13 @@ choose case a_button
 
 	case "b_ric_lotto", "b_cap_l",  "b_nazioni_l",  "b_clie_settori",  "b_clie_classi", "b_contab", "b_cliente_mkt", "b_cliente_web", "b_armo_prezzi" & 
 		, "b_arsp_sped", "b_m_r_f", "b_elenco_clienti_del_contatto", "b_wm_pklist_righe", "b_docprod", "b_listino_link_pregruppi", "b_listino_pregruppi"&
-		, "b_contratti", "b_meca_causali_l", "b_art_l", "p_memo", "p_memo_link", "b_clienti","p_clienti_memo_elenco", "p_meca_memo_elenco", "p_id_memo_no" &
+		, "b_contratti", "b_meca_causali_l", "b_art_l", "p_memo", "p_memo_link", "b_clienti","p_clienti_memo_elenco", "p_meca_memo_elenco"&
+		, "p_id_memo", "p_id_memo_no" &
 		, "b_arfalistaxcontr", "b_qtna_note" &
-		, "b_barcode_dosim_l", "b_meca_dosim_barcode_l", "b_dosim_lotto_dosim_l"&
-		, "b_asn", "b_e1doco_lav", "b_e1apid_dett", "b_certif_stampa", "b_contratto_doc_dettaglio"
+		, "b_barcode_dosim_l", "b_meca_dosim_barcode_l", "b_dosim_lotto_dosim_l" &
+		, "b_asn", "b_e1doco_lav", "b_e1apid_dett", "b_certif_stampa", "b_contratto_doc_dettaglio" &
+		, "p_memo_alarm_certif" &
+		, "p_memo_alarm_ddt"
 		k_return = a_button
 		
 		
@@ -398,6 +401,9 @@ choose case a_nome_link
 
 	case "p_memo", "id_memo", "p_id_memo_no", "p_id_memo", "p_memo_x"
 		kuf1_parent = create using "kuf_memo"
+		
+	case "p_memo_alarm_certif", "p_memo_alarm_ddt"
+		kuf1_parent = create using "kuf_memo_allarme"
 		
 	case "p_memo_link", "id_memo_link"
 		kuf1_parent = create using "kuf_memo_link"

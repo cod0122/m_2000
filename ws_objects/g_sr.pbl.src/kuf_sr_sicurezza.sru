@@ -2007,6 +2007,7 @@ public function string get_password (st_tab_sr_utenti kst_tab_sr_utenti) throws 
 //====================================================================
 string k_codice_up, k_codice_lo, k_return
 kuf_base kuf1_base
+kuf_cripta kuf1_cripta
 st_esito kst_esito
 
 
@@ -2023,7 +2024,7 @@ st_esito kst_esito
     INTO 
 	      :kst_tab_sr_utenti.password
     FROM sr_utenti  
-	 where codice = :k_codice_up or codice = :k_codice_lo
+	 where upper(codice) = :k_codice_up 
 	 using sqlca;
 
 	if sqlca.sqlcode < 0 or sqlca.sqlcode = 100 then
@@ -2039,7 +2040,10 @@ st_esito kst_esito
 		kguo_exception.set_esito(kst_esito)
 		throw kguo_exception
 	else
-		k_return = kst_tab_sr_utenti.password 
+//--- decripta la password				
+		kuf1_cripta = create kuf_cripta
+		k_return = kuf1_cripta.of_decrypt(trim(kst_tab_sr_utenti.password))
+		destroy kuf1_cripta
 	end if
 	
 return k_return
@@ -2417,7 +2421,7 @@ try
 	end if
 	
 	if  not isnull(ast_tab_sr_utenti.codice) then
-		ast_tab_sr_utenti.codice = upper(trim(ast_tab_sr_utenti.codice))
+		ast_tab_sr_utenti.codice = trim(ast_tab_sr_utenti.codice)
 	else
 		ast_tab_sr_utenti.codice = ""
 	end if
@@ -2647,7 +2651,6 @@ string k_codice_up, k_codice_lo
 date k_dataoggi, k_data_scad
 st_esito kst_esito, kst_esito1
 st_tab_sr_utenti kst_tab_sr_utenti_1 
-kuf_cripta kuf1_cripta
 
 
 	try
@@ -2662,11 +2665,7 @@ kuf_cripta kuf1_cripta
 //--- get della password 
 		kst_tab_sr_utenti_1.password = get_password(kst_tab_sr_utenti)
 
-		if LenA(trim(kst_tab_sr_utenti_1.password)) > 0 then
-//--- decripta la password				
-			kuf1_cripta = create kuf_cripta
-			kst_tab_sr_utenti_1.password = kuf1_cripta.of_decrypt(trim(kst_tab_sr_utenti_1.password))
-			destroy kuf1_cripta
+		if trim(kst_tab_sr_utenti_1.password) > " " then
 		else
 			kst_tab_sr_utenti_1.password = " "
 			kst_tab_sr_utenti.password = " "

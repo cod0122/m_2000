@@ -2,8 +2,12 @@
 global type st_memo_allarme from structure
 	string		allarme		descriptor "comment" = "tipo di allarme come in kuf_clienti o kuf_meca .... es. F=fattura, C=clienti ...."
 	string		descr		descriptor "comment" = "descrizione dell'allarme da visualizzare"
-	datastore		d_memo_allarme		descriptor "comment" = "datstore memo del allarme"
+	datastore		d_memo_allarme		descriptor "comment" = "datastore memo del allarme"
 	integer		numero		descriptor "comment" = "numero di allarmi per riga"
 	st_memo		st_memo
+	integer		tipo		descriptor "comment" = "0 = allarme window piccola a dx, 1=allarme window al centro + visibile"
+	long		clie_1		descriptor "comment" = "mandante"
+	long		clie_2		descriptor "comment" = "ricevente"
+	long		clie_3		descriptor "comment" = "cliente"
 end type
 

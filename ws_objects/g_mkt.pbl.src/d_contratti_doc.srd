@@ -24,7 +24,7 @@ table(column=(type=long update=yes updatewhereclause=yes identity=yes name=id_co
  column=(type=char(4000) update=yes updatewhereclause=yes name=note dbname="note" )
  column=(type=char(4000) update=yes updatewhereclause=yes name=note_audit dbname="note_audit" )
  column=(type=char(4000) update=yes updatewhereclause=yes name=note_fasi_operative dbname="note_fasi_operative" )
- column=(type=char(4000) update=yes updatewhereclause=yes name=iva dbname="v_contratti_doc.iva" dbalias="ctr.iva" )
+ column=(type=number update=yes updatewhereclause=yes name=iva dbname="v_contratti_doc.iva" dbalias="ctr.iva" )
  column=(type=decimal(0) updatewhereclause=yes name=iva_aliq dbname="iva.aliq" dbalias=".aliq" )
  column=(type=char(80) updatewhereclause=yes name=iva_des dbname="iva.des" dbalias=".des" )
  column=(type=long update=yes updatewhereclause=yes name=cod_pag dbname="v_contratti_doc.cod_pag" dbalias="ctr.cod_pag" )
@@ -304,4 +304,3 @@ export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
 import.xml()
 export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" nativepdf.customsize=0 nativepdf.customorientation=0 nativepdf.pdfstandard=0 nativepdf.useprintspec=no )
 export.xhtml()
- 

@@ -3029,15 +3029,8 @@ if isvalid(kdsi_elenco_input) then destroy kdsi_elenco_input
 end event
 
 event u_ricevi_da_elenco;call super::u_ricevi_da_elenco;//
-//
+int k_return
 int k_rc
-long k_num_int, k_riga
-date k_data_int
-double k_coeff_a_s
-int k_assorbanza, k_spessore
-window k_window
-//kuf_menu_window kuf1_menu_window 
-
 
 
 	if isvalid(kst_open_w) then
@@ -3052,7 +3045,7 @@ window k_window
 					kdsi_elenco_input = kst_open_w.key12_any 
 				
 					if kdsi_elenco_input.rowcount() > 0 then
-		
+						k_return = 1
 			
 						tab_1.tabpage_1.dw_1.setitem(1, "cap_1", &
 										 kdsi_elenco_input.getitemstring(long(kst_open_w.key3), "cap"))
@@ -3071,6 +3064,7 @@ window k_window
 					kdsi_elenco_input = kst_open_w.key12_any 
 					if kdsi_elenco_input.rowcount() > 0 then
 		
+						k_return = 1
 						choose case ki_dwo_name_b_nazioni_l		
 							case "b_nazioni_1_l" 
 								tab_1.tabpage_1.dw_1.setitem(1, "id_nazione_2", kdsi_elenco_input.getitemstring(long(kst_open_w.key3), "id_nazione"))
@@ -3093,6 +3087,7 @@ window k_window
 
 					kdsi_elenco_input = kst_open_w.key12_any 
 					if kdsi_elenco_input.rowcount() > 0 then
+						k_return = 1
 		
 						tab_1.tabpage_1.dw_1.setitem(1, "id_clie_settore", &
 										 kdsi_elenco_input.getitemstring(long(kst_open_w.key3), "id_clie_settore"))
@@ -3108,6 +3103,7 @@ window k_window
 
 					kdsi_elenco_input = kst_open_w.key12_any 
 					if kdsi_elenco_input.rowcount() > 0 then
+						k_return = 1
 		
 						tab_1.tabpage_1.dw_1.setitem(1, "id_clie_classe", &
 										 kdsi_elenco_input.getitemstring(long(kst_open_w.key3), "id_clie_classe"))
@@ -3123,6 +3119,7 @@ window k_window
 
 					kdsi_elenco_input = kst_open_w.key12_any 
 					if kdsi_elenco_input.rowcount() > 0 then
+						k_return = 1
 		
 						tab_1.tabpage_1.dw_1.setitem(1, "id_meca_causale", &
 										 kdsi_elenco_input.getitemnumber(long(kst_open_w.key3), "id_meca_causale"))
@@ -3138,6 +3135,12 @@ window k_window
 	end if
 
 	ki_dwo_name_b_nazioni_l = ""
+	
+	if k_return = 1 then
+		attiva_tasti()
+	end if
+	
+return k_return	
 	
 
 end event

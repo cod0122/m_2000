@@ -1,25 +1,25 @@
 ﻿$PBExportHeader$w_memo_allarme.srw
 forward
-global type w_memo_allarme from w_super
+global type w_memo_allarme from window
 end type
 type dw_memo_allarme from uo_d_memo_allarme within w_memo_allarme
 end type
 end forward
 
-global type w_memo_allarme from w_super
-integer width = 1975
-integer height = 524
-string title = "ALLARME"
-boolean minbox = false
-boolean maxbox = false
+global type w_memo_allarme from window
+integer x = -32768
+integer y = -32768
+integer width = 2002
+integer height = 516
+boolean titlebar = true
+boolean controlmenu = true
+boolean resizable = true
 long backcolor = 553648127
 string icon = "Asterisk!"
-boolean center = false
 integer transparency = 20
 windowanimationstyle openanimation = bottomroll!
 windowanimationstyle closeanimation = toproll!
 integer animationtime = 50
-boolean ki_toolbar_window_presente = true
 event u_open ( )
 dw_memo_allarme dw_memo_allarme
 end type
@@ -35,22 +35,25 @@ private boolean ki_permetti_chiusura=false
 private int ki_open_timer=0
 
 private int li_ScreenHt = 0, li_ScreenWid = 0
-
+private st_open_w ki_st_open_w
 
 end variables
-
 forward prototypes
 protected subroutine smista_funz (string k_par_in)
-public subroutine set_posizione (integer a_width, integer a_height)
 public subroutine u_attiva_allarme (datastore ads_memo_allarme) throws uo_exception
+public subroutine set_posizione_hide ()
+public function boolean if_visible ()
+public subroutine set_posizione ()
+public subroutine u_show ()
+public subroutine u_hide ()
 end prototypes
 
 event u_open();//
 
 try 
 
-		dw_memo_allarme.Modify("p_img_del.Filename='" + trim(kguo_path.get_risorse( ) + kkg.path_sep + "cancel16.png'"))
-		dw_memo_allarme.Modify("b_aggiorna.Filename='" + trim(kguo_path.get_risorse( ) + kkg.path_sep + "refresh16.png'"))
+//		dw_memo_allarme.Modify("p_img_del.Filename='" + trim(kguo_path.get_risorse( ) + kkg.path_sep + "cancel16.png'"))
+//		dw_memo_allarme.Modify("b_aggiorna.Filename='" + trim(kguo_path.get_risorse( ) + kkg.path_sep + "refresh16.png'"))
 		dw_memo_allarme.set_kuf_memo_allarme(kiuf_memo_allarme)
 
 //--- dimensioni
@@ -91,32 +94,6 @@ choose case k_par_in
 		post close (kiw_this)
 
 end choose
-
-end subroutine
-
-public subroutine set_posizione (integer a_width, integer a_height);//
-if not this.visible then
-
-	this.width = 2000
-	this.height = 490
-
-	long ll_row
-	environment le_env
-	
-	// Get screen size from environment
-	GetEnvironment( le_env )
-	
-	li_ScreenHt = PixelsToUnits( le_env.ScreenHeight, YPixelsToUnits! )
-	li_ScreenWid = PixelsToUnits( le_env.ScreenWidth, XPixelsToUnits! )
-	
-	// open in lower right corner
-	this.Move( ( li_ScreenWid - this.Width ) - 80, ( li_ScreenHt - this.Height ) - 260 )
-	
-	this.title = this.title + " dal " + string(kiuf_memo_allarme.get_data_allarme_ini( ))
-	
-//	this.x = a_width - this.width - 180
-//	this.y = a_height - this.height - 330  
-end if
 
 end subroutine
 
@@ -166,28 +143,78 @@ end try
 
 end subroutine
 
+public subroutine set_posizione_hide ();//
+	this.x = 32767
+	this.y = 32767
+
+end subroutine
+
+public function boolean if_visible ();//
+boolean k_return = false
+
+if this.visible and this.x < 32000 then
+	k_return = true
+end if
+
+return k_return
+end function
+
+public subroutine set_posizione ();//
+//if not this.visible then
+
+	this.width = 2000 
+	this.height = 490
+
+	long ll_row
+	environment le_env
+	
+	// Get screen size from environment
+	GetEnvironment( le_env )
+	
+	li_ScreenHt = PixelsToUnits( le_env.ScreenHeight, YPixelsToUnits! )
+	li_ScreenWid = PixelsToUnits( le_env.ScreenWidth, XPixelsToUnits! )
+	
+	// open in lower right corner
+	this.Move( ( li_ScreenWid - this.Width ) - 80, ( li_ScreenHt - this.Height ) - 260 )
+	
+	this.title = "ALLARMI MEMO " + " DAL " + string(kiuf_memo_allarme.get_data_allarme_ini( ))
+	
+//end if
+
+end subroutine
+
+public subroutine u_show ();//
+set_posizione( )
+this.show( )
+
+end subroutine
+
+public subroutine u_hide ();//
+this.hide( )
+set_posizione_hide( )
+
+end subroutine
+
 on w_memo_allarme.create
-int iCurrent
-call super::create
 this.dw_memo_allarme=create dw_memo_allarme
-iCurrent=UpperBound(this.Control)
-this.Control[iCurrent+1]=this.dw_memo_allarme
+this.Control[]={this.dw_memo_allarme}
 end on
 
 on w_memo_allarme.destroy
-call super::destroy
 destroy(this.dw_memo_allarme)
 end on
 
-event open;call super::open;//
+event open;//
 	if isvalid(message.powerobjectparm) then 
 		
+		this.x = 32767
+		this.y = 32767
 		ki_st_open_w = message.powerobjectparm
+
+		ki_st_open_w.flag_primo_giro = "S"
 
 		if isnull(ki_st_open_w.key1) then ki_st_open_w.key1 = ""
 
-//		this.title = "<" + trim(ki_st_open_w.id_programma) + "> " + ki_st_open_w.window_title + " per: " + trim(ki_st_open_w.key1 )
-	
 //--- punta all'oggetto kuf_memo_allarme 
 		kiuf_memo_allarme = ki_st_open_w.key12_any
 		kiw_this = this
@@ -200,18 +227,17 @@ event open;call super::open;//
 	end if
 end event
 
-event closequery;call super::closequery;//
-//--- per chiuedere effettivamente la window chiedo il permesso 
+event closequery;//--- per chiuedere effettivamente la window chiedo il permesso 
 if isvalid(kiuf_memo_allarme) then
-	if not kiuf_memo_allarme.if_close_w_allarme() then
-		hide( )
+//	if not kiuf_memo_allarme.if_close_w_allarme() then
+		u_hide( )
 		return 1
-	end if
+//	end if
 end if
 	
 end event
 
-event timer;call super::timer;////st_1.text = 'Timer Count: ' + string(il_open)
+event timer;//call super::timer;////st_1.text = 'Timer Count: ' + string(il_open)
 //
 //ki_open_timer ++
 //
@@ -228,14 +254,16 @@ event resize;call super::resize;//
 //
 long k_y
 
-dw_memo_allarme.x = 1
-dw_memo_allarme.y = 1
-if this.width > 100 then 
-	dw_memo_allarme.width = this.width - 90
-end if
-if this.height > 200 then
-	dw_memo_allarme.height = this.height - 160
-end if
+dw_memo_allarme.x = 0
+dw_memo_allarme.y = 0
+dw_memo_allarme.width = newwidth
+dw_memo_allarme.height = newheight
+//if newwidth > 100 then 
+//	dw_memo_allarme.width = newwidth - 90
+//end if
+//if newheight > 200 then
+//	dw_memo_allarme.height = newheight - 130
+//end if
 
 if dw_memo_allarme.width > 300 then
 	dw_memo_allarme.object.k_descr.width = dw_memo_allarme.width -250
@@ -249,12 +277,13 @@ integer width = 1920
 integer height = 360
 integer taborder = 10
 boolean hscrollbar = true
+boolean ki_notifica_a_video = true
 end type
 
 event u_keydown;//
 //--- se tasto ESC nascondo window
 	if key = KeyESCape! then 
-		parent.visible = false
+		parent.u_hide( )
 	end if
 
 
@@ -273,7 +302,7 @@ try
 
 	if dwo.name = "b_aggiorna" then
 		if kiuf_memo_allarme.set_allarme_utente(kst_memo_allarme) then
-			kiuf_memo_allarme.u_attiva_memo_allarme()
+			kiuf_memo_allarme.u_attiva_memo_allarme_on()
 		end if
 	end if
 

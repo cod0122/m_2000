@@ -34,6 +34,7 @@ public constant string kki_memo_attivi = "3"
 public constant string kki_memo_tutti = "4"
 
 end variables
+
 forward prototypes
 public function long get_ult_id_memo () throws uo_exception
 public function boolean if_esiste (st_tab_memo ast_tab_memo) throws uo_exception
@@ -64,6 +65,7 @@ private subroutine aggiorna_altri_archivi (st_memo ast_memo) throws uo_exception
 public subroutine tb_delete_altri_archivi (st_tab_memo ast_tab_memo)
 public function boolean u_open_ds (st_open_w ast_open_w) throws uo_exception
 private subroutine u_open_window_old (string a_flag_modalita)
+public function st_memo get_st_memo_da_ds (ref datastore ads_1) throws uo_exception
 end prototypes
 
 public function long get_ult_id_memo () throws uo_exception;//
@@ -406,17 +408,22 @@ choose case a_campo_link
 		end if
 
 //--- Nuovo MEMO
-	case "p_id_memo_no", "p_memo_x"
+	case "p_id_memo_no", "p_memo_x", "id_memo_no"
 		kst_memo.st_tab_memo.id_memo = 0
 		kst_memo.st_tab_meca_memo.id_meca = 0
 		kst_memo.st_tab_clienti_memo.id_cliente = 0
-		if adw_link.describe("id_meca.color") <> "!" then
+		if not isvalid(kuf1_meca_memo) then kuf1_meca_memo = create kuf_meca_memo
+		if adw_link.describe("id_meca.color") = "!" then
+			if adw_link.describe("id_meca_memo.color") <> "!" then
+				kst_memo.st_tab_meca_memo.id_meca_memo = adw_link.getitemnumber(adw_link.getrow(), "id_meca_memo")
+				if kst_memo.st_tab_meca_memo.id_meca_memo > 0 then
+					kst_memo.st_tab_meca_memo.id_meca = kuf1_meca_memo.get_id_meca(kst_memo.st_tab_meca_memo)
+				end if
+			end if
+		else
 			kst_memo.st_tab_meca_memo.id_meca = adw_link.getitemnumber(adw_link.getrow(), "id_meca")
 			if kst_memo.st_tab_meca_memo.id_meca > 0 then
 				kuf1_armo_inout = create kuf_armo_inout
-//				kst_tab_meca_memo.id_meca = kst_memo.st_tab_meca_memo.id_meca
-//				kuf1_armo_inout.get_id_memo_max_x_id_meca(kst_tab_meca_memo)
-				if not isvalid(kuf1_meca_memo) then kuf1_meca_memo = create kuf_meca_memo
 				if kuf1_meca_memo.if_esiste(kst_memo.st_tab_meca_memo) then
 					k_modalita = kkg_flag_modalita.elenco
 				else
@@ -427,13 +434,18 @@ choose case a_campo_link
 			end if
 		end if
 		if kst_memo.st_tab_meca_memo.id_meca = 0 then
-			if adw_link.describe("id_cliente.color") <> "!" then
+			if not isvalid(kuf1_clienti_memo) then kuf1_clienti_memo = create kuf_clienti_memo
+			if adw_link.describe("id_cliente.color") = "!" then
+				if adw_link.describe("id_cliente_memo.color") <> "!" then
+					kst_memo.st_tab_clienti_memo.id_cliente_memo = adw_link.getitemnumber(adw_link.getrow(), "id_cliente_memo")
+					if kst_memo.st_tab_clienti_memo.id_cliente_memo > 0 then
+						kst_memo.st_tab_clienti_memo.id_cliente = kuf1_clienti_memo.get_id_cliente(kst_memo.st_tab_clienti_memo)
+					end if
+				end if
+			else
 				kst_memo.st_tab_clienti_memo.id_cliente = adw_link.getitemnumber(adw_link.getrow(), "id_cliente")
 				if kst_memo.st_tab_clienti_memo.id_cliente > 0 then
 					kuf1_clienti = create kuf_clienti
-//					kst_tab_clienti_memo.id_cliente = kst_memo.st_tab_clienti_memo.id_cliente
-//					kuf1_clienti.get_id_memo_max_x_id_cliente(kst_tab_clienti_memo)
-					if not isvalid(kuf1_clienti_memo) then kuf1_clienti_memo = create kuf_clienti_memo
 					if kuf1_clienti_memo.if_esiste(kst_memo.st_tab_clienti_memo) then
 						k_modalita = kkg_flag_modalita.elenco
 					else
@@ -444,14 +456,8 @@ choose case a_campo_link
 				end if
 			end if
 		end if
-//		if kst_memo.st_tab_clienti_memo.id_cliente = 0 and kst_memo.st_tab_clienti_memo.id_cliente = 0 then 	
-//			k_return = true
-			kist_memo = kst_memo
-			u_attiva_funzione(kst_memo, k_modalita) 
-//		else
-//			k_return = true
-//			u_attiva_funzione(kst_memo, kkg_flag_modalita.visualizzazione)
-//		end if
+		kist_memo = kst_memo
+		u_attiva_funzione(kst_memo, k_modalita) 
 		
 end choose
 
@@ -928,7 +934,7 @@ try
 			k_senza_dati = true
 			ast_tab_memo.memo = blob("")
 		end if
-			
+			 
 		UPDATEBLOB memo  
 					SET 
 						memo = :ast_tab_memo.memo
@@ -1025,15 +1031,15 @@ try
 			end if
 		else
 //--- aggiorna BLOB se cambiato
-			kst_tab_memo = ast_tab_memo
-			get_memo(kst_tab_memo)
-			k_memo_rtf_len = len(ast_tab_memo.memo)
-			k_memo_rtf_orig_len = len(kst_tab_memo.memo)
-			if isnull(k_memo_rtf_len) then k_memo_rtf_len = 0 
-			if isnull(k_memo_rtf_orig_len) then k_memo_rtf_orig_len = 0 
-			if k_memo_rtf_len <> k_memo_rtf_orig_len then
+//			kst_tab_memo = ast_tab_memo
+//			get_memo(kst_tab_memo)
+//			k_memo_rtf_len = len(ast_tab_memo.memo)
+//			k_memo_rtf_orig_len = len(kst_tab_memo.memo)
+//			if isnull(k_memo_rtf_len) then k_memo_rtf_len = 0 
+//			if isnull(k_memo_rtf_orig_len) then k_memo_rtf_orig_len = 0 
+//			if k_memo_rtf_len <> k_memo_rtf_orig_len then
 				k_return = tb_update_memo(ast_tab_memo)  // aggiorna il BLOB con i dati (memo)
-			end if
+//			end if
 		end if
 //	end if
 		if ast_tab_memo.st_tab_g_0.esegui_commit <> "N" or isnull(ast_tab_memo.st_tab_g_0.esegui_commit) then
@@ -1498,50 +1504,36 @@ try
 	
 	if ast_open_w.id_programma > " " then
 		
-		
-		kuf1_memo_inout = create kuf_memo_inout
-		
-		choose case ast_open_w.key11_ds.dataobject 
+		if ast_open_w.key11_ds.rowcount() > 0 then
 			
-			case "d_clienti_memo_l"
-				if ast_open_w.key11_ds.rowcount() > 0 or ast_open_w.flag_modalita = kkg_flag_modalita.inserimento then
-					kst_tab_clienti_memo.id_cliente = 0
-					kst_tab_clienti_memo.id_cliente_memo = 0
-					if ast_open_w.key11_ds.rowcount() > 0 then
-						kst_tab_clienti_memo.id_cliente = ast_open_w.key11_ds.getitemnumber(1, "id_cliente")
-						if ast_open_w.flag_modalita = kkg_flag_modalita.inserimento then
-						else
-							k_riga = ast_open_w.key11_ds.getrow()
-							if k_riga = 0 then k_riga = 1
-							kst_tab_clienti_memo.id_cliente_memo = ast_open_w.key11_ds.getitemnumber(k_riga, "id_cliente_memo")
-						end if
-					end if
+			k_riga = ast_open_w.key11_ds.getrow()
+			if k_riga = 0 then 
+				ast_open_w.key11_ds.setrow(1)
+			end if
+			if ast_open_w.flag_modalita = kkg_flag_modalita.inserimento then
+				kst_memo = get_st_memo_da_ds(ast_open_w.key11_ds)
+				kst_tab_clienti_memo = kst_memo.st_tab_clienti_memo
+				kst_tab_meca_memo = kst_memo.st_tab_meca_memo
+			else
+				kst_memo.st_tab_memo.id_memo = ast_open_w.key11_ds.getitemnumber(ast_open_w.key11_ds.getrow(), "id_memo")
+			end if
+		
+			kuf1_memo_inout = create kuf_memo_inout
+			
+			choose case ast_open_w.key11_ds.dataobject 
+				
+				case "d_clienti_memo_l"
 					kuf1_memo_inout.memo_xcliente(kst_tab_clienti_memo, kst_memo.st_tab_memo)
 					u_attiva_funzione(kst_memo, ast_open_w.flag_modalita )   // APRE FUNZIONE
 					k_return = true
-				end if
 			
-			case "d_meca_memo_l"
-				if ast_open_w.key11_ds.rowcount() > 0 or ast_open_w.flag_modalita = kkg_flag_modalita.inserimento then
-					kst_tab_meca_memo.id_meca = 0
-					kst_tab_meca_memo.id_meca_memo = 0
-					if ast_open_w.key11_ds.rowcount() > 0 then
-						kst_tab_meca_memo.id_meca = ast_open_w.key11_ds.getitemnumber(1, "id_meca")
-						if ast_open_w.flag_modalita = kkg_flag_modalita.inserimento then
-						else
-							k_riga = ast_open_w.key11_ds.getrow()
-							if k_riga = 0 then k_riga = 1
-							kst_tab_meca_memo.id_meca_memo = ast_open_w.key11_ds.getitemnumber(k_riga, "id_meca_memo")
-						end if
-					end if
+				case "d_meca_memo_l"
 					kuf1_memo_inout.memo_xmeca(kst_tab_meca_memo, kst_memo.st_tab_memo)
 					u_attiva_funzione(kst_memo, ast_open_w.flag_modalita )   // APRE FUNZIONE
 					k_return = true
-				end if
-			
-			
-		end choose
+			end choose
 		
+		end if
 	end if
 
 catch (uo_exception kuo_exception)
@@ -1578,6 +1570,50 @@ st_open_w k_st_open_w
 
 
 end subroutine
+
+public function st_memo get_st_memo_da_ds (ref datastore ads_1) throws uo_exception;//====================================================================
+//=== Get dati MEMO da datastore
+//====================================================================
+//
+long k_rc
+st_memo kst_memo
+kuf_clienti_memo kuf1_clienti_memo
+kuf_meca_memo kuf1_meca_memo
+
+
+	kst_memo.st_tab_memo.id_memo = 0
+	kst_memo.st_tab_meca_memo.id_meca = 0
+	kst_memo.st_tab_clienti_memo.id_cliente = 0
+
+	if not isvalid(kuf1_meca_memo) then kuf1_meca_memo = create kuf_meca_memo
+	if ads_1.describe("id_meca.color") = "!" then
+		if ads_1.describe("id_meca_memo.color") <> "!" then
+			kst_memo.st_tab_meca_memo.id_meca_memo = ads_1.getitemnumber(ads_1.getrow(), "id_meca_memo")
+			if kst_memo.st_tab_meca_memo.id_meca_memo > 0 then
+				kst_memo.st_tab_meca_memo.id_meca = kuf1_meca_memo.get_id_meca(kst_memo.st_tab_meca_memo)
+			end if
+		end if
+	else
+		kst_memo.st_tab_meca_memo.id_meca = ads_1.getitemnumber(ads_1.getrow(), "id_meca")
+	end if
+	if kst_memo.st_tab_meca_memo.id_meca = 0 then
+		if not isvalid(kuf1_clienti_memo) then kuf1_clienti_memo = create kuf_clienti_memo
+		if ads_1.describe("id_cliente.color") = "!" then
+			if ads_1.describe("id_cliente_memo.color") <> "!" then
+				kst_memo.st_tab_clienti_memo.id_cliente_memo = ads_1.getitemnumber(ads_1.getrow(), "id_cliente_memo")
+				if kst_memo.st_tab_clienti_memo.id_cliente_memo > 0 then
+					kst_memo.st_tab_clienti_memo.id_cliente = kuf1_clienti_memo.get_id_cliente(kst_memo.st_tab_clienti_memo)
+				end if
+			end if
+		else
+			kst_memo.st_tab_clienti_memo.id_cliente = ads_1.getitemnumber(ads_1.getrow(), "id_cliente")
+		end if
+	end if
+
+
+return kst_memo
+
+end function
 
 on kuf_memo.create
 call super::create

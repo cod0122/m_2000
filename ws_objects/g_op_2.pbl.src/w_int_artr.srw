@@ -20,72 +20,73 @@ global w_int_artr w_int_artr
 
 type variables
 //
-st_int_artr kist_int_artr
+st_int_artr ki_st_int_artr
 
-private kuf_utility kiuf_utility
-private kuf_report_pilota kiuf_report_pilota
-private kuf_pilota_previsioni kiuf_pilota_previsioni
+protected kuf_int_artr kiuf_int_artr
+protected kuf_utility kiuf_utility
+protected kuf_report_pilota kiuf_report_pilota
+protected kuf_pilota_previsioni kiuf_pilota_previsioni
 
-//--- variabile contenente la scelta del REPORT
-private int ki_scelta_report_generico = 0
-private int ki_scelta_report_coda_pilota = 0
-private int ki_scelta_report_in_trattamento = 0
-private int ki_scelta_report_trattato = 0
-private int ki_scelta_report_chk_intra = 0
-private int ki_scelta_report_lotti_in_giacenza = 0
-private int ki_scelta_report_lotti_entrati = 0
-private int ki_scelta_report_lotti_in_giacenza_gia_trattati = 0
-private int ki_scelta_report_RegArt50 = 0
-private int ki_scelta_report_lotti_da_sped = 0
-private int ki_scelta_report_lotti_sped = 0
-private int ki_scelta_report_etichette_lotti = 0
-private int ki_scelta_report_groupage = 0
-private int ki_scelta_report_etichettine = 0
-private int ki_scelta_report_bcode_trattati = 0
-private int ki_scelta_report_art_movim = 0
-//private int ki_scelta_report_armo_prezzi = 0
-private int ki_scelta_report_memo = 0
-private int ki_scelta_report_lotti_sped_daFatt = 0
-private int ki_scelta_report_Attestati = 0
-private int ki_scelta_report_armo_Contratti = 0
-private int ki_scelta_report_LavxCapitolato = 0
-private int ki_scelta_report_RunsRtrRts = 0
-private int ki_scelta_report_prevFineLav = 0
-private int ki_scelta_report_NrDosimetri = 0
+////--- variabile contenente la scelta del REPORT
+//protected int ki_scelta_report_generico = 0
+//protected int ki_scelta_report_coda_pilota = 0
+//protected int ki_scelta_report_in_trattamento = 0
+//protected int ki_scelta_report_trattato = 0
+//protected int ki_scelta_report_chk_intra = 0
+//protected int ki_scelta_report_lotti_in_giacenza = 0
+//protected int ki_scelta_report_lotti_entrati = 0
+//protected int ki_scelta_report_lotti_in_giacenza_gia_trattati = 0
+//protected int ki_scelta_report_RegArt50 = 0
+//protected int ki_scelta_report_lotti_da_sped = 0
+//protected int ki_scelta_report_lotti_sped = 0
+//protected int ki_scelta_report_etichette_lotti = 0
+//protected int ki_scelta_report_groupage = 0
+//protected int ki_scelta_report_etichettine = 0
+//protected int ki_scelta_report_bcode_trattati = 0
+//protected int ki_scelta_report_art_movim = 0
+////protected int ki_scelta_report_armo_prezzi = 0
+//protected int ki_scelta_report_memo = 0
+//protected int ki_scelta_report_lotti_sped_daFatt = 0
+//protected int ki_scelta_report_Attestati = 0
+//protected int ki_scelta_report_armo_Contratti = 0
+//protected int ki_scelta_report_LavxCapitolato = 0
+//protected int ki_scelta_report_RunsRtrRts = 0
+//protected int ki_scelta_report_prevFineLav = 0
+//protected int ki_scelta_report_NrDosimetri = 0
 
 //--- variabile contenentei l'indice della picture x la scelta del REPORT
-private int ki_scelta_report=0
-private int ki_scelta_report_pic_generico = 0
-private int ki_scelta_report_pic_coda_pilota = 0
-private int ki_scelta_report_pic_in_trattamento = 0
-private int ki_scelta_report_pic_trattato = 0
-private int ki_scelta_report_pic_chk_intra = 0
-private int ki_scelta_report_pic_lotti_in_giacenza = 0
-private int ki_scelta_report_pic_lotti_entrati = 0
-private int ki_scelta_report_pic_lotti_in_giacenza_gia_trattati = 0
-private int ki_scelta_report_pic_RegArt50 = 0
-private int ki_scelta_report_pic_lotti_da_sped = 0
-private int ki_scelta_report_pic_lotti_sped = 0
-private int ki_scelta_report_pic_etichette_lotti = 0
-private int ki_scelta_report_pic_groupage = 0
-private int ki_scelta_report_pic_etichettine = 0
-private int ki_scelta_report_pic_bcode_trattati = 0
-private int ki_scelta_report_pic_art_movim = 0
-//private int ki_scelta_report_pic_armo_prezzi = 0
-private int ki_scelta_report_pic_memo = 0
-private int ki_scelta_report_pic_lotti_sped_daFatt = 0
-private int ki_scelta_report_pic_Attestati = 0
-private int ki_scelta_report_pic_armo_Contratti = 0
-private int ki_scelta_report_pic_LavxCapitolato = 0
-private int ki_scelta_report_pic_RunsRtrRts = 0
-private int ki_scelta_report_pic_prevFineLav = 0
-private int ki_scelta_report_pic_NrDosimetri = 0
+protected int ki_scelta_report=0
 
-private boolean ki_scegli_report = false
+//protected int ki_scelta_report_pic_generico = 0
+//protected int ki_scelta_report_pic_coda_pilota = 0
+//protected int ki_scelta_report_pic_in_trattamento = 0
+//protected int ki_scelta_report_pic_trattato = 0
+//protected int ki_scelta_report_pic_chk_intra = 0
+//protected int ki_scelta_report_pic_lotti_in_giacenza = 0
+//protected int ki_scelta_report_pic_lotti_entrati = 0
+//protected int ki_scelta_report_pic_lotti_in_giacenza_gia_trattati = 0
+//protected int ki_scelta_report_pic_RegArt50 = 0
+//protected int ki_scelta_report_pic_lotti_da_sped = 0
+//protected int ki_scelta_report_pic_lotti_sped = 0
+//protected int ki_scelta_report_pic_etichette_lotti = 0
+//protected int ki_scelta_report_pic_groupage = 0
+//protected int ki_scelta_report_pic_etichettine = 0
+//protected int ki_scelta_report_pic_bcode_trattati = 0
+//protected int ki_scelta_report_pic_art_movim = 0
+////protected int ki_scelta_report_pic_armo_prezzi = 0
+//protected int ki_scelta_report_pic_memo = 0
+//protected int ki_scelta_report_pic_lotti_sped_daFatt = 0
+//protected int ki_scelta_report_pic_Attestati = 0
+//protected int ki_scelta_report_pic_armo_Contratti = 0
+//protected int ki_scelta_report_pic_LavxCapitolato = 0
+//protected int ki_scelta_report_pic_RunsRtrRts = 0
+//protected int ki_scelta_report_pic_prevFineLav = 0
+//protected int ki_scelta_report_pic_NrDosimetri = 0
+
+protected boolean ki_scegli_report = false
 
 
 end variables
-
 forward prototypes
 protected function string inizializza () throws uo_exception
 protected subroutine inizializza_1 () throws uo_exception
@@ -144,7 +145,6 @@ public subroutine get_parametri_18 () throws uo_exception
 private subroutine get_parametri_19 () throws uo_exception
 private function long report_19_inizializza (uo_d_std_1 kdw_1) throws uo_exception
 private subroutine report_19 ()
-public subroutine u_scegli_report (integer a_num_report)
 private subroutine report_20 ()
 private function long report_20_inizializza (uo_d_std_1 kdw_1) throws uo_exception
 private subroutine get_parametri_20 () throws uo_exception
@@ -204,6 +204,7 @@ private subroutine crea_view_x_report_23_xdtcertif () throws uo_exception
 private subroutine crea_view_x_report_23_xdtent () throws uo_exception
 private subroutine crea_view_x_report_23_idxconsegnecli () throws uo_exception
 private subroutine crea_view_x_report_23_xdtentgru () throws uo_exception
+private function boolean u_scegli_report (integer a_num_report)
 end prototypes
 
 protected function string inizializza () throws uo_exception;////======================================================================
@@ -305,7 +306,7 @@ kpointer = SetPointer(HourGlass!)
 	kuf1_utility = create kuf_utility
 
 //--- costruisco la view con ID_MECA delle fatture emesse da data a data
-	k_view = "vx_" + trim(kist_int_artr.utente) + "_int_artr "
+	k_view = "vx_" + trim(ki_st_int_artr.utente) + "_int_artr "
 	k_sql = " "                                   
 	k_sql = + &
 	"CREATE VIEW " + trim(k_view) &
@@ -317,21 +318,21 @@ kpointer = SetPointer(HourGlass!)
 		+ " ON meca.id = armo.id_meca " 
 
 //--- se richiesto piglio solo i Lotti che hanno avuto la "NON CONFORMITA'" in entrata e/o la puntuale Causale di Blocco
-	if kist_int_artr.meca_blk then
+	if ki_st_int_artr.meca_blk then
 		k_sql += &
 		  "  INNER JOIN meca_blk " &
 		+ " ON meca.id = meca_blk.id_meca "  
 	end if
 //--- Filtro x CAUSALE di Entrata	
-	if kist_int_artr.id_meca_causale > 0 then
-		if NOT kist_int_artr.meca_blk then
+	if ki_st_int_artr.id_meca_causale > 0 then
+		if NOT ki_st_int_artr.meca_blk then
 			k_sql += "  INNER JOIN meca_blk  ON meca.id = meca_blk.id_meca "
 		end if
-		k_sql += " and meca_blk.id_meca_causale = " + string(kist_int_artr.id_meca_causale)   
+		k_sql += " and meca_blk.id_meca_causale = " + string(ki_st_int_artr.id_meca_causale)   
 	end if
 	
-	if kist_int_artr.upd_data_fin > date('01.01.1900') or kist_int_artr.upd_data_ok > date('01.01.1900') &
-		or kist_int_artr.barcode <> '*' then
+	if ki_st_int_artr.upd_data_fin > date('01.01.1900') or ki_st_int_artr.upd_data_ok > date('01.01.1900') &
+		or ki_st_int_artr.barcode <> '*' then
 		k_sql += &
 		  "  LEFT OUTER JOIN barcode " &
 		+ " ON armo.id_armo = barcode.id_armo "  
@@ -357,26 +358,26 @@ kpointer = SetPointer(HourGlass!)
 			+ " ON meca.id = meca_dosim.id_meca " 
 
 	k_sql += " WHERE  " &
-			+ " (meca.id between " + string(kist_int_artr.id_meca_ini) + " and " + string(kist_int_artr.id_meca_fin) + ") " 
+			+ " (meca.id between " + string(ki_st_int_artr.id_meca_ini) + " and " + string(ki_st_int_artr.id_meca_fin) + ") " 
 	
 
-	if kist_int_artr.data_da > date(0) and not isnull(kist_int_artr.data_da) then
-		if kist_int_artr.data_da = kist_int_artr.data_a then
-			k_sql +=  " and meca.data_int = '" + string(kist_int_artr.data_da) + "' "
+	if ki_st_int_artr.data_da > date(0) and not isnull(ki_st_int_artr.data_da) then
+		if ki_st_int_artr.data_da = ki_st_int_artr.data_a then
+			k_sql +=  " and meca.data_int = '" + string(ki_st_int_artr.data_da) + "' "
 		else
-			if kist_int_artr.data_a > date(0) and not isnull(kist_int_artr.data_a) then
-				k_sql +=  " and meca.data_int between '" + string(kist_int_artr.data_da) + "' and '"+ string(kist_int_artr.data_a) + "' "
+			if ki_st_int_artr.data_a > date(0) and not isnull(ki_st_int_artr.data_a) then
+				k_sql +=  " and meca.data_int between '" + string(ki_st_int_artr.data_da) + "' and '"+ string(ki_st_int_artr.data_a) + "' "
 			else
-				k_sql +=  " and meca.data_int >= '" + string(kist_int_artr.data_da) + "' "
+				k_sql +=  " and meca.data_int >= '" + string(ki_st_int_artr.data_da) + "' "
 			end if
 		end if
 	end if
 
-	if kist_int_artr.impianto > 0 then
-		k_sql +=  " and armo.magazzino = " + string(kist_int_artr.impianto) + " "
+	if ki_st_int_artr.impianto > 0 then
+		k_sql +=  " and armo.magazzino = " + string(ki_st_int_artr.impianto) + " "
 	end if
 
-	choose case kist_int_artr.lavorazione
+	choose case ki_st_int_artr.lavorazione
 		case "N"
 			k_sql +=  " and ((artr.data_in =   '" + string(date('01.01.1900')) + "' or artr.data_in is null or artr.data_in =  0)) " 
 
@@ -396,25 +397,25 @@ kpointer = SetPointer(HourGlass!)
 		
 	end choose
 
-	choose case kist_int_artr.m_r_f
+	choose case ki_st_int_artr.m_r_f
 		case "0"
-			if kist_int_artr.clie_1 > 0 then
-				k_sql +=  " and (meca.clie_1 = " + string(kist_int_artr.clie_1) + ")  " 
+			if ki_st_int_artr.clie_1 > 0 then
+				k_sql +=  " and (meca.clie_1 = " + string(ki_st_int_artr.clie_1) + ")  " 
 			end if
-			if kist_int_artr.clie_2 > 0 then
-				k_sql +=  " and (meca.clie_2 = " + string(kist_int_artr.clie_2) + ")  " 
+			if ki_st_int_artr.clie_2 > 0 then
+				k_sql +=  " and (meca.clie_2 = " + string(ki_st_int_artr.clie_2) + ")  " 
 			end if
-			if kist_int_artr.clie_3 > 0 then
-				k_sql +=  " and (meca.clie_3 = " + string(kist_int_artr.clie_3) + ")  " 
+			if ki_st_int_artr.clie_3 > 0 then
+				k_sql +=  " and (meca.clie_3 = " + string(ki_st_int_artr.clie_3) + ")  " 
 			end if
 
 		case "1"
-			k_sql +=  " and (meca.clie_1 =  " + string(kist_int_artr.clie_1) + " " + & 
-							 " or meca.clie_2 =  " + string(kist_int_artr.clie_2) + "  " + & 
-							 " or meca.clie_3 =  " + string(kist_int_artr.clie_3) + ")  " 
+			k_sql +=  " and (meca.clie_1 =  " + string(ki_st_int_artr.clie_1) + " " + & 
+							 " or meca.clie_2 =  " + string(ki_st_int_artr.clie_2) + "  " + & 
+							 " or meca.clie_3 =  " + string(ki_st_int_artr.clie_3) + ")  " 
 	end choose
 
-	choose case kist_int_artr.certificato_st
+	choose case ki_st_int_artr.certificato_st
 		case "S"
 			k_sql +=  " and artr.data_st >  '" + string(date('01.01.1900')) + "'  " 
 
@@ -423,28 +424,28 @@ kpointer = SetPointer(HourGlass!)
 	end choose
 
 					 
-	if kist_int_artr.anno_bolla_in > 0 then 
-		k_sql += " and year(meca.data_bolla_in) = " + string(kist_int_artr.anno_bolla_in)
+	if ki_st_int_artr.anno_bolla_in > 0 then 
+		k_sql += " and year(meca.data_bolla_in) = " + string(ki_st_int_artr.anno_bolla_in)
 	end if
-	if LenA(kist_int_artr.num_bolla_in) > 0 then 
-		k_sql += " and (meca.num_bolla_in like '" + string(kist_int_artr.num_bolla_in) + "' ) "
+	if LenA(ki_st_int_artr.num_bolla_in) > 0 then 
+		k_sql += " and (meca.num_bolla_in like '" + string(ki_st_int_artr.num_bolla_in) + "' ) "
 	end if
-	if kist_int_artr.dose > 0 then k_sql += " and armo.dose = " + kuf1_utility.u_num_itatousa(string(kist_int_artr.dose)) //string(kist_int_artr.dose, "###,###.##") 
-	if kist_int_artr.data_ini > date('01.01.1900') then k_sql += " and artr.data_in >= '" + string(kist_int_artr.data_ini) + "' "
-	if kist_int_artr.data_ini_1 > date('01.01.1900') then k_sql += " and artr.data_in <= '" + string(kist_int_artr.data_ini_1) + "' " 
-	if kist_int_artr.data_fin > date('01.01.1900') then k_sql += " and artr.data_fin >= '" + string(kist_int_artr.data_fin) + "' " 
-	if kist_int_artr.data_fin_1 > date('01.01.1900') then k_sql += " and artr.data_fin <= '" + string(kist_int_artr.data_fin_1) + "' "
-	if kist_int_artr.certificato_dt_st_ini > date('01.01.1900') then k_sql += " and artr.data_st >= '" + string(kist_int_artr.certificato_dt_st_ini) + "' "
-	if kist_int_artr.certificato_dt_st_fin > date('01.01.1900') then k_sql += " and artr.data_st <= '" + string(kist_int_artr.certificato_dt_st_fin) + "' "  
-	if kist_int_artr.dosim_data_i > date('01.01.1900') then k_sql += " and meca_dosim.dosim_data >= '" + string(kist_int_artr.dosim_data_i) + "' " 
-	if kist_int_artr.dosim_data_f > date('01.01.1900') then k_sql += " and meca_dosim.dosim_data <= '"+ string(kist_int_artr.dosim_data_f) + "' "  
-	if kist_int_artr.err_lav_ok <> "0" then k_sql += " and meca.err_lav_ok = '" + kist_int_artr.err_lav_ok + "' "
-	if kist_int_artr.num_certif <> 0 then k_sql += " and artr.num_certif = " + string(kist_int_artr.num_certif) 
-	if kist_int_artr.groupage <> "*" then k_sql += " and barcode.groupage = '" + kist_int_artr.groupage  + "' " 
-	if kist_int_artr.barcode <> "*" then k_sql += " and barcode.barcode like '" + kist_int_artr.barcode  + "' "
-	if kist_int_artr.upd_data_fin > date('01.01.1900') then k_sql += " and convert(date,barcode.upd_data_fin) = '" + string(kist_int_artr.upd_data_fin) + "' "
-	if kist_int_artr.upd_data_ok > date('01.01.1900') then k_sql += " and convert(date,barcode.upd_data_ok) = '" + string(kist_int_artr.upd_data_ok) + "' "  
-	if kist_int_artr.art > " " then k_sql += " and  armo.art =  '" + kist_int_artr.art  + "' "
+	if ki_st_int_artr.dose > 0 then k_sql += " and armo.dose = " + kuf1_utility.u_num_itatousa(string(ki_st_int_artr.dose)) //string(ki_st_int_artr.dose, "###,###.##") 
+	if ki_st_int_artr.data_ini > date('01.01.1900') then k_sql += " and artr.data_in >= '" + string(ki_st_int_artr.data_ini) + "' "
+	if ki_st_int_artr.data_ini_1 > date('01.01.1900') then k_sql += " and artr.data_in <= '" + string(ki_st_int_artr.data_ini_1) + "' " 
+	if ki_st_int_artr.data_fin > date('01.01.1900') then k_sql += " and artr.data_fin >= '" + string(ki_st_int_artr.data_fin) + "' " 
+	if ki_st_int_artr.data_fin_1 > date('01.01.1900') then k_sql += " and artr.data_fin <= '" + string(ki_st_int_artr.data_fin_1) + "' "
+	if ki_st_int_artr.certificato_dt_st_ini > date('01.01.1900') then k_sql += " and artr.data_st >= '" + string(ki_st_int_artr.certificato_dt_st_ini) + "' "
+	if ki_st_int_artr.certificato_dt_st_fin > date('01.01.1900') then k_sql += " and artr.data_st <= '" + string(ki_st_int_artr.certificato_dt_st_fin) + "' "  
+	if ki_st_int_artr.dosim_data_i > date('01.01.1900') then k_sql += " and meca_dosim.dosim_data >= '" + string(ki_st_int_artr.dosim_data_i) + "' " 
+	if ki_st_int_artr.dosim_data_f > date('01.01.1900') then k_sql += " and meca_dosim.dosim_data <= '"+ string(ki_st_int_artr.dosim_data_f) + "' "  
+	if ki_st_int_artr.err_lav_ok <> "0" then k_sql += " and meca.err_lav_ok = '" + ki_st_int_artr.err_lav_ok + "' "
+	if ki_st_int_artr.num_certif <> 0 then k_sql += " and artr.num_certif = " + string(ki_st_int_artr.num_certif) 
+	if ki_st_int_artr.groupage <> "*" then k_sql += " and barcode.groupage = '" + ki_st_int_artr.groupage  + "' " 
+	if ki_st_int_artr.barcode <> "*" then k_sql += " and barcode.barcode like '" + ki_st_int_artr.barcode  + "' "
+	if ki_st_int_artr.upd_data_fin > date('01.01.1900') then k_sql += " and convert(date,barcode.upd_data_fin) = '" + string(ki_st_int_artr.upd_data_fin) + "' "
+	if ki_st_int_artr.upd_data_ok > date('01.01.1900') then k_sql += " and convert(date,barcode.upd_data_ok) = '" + string(ki_st_int_artr.upd_data_ok) + "' "  
+	if ki_st_int_artr.art > " " then k_sql += " and  armo.art =  '" + ki_st_int_artr.art  + "' "
 
 
 //order by armo.data_int desc, armo.num_int desc
@@ -466,23 +467,23 @@ private subroutine set_nome_utente_tab () throws uo_exception;//
 int k_ctr=0
 
 
-	kist_int_artr.utente = kguo_utente.get_comp()
-	if LenA(trim(kist_int_artr.utente)) > 0 then
-		kist_int_artr.utente = MidA(kist_int_artr.utente, 1, 4)
+	ki_st_int_artr.utente = kguo_utente.get_comp()
+	if LenA(trim(ki_st_int_artr.utente)) > 0 then
+		ki_st_int_artr.utente = MidA(ki_st_int_artr.utente, 1, 4)
 		
-		k_ctr = PosA(kist_int_artr.utente, ".") 
+		k_ctr = PosA(ki_st_int_artr.utente, ".") 
 		do while k_ctr > 0 
-			kist_int_artr.utente = ReplaceA ( kist_int_artr.utente, k_ctr, 1, "_" ) 
-			k_ctr = PosA( kist_int_artr.utente, "." ) 
+			ki_st_int_artr.utente = ReplaceA ( ki_st_int_artr.utente, k_ctr, 1, "_" ) 
+			k_ctr = PosA( ki_st_int_artr.utente, "." ) 
 		loop 
 //--- aggiungo il numero tab al nome utente
 		if LenA(trim(string(tab_1.selectedtab))) = 0 then
-			kist_int_artr.utente = kist_int_artr.utente + "_" 
+			ki_st_int_artr.utente = ki_st_int_artr.utente + "_" 
 		else
-			kist_int_artr.utente = kist_int_artr.utente + trim(string(tab_1.selectedtab)) 
+			ki_st_int_artr.utente = ki_st_int_artr.utente + trim(string(tab_1.selectedtab)) 
 		end if
 	else
-		kist_int_artr.utente = ""
+		ki_st_int_artr.utente = ""
 		kGuo_exception.set_tipo(kGuo_exception.KK_st_uo_exception_tipo_dati_utente)
 		kGuo_exception.setmessage("Errore nel reperimento dell'Utente di connessione al sistema,~n~r" &
 				+"prego riprovare l'operazione." )
@@ -512,40 +513,40 @@ kpointer = SetPointer(HourGlass!)
 
 
 
-	kist_int_artr.impianto = tab_1.tabpage_1.dw_1.getitemnumber(1, "impianto") //Impianto
+	ki_st_int_artr.impianto = tab_1.tabpage_1.dw_1.getitemnumber(1, "impianto") //Impianto
 	k_num_int_ini = tab_1.tabpage_1.dw_1.getitemnumber(1, "num_int_ini") //rif ini
 	k_num_int_fin = tab_1.tabpage_1.dw_1.getitemnumber(1, "num_int_fin") //rif fin
 	k_data_da = tab_1.tabpage_1.dw_1.getitemdate(1, "data_da") //data riferimento da
 	k_data_a = tab_1.tabpage_1.dw_1.getitemdate(1, "data_a") //data riferimento da
-	kist_int_artr.lavorazione = trim(tab_1.tabpage_1.dw_1.getitemstring(1, "lavorazione")) //estrae entrate/in lav/tattati
-	kist_int_artr.num_bolla_in = tab_1.tabpage_1.dw_1.getitemstring(1, "num_bolla_in") //Bolla mandante
-	kist_int_artr.anno_bolla_in = tab_1.tabpage_1.dw_1.getitemnumber(1, "anno_bolla_in") //Bolla mandante
-	kist_int_artr.data_ini = tab_1.tabpage_1.dw_1.getitemdate(1, "data_ini") //data inizio lavorazione
-	kist_int_artr.data_fin = tab_1.tabpage_1.dw_1.getitemdate(1, "data_fin") //data fine lavorazione
-	kist_int_artr.data_ini_1 = tab_1.tabpage_1.dw_1.getitemdate(1, "data_ini_1") //alla data inizio lavorazione
-	kist_int_artr.data_fin_1 = tab_1.tabpage_1.dw_1.getitemdate(1, "data_fin_1") //alla data fine lavorazione
-	kist_int_artr.dosim_data_i = tab_1.tabpage_1.dw_1.getitemdate(1, "dosim_data_i") //alla data convalida ini
-	kist_int_artr.dosim_data_f = tab_1.tabpage_1.dw_1.getitemdate(1, "dosim_data_f") //alla data convalida fin
-	kist_int_artr.upd_data_fin = tab_1.tabpage_1.dw_1.getitemdate(1, "upd_data_fin") //data di importazione
-	kist_int_artr.upd_data_ok = tab_1.tabpage_1.dw_1.getitemdate(1, "upd_data_ok") //data di convalida
-	kist_int_artr.clie_1 = tab_1.tabpage_1.dw_1.getitemnumber(1, "id_clie_1") //Mandante
-	kist_int_artr.clie_2 = tab_1.tabpage_1.dw_1.getitemnumber(1, "id_clie_2") //Ricev
-	kist_int_artr.clie_3 = tab_1.tabpage_1.dw_1.getitemnumber(1, "id_clie_3") //Fatturato
-	kist_int_artr.dose = tab_1.tabpage_1.dw_1.getitemnumber(1, "dose") //Dose
-	kist_int_artr.barcode = tab_1.tabpage_1.dw_1.getitemstring(1, "barcode") //barcode
-	kist_int_artr.num_certif = tab_1.tabpage_1.dw_1.getitemnumber(1, "certificato") //num.certificato
-	kist_int_artr.certificato_dt_st_ini = tab_1.tabpage_1.dw_1.getitemdate(1, "certificato_dt_st_ini") //data certificato ini
-	kist_int_artr.certificato_dt_st_fin = tab_1.tabpage_1.dw_1.getitemdate(1, "certificato_dt_st_fin") //data certificato fin
-	kist_int_artr.certificato_st = tab_1.tabpage_1.dw_1.getitemstring(1, "certificato_st") //stato certif.
-	kist_int_artr.groupage = tab_1.tabpage_1.dw_1.getitemstring(1, "groupage") //estrae groupage
-	kist_int_artr.m_r_f = tab_1.tabpage_1.dw_1.getitemstring(1, "m_r_f") //come estrae la triade
-	kist_int_artr.art = tab_1.tabpage_1.dw_1.getitemstring(1, "art") //codice Articolo
+	ki_st_int_artr.lavorazione = trim(tab_1.tabpage_1.dw_1.getitemstring(1, "lavorazione")) //estrae entrate/in lav/tattati
+	ki_st_int_artr.num_bolla_in = tab_1.tabpage_1.dw_1.getitemstring(1, "num_bolla_in") //Bolla mandante
+	ki_st_int_artr.anno_bolla_in = tab_1.tabpage_1.dw_1.getitemnumber(1, "anno_bolla_in") //Bolla mandante
+	ki_st_int_artr.data_ini = tab_1.tabpage_1.dw_1.getitemdate(1, "data_ini") //data inizio lavorazione
+	ki_st_int_artr.data_fin = tab_1.tabpage_1.dw_1.getitemdate(1, "data_fin") //data fine lavorazione
+	ki_st_int_artr.data_ini_1 = tab_1.tabpage_1.dw_1.getitemdate(1, "data_ini_1") //alla data inizio lavorazione
+	ki_st_int_artr.data_fin_1 = tab_1.tabpage_1.dw_1.getitemdate(1, "data_fin_1") //alla data fine lavorazione
+	ki_st_int_artr.dosim_data_i = tab_1.tabpage_1.dw_1.getitemdate(1, "dosim_data_i") //alla data convalida ini
+	ki_st_int_artr.dosim_data_f = tab_1.tabpage_1.dw_1.getitemdate(1, "dosim_data_f") //alla data convalida fin
+	ki_st_int_artr.upd_data_fin = tab_1.tabpage_1.dw_1.getitemdate(1, "upd_data_fin") //data di importazione
+	ki_st_int_artr.upd_data_ok = tab_1.tabpage_1.dw_1.getitemdate(1, "upd_data_ok") //data di convalida
+	ki_st_int_artr.clie_1 = tab_1.tabpage_1.dw_1.getitemnumber(1, "id_clie_1") //Mandante
+	ki_st_int_artr.clie_2 = tab_1.tabpage_1.dw_1.getitemnumber(1, "id_clie_2") //Ricev
+	ki_st_int_artr.clie_3 = tab_1.tabpage_1.dw_1.getitemnumber(1, "id_clie_3") //Fatturato
+	ki_st_int_artr.dose = tab_1.tabpage_1.dw_1.getitemnumber(1, "dose") //Dose
+	ki_st_int_artr.barcode = tab_1.tabpage_1.dw_1.getitemstring(1, "barcode") //barcode
+	ki_st_int_artr.num_certif = tab_1.tabpage_1.dw_1.getitemnumber(1, "certificato") //num.certificato
+	ki_st_int_artr.certificato_dt_st_ini = tab_1.tabpage_1.dw_1.getitemdate(1, "certificato_dt_st_ini") //data certificato ini
+	ki_st_int_artr.certificato_dt_st_fin = tab_1.tabpage_1.dw_1.getitemdate(1, "certificato_dt_st_fin") //data certificato fin
+	ki_st_int_artr.certificato_st = tab_1.tabpage_1.dw_1.getitemstring(1, "certificato_st") //stato certif.
+	ki_st_int_artr.groupage = tab_1.tabpage_1.dw_1.getitemstring(1, "groupage") //estrae groupage
+	ki_st_int_artr.m_r_f = tab_1.tabpage_1.dw_1.getitemstring(1, "m_r_f") //come estrae la triade
+	ki_st_int_artr.art = tab_1.tabpage_1.dw_1.getitemstring(1, "art") //codice Articolo
 	if tab_1.tabpage_1.dw_1.getitemstring(1, "meca_blk")  = "S" then //estrae i NON CONFORMI
-		kist_int_artr.meca_blk = true
+		ki_st_int_artr.meca_blk = true
 	else
-		kist_int_artr.meca_blk = false 
+		ki_st_int_artr.meca_blk = false 
 	end if
-	kist_int_artr.id_meca_causale = tab_1.tabpage_1.dw_1.getitemnumber(1, "id_meca_causale") //causale entrata merce
+	ki_st_int_artr.id_meca_causale = tab_1.tabpage_1.dw_1.getitemnumber(1, "id_meca_causale") //causale entrata merce
 	
 	set_nome_utente_tab() //--- imposta il nome utente da utilizzare x i nomi view 
 
@@ -574,115 +575,115 @@ if k_data_da > kkg.data_zero then
 else
 	k_data_da = relativedate(k_dataoggi, -730)
 end if
-kist_int_artr.data_da = k_data_da
+ki_st_int_artr.data_da = k_data_da
 if k_data_a > kkg.data_zero then
 else
 	k_data_a = k_dataoggi
 end if
-kist_int_artr.data_a = k_data_a
+ki_st_int_artr.data_a = k_data_a
 
 //--- lavorazione
-if isnull(kist_int_artr.lavorazione) then
-	kist_int_artr.lavorazione = "*"
+if isnull(ki_st_int_artr.lavorazione) then
+	ki_st_int_artr.lavorazione = "*"
 else
-	if kist_int_artr.lavorazione = "CE" then
-		kist_int_artr.err_lav_ok = "1" //errore in convalida
+	if ki_st_int_artr.lavorazione = "CE" then
+		ki_st_int_artr.err_lav_ok = "1" //errore in convalida
 	else
-		kist_int_artr.err_lav_ok = "0" //no errore in convalida
+		ki_st_int_artr.err_lav_ok = "0" //no errore in convalida
 	end if
 end if
-if isnull(kist_int_artr.anno_bolla_in) then
-	kist_int_artr.anno_bolla_in = 0
+if isnull(ki_st_int_artr.anno_bolla_in) then
+	ki_st_int_artr.anno_bolla_in = 0
 end if
-if isnull(kist_int_artr.impianto) then
-	kist_int_artr.impianto = 0
+if isnull(ki_st_int_artr.impianto) then
+	ki_st_int_artr.impianto = 0
 end if
-if isnull(kist_int_artr.num_bolla_in) then
-	kist_int_artr.num_bolla_in = ""
+if isnull(ki_st_int_artr.num_bolla_in) then
+	ki_st_int_artr.num_bolla_in = ""
 else
-	kist_int_artr.num_bolla_in = trim(kist_int_artr.num_bolla_in) 
+	ki_st_int_artr.num_bolla_in = trim(ki_st_int_artr.num_bolla_in) 
 end if
-if kist_int_artr.data_ini > kkg.data_zero then
+if ki_st_int_artr.data_ini > kkg.data_zero then
 else
-	kist_int_artr.data_ini = date("01/01/1900")
+	ki_st_int_artr.data_ini = date("01/01/1900")
 end if
-if kist_int_artr.data_ini_1 > kkg.data_zero then
+if ki_st_int_artr.data_ini_1 > kkg.data_zero then
 else
-	kist_int_artr.data_ini_1 = date("01/01/1900")
+	ki_st_int_artr.data_ini_1 = date("01/01/1900")
 end if
-if kist_int_artr.data_fin > kkg.data_zero then
+if ki_st_int_artr.data_fin > kkg.data_zero then
 else
-	kist_int_artr.data_fin = date("01/01/1900")
+	ki_st_int_artr.data_fin = date("01/01/1900")
 end if
-if kist_int_artr.data_fin_1 > kkg.data_zero then
+if ki_st_int_artr.data_fin_1 > kkg.data_zero then
 else
-	kist_int_artr.data_fin_1 = date("01/01/1900")
+	ki_st_int_artr.data_fin_1 = date("01/01/1900")
 end if
-if kist_int_artr.upd_data_fin > kkg.data_zero then
+if ki_st_int_artr.upd_data_fin > kkg.data_zero then
 else
-	kist_int_artr.upd_data_fin = date('01.01.1900')
+	ki_st_int_artr.upd_data_fin = date('01.01.1900')
 end if
-if kist_int_artr.upd_data_ok > kkg.data_zero then
+if ki_st_int_artr.upd_data_ok > kkg.data_zero then
 else
-	kist_int_artr.upd_data_ok = date('01.01.1900')
+	ki_st_int_artr.upd_data_ok = date('01.01.1900')
 end if
-if isnull(kist_int_artr.m_r_f) or LenA(trim(kist_int_artr.m_r_f)) = 0 then
-	kist_int_artr.m_r_f = "0"
+if isnull(ki_st_int_artr.m_r_f) or LenA(trim(ki_st_int_artr.m_r_f)) = 0 then
+	ki_st_int_artr.m_r_f = "0"
 end if
 
 //--- convalida dosim
-if kist_int_artr.dosim_data_i > kkg.data_zero then
+if ki_st_int_artr.dosim_data_i > kkg.data_zero then
 else
-	kist_int_artr.dosim_data_i = date("01/01/1900")
+	ki_st_int_artr.dosim_data_i = date("01/01/1900")
 end if
-if kist_int_artr.dosim_data_f > kkg.data_zero then
+if ki_st_int_artr.dosim_data_f > kkg.data_zero then
 else
-	kist_int_artr.dosim_data_f = date("01/01/1900")
+	ki_st_int_artr.dosim_data_f = date("01/01/1900")
 end if
-if isnull(kist_int_artr.err_lav_ok) or LenA(trim(kist_int_artr.err_lav_ok)) = 0 then
-	kist_int_artr.err_lav_ok = "0"
+if isnull(ki_st_int_artr.err_lav_ok) or LenA(trim(ki_st_int_artr.err_lav_ok)) = 0 then
+	ki_st_int_artr.err_lav_ok = "0"
 end if
 
 //--- clienti
-if isnull(kist_int_artr.clie_1) then
-	kist_int_artr.clie_1 = 0
+if isnull(ki_st_int_artr.clie_1) then
+	ki_st_int_artr.clie_1 = 0
 end if
-if isnull(kist_int_artr.clie_2) then
-	kist_int_artr.clie_2 = 0
+if isnull(ki_st_int_artr.clie_2) then
+	ki_st_int_artr.clie_2 = 0
 end if
-if isnull(kist_int_artr.clie_3) then
-	kist_int_artr.clie_3 = 0
+if isnull(ki_st_int_artr.clie_3) then
+	ki_st_int_artr.clie_3 = 0
 end if
 
 //--- altro + certificato
-if isnull(kist_int_artr.dose) then
-	kist_int_artr.dose = 0
+if isnull(ki_st_int_artr.dose) then
+	ki_st_int_artr.dose = 0
 end if
-if isnull(kist_int_artr.barcode) or LenA(trim(kist_int_artr.barcode)) = 0 then
-	kist_int_artr.barcode = "*"
+if isnull(ki_st_int_artr.barcode) or LenA(trim(ki_st_int_artr.barcode)) = 0 then
+	ki_st_int_artr.barcode = "*"
 end if
-if isnull(kist_int_artr.num_certif) then
-	kist_int_artr.num_certif = 0
+if isnull(ki_st_int_artr.num_certif) then
+	ki_st_int_artr.num_certif = 0
 end if
-if kist_int_artr.certificato_dt_st_ini > kkg.data_zero then
+if ki_st_int_artr.certificato_dt_st_ini > kkg.data_zero then
 else
-	kist_int_artr.certificato_dt_st_ini = date("01/01/1900")
+	ki_st_int_artr.certificato_dt_st_ini = date("01/01/1900")
 end if
-if kist_int_artr.certificato_dt_st_fin > kkg.data_zero then
+if ki_st_int_artr.certificato_dt_st_fin > kkg.data_zero then
 else
-	kist_int_artr.certificato_dt_st_fin = date("01/01/1900")
+	ki_st_int_artr.certificato_dt_st_fin = date("01/01/1900")
 end if
-if isnull(kist_int_artr.certificato_st) then
-	kist_int_artr.certificato_st = "*"
+if isnull(ki_st_int_artr.certificato_st) then
+	ki_st_int_artr.certificato_st = "*"
 end if
-if isnull(kist_int_artr.groupage) then
-	kist_int_artr.groupage = "*"
+if isnull(ki_st_int_artr.groupage) then
+	ki_st_int_artr.groupage = "*"
 end if
-if isnull(kist_int_artr.art) then
-	kist_int_artr.art = ""
+if isnull(ki_st_int_artr.art) then
+	ki_st_int_artr.art = ""
 end if
 
-if isnull(kist_int_artr.id_meca_causale) then kist_int_artr.id_meca_causale = 0
+if isnull(ki_st_int_artr.id_meca_causale) then ki_st_int_artr.id_meca_causale = 0
 
 ////--- salvo i parametri cosi come sono stati immessi
 //kuf1_utility = create kuf_utility
@@ -700,7 +701,7 @@ if isnull(kist_int_artr.id_meca_causale) then kist_int_artr.id_meca_causale = 0
 	if k_num_int_ini > 0 then
 		
 		select min(id)
-			 into :kist_int_artr.id_meca_ini
+			 into :ki_st_int_artr.id_meca_ini
 			 from meca
 			 where num_int = :k_num_int_ini 
 			       and year(data_int) = :k_anno
@@ -709,69 +710,69 @@ if isnull(kist_int_artr.id_meca_causale) then kist_int_artr.id_meca_causale = 0
 	else
 		if k_data_da > date(0) then
 			select min(id)
-				 into :kist_int_artr.id_meca_ini
+				 into :ki_st_int_artr.id_meca_ini
 				 from meca
 				 where data_int >= :k_data_da and year(data_int) = :k_anno
 				 using sqlca;
 //--- se non ho trovato niente vedo se c'e' qualcosa nel periodo successivo				 
-			if sqlca.sqlcode <> 0 or isnull(kist_int_artr.id_meca_ini) then
+			if sqlca.sqlcode <> 0 or isnull(ki_st_int_artr.id_meca_ini) then
 
 				select min(id)
-					 into :kist_int_artr.id_meca_ini
+					 into :ki_st_int_artr.id_meca_ini
 					 from meca
 					 where data_int >= :k_data_da 
 					 using sqlca;
 
-				if sqlca.sqlcode <> 0  or isnull(kist_int_artr.id_meca_ini) then
-					kist_int_artr.id_meca_ini=0
+				if sqlca.sqlcode <> 0  or isnull(ki_st_int_artr.id_meca_ini) then
+					ki_st_int_artr.id_meca_ini=0
 				end if
 			end if
 		else
-			kist_int_artr.id_meca_ini=0
+			ki_st_int_artr.id_meca_ini=0
 		end if	
 	end if
-	if kist_int_artr.id_meca_ini > 0 then
+	if ki_st_int_artr.id_meca_ini > 0 then
 	else
-		kist_int_artr.id_meca_ini = 0
+		ki_st_int_artr.id_meca_ini = 0
 	end if
 
 //--- ricavo il riferimento di FINE
 	if k_num_int_ini > 0 and k_num_int_ini = k_num_int_fin then
-		kist_int_artr.id_meca_fin = kist_int_artr.id_meca_ini
+		ki_st_int_artr.id_meca_fin = ki_st_int_artr.id_meca_ini
 	else
 		
 		k_anno=year(k_data_a)
 		if k_num_int_fin > 0 then
 			select max(id)
-				 into :kist_int_artr.id_meca_fin
+				 into :ki_st_int_artr.id_meca_fin
 				 from meca
 				 where num_int = :k_num_int_fin 
 					and year(data_int) = :k_anno
-					and id >= :kist_int_artr.id_meca_ini
+					and id >= :ki_st_int_artr.id_meca_ini
 				 using sqlca;
 			if sqlca.sqlcode <> 0 then
-				kist_int_artr.id_meca_fin=0
+				ki_st_int_artr.id_meca_fin=0
 			end if
 		else
 			if k_data_a > date(0) then
 				select max(id)
-					 into :kist_int_artr.id_meca_fin
+					 into :ki_st_int_artr.id_meca_fin
 					 from meca
 					 where
-					     data_int <= :k_data_a  and id >= :kist_int_artr.id_meca_ini
+					     data_int <= :k_data_a  and id >= :ki_st_int_artr.id_meca_ini
 					 using sqlca;
 			else
-				kist_int_artr.id_meca_fin=999999999
+				ki_st_int_artr.id_meca_fin=999999999
 			end if	
 		end if	
 	end if
-	if kist_int_artr.id_meca_fin > 0 then
+	if ki_st_int_artr.id_meca_fin > 0 then
 	else
-		kist_int_artr.id_meca_fin = 0
+		ki_st_int_artr.id_meca_fin = 0
 	end if
 
 //=== Controllo date
-	if kist_int_artr.id_meca_ini > 0 and kist_int_artr.id_meca_ini > kist_int_artr.id_meca_fin then
+	if ki_st_int_artr.id_meca_ini > 0 and ki_st_int_artr.id_meca_ini > ki_st_int_artr.id_meca_fin then
 		kGuo_exception.inizializza( )
 		kguo_exception.set_tipo(kguo_exception.kk_st_uo_exception_tipo_dati_non_eseguito)
 		kGuo_exception.setmessage("Filtro intervallo numeri Lotto non congruenti,~n~r numero di fine periodo minore di quello di inizio")
@@ -780,7 +781,7 @@ if isnull(kist_int_artr.id_meca_causale) then kist_int_artr.id_meca_causale = 0
 	end if
 
 //=== Controllo se ho richiesto di pigliare almeno un'angrafica
-	if kist_int_artr.m_r_f = "1" and (kist_int_artr.clie_1 = 0 or kist_int_artr.clie_2 = 0 or kist_int_artr.clie_3 = 0) then
+	if ki_st_int_artr.m_r_f = "1" and (ki_st_int_artr.clie_1 = 0 or ki_st_int_artr.clie_2 = 0 or ki_st_int_artr.clie_3 = 0) then
 		
 		kGuo_exception.inizializza( )
 		kguo_exception.set_tipo(kguo_exception.kk_st_uo_exception_tipo_dati_non_eseguito)
@@ -795,11 +796,11 @@ if isnull(kist_int_artr.id_meca_causale) then kist_int_artr.id_meca_causale = 0
 
 //=== Controllo date
 	if ((k_data_a > date(0) and k_data_a < k_data_da) &
-	   or kist_int_artr.data_ini_1 < kist_int_artr.data_ini and kist_int_artr.data_ini_1 <> date(0) &
-	   or kist_int_artr.data_fin_1 < kist_int_artr.data_fin and kist_int_artr.data_fin_1 <> date(0) &
-	   or kist_int_artr.dosim_data_f < kist_int_artr.dosim_data_i and kist_int_artr.dosim_data_f <> date(0) &
-	   or (kist_int_artr.certificato_dt_st_fin < kist_int_artr.certificato_dt_st_ini &
-		   and kist_int_artr.certificato_dt_st_fin <> date(0))) &
+	   or ki_st_int_artr.data_ini_1 < ki_st_int_artr.data_ini and ki_st_int_artr.data_ini_1 <> date(0) &
+	   or ki_st_int_artr.data_fin_1 < ki_st_int_artr.data_fin and ki_st_int_artr.data_fin_1 <> date(0) &
+	   or ki_st_int_artr.dosim_data_f < ki_st_int_artr.dosim_data_i and ki_st_int_artr.dosim_data_f <> date(0) &
+	   or (ki_st_int_artr.certificato_dt_st_fin < ki_st_int_artr.certificato_dt_st_ini &
+		   and ki_st_int_artr.certificato_dt_st_fin <> date(0))) &
 		then
 		kGuo_exception.inizializza( )
 		kguo_exception.set_tipo(kguo_exception.kk_st_uo_exception_tipo_dati_non_eseguito)
@@ -811,7 +812,7 @@ if isnull(kist_int_artr.id_meca_causale) then kist_int_artr.id_meca_causale = 0
 
 	if not k_errore then
 
-		if kist_int_artr.id_meca_ini = 0 or isnull(kist_int_artr.id_meca_ini) or kist_int_artr.id_meca_fin = 0 or isnull(kist_int_artr.id_meca_fin) then
+		if ki_st_int_artr.id_meca_ini = 0 or isnull(ki_st_int_artr.id_meca_ini) or ki_st_int_artr.id_meca_fin = 0 or isnull(ki_st_int_artr.id_meca_fin) then
 			kGuo_exception.setmessage("Parametri Errati, reperimento dei Riferimenti da estrarre fallito.  ")
 			throw kGuo_exception 
 						
@@ -983,7 +984,7 @@ if tab_1.tabpage_1.dw_1.rowcount() <= 0 or tab_1.tabpage_1.dw_1.dataobject <> "d
 			try	
 	//--- imposto l'utente (il "terminale") x costruire il nome della view
 				set_nome_utente_tab() //--- imposta il nome utente da utilizzare x i nomi view 
-				tab_1.tabpage_1.dw_1.setitem(1, "utente", kist_int_artr.utente)
+				tab_1.tabpage_1.dw_1.setitem(1, "utente", ki_st_int_artr.utente)
 			
 				
 				tab_1.tabpage_1.dw_1.setitem(1, "report", 1)
@@ -1095,7 +1096,7 @@ if tab_1.tabpage_1.dw_1.rowcount() <= 0 or tab_1.tabpage_1.dw_1.dataobject <> "d
 	try	
 //--- imposto l'utente (il "terminale") x costruire il nome della view
 		set_nome_utente_tab() //--- imposta il nome utente da utilizzare x i nomi view 
-		tab_1.tabpage_1.dw_1.setitem(1, "utente", kist_int_artr.utente)
+		tab_1.tabpage_1.dw_1.setitem(1, "utente", ki_st_int_artr.utente)
 	
 		
 	catch (uo_exception kuo_exception)
@@ -1215,10 +1216,10 @@ st_stampe kst_stampe
 			kst_stampe.dw_print = kidw_selezionata
 			
 			choose case u_report_selezionato()
-				case ki_scelta_report_lotti_entrati
+				case kiuf_int_artr.kki_scelta_report_lotti_entrati
 					k_titolo = "Lotti entrati "
 //--- copia la stampa in un dw fatto apposta x l'esportazione
-					if kist_int_artr.flag_report = 1 then  // report con la conta dei giri
+					if ki_st_int_artr.flag_report = 1 then  // report con la conta dei giri
 						kst_stampe.ds_esporta = create datastore
 						kst_stampe.ds_esporta.dataobject = "d_report_7_con_giri_esporta" 
 						k_righe = kidw_selezionata.rowscopy( 1, kidw_selezionata.rowcount( ) , primary!, kst_stampe.ds_esporta, 1, Primary!)
@@ -1228,15 +1229,15 @@ st_stampe kst_stampe
 //						kst_stampe.dw_print.dataobject = "d_report_7_con_giri_esporta" 
 //						k_righe = kidw_selezionata.rowscopy( 1, kidw_selezionata.rowcount( ) , primary!, kst_stampe.dw_print, 1, Primary!)
 					end if
-				case ki_scelta_report_generico
+				case kiuf_int_artr.kki_scelta_report_generico
 					k_titolo = "Interrogazione Generica "
-				case ki_scelta_report_coda_pilota
+				case kiuf_int_artr.kki_scelta_report_coda_pilota
 					k_titolo = "Programmazione Impianto "
-				case ki_scelta_report_in_trattamento
+				case kiuf_int_artr.kki_scelta_report_in_trattamento
 					k_titolo = "Materiale in Trattamento "
-				case ki_scelta_report_trattato
+				case kiuf_int_artr.kki_scelta_report_trattato
 					k_titolo = "Materiale Trattato "
-				case ki_scelta_report_lotti_in_giacenza
+				case kiuf_int_artr.kki_scelta_report_lotti_in_giacenza
 					k_titolo = "Lotti in giacenza a magazzino "
 				case else
 					k_titolo = "Stampa " + trim(u_report_selezionato_title())
@@ -1281,7 +1282,7 @@ if tab_1.tabpage_1.dw_1.rowcount() <= 0 or tab_1.tabpage_1.dw_1.dataobject <> "d
 	try	
 //--- imposto l'utente (il "terminale") x costruire il nome della view
 		set_nome_utente_tab() //--- imposta il nome utente da utilizzare x i nomi view 
-		tab_1.tabpage_1.dw_1.setitem(1, "utente", kist_int_artr.utente)
+		tab_1.tabpage_1.dw_1.setitem(1, "utente", ki_st_int_artr.utente)
 	
 		
 	catch (uo_exception kuo_exception)
@@ -1402,7 +1403,7 @@ if tab_1.tabpage_1.dw_1.rowcount() <= 0 or tab_1.tabpage_1.dw_1.dataobject <> "d
 	try	
 //--- imposto l'utente (il "terminale") x costruire il nome della view
 		set_nome_utente_tab() //--- imposta il nome utente da utilizzare x i nomi view 
-		tab_1.tabpage_1.dw_1.setitem(1, "utente", kist_int_artr.utente)
+		tab_1.tabpage_1.dw_1.setitem(1, "utente", ki_st_int_artr.utente)
 	
 		
 	catch (uo_exception kuo_exception)
@@ -1614,7 +1615,7 @@ if tab_1.tabpage_1.dw_1.rowcount() <= 0 or tab_1.tabpage_1.dw_1.dataobject <> "d
 	try	
 //--- imposto l'utente (il "terminale") x costruire il nome della view
 		set_nome_utente_tab() //--- imposta il nome utente da utilizzare x i nomi view 
-		tab_1.tabpage_1.dw_1.setitem(1, "utente", kist_int_artr.utente)
+		tab_1.tabpage_1.dw_1.setitem(1, "utente", ki_st_int_artr.utente)
 
 		tab_1.tabpage_1.dw_1.getchild("clie_1", kdwc_cliente)
 		kdwc_cliente.settransobject(sqlca)
@@ -1755,7 +1756,7 @@ if tab_1.tabpage_1.dw_1.rowcount() <= 0 or tab_1.tabpage_1.dw_1.dataobject <> "d
 	try	
 //--- imposto l'utente (il "terminale") x costruire il nome della view
 		set_nome_utente_tab() //--- imposta il nome utente da utilizzare x i nomi view 
-		tab_1.tabpage_1.dw_1.setitem(1, "utente", kist_int_artr.utente)
+		tab_1.tabpage_1.dw_1.setitem(1, "utente", ki_st_int_artr.utente)
 
 
 //--- prendi data oggi		
@@ -1810,17 +1811,17 @@ k_data_a = tab_1.tabpage_1.dw_1.getitemdate(1, "data_a") //data riferimento da
 if isnull(k_data_a) or k_data_a = date(0) or k_data_a = date("01/01/1900") or k_data_a = date("00/00/0000") then
 	k_data_a = k_dataoggi
 end if
-kist_int_artr.data_a = k_data_a
+ki_st_int_artr.data_a = k_data_a
 
 k_data_da_gg = tab_1.tabpage_1.dw_1.getitemnumber(1, "periodo") //num. giorni indietro 
 if isnull(k_data_da_gg) or k_data_da_gg = 0 then
 	k_data_da_gg = 90
 end if
-kist_int_artr.data_da = relativedate(kist_int_artr.data_a, - k_data_da_gg)
+ki_st_int_artr.data_da = relativedate(ki_st_int_artr.data_a, - k_data_da_gg)
 
-kist_int_artr.no_dose = tab_1.tabpage_1.dw_1.getitemnumber(1, "no_dose") //flag se dose esclusa o meno
-if isnull(kist_int_artr.no_dose) then
-	kist_int_artr.no_dose = 0
+ki_st_int_artr.no_dose = tab_1.tabpage_1.dw_1.getitemnumber(1, "no_dose") //flag se dose esclusa o meno
+if isnull(ki_st_int_artr.no_dose) then
+	ki_st_int_artr.no_dose = 0
 end if
 
 
@@ -1914,7 +1915,7 @@ if tab_1.tabpage_1.dw_1.rowcount() <= 0 or tab_1.tabpage_1.dw_1.dataobject <> "d
 			try	
 	//--- imposto l'utente (il "terminale") x costruire il nome della view
 				set_nome_utente_tab() //--- imposta il nome utente da utilizzare x i nomi view 
-				tab_1.tabpage_1.dw_1.setitem(1, "utente", kist_int_artr.utente)
+				tab_1.tabpage_1.dw_1.setitem(1, "utente", ki_st_int_artr.utente)
 			
 				
 				tab_1.tabpage_1.dw_1.setitem(1, "report", 1)
@@ -1923,8 +1924,8 @@ if tab_1.tabpage_1.dw_1.rowcount() <= 0 or tab_1.tabpage_1.dw_1.dataobject <> "d
 
 				tab_1.tabpage_1.dw_1.setitem(1, "num_int", 0)
 
-				kist_int_artr.anno = tab_1.tabpage_1.dw_1.getitemnumber(1, "anno")
-				if kist_int_artr.anno = 0 or isnull(kist_int_artr.anno ) then
+				ki_st_int_artr.anno = tab_1.tabpage_1.dw_1.getitemnumber(1, "anno")
+				if ki_st_int_artr.anno = 0 or isnull(ki_st_int_artr.anno ) then
 					tab_1.tabpage_1.dw_1.setitem(1, "anno", year(kg_dataoggi))
 				end if
 				
@@ -2011,7 +2012,7 @@ kuf_base kuf1_base
 	//--- piglia i parametri per l'estrazione 
 			get_parametri_7()
 
-			choose case kist_int_artr.flag_report
+			choose case ki_st_int_artr.flag_report
 				case 1
 					kdw_1.dataobject = "d_report_7_con_giri" 
 				case 2
@@ -2079,23 +2080,23 @@ try
 
 	kuf1_armo = create kuf_armo
 
-	kist_int_artr.id_meca_ini = 0
-	kist_int_artr.id_meca_fin = 0
+	ki_st_int_artr.id_meca_ini = 0
+	ki_st_int_artr.id_meca_fin = 0
 	k_data_a = date(0)
 	
 	//--- piglia param dalla window
-	kist_int_artr.num_int = tab_1.tabpage_1.dw_1.getitemnumber(1, "num_int") //num riferimento 
-	if isnull(kist_int_artr.num_int)  then
-		kist_int_artr.num_int = 0
+	ki_st_int_artr.num_int = tab_1.tabpage_1.dw_1.getitemnumber(1, "num_int") //num riferimento 
+	if isnull(ki_st_int_artr.num_int)  then
+		ki_st_int_artr.num_int = 0
 	end if
-	kist_int_artr.anno = tab_1.tabpage_1.dw_1.getitemnumber(1, "anno") //anno riferimento 
-	if isnull(kist_int_artr.anno) then
-		kist_int_artr.anno = year(kg_dataoggi)
+	ki_st_int_artr.anno = tab_1.tabpage_1.dw_1.getitemnumber(1, "anno") //anno riferimento 
+	if isnull(ki_st_int_artr.anno) then
+		ki_st_int_artr.anno = year(kg_dataoggi)
 	end if
-	kist_int_artr.id_meca_ini = 0
-	if kist_int_artr.num_int > 0 then
-		kst_tab_armo.num_int = kist_int_artr.num_int
-		kst_tab_armo.data_int = date(kist_int_artr.anno,01,01)
+	ki_st_int_artr.id_meca_ini = 0
+	if ki_st_int_artr.num_int > 0 then
+		kst_tab_armo.num_int = ki_st_int_artr.num_int
+		kst_tab_armo.data_int = date(ki_st_int_artr.anno,01,01)
 		kst_esito=kuf1_armo.get_id_meca(kst_tab_armo)
 	//=== Controllo esito riferimento
 		if kst_esito.esito <> kkg_esito.ok then
@@ -2104,26 +2105,26 @@ try
 		end if
 		
 		if kst_tab_armo.id_meca > 0 then
-			kist_int_artr.id_meca_ini = kst_tab_armo.id_meca 
+			ki_st_int_artr.id_meca_ini = kst_tab_armo.id_meca 
 		end if
 		
 	else
 	
-		kist_int_artr.non_entrati = tab_1.tabpage_1.dw_1.getitemstring(1, "non_entrati") //Senza data di entrata
+		ki_st_int_artr.non_entrati = tab_1.tabpage_1.dw_1.getitemstring(1, "non_entrati") //Senza data di entrata
 	
-		if kist_int_artr.non_entrati = "S" then
+		if ki_st_int_artr.non_entrati = "S" then
 		else
 			k_data_da = tab_1.tabpage_1.dw_1.getitemdate(1, "data_da") //data entrata riferimento a
 			if isnull(k_data_da) or k_data_da = date(0) or k_data_da = date("01/01/1900") or k_data_da = date("00/00/0000") then
 				k_data_da = k_dataoggi
 			end if
-			kist_int_artr.data_da = k_data_da
+			ki_st_int_artr.data_da = k_data_da
 		
 			k_data_a = tab_1.tabpage_1.dw_1.getitemdate(1, "data_a") //data entrata riferimento da
 			if isnull(k_data_a) or k_data_a = date(0) or k_data_a = date("01/01/1900") or k_data_a = date("00/00/0000") then
 				k_data_a = k_dataoggi
 			end if
-			kist_int_artr.data_a = k_data_a
+			ki_st_int_artr.data_a = k_data_a
 			
 			if k_data_a >= k_data_da then
 	//--- get del range ID meca dal periodo impostato	
@@ -2131,34 +2132,34 @@ try
 				k_time = time('23:59:59.000000')
 				kst_tab_meca_a.data_ent = datetime(k_data_a, k_time)
 				kuf1_armo.get_id_meca_min_max_x_data_ent(kst_tab_meca_da, kst_tab_meca_a)
-				kist_int_artr.id_meca_ini = kst_tab_meca_da.id
-				kist_int_artr.id_meca_fin = kst_tab_meca_a.id
+				ki_st_int_artr.id_meca_ini = kst_tab_meca_da.id
+				ki_st_int_artr.id_meca_fin = kst_tab_meca_a.id
 			end if
 		end if
 		
 	end if
 	
-	kist_int_artr.clie_3 = tab_1.tabpage_1.dw_1.getitemnumber(1, "id_clie_3") //Fatturato
-	if isnull(kist_int_artr.clie_3) then
-		kist_int_artr.clie_3 = 0
+	ki_st_int_artr.clie_3 = tab_1.tabpage_1.dw_1.getitemnumber(1, "id_clie_3") //Fatturato
+	if isnull(ki_st_int_artr.clie_3) then
+		ki_st_int_artr.clie_3 = 0
 	end if
 	
-	kist_int_artr.gru = tab_1.tabpage_1.dw_1.getitemnumber(1, "id_gruppo") //codice gruppo
-	if isnull(kist_int_artr.gru) then
-		kist_int_artr.gru = 0
+	ki_st_int_artr.gru = tab_1.tabpage_1.dw_1.getitemnumber(1, "id_gruppo") //codice gruppo
+	if isnull(ki_st_int_artr.gru) then
+		ki_st_int_artr.gru = 0
 	end if
-	kist_int_artr.gru_flag = tab_1.tabpage_1.dw_1.getitemnumber(1, "gruppo_flag") //flag tipo estrazione gruppo
-	if isnull(kist_int_artr.gru_flag) then
-		kist_int_artr.gru_flag = 2
+	ki_st_int_artr.gru_flag = tab_1.tabpage_1.dw_1.getitemnumber(1, "gruppo_flag") //flag tipo estrazione gruppo
+	if isnull(ki_st_int_artr.gru_flag) then
+		ki_st_int_artr.gru_flag = 2
 	end if
-	kist_int_artr.gru_attiva = tab_1.tabpage_1.dw_1.getitemnumber(1, "gruppo_attiva") //flag attiva/disattiva estrazione gruppo
-	if isnull(kist_int_artr.gru_attiva) then
-		kist_int_artr.gru_attiva = 0
+	ki_st_int_artr.gru_attiva = tab_1.tabpage_1.dw_1.getitemnumber(1, "gruppo_attiva") //flag attiva/disattiva estrazione gruppo
+	if isnull(ki_st_int_artr.gru_attiva) then
+		ki_st_int_artr.gru_attiva = 0
 	end if
 	
-	kist_int_artr.flag_report = tab_1.tabpage_1.dw_1.getitemnumber(1, "flag_report") //sceglie varie tipopolie di Report 0=normale
-	if isnull(kist_int_artr.flag_report) then
-		kist_int_artr.flag_report = 0
+	ki_st_int_artr.flag_report = tab_1.tabpage_1.dw_1.getitemnumber(1, "flag_report") //sceglie varie tipopolie di Report 0=normale
+	if isnull(ki_st_int_artr.flag_report) then
+		ki_st_int_artr.flag_report = 0
 	end if
 	
 	set_nome_utente_tab() //--- imposta il nome utente da utilizzare x i nomi view 
@@ -2171,7 +2172,7 @@ try
 		kGuo_exception.setmessage("Controlla le date immesse,~n~r data di fine periodo e' minore di quella di inizio")
 		throw kGuo_exception 
 	else
-		if	kist_int_artr.id_meca_ini > 0 then
+		if	ki_st_int_artr.id_meca_ini > 0 then
 		else
 			kGuo_exception.inizializza( )
 			kGuo_exception.set_tipo(kGuo_exception.kk_st_uo_exception_tipo_dati_non_eseguito)
@@ -2216,7 +2217,7 @@ if tab_1.tabpage_1.dw_1.rowcount() <= 0 or tab_1.tabpage_1.dw_1.dataobject <> "d
 	try	
 //--- imposto l'utente (il "terminale") x costruire il nome della view
 		set_nome_utente_tab() //--- imposta il nome utente da utilizzare x i nomi view 
-		tab_1.tabpage_1.dw_1.setitem(1, "utente", kist_int_artr.utente)
+		tab_1.tabpage_1.dw_1.setitem(1, "utente", ki_st_int_artr.utente)
 
 
 //--- prendi data oggi		
@@ -2271,17 +2272,17 @@ k_data_a = tab_1.tabpage_1.dw_1.getitemdate(1, "data_a") //data da cui far parti
 if isnull(k_data_a) or k_data_a = date(0) or k_data_a = date("01/01/1900") or k_data_a = date("00/00/0000") then
 	k_data_a = k_dataoggi
 end if
-kist_int_artr.data_a = k_data_a
+ki_st_int_artr.data_a = k_data_a
 
 k_data_da_gg = tab_1.tabpage_1.dw_1.getitemnumber(1, "periodo") //num. giorni di max giacenza x un lotto gia' certificato 
 if isnull(k_data_da_gg)  then
 	k_data_da_gg = 5
 end if
-kist_int_artr.data_da = relativedate(kist_int_artr.data_a, - k_data_da_gg)
+ki_st_int_artr.data_da = relativedate(ki_st_int_artr.data_a, - k_data_da_gg)
 
-kist_int_artr.no_dose = tab_1.tabpage_1.dw_1.getitemnumber(1, "no_dose") //flag se dose esclusa o meno
-if isnull(kist_int_artr.no_dose) then
-	kist_int_artr.no_dose = 0
+ki_st_int_artr.no_dose = tab_1.tabpage_1.dw_1.getitemnumber(1, "no_dose") //flag se dose esclusa o meno
+if isnull(ki_st_int_artr.no_dose) then
+	ki_st_int_artr.no_dose = 0
 end if
 
 
@@ -2308,7 +2309,7 @@ kpointer = SetPointer(HourGlass!)
 
 
 //--- costruisco la view con ID_MECA delle fatture emesse da data a data
-	k_view = "vx_" + trim(kist_int_artr.utente) + "_report_8 "
+	k_view = "vx_" + trim(ki_st_int_artr.utente) + "_report_8 "
 	k_sql = " "                                   
 	k_sql = + &
 	"CREATE VIEW " + trim(k_view) &
@@ -2324,10 +2325,10 @@ kpointer = SetPointer(HourGlass!)
 			+ " ON meca.id = armo.id_meca " &
 			+ " left outer JOIN arsp " &
 			+ " ON armo.id_armo = arsp.id_armo " &
-			+ " and (arsp.data_bolla_out <= '" + string(kist_int_artr.data_a) + "' or arsp.data_bolla_out is null)" &
+			+ " and (arsp.data_bolla_out <= '" + string(ki_st_int_artr.data_a) + "' or arsp.data_bolla_out is null)" &
 			+ " WHERE  " &
-			+ " certif.data between '" + string(relativedate(kist_int_artr.data_da, -270)) + "' and' " + string(kist_int_artr.data_da) + "' "  
-		if kist_int_artr.no_dose = 1 then
+			+ " certif.data between '" + string(relativedate(ki_st_int_artr.data_da, -270)) + "' and' " + string(ki_st_int_artr.data_da) + "' "  
+		if ki_st_int_artr.no_dose = 1 then
 			k_sql += &
 				 " and armo.dose > 0 " 
 		end if
@@ -2350,12 +2351,31 @@ end subroutine
 
 protected subroutine open_start_window ();//---
 kiuf_utility = create kuf_utility
+kiuf_int_artr = create kuf_int_artr
 
 this.tab_1.tabpage_1.ddplb_report.event u_constructor( )
 
 //tab_1.tabpage_1.picturename = kGuo_path.get_risorse() + "\edit16.gif" 
 tab_1.tabpage_2.text = "Report ?"
 tab_1.tabpage_2.picturename = "VCRNext!"
+
+//--- parametri ingresso ad esempio per fare subito un report
+if not isnull(ki_st_open_w.key12_any) then
+	ki_st_int_artr = ki_st_open_w.key12_any
+	if ki_st_int_artr.report_start > 0 then
+		if u_scegli_report(ki_st_int_artr.report_start) then
+			if ki_st_int_artr.report_autorefresh_min > 0 then
+				timer(ki_st_int_artr.report_autorefresh_min * 60)
+			end if
+		else
+			messagebox("Report", "Report richiesto n. " + string(ki_st_int_artr.report_start) + " non trovato!", stopsign!)
+		end if
+		if ki_st_int_artr.report_start_only then
+			tab_1.tabpage_1.dw_1.enabled = false
+			tab_1.tabpage_1.ddplb_report.enabled = false
+		end if
+	end if
+end if
 
 end subroutine
 
@@ -2383,7 +2403,7 @@ if tab_1.tabpage_1.dw_1.rowcount() <= 0 or tab_1.tabpage_1.dw_1.dataobject <> "d
 	try	
 //--- imposto l'utente (il "terminale") x costruire il nome della view
 		set_nome_utente_tab() //--- imposta il nome utente da utilizzare x i nomi view 
-		tab_1.tabpage_1.dw_1.setitem(1, "utente", kist_int_artr.utente)
+		tab_1.tabpage_1.dw_1.setitem(1, "utente", ki_st_int_artr.utente)
 		tab_1.tabpage_1.dw_1.Object.b_registra.Enabled="No"
 //		k_rcx = tab_1.tabpage_1.dw_1.modify("b_registra.enabled = 0")
 			
@@ -2491,7 +2511,7 @@ if tab_1.tabpage_1.dw_1.rowcount() <= 0 or tab_1.tabpage_1.dw_1.dataobject <> "d
 	try	
 //--- imposto l'utente (il "terminale") x costruire il nome della view
 		set_nome_utente_tab() //--- imposta il nome utente da utilizzare x i nomi view 
-		tab_1.tabpage_1.dw_1.setitem(1, "utente", kist_int_artr.utente)
+		tab_1.tabpage_1.dw_1.setitem(1, "utente", ki_st_int_artr.utente)
 			
 	//--- prendi dati
 		kuf1_report_merce_da_sped = create kuf_report_merce_da_sped
@@ -2573,15 +2593,15 @@ datetime k_data_ent_da, k_data_ent_a
 			if isnull(kst_tab_meca_a.num_int) then kst_tab_meca_a.num_int = 0	
 			k_data_da = tab_1.tabpage_1.dw_1.getitemdate(1, "data_da") //data entrata riferimento da
 			k_data_a = tab_1.tabpage_1.dw_1.getitemdate(1, "data_a") //data entrata riferimento a
-			kist_int_artr.clie_1 = tab_1.tabpage_1.dw_1.getitemnumber(1, "id_clie_1") //Mandante
-			if isnull(kist_int_artr.clie_1) then kist_int_artr.clie_1 = 0	
-//			kist_int_artr.clie_2 = tab_1.tabpage_1.dw_1.getitemnumber(1, "id_clie_2") //Ricev
-//			kist_int_artr.clie_3 = tab_1.tabpage_1.dw_1.getitemnumber(1, "id_clie_3") //Fatturato
-//			kist_int_artr.m_r_f = tab_1.tabpage_1.dw_1.getitemstring(1, "m_r_f") //estrae tipo estrazione nominativi
-			kist_int_artr.num_bolla_in = tab_1.tabpage_1.dw_1.getitemstring(1, "num_bolla_in") //Bolla mandante
-			kist_int_artr.anno_bolla_in = tab_1.tabpage_1.dw_1.getitemnumber(1, "anno_bolla_in") //Bolla mandante
-			if isnull(kist_int_artr.anno_bolla_in) then	 kist_int_artr.anno_bolla_in = 0	
-			if isnull(kist_int_artr.num_bolla_in) then	 kist_int_artr.num_bolla_in = " "	
+			ki_st_int_artr.clie_1 = tab_1.tabpage_1.dw_1.getitemnumber(1, "id_clie_1") //Mandante
+			if isnull(ki_st_int_artr.clie_1) then ki_st_int_artr.clie_1 = 0	
+//			ki_st_int_artr.clie_2 = tab_1.tabpage_1.dw_1.getitemnumber(1, "id_clie_2") //Ricev
+//			ki_st_int_artr.clie_3 = tab_1.tabpage_1.dw_1.getitemnumber(1, "id_clie_3") //Fatturato
+//			ki_st_int_artr.m_r_f = tab_1.tabpage_1.dw_1.getitemstring(1, "m_r_f") //estrae tipo estrazione nominativi
+			ki_st_int_artr.num_bolla_in = tab_1.tabpage_1.dw_1.getitemstring(1, "num_bolla_in") //Bolla mandante
+			ki_st_int_artr.anno_bolla_in = tab_1.tabpage_1.dw_1.getitemnumber(1, "anno_bolla_in") //Bolla mandante
+			if isnull(ki_st_int_artr.anno_bolla_in) then	 ki_st_int_artr.anno_bolla_in = 0	
+			if isnull(ki_st_int_artr.num_bolla_in) then	 ki_st_int_artr.num_bolla_in = " "	
 			kst_tab_nazioni.gruppo = tab_1.tabpage_1.dw_1.getitemstring(1, "nazioni_gruppo_1") //Bolla mandante
 			if isnull(kst_tab_nazioni.gruppo) then	 kst_tab_nazioni.gruppo = " "	
 
@@ -2611,10 +2631,10 @@ datetime k_data_ent_da, k_data_ent_a
 				                                  ,kst_tab_meca_a.id  &
 															 ,k_data_int_da  &
 				                                  ,k_data_int_a  &
-															 ,kist_int_artr.clie_1  &						 
+															 ,ki_st_int_artr.clie_1  &						 
 				                                  ,kst_tab_nazioni.gruppo &
-															 ,kist_int_artr.anno_bolla_in &
-															 ,kist_int_artr.num_bolla_in &
+															 ,ki_st_int_artr.anno_bolla_in &
+															 ,ki_st_int_artr.num_bolla_in &
 															 ,k_data_ent_da &
 															 ,k_data_ent_a &
 															)
@@ -2699,7 +2719,7 @@ kuf_base kuf1_base
 		
 	//--- Aggiorna SQL della dw	
 			k_sql_orig = kdw_1.Object.DataWindow.Table.Select 
-			k_stringn = "vx_" + trim(kist_int_artr.utente) + "_report_8"
+			k_stringn = "vx_" + trim(ki_st_int_artr.utente) + "_report_8"
 			k_string = "vx_MAST2_report_8"
 			k_ctr = PosA(k_sql_orig, k_string, 1)
 			DO WHILE k_ctr > 0 and trim(k_string) <> trim(k_stringn)  
@@ -3121,7 +3141,7 @@ if tab_1.tabpage_1.dw_1.rowcount() <= 0 or tab_1.tabpage_1.dw_1.dataobject <> "d
 
 //--- imposto l'utente (il "terminale") x costruire il nome della view
 		set_nome_utente_tab() //--- imposta il nome utente da utilizzare x i nomi view 
-		tab_1.tabpage_1.dw_1.setitem(1, "utente", kist_int_artr.utente)
+		tab_1.tabpage_1.dw_1.setitem(1, "utente", ki_st_int_artr.utente)
 			
 	//--- prendi dati
 		kuf1_report_etichette_lotti = create kuf_report_etichette_lotti
@@ -3263,7 +3283,7 @@ if tab_1.tabpage_1.dw_1.rowcount() <= 0 or tab_1.tabpage_1.dw_1.dataobject <> "d
 	try	
 //--- imposto l'utente (il "terminale") x costruire il nome della view
 		set_nome_utente_tab() //--- imposta il nome utente da utilizzare x i nomi view 
-		tab_1.tabpage_1.dw_1.setitem(1, "utente", kist_int_artr.utente)
+		tab_1.tabpage_1.dw_1.setitem(1, "utente", ki_st_int_artr.utente)
 			
 	//--- imposta dati di default
 		tab_1.tabpage_1.dw_1.setitem(1, "data_pl", kg_dataoggi )
@@ -3416,7 +3436,7 @@ if tab_1.tabpage_1.dw_1.rowcount() <= 0 or tab_1.tabpage_1.dw_1.dataobject <> "d
 	try	
 //--- imposto l'utente (il "terminale") x costruire il nome della view
 		set_nome_utente_tab() //--- imposta il nome utente da utilizzare x i nomi view 
-		tab_1.tabpage_1.dw_1.setitem(1, "utente", kist_int_artr.utente)
+		tab_1.tabpage_1.dw_1.setitem(1, "utente", ki_st_int_artr.utente)
 			
 	//--- prendi dati
 		kuf1_report_etichette_lotti = create kuf_report_etichette_lotti
@@ -3486,7 +3506,7 @@ if tab_1.tabpage_1.dw_1.rowcount() <= 0 or tab_1.tabpage_1.dw_1.dataobject <> "d
 	try	
 //--- imposto l'utente (il "terminale") x costruire il nome della view
 		set_nome_utente_tab() //--- imposta il nome utente da utilizzare x i nomi view 
-		tab_1.tabpage_1.dw_1.setitem(1, "utente", kist_int_artr.utente)
+		tab_1.tabpage_1.dw_1.setitem(1, "utente", ki_st_int_artr.utente)
 			
 	//--- prendi dati
 		kuf1_report_merce_sped = create kuf_report_merce_sped
@@ -3628,7 +3648,7 @@ if tab_1.tabpage_1.dw_1.rowcount() <= 0 or tab_1.tabpage_1.dw_1.dataobject <> "d
 	try	
 //--- imposto l'utente (il "terminale") x costruire il nome della view
 		set_nome_utente_tab() //--- imposta il nome utente da utilizzare x i nomi view 
-		tab_1.tabpage_1.dw_1.setitem(1, "utente", kist_int_artr.utente)
+		tab_1.tabpage_1.dw_1.setitem(1, "utente", ki_st_int_artr.utente)
 
 
 //--- prendi data oggi	
@@ -3687,11 +3707,11 @@ if isnull(k_data_a) or k_data_a = date(0) or k_data_a = date("01/01/1900") or k_
 	k_data_a = kguo_g.get_dataoggi( )
 	tab_1.tabpage_1.dw_1.setitem(1, "data_a", k_data_a)
 end if
-kist_int_artr.data_a = k_data_a
+ki_st_int_artr.data_a = k_data_a
 
-kist_int_artr.clie_1 = tab_1.tabpage_1.dw_1.getitemnumber(1, "id_clie_1") //Mandante
-if isnull(kist_int_artr.clie_1) then
-	kist_int_artr.clie_1 = 0
+ki_st_int_artr.clie_1 = tab_1.tabpage_1.dw_1.getitemnumber(1, "id_clie_1") //Mandante
+if isnull(ki_st_int_artr.clie_1) then
+	ki_st_int_artr.clie_1 = 0
 end if
 
 
@@ -3742,7 +3762,7 @@ kuf_utility kuf1_utility
 	//--- piglia i parametri per l'estrazione 
 			get_parametri_15()
 	
-			k_righe = kdw_1.retrieve(kist_int_artr.data_a, kist_int_artr.clie_1)
+			k_righe = kdw_1.retrieve(ki_st_int_artr.data_a, ki_st_int_artr.clie_1)
 
 		end if
 
@@ -3786,7 +3806,7 @@ if tab_1.tabpage_1.dw_1.rowcount() <= 0 or tab_1.tabpage_1.dw_1.dataobject <> "d
 	try	
 //--- imposto l'utente (il "terminale") x costruire il nome della view
 		set_nome_utente_tab() //--- imposta il nome utente da utilizzare x i nomi view 
-		tab_1.tabpage_1.dw_1.setitem(1, "utente", kist_int_artr.utente)
+		tab_1.tabpage_1.dw_1.setitem(1, "utente", ki_st_int_artr.utente)
 
 
 //--- prendi data oggi	
@@ -3846,11 +3866,11 @@ if isnull(k_data_da) or k_data_da = date(0) then
 	kGuo_exception.setmessage("Data assente non ammessa,~n~rimposto in automatico la data a inizio mese")
 	throw kGuo_exception 
 end if
-kist_int_artr.data_da = k_data_da
+ki_st_int_artr.data_da = k_data_da
 
-kist_int_artr.art = tab_1.tabpage_1.dw_1.getitemstring(1, "art") //Mandante
-if isnull(kist_int_artr.art) then
-	kist_int_artr.art = "%"
+ki_st_int_artr.art = tab_1.tabpage_1.dw_1.getitemstring(1, "art") //Mandante
+if isnull(ki_st_int_artr.art) then
+	ki_st_int_artr.art = "%"
 end if
 
 
@@ -3904,7 +3924,7 @@ kuf_base kuf1_base
 	//--- piglia i parametri per l'estrazione 
 			get_parametri_16()
 	
-			k_righe = kdw_1.retrieve(kist_int_artr.data_da, kist_int_artr.art)
+			k_righe = kdw_1.retrieve(ki_st_int_artr.data_da, ki_st_int_artr.art)
 
 		end if
 
@@ -3950,11 +3970,11 @@ if isnull(k_data_da) or k_data_da = date(0) then
 	kGuo_exception.setmessage("Data assente non ammessa,~n~rimposto in automatico la data a inizio mese")
 	throw kGuo_exception 
 end if
-kist_int_artr.data_da = k_data_da
+ki_st_int_artr.data_da = k_data_da
 
-kist_int_artr.stato = tab_1.tabpage_1.dw_1.getitemstring(1, "stato") //Mandante
-if isnull(kist_int_artr.stato) then
-	kist_int_artr.stato = "0"
+ki_st_int_artr.stato = tab_1.tabpage_1.dw_1.getitemstring(1, "stato") //Mandante
+if isnull(ki_st_int_artr.stato) then
+	ki_st_int_artr.stato = "0"
 end if
 
 
@@ -4008,7 +4028,7 @@ kuf_base kuf1_base
 	//--- piglia i parametri per l'estrazione 
 			get_parametri_17()
 	
-			k_righe = kdw_1.retrieve(kist_int_artr.data_da, kist_int_artr.stato)
+			k_righe = kdw_1.retrieve(ki_st_int_artr.data_da, ki_st_int_artr.stato)
 
 		end if
 
@@ -4056,7 +4076,7 @@ if tab_1.tabpage_1.dw_1.rowcount() <= 0 or tab_1.tabpage_1.dw_1.dataobject <> "d
 	try	
 //--- imposto l'utente (il "terminale") x costruire il nome della view
 		set_nome_utente_tab() //--- imposta il nome utente da utilizzare x i nomi view 
-		tab_1.tabpage_1.dw_1.setitem(1, "utente", kist_int_artr.utente)
+		tab_1.tabpage_1.dw_1.setitem(1, "utente", ki_st_int_artr.utente)
 
 
 //--- prendi data oggi	
@@ -4121,7 +4141,7 @@ if tab_1.tabpage_1.dw_1.rowcount() <= 0 or tab_1.tabpage_1.dw_1.dataobject <> "d
 	try	
 //--- imposto l'utente (il "terminale") x costruire il nome della view
 		set_nome_utente_tab() //--- imposta il nome utente da utilizzare x i nomi view 
-		tab_1.tabpage_1.dw_1.setitem(1, "utente", kist_int_artr.utente)
+		tab_1.tabpage_1.dw_1.setitem(1, "utente", ki_st_int_artr.utente)
 
 
 		tab_1.tabpage_1.dw_1.setitem(1, "x_data", relativedate(kguo_g.get_dataoggi(), -31) )	
@@ -4193,13 +4213,13 @@ kuf_sped kuf1_sped
 
 	//--- piglia i parametri per l'estrazione 
 			get_parametri_18()
-			k_dataora = datetime(kist_int_artr.data_da)
+			k_dataora = datetime(ki_st_int_artr.data_da)
 			
 			kdw_1.visible = true
 			
-			if kist_int_artr.num_int > 0 then
-				kst_tab_meca.num_int = kist_int_artr.num_int
-				kst_tab_meca.data_int = date(kist_int_artr.anno, 01, 01)
+			if ki_st_int_artr.num_int > 0 then
+				kst_tab_meca.num_int = ki_st_int_artr.num_int
+				kst_tab_meca.data_int = date(ki_st_int_artr.anno, 01, 01)
 				kuf1_armo = create kuf_armo
 				kuf1_armo.get_id_meca(kst_tab_meca)
 				if kst_tab_meca.id > 0 then
@@ -4209,9 +4229,9 @@ kuf_sped kuf1_sped
 				k_rc = kdw_1.settransobject(sqlca)
 				k_righe = kdw_1.retrieve(kguf_memo_allarme.kki_memo_allarme_meca,kst_tab_meca.id, kst_tab_meca.clie_1, kst_tab_meca.clie_2, kst_tab_meca.clie_3 )
 			else
-				if kist_int_artr.num_bolla_out > 0 then
-					kst_tab_sped.num_bolla_out = kist_int_artr.num_bolla_out
-					kst_tab_sped.data_bolla_out = date(kist_int_artr.anno, 01, 01)
+				if ki_st_int_artr.num_bolla_out > 0 then
+					kst_tab_sped.num_bolla_out = ki_st_int_artr.num_bolla_out
+					kst_tab_sped.data_bolla_out = date(ki_st_int_artr.anno, 01, 01)
 					kuf1_sped = create kuf_sped
 					kuf1_sped.get_id_sped_anno(kst_tab_sped)
 					if kst_tab_sped.id_sped > 0 then
@@ -4221,9 +4241,9 @@ kuf_sped kuf1_sped
 					k_rc = kdw_1.settransobject(sqlca)
 					k_righe = kdw_1.retrieve(kguf_memo_allarme.kki_memo_allarme_ddt ,kst_tab_sped.id_sped, kst_tab_sped.clie_2)
 				else
-					if kist_int_artr.num_fatt > 0 then
-						kst_tab_arfa.num_fatt = kist_int_artr.num_fatt
-						kst_tab_arfa.data_fatt = date(kist_int_artr.anno, 01, 01)
+					if ki_st_int_artr.num_fatt > 0 then
+						kst_tab_arfa.num_fatt = ki_st_int_artr.num_fatt
+						kst_tab_arfa.data_fatt = date(ki_st_int_artr.anno, 01, 01)
 						kuf1_fatt = create kuf_fatt
 						kuf1_fatt.get_id(kst_tab_arfa)
 						if kst_tab_arfa.id_fattura > 0 then
@@ -4235,7 +4255,7 @@ kuf_sped kuf1_sped
 					else
 						kdw_1.dataobject = "d_report_18_memo_l"
 						k_rc = kdw_1.settransobject(sqlca)
-						k_righe = kdw_1.retrieve(kist_int_artr.ricerca, kist_int_artr.settore, kist_int_artr.clie_1, kist_int_artr.x_utente, k_dataora, kist_int_artr.ricerca_rid )
+						k_righe = kdw_1.retrieve(ki_st_int_artr.ricerca, ki_st_int_artr.settore, ki_st_int_artr.clie_1, ki_st_int_artr.x_utente, k_dataora, ki_st_int_artr.ricerca_rid )
 					end if
 				end if
 			end if
@@ -4274,34 +4294,34 @@ set_nome_utente_tab() //--- imposta il nome utente da utilizzare x i nomi view
 
 
 //--- piglia param dalla window
-kist_int_artr.anno = tab_1.tabpage_1.dw_1.getitemnumber(1, "anno") //anno
-kist_int_artr.num_int = tab_1.tabpage_1.dw_1.getitemnumber(1, "num_int") //lotto
-kist_int_artr.num_bolla_out = tab_1.tabpage_1.dw_1.getitemnumber(1, "num_ddt") //ddt
-kist_int_artr.num_fatt = tab_1.tabpage_1.dw_1.getitemnumber(1, "num_fatt") //fattura
+ki_st_int_artr.anno = tab_1.tabpage_1.dw_1.getitemnumber(1, "anno") //anno
+ki_st_int_artr.num_int = tab_1.tabpage_1.dw_1.getitemnumber(1, "num_int") //lotto
+ki_st_int_artr.num_bolla_out = tab_1.tabpage_1.dw_1.getitemnumber(1, "num_ddt") //ddt
+ki_st_int_artr.num_fatt = tab_1.tabpage_1.dw_1.getitemnumber(1, "num_fatt") //fattura
 
-kist_int_artr.ricerca_rid =  trim(tab_1.tabpage_1.dw_1.getitemstring(1, "ricerca"))   // dicitura da cercare su titolo+note del memo
-if kist_int_artr.ricerca_rid > " " then
-	kist_int_artr.ricerca = "%" + trim(kist_int_artr.ricerca_rid) + "%"
+ki_st_int_artr.ricerca_rid =  trim(tab_1.tabpage_1.dw_1.getitemstring(1, "ricerca"))   // dicitura da cercare su titolo+note del memo
+if ki_st_int_artr.ricerca_rid > " " then
+	ki_st_int_artr.ricerca = "%" + trim(ki_st_int_artr.ricerca_rid) + "%"
 else
-	kist_int_artr.ricerca = "%"
+	ki_st_int_artr.ricerca = "%"
 end if
 
-kist_int_artr.settore = trim(tab_1.tabpage_1.dw_1.getitemstring(1, "settore")) //settore
-if isnull(kist_int_artr.settore) then
-	kist_int_artr.settore = ""
+ki_st_int_artr.settore = trim(tab_1.tabpage_1.dw_1.getitemstring(1, "settore")) //settore
+if isnull(ki_st_int_artr.settore) then
+	ki_st_int_artr.settore = ""
 end if
 
-kist_int_artr.clie_1 = tab_1.tabpage_1.dw_1.getitemnumber(1, "id_clie_1") //anagrafica
-if isnull(kist_int_artr.clie_1) then
-	kist_int_artr.clie_1 = 0
+ki_st_int_artr.clie_1 = tab_1.tabpage_1.dw_1.getitemnumber(1, "id_clie_1") //anagrafica
+if isnull(ki_st_int_artr.clie_1) then
+	ki_st_int_artr.clie_1 = 0
 end if
-kist_int_artr.data_da = tab_1.tabpage_1.dw_1.getitemdate(1, "x_data") //data 
-if isnull(kist_int_artr.data_da) then
-	kist_int_artr.data_da = date(0)
+ki_st_int_artr.data_da = tab_1.tabpage_1.dw_1.getitemdate(1, "x_data") //data 
+if isnull(ki_st_int_artr.data_da) then
+	ki_st_int_artr.data_da = date(0)
 end if
-kist_int_artr.x_utente =  trim(tab_1.tabpage_1.dw_1.getitemstring(1, "x_utente")) //utente di creazione eaggiornamento memo
-if isnull(kist_int_artr.x_utente) then
-	kist_int_artr.x_utente = ""
+ki_st_int_artr.x_utente =  trim(tab_1.tabpage_1.dw_1.getitemstring(1, "x_utente")) //utente di creazione eaggiornamento memo
+if isnull(ki_st_int_artr.x_utente) then
+	ki_st_int_artr.x_utente = ""
 end if
 
 
@@ -4331,20 +4351,20 @@ if isnull(k_data_a) or k_data_a = date(0) or k_data_a = date("01/01/1900") or k_
 	k_data_a = kguo_g.get_dataoggi( )
 	tab_1.tabpage_1.dw_1.setitem(1, "data_a", k_data_a)
 end if
-kist_int_artr.data_a = k_data_a
+ki_st_int_artr.data_a = k_data_a
 k_data_da = tab_1.tabpage_1.dw_1.getitemdate(1, "data_da") 
 if isnull(k_data_da) or k_data_da = date(0) then
-	k_data_da = relativedate(kist_int_artr.data_a, -270)
+	k_data_da = relativedate(ki_st_int_artr.data_a, -270)
 	tab_1.tabpage_1.dw_1.setitem(1, "data_da", k_data_da)
 	kGuo_exception.setmessage("Data assente non ammessa,~n~rimposto in automatico la data a inizio mese")
 	throw kGuo_exception 
 end if
-kist_int_artr.data_da = k_data_da
+ki_st_int_artr.data_da = k_data_da
 
 
-kist_int_artr.clie_1 = tab_1.tabpage_1.dw_1.getitemnumber(1, "id_clie_1") //Mandante
-if isnull(kist_int_artr.clie_1) then
-	kist_int_artr.clie_1 = 0
+ki_st_int_artr.clie_1 = tab_1.tabpage_1.dw_1.getitemnumber(1, "id_clie_1") //Mandante
+if isnull(ki_st_int_artr.clie_1) then
+	ki_st_int_artr.clie_1 = 0
 end if
 
 
@@ -4394,7 +4414,7 @@ kuf_utility kuf1_utility
 	//--- piglia i parametri per l'estrazione 
 			get_parametri_19()
 	
-			k_righe = kdw_1.retrieve(kist_int_artr.clie_1, kist_int_artr.data_da, kist_int_artr.data_a)
+			k_righe = kdw_1.retrieve(ki_st_int_artr.clie_1, ki_st_int_artr.data_da, ki_st_int_artr.data_a)
 
 		end if
 
@@ -4440,7 +4460,7 @@ if tab_1.tabpage_1.dw_1.rowcount() <= 0 or tab_1.tabpage_1.dw_1.dataobject <> "d
 	try	
 //--- imposto l'utente (il "terminale") x costruire il nome della view
 		set_nome_utente_tab() //--- imposta il nome utente da utilizzare x i nomi view 
-		tab_1.tabpage_1.dw_1.setitem(1, "utente", kist_int_artr.utente)
+		tab_1.tabpage_1.dw_1.setitem(1, "utente", ki_st_int_artr.utente)
 
 //--- legge dwc mandante
 		tab_1.tabpage_1.dw_1.getchild("clie_1", kdwc_cliente)
@@ -4470,106 +4490,6 @@ attiva_tasti()
 	
 
 
-
-end subroutine
-
-public subroutine u_scegli_report (integer a_num_report);//
-
-ki_scelta_report = a_num_report
-
-if ki_scelta_report > 0 then
-	tab_1.tabpage_2.enabled = true
-end if
-
-//tab_1.tabpage_1.dw_1.reset()
-tab_1.tabpage_1.dw_1.setredraw(false)
-u_dw_selezione_save( )
-
-choose case ki_scelta_report
-
-	case ki_scelta_report_lotti_entrati //"riferimenti entrati"
-		report_7()
-
-	case ki_scelta_report_generico // "Interrogazione Generica"
-		report_1()
-
-	case ki_scelta_report_coda_pilota //"Coda di Lavorazione"
-		report_2()
-
-	case ki_scelta_report_in_trattamento //"In Trattamento"
-		report_3()
-
-	case ki_scelta_report_trattato //"Trattato"
-		report_4()
-
-	case ki_scelta_report_chk_intra //"controllo INTRA"
-		report_5()
-
-	case ki_scelta_report_RegArt50 //"Registro Articolo 50"
-		report_9()
-
-	case ki_scelta_report_lotti_in_giacenza //"lotti entrati e NON spediti"
-		report_6()
-
-	case ki_scelta_report_lotti_in_giacenza_gia_trattati //"lotti gia con ATTESTATO ma non spediti
-		report_8()
-
-	case ki_scelta_report_lotti_da_sped 	//"lotti da spedire
-		report_10()
-
-	case ki_scelta_report_lotti_sped 			//"lotti spediti
-		report_11()
-
-	case ki_scelta_report_etichette_lotti 	//"Etichette Lotti
-		report_12()
-
-	case ki_scelta_report_groupage 			//Groupage Pianificati
-		report_13()
-
-	case ki_scelta_report_etichettine 			//"Etichettina Dosimetro
-		report_14()
-
-	case ki_scelta_report_bcode_trattati 	//"Barcode Trattati
-		report_15()
-
-	case ki_scelta_report_art_movim 			//"Movimenti Articoli
-		report_16()
-		
-//	case ki_scelta_report_armo_prezzi 		//"Voci Lotto in ARMO_PREZZI
-//		report_17()
-		
-	case ki_scelta_report_memo 				//"Cerca su MEMO
-		report_18()
-		
-	case ki_scelta_report_lotti_sped_dafatt //"lotti spediti da fatturare
-		report_19()
-		
-	case ki_scelta_report_attestati  			//"Attestati
-		report_20()
-		
-	case ki_scelta_report_armo_Contratti  	//"Contratti entrati
-		report_21()
-
-	case ki_scelta_report_lavxcapitolato 	// "Dati lavorazione x Capitolato"
-		report_22()
-		
-	case ki_scelta_report_runsrtrrts 			// "Dati RUNS+RTR+RTS (Receipt to Release/Receipt to Ship)"
-		report_23()
-		
-	case ki_scelta_report_prevfinelav 		// Previsione inizio-fine lav Lotti su PILOTA
-		report_24()
-		
-	case ki_scelta_report_nrdosimetri		// Numero dosimetri previsti e prodotti
-		report_25()
-
-	case else  
-		report_0( )
-		
-end choose
-
-tab_1.tabpage_1.dw_1.setredraw(true)
-tab_1.tabpage_1.dw_1.visible = true
-tab_1.tabpage_1.dw_1.setfocus()
 
 end subroutine
 
@@ -4611,7 +4531,7 @@ if tab_1.tabpage_1.dw_1.rowcount() <= 0 or tab_1.tabpage_1.dw_1.dataobject <> "d
 	try	
 //--- imposto l'utente (il "terminale") x costruire il nome della view
 		set_nome_utente_tab() //--- imposta il nome utente da utilizzare x i nomi view 
-		tab_1.tabpage_1.dw_1.setitem(1, "utente", kist_int_artr.utente)
+		tab_1.tabpage_1.dw_1.setitem(1, "utente", ki_st_int_artr.utente)
 			
 		k_data_a = kguo_g.get_dataoggi( )
 		k_data_da = date(kguo_g.get_anno( ), kguo_g.get_mese( ), 01)
@@ -4680,7 +4600,7 @@ kuf_utility kuf1_utility
 	//--- piglia i parametri per l'estrazione 
 			get_parametri_20()
 	
-			k_righe = kdw_1.retrieve(kist_int_artr.data_da, kist_int_artr.data_a, kist_int_artr.mc_co, kist_int_artr.clie_3 )
+			k_righe = kdw_1.retrieve(ki_st_int_artr.data_da, ki_st_int_artr.data_a, ki_st_int_artr.mc_co, ki_st_int_artr.clie_3 )
 
 		end if
 
@@ -4728,22 +4648,22 @@ if k_data_da > k_data_a  then
 	throw kGuo_exception 
 end if
 
-kist_int_artr.data_a = k_data_a
-kist_int_artr.data_da = k_data_da
+ki_st_int_artr.data_a = k_data_a
+ki_st_int_artr.data_da = k_data_da
 
-kist_int_artr.mc_co = tab_1.tabpage_1.dw_1.getitemstring(1, "mc_co") //contratto CO
-if kist_int_artr.mc_co > " " then
+ki_st_int_artr.mc_co = tab_1.tabpage_1.dw_1.getitemstring(1, "mc_co") //contratto CO
+if ki_st_int_artr.mc_co > " " then
 	if  tab_1.tabpage_1.dw_1.getitemstring(1, "mc_co_ricerca_puntuale") = "S" then
 	else
-		kist_int_artr.mc_co = "%" + trim(kist_int_artr.mc_co) + "%"
+		ki_st_int_artr.mc_co = "%" + trim(ki_st_int_artr.mc_co) + "%"
 	end if
 else
-	kist_int_artr.mc_co = "%"
+	ki_st_int_artr.mc_co = "%"
 end if
 
-kist_int_artr.clie_3 = tab_1.tabpage_1.dw_1.getitemnumber(1, "id_clie_3") //Cliente
-if isnull(kist_int_artr.clie_3) then
-	kist_int_artr.clie_3 = 0
+ki_st_int_artr.clie_3 = tab_1.tabpage_1.dw_1.getitemnumber(1, "id_clie_3") //Cliente
+if isnull(ki_st_int_artr.clie_3) then
+	ki_st_int_artr.clie_3 = 0
 end if
 
 
@@ -4777,22 +4697,22 @@ if k_data_da > k_data_a  then
 	throw kGuo_exception 
 end if
 
-kist_int_artr.data_da = k_data_da
-kist_int_artr.data_a = k_data_a
+ki_st_int_artr.data_da = k_data_da
+ki_st_int_artr.data_a = k_data_a
 
-kist_int_artr.contratto = tab_1.tabpage_1.dw_1.getitemnumber(1, "codice") //id contratto CO
-if kist_int_artr.contratto > 0 then
+ki_st_int_artr.contratto = tab_1.tabpage_1.dw_1.getitemnumber(1, "codice") //id contratto CO
+if ki_st_int_artr.contratto > 0 then
 else
-	kist_int_artr.contratto = 0
+	ki_st_int_artr.contratto = 0
 end if
 
-kist_int_artr.clie_3 = tab_1.tabpage_1.dw_1.getitemnumber(1, "id_clie_3") //Cliente
-if isnull(kist_int_artr.clie_3) then
-	kist_int_artr.clie_3 = 0
+ki_st_int_artr.clie_3 = tab_1.tabpage_1.dw_1.getitemnumber(1, "id_clie_3") //Cliente
+if isnull(ki_st_int_artr.clie_3) then
+	ki_st_int_artr.clie_3 = 0
 end if
 
-if isnull(kist_int_artr.id_meca=0) then
-	kist_int_artr.id_meca = 0
+if isnull(ki_st_int_artr.id_meca=0) then
+	ki_st_int_artr.id_meca = 0
 end if
 
 end subroutine
@@ -4851,7 +4771,7 @@ if tab_1.tabpage_1.dw_1.rowcount() <= 0 or tab_1.tabpage_1.dw_1.dataobject <> "d
 	try	
 //--- imposto l'utente (il "terminale") x costruire il nome della view
 		set_nome_utente_tab() //--- imposta il nome utente da utilizzare x i nomi view 
-		tab_1.tabpage_1.dw_1.setitem(1, "utente", kist_int_artr.utente)
+		tab_1.tabpage_1.dw_1.setitem(1, "utente", ki_st_int_artr.utente)
 			
 		k_data_a = kguo_g.get_dataoggi( )
 		k_data_da = date(kguo_g.get_anno( ), kguo_g.get_mese( ), 01)
@@ -4923,7 +4843,7 @@ kuf_utility kuf1_utility
 	//--- piglia i parametri per l'estrazione 
 			get_parametri_21()
 	
-			k_righe = kdw_1.retrieve(kist_int_artr.data_da, kist_int_artr.data_a, kist_int_artr.clie_3, kist_int_artr.id_meca, kist_int_artr.contratto )
+			k_righe = kdw_1.retrieve(ki_st_int_artr.data_da, ki_st_int_artr.data_a, ki_st_int_artr.clie_3, ki_st_int_artr.id_meca, ki_st_int_artr.contratto )
 
 		end if
 
@@ -5302,7 +5222,7 @@ kuf_base kuf1_base
 		
 	//--- Aggiorna SQL della dw
 			k_sql_orig = kdw_1.Object.DataWindow.Table.Select 
-			k_stringn = "vx_" + trim(kist_int_artr.utente) + "_int_artr"
+			k_stringn = "vx_" + trim(ki_st_int_artr.utente) + "_int_artr"
 			k_string = "vx_MAST2_int_artr"
 			k_ctr = PosA(k_sql_orig, k_string, 1)
 			DO WHILE k_ctr > 0 and trim(k_string) <> trim(k_stringn)  
@@ -5527,79 +5447,79 @@ try
 
 	choose case ki_scelta_report 
 	
-		case ki_scelta_report_lotti_entrati
+		case kiuf_int_artr.kki_scelta_report_lotti_entrati
 			k_righe = report_7_inizializza(kdw_1)
 	
-		case ki_scelta_report_generico
+		case kiuf_int_artr.kki_scelta_report_generico
 			k_righe = report_1_inizializza(kdw_1)
 	
-		case ki_scelta_report_coda_pilota
+		case kiuf_int_artr.kki_scelta_report_coda_pilota
 			k_righe = report_2_inizializza(kdw_1)
 			
-		case ki_scelta_report_in_trattamento
+		case kiuf_int_artr.kki_scelta_report_in_trattamento
 			k_righe = report_3_inizializza(kdw_1)
 			
-		case ki_scelta_report_trattato
+		case kiuf_int_artr.kki_scelta_report_trattato
 			k_righe = report_4_inizializza(kdw_1)
 			
-		case ki_scelta_report_RegArt50
+		case kiuf_int_artr.kki_scelta_report_RegArt50
 			k_righe = report_9_inizializza(kdw_1)
 			
-		case ki_scelta_report_chk_intra
+		case kiuf_int_artr.kki_scelta_report_chk_intra
 			k_righe = report_5_inizializza(kdw_1)
 	
-		case ki_scelta_report_lotti_in_giacenza
+		case kiuf_int_artr.kki_scelta_report_lotti_in_giacenza
 			k_righe = report_6_inizializza(kdw_1)
 	
-		case ki_scelta_report_lotti_in_giacenza_gia_trattati
+		case kiuf_int_artr.kki_scelta_report_lotti_in_giacenza_gia_trattati
 			k_righe = report_8_inizializza(kdw_1)
 			
-		case ki_scelta_report_lotti_da_sped
+		case kiuf_int_artr.kki_scelta_report_lotti_da_sped
 			k_righe = report_10_inizializza(kdw_1)
 			
-		case ki_scelta_report_lotti_sped
+		case kiuf_int_artr.kki_scelta_report_lotti_sped
 			k_righe = report_11_inizializza(kdw_1)
 			
-		case ki_scelta_report_etichette_lotti
+		case kiuf_int_artr.kki_scelta_report_etichette_lotti
 			k_righe = report_12_inizializza(kdw_1)
 
-		case ki_scelta_report_groupage
+		case kiuf_int_artr.kki_scelta_report_groupage
 			k_righe = report_13_inizializza(kdw_1)
 
-		case ki_scelta_report_etichettine
+		case kiuf_int_artr.kki_scelta_report_etichettine
 			k_righe = report_14_inizializza(kdw_1)
 			
-		case ki_scelta_report_bcode_trattati
+		case kiuf_int_artr.kki_scelta_report_bcode_trattati
 			k_righe = report_15_inizializza(kdw_1)
 			
-		case ki_scelta_report_art_movim //"Movimenti Articoli
+		case kiuf_int_artr.kki_scelta_report_art_movim //"Movimenti Articoli
 			k_righe = report_16_inizializza(kdw_1)
 			
-//		case ki_scelta_report_armo_prezzi //"voci lotto in armo_prezzi
+//		case kiuf_int_artr.kki_scelta_report_armo_prezzi //"voci lotto in armo_prezzi
 //			k_righe = report_17_inizializza(kdw_1)
 
-		case ki_scelta_report_memo //Cerca su MEMO
+		case kiuf_int_artr.kki_scelta_report_memo //Cerca su MEMO
 			k_righe = report_18_inizializza(kdw_1)
 
-		case ki_scelta_report_lotti_sped_daFatt //lotti sped da fatt
+		case kiuf_int_artr.kki_scelta_report_lotti_sped_daFatt //lotti sped da fatt
 			k_righe = report_19_inizializza(kdw_1)
 
-		case ki_scelta_report_attestati //Attestati
+		case kiuf_int_artr.kki_scelta_report_attestati //Attestati
 			k_righe = report_20_inizializza(kdw_1)
 
-		case ki_scelta_report_armo_contratti // Contratti entrati
+		case kiuf_int_artr.kki_scelta_report_armo_contratti // Contratti entrati
 			k_righe = report_21_inizializza(kdw_1)
 
-		case ki_scelta_report_LavxCapitolato // Capitolati di fornitura
+		case kiuf_int_artr.kki_scelta_report_LavxCapitolato // Capitolati di fornitura
 			k_righe = report_22_inizializza(kdw_1)
 
-		case ki_scelta_report_runsrtrrts // dati RUNS+RTR+RTS
+		case kiuf_int_artr.kki_scelta_report_runsrtrrts // dati RUNS+RTR+RTS
 			k_righe = report_23_inizializza(kdw_1)
 
-		case ki_scelta_report_prevfinelav // Previsione INIZ-FINE lavorazione Lotti nel Pilota in Impianto 
+		case kiuf_int_artr.kki_scelta_report_prevfinelav // Previsione INIZ-FINE lavorazione Lotti nel Pilota in Impianto 
 			k_righe = report_24_inizializza(kdw_1)
 			
-		case ki_scelta_report_nrdosimetri // Numero dosimetri previsti e prodotti
+		case kiuf_int_artr.kki_scelta_report_nrdosimetri // Numero dosimetri previsti e prodotti
 			k_righe = report_25_inizializza(kdw_1)
 	
 		case else
@@ -6158,7 +6078,7 @@ kuf_utility kuf1_utility
 
 	//--- Aggiorna SQL della dw	
 			k_sql_orig = kdw_1.Object.DataWindow.Table.Select 
-			k_stringn = "vx_" + trim(kist_int_artr.utente) + "_report_22"
+			k_stringn = "vx_" + trim(ki_st_int_artr.utente) + "_report_22"
 			k_string = "vx_MAST2_report_22"
 			k_ctr = PosA(k_sql_orig, k_string, 1)
 			DO WHILE k_ctr > 0 and trim(k_string) <> trim(k_stringn)  
@@ -6167,7 +6087,7 @@ kuf_utility kuf1_utility
 			LOOP
 			kdw_1.Object.DataWindow.Table.Select = k_sql_orig 
 
-			k_righe = kdw_1.retrieve(kist_int_artr.sc_cf )
+			k_righe = kdw_1.retrieve(ki_st_int_artr.sc_cf )
 
 		end if
 
@@ -6215,18 +6135,18 @@ if k_data_ini > k_data_fin  then
 	throw kGuo_exception 
 end if
 
-kist_int_artr.data_ini = k_data_ini
-kist_int_artr.data_fin = k_data_fin
+ki_st_int_artr.data_ini = k_data_ini
+ki_st_int_artr.data_fin = k_data_fin
 
-kist_int_artr.sc_cf = trim(tab_1.tabpage_1.dw_1.getitemstring(1, "sc_cf"))
-if kist_int_artr.sc_cf > " " then
+ki_st_int_artr.sc_cf = trim(tab_1.tabpage_1.dw_1.getitemstring(1, "sc_cf"))
+if ki_st_int_artr.sc_cf > " " then
 else
-	kist_int_artr.sc_cf = ""
+	ki_st_int_artr.sc_cf = ""
 end if
 
-//kist_int_artr.clie_3 = tab_1.tabpage_1.dw_1.getitemnumber(1, "id_clie_3") //Cliente
-//if isnull(kist_int_artr.clie_3) then
-//	kist_int_artr.clie_3 = 0
+//ki_st_int_artr.clie_3 = tab_1.tabpage_1.dw_1.getitemnumber(1, "id_clie_3") //Cliente
+//if isnull(ki_st_int_artr.clie_3) then
+//	ki_st_int_artr.clie_3 = 0
 //end if
 
 
@@ -6249,14 +6169,14 @@ pointer kpointer  // Declares a pointer variable
 kpointer = SetPointer(HourGlass!)
 
 select min(id_meca), max(id_meca)
-   into :kist_int_artr.id_meca_ini
-   	 ,:kist_int_artr.id_meca_fin
+   into :ki_st_int_artr.id_meca_ini
+   	 ,:ki_st_int_artr.id_meca_fin
    from barcode 
-   where data_lav_fin between :kist_int_artr.data_ini and :kist_int_artr.data_fin
+   where data_lav_fin between :ki_st_int_artr.data_ini and :ki_st_int_artr.data_fin
 	using kguo_sqlca_db_magazzino;
 
 //--- costruisco la view con ID_MECA delle fatture emesse da data a data
-	k_view = "vx_" + trim(kist_int_artr.utente) + "_report_22 "
+	k_view = "vx_" + trim(ki_st_int_artr.utente) + "_report_22 "
 	k_sql = " "                                   
 	k_sql = + &
 	"CREATE VIEW " + trim(k_view) &
@@ -6268,7 +6188,7 @@ select min(id_meca), max(id_meca)
 			+ " WHERE  " 
 
 	k_sql += &
-	 		 " id_meca between " + string(kist_int_artr.id_meca_ini) + " and " + string(kist_int_artr.id_meca_fin) 
+	 		 " id_meca between " + string(ki_st_int_artr.id_meca_ini) + " and " + string(ki_st_int_artr.id_meca_fin) 
 	
 	k_sql += &
 			" group by  armo.id_armo "
@@ -6392,7 +6312,7 @@ kpointer = SetPointer(HourGlass!)
 
 //--- costruisco la view con ID_MECA delle fatture emesse da data a data
 	k_view = kguf_data_base.u_get_nometab_xutente("report_7")
-//	k_view = "vx_" + trim(kist_int_artr.utente) + "_report_7 "
+//	k_view = "vx_" + trim(ki_st_int_artr.utente) + "_report_7 "
 	k_sql = " "                                   
 	k_sql = + &
 	"CREATE VIEW " + trim(k_view) &
@@ -6405,40 +6325,40 @@ kpointer = SetPointer(HourGlass!)
 			+ " inner JOIN armo " &
 			+ " ON meca.id = armo.id_meca " 
 			
-	if kist_int_artr.gru_attiva = 1 then
+	if ki_st_int_artr.gru_attiva = 1 then
 		k_sql += &
 			  " inner JOIN prodotti " &
 			+ " ON armo.art = prodotti.codice " 
-			if kist_int_artr.gru_flag = 2 then  // no ai gruppi indicato come NO STAT in tabella
+			if ki_st_int_artr.gru_flag = 2 then  // no ai gruppi indicato come NO STAT in tabella
 				k_sql += &
 					+ " inner JOIN gru " &
 					+ " ON prodotti.gruppo = gru.codice " 
 			end if
 	end if
 	k_sql += " WHERE  " 
-	if kist_int_artr.num_int > 0 then
+	if ki_st_int_artr.num_int > 0 then
 		k_sql += &
-	 		 " meca.id = " + string(kist_int_artr.id_meca_ini)
+	 		 " meca.id = " + string(ki_st_int_artr.id_meca_ini)
 	else
-		if kist_int_artr.non_entrati = "S" then
+		if ki_st_int_artr.non_entrati = "S" then
 			k_sql += " (meca.data_ent is null or meca.data_ent <  '" + string(kguo_g.get_datetime_zero( )) + "') "
 		else
 			k_sql += &
-				+ " meca.id between " + string(kist_int_artr.id_meca_ini) + " and " + string(kist_int_artr.id_meca_fin) + " " &
-			   + " and meca.data_ent between '" + string(datetime(kist_int_artr.data_da)) + "' and '" + string(datetime(kist_int_artr.data_a, time("23:59:59"))) +"'  "
+				+ " meca.id between " + string(ki_st_int_artr.id_meca_ini) + " and " + string(ki_st_int_artr.id_meca_fin) + " " &
+			   + " and meca.data_ent between '" + string(datetime(ki_st_int_artr.data_da)) + "' and '" + string(datetime(ki_st_int_artr.data_a, time("23:59:59"))) +"'  "
 		end if
-		if kist_int_artr.clie_3 > 0 then
+		if ki_st_int_artr.clie_3 > 0 then
 			k_sql += &
-				 "and meca.clie_3 = " + string(kist_int_artr.clie_3)
+				 "and meca.clie_3 = " + string(ki_st_int_artr.clie_3)
 		end if
 	end if
-	if kist_int_artr.gru_attiva = 1 then
-		if kist_int_artr.gru_flag = 1 or kist_int_artr.gru_flag = 0 then  // solo un gruppo puntuale
-			if kist_int_artr.gru > 0 then
-				if kist_int_artr.gru_flag = 1 then  // includi solo un gruppo puntuale
-					k_sql += " and prodotti.gruppo = " + string(kist_int_artr.gru) + " "
+	if ki_st_int_artr.gru_attiva = 1 then
+		if ki_st_int_artr.gru_flag = 1 or ki_st_int_artr.gru_flag = 0 then  // solo un gruppo puntuale
+			if ki_st_int_artr.gru > 0 then
+				if ki_st_int_artr.gru_flag = 1 then  // includi solo un gruppo puntuale
+					k_sql += " and prodotti.gruppo = " + string(ki_st_int_artr.gru) + " "
 				else  // Ecludi solo un gruppo puntuale
-					k_sql += " and prodotti.gruppo <> " + string(kist_int_artr.gru) + " "
+					k_sql += " and prodotti.gruppo <> " + string(ki_st_int_artr.gru) + " "
 				end if
 			end if
 		else
@@ -6482,20 +6402,20 @@ try
 	kuf1_armo = create kuf_armo
 	
 	//--- piglia param dalla window
-	kist_int_artr.report = tab_1.tabpage_1.dw_1.getitemnumber(1, "report") 
+	ki_st_int_artr.report = tab_1.tabpage_1.dw_1.getitemnumber(1, "report") 
 	
-	kist_int_artr.num_int = tab_1.tabpage_1.dw_1.getitemnumber(1, "num_int") //data riferimento da
-	if isnull(kist_int_artr.num_int)  then
-		kist_int_artr.num_int = 0
+	ki_st_int_artr.num_int = tab_1.tabpage_1.dw_1.getitemnumber(1, "num_int") //data riferimento da
+	if isnull(ki_st_int_artr.num_int)  then
+		ki_st_int_artr.num_int = 0
 	end if
-	kist_int_artr.anno = tab_1.tabpage_1.dw_1.getitemnumber(1, "anno") //data riferimento da
-	if isnull(kist_int_artr.anno) then
-		kist_int_artr.anno = year(kg_dataoggi)
+	ki_st_int_artr.anno = tab_1.tabpage_1.dw_1.getitemnumber(1, "anno") //data riferimento da
+	if isnull(ki_st_int_artr.anno) then
+		ki_st_int_artr.anno = year(kg_dataoggi)
 	end if
-	kist_int_artr.id_meca_ini = 0
-	if kist_int_artr.num_int > 0 then
-		kst_tab_armo.num_int = kist_int_artr.num_int
-		kst_tab_armo.data_int = date(kist_int_artr.anno,01,01)
+	ki_st_int_artr.id_meca_ini = 0
+	if ki_st_int_artr.num_int > 0 then
+		kst_tab_armo.num_int = ki_st_int_artr.num_int
+		kst_tab_armo.data_int = date(ki_st_int_artr.anno,01,01)
 		kst_esito=kuf1_armo.get_id_meca(kst_tab_armo)
 	//=== Controllo esito riferimento
 		if kst_esito.esito <> kkg_esito.ok then
@@ -6504,7 +6424,7 @@ try
 		end if
 		
 		if kst_tab_armo.id_meca > 0 then
-			kist_int_artr.id_meca_ini = kst_tab_armo.id_meca 
+			ki_st_int_artr.id_meca_ini = kst_tab_armo.id_meca 
 		end if
 		
 	else
@@ -6513,45 +6433,45 @@ try
 		if isnull(k_data_da) or k_data_da = date(0) or k_data_da = date("01/01/1900") or k_data_da = date("00/00/0000") then
 			k_data_da = k_dataoggi
 		end if
-		kist_int_artr.data_da = k_data_da
+		ki_st_int_artr.data_da = k_data_da
 	
 		k_data_a = tab_1.tabpage_1.dw_1.getitemdate(1, "data_a") //data riferimento da
 		if isnull(k_data_a) or k_data_a = date(0) or k_data_a = date("01/01/1900") or k_data_a = date("00/00/0000") then
 			k_data_a = k_dataoggi
 		end if
-		kist_int_artr.data_a = k_data_a
+		ki_st_int_artr.data_a = k_data_a
 		
 		if k_data_a >= k_data_da then
 //--- get del range ID meca dal periodo impostato	
 			kst_tab_meca_da.data_ent = datetime(relativedate(k_data_da, -365), time('00:00:00.000001'))
 			kst_tab_meca_a.data_ent = datetime(k_data_a, time('23:59:59.000000'))
 			kuf1_armo.get_id_meca_min_max_x_data_ent(kst_tab_meca_da, kst_tab_meca_a)
-			kist_int_artr.id_meca_ini = kst_tab_meca_da.id
-//			kist_int_artr.id_meca_fin = kst_tab_meca_a.id
+			ki_st_int_artr.id_meca_ini = kst_tab_meca_da.id
+//			ki_st_int_artr.id_meca_fin = kst_tab_meca_a.id
 		end if
 	end if
 	
-	kist_int_artr.clie_3 = tab_1.tabpage_1.dw_1.getitemnumber(1, "id_clie_3") //Fatturato
-	if isnull(kist_int_artr.clie_3) then
-		kist_int_artr.clie_3 = 0
+	ki_st_int_artr.clie_3 = tab_1.tabpage_1.dw_1.getitemnumber(1, "id_clie_3") //Fatturato
+	if isnull(ki_st_int_artr.clie_3) then
+		ki_st_int_artr.clie_3 = 0
 	end if
 	
-	kist_int_artr.gru = tab_1.tabpage_1.dw_1.getitemnumber(1, "id_gruppo") //codice gruppo
-	if isnull(kist_int_artr.gru) then
-		kist_int_artr.gru = 0
+	ki_st_int_artr.gru = tab_1.tabpage_1.dw_1.getitemnumber(1, "id_gruppo") //codice gruppo
+	if isnull(ki_st_int_artr.gru) then
+		ki_st_int_artr.gru = 0
 	end if
-	kist_int_artr.gru_flag = tab_1.tabpage_1.dw_1.getitemnumber(1, "gruppo_flag") //flag tipo estrazione gruppo
-	if isnull(kist_int_artr.gru_flag) then
-		kist_int_artr.gru_flag = 2
+	ki_st_int_artr.gru_flag = tab_1.tabpage_1.dw_1.getitemnumber(1, "gruppo_flag") //flag tipo estrazione gruppo
+	if isnull(ki_st_int_artr.gru_flag) then
+		ki_st_int_artr.gru_flag = 2
 	end if
-	kist_int_artr.gru_attiva = tab_1.tabpage_1.dw_1.getitemnumber(1, "gruppo_attiva") //flag attiva/disattiva estrazione gruppo
-	if isnull(kist_int_artr.gru_attiva) then
-		kist_int_artr.gru_attiva = 0
+	ki_st_int_artr.gru_attiva = tab_1.tabpage_1.dw_1.getitemnumber(1, "gruppo_attiva") //flag attiva/disattiva estrazione gruppo
+	if isnull(ki_st_int_artr.gru_attiva) then
+		ki_st_int_artr.gru_attiva = 0
 	end if
 	
-	kist_int_artr.xcliente = tab_1.tabpage_1.dw_1.getitemstring(1, "daticlienti")
-	if isnull(kist_int_artr.xcliente) then
-		kist_int_artr.xcliente = "N"
+	ki_st_int_artr.xcliente = tab_1.tabpage_1.dw_1.getitemstring(1, "daticlienti")
+	if isnull(ki_st_int_artr.xcliente) then
+		ki_st_int_artr.xcliente = "N"
 	end if
 	
 	set_nome_utente_tab() //--- imposta il nome utente da utilizzare x i nomi view 
@@ -6564,10 +6484,10 @@ try
 		kGuo_exception.setmessage("Controlla le date immesse,~n~r data di fine periodo e' minore di quella di inizio")
 		throw kGuo_exception 
 	else
-		if	kist_int_artr.id_meca_ini = 0 then
+		if	ki_st_int_artr.id_meca_ini = 0 then
 			kGuo_exception.inizializza( )
 			kGuo_exception.set_tipo(kGuo_exception.kk_st_uo_exception_tipo_dati_non_eseguito)
-			kGuo_exception.setmessage("Nessun Lotto trovato per il periodo richiesto (" + string(kist_int_artr.id_meca_ini) + " - " + string(kist_int_artr.id_meca_fin) + ")") 
+			kGuo_exception.setmessage("Nessun Lotto trovato per il periodo richiesto (" + string(ki_st_int_artr.id_meca_ini) + " - " + string(ki_st_int_artr.id_meca_fin) + ")") 
 			throw kGuo_exception 
 		end if
 	end if
@@ -6641,15 +6561,15 @@ if tab_1.tabpage_1.dw_1.rowcount() <= 0 or tab_1.tabpage_1.dw_1.dataobject <> "d
 	try	
 //--- imposto l'utente (il "terminale") x costruire il nome della view
 		set_nome_utente_tab() //--- imposta il nome utente da utilizzare x i nomi view 
-		tab_1.tabpage_1.dw_1.setitem(1, "utente", kist_int_artr.utente)
+		tab_1.tabpage_1.dw_1.setitem(1, "utente", ki_st_int_artr.utente)
 		tab_1.tabpage_1.dw_1.setitem(1, "report", 1)
 //--- prendi data oggi		
 		k_data = kguo_g.get_dataoggi( )
 
 		tab_1.tabpage_1.dw_1.setitem(1, "num_int", 0)
 
-		kist_int_artr.anno = tab_1.tabpage_1.dw_1.getitemnumber(1, "anno")
-		if kist_int_artr.anno = 0 or isnull(kist_int_artr.anno ) then
+		ki_st_int_artr.anno = tab_1.tabpage_1.dw_1.getitemnumber(1, "anno")
+		if ki_st_int_artr.anno = 0 or isnull(ki_st_int_artr.anno ) then
 			tab_1.tabpage_1.dw_1.setitem(1, "anno", year(kg_dataoggi))
 		end if
 		
@@ -6680,8 +6600,8 @@ if tab_1.tabpage_1.dw_1.rowcount() <= 0 or tab_1.tabpage_1.dw_1.dataobject <> "d
 			tab_1.tabpage_1.dw_1.setitem(1, "data_a", "00/00/00")
 		end if
 
-		kist_int_artr.gru_attiva = tab_1.tabpage_1.dw_1.getitemnumber(1, "gruppo_attiva")
-		if kist_int_artr.gru_attiva >= 0 then
+		ki_st_int_artr.gru_attiva = tab_1.tabpage_1.dw_1.getitemnumber(1, "gruppo_attiva")
+		if ki_st_int_artr.gru_attiva >= 0 then
 		else
 			tab_1.tabpage_1.dw_1.setitem(1, "gruppo_attiva", 1)
 		end if
@@ -6747,8 +6667,8 @@ kuf_base kuf1_base
 			get_parametri_23()
 
 	//--- view x estrazione 
-			if kist_int_artr.report = 1 then
-				if kist_int_artr.xcliente = "S" then
+			if ki_st_int_artr.report = 1 then
+				if ki_st_int_artr.xcliente = "S" then
 					crea_view_x_report_23_runsrtrrtscli()
 					kdw_1.dataobject = "d_report_23_runs_rtr_rts_cli" 
 					kguf_data_base.u_set_ds_change_name_tab(kdw_1, "vx_MAST2_report_23CLI_runs_rtr_rts") // Aggiorna SQL della dw	
@@ -6758,7 +6678,7 @@ kuf_base kuf1_base
 					kguf_data_base.u_set_ds_change_name_tab(kdw_1, "vx_MAST2_report_23_runs_rtr_rts") // Aggiorna SQL della dw	
 				end if
 			else
-				if kist_int_artr.xcliente = "S" then
+				if ki_st_int_artr.xcliente = "S" then
 					crea_view_x_report_23_idxconsegnecli( )
 					kdw_1.dataobject = "d_report_23_idx_consegne_cli" 
 					kguf_data_base.u_set_ds_change_name_tab(kdw_1, "vx_MAST2_report_23CLI_idx_consegne") // Aggiorna SQL della dw	
@@ -7060,7 +6980,7 @@ string k_return
 			k_return = trim(tab_1.tabpage_1.dw_1.dataobject)
 		case else
 			choose case u_report_selezionato()
-				case ki_scelta_report_lotti_entrati
+				case kiuf_int_artr.kki_scelta_report_lotti_entrati
 					k_return = "d_report_7_con_giri_esporta" 
 				case else
 					k_return = trim(kidw_selezionata.dataobject)
@@ -7174,7 +7094,7 @@ if tab_1.tabpage_1.dw_1.rowcount() <= 0 or tab_1.tabpage_1.dw_1.dataobject <> "d
 	try	
 //--- imposto l'utente (il "terminale") x costruire il nome della view
 		set_nome_utente_tab() //--- imposta il nome utente da utilizzare x i nomi view 
-		tab_1.tabpage_1.dw_1.setitem(1, "utente", kist_int_artr.utente)
+		tab_1.tabpage_1.dw_1.setitem(1, "utente", ki_st_int_artr.utente)
 	
 		
 	catch (uo_exception kuo_exception)
@@ -7486,14 +7406,14 @@ try
 //=== Se volessi riprist. il vecchio puntatore : SetPointer(kpointer)
 	kpointer = SetPointer(HourGlass!)
 
-	k_data_int_da = relativedate(kist_int_artr.data_da, -180)
-	k_data_int_a = relativedate(kist_int_artr.data_da, 30)
-	k_data_ent_dax = string(datetime(kist_int_artr.data_da)) + " " + string(time(0))  //YEAR TO SECOND "  1998-01-02 00:00:00.000
-	k_data_ent_ax =  string(datetime(kist_int_artr.data_a, time(23,59,59)))  //YEAR TO SECOND "
+	k_data_int_da = relativedate(ki_st_int_artr.data_da, -180)
+	k_data_int_a = relativedate(ki_st_int_artr.data_da, 30)
+	k_data_ent_dax = string(datetime(ki_st_int_artr.data_da)) + " " + string(time(0))  //YEAR TO SECOND "  1998-01-02 00:00:00.000
+	k_data_ent_ax =  string(datetime(ki_st_int_artr.data_a, time(23,59,59)))  //YEAR TO SECOND "
 
 //--- costruisco la view con ID_MECA delle fatture emesse da data a data
 	k_view = kguf_data_base.u_get_nometab_xutente("_report_6")
-//	k_view = "vx_" + trim(kist_int_artr.utente) + "_report_6 "
+//	k_view = "vx_" + trim(ki_st_int_artr.utente) + "_report_6 "
 	k_sql = " "                                   
 	k_sql = + &
 	"CREATE VIEW " + trim(k_view) &
@@ -7507,12 +7427,12 @@ try
 			+ " ON meca.id = armo.id_meca " &
 			+ " left outer JOIN arsp " &
 			+ " ON armo.id_armo = arsp.id_armo " &
-			+ " and (arsp.data_bolla_out <= '" + string(kist_int_artr.data_a) + "' or arsp.data_bolla_out is null)" &
+			+ " and (arsp.data_bolla_out <= '" + string(ki_st_int_artr.data_a) + "' or arsp.data_bolla_out is null)" &
 			+ " WHERE  " &
 			+ " meca.data_int between '" + string(k_data_int_da) + "' and '" + string(k_data_int_a) + "' "  &
 		   + " and meca.data_ent between '"  + k_data_ent_dax + "' and '" + k_data_ent_ax + "'  "     &
 			+ " and (meca.aperto <> '" + string(kuf1_armo.kki_meca_aperto_annullato ) + "') "
-		if kist_int_artr.no_dose = 1 then
+		if ki_st_int_artr.no_dose = 1 then
 			k_sql += &
 				 " and armo.dose > 0 " 
 		end if
@@ -7553,7 +7473,7 @@ if tab_1.tabpage_1.dw_1.rowcount() <= 0 or tab_1.tabpage_1.dw_1.dataobject <> "d
 	try	
 //--- imposto l'utente (il "terminale") x costruire il nome della view
 		set_nome_utente_tab() //--- imposta il nome utente da utilizzare x i nomi view 
-		tab_1.tabpage_1.dw_1.setitem(1, "utente", kist_int_artr.utente)
+		tab_1.tabpage_1.dw_1.setitem(1, "utente", ki_st_int_artr.utente)
 	
 		k_data_da = tab_1.tabpage_1.dw_1.getitemdate( 1, "data_ini")
 		if k_data_da > date(0) then
@@ -7602,15 +7522,15 @@ if k_data_ini > k_data_fin  then
 	throw kGuo_exception 
 end if
 
-kist_int_artr.data_ini = k_data_ini
-kist_int_artr.data_fin = k_data_fin
+ki_st_int_artr.data_ini = k_data_ini
+ki_st_int_artr.data_fin = k_data_fin
 
 kst_tab_meca_da.id = 0
-kst_tab_meca_da.data_int = kist_int_artr.data_ini
-kst_tab_meca_a.data_int = kist_int_artr.data_fin
+kst_tab_meca_da.data_int = ki_st_int_artr.data_ini
+kst_tab_meca_a.data_int = ki_st_int_artr.data_fin
 get_id_meca(kst_tab_meca_da, kst_tab_meca_a)
-kist_int_artr.id_meca_ini = kst_tab_meca_da.id 
-kist_int_artr.id_meca_fin = kst_tab_meca_a.id 
+ki_st_int_artr.id_meca_ini = kst_tab_meca_da.id 
+ki_st_int_artr.id_meca_fin = kst_tab_meca_a.id 
 
 
 end subroutine
@@ -7658,7 +7578,7 @@ kuf_utility kuf1_utility
 	//--- piglia i parametri per l'estrazione 
 			get_parametri_25()
 
-			k_righe = kdw_1.retrieve(kist_int_artr.id_meca_ini, kist_int_artr.id_meca_fin, kist_int_artr.data_ini, kist_int_artr.data_fin)
+			k_righe = kdw_1.retrieve(ki_st_int_artr.id_meca_ini, ki_st_int_artr.id_meca_fin, ki_st_int_artr.data_ini, ki_st_int_artr.data_fin)
 
 		end if
 
@@ -7897,19 +7817,19 @@ string k_view, k_sql, k_campi
 	k_sql += &
 			" SELECT report_23.id_armo, report_23.id_meca  FROM " &
 			+  kguf_data_base.u_get_nometab_xutente("report_23_xdtcertif") + " as report_23 "
-	if kist_int_artr.gru_attiva = 1 then
+	if ki_st_int_artr.gru_attiva = 1 then
 		k_sql += &
 			 " inner JOIN armo " &
 			+ " ON report_23.id_meca = armo.id_meca " &
 			+ " inner JOIN prodotti " &
 			+ " ON armo.art = prodotti.codice " 
-		if kist_int_artr.gru_flag = 1 or kist_int_artr.gru_flag = 0 then  // includi/escludi solo un gruppo puntuale
-			if kist_int_artr.gru > 0 then
+		if ki_st_int_artr.gru_flag = 1 or ki_st_int_artr.gru_flag = 0 then  // includi/escludi solo un gruppo puntuale
+			if ki_st_int_artr.gru > 0 then
 				k_sql += " WHERE  " 
-				if kist_int_artr.gru_flag = 1 then  
-					k_sql += " prodotti.gruppo = " + string(kist_int_artr.gru) + " " // includi solo un gruppo puntuale
+				if ki_st_int_artr.gru_flag = 1 then  
+					k_sql += " prodotti.gruppo = " + string(ki_st_int_artr.gru) + " " // includi solo un gruppo puntuale
 				else  
-					k_sql += " prodotti.gruppo <> " + string(kist_int_artr.gru) + " " // Ecludi solo un gruppo puntuale
+					k_sql += " prodotti.gruppo <> " + string(ki_st_int_artr.gru) + " " // Ecludi solo un gruppo puntuale
 				end if
 			end if
 		else
@@ -7951,19 +7871,19 @@ string k_view, k_sql, k_campi
 			+ " ON meca.id = certif.id_meca " 
 			
 	k_sql += " WHERE  " 
-	if kist_int_artr.num_int > 0 then
+	if ki_st_int_artr.num_int > 0 then
 		k_sql += &
-	 		 " meca.id = " + string(kist_int_artr.id_meca_ini)
+	 		 " meca.id = " + string(ki_st_int_artr.id_meca_ini)
 	else
 		k_sql += &
-			+ " certif.data between '" + string(kist_int_artr.data_da) + "' and '" + string(kist_int_artr.data_a) + "' " 
+			+ " certif.data between '" + string(ki_st_int_artr.data_da) + "' and '" + string(ki_st_int_artr.data_a) + "' " 
 		
 		k_sql += &
 			+ " and meca.data_ent >  '" + string(kkg.data_no) + "' "
 		
-		if kist_int_artr.clie_3 > 0 then
+		if ki_st_int_artr.clie_3 > 0 then
 			k_sql += &
-				 "and meca.clie_3 = " + string(kist_int_artr.clie_3)
+				 "and meca.clie_3 = " + string(ki_st_int_artr.clie_3)
 		end if
 	end if
 	k_sql += " group by  armo.id_armo, armo.id_meca "
@@ -8020,16 +7940,16 @@ string k_view, k_sql, k_campi
 			+ " and certif.data_stampa > '" + string(kkg.data_no) + "' " &
 			+ " and certif.ora_stampa > '" + string(time(0)) + "' " 
 			
-	if kist_int_artr.num_int > 0 then
+	if ki_st_int_artr.num_int > 0 then
 		k_sql += &
-	 		 " and meca.id = " + string(kist_int_artr.id_meca_ini)
+	 		 " and meca.id = " + string(ki_st_int_artr.id_meca_ini)
 	else
 		k_sql += &
-			+ " and meca.data_ent between '" + string(datetime(kist_int_artr.data_da, time(0))) + "' and '" + string(datetime(kist_int_artr.data_a, time("23:59:59"))) + "' " 
+			+ " and meca.data_ent between '" + string(datetime(ki_st_int_artr.data_da, time(0))) + "' and '" + string(datetime(ki_st_int_artr.data_a, time("23:59:59"))) + "' " 
 		
-		if kist_int_artr.clie_3 > 0 then
+		if ki_st_int_artr.clie_3 > 0 then
 			k_sql += &
-				 "and meca.clie_3 = " + string(kist_int_artr.clie_3)
+				 "and meca.clie_3 = " + string(ki_st_int_artr.clie_3)
 		end if
 	end if
 	k_sql += " group by   meca.clie_3, armo.id_armo, meca.id, meca.data_ent " &
@@ -8177,28 +8097,27 @@ string k_view, k_sql, k_campi
 
 
 	k_view =  kguf_data_base.u_get_nometab_xutente("report_23_xdtentgru") 
-	k_sql = " "                                   
-	k_sql = + &
-	"CREATE VIEW " + trim(k_view) &
-	 + " ( id_armo, id_meca ) AS   " 
+	                               
+	k_sql = "CREATE VIEW " + trim(k_view) &
+					 + " ( id_armo, id_meca ) AS   " 
    k_campi = "id_armo integer " & 
-            + ", id_meca integer " 
+           			 + ", id_meca integer " 
 	k_sql += &
 			" SELECT report_23.id_armo, report_23.id_meca  FROM " &
 			+  kguf_data_base.u_get_nometab_xutente("report_23_xdtent") + " as report_23 "
-	if kist_int_artr.gru_attiva = 1 then
+	if ki_st_int_artr.gru_attiva = 1 then
 		k_sql += &
 			 " inner JOIN armo " &
 			+ " ON report_23.id_meca = armo.id_meca " &
 			+ " inner JOIN prodotti " &
 			+ " ON armo.art = prodotti.codice " 
-		if kist_int_artr.gru_flag = 1 or kist_int_artr.gru_flag = 0 then  // includi/escludi solo un gruppo puntuale
-			if kist_int_artr.gru > 0 then
+		if ki_st_int_artr.gru_flag = 1 or ki_st_int_artr.gru_flag = 0 then  // includi/escludi solo un gruppo puntuale
+			if ki_st_int_artr.gru > 0 then
 				k_sql += " WHERE  " 
-				if kist_int_artr.gru_flag = 1 then  
-					k_sql += " prodotti.gruppo = " + string(kist_int_artr.gru) + " " // includi solo un gruppo puntuale
+				if ki_st_int_artr.gru_flag = 1 then  
+					k_sql += " prodotti.gruppo = " + string(ki_st_int_artr.gru) + " " // includi solo un gruppo puntuale
 				else  
-					k_sql += " prodotti.gruppo <> " + string(kist_int_artr.gru) + " " // Ecludi solo un gruppo puntuale
+					k_sql += " prodotti.gruppo <> " + string(ki_st_int_artr.gru) + " " // Ecludi solo un gruppo puntuale
 				end if
 			end if
 		else
@@ -8209,12 +8128,114 @@ string k_view, k_sql, k_campi
 			+ " WHERE  gru.escludi_da_stat_glob = 'N' "// tutti i gruppi (meno quelli da Escludere x stat)
 		end if
 	end if	
-	k_sql += &
-			" group by report_23.id_armo, report_23.id_meca "
+	k_sql += " group by report_23.id_armo, report_23.id_meca "
 	kguo_sqlca_db_magazzino.db_crea_view(1, k_view, k_sql)		
 //   kguo_sqlca_db_magazzino.db_crea_temp_table(k_view, k_campi, k_sql)      
 
 end subroutine
+
+private function boolean u_scegli_report (integer a_num_report);//
+boolean k_return = true
+
+ki_scelta_report = a_num_report
+
+if ki_scelta_report > 0 then
+	tab_1.tabpage_2.enabled = true
+end if
+
+//tab_1.tabpage_1.dw_1.reset()
+tab_1.tabpage_1.dw_1.setredraw(false)
+u_dw_selezione_save( )
+
+choose case ki_scelta_report
+
+	case kiuf_int_artr.kki_scelta_report_lotti_entrati //"riferimenti entrati"
+		report_7()
+
+	case kiuf_int_artr.kki_scelta_report_generico // "Interrogazione Generica"
+		report_1()
+
+	case kiuf_int_artr.kki_scelta_report_coda_pilota //"Coda di Lavorazione"
+		report_2()
+
+	case kiuf_int_artr.kki_scelta_report_in_trattamento //"In Trattamento"
+		report_3()
+
+	case kiuf_int_artr.kki_scelta_report_trattato //"Trattato"
+		report_4()
+
+	case kiuf_int_artr.kki_scelta_report_chk_intra //"controllo INTRA"
+		report_5()
+
+	case kiuf_int_artr.kki_scelta_report_RegArt50 //"Registro Articolo 50"
+		report_9()
+
+	case kiuf_int_artr.kki_scelta_report_lotti_in_giacenza //"lotti entrati e NON spediti"
+		report_6()
+
+	case kiuf_int_artr.kki_scelta_report_lotti_in_giacenza_gia_trattati //"lotti gia con ATTESTATO ma non spediti
+		report_8()
+
+	case kiuf_int_artr.kki_scelta_report_lotti_da_sped 	//"lotti da spedire
+		report_10()
+
+	case kiuf_int_artr.kki_scelta_report_lotti_sped 			//"lotti spediti
+		report_11()
+
+	case kiuf_int_artr.kki_scelta_report_etichette_lotti 	//"Etichette Lotti
+		report_12()
+
+	case kiuf_int_artr.kki_scelta_report_groupage 			//Groupage Pianificati
+		report_13()
+
+	case kiuf_int_artr.kki_scelta_report_etichettine 			//"Etichettina Dosimetro
+		report_14()
+
+	case kiuf_int_artr.kki_scelta_report_bcode_trattati 	//"Barcode Trattati
+		report_15()
+
+	case kiuf_int_artr.kki_scelta_report_art_movim 			//"Movimenti Articoli
+		report_16()
+		
+//	case kiuf_int_artr.kki_scelta_report_armo_prezzi 		//"Voci Lotto in ARMO_PREZZI
+//		report_17()
+		
+	case kiuf_int_artr.kki_scelta_report_memo 				//"Cerca su MEMO
+		report_18()
+		
+	case kiuf_int_artr.kki_scelta_report_lotti_sped_dafatt //"lotti spediti da fatturare
+		report_19()
+		
+	case kiuf_int_artr.kki_scelta_report_attestati  			//"Attestati
+		report_20()
+		
+	case kiuf_int_artr.kki_scelta_report_armo_Contratti  	//"Contratti entrati
+		report_21()
+
+	case kiuf_int_artr.kki_scelta_report_lavxcapitolato 	// "Dati lavorazione x Capitolato"
+		report_22()
+		
+	case kiuf_int_artr.kki_scelta_report_runsrtrrts 			// "Dati RUNS+RTR+RTS (Receipt to Release/Receipt to Ship)"
+		report_23()
+		
+	case kiuf_int_artr.kki_scelta_report_prevfinelav 		// Previsione inizio-fine lav Lotti su PILOTA
+		report_24()
+		
+	case kiuf_int_artr.kki_scelta_report_nrdosimetri		// Numero dosimetri previsti e prodotti
+		report_25()
+
+	case else  
+		k_return = false
+		report_0( )
+		
+end choose
+
+tab_1.tabpage_1.dw_1.setredraw(true)
+tab_1.tabpage_1.dw_1.visible = true
+tab_1.tabpage_1.dw_1.setfocus()
+
+return k_return
+end function
 
 on w_int_artr.create
 int iCurrent
@@ -8229,6 +8250,7 @@ end on
 event close;call super::close;//
 u_dw_selezione_save( )
 
+if not isnull(kiuf_int_artr) then destroy kiuf_int_artr
 if not isnull(kiuf_utility) then destroy kiuf_utility
 if not isnull(kiuf_report_pilota) then destroy kiuf_report_pilota
 if not isnull(kiuf_pilota_previsioni) then destroy kiuf_pilota_previsioni
@@ -8236,7 +8258,7 @@ if not isnull(kiuf_pilota_previsioni) then destroy kiuf_pilota_previsioni
 end event
 
 event u_ricevi_da_elenco;call super::u_ricevi_da_elenco;//
-//
+int k_return
 int k_rc
 string k_sc_cf
 string k_art = ""
@@ -8257,9 +8279,11 @@ if isvalid(kst_open_w) then
 				if long(kst_open_w.key3) > 0 then
 					kdsi_elenco_input = kst_open_w.key12_any 
 					if kdsi_elenco_input.rowcount() > 0 then
+						k_return = 1
 						k_art = trim(kdsi_elenco_input.getitemstring(long(kst_open_w.key3), "codice"))
 						tab_1.tabpage_1.dw_1.setitem(1, "art", k_art)
 
+						attiva_tasti()
 					end if
 				end if
 				
@@ -8267,9 +8291,11 @@ if isvalid(kst_open_w) then
 				if long(kst_open_w.key3) > 0 then
 					kdsi_elenco_input = kst_open_w.key12_any 
 					if kdsi_elenco_input.rowcount() > 0 then
+						k_return = 1
 						k_sc_cf = trim(kdsi_elenco_input.getitemstring(long(kst_open_w.key3), "codice"))
 						tab_1.tabpage_1.dw_1.setitem(1, "sc_cf", k_sc_cf)
 
+						attiva_tasti()
 					end if
 				end if
 				
@@ -8280,6 +8306,12 @@ if isvalid(kst_open_w) then
 
 end if
 
+return k_return
+
+end event
+
+event timer;call super::timer;//
+smista_funz(KKG_FLAG_RICHIESTA.refresh)
 
 end event
 
@@ -8579,7 +8611,7 @@ datawindowchild kdwc_contratti_1
 
 
 //---- se ho cambiato il cliente rileggo il Contratto
-if ki_scelta_report = ki_scelta_report_armo_Contratti then
+if ki_scelta_report = kiuf_int_artr.kki_scelta_report_armo_Contratti then
 	if  dwo.name = "id_clie_3" or  dwo.name = "clie_3" then
 		if  dwo.name = "id_clie_3" then
 			k_id_clie =  long(trim(this.gettext()))
@@ -8855,58 +8887,85 @@ end type
 
 event u_constructor();//--- se run da IDE salta le add picture altrimenti va in CRASH
 if NOT kguf_data_base.u_if_run_dev_mode( ) then
-	ki_scelta_report_pic_lotti_entrati = this.AddPicture("DataWindow!")
-	ki_scelta_report_pic_generico = this.AddPicture("DataWindow!")
-	ki_scelta_report_pic_coda_pilota = this.AddPicture("Regenerate!")
-	ki_scelta_report_pic_in_trattamento = this.AddPicture("Regenerate!")
-	ki_scelta_report_pic_trattato = this.AddPicture("Regenerate!")
-	ki_scelta_report_pic_chk_intra = this.AddPicture("Menu!")
-	ki_scelta_report_pic_RegArt50 = this.AddPicture("Menu!")
-	ki_scelta_report_pic_lotti_in_giacenza = this.AddPicture("CheckStatus5!")
-	ki_scelta_report_pic_lotti_in_giacenza_gia_trattati = this.AddPicture("CheckStatus5!")
-	ki_scelta_report_pic_lotti_da_sped = this.AddPicture("CheckStatus5!")
-	ki_scelta_report_pic_lotti_sped = this.AddPicture("CheckStatus5!")
-	ki_scelta_report_pic_etichette_lotti = this.AddPicture("barcode.bmp") //(kGuo_path.get_risorse() + "\barcode.bmp")
-	ki_scelta_report_pic_etichettine = this.AddPicture("barcode.bmp") //kGuo_path.get_risorse() + "\barcode.bmp")
-	ki_scelta_report_pic_groupage = this.AddPicture("CheckIn5!")
-	ki_scelta_report_pic_bcode_trattati = this.AddPicture("CheckStatus5!")
-	ki_scelta_report_pic_art_movim = this.AddPicture("CheckStatus5!")
-	//ki_scelta_report_pic_armo_prezzi = this.AddPicture("FormatDollar!")
-	ki_scelta_report_pic_memo = this.AddPicture("edit16.gif") //kGuo_path.get_risorse() + "\edit16.gif")
-	ki_scelta_report_pic_lotti_sped_daFatt = this.AddPicture("CheckStatus5!")
-	ki_scelta_report_pic_Attestati = this.AddPicture("certificato16.gif") //kGuo_path.get_risorse() + "\certificato16.gif")
-	ki_scelta_report_pic_armo_Contratti = this.AddPicture("CheckStatus5!")
-	ki_scelta_report_pic_LavxCapitolato = this.AddPicture("DataWindow!")
-	ki_scelta_report_pic_RunsRtrRts = this.AddPicture("DataWindow!")
-	ki_scelta_report_pic_prevFineLav = this.AddPicture("Regenerate!")
-	ki_scelta_report_pic_nrDosimetri = this.AddPicture("DataWindow!")
+	kiuf_int_artr.kki_scelta_report_pic_lotti_entrati = this.AddPicture("DataWindow!")
+	kiuf_int_artr.kki_scelta_report_pic_generico = this.AddPicture("DataWindow!")
+	kiuf_int_artr.kki_scelta_report_pic_coda_pilota = this.AddPicture("Regenerate!")
+	kiuf_int_artr.kki_scelta_report_pic_in_trattamento = this.AddPicture("Regenerate!")
+	kiuf_int_artr.kki_scelta_report_pic_trattato = this.AddPicture("Regenerate!")
+	kiuf_int_artr.kki_scelta_report_pic_chk_intra = this.AddPicture("Menu!")
+	kiuf_int_artr.kki_scelta_report_pic_RegArt50 = this.AddPicture("Menu!")
+	kiuf_int_artr.kki_scelta_report_pic_lotti_in_giacenza = this.AddPicture("CheckStatus5!")
+	kiuf_int_artr.kki_scelta_report_pic_lotti_in_giacenza_gia_trattati = this.AddPicture("CheckStatus5!")
+	kiuf_int_artr.kki_scelta_report_pic_lotti_da_sped = this.AddPicture("CheckStatus5!")
+	kiuf_int_artr.kki_scelta_report_pic_lotti_sped = this.AddPicture("CheckStatus5!")
+	kiuf_int_artr.kki_scelta_report_pic_etichette_lotti = this.AddPicture("barcode.bmp") //(kGuo_path.get_risorse() + "\barcode.bmp")
+	kiuf_int_artr.kki_scelta_report_pic_etichettine = this.AddPicture("barcode.bmp") //kGuo_path.get_risorse() + "\barcode.bmp")
+	kiuf_int_artr.kki_scelta_report_pic_groupage = this.AddPicture("CheckIn5!")
+	kiuf_int_artr.kki_scelta_report_pic_bcode_trattati = this.AddPicture("CheckStatus5!")
+	kiuf_int_artr.kki_scelta_report_pic_art_movim = this.AddPicture("CheckStatus5!")
+	//kiuf_int_artr.kki_scelta_report_pic_armo_prezzi = this.AddPicture("FormatDollar!")
+	kiuf_int_artr.kki_scelta_report_pic_memo = this.AddPicture("edit16.gif") //kGuo_path.get_risorse() + "\edit16.gif")
+	kiuf_int_artr.kki_scelta_report_pic_lotti_sped_daFatt = this.AddPicture("CheckStatus5!")
+	kiuf_int_artr.kki_scelta_report_pic_Attestati = this.AddPicture("certificato16.gif") //kGuo_path.get_risorse() + "\certificato16.gif")
+	kiuf_int_artr.kki_scelta_report_pic_armo_Contratti = this.AddPicture("CheckStatus5!")
+	kiuf_int_artr.kki_scelta_report_pic_LavxCapitolato = this.AddPicture("DataWindow!")
+	kiuf_int_artr.kki_scelta_report_pic_RunsRtrRts = this.AddPicture("DataWindow!")
+	kiuf_int_artr.kki_scelta_report_pic_prevFineLav = this.AddPicture("Regenerate!")
+	kiuf_int_artr.kki_scelta_report_pic_nrDosimetri = this.AddPicture("DataWindow!")
 end if
 
- ki_scelta_report_lotti_entrati = this.additem(  "Lotti entrati", ki_scelta_report_pic_lotti_entrati) //1 report 
- ki_scelta_report_generico = this.additem(  "Interrogazione Generica", ki_scelta_report_pic_generico) //2
- ki_scelta_report_coda_pilota = this.additem(  "Pilota: Programma Impianto", ki_scelta_report_pic_coda_pilota) //3
- ki_scelta_report_in_trattamento = this.additem(  "Pilota: Materiale in Lavorazione", ki_scelta_report_pic_in_trattamento) //4
- ki_scelta_report_prevFineLav = this.additem(  "Pilota: Previsione Lavorazione ", ki_scelta_report_pic_prevFineLav) //24
- ki_scelta_report_trattato = this.additem(  "Pilota: Materiale Trattato ", ki_scelta_report_pic_trattato) //5
- ki_scelta_report_chk_intra = this.additem(  "Conrollo INTRA", ki_scelta_report_pic_chk_intra) //6
- ki_scelta_report_RegArt50 = this.additem(  "Registro Articolo 50", ki_scelta_report_pic_RegArt50) //7
- ki_scelta_report_lotti_in_giacenza = this.additem(  "Lotti in giacenza", ki_scelta_report_pic_lotti_in_giacenza) //8
- ki_scelta_report_lotti_in_giacenza_gia_trattati = this.additem(  "Lotti Certificati in giacenza", ki_scelta_report_pic_lotti_in_giacenza_gia_trattati) //9
- ki_scelta_report_lotti_da_sped = this.additem(  "Lotti da Spedire", ki_scelta_report_pic_lotti_da_sped) //10
- ki_scelta_report_lotti_sped= this.additem(  "Lotti Spediti", ki_scelta_report_pic_lotti_sped) //11
- ki_scelta_report_etichette_lotti= this.additem(  "Etichette Lotti", ki_scelta_report_pic_etichette_lotti) //12
- ki_scelta_report_etichettine= this.additem(  "Etichette Dosimetro", ki_scelta_report_pic_etichettine) //13
- ki_scelta_report_groupage= this.additem(  "Elenco Groupage", ki_scelta_report_pic_groupage) //14
- ki_scelta_report_bcode_trattati = this.additem(  "Lotti Trattati", ki_scelta_report_pic_bcode_trattati) //15
+ this.InsertItem(  "Lotti entrati", kiuf_int_artr.kki_scelta_report_pic_lotti_entrati, kiuf_int_artr.kki_scelta_report_lotti_entrati) //1 report 
+ this.InsertItem(  "Interrogazione Generica", kiuf_int_artr.kki_scelta_report_pic_generico, kiuf_int_artr.kki_scelta_report_generico) //2
+ this.InsertItem(  "Pilota: Programma Impianto", kiuf_int_artr.kki_scelta_report_pic_coda_pilota, kiuf_int_artr.kki_scelta_report_coda_pilota) //3
+ this.InsertItem(  "Pilota: Materiale in Lavorazione", kiuf_int_artr.kki_scelta_report_pic_in_trattamento, kiuf_int_artr.kki_scelta_report_in_trattamento) //4
+ this.InsertItem(  "Pilota: Previsione Lavorazione ", kiuf_int_artr.kki_scelta_report_pic_prevFineLav, kiuf_int_artr.kki_scelta_report_prevFineLav) //24
+ this.InsertItem(  "Pilota: Materiale Trattato ", kiuf_int_artr.kki_scelta_report_pic_trattato, kiuf_int_artr.kki_scelta_report_trattato) //5
+ this.InsertItem(  "Conrollo INTRA", kiuf_int_artr.kki_scelta_report_pic_chk_intra, kiuf_int_artr.kki_scelta_report_chk_intra) //6
+ this.InsertItem(  "Registro Articolo 50", kiuf_int_artr.kki_scelta_report_pic_RegArt50, kiuf_int_artr.kki_scelta_report_RegArt50) //7
+ this.InsertItem(  "Lotti in giacenza", kiuf_int_artr.kki_scelta_report_pic_lotti_in_giacenza, kiuf_int_artr.kki_scelta_report_lotti_in_giacenza) //8
+ this.InsertItem(  "Lotti Certificati in giacenza", kiuf_int_artr.kki_scelta_report_pic_lotti_in_giacenza_gia_trattati, kiuf_int_artr.kki_scelta_report_lotti_in_giacenza_gia_trattati) //9
+ this.InsertItem(  "Lotti da Spedire", kiuf_int_artr.kki_scelta_report_pic_lotti_da_sped, kiuf_int_artr.kki_scelta_report_lotti_da_sped) //10
+ this.InsertItem(  "Lotti Spediti", kiuf_int_artr.kki_scelta_report_pic_lotti_sped, kiuf_int_artr.kki_scelta_report_lotti_sped) //11
+ this.InsertItem(  "Etichette Lotti", kiuf_int_artr.kki_scelta_report_pic_etichette_lotti, kiuf_int_artr.kki_scelta_report_etichette_lotti) //12
+ this.InsertItem(  "Etichette Dosimetro", kiuf_int_artr.kki_scelta_report_pic_etichettine, kiuf_int_artr.kki_scelta_report_etichettine) //13
+ this.InsertItem(  "Elenco Groupage", kiuf_int_artr.kki_scelta_report_pic_groupage, kiuf_int_artr.kki_scelta_report_groupage) //14
+ this.InsertItem(  "Lotti Trattati", kiuf_int_artr.kki_scelta_report_pic_bcode_trattati, kiuf_int_artr.kki_scelta_report_bcode_trattati) //15
+ this.InsertItem(  "Trova Memo ", kiuf_int_artr.kki_scelta_report_pic_memo, kiuf_int_artr.kki_scelta_report_memo)//18
+ this.InsertItem(  "Lotti Spediti da Fatturare ", kiuf_int_artr.kki_scelta_report_pic_lotti_sped_daFatt, kiuf_int_artr.kki_scelta_report_lotti_sped_dafatt)//19
+ this.InsertItem(  "Attestati ", kiuf_int_artr.kki_scelta_report_pic_attestati, kiuf_int_artr.kki_scelta_report_attestati)//20
+ this.InsertItem(  "Articoli Movimentati", kiuf_int_artr.kki_scelta_report_pic_art_movim, kiuf_int_artr.kki_scelta_report_art_movim) //16
+ this.InsertItem(  "Contratti Movimentati ", kiuf_int_artr.kki_scelta_report_pic_armo_Contratti, kiuf_int_artr.kki_scelta_report_armo_Contratti) //21
+ this.InsertItem(  "Capitolati ", kiuf_int_artr.kki_scelta_report_pic_LavxCapitolato, kiuf_int_artr.kki_scelta_report_LavxCapitolato) //22
+ this.InsertItem(  "N. Dosimetri ", kiuf_int_artr.kki_scelta_report_pic_nrDosimetri, kiuf_int_artr.kki_scelta_report_nrdosimetri) //25
+ this.InsertItem(  "Indicatori ", kiuf_int_artr.kki_scelta_report_pic_RunsRtrRts, kiuf_int_artr.kki_scelta_report_RunsRtrRts) //23
+
+
+// ki_scelta_report_lotti_entrati = this.additem(  "Lotti entrati", ki_scelta_report_pic_lotti_entrati) //1 report 
+// ki_scelta_report_generico = this.additem(  "Interrogazione Generica", ki_scelta_report_pic_generico) //2
+// ki_scelta_report_coda_pilota = this.additem(  "Pilota: Programma Impianto", ki_scelta_report_pic_coda_pilota) //3
+// ki_scelta_report_in_trattamento = this.additem(  "Pilota: Materiale in Lavorazione", ki_scelta_report_pic_in_trattamento) //4
+// ki_scelta_report_prevFineLav = this.additem(  "Pilota: Previsione Lavorazione ", ki_scelta_report_pic_prevFineLav) //24
+// ki_scelta_report_trattato = this.additem(  "Pilota: Materiale Trattato ", ki_scelta_report_pic_trattato) //5
+// ki_scelta_report_chk_intra = this.additem(  "Conrollo INTRA", ki_scelta_report_pic_chk_intra) //6
+// ki_scelta_report_RegArt50 = this.additem(  "Registro Articolo 50", ki_scelta_report_pic_RegArt50) //7
+// ki_scelta_report_lotti_in_giacenza = this.additem(  "Lotti in giacenza", ki_scelta_report_pic_lotti_in_giacenza) //8
+// ki_scelta_report_lotti_in_giacenza_gia_trattati = this.additem(  "Lotti Certificati in giacenza", ki_scelta_report_pic_lotti_in_giacenza_gia_trattati) //9
+// ki_scelta_report_lotti_da_sped = this.additem(  "Lotti da Spedire", ki_scelta_report_pic_lotti_da_sped) //10
+// ki_scelta_report_lotti_sped= this.additem(  "Lotti Spediti", ki_scelta_report_pic_lotti_sped) //11
+// ki_scelta_report_etichette_lotti= this.additem(  "Etichette Lotti", ki_scelta_report_pic_etichette_lotti) //12
+// ki_scelta_report_etichettine= this.additem(  "Etichette Dosimetro", ki_scelta_report_pic_etichettine) //13
+// ki_scelta_report_groupage= this.additem(  "Elenco Groupage", ki_scelta_report_pic_groupage) //14
+// ki_scelta_report_bcode_trattati = this.additem(  "Lotti Trattati", ki_scelta_report_pic_bcode_trattati) //15
+// ki_scelta_report_memo = this.additem(  "Trova Memo ", ki_scelta_report_pic_memo)//18
+// ki_scelta_report_lotti_sped_dafatt = this.additem(  "Lotti Spediti da Fatturare ", ki_scelta_report_pic_lotti_sped_daFatt)//19
+// ki_scelta_report_attestati = this.additem(  "Attestati ", ki_scelta_report_pic_attestati)//20
+// ki_scelta_report_art_movim = this.additem(  "Articoli Movimentati", ki_scelta_report_pic_art_movim) //16
+// ki_scelta_report_armo_Contratti = this.additem(  "Contratti Movimentati ", ki_scelta_report_pic_armo_Contratti) //21
+// ki_scelta_report_LavxCapitolato = this.additem(  "Capitolati ", ki_scelta_report_pic_LavxCapitolato) //22
+// ki_scelta_report_nrdosimetri = this.additem(  "N. Dosimetri ", ki_scelta_report_pic_nrDosimetri) //25
+// ki_scelta_report_RunsRtrRts = this.additem(  "Indicatori ", ki_scelta_report_pic_RunsRtrRts) //23
+
 // ki_scelta_report_armo_prezzi = this.additem(  "Voci lotto per la Fatturazione ", ki_scelta_report_pic_armo_prezzi) //17
- ki_scelta_report_memo = this.additem(  "Trova Memo ", ki_scelta_report_pic_memo)//18
- ki_scelta_report_lotti_sped_dafatt = this.additem(  "Lotti Spediti da Fatturare ", ki_scelta_report_pic_lotti_sped_daFatt)//19
- ki_scelta_report_attestati = this.additem(  "Attestati ", ki_scelta_report_pic_attestati)//20
- ki_scelta_report_art_movim = this.additem(  "Articoli Movimentati", ki_scelta_report_pic_art_movim) //16
- ki_scelta_report_armo_Contratti = this.additem(  "Contratti Movimentati ", ki_scelta_report_pic_armo_Contratti) //21
- ki_scelta_report_LavxCapitolato = this.additem(  "Capitolati ", ki_scelta_report_pic_LavxCapitolato) //22
- ki_scelta_report_nrdosimetri = this.additem(  "N. Dosimetri ", ki_scelta_report_pic_nrDosimetri) //25
- ki_scelta_report_RunsRtrRts = this.additem(  "Indicatori ", ki_scelta_report_pic_RunsRtrRts) //23
  //ki_scelta_report_RunsRtrRts = this.additem(  "Runs RTR RTS ETR ", ki_scelta_report_pic_RunsRtrRts) //23
  
  

@@ -10,7 +10,7 @@ type cb_stampa_ok from commandbutton within w_ddt_l
 end type
 type cb_stampa_annulla from commandbutton within w_ddt_l
 end type
-type dw_periodo from uo_d_std_1 within w_ddt_l
+type dw_periodo from uo_dw_periodo within w_ddt_l
 end type
 type gb_stampa from groupbox within w_ddt_l
 end type
@@ -32,8 +32,8 @@ global w_ddt_l w_ddt_l
 
 type variables
 //
-private date ki_data_ini 
-private date ki_data_fin 
+//private date ki_data_ini 
+//private date ki_data_fin 
 private string ki_mostra_nascondi_in_lista="S"
 private string ki_win_titolo_orig_save = ""
 
@@ -86,18 +86,18 @@ pointer oldpointer  // Declares a pointer variable
 		else
 			kst_tab_sped.clie_2 = 0
 		end if
-		if dw_lista_0.retrieve(ki_data_ini, ki_data_fin, kst_tab_sped.clie_2) < 1 then
-			k_return = "1Nessuna Spedizione per il periodo: " + string(ki_data_ini) + " - " + string(ki_data_fin)
+		if dw_lista_0.retrieve(dw_periodo.ki_data_ini, dw_periodo.ki_data_fin, kst_tab_sped.clie_2) < 1 then
+			k_return = "1Nessuna Spedizione per il periodo: " + string(dw_periodo.ki_data_ini) + " - " + string(dw_periodo.ki_data_fin)
 
 			SetPointer(oldpointer)
 			messagebox("Elenco ddt", &
-					"Nessuna Spedizione per il periodo: " + string(ki_data_ini) + " - " + string(ki_data_fin))
+					"Nessuna Spedizione per il periodo: " + string(dw_periodo.ki_data_ini) + " - " + string(dw_periodo.ki_data_fin))
 
 		end if		
 	end if
 
 	ki_win_titolo_orig = ki_win_titolo_orig_save
-	ki_win_titolo_orig += " dal " + string(ki_data_ini) + " al " + string(ki_data_fin)
+	ki_win_titolo_orig += " dal " + string(dw_periodo.ki_data_ini) + " al " + string(dw_periodo.ki_data_fin)
 	kiw_this_window.title = ki_win_titolo_orig
 
 	attiva_tasti()
@@ -167,8 +167,8 @@ private subroutine cambia_periodo_elenco ();//---
 //---
 
 
-dw_periodo.triggerevent("ue_visibile")
-
+//dw_periodo.event post ue_visibile
+dw_periodo.event ue_visible( )
 end subroutine
 
 public subroutine popola_st_sped_ddt_da_lista ();//---
@@ -321,23 +321,24 @@ protected subroutine open_start_window ();//
 //--- Argomenti:  KEY1 = cliente, KEY2= Data Inizio -   KEY3 = Data Fine 
 	if trim(ki_st_open_w.key2) = "" then
 		if isdate(trim(ki_st_open_w.key2)) then
-			ki_data_ini = date(trim(ki_st_open_w.key2))
+			dw_periodo.ki_data_ini = date(trim(ki_st_open_w.key2))
 		else
-			ki_data_ini = relativedate(kg_dataoggi, -35)
+			dw_periodo.ki_data_ini = relativedate(kg_dataoggi, -35)
 		end if
 	else
-		ki_data_ini = relativedate(kg_dataoggi, -35)
+		dw_periodo.ki_data_ini = relativedate(kg_dataoggi, -35)
 	end if
 	if trim(ki_st_open_w.key3) = "" then
 		if isdate(trim(ki_st_open_w.key3)) then
-			ki_data_fin = date(trim(ki_st_open_w.key3))
+			dw_periodo.ki_data_fin = date(trim(ki_st_open_w.key3))
 		else
-			ki_data_fin = kg_dataoggi
+			dw_periodo.ki_data_fin = kg_dataoggi
 		end if
 	else
-		ki_data_fin = kg_dataoggi
+		dw_periodo.ki_data_fin = kg_dataoggi
 	end if
 	
+	dw_periodo.kiw_parent = this
 
 //	tab_1.tabpage_1.dw_1.object.b_ric_lotto.filename ="pdf16.png" 
 
@@ -489,6 +490,9 @@ end type
 type dw_guida from w_g_tab0`dw_guida within w_ddt_l
 end type
 
+type st_duplica from w_g_tab0`st_duplica within w_ddt_l
+end type
+
 type rb_prova from radiobutton within w_ddt_l
 boolean visible = false
 integer x = 165
@@ -593,7 +597,7 @@ cb_stampa_annulla.visible = false
 
 end event
 
-type dw_periodo from uo_d_std_1 within w_ddt_l
+type dw_periodo from uo_dw_periodo within w_ddt_l
 integer x = 114
 integer y = 868
 integer width = 955
@@ -601,61 +605,35 @@ integer height = 504
 integer taborder = 60
 boolean bringtotop = true
 boolean enabled = true
-boolean titlebar = true
-string title = "Periodo di estrazione"
-string dataobject = "d_periodo"
-boolean controlmenu = true
-boolean hsplitscroll = false
-boolean livescroll = false
 end type
 
-event buttonclicked;call super::buttonclicked;//
-st_stampe kst_stampe
-pointer oldpointer  // Declares a pointer variable
-
-	
-//=== Puntatore Cursore da attesa.....
-oldpointer = SetPointer(HourGlass!)
-	
-
-if dwo.name = "b_ok" then
-	
-	this.accepttext( )
-	this.visible = false
-	
-	ki_data_ini  = this.getitemdate( 1, "data_dal")
-	ki_data_fin  = this.getitemdate( 1, "data_al")
-	inizializza()
-
-else
-	if dwo.name = "b_annulla" then
-
-		this.visible = false
-	
-	
-	end if
-end if
-
-SetPointer(oldpointer)
+event ue_visible;call super::ue_visible;////
+//int k_rc
+//
+//	this.width = long(this.object.data_al.x) + long(this.object.data_al.width) + 100
+//	this.height = long(this.object.b_ok.y) + long(this.object.b_ok.height) + 160
+//
+//	this.x = (kiw_this_window.width  - this.width) / 4
+//	this.y = (kiw_this_window.height - this.height) / 4
+//
+//	this.reset()
+//	k_rc = this.insertrow(0)
+//	k_rc = this.setitem(1, "data_dal", ki_data_ini)
+//	k_rc = this.setitem(1, "data_al", ki_data_fin)
+//	this.visible = true
+//	this.setfocus()
 
 
 end event
 
-event ue_visibile;call super::ue_visibile;//
-int k_rc
+event ue_clicked;call super::ue_clicked;//
+	this.accepttext( )
+	this.visible = false
+	
+	dw_periodo.ki_data_ini  = this.getitemdate( 1, "data_dal")
+	dw_periodo.ki_data_fin  = this.getitemdate( 1, "data_al")
+	inizializza()
 
-	this.width = long(this.object.data_al.x) + long(this.object.data_al.width) + 100
-	this.height = long(this.object.b_ok.y) + long(this.object.b_ok.height) + 160
-
-	this.x = (kiw_this_window.width  - this.width) / 4
-	this.y = (kiw_this_window.height - this.height) / 4
-
-	this.reset()
-	k_rc = this.insertrow(0)
-	k_rc = this.setitem(1, "data_dal", ki_data_ini)
-	k_rc = this.setitem(1, "data_al", ki_data_fin)
-	this.visible = true
-	this.setfocus()
 end event
 
 type gb_stampa from groupbox within w_ddt_l

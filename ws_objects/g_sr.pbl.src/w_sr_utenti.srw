@@ -754,13 +754,10 @@ end on
 
 event u_ricevi_da_elenco;call super::u_ricevi_da_elenco;//
 //
+int k_return
 int k_rc
-long k_num_int, k_riga
-date k_data_int
-window k_window
 st_esito kst_esito
 st_tab_sr_prof_utenti kst_tab_sr_prof_utenti 
-kuf_menu_window kuf1_menu_window 
 kuf_sr_sicurezza kuf1_sr_sicurezza
 
 
@@ -778,6 +775,7 @@ if isvalid(kst_open_w) then
 	
 //--- Se dalla w di elenco doppio-click		
  		if kst_open_w.key2 = ki_dw_lista_utenti and long(kst_open_w.key3) > 0 then
+			k_return = 1
 		
 			kdsi_elenco_input = kst_open_w.key12_any 
 		
@@ -798,10 +796,7 @@ if isvalid(kst_open_w) then
 					inizializza_lista()
 					
 					if kst_esito.esito <> "0" then
-						messagebox("Operazione non riuscita", &
-									  + trim(kst_esito.sqlerrtext), &
-									  StopSign!&
-									 )   
+						messagebox("Operazione non riuscita", "Errore: " + trim(kst_esito.sqlerrtext), StopSign!)   
 					end if
 					
 				end if
@@ -812,8 +807,8 @@ if isvalid(kst_open_w) then
 	end if
 
 end if
-//
 
+return k_return
 
 end event
 
@@ -1142,5 +1137,8 @@ type st_9_retrieve from w_g_tab_3`st_9_retrieve within tabpage_9
 end type
 
 type dw_9 from w_g_tab_3`dw_9 within tabpage_9
+end type
+
+type st_duplica from w_g_tab_3`st_duplica within w_sr_utenti
 end type
 

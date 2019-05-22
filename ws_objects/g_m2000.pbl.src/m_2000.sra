@@ -215,8 +215,8 @@ string kG_path_risorse = ""  //path dei grafici
 string kG_path_help = ""  //path file di HELP 
 date KG_DATAOGGI = today()   //data oggi
 //int KG_ANNO=year(KG_DATAOGGI) //Anno ESERCIZIO in tabella base
-boolean KG_ATTIVA_SUONI = false  //x attivare i suoni di open ecc... nelle windows
-boolean KG_SALVA_LISTE = false  //x attivare lo speed-list ovvero il salvatagio su HD delle DW x visualizz + in fretta
+//boolean KG_ATTIVA_SUONI = false  //x attivare i suoni di open ecc... nelle windows
+//boolean KG_SALVA_LISTE = false  //x attivare lo speed-list ovvero il salvatagio su HD delle DW x visualizz + in fretta
 //pointer KG_POINTER_DEFAULT = Arrow!
 //boolean kG_toolbar_window_stato=true //toolbar visibile o meno
 
@@ -231,7 +231,6 @@ constant string kkg_risorsa_elenco = KKG.PATH_SEP + "folder.gif"
 //string KG_UTENTE_COMP="MAST" //User compatto, prendo solo 4 lettere senza char strani
 
 end variables
-
 global type m_2000 from application
 string appname = "m_2000"
 boolean toolbartext = true
@@ -283,12 +282,13 @@ try
 	if isvalid(kguf_memo_allarme) then
 		if kguf_memo_allarme.set_allarme_utente(kst_memo_allarme) then
 			
-			kguf_memo_allarme.u_attiva_memo_allarme()
+			kguf_memo_allarme.u_attiva_memo_allarme_on()
 			
 			if kguf_memo_allarme.if_notifica_memo_a_video( ) then
 				kguf_memo_allarme.set_visualizza_allarme( )
 			end if
-			
+		else
+//			kguf_memo_allarme.u_attiva_memo_allarme_hide()
 		end if
 	end if
 	
@@ -332,7 +332,7 @@ st_tab_base_personale kst_tab_base_personale
 st_open_w kst_open_w
 pointer oldpointer  // Declares a pointer variable
 kuf_utility kuf1_utility
-kuf_base kuf1_base
+//kuf_base kuf1_base
  
 
 //--- Puntatore Cursore da attesa.....
@@ -375,7 +375,7 @@ KGuf_memo_allarme = create Kuf_memo_allarme
 KGuf_base_docking = create Kuf_base_docking
 
 kuf1_utility = create kuf_utility
-kuf1_base = create kuf_base
+//kuf1_base = create kuf_base
 
 ////--- Controllo se procedura gia' lanciata se si .....
 //if kGuf_data_base.if_is_running( )  then
@@ -433,27 +433,6 @@ SetPointer(oldpointer)
 
 if len(trim( kGuo_path.get_procedura())) > 0 then
 	
-//--- piglia dati standard personalizzati	
-	try
-		kst_tab_base_personale.flag_suoni = trim(kuf1_base.get_dato_personale("flag_suoni"))
-		kst_tab_base_personale.flag_salva_liste = trim(mid(kuf1_base.prendi_dato_base("flag_salva_liste"),2))
-	catch (uo_exception kuo_exception2)
-		kst_tab_base_personale.flag_suoni = ""
-	end try
-
-	if kst_tab_base_personale.flag_suoni = "S" then
-		kg_attiva_suoni = true 
-	else
-		kg_attiva_suoni = false 
-	end if
-
-	if kst_tab_base_personale.flag_salva_liste = "S" then
-		KG_SALVA_LISTE = true 
-	else
-		KG_SALVA_LISTE = false
-	end if
-	
-
 //--- Lancia il Logo iniziale x Connessione Autorizzazione Utente
 	kst_open_w.flag_modalita = kkg_flag_modalita.inserimento
 	OpenWithParm(w_about_start, kst_open_w)
@@ -463,7 +442,7 @@ if len(trim( kGuo_path.get_procedura())) > 0 then
 end if
 
 if isvalid(kuf1_utility) then destroy kuf1_utility
-if isvalid(kuf1_base) then destroy kuf1_base
+//if isvalid(kuf1_base) then destroy kuf1_base
 
 //--- se utente inattivo x + di 40' (2400 sec) allora lancia idle()
 idle(2400)

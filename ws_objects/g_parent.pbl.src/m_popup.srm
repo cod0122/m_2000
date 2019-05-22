@@ -84,6 +84,8 @@ type m_filtro from menu within m_popup
 end type
 type m_t_filtro from menu within m_popup
 end type
+type m_memo from menu within m_popup
+end type
 type m_agglista from menu within m_popup
 end type
 type m_t_agglista from menu within m_popup
@@ -140,6 +142,7 @@ m_cerca m_cerca
 m_t_cerca m_t_cerca
 m_filtro m_filtro
 m_t_filtro m_t_filtro
+m_memo m_memo
 m_agglista m_agglista
 m_t_agglista m_t_agglista
 m_copiaabilitata m_copiaabilitata
@@ -192,6 +195,7 @@ m_cerca m_cerca
 m_t_cerca m_t_cerca
 m_filtro m_filtro
 m_t_filtro m_t_filtro
+m_memo m_memo
 m_agglista m_agglista
 m_t_agglista m_t_agglista
 m_copiaabilitata m_copiaabilitata
@@ -324,6 +328,7 @@ this.m_cerca=create m_cerca
 this.m_t_cerca=create m_t_cerca
 this.m_filtro=create m_filtro
 this.m_t_filtro=create m_t_filtro
+this.m_memo=create m_memo
 this.m_agglista=create m_agglista
 this.m_t_agglista=create m_t_agglista
 this.m_copiaabilitata=create m_copiaabilitata
@@ -372,6 +377,7 @@ this.Item[UpperBound(this.Item)+1]=this.m_cerca
 this.Item[UpperBound(this.Item)+1]=this.m_t_cerca
 this.Item[UpperBound(this.Item)+1]=this.m_filtro
 this.Item[UpperBound(this.Item)+1]=this.m_t_filtro
+this.Item[UpperBound(this.Item)+1]=this.m_memo
 this.Item[UpperBound(this.Item)+1]=this.m_agglista
 this.Item[UpperBound(this.Item)+1]=this.m_t_agglista
 this.Item[UpperBound(this.Item)+1]=this.m_copiaabilitata
@@ -424,6 +430,7 @@ destroy(this.m_cerca)
 destroy(this.m_t_cerca)
 destroy(this.m_filtro)
 destroy(this.m_t_filtro)
+destroy(this.m_memo)
 destroy(this.m_agglista)
 destroy(this.m_t_agglista)
 destroy(this.m_copiaabilitata)
@@ -1995,6 +2002,44 @@ this.bitmapgradient = true
 end on
 
 on m_t_filtro.destroy
+call super::destroy
+end on
+
+type m_memo from menu within m_popup
+end type
+
+event clicked;//
+if isvalid(kguf_memo_allarme) then
+	kguf_memo_allarme.set_visualizza_allarme_on( )
+else
+	messagebox("Allarmi Memo", "Nessun messaggio disponibile")
+end if
+end event
+
+on m_memo.create
+call super::create
+this.text = "Memo"
+this.microhelp = "Allarmi Memo"
+this.menuimage = "memo16.png"
+this.menustyle = contemporarymenu!
+this.menutextcolor = 134217735
+this.menubackcolor = 134217732
+this.menuhighlightcolor = 134217741
+this.textsize = 8
+this.weight = 400
+this.facename = "Tahoma"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 12632256
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 67108864
+this.toolbarhighlightcolor = 134217741
+this.toolbargradient = true
+this.bitmapgradient = true
+end on
+
+on m_memo.destroy
 call super::destroy
 end on
 

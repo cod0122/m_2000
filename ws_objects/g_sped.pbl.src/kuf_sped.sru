@@ -119,6 +119,7 @@ public function long get_num_bolla_out_ultimo (ref st_tab_sped kst_tab_sped) thr
 public function long get_numero_nuovo (st_tab_sped ast_tab_sped, integer a_ctr) throws uo_exception
 public function long if_num_bolla_out_exists (st_tab_sped kst_tab_sped) throws uo_exception
 private function long u_get_clie_ds_dw_elenco_indirizzi ()
+public function boolean if_ddt_allarme_memo (st_tab_sped kst_tab_sped) throws uo_exception
 end prototypes
 
 public subroutine if_isnull_testa (ref st_tab_sped kst_tab_sped);//---
@@ -6597,20 +6598,11 @@ end subroutine
 public function boolean if_ddt_lavparziale () throws uo_exception;//
 //----------------------------------------------------------------------------------------------------------------
 //--- 
-//--- Controlla se DDT è modificabile x id_sped
-//--- 
-//--- 
-//--- Inp: st_tab_sped.id_sped
-//--- Out: TRUE = si è possibile fare modifiche
-//---
-//--- lancia exception
-//---
-//----------------------------------------------------------------------------------------------------------------
-//
 //--- Controlla se è possibile fare DDT con lotti trattati solo parzialmente 
 //---
 //--- Rit: true = ok posso spedire lotti parziali, FALSE = NON è possibile fare DDT x lotti parziali
 //
+//----------------------------------------------------------------------------------------------------------------
 boolean k_return = false
 string k_esito = ""
 st_tab_base kst_tab_base
@@ -7583,6 +7575,54 @@ long k_return
 	end if
 	
 return k_return
+
+end function
+
+public function boolean if_ddt_allarme_memo (st_tab_sped kst_tab_sped) throws uo_exception;//
+//----------------------------------------------------------------------------------------------------------------
+//--- 
+//--- Controlla se DDT ha un allarme MEMO x id_sped
+//--- 
+//--- 
+//--- Inp: st_tab_sped.id_sped
+//--- Out: TRUE = ddt in allarme 
+//---
+//--- lancia exception
+//---
+//----------------------------------------------------------------------------------------------------------------
+//
+boolean k_return = false
+string k_esito = ""
+datastore kds
+st_esito kst_esito
+kuf_base kuf1_base
+
+
+kst_esito.esito = kkg_esito.ok
+kst_esito.sqlcode = 0
+kst_esito.SQLErrText = " "
+kst_esito.nome_oggetto = this.classname()
+
+if kst_tab_sped.id_sped > 0 then
+	kds = create datastore
+	kds.dataobject = "ds_ddt_if_allarme_memo"
+	kds.settransobject(kguo_sqlca_db_magazzino)
+	if kds.retrieve( kst_tab_sped.id_sped) > 0 then
+		k_return = true
+	end if
+else
+
+	kst_esito.esito = kkg_esito.no_esecuzione  
+	kst_esito.SQLErrText = "Verifica Allarme MEMO sul DDT non eseguita, id del DDT assente!"
+	kguo_exception.inizializza( )
+	kguo_exception.set_esito(kst_esito)
+	throw kguo_exception
+end if
+
+
+return k_return
+
+
 
 end function
 

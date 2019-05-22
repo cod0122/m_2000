@@ -2218,19 +2218,12 @@ call super::destroy
 if IsValid(MenuID) then destroy(MenuID)
 end on
 
-event u_ricevi_da_elenco;call super::u_ricevi_da_elenco;////
-////
-//int k_rc
+event u_ricevi_da_elenco;call super::u_ricevi_da_elenco;//
+int k_return
 long k_riga
-st_esito kst_esito
 st_tab_listino kst_tab_listino 
 datastore kds_elenco
 
-
-
-//st_open_w kst_open_w
-
-//kst_open_w = Message.PowerObjectParm	
 
 if isvalid(kst_open_w) then
 
@@ -2248,22 +2241,20 @@ if isvalid(kst_open_w) then
 						tab_1.tabpage_4.dw_4.setitem(1, "listino_prezzo", 0)
 						kst_tab_listino.id = kds_elenco.getitemnumber(k_riga, "id_listino")
 						if kst_tab_listino.id > 0 then
+							k_return = 1
 							u_set_sv_call_vettore_id_listino(kst_tab_listino)
+							attiva_tasti()
 						end if
 									
-					
 				end choose
 
 			end if
-			
-			attiva_menu()
-
 		end if
 	end if
 
 end if
-//
 
+return k_return
 
 end event
 
@@ -3069,6 +3060,9 @@ integer x = 658
 integer y = 808
 integer width = 1563
 integer height = 512
+end type
+
+type st_duplica from w_g_tab_3`st_duplica within w_base_personale
 end type
 
 type cb_1 from commandbutton within tabpage_3

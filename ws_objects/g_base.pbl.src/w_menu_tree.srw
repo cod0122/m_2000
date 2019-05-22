@@ -1249,10 +1249,6 @@ event ue_menu;//
 return 1
 end event
 
-event u_ricevi_da_elenco;//
-
-end event
-
 event open;//
 
 	ki_st_open_w.flag_primo_giro = "S"

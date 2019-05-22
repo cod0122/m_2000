@@ -515,16 +515,16 @@ protected subroutine open_start_window ();//
 //--- spesso in alternativa alla DROP-DATAWINDOWS (doppio click)
 //----
 //--- Parametri richiesti:
-//--- KEY1 = Titolo di questa Window di Zoom ("elenco/anteprima")
+//--- KEY1 = Titolo da dare a questa scheda di ZOOM ("elenco/anteprima")
 //--- KEY2 = nome data-window x l'elenco
-//--- KEY3 = non usare xchè ritorna il numero di RIGA cliccato
-//--- KEY4 = Titolo della Windows chiamante
+//--- KEY3 = RISERVATO non usare xchè ritorna il numero di RIGA cliccato
+//--- KEY4 = Titolo della Window chiamante
 //--- KEY5 = RISERVATO da non usare
 //--- KEY6 = nome campo che ha scatenato la chiamata a questo elenco
-//--- KEY7 = flag di chiusura della Window dopo il DOPPIO CLICK di scelta (kuf_elenco.ki_esci_dopo_scelta) 
-//--- KEY12_any = reference al datastore con i dati
+//--- KEY7 = flag N= non chiudere lo ZOOM dopo il DOPPIO CLICK (kuf_elenco.ki_esci_dopo_scelta) 
+//--- KEY12_any = reference al datastore con i dati da visualizzare
 //---
-//--- Torna:
+//--- Nell'evento chiamato questi altri valori, oltre a quelli di cui sopra:
 //--- KEY3 = numero della riga scelta dall'elenco
 //---        0 = nessuna riga scelta
 //--- KEY5 = nome campo che ha scatenato la chiamata a questo elenco
@@ -871,12 +871,6 @@ event u_open_preliminari;call super::u_open_preliminari;//
 end event
 
 event open;//
-//=== Parametri di Input : 1  lung 2   scelta; 
-//===								3  lung 20  Key principale
-//===								23 lung 1   's'=adatta windows alla definiz.
-//===								24 lung 26  Libero x future implem
-//===								50 lung ??  Personalizzabile
-//===								
 //
 long k_ctr
 

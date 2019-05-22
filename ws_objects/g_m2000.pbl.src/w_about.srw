@@ -34,12 +34,11 @@ global w_about w_about
 type variables
 
 //
-constant string ki_suona_motivo_start = "Start.wav"
 st_open_w kist_open_w
 kuf_sr_sicurezza kiuf_sr_sicurezza
 
-end variables
 
+end variables
 forward prototypes
 private subroutine u_check_caps_on ()
 private subroutine imposta_password ()
@@ -251,7 +250,7 @@ try
 		k_passwd = ""
 	end if
 		
-	kst_tab_sr_utenti.codice = upper(k_utente)
+	kst_tab_sr_utenti.codice = trim(k_utente)
 	kst_tab_sr_utenti.password = trim(k_passwd)
 	k_return = kiuf_sr_sicurezza.check_user_password (kst_tab_sr_utenti)
 
@@ -496,9 +495,6 @@ else
 			u_set_menu( )
 
 			open(w_main)
-
-//--- Suona Motivo di attivazione programma
-			kGuf_data_base.post suona_motivo(ki_suona_motivo_start, 0)
 				
 		else
 //--- w_main già aperta per cui lancio solo l'evento OPEN

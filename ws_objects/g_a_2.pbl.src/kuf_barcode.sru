@@ -220,7 +220,7 @@ if len(trim(kst_tab_barcode.barcode)) > 0 then
 	
 			k_rek_ok = 1
 	
-			messagebox("Operazione non possibile",&
+			messagebox("Operazione non disponibile",&
 				"P.L. già chiuso in data " + string(kst_tab_pl_barcode.data_chiuso, "dd/mm/yyyy"), &
 				StopSign!) 
 		else
@@ -249,7 +249,7 @@ if len(trim(kst_tab_barcode.barcode)) > 0 then
 	
 					k_rek_ok = 1
 					  
-					messagebox("Operazione non possibile",&
+					messagebox("Operazione non disponibile",&
 						"BARCODE già trattato, lavorazione conclusa il " + string(kst_tab_barcode.data_lav_fin, "dd/mm/yyyy") + ". Barcode " + k_codice,  &
 						StopSign!) 
 	
@@ -258,7 +258,7 @@ if len(trim(kst_tab_barcode.barcode)) > 0 then
 					  
 					k_rek_ok = 1
 	
-					messagebox("Operazione non possibile",&
+					messagebox("Operazione non disponibile",&
 						"BARCODE in lavorazione dal " + string(kst_tab_barcode.data_lav_ini, "dd/mm/yyyy")  + ". Barcode " + k_codice,  &
 						StopSign!) 
 					
@@ -4032,7 +4032,7 @@ st_esito kst_esito
 	kst_esito.nome_oggetto = this.classname()
 
 	k_barcode = trim(kst_tab_barcode.barcode)
-	
+	 
 
 //	if isnull(kst_tab_barcode.groupage) or len(trim(kst_tab_barcode.groupage)) = 0 then
 //		kst_tab_barcode.groupage = "N"
@@ -4053,7 +4053,7 @@ st_esito kst_esito
 //	if isnull(kst_tab_barcode.fila_1p) then
 //		kst_tab_barcode.fila_1p = 0
 //	end if
-//	if isnull(kst_tab_barcode.fila_2) then
+//	if isnull(kst_tab_barcode.fila_2) then 
 //		kst_tab_barcode.fila_2 = 0
 //	end if
 //	if isnull(kst_tab_barcode.fila_2p) then
@@ -4065,14 +4065,14 @@ st_esito kst_esito
 //			 fila_1 = :kst_tab_barcode.fila_1, 
 //			 fila_2 = :kst_tab_barcode.fila_2, 
 //			 fila_1p = :kst_tab_barcode.fila_1p, 
-//			 fila_2p = :kst_tab_barcode.fila_2p, 
+//			 fila_2p = :kst_tab_barcode.fila_2p,  
 
 	kst_tab_barcode.x_datins = kGuf_data_base.prendi_x_datins()
 	kst_tab_barcode.x_utente = kGuf_data_base.prendi_x_utente()
 
 	if kst_esito.esito = "0" then
-	
-		update barcode set
+	  
+		update barcode set  
 			 pl_barcode = :kst_tab_barcode.pl_barcode,
 			 pl_barcode_progr = :kst_tab_barcode.pl_barcode_progr,
 			 x_datins = :kst_tab_barcode.x_datins,

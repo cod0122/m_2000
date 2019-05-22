@@ -112,7 +112,7 @@ try
 				messagebox("Rimozione NOTE", "Operazione Interrotta dall'utente", stopsign!)
 			end if
 		else
-			messagebox("Rimozione NOTE", "Operazione non possibile, Note lotto già movimentate", stopsign!)
+			messagebox("Rimozione NOTE", "Operazione non disponibile, Note lotto già movimentate", stopsign!)
 		end if
 	end if
 	
@@ -359,5 +359,8 @@ end type
 type dw_guida from w_g_tab0`dw_guida within w_armo_nt
 integer x = 1147
 integer y = 724
+end type
+
+type st_duplica from w_g_tab0`st_duplica within w_armo_nt
 end type
 

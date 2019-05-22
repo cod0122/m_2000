@@ -1547,14 +1547,13 @@ end on
 
 event u_ricevi_da_elenco;call super::u_ricevi_da_elenco;//
 //
+int k_return
 int k_rc
 long k_num_int, k_riga
 date k_data_int
 double k_coeff_a_s
 int k_assorbanza, k_spessore
 st_tab_meca_dosim kst_tab_meca_dosim
-window k_window
-kuf_menu_window kuf1_menu_window 
 
 
 
@@ -1565,6 +1564,7 @@ kuf_menu_window kuf1_menu_window
 //--- Se dalla w di elenco non ho premuto un pulsante ma ad esempio doppio-click		
 		if kst_open_w.key2 = "d_dosimetrie_lotto_l" and long(kst_open_w.key3) > 0 then
 		
+			k_return = 1
 			kdsi_elenco_input = kst_open_w.key12_any 
 		
 			if kdsi_elenco_input.rowcount() > 0 then
@@ -1578,7 +1578,7 @@ kuf_menu_window kuf1_menu_window
 //			if kst_open_w.key2 = "d_meca_elenco_da_conv" and long(kst_open_w.key3) > 0 then
 			if LeftA(kst_open_w.key2,23) = "d_meca_elenco_convalide" and long(kst_open_w.key3) > 0 then
 
-
+				k_return = 1
 				kdsi_elenco_input = kst_open_w.key12_any 
 				if kdsi_elenco_input.rowcount() > 0 then
 					ki_st_open_w.key1 = string(kdsi_elenco_input.getitemnumber(long(kst_open_w.key3), "num_int"))
@@ -1597,6 +1597,7 @@ kuf_menu_window kuf1_menu_window
 				
 				if kst_open_w.key2 = "d_dosimetrie_coeff_lotto_l" and long(kst_open_w.key3) > 0 then
 					
+					k_return = 1
 					kdsi_elenco_input = kst_open_w.key12_any 
 
 					tab_1.tabpage_1.dw_1.gettext()
@@ -1620,9 +1621,12 @@ kuf_menu_window kuf1_menu_window
 				end if				
 			end if				
 		end if
+		
+		attiva_tasti()
 
 	end if
 
+return k_return
 
 
 
@@ -2149,5 +2153,8 @@ type st_9_retrieve from w_g_tab_3`st_9_retrieve within tabpage_9
 end type
 
 type dw_9 from w_g_tab_3`dw_9 within tabpage_9
+end type
+
+type st_duplica from w_g_tab_3`st_duplica within w_convalida_dosim
 end type
 

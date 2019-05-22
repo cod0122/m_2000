@@ -62,6 +62,7 @@ public boolean ki_disattiva_moment_cb_aggiorna = true
 public string ki_flag_modalita = ""
 
 //--- attiva/disattiva i LINK
+private kuf_link_zoom kiuf_link_zoom
 public boolean ki_link_standard_sempre_possibile = false
 public boolean ki_link_standard_attivi = true
 public boolean ki_button_standard_attivi = true
@@ -430,7 +431,7 @@ end event
 
 event u_personalizza_dw();//
 //---- imposta i link standard se attivi e memorizza l'ultimo dataobject cliccato          
-	if ki_link_standard_attivi &
+	if not isnull(this) and this.dataobject > " " and this.dataobject <> "d_nulla" and  ki_link_standard_attivi &
 			and ((ki_flag_modalita <> kkg_flag_modalita.modifica and ki_flag_modalita <> KKG_FLAG_RICHIESTA.inserimento) &
 				or ki_link_standard_sempre_possibile) then
 		
@@ -1339,7 +1340,7 @@ string k_nome_link_button = " "
 string k_protect = "", k_taborder="", k_valore=""
 int k_taborder_n = 0
 boolean k_zoom_ok = false, k_press_KeyControl
-kuf_link_zoom kuf1_link_zoom
+//kuf_link_zoom kuf1_link_zoom
 
 
 try 
@@ -1350,12 +1351,12 @@ try
 
 		setpointer (kkg.pointer_attesa)	
 		
-		kuf1_link_zoom = create kuf_link_zoom
+//		kuf1_link_zoom = create kuf_link_zoom
 		
 		if KeyDown(KeyControl!) then k_press_KeyControl = true
 		
 //--- se ho cliccato su un BUTTON o SIMILARE converto nel link tradizionale 
-		k_nome_link_button = kuf1_link_zoom.get_link_da_button (a_nome_link)
+		k_nome_link_button = kiuf_link_zoom.get_link_da_button (a_nome_link)
 		
 		if k_nome_link_button > " " then  // se è un Bottone lo riverso anche nel campo nome LINK
 			a_nome_link = trim(k_nome_link_button)
@@ -1400,7 +1401,7 @@ try
 
 //--- Se posso 'lanciare lo ZOOM'
 		if k_zoom_ok then 
-			k_return = kuf1_link_zoom.link_standard_call_p (adw_link, a_nome_link) // attiva i tasti con il LINK
+			k_return = kiuf_link_zoom.link_standard_call_p (adw_link, a_nome_link) // attiva i tasti con il LINK
 		end if			
 
 	end if
@@ -1849,6 +1850,7 @@ kist_errori_gestione.sqldbcode = 0
 setnull(kist_errori_gestione.sqlca) 
 
 kiuf_ddw_grid = create kuf_ddw_grid
+kiuf_link_zoom = create kuf_link_zoom
 
 //--- costruisce oggetto x effetto EXCEL
 kin_cst_PowerFilter = create n_cst_PowerFilter  

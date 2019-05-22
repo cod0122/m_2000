@@ -117,26 +117,25 @@ end if
 //--- Espone il msg all'utente
 choose case ki_st_uo_exception.tipo
 	case KK_st_uo_exception_tipo_generico
-		messaggio_utente (k_titolo,  "Prego, fare attenzione alle seguenti Avvertenze: " + getmessage())
+		messaggio_utente (k_titolo,  getmessage())
 	case KK_st_uo_exception_tipo_dati_non_eseguito
 		messaggio_utente (k_titolo,  getmessage())
 	case KK_st_uo_exception_tipo_dati_anomali, KK_st_uo_exception_tipo_dati_wrn
-		messaggio_utente (k_titolo, "Prego, fare attenzione alle seguenti Avvertenze: " + getmessage())
-	case KK_st_uo_exception_tipo_dati_utente &
-		, KK_st_uo_exception_tipo_noAUT
+		messaggio_utente (k_titolo, getmessage())
+	case KK_st_uo_exception_tipo_dati_utente , KK_st_uo_exception_tipo_noAUT
 		messaggio_utente (k_titolo, getmessage())
 	case KK_st_uo_exception_tipo_db_ko
-		messaggio_utente (k_titolo, "Attenzione si è verificato il seguente Errore: " + getmessage())
+		messaggio_utente (k_titolo, getmessage())
 	case KK_st_uo_exception_tipo_ko
-		messaggio_utente (k_titolo, "Attenzione si è verificato il seguente Errore: " + getmessage())
+		messaggio_utente (k_titolo, getmessage())
 	case KK_st_uo_exception_tipo_not_fnd
-		messaggio_utente (k_titolo, "Prego fare attenzione alle seguenti Avvertenze: " +  getmessage())
+		messaggio_utente (k_titolo, getmessage())
 	case KK_st_uo_exception_tipo_err_int
-		messaggio_utente (k_titolo, "Attenzione si è verificato il seguente Errore: " + getmessage())
+		messaggio_utente (k_titolo, getmessage())
 	case KK_st_uo_exception_tipo_allerta
-		messaggio_utente (k_titolo,  "Prego, fare attenzione alle seguenti Avvertenze: " + getmessage())
+		messaggio_utente (k_titolo, getmessage())
 	case KK_st_uo_exception_tipo_dati_insufficienti, KK_st_uo_exception_tipo_dati_insufficienti1
-		messaggio_utente (k_titolo,  "Prego, fare attenzione alle seguenti Avvertenze: " + getmessage())
+		messaggio_utente (k_titolo, getmessage())
 	case KK_st_uo_exception_tipo_OK
 		messaggio_utente (k_titolo,  trim(getmessage()))
 	case else

@@ -85,7 +85,6 @@ public function st_esito get_id_meca (ref st_tab_armo kst_tab_armo)
 public function st_esito get_stato (ref st_tab_meca kst_tab_meca)
 public function boolean if_stampa_etichetta_avvertenze (st_tab_meca kst_tab_meca)
 public function st_esito get_id_meca_da_id_armo (ref st_tab_armo kst_tab_armo)
-public function boolean if_lotto_chiuso (st_tab_meca kst_tab_meca) throws uo_exception
 public function st_esito anteprima_riga (ref datastore kdw_anteprima, st_tab_armo kst_tab_armo)
 public function integer get_colli_anno_x_clie_3 (readonly st_tab_meca kst_tab_meca) throws uo_exception
 public function st_esito get_riga_colli_da_fatt (ref st_tab_armo kst_tab_armo)
@@ -205,6 +204,7 @@ public function string get_stato_descrizione_std (st_tab_meca ast_tab_meca) thro
 public function string u_get_consegna_tempi (ref st_tab_meca kst_tab_meca) throws uo_exception
 public subroutine set_consegna_ora (st_tab_meca kst_tab_meca) throws uo_exception
 public function integer set_dosimprev (ref st_tab_meca kst_tab_meca) throws uo_exception
+public function boolean if_lotto_chiuso (ref st_tab_meca kst_tab_meca) throws uo_exception
 end prototypes
 
 public function st_esito setta_errore_lav (st_tab_meca kst_tab_meca);//
@@ -1627,56 +1627,6 @@ st_esito kst_esito
 	end if
 	
 return kst_esito
-
-end function
-
-public function boolean if_lotto_chiuso (st_tab_meca kst_tab_meca) throws uo_exception;//
-//====================================================================
-//=== Controllo se Riferimento e' CHIUSO/ANNULLATO
-//=== 
-//=== Ritorna boolean : TRUE=chiuso, FALSE=aperto;
-//===                  : come standard
-//===   
-//====================================================================
-
-st_esito kst_esito
-boolean k_return = false
-uo_exception kuo_exception
-
-
-	kst_esito.esito = kkg_esito.ok
-	kst_esito.sqlcode = 0
-	kst_esito.SQLErrText = ""
-	kst_esito.nome_oggetto = this.classname()
-
-
-//--- 
-	select aperto
-		into :kst_tab_meca.aperto
-		from meca 
-		where meca.id = :kst_tab_meca.id
-		using kguo_sqlca_db_magazzino;
-	
-	if kguo_sqlca_db_magazzino.sqlcode = 0 then
-
-		if kst_tab_meca.aperto = kki_meca_aperto_NO or kst_tab_meca.aperto = kki_meca_aperto_annullato then
-			k_return = true
-		end if
-		
-	else
-		if kguo_sqlca_db_magazzino.sqlcode < 0 then
-			kst_esito.esito = kkg_esito.db_ko
-			kst_esito.sqlcode = kguo_sqlca_db_magazzino.sqlcode
-			kst_esito.SQLErrText = "Errore grave durante controllo Lotto Aperto, id=" + string(kst_tab_meca.id) + "~n~r" + kguo_sqlca_db_magazzino.sqlerrtext
-			kuo_exception = create uo_exception
-			kuo_exception.set_esito( kst_esito )
-			throw kuo_exception
-		end if
-	end if
-	
-	
-return k_return
-
 
 end function
 
@@ -10024,6 +9974,56 @@ end try
 
 
 return k_return
+
+end function
+
+public function boolean if_lotto_chiuso (ref st_tab_meca kst_tab_meca) throws uo_exception;//
+//====================================================================
+//=== Controllo se Riferimento e' CHIUSO/ANNULLATO
+//=== 
+//=== Ritorna boolean : TRUE=chiuso, FALSE=aperto;
+//===                  : come standard
+//===   
+//====================================================================
+
+st_esito kst_esito
+boolean k_return = false
+uo_exception kuo_exception
+
+
+	kst_esito.esito = kkg_esito.ok
+	kst_esito.sqlcode = 0
+	kst_esito.SQLErrText = ""
+	kst_esito.nome_oggetto = this.classname()
+
+
+//--- 
+	select aperto
+		into :kst_tab_meca.aperto
+		from meca 
+		where meca.id = :kst_tab_meca.id
+		using kguo_sqlca_db_magazzino;
+	
+	if kguo_sqlca_db_magazzino.sqlcode = 0 then
+
+		if kst_tab_meca.aperto = kki_meca_aperto_NO or kst_tab_meca.aperto = kki_meca_aperto_annullato then
+			k_return = true
+		end if
+		
+	else
+		if kguo_sqlca_db_magazzino.sqlcode < 0 then
+			kst_esito.esito = kkg_esito.db_ko
+			kst_esito.sqlcode = kguo_sqlca_db_magazzino.sqlcode
+			kst_esito.SQLErrText = "Errore grave durante controllo Lotto Aperto, id=" + string(kst_tab_meca.id) + "~n~r" + kguo_sqlca_db_magazzino.sqlerrtext
+			kuo_exception = create uo_exception
+			kuo_exception.set_esito( kst_esito )
+			throw kuo_exception
+		end if
+	end if
+	
+	
+return k_return
+
 
 end function
 

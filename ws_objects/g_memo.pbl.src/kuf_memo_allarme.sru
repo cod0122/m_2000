@@ -29,12 +29,14 @@ public constant string kki_MEMO_allarme_ddt = "S" // nel carico DDT
 public constant string kki_MEMO_allarme_fattura = "F" // nel carico Fattura
 public constant string kki_MEMO_allarme_ddtfatt = "T" // segnala nel ddt e in fattura
 public constant string kki_MEMO_allarme_utente = "U" // segnalazione su utente
+public constant string kki_MEMO_allarme_certif = "A" // segnala su Attestato
 
 //--- data dalla quale get gli allarmi
 private date ki_data_allarme_ini 
 
-end variables
+constant string kki_suona_motivo_allarme = "allarmeMemo.wav"
 
+end variables
 forward prototypes
 private subroutine u_open_window (string a_titolo)
 public function boolean if_sicurezza (st_open_w ast_open_w) throws uo_exception
@@ -43,7 +45,6 @@ public function boolean set_allarme_cliente (ref st_memo_allarme ast_memo_allarm
 public function boolean set_allarme_lotto (ref st_memo_allarme ast_memo_allarme) throws uo_exception
 private function boolean if_allarme_cliente (ref st_memo_allarme ast_memo_allarme) throws uo_exception
 private function boolean if_allarme_lotto (ref st_memo_allarme ast_memo_allarme) throws uo_exception
-public function boolean u_attiva_memo_allarme () throws uo_exception
 public subroutine set_window (ref w_memo_allarme a_window)
 public function w_memo_allarme get_window ()
 public subroutine set_w_main (ref window a_window)
@@ -61,6 +62,13 @@ public subroutine inizializza ()
 public function date get_data_allarme_ini ()
 public subroutine set_visualizza_allarme ()
 public subroutine u_mostra_allarme (string a_nr_allarmi)
+public function boolean u_attiva_memo_allarme_on () throws uo_exception
+private function boolean u_attiva_memo_allarme () throws uo_exception
+public function boolean u_attiva_memo_allarme_hide () throws uo_exception
+public subroutine set_visualizza_allarme_on ()
+public subroutine set_visualizza_allarme_off ()
+public function boolean link_call (ref datawindow adw_link, string a_campo_link) throws uo_exception
+public subroutine u_audio_warning ()
 end prototypes
 
 private subroutine u_open_window (string a_titolo);
@@ -91,7 +99,10 @@ long k_riga
 int k_rc
 
 
-if ast_memo_allarme.st_memo.st_tab_clienti_memo.id_cliente > 0 then
+if ast_memo_allarme.st_memo.st_tab_clienti_memo.id_cliente > 0 &
+     	or ast_memo_allarme.clie_1 > 0  &
+     	or ast_memo_allarme.clie_2 > 0  &
+     	or ast_memo_allarme.clie_3 > 0  then
 	
 	if if_allarme_cliente(ast_memo_allarme) then
 		//--- solo se id non presente allora lo aggiungo
@@ -119,7 +130,7 @@ if ast_memo_allarme.st_memo.st_tab_clienti_memo.id_cliente > 0 then
 
 				ki_visualizza_allarme = true
 				k_return = true
-				set_visualizza_allarme()   // visualizza pop-pup allarme
+				set_visualizza_allarme_on()   // visualizza pop-pup allarme
 			end if
 		end if
 	end if
@@ -171,7 +182,7 @@ if ast_memo_allarme.st_memo.st_tab_meca_memo.id_meca > 0 then
 
 				ki_visualizza_allarme = true
 				k_return = true
-				set_visualizza_allarme()   // visualizza pop-pup allarme
+				set_visualizza_allarme_on()   // visualizza pop-pup allarme
 			end if
 		end if
 	end if
@@ -268,39 +279,6 @@ return k_return
 
 end function
 
-public function boolean u_attiva_memo_allarme () throws uo_exception;//
-//--- Attiva la window x visualizzare gli Allarmi MEMO per una determinata funzione
-//--- Inp: 	st_memo_allarme  tipo_allarme e i campi riempiti per cercare i memo
-//---		           ad esempio se tipo_allarme = "C"  cercherò i memo 
-//---                 del cliente indicato in st_memo_allarme.st_memo.st_clienti_memo.id_cliente
-//---    
-//
-boolean k_return = false
-
-//--- ALLARME da visualizzare?	
-	if ki_visualizza_allarme then
-		ki_visualizza_allarme = false
-	
-//--- se window non ancora aperta la crea	
-		if not isvalid(kiw_memo_allarme) then
-			u_open()	
-		end if
-	
-		if isvalid (kiw_main) and isvalid(kiw_memo_allarme) then
-			kiw_memo_allarme.set_posizione(kiw_main.width, kiw_main.height)
-		end if		
-		if isvalid(kiw_memo_allarme) and kids_memo_allarme.rowcount( ) > 0 then
-			kiw_memo_allarme.u_attiva_allarme(kids_memo_allarme)
-			set_icona_avviso( )  // visualizza l'icona dell'avviso sulla MDI
-		end if
-
-	end if	
-
-
-return k_return
-
-end function
-
 public subroutine set_window (ref w_memo_allarme a_window);//
 kiw_memo_allarme = a_window
 
@@ -318,6 +296,8 @@ kiw_main = a_window
 end subroutine
 
 public function boolean u_open_applicazione (ref st_tab_g_0 kst_tab_g_0, string k_flag_modalita);//
+int k_rc_open
+//window kwindow
 kuf_menu_window kuf1_menu_window
 st_open_w Kst_open_w
 
@@ -332,7 +312,14 @@ st_open_w Kst_open_w
 	Kst_open_w.key12_any = this			// questo oggetto di gestione del trovo
 	
 	kuf1_menu_window = create kuf_menu_window 
-	kuf1_menu_window.open_w_tabelle(kst_open_w)
+
+	k_rc_open = OpenWithParm(kiw_memo_allarme, kst_open_w)
+
+	if k_rc_open > 0 then
+		kiw_memo_allarme.bringtotop = true
+	end if
+
+	//kuf1_menu_window.open_w_tabelle(kst_open_w)
 	destroy kuf1_menu_window
 				
 				
@@ -633,12 +620,10 @@ public subroutine set_visualizza_allarme ();//
 //--- mostra o nasconde la window
 //
 if isvalid(kiw_memo_allarme) then
-	if NOT kiw_memo_allarme.visible then
-		ki_visualizza_allarme = true
-		kiw_memo_allarme.show( )
+	if NOT kiw_memo_allarme.if_visible() then
+		set_visualizza_allarme_on( )
 	else
-		ki_visualizza_allarme = false
-		kiw_memo_allarme.hide( )
+		set_visualizza_allarme_off( )
 	end if
 	
 end if
@@ -681,6 +666,224 @@ end try
 
 end subroutine
 
+public function boolean u_attiva_memo_allarme_on () throws uo_exception;//
+//--- Attiva la window x visualizzare gli Allarmi MEMO 
+//---    
+//
+boolean k_return = false
+
+
+	//--- se window non ancora aperta la crea	
+	if not isvalid(kiw_memo_allarme) then
+		u_open()	
+	end if
+
+	if isvalid (kiw_main) and isvalid(kiw_memo_allarme) then
+		kiw_memo_allarme.set_posizione() //kiw_main.width, kiw_main.height)
+
+		ki_visualizza_allarme = true
+		u_attiva_memo_allarme( )
+
+	end if	
+
+
+return k_return
+
+end function
+
+private function boolean u_attiva_memo_allarme () throws uo_exception;//
+//--- Attiva la window x visualizzare gli Allarmi MEMO
+//
+boolean k_return = false
+
+//--- ALLARME da visualizzare?	
+	if ki_visualizza_allarme then
+		ki_visualizza_allarme = false
+	
+		if isvalid(kiw_memo_allarme) and kids_memo_allarme.rowcount( ) > 0 then
+			k_return = true
+			kiw_memo_allarme.u_attiva_allarme(kids_memo_allarme)
+			set_icona_avviso( )  // visualizza l'icona dell'avviso sulla MDI
+		end if
+
+	end if	
+
+
+return k_return
+
+end function
+
+public function boolean u_attiva_memo_allarme_hide () throws uo_exception;//
+//--- Attiva la window x visualizzare gli Allarmi MEMO
+//
+boolean k_return = false
+
+//--- se window non ancora aperta la crea	
+	if not isvalid(kiw_memo_allarme) then
+		u_open()	
+	end if
+	
+	if isvalid (kiw_main) and isvalid(kiw_memo_allarme) then
+		kiw_memo_allarme.set_posizione_hide()
+	
+		ki_visualizza_allarme = false
+		k_return = u_attiva_memo_allarme( )
+	end if		
+
+return k_return
+
+end function
+
+public subroutine set_visualizza_allarme_on ();//
+//--- mostra o nasconde la window
+//
+if isvalid(kiw_memo_allarme) then
+	ki_visualizza_allarme = true
+	kiw_memo_allarme.u_show( )
+end if
+	
+
+end subroutine
+
+public subroutine set_visualizza_allarme_off ();//
+//--- mostra o nasconde la window
+//
+if isvalid(kiw_memo_allarme) then
+	ki_visualizza_allarme = false
+	kiw_memo_allarme.u_hide( )
+end if
+	
+
+end subroutine
+
+public function boolean link_call (ref datawindow adw_link, string a_campo_link) throws uo_exception;//
+//=== 
+//====================================================================
+//=== Attiva LINK cliccato 
+//===
+//=== Par. Inut: 
+//===               datawindow su cui è stato attivato il LINK
+//===               nome campo di LINK
+//=== 
+//=== Ritorna tab. ST_ESITO, Esiti: 0=OK; 1=Errore Grave
+//===                                     2=Errore gestito
+//===                                     3=altro errore
+//===                                     100=Non trovato 
+//=== 
+//====================================================================
+//
+//=== 
+long k_rc
+boolean k_return=true
+string k_rcx
+st_tab_certif  kst_st_tab_certif
+st_tab_sped kst_st_tab_sped
+st_esito kst_esito
+datastore kdsi_elenco_output   //ds da passare alla windows di elenco
+st_open_w kst_open_w 
+kuf_elenco kuf1_elenco
+
+
+try
+	SetPointer(kkg.pointer_attesa )
+	
+	kdsi_elenco_output = create datastore
+	
+	kst_esito.esito = kkg_esito.ok
+	kst_esito.sqlcode = 0
+	kst_esito.SQLErrText = ""
+	kst_esito.nome_oggetto = this.classname()
+	
+	
+	choose case a_campo_link
+	
+		case "p_memo_alarm_certif"
+			kst_st_tab_certif.num_certif = 0
+			k_rcx = adw_link.describe("num_certif.x")
+			if k_rcx <> "!" and isnumber(k_rcx) then
+				kst_st_tab_certif.num_certif  = adw_link.getitemnumber(adw_link.getrow(), "num_certif")
+			else
+				k_rcx = adw_link.describe("certif_num_certif.x")
+				if k_rcx <> "!" and isnumber(k_rcx) then
+					kst_st_tab_certif.num_certif  = adw_link.getitemnumber(adw_link.getrow(), "certif_num_certif")
+				end if
+			end if
+			if kst_st_tab_certif.num_certif  > 0 then
+				kdsi_elenco_output.dataobject = "d_memo_allarme_attestati_l"
+				kdsi_elenco_output.settransobject( kguo_sqlca_db_magazzino )
+				kdsi_elenco_output.reset()	
+				k_rc=kdsi_elenco_output.retrieve(kst_st_tab_certif.num_certif )
+//				kst_esito = this.anteprima( kdsi_elenco_output, kst_st_tab_certif )
+//				if kst_esito.esito <> kkg_esito.ok then
+//					kguo_exception.inizializza( )
+//					kguo_exception.set_esito(kst_esito)
+//					throw kguo_exception
+//				end if
+				kst_open_w.key1 = "Allarmi MEMO Attestato n. " + trim(string(kst_st_tab_certif.num_certif )) + ") " 
+			else
+				k_return = false
+			end if
+	
+		case "p_memo_alarm_ddt"
+			kst_st_tab_sped.id_sped = 0
+			k_rcx = adw_link.describe("id_sped.x")
+			if k_rcx <> "!" and isnumber(k_rcx) then
+				kst_st_tab_sped.id_sped  = adw_link.getitemnumber(adw_link.getrow(), "id_sped")
+			end if
+			if kst_st_tab_sped.id_sped  > 0 then
+				kdsi_elenco_output.dataobject = "d_memo_allarme_ddt_l"
+				kdsi_elenco_output.settransobject( kguo_sqlca_db_magazzino )
+				kdsi_elenco_output.reset()	
+				k_rc=kdsi_elenco_output.retrieve(kst_st_tab_sped.id_sped )
+				kst_open_w.key1 = "Allarmi MEMO DDT id " + trim(string(kst_st_tab_sped.id_sped )) + ") " 
+			else
+				k_return = false
+			end if
+	
+	end choose
+	
+	if k_return then
+	
+		if kdsi_elenco_output.rowcount() > 0 then
+		
+			kuf1_elenco = create kuf_elenco
+			kst_open_w.flag_primo_giro = "S"
+			kst_open_w.flag_modalita = kkg_flag_modalita.elenco
+			kst_open_w.key2 = trim(kdsi_elenco_output.dataobject)
+			kst_open_w.key3 = "0"     //--- viene riempito con il nr di riga selezionata
+			kst_open_w.key4 = kGuf_data_base.prendi_win_attiva_titolo()    //--- Titolo della Window di chiamata per riconoscerla
+			kst_open_w.key12_any = kdsi_elenco_output
+			kuf1_elenco.u_open(kst_open_w)
+	
+		else
+			
+			kguo_exception.inizializza( )
+			kguo_exception.setmessage( "Nessun valore disponibile. " )
+			throw kguo_exception
+			
+		end if
+	
+	end if
+
+
+catch (uo_exception kuo1_exception)
+	throw kuo1_exception 
+
+
+finally
+	if isvalid(kuf1_elenco) then destroy kuf1_elenco
+	SetPointer(kkg.pointer_default)
+	
+end try	
+
+
+return k_return
+
+end function
+
+public subroutine u_audio_warning ();
+end subroutine
+
 on kuf_memo_allarme.create
 call super::create
 end on
@@ -694,6 +897,7 @@ kids_memo_allarme  = create datastore
 kids_memo_allarme.dataobject = "d_memo_allarme"
 
 ki_data_allarme_ini = relativedate(today() , -60)
+
 
 end event
 

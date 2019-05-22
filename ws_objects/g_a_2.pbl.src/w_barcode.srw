@@ -1861,116 +1861,13 @@ end on
 
 event u_ricevi_da_elenco;call super::u_ricevi_da_elenco;//
 //
+int k_return
 int k_rc
-long k_num_int, k_riga
-date k_data_int
 st_tab_barcode kst_tab_barcode
-window k_window
-kuf_menu_window kuf1_menu_window 
 kuf_barcode kuf1_barcode
 
 
-//st_open_w kst_open_w
-
-//kst_open_w = Message.PowerObjectParm	
-
 if isvalid(kst_open_w) then
-
-
-//--- Dalla finestra di Elenco Valori
-//	if kst_open_w.id_programma = "elenco" then
-//	
-////--- popolo il datasore (dw non visuale) di ritorno da window elenco
-//		if not isvalid(kdsi_elenco_input) then kdsi_elenco_input = create datastore
-//
-
-//--- Controllo che dalla window ELENCO non abbia premuto un tasto
-//		if kst_open_w.key5 = "b_dettaglio" then
-//
-////--- ricavo la data chiave dalla dw tornata dall'elenco
-//			kdsi_elenco_input = kst_open_w.key12_any 
-//			k_riga = long(kst_open_w.key3)
-//			k_data_int = kdsi_elenco_input.getitemdate(k_riga, "data_int")
-//			k_num_int = kdsi_elenco_input.getitemnumber(k_riga, "num_int")
-//				
-////--- popolo il datasore (dw non visuale) per chiamare window elenco
-//			kdsi_elenco_output.dataobject = "d_barcode_l" 
-//			k_rc = kdsi_elenco_output.settrans ( sqlca )
-//			k_rc = kdsi_elenco_output.retrieve(k_num_int, k_data_int, "tutti",999,999,999,999,0)
-//			kst_open_w.key1 = "Dettaglio barcode "
-//		
-//			if kdsi_elenco_input.rowcount() > 0 then
-//		
-//				k_window = kGuf_data_base.prendi_win_attiva()
-//				
-//			//--- chiamare la window di elenco
-//			//
-//			//=== Parametri : 
-//			//=== struttura st_open_w
-//				kst_open_w.id_programma = "elenco"
-//				kst_open_w.flag_primo_giro = "S"
-//				kst_open_w.flag_modalita = "el"
-//				kst_open_w.flag_adatta_win = KKG.ADATTA_WIN
-//				kst_open_w.flag_leggi_dw = " "
-//				kst_open_w.flag_cerca_in_lista = " "
-//				kst_open_w.key2 = trim(kdsi_elenco_output.dataobject)
-//				kst_open_w.key3 = "0"     //--- viene riempito con il nr di riga selezionata
-//				kst_open_w.key4 = k_window.title    //--- Titolo della Window di chiamata per riconoscerla
-//				kst_open_w.key12_any = kdsi_elenco_output
-//				kst_open_w.flag_where = " "
-//				kuf1_menu_window = create kuf_menu_window 
-//				kuf1_menu_window.open_w_tabelle(kst_open_w)
-//				destroy kuf1_menu_window
-//			
-//			else
-//				
-//				messagebox("Elenco Dati", &
-//							"Nessun valore disponibile. ")
-//				
-//				
-//			end if
-//
-//		end if
-			
-			
-//	else
-
-//--- Se dalla w di elenco non ho premuto un pulsante ma ad esempio doppio-click		
-//		if kst_open_w.key2 = "d_meca_elenco" and long(kst_open_w.key3) > 0 then
-//		
-//			kdsi_elenco_input = kst_open_w.key12_any 
-//		
-//			if kdsi_elenco_input.rowcount() > 0 then
-//	
-//				tab_1.tabpage_1.dw_1.setitem(1, "num_int", &
-//								 kdsi_elenco_input.getitemnumber(long(kst_open_w.key3), "num_int"))
-//				tab_1.tabpage_1.dw_1.setitem(1, "barcode_data_int", &
-//								 kdsi_elenco_input.getitemdate(long(kst_open_w.key3), "data_int"))
-//				tab_1.tabpage_1.dw_1.setitem(1, "clie_1", &
-//								 kdsi_elenco_input.getitemnumber(long(kst_open_w.key3), "clie_1"))
-//				tab_1.tabpage_1.dw_1.setitem(1, "clie_3", &
-//								 kdsi_elenco_input.getitemnumber(long(kst_open_w.key3), "clie_3"))
-//				tab_1.tabpage_1.dw_1.setitem(1, "clienti_rag_soc_10", &
-//								 kdsi_elenco_input.getitemstring(long(kst_open_w.key3), "rag_soc_10"))
-//				tab_1.tabpage_1.dw_1.setitem(1, "clienti_rag_soc_10_1", &
-//								 kdsi_elenco_input.getitemstring(long(kst_open_w.key3), "rag_soc_10_1"))
-//				tab_1.tabpage_1.dw_1.setitem(1, "contratto", &
-//								 kdsi_elenco_input.getitemnumber(long(kst_open_w.key3), "contratto"))
-//				tab_1.tabpage_1.dw_1.setitem(1, "contratti_descr", &
-//								 kdsi_elenco_input.getitemstring(long(kst_open_w.key3), "contratti_descr"))
-//				tab_1.tabpage_1.dw_1.setitem(1, "contratti_sc_cf", &
-//								 kdsi_elenco_input.getitemstring(long(kst_open_w.key3), "sc_cf"))
-//				tab_1.tabpage_1.dw_1.setitem(1, "sl_pt_cod_sl_pt", &
-//								 kdsi_elenco_input.getitemstring(long(kst_open_w.key3), "sl_pt"))
-//				tab_1.tabpage_1.dw_1.setitem(1, "sl_pt_descr", " ") //&
-////								 kdsi_elenco_input.getitemstring(long(kst_open_w.key3), "contratti_descr"))
-//				tab_1.tabpage_1.dw_1.setitem(1, "meca_num_bolla_in", &
-//								 kdsi_elenco_input.getitemstring(long(kst_open_w.key3), "num_bolla_in"))
-//				tab_1.tabpage_1.dw_1.setitem(1, "meca_data_bolla_in", &
-//								 kdsi_elenco_input.getitemdate(long(kst_open_w.key3), "data_bolla_in"))
-//							
-//			end if
-//		end if
 
 //--- se ho chiuso una finestra di Elenco Valori
 		if kst_open_w.id_programma = "elenco" and long(kst_open_w.key3) > 0 then
@@ -1986,6 +1883,7 @@ if isvalid(kst_open_w) then
 					kdsi_elenco_input = kst_open_w.key12_any 
 				
 					if kdsi_elenco_input.rowcount() > 0 then
+						k_return = 1
 			
 						tab_1.tabpage_1.dw_1.setitem(1, "id_armo", &
 										 kdsi_elenco_input.getitemnumber(long(kst_open_w.key3), "id_armo"))
@@ -2008,38 +1906,41 @@ if isvalid(kst_open_w) then
 										 kdsi_elenco_input.getitemnumber(long(kst_open_w.key3), "dose"))
 					
 						end if
+						attiva_tasti( )
 					end if
 
 				case kuf1_barcode.kk_dw_nome_barcode_l_padri_potenziali
 					kdsi_elenco_input = kst_open_w.key12_any 
 				
 					if kdsi_elenco_input.rowcount() > 0 then
+						k_return = 1
 						kst_tab_barcode.barcode = kdsi_elenco_input.getitemstring(long(kst_open_w.key3), "barcode_padre")
 						aggiungi_barcode_padre(kst_tab_barcode)
 						
+						attiva_tasti( )
 					end if
 
 				case kuf1_barcode.kk_dw_nome_barcode_l_figli_potenziali
 					kdsi_elenco_input = kst_open_w.key12_any 
 				
 					if kdsi_elenco_input.rowcount() > 0 then
+						k_return = 1
 						kst_tab_barcode.barcode = kdsi_elenco_input.getitemstring(long(kst_open_w.key3), "barcode_figlio")
 						if tab_1.selectedtab <> 2 then
 							tab_1.selectedtab = 2
 						end if
 						aggiungi_barcode_figlio(kst_tab_barcode)
 						
+						attiva_tasti( )
 					end if
 					
 			end choose
 					
 		end if
-//	end if
 
 end if
-//
 
-
+return k_return
 end event
 
 event open;call super::open;//
@@ -2588,6 +2489,9 @@ type st_9_retrieve from w_g_tab_3`st_9_retrieve within tabpage_9
 end type
 
 type dw_9 from w_g_tab_3`dw_9 within tabpage_9
+end type
+
+type st_duplica from w_g_tab_3`st_duplica within w_barcode
 end type
 
 type ln_1 from line within tabpage_4

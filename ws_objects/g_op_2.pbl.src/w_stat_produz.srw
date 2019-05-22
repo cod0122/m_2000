@@ -2510,7 +2510,7 @@ if IsValid(MenuID) then destroy(MenuID)
 end on
 
 event u_ricevi_da_elenco;call super::u_ricevi_da_elenco;//
-//
+int k_return
 int k_rc
 long k_id_meca, k_riga, k_num_int
 date k_data_int
@@ -2518,83 +2518,81 @@ window k_window
 kuf_menu_window kuf1_menu_window 
 
 
-//st_open_w kst_open_w
 
-//kst_open_w = Message.PowerObjectParm	
-
-if isvalid(kst_open_w) then
-
-//--- Dalla finestra di Elenco Valori
-	if kst_open_w.id_programma = kkg_id_programma_elenco then
-	
-//--- Controllo che dalla window ELENCO non abbia premuto un tasto
-		if kst_open_w.key5 = "id_meca" then
-
-//--- popolo il datasore (dw non visuale) di ritorno da window elenco
-			if not isvalid(kdsi_elenco_input) then 
-				kdsi_elenco_input = create datastore
-			end if
-//--- ricavo la data chiave dalla dw tornata dall'elenco
-			kdsi_elenco_input = kst_open_w.key12_any 
-			k_riga = long(kst_open_w.key3)
-			k_id_meca = kdsi_elenco_input.getitemnumber(k_riga, "id_meca")
-			k_num_int = kdsi_elenco_input.getitemnumber(k_riga, "num_int")
-			k_data_int = kdsi_elenco_input.getitemdate(k_riga, "data_int")
-				
-		//--- popolo il datasore (dw non visuale) per appoggio elenco
-			if not isvalid(kdsi_elenco_output) then 
-				kdsi_elenco_output = create datastore
-			end if
-		
-			kdsi_elenco_output.dataobject = "d_stat_produz_dettaglio" 
-			kdsi_elenco_output.modify("DataWindow.Tree.Level.1.CollapsedTreeNodeIconName='" + string(kGuo_path.get_risorse() + "\cartella.ico") + "' ")
-			kdsi_elenco_output.modify("DataWindow.Tree.Level.operazione.ExpandedTreeNodeIconName='" + string(kGuo_path.get_risorse() + "\cartella_open.ico") + "' ")
-			k_rc = kdsi_elenco_output.settransobject ( sqlca )
-			k_rc = kdsi_elenco_output.retrieve    (&
-														k_id_meca &
-														)
-			kst_open_w.key1 = "Elenco di dettaglio del Lotto " + string(k_num_int) &
-			                  + ' del ' + string(k_data_int, 'dd.mm.yy')
-		
-			if kdsi_elenco_output.rowcount() > 0 then
-		
-				k_window = kGuf_data_base.prendi_win_attiva()
-				
-			//--- chiamare la window di elenco
-			//
-			//=== Parametri : 
-			//=== struttura st_open_w
-				kst_open_w.id_programma = "elenco"
-				kst_open_w.flag_primo_giro = "S"
-				kst_open_w.flag_modalita = "el"
-				kst_open_w.flag_adatta_win = KKG.ADATTA_WIN
-				kst_open_w.flag_leggi_dw = " "
-				kst_open_w.flag_cerca_in_lista = " "
-				kst_open_w.key2 = trim(kdsi_elenco_output.dataobject)
-				kst_open_w.key3 = "0"     //--- viene riempito con il nr di riga selezionata
-				kst_open_w.key4 = k_window.title    //--- Titolo della Window di chiamata per riconoscerla
-				kst_open_w.key12_any = kdsi_elenco_output
-				kst_open_w.flag_where = " "
-				kuf1_menu_window = create kuf_menu_window 
-				kuf1_menu_window.open_w_tabelle(kst_open_w)
-				destroy kuf1_menu_window
-			
-			else
-				
-				messagebox("Elenco Dati", &
-							"Nessun valore disponibile. ")
-				
-				
-			end if
-
-		end if
-			
-			
-	end if
-
-end if
+//if isvalid(kst_open_w) then
 //
-
+////--- Dalla finestra di Elenco Valori
+//	if kst_open_w.id_programma = kkg_id_programma_elenco then
+//	
+////--- Controllo che dalla window ELENCO non abbia premuto un tasto
+//		if kst_open_w.key5 = "id_meca" then
+//
+////--- popolo il datasore (dw non visuale) di ritorno da window elenco
+//			if not isvalid(kdsi_elenco_input) then 
+//				kdsi_elenco_input = create datastore
+//			end if
+////--- ricavo la data chiave dalla dw tornata dall'elenco
+//			kdsi_elenco_input = kst_open_w.key12_any 
+//			k_riga = long(kst_open_w.key3)
+//			k_id_meca = kdsi_elenco_input.getitemnumber(k_riga, "id_meca")
+//			k_num_int = kdsi_elenco_input.getitemnumber(k_riga, "num_int")
+//			k_data_int = kdsi_elenco_input.getitemdate(k_riga, "data_int")
+//				
+//		//--- popolo il datasore (dw non visuale) per appoggio elenco
+//			if not isvalid(kdsi_elenco_output) then 
+//				kdsi_elenco_output = create datastore
+//			end if
+//		
+//			kdsi_elenco_output.dataobject = "d_stat_produz_dettaglio" 
+//			kdsi_elenco_output.modify("DataWindow.Tree.Level.1.CollapsedTreeNodeIconName='" + string(kGuo_path.get_risorse() + "\cartella.ico") + "' ")
+//			kdsi_elenco_output.modify("DataWindow.Tree.Level.operazione.ExpandedTreeNodeIconName='" + string(kGuo_path.get_risorse() + "\cartella_open.ico") + "' ")
+//			k_rc = kdsi_elenco_output.settransobject ( sqlca )
+//			k_rc = kdsi_elenco_output.retrieve    (&
+//														k_id_meca &
+//														)
+//			kst_open_w.key1 = "Elenco di dettaglio del Lotto " + string(k_num_int) &
+//			                  + ' del ' + string(k_data_int, 'dd.mm.yy')
+//		
+//			if kdsi_elenco_output.rowcount() > 0 then
+//				k_return = 1
+//		
+//				k_window = kGuf_data_base.prendi_win_attiva()
+//				
+//			//--- chiamare la window di elenco
+//			//
+//			//=== Parametri : 
+//			//=== struttura st_open_w
+//				kst_open_w.id_programma = "elenco"
+//				kst_open_w.flag_primo_giro = "S"
+//				kst_open_w.flag_modalita = "el"
+//				kst_open_w.flag_adatta_win = KKG.ADATTA_WIN
+//				kst_open_w.flag_leggi_dw = " "
+//				kst_open_w.flag_cerca_in_lista = " "
+//				kst_open_w.key2 = trim(kdsi_elenco_output.dataobject)
+//				kst_open_w.key3 = "0"     //--- viene riempito con il nr di riga selezionata
+//				kst_open_w.key4 = k_window.title    //--- Titolo della Window di chiamata per riconoscerla
+//				kst_open_w.key12_any = kdsi_elenco_output
+//				kst_open_w.flag_where = " "
+//				kuf1_menu_window = create kuf_menu_window 
+//				kuf1_menu_window.open_w_tabelle(kst_open_w)
+//				destroy kuf1_menu_window
+//			
+//			else
+//				
+//				messagebox("Elenco Dati", &
+//							"Nessun valore disponibile. ")
+//				
+//				
+//			end if
+//
+//		end if
+//			
+//			
+//	end if
+//
+//end if
+//
+return k_return
 
 
 end event
@@ -3295,6 +3293,9 @@ type st_9_retrieve from w_g_tab_3`st_9_retrieve within tabpage_9
 end type
 
 type dw_9 from w_g_tab_3`dw_9 within tabpage_9
+end type
+
+type st_duplica from w_g_tab_3`st_duplica within w_stat_produz
 end type
 
 type ln_1 from line within tabpage_4

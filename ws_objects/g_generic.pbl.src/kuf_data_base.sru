@@ -706,6 +706,7 @@ public function integer suona_motivo (string k_file_motivo, unsignedinteger k_fl
 uint k_numdevs
 int k_return=0
 
+yield()
 if kGuo_g.get_attiva_suoni() then
 	
 	k_numdevs = waveOutGetNumDevs()
@@ -894,8 +895,14 @@ int k_leggi=1, k_scrivi=2, k_rc
 					if k_key = k_leggi then 
 						k_RETURN = trim(profilestring ( k_file, "ambiente", "arch_graf", "nullo"))
 						if k_return = "nullo" then
-							k_return = trim(GetCurrentDirectory ( )) + "\ICONE"
-							k_rc = SetProfileString(k_file, "ambiente", "arch_graf", trim(k_return))
+							k_return = kguo_path.get_base_del_server( )
+							if k_return > " " then
+								k_return += "\ICONE"
+								k_rc = SetProfileString(k_file, "ambiente", "arch_graf", trim(k_return))
+							else
+								k_return = trim(GetCurrentDirectory ( )) + "\ICONE"
+							end if
+							
 						end if
 					else
 						k_return = string(SetProfileString(k_file, "ambiente", "arch_graf", trim(k_key_2)))

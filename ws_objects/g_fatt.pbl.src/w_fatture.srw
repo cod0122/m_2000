@@ -3373,7 +3373,7 @@ try
 		kst_memo_allarme.st_memo.st_tab_clienti_memo.id_cliente = ast_tab_clienti.codice
 		kst_memo_allarme.descr = "Avviso rilevato sul Cliente " + string(ast_tab_clienti.codice) + ", fattura: " + string(tab_1.tabpage_1.dw_1.getitemnumber(1, "num_fatt"))
 		if kguf_memo_allarme.set_allarme_cliente(kst_memo_allarme) then
-			kguf_memo_allarme.u_attiva_memo_allarme()
+			kguf_memo_allarme.u_attiva_memo_allarme_on()
 		end if
 	else
 		kguf_memo_allarme.inizializza()
@@ -3414,7 +3414,7 @@ try
 		kst_memo_allarme.st_memo.st_tab_meca_memo.id_meca = ast_tab_meca.id
 		kst_memo_allarme.descr = "Avviso rilevato sul Lotto " + string(ast_tab_meca.num_int) + " " + string(ast_tab_meca.data_int, "dd/mm/yy") + " id "+ string(ast_tab_meca.id) + ", fattura: " + string(tab_1.tabpage_1.dw_1.getitemnumber(1, "num_fatt"))
 		if kguf_memo_allarme.set_allarme_lotto(kst_memo_allarme) then
-			kguf_memo_allarme.u_attiva_memo_allarme()
+			kguf_memo_allarme.u_attiva_memo_allarme_on()
 		end if
 	else
 		kguf_memo_allarme.inizializza()
@@ -4600,7 +4600,7 @@ if isvalid(kids_elenco_fatt) then destroy kids_elenco_fatt
 end event
 
 event u_ricevi_da_elenco;call super::u_ricevi_da_elenco;//
-//
+int k_return
 int k_rc
 long  k_riga, k_righe
 datastore kds_elenco_input_appo
@@ -4611,7 +4611,7 @@ if isvalid(kst_open_w) then
 		if isnumber(kst_open_w.key3) then
 			if long(kst_open_w.key3) > 0 then 
 		
-				setpointer(kkg.pointer_attesa)
+				k_return = 1
 
 				if not isvalid(kds_elenco_input_appo) then kds_elenco_input_appo = create datastore
 				kds_elenco_input_appo = kst_open_w.key12_any 
@@ -4635,17 +4635,13 @@ if isvalid(kst_open_w) then
 					
 				end if
 				
-				setpointer(kkg.pointer_default)
-				
+				attiva_tasti()
 			end if
 		end if
 		
 end if
 
-
-
-attiva_tasti()
-
+return k_return
 
 
 end event
@@ -4783,7 +4779,6 @@ end on
 type tabpage_1 from w_g_tab_3`tabpage_1 within tab_1
 integer width = 3159
 integer height = 1428
-long backcolor = 32435950
 string text = "Testata"
 string picturename = "Custom081!"
 long picturemaskcolor = 32435950
@@ -5277,6 +5272,9 @@ type st_9_retrieve from w_g_tab_3`st_9_retrieve within tabpage_9
 end type
 
 type dw_9 from w_g_tab_3`dw_9 within tabpage_9
+end type
+
+type st_duplica from w_g_tab_3`st_duplica within w_fatture
 end type
 
 type dw_anno_numero from datawindow within w_fatture

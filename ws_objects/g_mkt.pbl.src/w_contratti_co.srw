@@ -1484,17 +1484,11 @@ if isvalid(kiuf_clienti) then destroy 	kiuf_clienti
 end event
 
 event u_ricevi_da_elenco;call super::u_ricevi_da_elenco;//
-//
+int k_return
 int k_rc
 string k_capitolati=""
-window k_window
-st_esito kst_esito
 st_tab_contratti  kst_tab_contratti 
-//st_tab_clienti kst_tab_clienti
 kuf_contratti kuf1_contratti
-kuf_menu_window kuf1_menu_window 
-kuf_sicurezza kuf1_sicurezza
-
 
 
 //st_open_w kst_open_w
@@ -1525,55 +1519,20 @@ if isvalid(kst_open_w) then
 						kst_tab_contratti.sc_cf = kdsi_elenco_input.getitemstring( long(kst_open_w.key3), "codice")
 			
 						if len(trim(kst_tab_contratti.sc_cf)) > 0  then
-						
-//							choose case  kst_open_w.key6    //--- nome del campo che avevo cliccato
-									
-//								case "b_capitolati"
-								   if trim(ki_st_open_w.flag_modalita) = kkg_flag_modalita.inserimento or trim(ki_st_open_w.flag_modalita) = kkg_flag_modalita.modifica then
-									 k_capitolati = tab_1.tabpage_1.dw_1.getitemstring( 1, "contratti_des")
-									 if len(trim(k_capitolati)) > 0 then
-										 tab_1.tabpage_1.dw_1.setitem( 1, "contratti_des", trim(k_capitolati) + "; " + trim(kst_tab_contratti.sc_cf))
-									else
-										 tab_1.tabpage_1.dw_1.setitem( 1, "contratti_des", trim(kst_tab_contratti.sc_cf))
-									end if
+							if trim(ki_st_open_w.flag_modalita) = kkg_flag_modalita.inserimento or trim(ki_st_open_w.flag_modalita) = kkg_flag_modalita.modifica then
+								k_return = 1
+								k_capitolati = tab_1.tabpage_1.dw_1.getitemstring( 1, "contratti_des")
+								if len(trim(k_capitolati)) > 0 then
+									tab_1.tabpage_1.dw_1.setitem( 1, "contratti_des", trim(k_capitolati) + "; " + trim(kst_tab_contratti.sc_cf))
+								else
+									tab_1.tabpage_1.dw_1.setitem( 1, "contratti_des", trim(kst_tab_contratti.sc_cf))
 								end if
-	//							case "b_cond_fatt_2"
-	//								 tab_1.tabpage_1.dw_1.setitem( 1, "id_cond_fatt_2",kst_tab_cond_fatt.id)
-	//								 tab_1.tabpage_1.dw_1.setitem( 1, "cf2_descr",kst_tab_cond_fatt.descr)
-	//							case "b_cond_fatt_3"
-	//								 tab_1.tabpage_1.dw_1.setitem( 1, "id_cond_fatt_3",kst_tab_cond_fatt.id)
-	//								 tab_1.tabpage_1.dw_1.setitem( 1, "cf3_descr",kst_tab_cond_fatt.descr)
-									 
-//							end choose
+								attiva_tasti()
+							end if
 						end if
 					end if
 
 					destroy kuf1_contratti
-
-//--- se sono sulla scheda 3
-//				case 3 
-//					
-//					k_riga =  tab_1.tabpage_3.dw_3.getrow( )
-//					
-//					kst_tab_clienti.codice = kdsi_elenco_input.getitemnumber( long(kst_open_w.key3), "id_cliente")
-//		
-//					choose case  tab_1.tabpage_3.dw_3.getcolumnname( )    //--- nome del campo che avevo cliccato
-//							
-//						case "valore_1"
-//							 tab_1.tabpage_3.dw_3.setitem( k_riga, "ipotesi_1",kiuf_listino.kki_cond_fatt_mand )
-//							 tab_1.tabpage_3.dw_3.setitem( k_riga, "segno_1","=")
-//							 tab_1.tabpage_3.dw_3.setitem( k_riga, "valore_1",string(kst_tab_clienti.codice))
-//						case "valore_2"
-//							 tab_1.tabpage_3.dw_3.setitem( k_riga, "ipotesi_2",kiuf_listino.kki_cond_fatt_mand )
-//							 tab_1.tabpage_3.dw_3.setitem( k_riga, "segno_2","=")
-//							 tab_1.tabpage_3.dw_3.setitem( k_riga, "valore_2",string(kst_tab_clienti.codice))
-//						case "valore_3"
-//							 tab_1.tabpage_3.dw_3.setitem( k_riga, "ipotesi_3",kiuf_listino.kki_cond_fatt_mand )
-//							 tab_1.tabpage_3.dw_3.setitem( k_riga, "segno_3","=")
-//							 tab_1.tabpage_3.dw_3.setitem( k_riga, "valore_3",string(kst_tab_clienti.codice))
-//							 
-//					end choose
-
 	
 			end choose
 							
@@ -1582,8 +1541,8 @@ if isvalid(kst_open_w) then
 	end if
 
 end if
-//
 
+return k_return
 
 end event
 

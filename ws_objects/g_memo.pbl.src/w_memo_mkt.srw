@@ -19,7 +19,7 @@ end forward
 global type w_memo_mkt from w_g_tab0
 integer width = 3744
 integer height = 2124
-long backcolor = 16711680
+long backcolor = 12639424
 string icon = "C:\GAMMARAD\PB_GMMRD11\ICONE\mkt_icona.ico"
 boolean ki_toolbar_window_presente = true
 boolean ki_esponi_msg_dati_modificati = false
@@ -1316,6 +1316,9 @@ end event
 type dw_guida from w_g_tab0`dw_guida within w_memo_mkt
 end type
 
+type st_duplica from w_g_tab0`st_duplica within w_memo_mkt
+end type
+
 type dw_xplistbar from u_dw_xplistbar within w_memo_mkt
 boolean visible = false
 integer x = 32
@@ -1471,8 +1474,6 @@ string title = "Proprietà Memo"
 string dataobject = "d_memo"
 boolean controlmenu = true
 boolean maxbox = true
-boolean hscrollbar = true
-boolean vscrollbar = true
 boolean resizable = true
 boolean hsplitscroll = false
 boolean ki_link_standard_sempre_possibile = true
@@ -1524,8 +1525,6 @@ string title = "Allegati Memo"
 string dataobject = "d_memo_link_l"
 boolean controlmenu = true
 boolean maxbox = true
-boolean hscrollbar = true
-boolean vscrollbar = true
 boolean resizable = true
 boolean hsplitscroll = false
 boolean ki_link_standard_sempre_possibile = true

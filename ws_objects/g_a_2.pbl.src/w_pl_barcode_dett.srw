@@ -6469,6 +6469,7 @@ end event
 
 event u_ricevi_da_elenco;call super::u_ricevi_da_elenco;//
 //
+int k_return
 int k_rc
 st_tab_pl_barcode kst_tab_pl_barcode
 st_tab_barcode kst_tab_barcode
@@ -6493,6 +6494,7 @@ if isvalid(kst_open_w) then
 					kdsi_elenco_input = kst_open_w.key12_any 
 				
 					if kdsi_elenco_input.rowcount() > 0 then
+						k_return = 1
 				
 						kst_tab_pl_barcode.prima_del_barcode = trim( kdsi_elenco_input.getitemstring(long(kst_open_w.key3), "barcode") )
 		
@@ -6502,6 +6504,7 @@ if isvalid(kst_open_w) then
 							dw_dett_0.setitem(dw_dett_0.getrow(), "prima_del_barcode", kst_tab_pl_barcode.prima_del_barcode) 				
 						end if					
 						
+						attiva_tasti()
 					end if
 
 //--- scelto Padre potenziale
@@ -6509,9 +6512,11 @@ if isvalid(kst_open_w) then
 					kdsi_elenco_input = kst_open_w.key12_any 
 				
 					if kdsi_elenco_input.rowcount() > 0 then
+						k_return = 1
 						kst_tab_barcode.barcode = kdsi_elenco_input.getitemstring(long(kst_open_w.key3), "barcode")
 						aggiungi_barcode_padre(kst_tab_barcode)
 						u_check_troppi_barcode( )
+						attiva_tasti()
 					end if
 
 
@@ -6519,9 +6524,11 @@ if isvalid(kst_open_w) then
 					kdsi_elenco_input = kst_open_w.key12_any 
 				
 					if kdsi_elenco_input.rowcount() > 0 then
+						k_return = 1
 						kst_tab_barcode.barcode = kdsi_elenco_input.getitemstring(long(kst_open_w.key3), "barcode_barcode")
 						aggiungi_barcode_padre(kst_tab_barcode)
 						u_check_troppi_barcode( )
+						attiva_tasti()
 					end if
 					
 							
@@ -6531,8 +6538,8 @@ if isvalid(kst_open_w) then
 	end if
 
 end if
-//
 
+return k_return
 
 end event
 
@@ -6787,6 +6794,9 @@ end if
 end event
 
 type dw_guida from w_g_tab0`dw_guida within w_pl_barcode_dett
+end type
+
+type st_duplica from w_g_tab0`st_duplica within w_pl_barcode_dett
 end type
 
 type cb_chiudi from statictext within w_pl_barcode_dett

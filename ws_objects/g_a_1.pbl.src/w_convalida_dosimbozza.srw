@@ -1236,10 +1236,8 @@ end event
 
 event u_ricevi_da_elenco;call super::u_ricevi_da_elenco;//
 //
+int k_return
 int k_rc
-window k_window
-kuf_menu_window kuf1_menu_window 
-
 
 
 	if isvalid(kst_open_w) then
@@ -1253,14 +1251,16 @@ kuf_menu_window kuf1_menu_window
 		
 			if kdsi_elenco_input.rowcount() > 0 then
 
+				k_return = 1
 				dw_dett_0.setitem(1, "dosim_lotto_dosim",  kdsi_elenco_input.getitemstring(long(kst_open_w.key3), "lotto_dosim"))
-			
+				
+				attiva_tasti( )
 			end if				
 		end if
 
 	end if
 
-
+return k_return
 
 
 
@@ -1692,6 +1692,9 @@ if k_campo = "dosimbozza_si" then
 end if
 
 end event
+
+type st_duplica from w_g_tab0`st_duplica within w_convalida_dosimbozza
+end type
 
 type dw_data from uo_d_std_1 within w_convalida_dosimbozza
 integer x = 2651
