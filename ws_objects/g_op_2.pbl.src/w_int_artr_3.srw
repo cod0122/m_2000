@@ -8,6 +8,25 @@ global type w_int_artr_3 from w_int_artr
 end type
 global w_int_artr_3 w_int_artr_3
 
+type variables
+//
+protected kuf_int_artr_3 kiuf_int_artr_3
+
+end variables
+
+forward prototypes
+protected subroutine open_start_window ()
+end prototypes
+
+protected subroutine open_start_window ();//
+kiuf_int_artr_3 = create kuf_int_artr_3
+
+ki_st_int_artr = kiuf_int_artr_3.ki_st_int_artr
+
+super::open_start_window( )
+
+end subroutine
+
 on w_int_artr_3.create
 call super::create
 end on

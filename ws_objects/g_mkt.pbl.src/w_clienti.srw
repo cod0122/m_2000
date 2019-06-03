@@ -7,7 +7,7 @@ end type
 end forward
 
 global type w_clienti from w_g_tab_3
-integer width = 814
+integer width = 1755
 integer height = 980
 string title = "Anagrafica "
 boolean ki_toolbar_window_presente = true
@@ -72,6 +72,7 @@ private subroutine u_add_memo_link (string a_file[], integer a_file_nr)
 public function long u_drop_file (integer a_k_tipo_drag, long a_handle)
 public subroutine u_retrieve_associazioni ()
 protected subroutine attiva_tasti_0 ()
+protected function boolean sicurezza (st_open_w kst_open_w)
 end prototypes
 
 protected function string aggiorna ();//
@@ -1165,22 +1166,22 @@ ki_selectedtab = 4
 k_codice = tab_1.tabpage_1.dw_1.getitemnumber(1, "codice")  
 k_scelta = trim(ki_st_open_w.flag_modalita)
 
-//--- Acchiappo il codice CLIENTE x evitare la rilettura
-if IsNumber(tab_1.tabpage_4.st_4_retrieve.Text) then
-	k_codice_4 = long(tab_1.tabpage_4.st_4_retrieve.Text)
-else
-	k_codice_4 = 0
-end if
-//=== Forza valore Codice cliente per ricordarlo per le prossime richieste
-tab_1.tabpage_4.st_4_retrieve.Text=string(k_codice, "####0")
 
-
-//=== Se nr.cliente non impostato forzo una INSERISCI cliente, impostando in nr.cliente
 if k_codice = 0 then
 	tab_1.tabpage_4.dw_4.reset()
 else
 
 
+	//--- Acchiappo il codice CLIENTE x evitare la rilettura
+	if IsNumber(tab_1.tabpage_4.st_4_retrieve.Text) then
+		k_codice_4 = long(tab_1.tabpage_4.st_4_retrieve.Text)
+	else
+		k_codice_4 = 0
+	end if
+	//=== Forza valore Codice cliente per ricordarlo per le prossime richieste
+	tab_1.tabpage_4.st_4_retrieve.Text=string(k_codice, "####0")
+	
+	
 	if tab_1.tabpage_4.dw_4.rowcount() = 0  and k_codice_4 <> k_codice then
 
 //--- Attivo dw archivio Clienti Mandanti
@@ -1203,9 +1204,9 @@ else
 		if kdwc_gru.rowcount() = 0 then
 			kdwc_gru.insertrow(1)
 		end if
-		
+			
 	end if
-
+	
 //--- salvo i parametri cosi come sono stati immessi
 	k_codice_prec = tab_1.tabpage_4.st_4_retrieve.text
 	kuf1_utility = create kuf_utility
@@ -1216,7 +1217,9 @@ else
       	kuf1_utility.u_proteggi_dw("1", 0, tab_1.tabpage_4.dw_4)
 	
 		if tab_1.tabpage_4.dw_4.retrieve(k_codice)  < 1 then
-			inserisci()
+			if ki_st_open_w.flag_modalita <> kkg_flag_modalita.visualizzazione and ki_st_open_w.flag_modalita <> kkg_flag_modalita.cancellazione then
+				inserisci()
+			end if
 		end if
 	end if
 	
@@ -2037,6 +2040,11 @@ boolean k_insert = true
 //--- Attiva/Dis. Voci di menu
 	super::attiva_menu()
 
+	if ki_tab_1_index_new = 2 then
+		ki_menu.m_finestra.m_gestione.m_fin_elimina.text = "Elimina MEMO"
+	else
+		ki_menu.m_finestra.m_gestione.m_fin_elimina.text = "Elimina"
+	end if
 end subroutine
 
 protected subroutine inizializza_6 () throws uo_exception;//======================================================================
@@ -2288,7 +2296,7 @@ end if
 
 if tab_1.tabpage_3.dw_3.rowcount() = 0 then
 
-	if ki_st_open_w.flag_modalita <> kkg_flag_modalita.visualizzazione then
+	if ki_st_open_w.flag_modalita <> kkg_flag_modalita.visualizzazione and ki_st_open_w.flag_modalita <> kkg_flag_modalita.cancellazione then
 		popola_dwc_3 ()  //--- popola le dw child del tab 3
 	end if
 
@@ -2308,9 +2316,10 @@ if tab_1.tabpage_3.dw_3.rowcount() = 0 then
 				cb_ritorna.postevent(clicked!)
 
 			case 0
-				tab_1.tabpage_3.dw_3.reset()
-				k_err_ins = inserisci()
-
+				if ki_st_open_w.flag_modalita <> kkg_flag_modalita.visualizzazione and ki_st_open_w.flag_modalita <> kkg_flag_modalita.cancellazione then
+					tab_1.tabpage_3.dw_3.reset()
+					k_err_ins = inserisci()
+				end if
 //			case is > 0		
 //				tab_1.tabpage_3.dw_3.setcolumn("rag_soc_10")
 		
@@ -3006,6 +3015,20 @@ end if
 
 
 end subroutine
+
+protected function boolean sicurezza (st_open_w kst_open_w);//
+
+if tab_1.selectedtab = 1 then
+
+	return super::sicurezza(kst_open_w)
+	
+else
+	
+	return true
+	
+end if
+
+end function
 
 on w_clienti.create
 int iCurrent

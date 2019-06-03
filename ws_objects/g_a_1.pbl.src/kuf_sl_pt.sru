@@ -1004,10 +1004,7 @@ kst_esito.nome_oggetto = this.classname()
 
 if ast_tab_sl_pt_memo.id_memo > 0 then
 	
-	kst_open_w.flag_modalita = kkg_flag_modalita.cancellazione
-	kst_open_w.id_programma = kkg_id_programma_anag
-	
-	
+
 	delete 
 			from sl_pt_memo
 			WHERE id_memo = :ast_tab_sl_pt_memo.id_memo 

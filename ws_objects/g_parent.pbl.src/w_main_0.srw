@@ -222,6 +222,7 @@ st_open_w k_st_open_w
 
 //20/05/2019 SOLO TEMPORANEAMENTE SE LA WINDOW INIZIALE E' IL REPORT ALLORA IMPOSTA ST_INT_ARTR PER I TURNISTI
 	
+		setpointer(kkg.pointer_attesa)
 	
 //=== Parametri : 
 //=== struttura st_open_w
@@ -244,6 +245,8 @@ st_open_w k_st_open_w
 		
 		kguf_menu_window.open_w_tabelle(k_st_open_w)
 								
+		setpointer(kkg.pointer_default)
+
 	end if
 	
 //	this.setredraw( true )

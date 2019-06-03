@@ -2215,8 +2215,8 @@ post attiva_tasti()
 end event
 
 type tab_1 from tab within w_g_tab_3
-event ue_rbuttondown pbm_rbuttondown
-event ue_rbuttonup pbm_rbuttonup
+//event ue_rbuttondown pbm_rbuttondown
+//event ue_rbuttonup pbm_rbuttonup
 boolean visible = false
 integer width = 1842
 integer height = 1144

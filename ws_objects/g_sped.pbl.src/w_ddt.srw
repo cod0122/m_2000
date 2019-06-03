@@ -3188,10 +3188,10 @@ if tab_1.tabpage_4.dw_riga_0.visible then
 end if
 
 k_return = super::aggiorna_dati( )
-
-if left(k_return, 1) = "0" then
-	u_if_allarme_memo( )
-end if
+//
+//if left(k_return, 1) = "0" then
+//	u_if_allarme_memo( )
+//end if
 
 return k_return 
 
@@ -3292,29 +3292,29 @@ public subroutine u_message (uo_exception auo_exception);//
 
 end subroutine
 
-public subroutine u_if_allarme_memo ();//
-st_tab_sped kst_tab_sped
-kuf_link_zoom kuf1_link_zoom
-
-try
-	kst_tab_sped.id_sped = tab_1.tabpage_1.dw_1.getitemnumber(1, "id_sped")
-	if kst_tab_sped.id_sped > 0 then
-		if kiuf_sped.if_ddt_allarme_memo(kst_tab_sped) then
-			if messagebox("Allarme MEMO", "E stato avvisato un Avviso di Allarme MEMO, vuoi aprirlo subito?", question!, yesno!, 1) = 1 then
-	//--- lancia visualizzazione dell'allarme memo
-				kuf1_link_zoom = create kuf_link_zoom
-				kuf1_link_zoom.link_standard_call_p (tab_1.tabpage_1.dw_1, "p_memo_alarm_ddt") 
-			end if 
-		end if
-	end if
-
-catch (uo_exception kuo_exception)
-	kuo_exception.messaggio_utente()
-	
-finally
-	if isvalid(kuf1_link_zoom) then destroy kuf1_link_zoom
-	
-end try
+public subroutine u_if_allarme_memo ();////
+//st_tab_sped kst_tab_sped
+//kuf_link_zoom kuf1_link_zoom
+//
+//try
+//	kst_tab_sped.id_sped = tab_1.tabpage_1.dw_1.getitemnumber(1, "id_sped")
+//	if kst_tab_sped.id_sped > 0 then
+//		if kiuf_sped.if_ddt_allarme_memo(kst_tab_sped) then
+//			if messagebox("Allarme MEMO", "C'è un Avviso di Allarme MEMO, vuoi aprirlo subito?", question!, yesno!, 1) = 1 then
+//	//--- lancia visualizzazione dell'allarme memo
+//				kuf1_link_zoom = create kuf_link_zoom
+//				kuf1_link_zoom.link_standard_call_p (tab_1.tabpage_1.dw_1, "p_memo_alarm_ddt") 
+//			end if 
+//		end if
+//	end if
+//
+//catch (uo_exception kuo_exception)
+//	kuo_exception.messaggio_utente()
+//	
+//finally
+//	if isvalid(kuf1_link_zoom) then destroy kuf1_link_zoom
+//	
+//end try
 end subroutine
 
 protected subroutine inizializza_4 () throws uo_exception;//======================================================================

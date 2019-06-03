@@ -5,7 +5,7 @@ header(height=72 color="536870912" transparency="0" gradient.color="8421504" gra
 summary(height=0 color="536870912" transparency="0" gradient.color="8421504" gradient.transparency="0" gradient.angle="0" brushmode="0" gradient.repetition.mode="0" gradient.repetition.count="0" gradient.repetition.length="100" gradient.focus="0" gradient.scale="100" gradient.spread="100" )
 footer(height=0 color="536870912" transparency="0" gradient.color="8421504" gradient.transparency="0" gradient.angle="0" brushmode="0" gradient.repetition.mode="0" gradient.repetition.count="0" gradient.repetition.length="100" gradient.focus="0" gradient.scale="100" gradient.spread="100" )
 detail(height=88 color="536870912" transparency="0" gradient.color="8421504" gradient.transparency="0" gradient.angle="0" brushmode="0" gradient.repetition.mode="0" gradient.repetition.count="0" gradient.repetition.length="100" gradient.focus="0" gradient.scale="100" gradient.spread="100" )
-table(column=(type=long updatewhereclause=yes identity=yes name=id_memo dbname="meca_memo.id_memo" )
+table(column=(type=long updatewhereclause=yes identity=yes name=id_memo dbname="meca_memo.id_memo" dbalias=".id_memo" )
  retrieve="select  top 1 id_memo 
            from  meca_memo mm
            where 
@@ -13,7 +13,7 @@ table(column=(type=long updatewhereclause=yes identity=yes name=id_memo dbname="
                      (select armo.id_meca from armo inner join arsp on 
                                                                  armo.id_armo = arsp.id_armo 
                              where arsp.id_sped = :k_id_sped) 
-                                    and mm.allarme in ('A', 'T')
+                                    and mm.allarme in ('S', 'T')
 union all 
      select  top 1 id_memo 
                 from  clienti_memo cm  
@@ -22,7 +22,7 @@ union all
                          or cm.id_cliente in
                     ( select sped.clie_3 from  sped where sped.id_sped = :k_id_sped)
                            )
-    		                      and cm.allarme in ('A', 'T')
+    		                      and cm.allarme in ('S', 'T')
 " arguments=(("k_id_sped", number)) )
 text(band=header alignment="2" text="Id Memo" border="0" color="33554432" x="14" y="8" height="56" width="329" html.valueishtml="0"  name=id_memo_t visible="1"  font.face="Verdana" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0" )
 column(band=detail id=1 alignment="1" tabsequence=32766 border="0" color="33554432" x="14" y="8" height="72" width="329" format="[general]" html.valueishtml="0"  name=id_memo visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0" )

@@ -87,6 +87,7 @@ protected boolean ki_scegli_report = false
 
 
 end variables
+
 forward prototypes
 protected function string inizializza () throws uo_exception
 protected subroutine inizializza_1 () throws uo_exception
@@ -2360,22 +2361,26 @@ tab_1.tabpage_2.text = "Report ?"
 tab_1.tabpage_2.picturename = "VCRNext!"
 
 //--- parametri ingresso ad esempio per fare subito un report
-if not isnull(ki_st_open_w.key12_any) then
+if not isnull(ki_st_open_w.key12_any) and isvalid(ki_st_open_w.key12_any) then
 	ki_st_int_artr = ki_st_open_w.key12_any
-	if ki_st_int_artr.report_start > 0 then
-		if u_scegli_report(ki_st_int_artr.report_start) then
-			if ki_st_int_artr.report_autorefresh_min > 0 then
-				timer(ki_st_int_artr.report_autorefresh_min * 60)
-			end if
-		else
-			messagebox("Report", "Report richiesto n. " + string(ki_st_int_artr.report_start) + " non trovato!", stopsign!)
+end if
+if ki_st_int_artr.report_start > 0 then
+	//if u_scegli_report(ki_st_int_artr.report_start) then
+		tab_1.tabpage_1.ddplb_report.selectitem(ki_st_int_artr.report_start)
+		tab_1.tabpage_1.ddplb_report.event selectionchanged(ki_st_int_artr.report_start)
+		tab_1.selecttab(2)
+		if ki_st_int_artr.report_autorefresh_min > 0 then
+			timer(ki_st_int_artr.report_autorefresh_min * 60)
 		end if
-		if ki_st_int_artr.report_start_only then
-			tab_1.tabpage_1.dw_1.enabled = false
-			tab_1.tabpage_1.ddplb_report.enabled = false
-		end if
+//	else
+//		messagebox("Report", "Report richiesto n. " + string(ki_st_int_artr.report_start) + " non trovato!", stopsign!)
+//	end if
+	if ki_st_int_artr.report_start_only then
+		tab_1.tabpage_1.dw_1.enabled = false
+		tab_1.tabpage_1.ddplb_report.enabled = false
 	end if
 end if
+
 
 end subroutine
 
@@ -8973,6 +8978,7 @@ end if
 end event
 
 event selectionchanged;//
+timer(0)
 tab_1.tabpage_2.enabled = true
 u_scegli_report(index)
 

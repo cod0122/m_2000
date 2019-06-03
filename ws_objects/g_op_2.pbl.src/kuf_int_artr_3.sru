@@ -11,6 +11,7 @@ global kuf_int_artr_3 kuf_int_artr_3
 type variables
 
 end variables
+
 on kuf_int_artr_3.create
 call super::create
 end on
@@ -20,9 +21,8 @@ call super::destroy
 end on
 
 event constructor;call super::constructor;//
-//ki_st_int_artr.report_start = this.kk1_
-//			if ki_st_int_artr.report_autorefresh_min > 0 then
-//				timer(ki_st_int_artr.report_autorefresh_min * 60)
-//
+ki_st_int_artr.report_start = this.kki_scelta_report_in_trattamento
+ki_st_int_artr.report_autorefresh_min = 3
+
 end event
 

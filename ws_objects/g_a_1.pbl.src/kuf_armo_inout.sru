@@ -985,9 +985,9 @@ kst_esito.nome_oggetto = this.classname()
 
 if ast_tab_meca_memo.id_memo > 0 then
 	
-	kst_open_w.flag_modalita = kkg_flag_modalita.cancellazione
-	kst_open_w.id_programma = kkg_id_programma_anag
-	
+//	kst_open_w.flag_modalita = kkg_flag_modalita.cancellazione
+//	kst_open_w.id_programma = kkg_id_programma_anag
+//	
 	
 	delete 
 			from meca_memo

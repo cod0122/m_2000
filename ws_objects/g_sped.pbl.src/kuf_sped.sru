@@ -7391,6 +7391,7 @@ st_esito kst_esito
 	 	FROM sped  
 		WHERE  data_bolla_out between :k_data_da and :k_data_a  
 		              and id_sped <> :kst_tab_sped.id_sped
+						  and num_bolla_out < 9000000
 			  using kguo_sqlca_db_magazzino;
 	
 	end if
