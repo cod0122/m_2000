@@ -1,0 +1,3 @@
+ 
+0000000006
+SELECT docpath.id_docpath, docpath.duplica, docpath.descr, docpath.x_datins, docpath.id_doctipo, doctipo.descr FROM docpath LEFT OUTER JOIN doctipo ON docpath.id_doctipo = doctipo.id_doctipo order by id_docpath

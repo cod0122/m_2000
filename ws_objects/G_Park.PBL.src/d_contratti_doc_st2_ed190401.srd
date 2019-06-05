@@ -1,0 +1,297 @@
+﻿$PBExportHeader$d_contratti_doc_st2_ed190401.srd
+release 17;
+datawindow(units=3 timer_interval=0 color=16777215 brushmode=0 transparency=0 gradient.angle=0 gradient.color=8421504 gradient.focus=0 gradient.repetition.count=0 gradient.repetition.length=100 gradient.repetition.mode=0 gradient.scale=100 gradient.spread=100 gradient.transparency=0 picture.blur=0 picture.clip.bottom=0 picture.clip.left=0 picture.clip.right=0 picture.clip.top=0 picture.mode=0 picture.scale.x=100 picture.scale.y=100 picture.transparency=0 processing=0 HTMLDW=no print.printername="" print.documentname="" print.orientation = 2 print.margin.left = 500 print.margin.right = 500 print.margin.top = 132 print.margin.bottom = 132 print.paper.source = 0 print.paper.size = 9 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes print.background=no print.preview.background=no print.preview.outline=yes hidegrayline=no showbackcoloronxp=no picture.file="" )
+header(height=0 color="536870912" transparency="0" gradient.color="8421504" gradient.transparency="0" gradient.angle="0" brushmode="0" gradient.repetition.mode="0" gradient.repetition.count="0" gradient.repetition.length="100" gradient.focus="0" gradient.scale="100" gradient.spread="100" )
+summary(height=0 color="536870912" transparency="0" gradient.color="8421504" gradient.transparency="0" gradient.angle="0" brushmode="0" gradient.repetition.mode="0" gradient.repetition.count="0" gradient.repetition.length="100" gradient.focus="0" gradient.scale="100" gradient.spread="100" )
+footer(height=0 color="536870912" transparency="0" gradient.color="8421504" gradient.transparency="0" gradient.angle="0" brushmode="0" gradient.repetition.mode="0" gradient.repetition.count="0" gradient.repetition.length="100" gradient.focus="0" gradient.scale="100" gradient.spread="100" )
+detail(height=28522 color="536870912" transparency="0" gradient.color="8421504" gradient.transparency="0" gradient.angle="0" brushmode="0" gradient.repetition.mode="0" gradient.repetition.count="0" gradient.repetition.length="100" gradient.focus="0" gradient.scale="100" gradient.spread="100" height.autosize=yes )
+table(column=(type=long update=yes updatewhereclause=yes identity=yes name=id_contratto_doc dbname="ctr.id_contratto_doc" )
+ column=(type=long update=yes updatewhereclause=yes name=anno dbname="ctr.anno" )
+ column=(type=char(2) updatewhereclause=yes name=stampa_tradotta dbname="ctr.stampa_tradotta" )
+ column=(type=date update=yes updatewhereclause=yes name=offerta_data dbname="ctr.offerta_data" )
+ column=(type=char(16) update=yes updatewhereclause=yes name=offerta_validita dbname="ctr.offerta_validita" )
+ column=(type=char(120) update=yes updatewhereclause=yes name=oggetto dbname="ctr.oggetto" )
+ column=(type=long update=yes updatewhereclause=yes name=id_cliente dbname="ctr.id_cliente" )
+ column=(type=char(30) updatewhereclause=yes name=rag_soc_10_1 dbname="rag_soc_10" )
+ column=(type=char(512) updatewhereclause=yes name=indi_1 dbname="indi_1" )
+ column=(type=char(30) updatewhereclause=yes name=clienti_loc_1 dbname="clienti.loc_1" )
+ column=(type=char(2) updatewhereclause=yes name=clienti_prov_1 dbname="clienti.prov_1" )
+ column=(type=char(3) updatewhereclause=yes name=clienti_id_nazione_1 dbname="clienti.id_nazione_1" )
+ column=(type=char(2048) update=yes updatewhereclause=yes name=id_clie_settore dbname="id_clie_settore" )
+ column=(type=char(80) updatewhereclause=yes name=clie_settori_descr dbname="clie_settori.descr" )
+ column=(type=char(80) updatewhereclause=yes name=clie_settori_descr_eng dbname="clie_settori.descr_eng" )
+ column=(type=decimal(0) update=yes updatewhereclause=yes name=gruppo dbname="ctr.gruppo" )
+ column=(type=char(40) updatewhereclause=yes name=gru_des dbname="gru.des" )
+ column=(type=char(40) updatewhereclause=yes name=gru_des_eng dbname="gru.des_eng" )
+ column=(type=char(80) update=yes updatewhereclause=yes name=nome_contatto dbname="nome_contatto" )
+ column=(type=char(2048) update=yes updatewhereclause=yes name=note dbname="note" )
+ column=(type=char(255) update=yes updatewhereclause=yes name=note_audit dbname="note_audit" )
+ column=(type=char(160) updatewhereclause=yes name=note_fasi_operative dbname="note_fasi_operative" )
+ column=(type=decimal(2) update=yes updatewhereclause=yes name=voce_prezzo_1 dbname="ctr.voce_prezzo_1" )
+ column=(type=decimal(2) update=yes updatewhereclause=yes name=voce_prezzo_2 dbname="ctr.voce_prezzo_2" )
+ column=(type=decimal(2) update=yes updatewhereclause=yes name=voce_prezzo_3 dbname="ctr.voce_prezzo_3" )
+ column=(type=decimal(2) update=yes updatewhereclause=yes name=voce_prezzo_4 dbname="ctr.voce_prezzo_4" )
+ column=(type=decimal(2) update=yes updatewhereclause=yes name=voce_prezzo_5 dbname="ctr.voce_prezzo_5" )
+ column=(type=decimal(2) update=yes updatewhereclause=yes name=voce_prezzo_6 dbname="ctr.voce_prezzo_6" )
+ column=(type=decimal(2) update=yes updatewhereclause=yes name=voce_prezzo_7 dbname="ctr.voce_prezzo_7" )
+ column=(type=decimal(2) update=yes updatewhereclause=yes name=voce_prezzo_8 dbname="ctr.voce_prezzo_8" )
+ column=(type=decimal(2) update=yes updatewhereclause=yes name=voce_prezzo_9 dbname="ctr.voce_prezzo_9" )
+ column=(type=decimal(2) update=yes updatewhereclause=yes name=voce_prezzo_10 dbname="ctr.voce_prezzo_10" )
+ column=(type=long updatewhereclause=yes name=voce_qta_1 dbname="ctr.voce_qta_1" )
+ column=(type=long updatewhereclause=yes name=voce_qta_2 dbname="ctr.voce_qta_2" )
+ column=(type=long updatewhereclause=yes name=voce_qta_3 dbname="ctr.voce_qta_3" )
+ column=(type=long updatewhereclause=yes name=voce_qta_4 dbname="ctr.voce_qta_4" )
+ column=(type=long updatewhereclause=yes name=voce_qta_5 dbname="ctr.voce_qta_5" )
+ column=(type=long updatewhereclause=yes name=voce_qta_6 dbname="ctr.voce_qta_6" )
+ column=(type=long updatewhereclause=yes name=voce_qta_7 dbname="ctr.voce_qta_7" )
+ column=(type=long updatewhereclause=yes name=voce_qta_8 dbname="ctr.voce_qta_8" )
+ column=(type=long updatewhereclause=yes name=voce_qta_9 dbname="ctr.voce_qta_9" )
+ column=(type=long updatewhereclause=yes name=voce_qta_10 dbname="ctr.voce_qta_10" )
+ column=(type=decimal(2) updatewhereclause=yes name=voce_prezzo_tot_1 dbname="ctr.voce_prezzo_tot_1" )
+ column=(type=decimal(2) updatewhereclause=yes name=voce_prezzo_tot_2 dbname="ctr.voce_prezzo_tot_2" )
+ column=(type=decimal(2) updatewhereclause=yes name=voce_prezzo_tot_3 dbname="ctr.voce_prezzo_tot_3" )
+ column=(type=decimal(2) updatewhereclause=yes name=voce_prezzo_tot_4 dbname="ctr.voce_prezzo_tot_4" )
+ column=(type=decimal(2) updatewhereclause=yes name=voce_prezzo_tot_5 dbname="ctr.voce_prezzo_tot_5" )
+ column=(type=decimal(2) updatewhereclause=yes name=voce_prezzo_tot_6 dbname="ctr.voce_prezzo_tot_6" )
+ column=(type=decimal(2) updatewhereclause=yes name=voce_prezzo_tot_7 dbname="ctr.voce_prezzo_tot_7" )
+ column=(type=decimal(2) updatewhereclause=yes name=voce_prezzo_tot_8 dbname="ctr.voce_prezzo_tot_8" )
+ column=(type=decimal(2) updatewhereclause=yes name=voce_prezzo_tot_9 dbname="ctr.voce_prezzo_tot_9" )
+ column=(type=decimal(2) updatewhereclause=yes name=voce_prezzo_tot_10 dbname="ctr.voce_prezzo_tot_10" )
+ column=(type=char(1) updatewhereclause=yes name=flg_st_voce_1 dbname="ctr.flg_st_voce_1" )
+ column=(type=char(1) updatewhereclause=yes name=flg_st_voce_2 dbname="ctr.flg_st_voce_2" )
+ column=(type=char(1) updatewhereclause=yes name=flg_st_voce_3 dbname="ctr.flg_st_voce_3" )
+ column=(type=char(1) updatewhereclause=yes name=flg_st_voce_4 dbname="ctr.flg_st_voce_4" )
+ column=(type=char(1) updatewhereclause=yes name=flg_st_voce_5 dbname="ctr.flg_st_voce_5" )
+ column=(type=char(1) updatewhereclause=yes name=flg_st_voce_6 dbname="ctr.flg_st_voce_6" )
+ column=(type=char(1) updatewhereclause=yes name=flg_st_voce_7 dbname="ctr.flg_st_voce_7" )
+ column=(type=char(1) updatewhereclause=yes name=flg_st_voce_8 dbname="ctr.flg_st_voce_8" )
+ column=(type=char(1) updatewhereclause=yes name=flg_st_voce_9 dbname="ctr.flg_st_voce_9" )
+ column=(type=char(1) updatewhereclause=yes name=flg_st_voce_10 dbname="ctr.flg_st_voce_10" )
+ column=(type=decimal(0) update=yes updatewhereclause=yes name=iva dbname="ctr.iva" )
+ column=(type=decimal(0) updatewhereclause=yes name=iva_aliq dbname="iva.aliq" )
+ column=(type=char(80) updatewhereclause=yes name=iva_des dbname="iva.des" )
+ column=(type=decimal(0) update=yes updatewhereclause=yes name=cod_pag dbname="ctr.cod_pag" )
+ column=(type=char(24) updatewhereclause=yes name=pagam_des dbname="pagam.des" )
+ column=(type=char(30) update=yes updatewhereclause=yes name=banca dbname="banca" )
+ column=(type=decimal(0) update=yes updatewhereclause=yes name=abi dbname="ctr.abi" )
+ column=(type=decimal(0) update=yes updatewhereclause=yes name=cab dbname="ctr.cab" )
+ column=(type=char(255) update=yes updatewhereclause=yes name=altre_condizioni dbname="altre_condizioni" )
+ column=(type=date update=yes updatewhereclause=yes name=data_inizio dbname="ctr.data_inizio" )
+ column=(type=date update=yes updatewhereclause=yes name=data_fine dbname="ctr.data_fine" )
+ column=(type=char(160) update=yes updatewhereclause=yes name=fattura_da dbname="ctr.fattura_da" )
+ column=(type=datetime update=yes updatewhereclause=yes name=x_datins dbname="ctr.x_datins" )
+ column=(type=char(12) update=yes updatewhereclause=yes name=x_utente dbname="ctr.x_utente" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=stato dbname="ctr.stato" values="Documento Nuovo	1/Riaperto	2/Versione definitiva (Stampato)	3/Accettato dal cliente	5/" )
+ column=(type=date updatewhereclause=yes name=data_stampa dbname="ctr.data_stampa" )
+ column=(type=char(22) updatewhereclause=yes name=k_marca_stampa dbname="ctr.k_marca_stampa" )
+ column=(type=char(122) updatewhereclause=yes name=v1_descr_xctr dbname="v1_descr_xctr" )
+ column=(type=char(122) updatewhereclause=yes name=v1_descr_xctr_eng dbname="v1_descr_xctr_eng" )
+ column=(type=char(122) updatewhereclause=yes name=v2_descr_xctr dbname="v2_descr_xctr" )
+ column=(type=char(122) updatewhereclause=yes name=v2_descr_xctr_eng dbname="v2_descr_xctr_eng" )
+ column=(type=char(122) updatewhereclause=yes name=v3_descr_xctr dbname="v3_descr_xctr" )
+ column=(type=char(122) updatewhereclause=yes name=v3_descr_xctr_eng dbname="v3_descr_xctr_eng" )
+ column=(type=char(122) updatewhereclause=yes name=v4_descr_xctr dbname="v4_descr_xctr" )
+ column=(type=char(122) updatewhereclause=yes name=v4_descr_xctr_eng dbname="v4_descr_xctr_eng" )
+ column=(type=char(122) updatewhereclause=yes name=v5_descr_xctr dbname="v5_descr_xctr" )
+ column=(type=char(122) updatewhereclause=yes name=v5_descr_xctr_eng dbname="v5_descr_xctr_eng" )
+ column=(type=char(122) updatewhereclause=yes name=v6_descr_xctr dbname="v6_descr_xctr" )
+ column=(type=char(122) updatewhereclause=yes name=v6_descr_xctr_eng dbname="v6_descr_xctr_eng" )
+ column=(type=char(122) updatewhereclause=yes name=v7_descr_xctr dbname="v7_descr_xctr" )
+ column=(type=char(122) updatewhereclause=yes name=v7_descr_xctr_eng dbname="v7_descr_xctr_eng" )
+ column=(type=char(122) updatewhereclause=yes name=v8_descr_xctr dbname="v8_descr_xctr" )
+ column=(type=char(122) updatewhereclause=yes name=v8_descr_xctr_eng dbname="v8_descr_xctr_eng" )
+ column=(type=char(122) updatewhereclause=yes name=v9_descr_xctr dbname="v9_descr_xctr" )
+ column=(type=char(122) updatewhereclause=yes name=v9_descr_xctr_eng dbname="v9_descr_xctr_eng" )
+ column=(type=char(122) updatewhereclause=yes name=v10_descr_xctr dbname="v10_descr_xctr" )
+ column=(type=char(122) updatewhereclause=yes name=v10_descr_xctr_eng dbname="v10_descr_xctr_eng" )
+ column=(type=real update=yes updatewhereclause=yes name=totale_contratto dbname="totale_contratto" )
+ column=(type=long updatewhereclause=yes name=acconto_perc dbname="ctr.acconto_perc" )
+ column=(type=decimal(2) updatewhereclause=yes name=acconto_imp dbname="ctr.acconto_imp" )
+ column=(type=decimal(0) updatewhereclause=yes name=acconto_cod_pag dbname="ctr.acconto_cod_pag" )
+ column=(type=char(24) updatewhereclause=yes name=acconto_pagam_des dbname="pagam.acconto_pagam_des" )
+ column=(type=char(1) updatewhereclause=yes name=k_ragsoc_base_1 dbname="k_ragsoc_base_1" )
+ column=(type=char(1) updatewhereclause=yes name=k_ragsoc_base_2 dbname="k_ragsoc_base_2" )
+ column=(type=char(80) updatewhereclause=yes name=quotazione_cod dbname="quotazione_cod" )
+ column=(type=char(8) updatewhereclause=yes name=quotazione_tipo dbname="quotazione_tipo" )
+ column=(type=char(1024) updatewhereclause=yes name=cliente_desprod dbname="cliente_desprod" )
+ column=(type=char(80) updatewhereclause=yes name=cliente_desprod_rid dbname="cliente_desprod_rid" )
+ retrieve=" SELECT ctr.id_contratto_doc,   
+         ctr.anno,   
+		ctr.stampa_tradotta,   
+         ctr.offerta_data,   
+         ctr.offerta_validita,   
+         ctr.oggetto,   
+         ctr.id_cliente,   
+         trim(clienti.rag_soc_10) as rag_soc_10,   
+         trim(clienti.indi_1) + ' - ' + trim(clienti.cap_1) + ' ' + trim(clienti.loc_1)  + ' - ' +  clienti.prov_1 + ' - ' + clienti.id_nazione_1 indi_1,   
+         ' ' clienti_loc_1,   
+         ' ' clienti_prov_1,   
+         ' ' clienti_id_nazione_1,   
+         trim(ctr.id_clie_settore) as id_clie_settore,   
+         clie_settori.descr,   
+         clie_settori.descr_eng,   
+         ctr.gruppo,   
+         gru.des,   
+         gru.des_eng,   
+         trim(ctr.nome_contatto) as nome_contatto,   
+         trim(COALESCE(ctr.note,'')) as note,   
+         trim(ctr.note_audit) as note_audit,   
+		 trim(ctr.note_fasi_operative) as note_fasi_operative,
+         ctr.voce_prezzo_1 as voce_prezzo_1,   
+         ctr.voce_prezzo_2 as voce_prezzo_2,   
+         ctr.voce_prezzo_3 as voce_prezzo_3,   
+         ctr.voce_prezzo_4 as voce_prezzo_4,   
+         ctr.voce_prezzo_5 as voce_prezzo_5,   
+         ctr.voce_prezzo_6 as voce_prezzo_6,   
+         ctr.voce_prezzo_7 as voce_prezzo_7,    
+         ctr.voce_prezzo_8 as voce_prezzo_8,   
+         ctr.voce_prezzo_9 as voce_prezzo_9,   
+         ctr.voce_prezzo_10 as voce_prezzo_10,   
+         ctr.voce_qta_1 as voce_qta_1,   
+         ctr.voce_qta_2 as voce_qta_2,   
+         ctr.voce_qta_3 as voce_qta_3,   
+         ctr.voce_qta_4 as voce_qta_4,   
+         ctr.voce_qta_5 as voce_qta_5,   
+         ctr.voce_qta_6 as voce_qta_6,   
+         ctr.voce_qta_7 as voce_qta_7,    
+         ctr.voce_qta_8 as voce_qta_8,   
+         ctr.voce_qta_9 as voce_qta_9,   
+         ctr.voce_qta_10 as voce_qta_10,   
+         ctr.voce_prezzo_tot_1 as voce_prezzo_tot_1,   
+         ctr.voce_prezzo_tot_2 as voce_prezzo_tot_2,   
+         ctr.voce_prezzo_tot_3 as voce_prezzo_tot_3,   
+         ctr.voce_prezzo_tot_4 as voce_prezzo_tot_4,   
+         ctr.voce_prezzo_tot_5 as voce_prezzo_tot_5,   
+         ctr.voce_prezzo_tot_6 as voce_prezzo_tot_6,   
+         ctr.voce_prezzo_tot_7 as voce_prezzo_tot_7,    
+         ctr.voce_prezzo_tot_8 as voce_prezzo_tot_8,   
+         ctr.voce_prezzo_tot_9 as voce_prezzo_tot_9,   
+         ctr.voce_prezzo_tot_10 as voce_prezzo_tot_10,   
+         ctr.flg_st_voce_1 as flg_st_voce_1,   
+         ctr.flg_st_voce_2 as flg_st_voce_2,   
+         ctr.flg_st_voce_3 as flg_st_voce_3,   
+         ctr.flg_st_voce_4 as flg_st_voce_4,   
+         ctr.flg_st_voce_5 as flg_st_voce_5,   
+         ctr.flg_st_voce_6 as flg_st_voce_6,   
+         ctr.flg_st_voce_7 as flg_st_voce_7,    
+         ctr.flg_st_voce_8 as flg_st_voce_8,   
+         ctr.flg_st_voce_9 as flg_st_voce_9,   
+         ctr.flg_st_voce_10 as flg_st_voce_10,   
+         ctr.iva,   
+         iva.aliq,   
+         iva.des,   
+         ctr.cod_pag,   
+         pagam.des,   
+         trim(ctr.banca) as banca,   
+         ctr.abi,   
+         ctr.cab,   
+         trim(ctr.altre_condizioni) as altre_condizioni,   
+         ctr.data_inizio,   
+         ctr.data_fine,   
+         ctr.fattura_da,   
+         ctr.x_datins,   
+         ctr.x_utente,   
+         ctr.stato,   
+         ctr.data_stampa , 
+        '- D010108.H12:00.U0011' as k_marca_stampa  
+         , trim(ctr.descr_1) + ': '       as v1_descr_xctr 
+         , trim(ctr.descr_1) + ': ' as v1_descr_xctr_eng
+         , trim(ctr.descr_2) + ': '        as v2_descr_xctr 
+         , trim(ctr.descr_2) + ': ' as v2_descr_xctr_eng
+         , trim(ctr.descr_3) + ': '        as v3_descr_xctr 
+         , trim(ctr.descr_3) + ': ' as v3_descr_xctr_eng
+         , trim(ctr.descr_4) + ': '        as v4_descr_xctr 
+         , trim(ctr.descr_4) + ': ' as v4_descr_xctr_eng
+         , trim(ctr.descr_5) + ': '        as v5_descr_xctr 
+         , trim(ctr.descr_5) + ': ' as v5_descr_xctr_eng
+         , trim(ctr.descr_6) + ': '        as v6_descr_xctr 
+         , trim(ctr.descr_6) + ': ' as v6_descr_xctr_eng
+         , trim(ctr.descr_7) + ': '        as v7_descr_xctr 
+         , trim(ctr.descr_7) + ': ' as v7_descr_xctr_eng
+         , trim(ctr.descr_8) + ': '        as v8_descr_xctr 
+         , trim(ctr.descr_8) + ': ' as v8_descr_xctr_eng
+         , trim(ctr.descr_9) + ': '        as v9_descr_xctr 
+         , trim(ctr.descr_9) + ': ' as v9_descr_xctr_eng
+         , trim(ctr.descr_10) + ': '        as v10_descr_xctr 
+         , trim(ctr.descr_10) + ': ' as v10_descr_xctr_eng
+         , COALESCE(ctr.totale_contratto,0) as totale_contratto
+	     , ctr.acconto_perc as acconto_perc
+  	   	, ctr.acconto_imp as acconto_imp  
+   	  	, ctr.acconto_cod_pag as acconto_cod_pag
+     	, acc_pagam.des as acconto_pagam_des
+        ,'1' as k_ragsoc_base_1
+        ,'2' as k_ragsoc_base_2
+        , ctr.quotazione_cod
+	    , ctr.quotazione_tipo
+		, ctr.cliente_desprod
+		, ctr.cliente_desprod_rid
+		FROM v_contratti_doc ctr LEFT OUTER JOIN clie_settori ON ctr.id_clie_settore = clie_settori.id_clie_settore
+		LEFT OUTER JOIN clienti ON ctr.id_cliente = clienti.codice
+		LEFT OUTER JOIN gru ON ctr.gruppo = gru.codice
+		LEFT OUTER JOIN pagam ON ctr.cod_pag = pagam.codice
+         LEFT OUTER JOIN pagam as acc_pagam ON ctr.acconto_cod_pag = acc_pagam.codice
+		LEFT OUTER JOIN iva ON ctr.iva = iva.codice  
+//                               LEFT OUTER JOIN listino_voci as v1 ON ctr.id_listino_voce_1 = v1.id_listino_voce
+//                               LEFT OUTER JOIN listino_voci as v2 ON ctr.id_listino_voce_2 = v2.id_listino_voce
+//                               LEFT OUTER JOIN listino_voci as v3 ON ctr.id_listino_voce_3 = v3.id_listino_voce
+//                               LEFT OUTER JOIN listino_voci as v4 ON ctr.id_listino_voce_4 = v4.id_listino_voce
+//                               LEFT OUTER JOIN listino_voci as v5 ON ctr.id_listino_voce_5 = v5.id_listino_voce
+//                               LEFT OUTER JOIN listino_voci as v6 ON ctr.id_listino_voce_6 = v6.id_listino_voce
+//                               LEFT OUTER JOIN listino_voci as v7 ON ctr.id_listino_voce_7 = v7.id_listino_voce
+//                               LEFT OUTER JOIN listino_voci as v8 ON ctr.id_listino_voce_8 = v8.id_listino_voce
+//                               LEFT OUTER JOIN listino_voci as v9 ON ctr.id_listino_voce_9 = v9.id_listino_voce
+//                               LEFT OUTER JOIN listino_voci as v10 ON ctr.id_listino_voce_10 = v10.id_listino_voce
+   WHERE ctr.id_contratto_doc = :k_id_contratto_doc    
+" arguments=(("k_id_contratto_doc", number)) )
+bitmap(band=detail filename="quotazione_bottom.png" x="0" y="26168" height="2328" width="18970" border="0" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0"  name=p_img_10 visible="1" transparency="0" )
+compute(band=detail alignment="0" expression="0"border="0" color="33554432" x="7858" y="1165" height="423" width="1243" format="[GENERAL]" html.valueishtml="0"  name=k_video visible="0"  font.face="Tahoma" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="255" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="0" color="33554432" x="6985" y="768" height="423" width="1084" format="[general]" html.valueishtml="0"  name=stampa_tradotta visible="0" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no  font.face="Tahoma" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="134217857" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0" )
+column(band=detail id=1 alignment="1" tabsequence=32766 border="0" color="0" x="6323" y="1217" height="476" width="1349" format="[General]" html.valueishtml="0"  name=id_contratto_doc visible="0" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Tahoma" font.height="-12" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="33554432" x="5715" y="397" height="476" width="1534" format="[general]" html.valueishtml="0"  name=anno visible="0" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no  font.face="Tahoma" font.height="-12" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0" )
+text(band=detail alignment="2" text="d_contratti_doc_st2_ed10613" border="0" color="33554432" x="1031" y="1641" height="476" width="7037" html.valueishtml="0"  name=txt_pagina_successiva  tag="mettere il dw con pag. successiva" visible="0"  font.face="Tahoma" font.height="-11" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" font.italic="1" background.mode="1" background.color="536870912" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0" )
+text(band=detail alignment="2" text="~"The present routine quote is subject to the General Supply Terms & Conditions of Sterigenics Italy SpA.~"~tif ( stampa_tradotta = 'EN', ~"The present routine quote is subject to the General Supply Terms & Conditions of Sterigenics Italy SpA.~", ~"La presente quotazione è soggetta ai termini e condizioni generali di fornitura di Sterigenics Italy SpA.~")
++ string(~"~~n~~r~")
++ if ( stampa_tradotta = 'EN', ~"Sterigenics General Terms & Conditions prevail.~", ~"I termini e le condizioni generali di Sterigenics prevalgono.~")
++ string(~"~~n~~r~")
++ if ( stampa_tradotta = 'EN', ~"Prices are valid Ex-works (Incoterms 2010).~", ~"I prezzi sono da intendersi Ex-works (Incoterms 2010).~")
++ string(~"~~n~~r~")
++ if ( stampa_tradotta = 'EN', ~"Prices are subject to be reviewed if change in the customer’s requirements.~", ~"I prezzi sono soggetti a revisione in caso di modifica dei requisiti del cliente~")
+" border="0" color="8388608" x="317" y="12409" height="2857" width="18573" html.valueishtml="0"  name=t_61 visible="1"  font.face="Calibri" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0"  height.autosize=yes)
+bitmap(band=detail filename="logo.png" x="370" y="106" height="1799" width="7011" border="0" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0"  name=p_img visible="1" transparency="0" )
+text(band=detail alignment="0" text="logo.png" border="0" color="0" x="4736" y="133" height="370" width="3386" html.valueishtml="0"  name=txt_p_img  tag="associata alla risorsa in: p_img" visible="0"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0" )
+text(band=detail alignment="0" text="7.  Costi Progetto - Dettagli" border="0" color="33554432" x="185" y="3361" height="635" width="18838" html.valueishtml="0"  name=caratteristichetecniche visible="1~tif ( stampa_tradotta = 'EN', 0, 1) "  font.face="Calibri" font.height="-11" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0" )
+text(band=detail alignment="0" text=" Mod.C.S&D Ed.16 del 7/2018" border="0" color="19211557" x="291" y="25480" height="291" width="3836" html.valueishtml="0"  name=t_modello visible="0"  font.face="Arial" font.height="-6" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" font.italic="1"font.escapement="0~t900"  background.mode="1" background.color="536870912" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0" )
+text(band=detail alignment="2" text="Pagina~tif ( stampa_tradotta = ~"EN~", ~"Page 2 of 7~", ~"Pagina 2 di 7~")" border="0" color="33554432" x="16218" y="27729" height="370" width="2222" html.valueishtml="0"  name=t_1 visible="1"  font.face="Tahoma" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0" )
+report(band=detail dataobject="d_contratti_doc_st_tab_val" x="52" y="4445" height="1111" width="19076" border="0" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0"  height.autosize=yes criteria="" nest_arguments=((" id_contratto_doc ")) trail_footer = yes  name=dw_1 visible="1"  slideleft=yes  slideup=directlyabove )
+text(band=detail alignment="1" text="
+    ~tif(quotazione_tipo = 'VAL', string(~"Sterigenics Validation Proposal - ~"), string(~"Sterigenics Irradiation Proposal - ~")) +
+trim( quotazione_cod )" border="0" color="33554432" x="8704" y="133" height="343" width="10212" html.valueishtml="0"  name=t_7 visible="1"  font.face="Calibri" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0" )
+column(band=detail id=79 alignment="0" tabsequence=32766 border="0" color="8388608" x="396" y="21855" height="291" width="5212" format="[general]" html.valueishtml="0"  name=k_marca_stampa visible="0" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no  font.face="Arial" font.height="-6" font.weight="400"  font.family="2" font.pitch="2" font.charset="0"font.escapement="0~t900"  background.mode="1" background.color="536870912" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0" )
+text(band=detail alignment="0" text="accettazione~tif ( stampa_tradotta = 'EN', string(~"APPROVAL:~"), string(~"PER ACCETTAZIONE:~"))" border="0" color="33554432" x="529" y="15611" height="555" width="4577" html.valueishtml="0"  name=t_91 visible="1"  font.face="Calibri" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0" )
+column(band=detail id=8 alignment="0" tabsequence=32766 border="0" color="33554432" x="529" y="16934" height="555" width="7408" format="[general]" html.valueishtml="0"  name=rag_soc_10_1 visible="1" height.autosize=yes dddw.name=d_clienti_l dddw.displaycolumn=rag_soc_1 dddw.datacolumn=rag_soc_1 dddw.percentwidth=150 dddw.lines=10 dddw.limit=0 dddw.allowedit=yes dddw.useasborder=no dddw.case=upper dddw.hscrollbar=yes dddw.vscrollbar=yes dddw.autoretrieve=no  font.face="Calibri" font.height="-11" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" font.underline="1" background.mode="2" background.color="16777215" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0" )
+text(band=detail alignment="0" text="By:~tif ( stampa_tradotta = 'EN', ~"By:~", ~"By:~")" border="0" color="33554432" x="529" y="18839" height="476" width="926" html.valueishtml="0"  name=t_2 visible="1"  font.face="Calibri" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0" )
+text(band=detail alignment="0" text="Data:~tif ( stampa_tradotta = 'EN', ~"Date:~", ~"Data:~")" border="0" color="33554432" x="529" y="20611" height="476" width="926" html.valueishtml="0"  name=t_26 visible="1"  font.face="Calibri" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0" )
+text(band=detail alignment="0" text="Timbro e Firma~tif ( stampa_tradotta = ~"EN~", ~"Stamp && Signature:~", ~"Timbro && Firma:~")" border="0" color="33554432" x="529" y="22728" height="476" width="3122" html.valueishtml="0"  name=t_27 visible="1"  font.face="Calibri" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0" )
+text(band=detail alignment="0" text="PO nr.:~tif ( stampa_tradotta = 'EN', ~"PO nbr.:~", ~"PO nr.:~")" border="0" color="33554432" x="529" y="24342" height="476" width="1111" html.valueishtml="0"  name=t_3 visible="1"  font.face="Calibri" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0" )
+line(band=detail x1="1587" y1="19315" x2="7672" y2="19315"  name=l_3 visible="1" pen.style="0" pen.width="26" pen.color="0"  background.mode="2" background.color="1073741824" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" )
+line(band=detail x1="1587" y1="21088" x2="7672" y2="21088"  name=l_5 visible="1" pen.style="0" pen.width="26" pen.color="0"  background.mode="2" background.color="1073741824" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" )
+line(band=detail x1="3545" y1="23204" x2="7672" y2="23204"  name=l_2 visible="1" pen.style="0" pen.width="26" pen.color="0"  background.mode="2" background.color="1073741824" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" )
+line(band=detail x1="2010" y1="24818" x2="7672" y2="24818"  name=l_4 visible="1" pen.style="0" pen.width="26" pen.color="0"  background.mode="2" background.color="1073741824" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" )
+text(band=detail alignment="0" text="quotazione_bottom.png" border="0" color="0" x="9577" y="25691" height="370" width="3466" html.valueishtml="0"  name=txt_p_img_10  tag="associata alla risorsa in: p_img_10" visible="0"  font.face="Arial" font.height="-8" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0" )
+text(band=detail alignment="0" text="STERIGENICS ITALY S.p.A." border="0" color="33554432" x="11535" y="16934" height="555" width="7408" html.valueishtml="0"  name=t_21 visible="1"  font.face="Calibri" font.height="-11" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" font.underline="1" background.mode="1" background.color="536870912" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0" )
+text(band=detail alignment="0" text="By: Barbara Salamoni~tif ( stampa_tradotta = 'EN', ~"By: Barbara Salamoni~", ~"By: Barbara Salamoni~")" border="0" color="33554432" x="11535" y="18839" height="476" width="3413" html.valueishtml="0"  name=t_4 visible="1"  font.face="Calibri" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0" )
+compute(band=detail alignment="0" expression="if (data_stampa > date('01.01.2000'), string(data_stampa, ~"dd-mmm-yyyy~"), string(  offerta_data , ~"dd-mmm-yyyy~"))"border="0" color="33554432" x="12567" y="20611" height="476" width="2063" format="[GENERAL]" html.valueishtml="0"  name=kdata visible="1"  font.face="Calibri" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0" )
+text(band=detail alignment="0" text="Firma~tif ( stampa_tradotta = 'EN', ~"Signature:~", ~"Firma:~")" border="0" color="33554432" x="11535" y="22728" height="476" width="3122" html.valueishtml="0"  name=t_6 visible="1"  font.face="Calibri" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0" )
+text(band=detail alignment="0" text="Inside Sales Resp." border="0" color="33554432" x="11535" y="19341" height="555" width="4577" html.valueishtml="0"  name=t_81 visible="1~tif ( stampa_tradotta = 'EN', 1, 0)  "  font.face="Calibri" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0" )
+text(band=detail alignment="0" text="Data:~tif ( stampa_tradotta = 'EN', ~"Date:~", ~"Data:~")" border="0" color="33554432" x="11535" y="20611" height="476" width="926" html.valueishtml="0"  name=t_5 visible="1"  font.face="Calibri" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" pagingmethod=0 generatedddwframes="1" )
+xhtmlgen() cssgen(sessionspecific="0" )
+xmlgen(inline="0" )
+xsltgen()
+jsgen()
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" nativepdf.customsize=0 nativepdf.customorientation=0 nativepdf.pdfstandard=0 nativepdf.useprintspec=no )
+export.xhtml()
+ 

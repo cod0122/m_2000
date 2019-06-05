@@ -47,6 +47,7 @@ constant string LIBERO10="la"
 constant string PROPRIETA="pr" 
 
 end variables
+
 on kkg_flag_richiesta.create
 call super::create
 TriggerEvent( this, "constructor" )

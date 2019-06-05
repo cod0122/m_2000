@@ -43,6 +43,7 @@ constant string DES_MEMO="MEMO"       	 //funz. particolare di memo allegati
 constant string DES_ALTRO="non precisata"       	 //da usare solo se devo fare qls di mooolto strano
 
 end variables
+
 on kkg_flag_modalita.create
 call super::create
 TriggerEvent( this, "constructor" )

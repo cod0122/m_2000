@@ -49,6 +49,7 @@ public date ki_data_certif_da_st_da, ki_data_certif_da_st_a
 private integer ki_picture_alarm 
 
 end variables
+
 forward prototypes
 public function boolean u_sicurezza (st_tab_treeview kst_tab_treeview)
 public function st_esito u_imposta_treeview_icone (ref treeview ktv_1, ref listview klv_1)

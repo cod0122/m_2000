@@ -1,0 +1,3 @@
+attivo D,codice A
+0000000011
+SELECT trim(prodotti.codice) as codice, trim(prodotti.des_mkt) as des, prodotti.gruppo,trim(gru.des) as gru_des, prodotti.iva,trim(iva.des) as iva_des, prodotti.magazzino, prodotti.attivo FROM (prodotti left outer join gru onprodotti.gruppo = gru.codice) left outer join iva onprodotti.iva = iva.codice WHERE (prodotti.codice like '%' ) ORDER BY prodotti.codice ASC

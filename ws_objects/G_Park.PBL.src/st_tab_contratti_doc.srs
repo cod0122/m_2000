@@ -1,0 +1,119 @@
+﻿$PBExportHeader$st_tab_contratti_doc.srs
+global type st_tab_contratti_doc from structure
+	st_tab_g_0		st_tab_g_0
+	long		contati
+	long		id_contratto_doc		descriptor "comment" = "id contratto generale"
+	long		id_contratto		descriptor "comment" = "id contratto RD / CO"
+	string		quotazione_cod		descriptor "comment" = "codice Quotazione esteso es.: BS-SI.STE.M-VAL-19-001"
+	string		quotazione_tipo		descriptor "comment" = "es. VAL = SD,  IRR= CO"
+	integer		anno
+	integer		magazzino		descriptor "comment" = "vedi variabile kkg_magazzino. (di solito = 6)"
+	date		offerta_data
+	string		offerta_validita
+	string		stato		descriptor "comment" = "'1'=nuovo, '3'=stampato, '5'=accettato"
+	string		stampa_tradotta
+	date		data_stampa
+	date		data_inizio
+	date		data_fine
+	string		oggetto
+	string		id_clie_settore
+	integer		gruppo
+	string		art
+	string		cliente_desprod		descriptor "comment" = "Prodotto: descrizione ampia in stampa"
+	string		cliente_desprod_rid		descriptor "comment" = "Prodotto: descrizione ridotta in stampa"
+	long		id_cliente
+	long		id_docprod
+	string		nome_contatto
+	string		note_fasi_operative
+	double		fase_b1		descriptor "comment" = "OBSOLETO 1 - Qualifica e prove"
+	double		fase_b2		descriptor "comment" = "OBSOLETO 2 - Bioburden dell prodotto"
+	double		fase_b3		descriptor "comment" = "OBSOLETO 3 - Dose di verifica"
+	double		fase_b4		descriptor "comment" = "OBSOLETO 4 - Analisi di sterilità"
+	double		fase_b5		descriptor "comment" = "OBSOLETO 5 - Definizione dell'imballo e Dose Mapping"
+	double		fase_b6		descriptor "comment" = "OBSOLETO 6 - Riesame dei dati e stesura dei documenti e capitolati"
+	double		fase_d1		descriptor "comment" = "OBSOLETO 1 - Bioburden su campioni forniti dal Cliente"
+	double		fase_d2		descriptor "comment" = "OBSOLETO 2 - Irraggiamento e dose di verifica"
+	double		fase_d3		descriptor "comment" = "OBSOLETO 3 - Test di sterilità"
+	double		fase_d4		descriptor "comment" = "OBSOLETO 4 - Rilascio rapporto di ~"Audit di dose~""
+	string		note
+	string		note_audit
+	integer		id_listino_pregruppo
+	integer		id_listino_voce_1
+	integer		id_listino_voce_2
+	integer		id_listino_voce_3
+	integer		id_listino_voce_4
+	integer		id_listino_voce_5
+	integer		id_listino_voce_6
+	integer		id_listino_voce_7
+	integer		id_listino_voce_8
+	integer		id_listino_voce_9
+	integer		id_listino_voce_10
+	string		descr_1		descriptor "comment" = "descrizione voce "
+	string		descr_2
+	string		descr_3
+	string		descr_4
+	string		descr_5
+	string		descr_6
+	string		descr_7
+	string		descr_8
+	string		descr_9
+	string		descr_10
+	double		voce_prezzo_1
+	double		voce_prezzo_2
+	double		voce_prezzo_3
+	double		voce_prezzo_4
+	double		voce_prezzo_5
+	double		voce_prezzo_6
+	double		voce_prezzo_7
+	double		voce_prezzo_8
+	double		voce_prezzo_9
+	double		voce_prezzo_10
+	double		totale_contratto		descriptor "comment" = "importo contratto mostrato al cliente"
+	integer		iva
+	integer		cod_pag
+	string		banca
+	integer		abi
+	integer		cab
+	integer		acconto_perc		descriptor "comment" = "% di acconto su importo al netto degli sconti"
+	decimal { 2 }		acconto_imp		descriptor "comment" = "importo acconto"
+	integer		acconto_cod_pag		descriptor "comment" = "codice di pagamento per l'acconto"
+	string		fattura_da
+	string		altre_condizioni
+	datetime		esito_operazioni_ts_operazione		descriptor "comment" = "timestamp dell'esito nella tabella esito-operazioni"
+	string		form_di_stampa		descriptor "comment" = "nome del DW sul quale e' stato stampato stampa"
+	decimal { 2 }		voce_prezzo_tot_1		descriptor "comment" = "prezzo x qta"
+	decimal { 2 }		voce_prezzo_tot_2		descriptor "comment" = "prezzo x qta"
+	decimal { 2 }		voce_prezzo_tot_3		descriptor "comment" = "prezzo x qta"
+	decimal { 2 }		voce_prezzo_tot_4		descriptor "comment" = "prezzo x qta"
+	decimal { 2 }		voce_prezzo_tot_5		descriptor "comment" = "prezzo x qta"
+	decimal { 2 }		voce_prezzo_tot_6		descriptor "comment" = "prezzo x qta"
+	decimal { 2 }		voce_prezzo_tot_7		descriptor "comment" = "prezzo x qta"
+	decimal { 2 }		voce_prezzo_tot_8		descriptor "comment" = "prezzo x qta"
+	decimal { 2 }		voce_prezzo_tot_9		descriptor "comment" = "prezzo x qta"
+	decimal { 2 }		voce_prezzo_tot_10		descriptor "comment" = "prezzo x qta"
+	integer		voce_qta_1
+	integer		voce_qta_2
+	integer		voce_qta_3
+	integer		voce_qta_4
+	integer		voce_qta_5
+	integer		voce_qta_6
+	integer		voce_qta_7
+	integer		voce_qta_8
+	integer		voce_qta_9
+	integer		voce_qta_10
+	string		flg_st_voce_1		descriptor "comment" = "S=stampa voce a contratto"
+	string		flg_st_voce_2		descriptor "comment" = "S=stampa voce a contratto"
+	string		flg_st_voce_3		descriptor "comment" = "S=stampa voce a contratto"
+	string		flg_st_voce_4		descriptor "comment" = "S=stampa voce a contratto"
+	string		flg_st_voce_5		descriptor "comment" = "S=stampa voce a contratto"
+	string		flg_st_voce_6		descriptor "comment" = "S=stampa voce a contratto"
+	string		flg_st_voce_7		descriptor "comment" = "S=stampa voce a contratto"
+	string		flg_st_voce_8		descriptor "comment" = "S=stampa voce a contratto"
+	string		flg_st_voce_9		descriptor "comment" = "S=stampa voce a contratto"
+	string		flg_st_voce_10		descriptor "comment" = "S=stampa voce a contratto"
+	string		flg_fatt_dopo_valid		descriptor "comment" = "S=Fatturazione dopo la Validazione"
+	integer		id_meca_causale		descriptor "comment" = "codice Causale di Blocco"
+	datetime		x_datins
+	string		x_utente
+end type
+

@@ -326,7 +326,7 @@ try
 	k_rows = u_set_ds_pilota_queue_data_prev( )	  // imposta data fine lav per rec in programmazione
 
 catch (uo_exception kuo_exception)
-	throw kguo_exception
+	throw kuo_exception
 	
 finally
 	

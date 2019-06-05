@@ -1,0 +1,3 @@
+data_fatt D,num_fatt D
+0000000001
+SELECTarfa_testa.num_fatt , arfa_testa.data_fatt, arfa_testa.tipo_doc , arfa_testa.id_fattura , arfa_testa.id_cliente , clienti.rag_soc_10, clienti.loc_1, clienti.prov_1, clienti.id_nazione_1, arfa_testa.cod_pag , pagam.des ,stampa as stampa,arfa_testa.x_datins as x_datins,arfa_testa.modo_stampa FROM arfa_testa LEFT OUTER JOIN clienti ON arfa_testa.id_cliente = clienti.codiceLEFT OUTER JOIN pagam ON arfa_testa.cod_pag = pagam.codiceLEFT OUTER JOIN ind_comm ON arfa_testa.id_cliente = ind_comm.clie_c where arfa_testa.data_fatt between '17-05-2018' and '17-05-2019'and (0 = 0 or arfa_testa.id_cliente = 0)

@@ -1,0 +1,3 @@
+ 
+0000000084
+SELECT barcode.pl_barcode, barcode.tipo_cicli, barcode.pl_barcode_progr, barcode.barcode, barcode.fila_1, barcode.fila_2, barcode.fila_1p, barcode.fila_2p, armo.dose, (armo.peso_kg / armo.colli_2) as armo_peso_kg, armo.larg_2, armo.lung_2, armo.alt_2, armo.pedane, armo.campione, meca.area_mag, armo.art, barcode.num_int, barcode.data_int, meca.clie_2, armo.id_armo,barcode.id_meca, clienti.e1ancodrsFROM barcode inner JOIN meca ON barcode.id_meca = meca.idinner JOIN armo ON barcode.id_armo = armo.id_armoinner JOIN clienti ON meca.clie_3 = clienti.codiceWHERE pl_barcode = 20182 and ('N' = '%' or ('N' = 'N' and (barcode.barcode_lav is null or barcode.barcode_lav = '') )) order by barcode.pl_barcode_progr

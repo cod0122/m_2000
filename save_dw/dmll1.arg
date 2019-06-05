@@ -1,0 +1,3 @@
+ 
+0000000003
+SELECT email.id_email, email.codice, email.stato, email.des ,trim(email.oggetto) as oggetto, email.flg_ritorno_ricev, trim(email.email_di_ritorno) as email_di_ritorno, trim(email.link_lettera) as link_letteraFROM email where stato like '%' ORDER BY email.codice ASC

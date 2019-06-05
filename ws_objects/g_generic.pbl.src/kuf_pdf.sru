@@ -14,6 +14,7 @@ private string ki_stampa_pdf[]
 private int ki_stampa_pdf_idx
 
 end variables
+
 forward prototypes
 public subroutine u_inizializza ()
 public subroutine u_add_file (string a_path_file)

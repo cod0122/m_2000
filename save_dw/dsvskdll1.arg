@@ -1,3 +1,3 @@
 sv_skedula_orario A,sv_skedula_id A
-0000000001
+0000000013
 SELECT sv_skedula.id, sv_skedula.orario, sv_skedula.rilancia_dopo_mm , sv_skedula.flag_run_giorni, sv_skedula.cmd_dos_run, sv_skedula.id_menu_window, sv_skedula.stato, menu_window.titolo, menu_window.descr, menu_window.funzioni FROM sv_skedula left OUTER JOIN menu_window ON sv_skedula.id_menu_window = menu_window.id

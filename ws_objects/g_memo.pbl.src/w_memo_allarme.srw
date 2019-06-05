@@ -38,6 +38,7 @@ private int li_ScreenHt = 0, li_ScreenWid = 0
 private st_open_w ki_st_open_w
 
 end variables
+
 forward prototypes
 protected subroutine smista_funz (string k_par_in)
 public subroutine u_attiva_allarme (datastore ads_memo_allarme) throws uo_exception

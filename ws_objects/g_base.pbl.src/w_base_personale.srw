@@ -205,6 +205,7 @@ protected subroutine stampa_esegui (st_stampe ast_stampe)
 protected subroutine attiva_tasti_0 ()
 private subroutine get_path_reportpilota ()
 private subroutine get_fgrp_out_path ()
+private subroutine get_report_export_dir ()
 end prototypes
 
 protected subroutine pulizia_righe ();////
@@ -1255,6 +1256,7 @@ try
 				kst_tab_base.dir_ddt = ""
 				kst_tab_base.e1dtlav_allineagg = tab_1.tabpage_4.dw_4.getitemnumber(1, "e1dtlav_allineagg")
 				kst_tab_base.dir_report_pilota = tab_1.tabpage_4.dw_4.getitemstring(1, "dir_report_pilota")
+				kst_tab_base.report_export_dir = tab_1.tabpage_4.dw_4.getitemstring(1, "report_export_dir")
 				kst_tab_base.st_tab_g_0.esegui_commit = "N" 
 				kst_esito = kuf1_base.tb_update_base_dir(kst_tab_base) 
 			
@@ -2208,6 +2210,30 @@ end if
 
 end subroutine
 
+private subroutine get_report_export_dir ();//
+string k_path=".."
+int k_ret
+
+
+k_path = tab_1.tabpage_4.dw_4.getitemstring (1, "report_export_dir")
+if len(trim(k_path)) > 0 then
+else
+	k_path=".."
+end if
+
+k_ret = GetFolder ( "Scegli Cartella dove esportare i Report", k_path )
+
+if k_ret = 1 then
+	tab_1.tabpage_4.dw_4.setitem(1, "report_export_dir", trim(k_path))
+else
+	if k_ret < 0 then
+//--- ERRORE	
+	end if
+end if
+
+
+end subroutine
+
 on w_base_personale.create
 int iCurrent
 call super::create
@@ -2620,6 +2646,8 @@ elseif dwo.name = "b_path_esolver_fidi" then
 	get_path_esolver_fidi()
 elseif dwo.name = "b_listini_no_contratto" then
 	u_call_art_x_no_contratto( )
+elseif dwo.name = "b_report_export_dir" then
+	get_report_export_dir()
 end if
 
 

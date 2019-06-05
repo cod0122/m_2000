@@ -64,6 +64,7 @@ int kki_scelta_report_pic_nrdosimetri
 int kki_scelta_report_pic_RunsRtrRts 
 
 end variables
+
 forward prototypes
 public function st_esito u_open ()
 public function boolean if_sicurezza (st_open_w ast_open_w) throws uo_exception

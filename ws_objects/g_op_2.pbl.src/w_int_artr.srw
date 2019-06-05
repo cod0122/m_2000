@@ -8397,8 +8397,9 @@ call super::destroy
 end on
 
 type tabpage_1 from w_g_tab_3`tabpage_1 within tab_1
+integer y = 144
 integer width = 3118
-integer height = 1624
+integer height = 1592
 long backcolor = 67108864
 string text = "Parametri"
 string picturename = "edit16.gif"
@@ -8685,8 +8686,9 @@ type st_1_retrieve from w_g_tab_3`st_1_retrieve within tabpage_1
 end type
 
 type tabpage_2 from w_g_tab_3`tabpage_2 within tab_1
+integer y = 144
 integer width = 3118
-integer height = 1624
+integer height = 1592
 boolean enabled = false
 long backcolor = 32567536
 string text = "Report ?"
@@ -8739,8 +8741,9 @@ type st_2_retrieve from w_g_tab_3`st_2_retrieve within tabpage_2
 end type
 
 type tabpage_3 from w_g_tab_3`tabpage_3 within tab_1
+integer y = 144
 integer width = 3118
-integer height = 1624
+integer height = 1592
 end type
 
 type dw_3 from w_g_tab_3`dw_3 within tabpage_3
@@ -8756,8 +8759,9 @@ type st_3_retrieve from w_g_tab_3`st_3_retrieve within tabpage_3
 end type
 
 type tabpage_4 from w_g_tab_3`tabpage_4 within tab_1
+integer y = 144
 integer width = 3118
-integer height = 1624
+integer height = 1592
 end type
 
 type dw_4 from w_g_tab_3`dw_4 within tabpage_4
@@ -8773,8 +8777,9 @@ type st_4_retrieve from w_g_tab_3`st_4_retrieve within tabpage_4
 end type
 
 type tabpage_5 from w_g_tab_3`tabpage_5 within tab_1
+integer y = 144
 integer width = 3118
-integer height = 1624
+integer height = 1592
 end type
 
 type dw_5 from w_g_tab_3`dw_5 within tabpage_5
@@ -8790,8 +8795,9 @@ type st_5_retrieve from w_g_tab_3`st_5_retrieve within tabpage_5
 end type
 
 type tabpage_6 from w_g_tab_3`tabpage_6 within tab_1
+integer y = 144
 integer width = 3118
-integer height = 1624
+integer height = 1592
 boolean enabled = true
 end type
 
@@ -8808,8 +8814,9 @@ u_dw_report_clicked(trim(dwo.name), row)
 end event
 
 type tabpage_7 from w_g_tab_3`tabpage_7 within tab_1
+integer y = 144
 integer width = 3118
-integer height = 1624
+integer height = 1592
 boolean enabled = true
 end type
 
@@ -8826,8 +8833,9 @@ u_dw_report_clicked(trim(dwo.name), row)
 end event
 
 type tabpage_8 from w_g_tab_3`tabpage_8 within tab_1
+integer y = 144
 integer width = 3118
-integer height = 1624
+integer height = 1592
 boolean enabled = true
 end type
 
@@ -8844,8 +8852,9 @@ u_dw_report_clicked(trim(dwo.name), row)
 end event
 
 type tabpage_9 from w_g_tab_3`tabpage_9 within tab_1
+integer y = 144
 integer width = 3118
-integer height = 1624
+integer height = 1592
 boolean enabled = true
 end type
 

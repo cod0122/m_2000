@@ -1,0 +1,3 @@
+ 
+0000000004
+SELECT listino_voci.id_listino_voce, listino_voci.descr, listino_voci.attivo, listino_voci.id_listino_voci_categ, listino_voci.tipo_listino, listino_voci.tipo_calcolo,listino_voci_categ.descr,listino_voci.aperto FROM listino_voci left outer join listino_voci_categ onlistino_voci.id_listino_voci_categ = listino_voci_categ.id_listino_voci_categwhere(0 = 0 or listino_voci.id_listino_voce = 0)and ('*' = '*'or listino_voci.id_listino_voci_categ = '*' or ('*' = '_' and (listino_voci.id_listino_voci_categ = '' or listino_voci.id_listino_voci_categ is null)))

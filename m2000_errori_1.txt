@@ -1,0 +1,85 @@
+File LOG creato il: 17/12/2018  ore: 15:24:58
+ 
+Errore del 17/12/2018 ore 15:24:58 - Versione Programma 18,1213 - Nome device di rete: ALBERTOT
+Codice Esito (st_esito.esito) = 6
+Indicare il Barcode Padre del Groupage da Lettore 
+ id: 0 - oggetto: kuf_lettore_grp
+ 
+ 
+Errore del 17/12/2018 ore 15:24:59 - Versione Programma 18,1213 - Nome device di rete: ALBERTOT
+Codice Esito (st_esito.esito) = 6
+Indicare il Barcode Padre del Groupage da Lettore 
+ id: 0 - oggetto: kuf_lettore_grp
+ 
+ 
+Errore del 17/12/2018 ore 15:25:58 - Versione Programma 18,1213 - Nome device di rete: ALBERTOT
+Codice Esito (st_esito.esito) = 1
+Errore durante lettura File Groupage da palmare 0 
+Codice errore: -4 - oggetto: kuf_lettore_grp
+ 
+ 
+Errore del 17/12/2018 ore 15:26:28 - Versione Programma 18,1213 - Nome device di rete: ALBERTOT
+Codice Esito (st_esito.esito) = 1
+Errore durante lettura File Groupage da palmare 0 
+Codice errore: -4 - oggetto: kuf_lettore_grp
+ 
+ 
+Errore del 17/12/2018 ore 15:27:15 - Versione Programma 18,1213 - Nome device di rete: ALBERTOT
+Codice Esito (st_esito.esito) = 6
+Indicare il Barcode Padre del Groupage da Lettore 
+ id: 0 - oggetto: kuf_lettore_grp
+ 
+ 
+Errore del 17/12/2018 ore 15:27:16 - Versione Programma 18,1213 - Nome device di rete: ALBERTOT
+Codice Esito (st_esito.esito) = 6
+Indicare il Barcode Padre del Groupage da Lettore 
+ id: 0 - oggetto: kuf_lettore_grp
+ 
+ 
+Errore del 17/12/2018 ore 15:34:24 - Versione Programma 18,1213 - Nome device di rete: ALBERTOT
+Codice Esito (st_esito.esito) = 6
+Indicare il Barcode Padre del Groupage da Lettore 
+ id: 0 - oggetto: kuf_lettore_grp
+ 
+ 
+Errore del 17/12/2018 ore 15:35:26 - Versione Programma 18,1213 - Nome device di rete: ALBERTOT
+Codice Esito (st_esito.esito) = 6
+Indicare il Barcode Padre del Groupage da Lettore 
+ id: 0 - oggetto: kuf_lettore_grp
+ 
+ 
+Errore del 17/12/2018 ore 15:36:24 - Versione Programma 18,1213 - Nome device di rete: ALBERTOT
+Codice Esito (st_esito.esito) = 6
+Indicare il Barcode Padre del Groupage da Lettore 
+ id: 0 - oggetto: kuf_lettore_grp
+ 
+ 
+Errore del 17/12/2018 ore 15:45:04 - Versione Programma 18,1213 - Nome device di rete: ALBERTOT
+Codice Esito (st_esito.esito) = 6
+Indicare il Barcode Padre del Groupage da Lettore 
+ id: 0 - oggetto: kuf_lettore_grp
+ 
+ 
+Errore del 17/12/2018 ore 15:49:01 - Versione Programma 18,1213 - Nome device di rete: ALBERTOT
+Codice Esito (st_esito.esito) = 6
+Indicare il Barcode Padre del Groupage da Lettore 
+ id: 0 - oggetto: kuf_lettore_grp
+ 
+ 
+Errore del 17/12/2018 ore 15:51:39 - Versione Programma 18,1213 - Nome device di rete: ALBERTOT
+Codice Esito (st_esito.esito) = 6
+Indicare il Barcode Padre del Groupage da Lettore 
+ id: 0 - oggetto: kuf_lettore_grp
+ 
+ 
+Errore del 17/12/2018 ore 15:53:46 - Versione Programma 18,1213 - Nome device di rete: ALBERTOT
+Codice Esito (st_esito.esito) = 6
+Indicare il Barcode Padre del Groupage da Lettore 
+ id: 0 - oggetto: kuf_lettore_grp
+ 
+ 
+Errore del 17/12/2018 ore 15:55:01 - Versione Programma 18,1213 - Nome device di rete: ALBERTOT
+Codice Esito (st_esito.esito) = 6
+Indicare il Barcode Padre del Groupage da Lettore 
+ id: 0 - oggetto: kuf_lettore_grp
+ 

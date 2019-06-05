@@ -37,6 +37,7 @@ public constant string k_dirlist_tipo_hidden = 'n'
 public constant string k_dirlist_tipo_file = 'f'
 
 end variables
+
 forward prototypes
 public function boolean of_execute (readonly string as_file, readonly string as_extension)
 public function boolean of_execute (string k_file)

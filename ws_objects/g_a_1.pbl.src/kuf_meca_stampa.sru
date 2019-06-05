@@ -12,6 +12,7 @@ type variables
 //
 private kuf_pdf kiuf_pdf 
 end variables
+
 forward prototypes
 public function boolean if_sicurezza (st_open_w ast_open_w) throws uo_exception
 public function boolean u_stampa_reportpilota (st_tab_meca ast_tab_meca) throws uo_exception

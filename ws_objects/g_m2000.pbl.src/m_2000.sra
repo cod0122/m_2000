@@ -231,6 +231,7 @@ constant string kkg_risorsa_elenco = KKG.PATH_SEP + "folder.gif"
 //string KG_UTENTE_COMP="MAST" //User compatto, prendo solo 4 lettere senza char strani
 
 end variables
+
 global type m_2000 from application
 string appname = "m_2000"
 boolean toolbartext = true

@@ -88,6 +88,7 @@ global type st_tab_base from structure
 	string		esolver_inpfidi_nome		descriptor "comment" = "nome file in esportare importi non fatturati x fare i FIDO x ESOLVER (contabilita)"
 	string		esolver_expfidi_nome		descriptor "comment" = "nome file da cui importare i clienti fuori FIDO da ESOLVER (contabilita)"
 	long		esolver_fidi_id_meca_causale		descriptor "comment" = "id_meca_causale x i clienti fuori fido"
+	string		report_export_dir		descriptor "comment" = "cartella nella quale esportare i report"
 	string		ddt_qtna_note		descriptor "comment" = "dicitura spedizione lotti in quaratena (in bolla di uscita)"
 	string		ddt_blk_lotti_senza_attestato		descriptor "comment" = "'1'=consente di spedire Lotti parzialmente Trattati solo se in Quarantena"
 	long		sv_call_vettore_id_listino		descriptor "comment" = "id del listino da applicare a costo CHIAMATA VETTORE messo sul DDT "

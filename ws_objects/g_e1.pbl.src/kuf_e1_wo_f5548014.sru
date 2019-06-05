@@ -27,6 +27,7 @@ string kki_tcicli_osmmcu_MISTO 	//File Miste da E1 definito come IRRADIATOR C
 
 
 end variables
+
 forward prototypes
 public subroutine _readme ()
 public subroutine if_isnull (ref st_tab_e1_wo_f5548014 kst_tab_e1_wo_f5548014)

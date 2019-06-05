@@ -373,7 +373,7 @@ else
 			kdw_anteprima.settransobject(kguo_sqlca_db_e1)
 	
 			kdw_anteprima.reset()	
-			k_nr_righe = kdw_anteprima.retrieve(kst_e1_anteprima.apid, kkg.e1mcu)
+			k_nr_righe = kdw_anteprima.retrieve(kst_e1_anteprima.apid, kguo_g.E1MCU)
 
 		catch (uo_exception kuo_exception)
 				kst_esito = kuo_exception.get_st_esito()

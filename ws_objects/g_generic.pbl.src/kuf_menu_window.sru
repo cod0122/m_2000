@@ -29,6 +29,7 @@ private constant string kki_suona_motivo_open_w_x_canc = "Open_w_x_canc.wav"
 private constant string kki_suona_motivo_fine = "Fine_funz.wav"
 
 end variables
+
 forward prototypes
 private subroutine open_run_batch (st_open_w kst_open_w) throws uo_exception
 public subroutine if_isnull (st_open_w ast_open_w)

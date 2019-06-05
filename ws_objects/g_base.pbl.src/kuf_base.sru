@@ -37,6 +37,7 @@ constant string kki_base_utenti_flagZOOMctrl = "flagzoomctrl"  // S=attiva ZOOM 
 
 
 end variables
+
 forward prototypes
 public function string check_pwd (string k_pwd)
 public function long dammi_rec (ref st_tab_base k_st_tab_base)
@@ -2192,6 +2193,18 @@ kuf_stampe kuf1_stampe
 			k_pos_ini = 1
 			k_lungo = len(k_record)
 			
+		case "report_export_dir" // Cartella di esportazione dei REPORT (es. pilota_coda.html)
+			select report_export_dir
+				 into :k_record
+				 from base_dir;
+			k_record = trim(k_record)
+			if isnull(k_record) then
+				k_record = ""
+			end if
+			k_record = trim(k_record)
+			k_pos_ini = 1
+			k_lungo = len(k_record)
+			
 
 			
 //		case "arch_esolver_anag"  // Cartella + nome file x esportare verso Contabilità versione da Utente
@@ -2860,6 +2873,11 @@ if len(trim(kst_tab_base.id_base)) > 0 then
 	if isnull(kst_tab_base.dir_report_pilota) then
 		kst_tab_base.dir_report_pilota = ""
 	end if
+	if isnull(kst_tab_base.report_export_dir) then
+		kst_tab_base.report_export_dir = ""
+	end if
+	
+	
 	kst_open_w.flag_modalita = kkg_flag_modalita.modifica
 	kst_open_w.id_programma = "az"
 	
@@ -2901,6 +2919,7 @@ if len(trim(kst_tab_base.id_base)) > 0 then
 						esolver_inpfidi_nome = :kst_tab_base.esolver_inpfidi_nome,
 						e1dtlav_allineagg = :kst_tab_base.e1dtlav_allineagg,
 						dir_report_pilota = :kst_tab_base.dir_report_pilota,
+						report_export_dir = :kst_tab_base.report_export_dir,
 						x_datins = :kst_tab_base.x_datins,  
 						x_utente = :kst_tab_base.x_utente  
 					WHERE id_base = :kst_tab_base.id_base 

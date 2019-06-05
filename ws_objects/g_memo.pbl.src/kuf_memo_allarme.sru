@@ -37,6 +37,7 @@ private date ki_data_allarme_ini
 constant string kki_suona_motivo_allarme = "allarmeMemo.wav"
 
 end variables
+
 forward prototypes
 private subroutine u_open_window (string a_titolo)
 public function boolean if_sicurezza (st_open_w ast_open_w) throws uo_exception

@@ -59,7 +59,7 @@ m_attivatrace m_attivatrace
 end type
 type m_f_u_-1 from menu within m_utility
 end type
-type m_rinnovalicenzant from menu within m_utility
+type m_esportacodapilotainhtml from menu within m_utility
 end type
 type m_popolat_contr from menu within m_utility
 end type
@@ -84,7 +84,7 @@ m_aggiornaprogrammi m_aggiornaprogrammi
 m_aggiornaallaversionedisviluppo m_aggiornaallaversionedisviluppo
 m_ottimizzadb m_ottimizzadb
 m_f_u_-1 m_f_u_-1
-m_rinnovalicenzant m_rinnovalicenzant
+m_esportacodapilotainhtml m_esportacodapilotainhtml
 m_popolat_contr m_popolat_contr
 m_popolalistinodaaccess m_popolalistinodaaccess
 m_sistemaricevute m_sistemaricevute
@@ -1719,7 +1719,7 @@ m_aggiornaprogrammi m_aggiornaprogrammi
 m_aggiornaallaversionedisviluppo m_aggiornaallaversionedisviluppo
 m_ottimizzadb m_ottimizzadb
 m_f_u_-1 m_f_u_-1
-m_rinnovalicenzant m_rinnovalicenzant
+m_esportacodapilotainhtml m_esportacodapilotainhtml
 m_popolat_contr m_popolat_contr
 m_popolalistinodaaccess m_popolalistinodaaccess
 m_sistemaricevute m_sistemaricevute
@@ -1756,7 +1756,7 @@ this.m_aggiornaprogrammi=create m_aggiornaprogrammi
 this.m_aggiornaallaversionedisviluppo=create m_aggiornaallaversionedisviluppo
 this.m_ottimizzadb=create m_ottimizzadb
 this.m_f_u_-1=create m_f_u_-1
-this.m_rinnovalicenzant=create m_rinnovalicenzant
+this.m_esportacodapilotainhtml=create m_esportacodapilotainhtml
 this.m_popolat_contr=create m_popolat_contr
 this.m_popolalistinodaaccess=create m_popolalistinodaaccess
 this.m_sistemaricevute=create m_sistemaricevute
@@ -1771,7 +1771,7 @@ this.Item[UpperBound(this.Item)+1]=this.m_aggiornaprogrammi
 this.Item[UpperBound(this.Item)+1]=this.m_aggiornaallaversionedisviluppo
 this.Item[UpperBound(this.Item)+1]=this.m_ottimizzadb
 this.Item[UpperBound(this.Item)+1]=this.m_f_u_-1
-this.Item[UpperBound(this.Item)+1]=this.m_rinnovalicenzant
+this.Item[UpperBound(this.Item)+1]=this.m_esportacodapilotainhtml
 this.Item[UpperBound(this.Item)+1]=this.m_popolat_contr
 this.Item[UpperBound(this.Item)+1]=this.m_popolalistinodaaccess
 this.Item[UpperBound(this.Item)+1]=this.m_sistemaricevute
@@ -1790,7 +1790,7 @@ destroy(this.m_aggiornaprogrammi)
 destroy(this.m_aggiornaallaversionedisviluppo)
 destroy(this.m_ottimizzadb)
 destroy(this.m_f_u_-1)
-destroy(this.m_rinnovalicenzant)
+destroy(this.m_esportacodapilotainhtml)
 destroy(this.m_popolat_contr)
 destroy(this.m_popolalistinodaaccess)
 destroy(this.m_sistemaricevute)
@@ -2719,44 +2719,40 @@ on m_f_u_-1.destroy
 call super::destroy
 end on
 
-type m_rinnovalicenzant from menu within m_utility
+type m_esportacodapilotainhtml from menu within m_utility
 end type
 
-event clicked;//=== Lancia il Logo iniziale
-//open (w_about)
-//
-st_open_w kst_open_w
-//---17092008kuf_menu_window kuf1_menu_window
+event clicked;//
+st_esito kst_esito
+kuf_report_pilota_html kuf1_report_pilota_html
 
 
+try
+	if messagebox ("Esporta Dati", "Vuoi esportare i Report di Programmazione Impianto in HTML?", question!, YesNo!, 2) = 1 then
+		
+		setpointer(kkg.pointer_attesa)
+		
+		kuf1_report_pilota_html = create kuf_report_pilota_html
+			
+		kst_esito = kuf1_report_pilota_html.u_batch_run() 
 
-//===
-//=== Menu Treeview
-//===
-kst_open_w.id_programma = kkg_id_programma.nt_licenza
-kst_open_w.flag_primo_giro = "S"
-kst_open_w.flag_modalita = kkg_flag_modalita.modifica
-kst_open_w.flag_adatta_win = KKG.ADATTA_WIN_NO
-kst_open_w.flag_leggi_dw = "N"
-kst_open_w.flag_cerca_in_lista = "0"
-kst_open_w.key1 = " " 
-kst_open_w.flag_where = " "
+	end if
+catch (uo_exception kuo_exception)
+	kst_esito = kuo_exception.get_st_esito()
+	
+finally
+	messagebox("Operazione Conclusa", kst_esito.sqlerrtext)
+	if isvalid(kuf1_report_pilota_html) then destroy kuf1_report_pilota_html
+	setpointer(kkg.pointer_default)
 
-							
-//---17092008kuf1_menu_window = create kuf_menu_window 
-kGuf_menu_window.open_w_tabelle(kst_open_w)
-//---17092008destroy kuf1_menu_window
-
-
-
+end try
+ 
 end event
 
-on m_rinnovalicenzant.create
+on m_esportacodapilotainhtml.create
 call super::create
 this.tag = "master"
-this.visible = false
-this.text = "Rinnova Licenza NT"
-this.enabled = false
+this.text = "Esporta Coda Pilota in HTML"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -2775,7 +2771,7 @@ this.toolbarhighlightcolor = 134217741
 this.bitmapgradient = true
 end on
 
-on m_rinnovalicenzant.destroy
+on m_esportacodapilotainhtml.destroy
 call super::destroy
 end on
 

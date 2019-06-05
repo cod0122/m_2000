@@ -39,6 +39,7 @@ kuf_sr_sicurezza kiuf_sr_sicurezza
 
 
 end variables
+
 forward prototypes
 private subroutine u_check_caps_on ()
 private subroutine imposta_password ()

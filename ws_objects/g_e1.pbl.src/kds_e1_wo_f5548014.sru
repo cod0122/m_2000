@@ -33,7 +33,7 @@ try
 		this.setitem(k_riga, "osuser", kguo_utente.get_codice( ))
 		this.setitem(k_riga, "x_datins", kGuf_data_base.prendi_x_datins())
 		this.setitem(k_riga, "x_utente", kGuf_data_base.prendi_x_utente())
-		//this.setitem(k_riga, "osmcu", kkg.e1mcu)							 // codice 270 = MINERBIO
+		//this.setitem(k_riga, "osmcu", kguo_g.E1MCU)							 // codice 270 = MINERBIO
 		
 	next
 	

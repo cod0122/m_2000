@@ -16,6 +16,7 @@ private st_sv_skedula kist_sv_skedula
 private st_sv_eventi_sked kist_sv_eventi_sked []
 
 end variables
+
 forward prototypes
 public function st_esito genera_eventi ()
 public function st_esito u_batch_run () throws uo_exception

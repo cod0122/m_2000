@@ -1,0 +1,3 @@
+ 
+0000000001
+SELECT listino_pregruppo.id_listino_pregruppo, listino_pregruppo.descr, listino_pregruppo.x_datins, listino_pregruppo.x_utente FROM listino_pregruppo order by 1

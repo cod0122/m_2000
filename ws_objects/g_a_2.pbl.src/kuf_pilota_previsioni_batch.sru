@@ -12,6 +12,7 @@ type variables
 private string ki_status
 
 end variables
+
 forward prototypes
 public function st_esito u_batch_run () throws uo_exception
 private function integer u_esegui_u_m2000_avgtimeplant ()
