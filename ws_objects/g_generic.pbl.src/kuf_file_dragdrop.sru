@@ -249,7 +249,7 @@ string 	ls_File
 ulong lul_data, lul_data_size=0 
 blob lblb_data
 integer li_FileNum
-//kuf_utility kuf1_utility
+kuf_file_explorer kuf1_file_explorer
 
 
 // Lock the global memory object and get a pointer to the first byte of the object's memory block
@@ -271,9 +271,10 @@ else
 //--- crea il nome file ed eventualmente la cartella se non esiste
 	ls_File = Space(1024)
 	ls_File = kguo_path.get_temp( ) + kkg.path_sep + "memo" + kkg.path_sep
-//	kuf1_utility = create kuf_utility
-	kguo_path.u_drectory_create(ls_File)
+	kuf1_file_explorer = create kuf_file_explorer
+	kuf1_file_explorer.u_directory_create(ls_File)
 	ls_File += "memo.eml"
+	destroy kuf1_file_explorer
 
 // Save the blob to a file (error checking is not implemented here!)
 	li_FileNum = FileOpen(ls_File, StreamMode!, Write!, LockReadWrite!,Replace!)

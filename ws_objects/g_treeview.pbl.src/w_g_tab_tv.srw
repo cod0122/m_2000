@@ -29,8 +29,8 @@ end type
 end forward
 
 global type w_g_tab_tv from w_g_tab
-integer width = 681
-integer height = 440
+integer width = 718
+integer height = 708
 string title = "Navigatore"
 long backcolor = 553648127
 windowanimationstyle closeanimation = rightroll!
@@ -128,6 +128,7 @@ private subroutine u_set_data_certif_da_st ()
 protected subroutine stampa_anteprima ()
 public subroutine u_resize ()
 public subroutine u_resize_default ()
+private subroutine u_smista_lib1 ()
 end prototypes
 
 protected function integer u_dammi_item_padre_da_list ();//
@@ -223,7 +224,7 @@ end function
 
 protected subroutine attiva_menu ();//
 boolean k_flg_lotto=false
-
+st_treeview_data kst_treeview_data
 
 //
 //--- Attiva/Dis. Voci di menu 
@@ -254,56 +255,54 @@ boolean k_flg_lotto=false
 		ki_menu.m_finestra.m_fin_stampa.toolbaritemText = "Stampa,"+ki_menu.m_finestra.m_fin_stampa.text
 	end if
 
-//	if not ki_menu.m_trova.toolbaritemvisible  then
-//		ki_menu.m_trova.toolbaritemvisible = st_ordina_lista.enabled = true
-//	end if
-//	if not ki_menu.m_trova.visible or not ki_menu.m_trova.enabled then
-//		ki_menu.m_trova.visible = true 
-//		ki_menu.m_trova.enabled = true 
-//		ki_menu.m_trova.m_fin_cerca.enabled = true 
-//		ki_menu.m_trova.m_fin_cerca.visible = true 
-//		ki_menu.m_trova.m_fin_cerca.toolbaritemvisible = true
-//		ki_menu.m_trova.m_fin_cercaancora.enabled = true 
-//		ki_menu.m_trova.m_fin_cercaancora.visible = true 
-//		ki_menu.m_trova.m_fin_cercaancora.toolbaritemvisible = true
-//	end if
+//	ki_menu.m_trova.m_fin_ordina.visible = false
 
 	st_aggiorna_lista.enabled = true
 	st_ordina_lista.enabled = true
-//	ki_menu.m_finestra.m_aggiornalista.enabled = true
-//	ki_menu.m_finestra.m_riordinalista.enabled = true
-//	ki_menu.m_finestra.m_chiudifinestra.enabled = cb_ritorna.enabled
-	
 
 //
 //--- Attiva/Dis. Voci di menu personalizzate
 //
-
-	choose case kiuf_treeview.kist_treeview_oggetto.oggetto
-			case kiuf_treeview.kist_treeview_oggetto.certif_da_st_dett &
-				  ,kiuf_treeview.kist_treeview_oggetto.certif_da_st_sd_dett &
-				  ,kiuf_treeview.kist_treeview_oggetto.certif_da_st_farma_dett &
-				  ,kiuf_treeview.kist_treeview_oggetto.certif_da_st_alimen_dett 
-
-				if not ki_menu.m_strumenti.m_fin_gest_libero1.visible then
-					ki_menu.m_strumenti.m_fin_gest_libero1.text = "Cambia data estrazione Attestati "
-					ki_menu.m_strumenti.m_fin_gest_libero1.microhelp = "Cambia data estrazione Attestati "
-					ki_menu.m_strumenti.m_fin_gest_libero1.visible = true
-					ki_menu.m_strumenti.m_fin_gest_libero1.enabled = true
-					ki_menu.m_strumenti.m_fin_gest_libero1.toolbaritemVisible = true
-					ki_menu.m_strumenti.m_fin_gest_libero1.toolbaritemText = "data,"+ki_menu.m_strumenti.m_fin_gest_libero1.text
-					ki_menu.m_strumenti.m_fin_gest_libero1.toolbaritemName = "Custom015!"
-			//		ki_menu.m_strumenti.m_fin_gest_libero1.toolbaritembarindex=2
-				end if	
-			case else
-				ki_menu.m_strumenti.m_fin_gest_libero1.visible = false
-				ki_menu.m_strumenti.m_fin_gest_libero1.enabled = false
+	kst_treeview_data = kiuf_treeview.u_get_st_treeview_data( ) 
+	//choose case kiuf_treeview.kist_treeview_oggetto.oggetto
+	choose case true 
+		case (kst_treeview_data.oggetto = &
+		            kiuf_treeview.kist_treeview_oggetto.certif_da_st_dett &
+					or kst_treeview_data.oggetto = &
+						kiuf_treeview.kist_treeview_oggetto.certif_da_st_sd_dett &
+			  		or kst_treeview_data.oggetto = & 
+					  kiuf_treeview.kist_treeview_oggetto.certif_da_st_farma_dett &
+					or kst_treeview_data.oggetto = &
+					  	kiuf_treeview.kist_treeview_oggetto.certif_da_st_alimen_dett )
+			ki_menu.m_strumenti.m_fin_gest_libero1.text = "Cambia data estrazione Attestati "
+			ki_menu.m_strumenti.m_fin_gest_libero1.microhelp = "Cambia data estrazione Attestati "
+			ki_menu.m_strumenti.m_fin_gest_libero1.toolbaritemVisible = true
+			ki_menu.m_strumenti.m_fin_gest_libero1.toolbaritemText = "data,"+ki_menu.m_strumenti.m_fin_gest_libero1.text
+			ki_menu.m_strumenti.m_fin_gest_libero1.toolbaritemName = "Custom015_2!"
+		//		ki_menu.m_strumenti.m_fin_gest_libero1.toolbaritembarindex=2
+			if not ki_menu.m_strumenti.m_fin_gest_libero1.visible then
+				ki_menu.m_strumenti.m_fin_gest_libero1.visible = true
+				ki_menu.m_strumenti.m_fin_gest_libero1.enabled = true
+			end if	
+			
+		case kst_treeview_data.oggetto_padre = kiuf_treeview.kist_treeview_oggetto.barcode_no_st_dett
+			ki_menu.m_strumenti.m_fin_gest_libero1.text = "Rigenera associazione dosimetro-barcode"
+			ki_menu.m_strumenti.m_fin_gest_libero1.microhelp = "Rigenera associazione dosimetro-barcode"
+			ki_menu.m_strumenti.m_fin_gest_libero1.toolbaritemVisible = true
+			ki_menu.m_strumenti.m_fin_gest_libero1.toolbaritemText = "dosimetri,"+ki_menu.m_strumenti.m_fin_gest_libero1.text
+			ki_menu.m_strumenti.m_fin_gest_libero1.toolbaritemName = "Custom077_2!"
+			if not ki_menu.m_strumenti.m_fin_gest_libero1.visible then
+				ki_menu.m_strumenti.m_fin_gest_libero1.visible = true
+				ki_menu.m_strumenti.m_fin_gest_libero1.enabled = true
+			end if	
+			
+		case else
+			ki_menu.m_strumenti.m_fin_gest_libero1.visible = false
+			ki_menu.m_strumenti.m_fin_gest_libero1.enabled = false
 	end choose
 
 //--- Menu LIBERI in aggiunta alle normali funzionalità
 	if not ki_menu.m_strumenti.m_fin_gest_libero1.enabled then
-		
-		
 		
 		ki_menu.m_strumenti.m_fin_gest_libero2.text = "Chiude tutti i 'rami'"
 		ki_menu.m_strumenti.m_fin_gest_libero2.microhelp = "Nasconde tutti i rami escluso quelli iniziali"
@@ -311,7 +310,7 @@ boolean k_flg_lotto=false
 		ki_menu.m_strumenti.m_fin_gest_libero2.enabled = true
 		ki_menu.m_strumenti.m_fin_gest_libero2.toolbaritemVisible = true //ki_menu.m_strumenti.m_fin_gest_libero1.visible
 		ki_menu.m_strumenti.m_fin_gest_libero2.toolbaritemText = "comp.,"+ki_menu.m_strumenti.m_fin_gest_libero2.text
-		ki_menu.m_strumenti.m_fin_gest_libero2.toolbaritemName = "close!"
+		ki_menu.m_strumenti.m_fin_gest_libero2.toolbaritemName = "close16.png"
 		ki_menu.m_strumenti.m_fin_gest_libero2.toolbaritembarindex=2
 	
 //	//	if tv_root.visible = true then
@@ -335,7 +334,7 @@ boolean k_flg_lotto=false
 		ki_menu.m_strumenti.m_fin_gest_libero3.enabled = true //ki_menu.m_strumenti.m_fin_gest_libero2.enabled
 		ki_menu.m_strumenti.m_fin_gest_libero3.toolbaritemVisible = true //ki_menu.m_strumenti.m_fin_gest_libero3.enabled
 		ki_menu.m_strumenti.m_fin_gest_libero3.toolbaritemText = "stampa,"+ki_menu.m_strumenti.m_fin_gest_libero3.text
-		ki_menu.m_strumenti.m_fin_gest_libero3.toolbaritemName = "Custom074!"
+		ki_menu.m_strumenti.m_fin_gest_libero3.toolbaritemName = "printerb16.png"
 		ki_menu.m_strumenti.m_fin_gest_libero3.toolbaritembarindex=2
 	
 	
@@ -353,7 +352,7 @@ boolean k_flg_lotto=false
 		ki_menu.m_strumenti.m_fin_gest_libero7.libero1.enabled = ki_menu.m_strumenti.m_fin_gest_libero2.enabled
 		ki_menu.m_strumenti.m_fin_gest_libero7.libero1.toolbaritemVisible = ki_menu.m_strumenti.m_fin_gest_libero2.enabled
 		ki_menu.m_strumenti.m_fin_gest_libero7.libero1.toolbaritemText = "grandi,"+ki_menu.m_strumenti.m_fin_gest_libero7.libero1.text
-		ki_menu.m_strumenti.m_fin_gest_libero7.libero1.toolbaritemName = "Custom097!"
+		ki_menu.m_strumenti.m_fin_gest_libero7.libero1.toolbaritemName = "iconbig16.png"
 		ki_menu.m_strumenti.m_fin_gest_libero7.libero1.toolbaritembarindex=2
 	
 		ki_menu.m_strumenti.m_fin_gest_libero7.libero2.text = "Icone piccole"
@@ -362,7 +361,7 @@ boolean k_flg_lotto=false
 		ki_menu.m_strumenti.m_fin_gest_libero7.libero2.enabled = ki_menu.m_strumenti.m_fin_gest_libero2.enabled
 		ki_menu.m_strumenti.m_fin_gest_libero7.libero2.toolbaritemVisible = ki_menu.m_strumenti.m_fin_gest_libero2.enabled
 		ki_menu.m_strumenti.m_fin_gest_libero7.libero2.toolbaritemText = "piccole,"+ki_menu.m_strumenti.m_fin_gest_libero7.libero2.text
-		ki_menu.m_strumenti.m_fin_gest_libero7.libero2.toolbaritemName = "Custom098!"
+		ki_menu.m_strumenti.m_fin_gest_libero7.libero2.toolbaritemName = "iconsmall16.png"
 		ki_menu.m_strumenti.m_fin_gest_libero7.libero2.toolbaritembarindex=2
 	
 		ki_menu.m_strumenti.m_fin_gest_libero7.libero3.text = "Lista voci"
@@ -371,7 +370,7 @@ boolean k_flg_lotto=false
 		ki_menu.m_strumenti.m_fin_gest_libero7.libero3.enabled = ki_menu.m_strumenti.m_fin_gest_libero2.enabled
 		ki_menu.m_strumenti.m_fin_gest_libero7.libero3.toolbaritemVisible = ki_menu.m_strumenti.m_fin_gest_libero2.enabled
 		ki_menu.m_strumenti.m_fin_gest_libero7.libero3.toolbaritemText = "elenco,"+ki_menu.m_strumenti.m_fin_gest_libero7.libero3.text
-		ki_menu.m_strumenti.m_fin_gest_libero7.libero3.toolbaritemName = "Custom099!"
+		ki_menu.m_strumenti.m_fin_gest_libero7.libero3.toolbaritemName = "iconlist16.png"
 		ki_menu.m_strumenti.m_fin_gest_libero7.libero3.toolbaritembarindex=2
 		
 		ki_menu.m_strumenti.m_fin_gest_libero7.libero4.text = "Dettaglio"
@@ -380,7 +379,7 @@ boolean k_flg_lotto=false
 		ki_menu.m_strumenti.m_fin_gest_libero7.libero4.enabled = ki_menu.m_strumenti.m_fin_gest_libero2.enabled
 		ki_menu.m_strumenti.m_fin_gest_libero7.libero4.toolbaritemVisible = ki_menu.m_strumenti.m_fin_gest_libero2.enabled
 		ki_menu.m_strumenti.m_fin_gest_libero7.libero4.toolbaritemText = "dettagli,"+ki_menu.m_strumenti.m_fin_gest_libero7.libero4.text
-		ki_menu.m_strumenti.m_fin_gest_libero7.libero4.toolbaritemName = "Custom100!"
+		ki_menu.m_strumenti.m_fin_gest_libero7.libero4.toolbaritemName = "icondetail16.png"
 		ki_menu.m_strumenti.m_fin_gest_libero7.libero4.toolbaritembarindex=2
 	
 	end if
@@ -428,7 +427,7 @@ boolean k_flg_lotto=false
 		ki_menu.m_strumenti.m_fin_gest_libero8.enabled = k_flg_lotto
 		ki_menu.m_strumenti.m_fin_gest_libero8.toolbaritemVisible = true // ki_menu.m_strumenti.m_fin_gest_libero8.enabled
 		ki_menu.m_strumenti.m_fin_gest_libero8.toolbaritemText = "Autorizza,"+ki_menu.m_strumenti.m_fin_gest_libero8.text
-		ki_menu.m_strumenti.m_fin_gest_libero8.toolbaritemName = "Error!"
+		ki_menu.m_strumenti.m_fin_gest_libero8.toolbaritemName = "Error_icon_2!"
 		ki_menu.m_strumenti.m_fin_gest_libero8.toolbaritembarindex=2
 	end if	
 	
@@ -968,8 +967,8 @@ try
 			open_dettaglio(k_par_in)
 	
 	
-		case KKG_FLAG_RICHIESTA.libero1		//cambia data
-			u_set_data_certif_da_st( )
+		case KKG_FLAG_RICHIESTA.libero1		//cambia data/rigenera flag dosimetri
+			u_smista_lib1( )
 	
 		case KKG_FLAG_RICHIESTA.libero2		//collassa rami tree
 			treeview_collassa_tutti_i_rami()
@@ -1785,6 +1784,41 @@ long k_width_orig, k_height_orig
 
 end subroutine
 
+private subroutine u_smista_lib1 ();//
+int k_n_dosim
+st_tab_barcode kst_tab_barcode
+st_treeview_data kst_treeview_data
+
+
+try
+
+	kst_treeview_data = kiuf_treeview.u_get_st_treeview_data( ) 
+	choose case kst_treeview_data.oggetto_padre
+		case kiuf_treeview.kist_treeview_oggetto.barcode_no_st_dett 
+			if messagebox("Indicatori Dosimetri", "Rigenerazione Indicatori Dosimetri barcode per l'intero Lotto. Proseguire?"&
+							,question!, yesno!, 2) = 1 then
+				kst_tab_barcode = kiuf_treeview.u_barcode_rigenera_flg_dosimetro( )
+
+				messagebox("Indicatori Dosimetri", "Sono stati rigenerati " &
+							+ string(kst_tab_barcode.st_tab_g_0.contati) + " indicatori nei barcode del Lotto " &
+							+ string(kst_tab_barcode.num_int) + " del " + string(kst_tab_barcode.data_int) &
+							+ " (id " + string(kst_tab_barcode.id_meca) + "). " &
+							+ "Operazione terminata." &
+							, information!)				
+				
+			else
+				messagebox("Indicatori Dosimetri", "Operazione Interrotta dall'utente.", information!)				
+			end if
+		case else
+			u_set_data_certif_da_st( )
+	end choose
+
+catch (uo_exception kuo_exception)
+	kuo_exception.messaggio_utente()
+end try
+
+end subroutine
+
 on w_g_tab_tv.create
 int iCurrent
 call super::create
@@ -2582,6 +2616,7 @@ integer width = 923
 integer height = 420
 integer taborder = 20
 boolean bringtotop = true
+boolean titlebar = true
 string title = "Periodo di estrazione"
 string dataobject = "d_periodo"
 boolean hscrollbar = false
@@ -2589,7 +2624,6 @@ boolean vscrollbar = false
 boolean border = true
 boolean hsplitscroll = false
 boolean livescroll = false
-borderstyle borderstyle = stylelowered!
 end type
 
 event ue_clicked_0(integer row, string k_dwo_name);//

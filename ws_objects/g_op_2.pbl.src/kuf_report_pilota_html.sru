@@ -1,11 +1,11 @@
 ﻿$PBExportHeader$kuf_report_pilota_html.sru
 $PBExportComments$report x movimenti registro articolo 50
 forward
-global type kuf_report_pilota_html from nonvisualobject
+global type kuf_report_pilota_html from kuf_parent
 end type
 end forward
 
-global type kuf_report_pilota_html from nonvisualobject
+global type kuf_report_pilota_html from kuf_parent
 end type
 global kuf_report_pilota_html kuf_report_pilota_html
 
@@ -39,7 +39,7 @@ try
 
 	kst_esito.esito = kkg_esito.ok
 	kst_esito.sqlcode = 0
-	kst_esito.SQLErrText = ""
+	kst_esito.SQLErrText = "" 
 	kst_esito.nome_oggetto = this.classname()
 
 //--- Genera archivi STATISTICI
@@ -156,11 +156,9 @@ end function
 
 on kuf_report_pilota_html.create
 call super::create
-TriggerEvent( this, "constructor" )
 end on
 
 on kuf_report_pilota_html.destroy
-TriggerEvent( this, "destructor" )
 call super::destroy
 end on
 

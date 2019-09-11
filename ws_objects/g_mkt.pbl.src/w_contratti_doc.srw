@@ -62,6 +62,7 @@ public function st_tab_contratti_doc u_calcola_tot_val ()
 public function st_tab_contratti_doc u_calcola_tot_irr ()
 protected function integer inserisci_2 ()
 protected function integer inserisci_3 ()
+public function string u_get_stato_from_dw ()
 end prototypes
 
 private subroutine pulizia_righe ();////
@@ -135,6 +136,8 @@ choose case tab_1.selectedtab
 				tab_1.tabpage_2.dw_2.resetupdate( )
 				tab_1.tabpage_3.dw_3.resetupdate( )
 				k_return ="0 "
+				
+				proteggi_campi()
 				
 			catch (uo_exception kuo_exception)
 				k_return="1Fallito aggiornamento in archivio '" &
@@ -288,22 +291,36 @@ try
 		kds_inp.dataobject = tab_1.tabpage_1.dw_1.dataobject
 		tab_1.tabpage_1.dw_1.rowscopy( 1,tab_1.tabpage_1.dw_1.rowcount( ) ,primary!, kds_inp, 1, primary!)
 		kst_esito = kiuf_contratti_doc.u_check_dati(kds_inp)
-	end if
-//--- Controllo il secondo tab con i dati VAL
-	if kst_esito.esito = kkg_esito.OK or kst_esito.esito = kkg_esito.DB_WRN or kst_esito.esito = kkg_esito.DATI_WRN then
-		if tab_1.tabpage_2.dw_2.rowcount() > 0 then
-			kds_inp.dataobject = tab_1.tabpage_2.dw_2.dataobject
-			tab_1.tabpage_2.dw_2.rowscopy( 1,tab_1.tabpage_2.dw_2.rowcount( ) ,primary!, kds_inp, 1, primary!)
-			kst_esito = kiuf_contratti_doc.u_check_dati_val(kds_inp)
+		if kst_esito.sqlerrtext > " " then
+			kst_esito.sqlerrtext = tab_1.tabpage_1.text + ": " + kst_esito.sqlerrtext
 		end if
 	end if
-//--- Controllo il secondo tab con i dati IRR
 	if kst_esito.esito = kkg_esito.OK or kst_esito.esito = kkg_esito.DB_WRN or kst_esito.esito = kkg_esito.DATI_WRN then
-		if tab_1.tabpage_3.dw_3.rowcount() > 0 then
-			kds_inp.dataobject = tab_1.tabpage_3.dw_3.dataobject
-			tab_1.tabpage_3.dw_3.rowscopy( 1,tab_1.tabpage_3.dw_3.rowcount( ) ,primary!, kds_inp, 1, primary!)
-			kst_esito = kiuf_contratti_doc.u_check_dati_irr(kds_inp)
-		end if
+		choose case tab_1.tabpage_1.dw_1.getitemstring( 1, "quotazione_tipo") 
+				
+			case "VAL"
+//--- Controllo altro tab con i dati VAL
+				if tab_1.tabpage_2.dw_2.rowcount() > 0 then
+					kds_inp.dataobject = tab_1.tabpage_2.dw_2.dataobject
+					tab_1.tabpage_2.dw_2.rowscopy( 1,tab_1.tabpage_2.dw_2.rowcount( ) ,primary!, kds_inp, 1, primary!)
+					kst_esito = kiuf_contratti_doc.u_check_dati_val(kds_inp)
+					if kst_esito.sqlerrtext > " " then
+						kst_esito.sqlerrtext = tab_1.tabpage_2.text + ": " + kst_esito.sqlerrtext
+					end if
+				end if
+
+			case "IRR"
+//--- Controllo altro tab con i dati IRR
+				if tab_1.tabpage_3.dw_3.rowcount() > 0 then
+					kds_inp.dataobject = tab_1.tabpage_3.dw_3.dataobject
+					tab_1.tabpage_3.dw_3.rowscopy( 1,tab_1.tabpage_3.dw_3.rowcount( ) ,primary!, kds_inp, 1, primary!)
+					kst_esito = kiuf_contratti_doc.u_check_dati_irr(kds_inp)
+					if kst_esito.sqlerrtext > " " then
+						kst_esito.sqlerrtext = tab_1.tabpage_3.text + ": " + kst_esito.sqlerrtext
+					end if
+				end if
+				
+		end choose
 	end if
 	
 	
@@ -374,7 +391,7 @@ protected function string inizializza ();//
 //
 string k_return="0 "
 int k_rc 
-//st_tab_contratti_doc kst_tab_contratti_doc
+st_tab_contratti_doc kst_tab_contratti_doc
 st_esito kst_esito
 kuf_utility kuf1_utility
 uo_exception kuo_exception
@@ -418,27 +435,33 @@ if tab_1.tabpage_1.dw_1.rowcount() = 0 then
 
 			case is > 0		
 				if ki_st_open_w.flag_modalita = kkg_flag_modalita.modifica then
+					kst_tab_contratti_doc.stato = u_get_stato_from_dw( )
 //--- se Documento già ACCETTATO/STAMPATO allora ATTENZIONE alle Modifiche	!!!!!	
-					if tab_1.tabpage_1.dw_1.getitemstring( 1, "stato") = kiuf_contratti_doc.kki_STATO_stampato then
+					if kst_tab_contratti_doc.stato = kiuf_contratti_doc.kki_STATO_stampato then
 						kuo_exception = create uo_exception
 						kuo_exception.set_tipo( kuo_exception.kk_st_uo_exception_tipo_allerta )
 						kuo_exception.setmessage(  &
-							"Attenzione, il Documento e' ga' stato Stampato 'in versione Definitiva'. ~n~rLa Modifica potebbe comprometterne l'integrità. ~n~r" + &
-							"(ID Documento cercato:" + string(kist_tab_contratti_doc.id_contratto_doc) + ") " )
+							"Attenzione, il Documento è stato Stampato in 'versione Definitiva'. ~n~rLa Modifica potebbe comprometterne l'integrità. ~n~r" + &
+							"(ID Documento: " + string(kist_tab_contratti_doc.id_contratto_doc) + ") " )
 						kuo_exception.messaggio_utente( )	
+						if isvalid(kuo_exception) then destroy kuo_exception
 					else
 //--- se lo STATO è ACCETTATO o NON/TRASFERITO oppure contratto ANNULLATO allora permetto solo visualizzazione						
-						if tab_1.tabpage_1.dw_1.getitemstring( 1, "stato") = kiuf_contratti_doc.kki_STATO_accettato &
-								or tab_1.tabpage_1.dw_1.getitemstring( 1, "stato") = kiuf_contratti_doc.kki_stato_respinto &
-								or tab_1.tabpage_1.dw_1.getitemstring( 1, "stato") = kiuf_contratti_doc.kki_stato_trasferito then
+						if kst_tab_contratti_doc.stato = kiuf_contratti_doc.kki_STATO_accettato &
+								or kst_tab_contratti_doc.stato = kiuf_contratti_doc.kki_stato_respinto &
+								or kst_tab_contratti_doc.stato = kiuf_contratti_doc.kki_stato_trasferito then
+							kuo_exception = create uo_exception
+							kuo_exception.set_tipo( kuo_exception.kk_st_uo_exception_tipo_allerta)
+							kuo_exception.setmessage(  &
+								"Attenzione, lo stato di '" + kiuf_contratti_doc.get_stato_descrizione(kst_tab_contratti_doc) + "' non permetta la Modifica del documento.~n~r" + &
+								"(ID Documento: " + string(kist_tab_contratti_doc.id_contratto_doc) + ") " )
+							kuo_exception.messaggio_utente( )	
 							ki_st_open_w.flag_modalita = kkg_flag_modalita.visualizzazione
+							if isvalid(kuo_exception) then destroy kuo_exception
 						end if
-//						if tab_1.tabpage_1.dw_1.getitemstring( 1, "stato") = kiuf_contratti_doc.kki_STATO_accettato then
-//							ki_st_open_w.flag_modalita = kkg_flag_modalita.visualizzazione
-//						end if
 					end if
 					
-//--- legge tiutte le DWC			
+//--- legge tutte le DWC			
 					leggi_liste()			
 					
 				end if	
@@ -985,17 +1008,17 @@ private subroutine proteggi_campi ();//
 //--- Protegge o meno a seconda dei casi
 //
 kuf_utility kuf1_utility
+st_tab_contratti_doc kst_tab_contratti_doc
 
+
+	kuf1_utility = create kuf_utility 
+	tab_1.tabpage_1.dw_1.setredraw(false)
 
 //--- se NO inserimento leggo DW-CHILD
 	if ki_st_open_w.flag_modalita <> kkg_flag_modalita.inserimento and tab_1.tabpage_1.dw_1.getrow() > 0 then
 
-		tab_1.tabpage_1.dw_1.setredraw(false)
-
 //--- Inabilita campi alla modifica se Visualizzazione
-		kuf1_utility = create kuf_utility 
-		if trim(ki_st_open_w.flag_modalita) <> kkg_flag_modalita.inserimento and trim(ki_st_open_w.flag_modalita) <> kkg_flag_modalita.modifica &
-			 			or (tab_1.tabpage_1.dw_1.getitemstring( 1, "stato") <> kiuf_contratti_doc.kki_STATO_riaperto and tab_1.tabpage_1.dw_1.getitemstring( 1, "stato") <> kiuf_contratti_doc.kki_STATO_nuovo) then
+		if trim(ki_st_open_w.flag_modalita) <> kkg_flag_modalita.modifica then
 		
 //--- Protezione tutti i campi 
 			kuf1_utility.u_proteggi_dw("1", 0, tab_1.tabpage_1.dw_1)
@@ -1003,39 +1026,52 @@ kuf_utility kuf1_utility
 			kuf1_utility.u_proteggi_dw("1", 0, tab_1.tabpage_3.dw_3)
 			kuf1_utility.u_proteggi_dw("1", "contratti_doc_id_contratto_doc", tab_1.tabpage_1.dw_1)
 			kuf1_utility.u_proteggi_dw("1", "id_listino_pregruppo", tab_1.tabpage_2.dw_2)
-				
-//--- se sono in MODIFICA e Contratto già stampa definitiva allora inabilito tutti i campi all'infuori che lo Stato			
-			if ki_st_open_w.flag_modalita = kkg_flag_modalita.modifica &
-			 			and (tab_1.tabpage_1.dw_1.getitemstring( 1, "stato") = kiuf_contratti_doc.kki_STATO_stampato &
-						         or tab_1.tabpage_1.dw_1.getitemstring( 1, "stato") = kiuf_contratti_doc.kki_STATO_accettato &
-						         or tab_1.tabpage_1.dw_1.getitemstring( 1, "stato") = kiuf_contratti_doc.kki_STATO_respinto) then
-//--- Abilito solo campo STATO
-				kuf1_utility.u_proteggi_dw("0", "stato", tab_1.tabpage_1.dw_1)
-			end if			
-
+			
 		else
-
-//--- S-protezione campi per riabilitare la modifica a parte la chiave
-			kuf1_utility.u_proteggi_dw("0", 0, tab_1.tabpage_1.dw_1)
-			kuf1_utility.u_proteggi_dw("0", 0, tab_1.tabpage_2.dw_2)
-			kuf1_utility.u_proteggi_dw("0", 0, tab_1.tabpage_3.dw_3)
-
-//--- Inabilita campo cliente per la modifica se Funzione MODIFICA
-			if trim(ki_st_open_w.flag_modalita) = kkg_flag_modalita.modifica then
-	
+			
+//--- se sono in MODIFICA e Contratto già stampa definitiva allora inabilito tutti i campi all'infuori che lo Stato			
 //--- protegge i campi chiave
-				kuf1_utility.u_proteggi_dw("1", "contratti_doc_id_contratto_doc", tab_1.tabpage_1.dw_1)
+			kuf1_utility.u_proteggi_dw("1", "contratti_doc_id_contratto_doc", tab_1.tabpage_1.dw_1)
 
+			kst_tab_contratti_doc.stato = u_get_stato_from_dw( )
 
-			end if
-	
-		end if
-		destroy kuf1_utility
+			if kst_tab_contratti_doc.stato = kiuf_contratti_doc.kki_STATO_stampato &
+						         or kst_tab_contratti_doc.stato = kiuf_contratti_doc.kki_STATO_accettato &
+						         or kst_tab_contratti_doc.stato = kiuf_contratti_doc.kki_STATO_respinto then
+				kuf1_utility.u_proteggi_dw("1", 0, tab_1.tabpage_1.dw_1)
+				kuf1_utility.u_proteggi_dw("1", 0, tab_1.tabpage_2.dw_2)
+				kuf1_utility.u_proteggi_dw("1", 0, tab_1.tabpage_3.dw_3)
+				kuf1_utility.u_proteggi_dw("1", "id_listino_pregruppo", tab_1.tabpage_2.dw_2)
+//--- Abilito solo campo STATO
+				kuf1_utility.u_proteggi_dw("0", "stato_1", tab_1.tabpage_1.dw_1)
+				if kst_tab_contratti_doc.stato = kiuf_contratti_doc.kki_STATO_stampato &
+						         or kst_tab_contratti_doc.stato = kiuf_contratti_doc.kki_STATO_respinto then
+					kuf1_utility.u_proteggi_dw("0", "stato_3", tab_1.tabpage_1.dw_1)
+				end if			
+				if kst_tab_contratti_doc.stato = kiuf_contratti_doc.kki_STATO_stampato &
+						         or kst_tab_contratti_doc.stato = kiuf_contratti_doc.kki_STATO_accettato then
+					kuf1_utility.u_proteggi_dw("0", "stato_4", tab_1.tabpage_1.dw_1)
+				end if			
+			else
+				kuf1_utility.u_proteggi_dw("0", 0, tab_1.tabpage_1.dw_1)
+				kuf1_utility.u_proteggi_dw("0", 0, tab_1.tabpage_2.dw_2)
+				kuf1_utility.u_proteggi_dw("0", 0, tab_1.tabpage_3.dw_3)
+			end if			
+		end if			
+
+	else
+
+//--- S-protezione campi 
+		kuf1_utility.u_proteggi_dw("0", 0, tab_1.tabpage_1.dw_1)
+		kuf1_utility.u_proteggi_dw("0", 0, tab_1.tabpage_2.dw_2)
+		kuf1_utility.u_proteggi_dw("0", 0, tab_1.tabpage_3.dw_3)
+
+	end if
+	destroy kuf1_utility
 		
 	
-		tab_1.tabpage_1.dw_1.setredraw(true)
+	tab_1.tabpage_1.dw_1.setredraw(true)
 	
-	end if
 
 end subroutine
 
@@ -1235,24 +1271,28 @@ public function boolean u_duplica () throws uo_exception;//
 //
 
 try
-	ki_st_open_w.flag_modalita = kkg_flag_modalita.inserimento
-	
-	tab_1.tabpage_1.dw_1.setitem(1, "contratti_doc_id_contratto_doc", 0)
-	tab_1.tabpage_1.dw_1.setitem(1, "anno", kguo_g.get_anno( ) )
-	tab_1.tabpage_1.dw_1.setitem(1, "quotazione_cod", "")
-	tab_1.tabpage_1.dw_1.setitem(1, "stato", "1")
-	tab_1.tabpage_1.dw_1.setitem(1, "data_stampa", kkg.data_zero )
-	tab_1.tabpage_1.dw_1.setitem(1, "offerta_data", kguo_g.get_dataoggi( ) )
-	tab_1.tabpage_1.dw_1.setitem(1, "data_inizio", kkg.data_zero )
-	tab_1.tabpage_1.dw_1.setitem(1, "data_fine", kkg.data_zero )
-	tab_1.tabpage_1.dw_1.setitem(1, "esito_operazioni_ts_operazione", kguo_g.get_datetime_zero( ) )
-	tab_1.tabpage_1.dw_1.setitem(1, "x_utente", "")
-	tab_1.tabpage_1.dw_1.setitem(1, "x_datins", kguo_g.get_datetime_zero( ) )
-	
-	tab_1.tabpage_1.dw_1.resetupdate( )
-	tab_1.tabpage_2.dw_2.resetupdate( )
-	tab_1.tabpage_3.dw_3.resetupdate( )
-	
+	//=== Richiesta di conferma operazione
+	if messagebox("Duplica Quotazione", "Genera il nuova Contratto copiando i dati da questo~n~r" &
+				+ "id " + string(tab_1.tabpage_1.dw_1.getitemnumber(1, "contratti_doc_id_contratto_doc")),  &
+				question!, yesno!, 2) = 1 then
+		ki_st_open_w.flag_modalita = kkg_flag_modalita.inserimento
+		
+		tab_1.tabpage_1.dw_1.setitem(1, "contratti_doc_id_contratto_doc", 0)
+		tab_1.tabpage_1.dw_1.setitem(1, "anno", kguo_g.get_anno( ) )
+		tab_1.tabpage_1.dw_1.setitem(1, "quotazione_cod", "")
+		tab_1.tabpage_1.dw_1.setitem(1, "stato", "1")
+		tab_1.tabpage_1.dw_1.setitem(1, "data_stampa", kkg.data_zero )
+		tab_1.tabpage_1.dw_1.setitem(1, "offerta_data", kguo_g.get_dataoggi( ) )
+		tab_1.tabpage_1.dw_1.setitem(1, "data_inizio", kkg.data_zero )
+		tab_1.tabpage_1.dw_1.setitem(1, "data_fine", kkg.data_zero )
+		tab_1.tabpage_1.dw_1.setitem(1, "esito_operazioni_ts_operazione", kguo_g.get_datetime_zero( ) )
+		tab_1.tabpage_1.dw_1.setitem(1, "x_utente", "")
+		tab_1.tabpage_1.dw_1.setitem(1, "x_datins", kguo_g.get_datetime_zero( ) )
+		
+		tab_1.tabpage_1.dw_1.resetupdate( )
+		tab_1.tabpage_2.dw_2.resetupdate( )
+		tab_1.tabpage_3.dw_3.resetupdate( )
+	end if	
 catch (uo_exception kuo_exception)
 	
 finally
@@ -1356,7 +1396,7 @@ kst_tab_contratti_doc.anno = tab_1.tabpage_1.dw_1.getitemnumber( 1, "anno")
 kst_tab_contratti_doc.magazzino = tab_1.tabpage_1.dw_1.getitemnumber( 1, "magazzino")			
 kst_tab_contratti_doc.offerta_data = tab_1.tabpage_1.dw_1.getitemdate( 1, "offerta_data")
 kst_tab_contratti_doc.offerta_validita = tab_1.tabpage_1.dw_1.getitemstring( 1, "offerta_validita")
-kst_tab_contratti_doc.stato = tab_1.tabpage_1.dw_1.getitemstring( 1, "stato")				
+kst_tab_contratti_doc.stato = u_get_stato_from_dw( )
 kst_tab_contratti_doc.stampa_tradotta = tab_1.tabpage_1.dw_1.getitemstring( 1, "stampa_tradotta")
 kst_tab_contratti_doc.data_stampa = tab_1.tabpage_1.dw_1.getitemdate( 1, "data_stampa")
 kst_tab_contratti_doc.data_inizio = tab_1.tabpage_1.dw_1.getitemdate( 1, "data_inizio")
@@ -1714,6 +1754,23 @@ return (k_return)
 
 
 
+end function
+
+public function string u_get_stato_from_dw ();//
+st_tab_contratti_doc kst_tab_contratti_doc
+
+
+if tab_1.tabpage_1.dw_1.getitemstring( 1, "stato_1") > " " then				
+	kst_tab_contratti_doc.stato = tab_1.tabpage_1.dw_1.getitemstring( 1, "stato_1")
+elseif tab_1.tabpage_1.dw_1.getitemstring( 1, "stato_3") > " " then	
+	kst_tab_contratti_doc.stato = tab_1.tabpage_1.dw_1.getitemstring( 1, "stato_3")				
+elseif tab_1.tabpage_1.dw_1.getitemstring( 1, "stato_4") > " " then				
+	kst_tab_contratti_doc.stato = tab_1.tabpage_1.dw_1.getitemstring( 1, "stato_4")
+else 
+	kst_tab_contratti_doc.stato = tab_1.tabpage_1.dw_1.getitemstring( 1, "stato")				
+end if
+
+return kst_tab_contratti_doc.stato
 end function
 
 on w_contratti_doc.create
@@ -2097,7 +2154,7 @@ try
 			end if
 			
 	elseif left(k_nome, 5) = "stato" then
-			kst_tab_contratti_doc.stato = this.getitemstring( 1, "stato")
+			kst_tab_contratti_doc.stato = u_get_stato_from_dw( )
 			choose case trim(data) 
 				case kiuf_contratti_doc.kki_stato_riaperto 
 					if kst_tab_contratti_doc.stato <> kiuf_contratti_doc.kki_stato_stampato then

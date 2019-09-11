@@ -120,15 +120,6 @@ end type
 type st_3_retrieve from w_base_personale`st_3_retrieve within tabpage_3
 end type
 
-type cb_1 from w_base_personale`cb_1 within tabpage_3
-end type
-
-type cb_2 from w_base_personale`cb_2 within tabpage_3
-end type
-
-type cb_3 from w_base_personale`cb_3 within tabpage_3
-end type
-
 type tabpage_4 from w_base_personale`tabpage_4 within tab_1
 integer x = 128
 integer width = 2898
@@ -321,13 +312,7 @@ end type
 type st_4 from w_base_personale`st_4 within tabpage_9
 end type
 
-type cb_4 from w_base_personale`cb_4 within tabpage_9
-end type
-
 type st_22 from w_base_personale`st_22 within tabpage_9
-end type
-
-type cb_5 from w_base_personale`cb_5 within tabpage_9
 end type
 
 type tabpage_10 from w_base_personale`tabpage_10 within tab_1
@@ -337,9 +322,6 @@ integer height = 2736
 end type
 
 type st_27 from w_base_personale`st_27 within tabpage_10
-end type
-
-type cb_6 from w_base_personale`cb_6 within tabpage_10
 end type
 
 type cb_meca_chiude from w_base_personale`cb_meca_chiude within tabpage_10

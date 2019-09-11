@@ -1,0 +1,12 @@
+﻿$PBExportHeader$st_tab_certif_email.srs
+global type st_tab_certif_email from structure
+	st_tab_g_0		st_tab_g_0
+	long		id_certif
+	long		id_meca
+	datetime		dtins		descriptor "comment" = "data e ora di insert della riga"
+	long		certif_e1_e1doco		descriptor "comment" = "WO del certificato E1 letto dai PDF stampati da E1"
+	long		id_email_invio		descriptor "comment" = "id tab invio email"
+	datetime		x_datins
+	string		x_utente
+end type
+

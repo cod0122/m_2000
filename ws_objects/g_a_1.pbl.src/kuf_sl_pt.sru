@@ -103,14 +103,16 @@ if len(trim(k_cod_sl_pt)) > 0 then
 			 dosim_delta_bcode,
 			 dosim_x_bcode,
 			 dosim_et_descr,
+			 unitwork,
+			 savedosimeter,
 			 x_datins,
 			 x_utente
-	 into   :k_st_tab_sl_pt.descr,
-				:k_st_tab_sl_pt.tipo_cicli,
-				:k_st_tab_sl_pt.fila_pref,
-				:k_st_tab_sl_pt.fila_1,
+	 into :k_st_tab_sl_pt.descr,
+			:k_st_tab_sl_pt.tipo_cicli,
+			:k_st_tab_sl_pt.fila_pref,
+			:k_st_tab_sl_pt.fila_1,
 			:k_st_tab_sl_pt.fila_2,
-				:k_st_tab_sl_pt.fila_1p,
+			:k_st_tab_sl_pt.fila_1p,
 			:k_st_tab_sl_pt.fila_2p,
 			:k_st_tab_sl_pt.densita,
 			:k_st_tab_sl_pt.dose,
@@ -129,6 +131,8 @@ if len(trim(k_cod_sl_pt)) > 0 then
 			:k_st_tab_sl_pt.dosim_delta_bcode,
 			:k_st_tab_sl_pt.dosim_x_bcode,
 			:k_st_tab_sl_pt.dosim_et_descr,
+			:k_st_tab_sl_pt.unitwork,
+			:k_st_tab_sl_pt.savedosimeter,
 			:k_st_tab_sl_pt.x_datins,
 			:k_st_tab_sl_pt.x_utente
 		from sl_pt
@@ -293,6 +297,8 @@ if isnull(kst_tab_sl_pt.tipo) then kst_tab_sl_pt.tipo = ""
 if isnull(kst_tab_sl_pt.proposta_fila_pref) then kst_tab_sl_pt.proposta_fila_pref = ""
 if isnull(kst_tab_sl_pt.magazzino) then kst_tab_sl_pt.magazzino = 0
 if isnull(kst_tab_sl_pt.composizione) then kst_tab_sl_pt.composizione = ""
+if isnull(kst_tab_sl_pt.unitwork) then kst_tab_sl_pt.unitwork = 0
+if isnull(kst_tab_sl_pt.savedosimeter) then kst_tab_sl_pt.savedosimeter = 0
 
 if isnull(kst_tab_sl_pt.dosim_x_bcode) then kst_tab_sl_pt.dosim_x_bcode = 0
 if isnull(kst_tab_sl_pt.dosim_delta_bcode) then kst_tab_sl_pt.dosim_delta_bcode = 0
@@ -639,8 +645,12 @@ st_esito kst_esito
 	select
 			 dosim_x_bcode
 			 ,dosim_delta_bcode
+			 ,unitwork
+			 ,savedosimeter
 	 into :ast_tab_sl_pt.dosim_x_bcode
 	 		,:ast_tab_sl_pt.dosim_delta_bcode
+	 		,:ast_tab_sl_pt.unitwork
+	 		,:ast_tab_sl_pt.savedosimeter
 		from sl_pt 
 		where cod_sl_pt = :ast_tab_sl_pt.cod_sl_pt
 		using kguo_sqlca_db_magazzino;
@@ -664,6 +674,14 @@ st_esito kst_esito
 	if ast_tab_sl_pt.dosim_delta_bcode > 0 then
 	else
 		ast_tab_sl_pt.dosim_delta_bcode = 0   // attacca la sola etichetta finale
+	end if
+	if ast_tab_sl_pt.unitwork > 0 then
+	else
+		ast_tab_sl_pt.unitwork = 100   // default (100%)
+	end if
+	if ast_tab_sl_pt.savedosimeter > 0 then
+	else
+		ast_tab_sl_pt.savedosimeter = 0   // No save!
 	end if
 	
 

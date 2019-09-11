@@ -30,7 +30,6 @@ constant string kki_tipo_CONTATTO = "C"  // solo contatto
 constant string kki_tipo_MOVIM = "M"  // anagrafica da movimentare in magazzino (mand o ricev o fatt)
 constant string kki_tipo_ALTRO = "A" 
 
-
 //--- campo Stato
 constant string kki_cliente_stato_potenziale_da_contattare = "2"
 constant string kki_cliente_stato_potenziale_in_contatto = "3"
@@ -62,6 +61,11 @@ string kki_fatt_modo_email_nulla = "N"    // non invia nulla
 
 //--- campo in MKT - documenti da esportare in digitale?
 string kki_doc_esporta_si = "S"
+
+//--- Dati x ACO: registro conto deposito
+string kki_registro_tipo_nessuno = 'N'
+string kki_registro_tipo_x_partnumber = 'P'  // estrazione x part-number
+string kki_registro_tipo_x_barcode = 'B' // estrazione dettagliata x barcode
 
 //--- MEMO
 //private kuf_memo kiuf_memo
@@ -171,6 +175,7 @@ public function long get_codice_da_e1an (st_tab_clienti kst_tab_clienti) throws 
 public function long get_id_cliente_memo_max () throws uo_exception
 public function long get_codice_max () throws uo_exception
 public subroutine get_delivery (ref st_tab_clienti kst_tab_clienti) throws uo_exception
+public function string get_email_attestato (st_tab_clienti kst_tab_clienti) throws uo_exception
 end prototypes
 
 public function st_esito conta_p_iva (ref st_tab_clienti kst_tab_clienti);//====================================================================
@@ -6924,7 +6929,7 @@ st_esito kst_esito
 	end if
 	
 	if kguo_sqlca_db_magazzino.sqlcode < 0 then
-		kst_esito.SQLErrText = "Errore in Lettura Clienti per ricerca indirizzo email  (da Cliente: " + string(ast_tab_clienti_web.id_cliente) + ") ~n~r:" + trim(kguo_sqlca_db_magazzino.SQLErrText)
+		kst_esito.SQLErrText = "Errore in Lettura Clienti per ricerca indirizzo email (Cliente: " + string(ast_tab_clienti_web.id_cliente) + ") ~n~r:" + trim(kguo_sqlca_db_magazzino.SQLErrText)
 		kguo_exception.set_esito(kst_esito)
 		throw kguo_exception
 	end if
@@ -7900,6 +7905,67 @@ catch (uo_exception kuo_exception)
 end try
 
 end subroutine
+
+public function string get_email_attestato (st_tab_clienti kst_tab_clienti) throws uo_exception;//
+//---------------------------------------------------------------------------------------------------------------------------------------------------
+//--- Torna email_attestato 
+//--- 
+//--- Input: kst_tab_clienti.codice  
+//--- Ritorna e-mail estesa x invio Attestati
+//--- 
+//---------------------------------------------------------------------------------------------------------------------------------------------------
+string k_return = ""
+st_tab_clienti_fatt kst_tab_clienti_fatt
+st_tab_clienti_web kst_tab_clienti_web
+st_esito kst_esito
+
+
+	kst_esito.esito = kkg_esito.ok
+	kst_esito.sqlcode = 0
+	kst_esito.SQLErrText = ""
+	kst_esito.nome_oggetto = this.classname()
+
+
+   if kst_tab_clienti.codice > 0 then
+	else
+		kst_esito.esito = kkg_esito.no_esecuzione
+		kst_esito.sqlcode = 0
+		kst_esito.SQLErrText = "Manca codice cliente in Lettura indirizzi email x Attestato."
+		kguo_exception.set_esito(kst_esito)
+		throw kguo_exception
+	end if
+	
+//--- get prima del numero email da usare 
+	SELECT clienti_fatt.email_invio
+		 into :kst_tab_clienti_fatt.email_invio
+		 FROM clienti_fatt
+		 where clienti_fatt.id_cliente = :kst_tab_clienti.codice
+			using kguo_sqlca_db_magazzino;
+
+	if kguo_sqlca_db_magazzino.sqlcode < 0 then
+		kst_esito.esito = kkg_esito.db_ko
+		kst_esito.sqlcode = kguo_sqlca_db_magazzino.sqlcode
+		kst_esito.SQLErrText = "Errore in Lettura Clienti per ricerca indirizzo e-mail per allegare gli Attessati (Cliente: " + string(kst_tab_clienti.codice) + ") ~n~r:" + trim(kguo_sqlca_db_magazzino.SQLErrText)
+		kguo_exception.set_esito(kst_esito)
+		throw kguo_exception
+	end if
+
+//--- da numero email da usare piglio l'indirizzo
+	if isnumber(kst_tab_clienti_fatt.email_invio) then
+		if kst_tab_clienti_fatt.email_invio > "0" then
+			kst_tab_clienti_web.id_cliente = kst_tab_clienti.codice
+			k_return = get_email_indirizzo(kst_tab_clienti_web, integer(kst_tab_clienti_fatt.email_invio))
+		end if 
+	end if 
+
+
+return k_return
+
+
+
+
+
+end function
 
 on kuf_clienti.create
 call super::create

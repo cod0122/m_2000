@@ -775,7 +775,7 @@ if isnull(ki_st_int_artr.id_meca_causale) then ki_st_int_artr.id_meca_causale = 
 //=== Controllo date
 	if ki_st_int_artr.id_meca_ini > 0 and ki_st_int_artr.id_meca_ini > ki_st_int_artr.id_meca_fin then
 		kGuo_exception.inizializza( )
-		kguo_exception.set_tipo(kguo_exception.kk_st_uo_exception_tipo_dati_non_eseguito)
+		kguo_exception.set_tipo(kguo_exception.KK_st_uo_exception_tipo_non_eseguito)
 		kGuo_exception.setmessage("Filtro intervallo numeri Lotto non congruenti,~n~r numero di fine periodo minore di quello di inizio")
 		throw kGuo_exception 
 					
@@ -785,7 +785,7 @@ if isnull(ki_st_int_artr.id_meca_causale) then ki_st_int_artr.id_meca_causale = 
 	if ki_st_int_artr.m_r_f = "1" and (ki_st_int_artr.clie_1 = 0 or ki_st_int_artr.clie_2 = 0 or ki_st_int_artr.clie_3 = 0) then
 		
 		kGuo_exception.inizializza( )
-		kguo_exception.set_tipo(kguo_exception.kk_st_uo_exception_tipo_dati_non_eseguito)
+		kguo_exception.set_tipo(kguo_exception.KK_st_uo_exception_tipo_non_eseguito)
 		kGuo_exception.setmessage("Dati mancanti o incongruenti,~n~r " &
 					+ "quando richiesta ~n~r'" + trim(tab_1.tabpage_1.dw_1.describe("m_r_f.CheckBox.Text")) &
 					+ "'~n~rimpostare i codici Mandante+Ricevente+Fatturato" &
@@ -804,7 +804,7 @@ if isnull(ki_st_int_artr.id_meca_causale) then ki_st_int_artr.id_meca_causale = 
 		   and ki_st_int_artr.certificato_dt_st_fin <> date(0))) &
 		then
 		kGuo_exception.inizializza( )
-		kguo_exception.set_tipo(kguo_exception.kk_st_uo_exception_tipo_dati_non_eseguito)
+		kguo_exception.set_tipo(kguo_exception.KK_st_uo_exception_tipo_non_eseguito)
 		kGuo_exception.setmessage("Filtro intervallo periodo Lotti non congruente,~n~r data di fine periodo minore di quella di inizio")
 		throw kGuo_exception 
 					
@@ -2169,14 +2169,14 @@ try
 	//=== Controllo date
 	if (k_data_a > date(0) and k_data_a < k_data_da) then
 		kGuo_exception.inizializza( )
-		kGuo_exception.set_tipo(kGuo_exception.kk_st_uo_exception_tipo_dati_non_eseguito)
+		kGuo_exception.set_tipo(kGuo_exception.KK_st_uo_exception_tipo_non_eseguito)
 		kGuo_exception.setmessage("Controlla le date immesse,~n~r data di fine periodo e' minore di quella di inizio")
 		throw kGuo_exception 
 	else
 		if	ki_st_int_artr.id_meca_ini > 0 then
 		else
 			kGuo_exception.inizializza( )
-			kGuo_exception.set_tipo(kGuo_exception.kk_st_uo_exception_tipo_dati_non_eseguito)
+			kGuo_exception.set_tipo(kGuo_exception.KK_st_uo_exception_tipo_non_eseguito)
 			kGuo_exception.setmessage("Nessun Lotto trovato per il periodo richiesto")
 			throw kGuo_exception 
 		end if
@@ -6485,13 +6485,13 @@ try
 	//=== Controllo date
 	if (k_data_a > date(0) and k_data_a < k_data_da) then
 		kGuo_exception.inizializza( )
-		kGuo_exception.set_tipo(kGuo_exception.kk_st_uo_exception_tipo_dati_non_eseguito)
+		kGuo_exception.set_tipo(kGuo_exception.KK_st_uo_exception_tipo_non_eseguito)
 		kGuo_exception.setmessage("Controlla le date immesse,~n~r data di fine periodo e' minore di quella di inizio")
 		throw kGuo_exception 
 	else
 		if	ki_st_int_artr.id_meca_ini = 0 then
 			kGuo_exception.inizializza( )
-			kGuo_exception.set_tipo(kGuo_exception.kk_st_uo_exception_tipo_dati_non_eseguito)
+			kGuo_exception.set_tipo(kGuo_exception.KK_st_uo_exception_tipo_non_eseguito)
 			kGuo_exception.setmessage("Nessun Lotto trovato per il periodo richiesto (" + string(ki_st_int_artr.id_meca_ini) + " - " + string(ki_st_int_artr.id_meca_fin) + ")") 
 			throw kGuo_exception 
 		end if

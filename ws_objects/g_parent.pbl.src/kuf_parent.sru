@@ -34,7 +34,7 @@ public subroutine _readme ()
 public function boolean link_call (ref datastore ads_1, string a_campo_link) throws uo_exception
 public subroutine u_set_ki_nomeoggetto (any a_any)
 public function st_esito u_batch_run () throws uo_exception
-public function st_esito u_open () 
+public function st_esito u_open ()
 public function st_esito u_open (ref st_open_w ast_open_w)
 public function st_esito u_open (string a_modalita)
 public function st_esito u_open (st_tab_g_0 kst_tab_g_0[], st_open_w kst_open_w)
@@ -66,39 +66,40 @@ public function boolean u_open_applicazione (ref st_tab_g_0 kst_tab_g_0, string 
 boolean k_return = false
 st_esito kst_esito 
 st_open_w k_st_open_w
-//kuf_menu_window kuf1_menu_window
 
 
-if kst_tab_g_0.id > 0 or k_flag_modalita = kkg_flag_modalita.inserimento &
-           or k_flag_modalita = kkg_flag_modalita.elenco then
+	if isnull(kst_tab_g_0.id) and k_flag_modalita = kkg_flag_modalita.elenco then
+		kst_tab_g_0.id = 0
+	end if
 	
 	if k_flag_modalita = kkg_flag_modalita.inserimento then
 		kst_tab_g_0.id = 0
 		kst_tab_g_0.idx = ""
-	end if
+	else
+
+	if not isnull(kst_tab_g_0.id) then 
+		
+	//=== Parametri : 
+	//=== struttura st_open_w
+	//=== dati particolare programma
+		K_st_open_w.id_programma = get_id_programma( k_flag_modalita )
+		K_st_open_w.flag_primo_giro = "S"
+		K_st_open_w.flag_modalita = k_flag_modalita
+		K_st_open_w.flag_adatta_win = KKG.ADATTA_WIN
+		K_st_open_w.flag_leggi_dw = " "
+		K_st_open_w.flag_cerca_in_lista = " "
+		K_st_open_w.key1 = trim(string(kst_tab_g_0.id)) // id generico
+		K_st_open_w.key2 = trim(kst_tab_g_0.idx) // id alfanumerico generico
+		K_st_open_w.key3 = " "
+		K_st_open_w.key4 = " " 
+		K_st_open_w.flag_where = " "
 	
-//=== Parametri : 
-//=== struttura st_open_w
-//=== dati particolare programma
-	K_st_open_w.id_programma = get_id_programma( k_flag_modalita )
-	K_st_open_w.flag_primo_giro = "S"
-	K_st_open_w.flag_modalita = k_flag_modalita
-	K_st_open_w.flag_adatta_win = KKG.ADATTA_WIN
-	K_st_open_w.flag_leggi_dw = " "
-	K_st_open_w.flag_cerca_in_lista = " "
-	K_st_open_w.key1 = trim(string(kst_tab_g_0.id)) // id generico
-	K_st_open_w.key2 = trim(kst_tab_g_0.idx) // id alfanumerico generico
-	K_st_open_w.key3 = " "
-	K_st_open_w.key4 = " " 
-	K_st_open_w.flag_where = " "
-
-	K_st_open_w.key12_any = this			// questo oggetto di gestione del trovo
-
-	//kuf1_menu_window = create kuf_menu_window 
-	kGuf_menu_window.open_w_tabelle(k_st_open_w)
-	//destroy kuf1_menu_window
-
-	k_return = true
+		K_st_open_w.key12_any = this			// questo oggetto di gestione del trovo
+	
+		kGuf_menu_window.open_w_tabelle(k_st_open_w)
+	
+		k_return = true
+	end if
 
 end if
 
@@ -696,7 +697,7 @@ st_esito kst_esito
 	kst_esito.sqlcode = 0
 	kst_esito.SQLErrText = ""
 
-	kst_tab_g_0[1].id = 1
+	kst_tab_g_0[1].id = 0
 	
 	k_return = this.u_open_applicazione(kst_tab_g_0[1], kkg_flag_modalita.visualizzazione)
  

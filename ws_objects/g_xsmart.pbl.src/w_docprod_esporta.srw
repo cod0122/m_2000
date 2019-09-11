@@ -395,7 +395,7 @@ pointer k_pointer
 //--- aggiunge riga al log
 					kiuf_docprod.kiuf_esito_operazioni.tb_add_riga("Nessun Documento Esportato ", false)
 					kguo_exception.inizializza( )
-					kguo_exception.set_tipo( kguo_exception.KK_st_uo_exception_tipo_dati_non_eseguito )
+					kguo_exception.set_tipo( kguo_exception.KK_st_uo_exception_tipo_non_eseguito )
 					kguo_exception.setmessage("Nessun Documento Esportato")
 					kguo_exception.messaggio_utente( )
 				end if
@@ -404,7 +404,7 @@ pointer k_pointer
 				
 				kguo_exception.inizializza( )
 				if k_ctr_Documenti = 0 then
-					kguo_exception.set_tipo( kguo_exception.KK_st_uo_exception_tipo_dati_non_eseguito )
+					kguo_exception.set_tipo( kguo_exception.KK_st_uo_exception_tipo_non_eseguito )
 					kguo_exception.setmessage("Selezionare almeno un Documento dall'elenco")
 					kguo_exception.messaggio_utente( )
 					

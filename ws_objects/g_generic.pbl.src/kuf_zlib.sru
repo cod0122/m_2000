@@ -1866,7 +1866,7 @@ CHOOSE CASE li_rc
 	CASE Z_MEM_Error
 		SetNull(ablob_dest)
 		kguo_exception.inizializza( )
-		kguo_exception.set_tipo(kguo_exception.kk_st_uo_exception_tipo_dati_non_eseguito)
+		kguo_exception.set_tipo(kguo_exception.KK_st_uo_exception_tipo_non_eseguito)
 		kguo_exception.setmessage("Compressione file: non c'è abbastanza memoria RAM per l'elaborazione (Zlib of_Compress2)!")
 		throw kguo_exception
 //		MessageBox("ZLib Errore nella funzione of_Compress2", &
@@ -1875,7 +1875,7 @@ CHOOSE CASE li_rc
 	CASE Z_BUF_Error
 		SetNull(ablob_dest)
 		kguo_exception.inizializza( )
-		kguo_exception.set_tipo(kguo_exception.kk_st_uo_exception_tipo_dati_non_eseguito)
+		kguo_exception.set_tipo(kguo_exception.KK_st_uo_exception_tipo_non_eseguito)
 		kguo_exception.setmessage("Compressione file: non c'è abbastanza spazio 'buffer di output' per l'elaborazione (Zlib of_Compress2)!")
 		throw kguo_exception
 //		MessageBox("ZLib Errore nella funzione of_Compress2", &
@@ -1884,7 +1884,7 @@ CHOOSE CASE li_rc
 	CASE ELSE
 		SetNull(ablob_dest)
 		kguo_exception.inizializza( )
-		kguo_exception.set_tipo(kguo_exception.kk_st_uo_exception_tipo_dati_non_eseguito)
+		kguo_exception.set_tipo(kguo_exception.KK_st_uo_exception_tipo_non_eseguito)
 		kguo_exception.setmessage("Compressione file: errore (Zlib of_Compress2) non riconosciuto: " + String(li_rc) )
 		throw kguo_exception
 //		MessageBox("ZLib Errore nella funzione of_Compress2", &
@@ -1958,7 +1958,7 @@ CHOOSE CASE li_rc
 	CASE Z_MEM_ERROR
 		SetNull(ablob_dest)
 		kguo_exception.inizializza( )
-		kguo_exception.set_tipo(kguo_exception.kk_st_uo_exception_tipo_dati_non_eseguito)
+		kguo_exception.set_tipo(kguo_exception.KK_st_uo_exception_tipo_non_eseguito)
 		kguo_exception.setmessage("Decompressione file: non c'è abbastanza memoria RAM per l'elaborazione (Zlib of_uncompress)!")
 		throw kguo_exception
 //		MessageBox("ZLib Error in of_UnCompress", &
@@ -1967,7 +1967,7 @@ CHOOSE CASE li_rc
 	CASE Z_BUF_ERROR
 		SetNull(ablob_dest)
 		kguo_exception.inizializza( )
-		kguo_exception.set_tipo(kguo_exception.kk_st_uo_exception_tipo_dati_non_eseguito)
+		kguo_exception.set_tipo(kguo_exception.KK_st_uo_exception_tipo_non_eseguito)
 		kguo_exception.setmessage("Decompressione file: non c'è abbastanza spazio di lavoro, 'len doc="+ string(aul_destlen) + "' per l'elaborazione (Zlib of_uncompress)!")
 		throw kguo_exception
 //		MessageBox("ZLib Error in of_UnCompress", &
@@ -1976,7 +1976,7 @@ CHOOSE CASE li_rc
 	CASE Z_DATA_ERROR
 		SetNull(ablob_dest)
 		kguo_exception.inizializza( )
-		kguo_exception.set_tipo(kguo_exception.kk_st_uo_exception_tipo_dati_non_eseguito)
+		kguo_exception.set_tipo(kguo_exception.KK_st_uo_exception_tipo_non_eseguito)
 		kguo_exception.setmessage("Decompressione file: il file non è decomprimibile, formato non riconosciuto (Zlib of_uncompress)!")
 		throw kguo_exception
 //		MessageBox("ZLib Error in of_UnCompress", &
@@ -1985,7 +1985,7 @@ CHOOSE CASE li_rc
 	CASE ELSE
 		SetNull(ablob_dest)
 		kguo_exception.inizializza( )
-		kguo_exception.set_tipo(kguo_exception.kk_st_uo_exception_tipo_dati_non_eseguito)
+		kguo_exception.set_tipo(kguo_exception.KK_st_uo_exception_tipo_non_eseguito)
 		kguo_exception.setmessage("Decompressione file: Errore non riconosciuto (Zlib of_uncompress) " + String(li_rc))
 		throw kguo_exception
 //		MessageBox("ZLib Error in of_UnCompress", &

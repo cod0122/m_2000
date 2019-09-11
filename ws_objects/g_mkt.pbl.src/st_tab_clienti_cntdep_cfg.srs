@@ -1,0 +1,20 @@
+﻿$PBExportHeader$st_tab_clienti_cntdep_cfg.srs
+global type st_tab_clienti_cntdep_cfg from structure
+	st_tab_g_0		st_tab_g_0
+	long		contati
+	long		id_cliente
+	integer		registro_anno		descriptor "comment" = "Anno di competenza del Conto Deposito"
+	long		registro_nr_ultimo		descriptor "comment" = "Utlimo Numero di Registro del Conto Deposito"
+	string		registro_tipo		descriptor "comment" = "N=Registro non attivo, B=registro dati x barcode, P=registro dati riassuntivo per Part Number "
+	long		id_meca_ultimo		descriptor "comment" = "Utlimo Lotto estratto"
+	string		codice
+	string		ragsoc1
+	string		ragsoc2
+	string		indirizzo
+	string		cap
+	string		loc
+	string		id_nazione
+	datetime		x_datins
+	string		x_utente
+end type
+

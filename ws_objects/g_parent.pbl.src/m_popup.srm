@@ -222,7 +222,7 @@ kgo_1 = getfocus()
 
 if isvalid(kgo_1) then
 	
-	m_impostazioni_utente.menuimage = "settings16.png"
+//	m_impostazioni_utente.menuimage = "settings16.png"
 //	m_duplica.menuimage = "duplicate16.png"
 	
 	if kgo_1.typeof( ) = MultiLineEdit! then
@@ -1333,7 +1333,7 @@ this.tag = "[F10]"
 this.visible = false
 this.text = "Salva i dati"
 this.microhelp = "Aggiorna dati in archivio"
-this.menuimage = "save!"
+this.menuimage = "Save_2!"
 this.menustyle = contemporarymenu!
 this.menutextcolor = 134217735
 this.menubackcolor = 134217732
@@ -1377,7 +1377,7 @@ this.tag = "[F2]"
 this.visible = false
 this.text = "Visualizza"
 this.microhelp = "Visualizza dati"
-this.menuimage = "Preview!"
+this.menuimage = "Preview_2!"
 this.menustyle = contemporarymenu!
 this.menutextcolor = 134217735
 this.menubackcolor = 134217732
@@ -1421,7 +1421,7 @@ this.tag = "[Ctrl+F2]"
 this.visible = false
 this.text = "Modifica"
 this.microhelp = "Modifica"
-this.menuimage = "inkedit!"
+this.menuimage = "Edit_2!"
 this.menustyle = contemporarymenu!
 this.menutextcolor = 134217735
 this.menubackcolor = 134217732
@@ -1465,7 +1465,7 @@ this.tag = "[F4]"
 this.visible = false
 this.text = "Nuovo"
 this.microhelp = "Inserimento "
-this.menuimage = "New!"
+this.menuimage = "New_2!"
 this.menustyle = contemporarymenu!
 this.menutextcolor = 134217735
 this.menubackcolor = 134217732
@@ -1575,7 +1575,7 @@ this.tag = "[F9]"
 this.visible = false
 this.text = "Stampa"
 this.microhelp = "In stampa"
-this.menuimage = "print!"
+this.menuimage = "Print_2!"
 this.menustyle = contemporarymenu!
 this.menutextcolor = 134217735
 this.menubackcolor = 134217732
@@ -1648,7 +1648,7 @@ this.tag = "[F6]"
 this.visible = false
 this.text = "Cancella"
 this.microhelp = "Elimina dati"
-this.menuimage = "Custom021!"
+this.menuimage = "Custom021_2!"
 this.menustyle = contemporarymenu!
 this.menutextcolor = 134217735
 this.menubackcolor = 134217732
@@ -1790,7 +1790,7 @@ call super::create
 this.visible = false
 this.text = "Adatta"
 this.microhelp = "Sistema le dimensioni della Finestra "
-this.menuimage = "sizeboth!"
+this.menuimage = "SizeBoth!"
 this.menustyle = contemporarymenu!
 this.menutextcolor = 134217735
 this.menubackcolor = 134217732
@@ -1881,7 +1881,7 @@ call super::create
 this.visible = false
 this.text = "Trova"
 this.microhelp = "Ricerca dati in elenco"
-this.menuimage = "Find!"
+this.menuimage = "Find_2!"
 this.menustyle = contemporarymenu!
 this.menutextcolor = 134217735
 this.menubackcolor = 134217732
@@ -1953,7 +1953,7 @@ call super::create
 this.visible = false
 this.text = "Filtro righe in elenco                 Alt+F3"
 this.microhelp = "Seleziona i dati come desiderato (es. solo clienti Italiani)"
-this.menuimage = "custom096!"
+this.menuimage = "Filter_2!"
 this.menustyle = contemporarymenu!
 this.menutextcolor = 134217735
 this.menubackcolor = 134217732
@@ -2020,7 +2020,7 @@ on m_memo.create
 call super::create
 this.text = "Memo"
 this.microhelp = "Allarmi Memo"
-this.menuimage = "memo16.png"
+this.menuimage = "Custom019_2!"
 this.menustyle = contemporarymenu!
 this.menutextcolor = 134217735
 this.menubackcolor = 134217732
@@ -2064,7 +2064,7 @@ this.tag = "[F11]"
 this.visible = false
 this.text = "Aggiorna Elenco"
 this.microhelp = "Aggiorna le liste "
-this.menuimage = "Regenerate5!"
+this.menuimage = "Regenerate_2!"
 this.menustyle = contemporarymenu!
 this.menutextcolor = 134217735
 this.menubackcolor = 134217732
@@ -2180,7 +2180,7 @@ end event
 on m_copia.create
 call super::create
 this.text = "Copia"
-this.menuimage = "Copy!"
+this.menuimage = "Copy_2!"
 this.menustyle = contemporarymenu!
 this.menutextcolor = 134217735
 this.menubackcolor = 134217732
@@ -2239,6 +2239,8 @@ on m_impostazioni_utente.create
 call super::create
 this.text = "Proprietà"
 this.microhelp = "Impostazioni utente"
+this.toolbaritemname = "preferences_2!"
+this.menuimage = "Preferences_2!"
 this.menustyle = contemporarymenu!
 this.menutextcolor = 134217735
 this.menubackcolor = 134217732
@@ -2289,7 +2291,7 @@ this.tag = "[Ctrl+F10]"
 this.visible = false
 this.text = "Esci"
 this.microhelp = "Uscita"
-this.menuimage = "exit!"
+this.menuimage = "Exit_2!"
 this.menustyle = contemporarymenu!
 this.menutextcolor = 134217735
 this.menubackcolor = 134217732

@@ -1,0 +1,5 @@
+﻿$PBExportHeader$st_path.srs
+global type st_path from structure
+	string		path[]		descriptor "comment" = "occurs di path"
+end type
+

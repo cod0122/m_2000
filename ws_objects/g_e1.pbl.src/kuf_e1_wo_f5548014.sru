@@ -212,7 +212,7 @@ try
 		
 		kst_tab_f5548014.osuser = kds_e1_wo_f5548014_l_xe1.getitemstring(k_riga, "osuser")	//Utente 
 
-//--- passo al peocesso di aggiornamento solo se sono su un record nuovo
+//--- passo al processo di aggiornamento solo se sono su un record nuovo
 		if kst_tab_f5548014.osdoco = kst1_tab_f5548014.osdoco and kst_tab_f5548014.osev01 = kst1_tab_f5548014.osev01 then
 		else			
 			kst1_tab_f5548014 = kst_tab_f5548014  // salva i dati per il controllo di cui sopra

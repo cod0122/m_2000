@@ -678,7 +678,7 @@ public function boolean produci_ddt_testa (ref ds_ddt_stampa kds_ddt_stampa, lon
 //---
 boolean k_return=true
 boolean k_stampa_indirizzo_2=false
-string k_stampante,  k_rcx, k_file
+string k_stampante,  k_rcx, k_file, k_num_bolla_out_bis
 long k_riga
 int k_rc
 st_esito kst_esito
@@ -765,7 +765,12 @@ kuf_clienti kiuf_clienti
 	end if
 
 //--- testata con il numero data ecc...
-	kids_stampa_ddt.setitem(k_riga, "num_bolla_out_1",  kds_ddt_stampa.object.sped_num_bolla_out[k_riga_dw])  
+	if kds_ddt_stampa.object.sped_num_bolla_out[k_riga_dw] > 9000000 then  // se DDT BIS allora toglie 9000....
+		k_num_bolla_out_bis = right(string(kds_ddt_stampa.object.sped_num_bolla_out[k_riga_dw]),6)
+		kids_stampa_ddt.setitem(k_riga, "num_bolla_out_1", long(k_num_bolla_out_bis))  
+	else
+		kids_stampa_ddt.setitem(k_riga, "num_bolla_out_1", kds_ddt_stampa.object.sped_num_bolla_out[k_riga_dw])  
+	end if
 	kids_stampa_ddt.setitem(k_riga, "data_bolla_out",  (kds_ddt_stampa.object.sped_data_bolla_out[k_riga_dw]))  
 	kids_stampa_ddt.setitem(k_riga, "id_sped",  (kds_ddt_stampa.object.id_sped[k_riga_dw]))  
 

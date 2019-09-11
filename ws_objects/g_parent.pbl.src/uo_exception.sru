@@ -17,22 +17,22 @@ public st_esito kist_esito
 private string ki_titolo = "" // titolo del messaggio 
 
 // valori possibili per TIPO di st_exception: Possibilmente uguali a quelli KKG_ESITO
-constant string KK_st_uo_exception_tipo_OK="0"
-constant string KK_st_uo_exception_tipo_db_ko="1"
-constant string KK_st_uo_exception_tipo_dati_utente="2"
-constant string KK_st_uo_exception_tipo_allerta="3"
-constant string KK_st_uo_exception_tipo_dati_non_eseguito="4"
-constant string KK_st_uo_exception_tipo_err_int="5"
-constant string KK_st_uo_exception_tipo_interr_da_utente="6"
-constant string KK_st_uo_exception_tipo_dati_insufficienti="7"
-constant string KK_st_uo_exception_tipo_dati_insufficienti1="I" 
-constant string KK_st_uo_exception_tipo_dati_anomali="8"
-constant string KK_st_uo_exception_tipo_dati_wrn="W"
-constant string KK_st_uo_exception_tipo_generico="9"
-constant string KK_st_uo_exception_tipo_ko="A"
-constant string KK_st_uo_exception_tipo_noAUT="B"
-constant string KK_st_uo_exception_tipo_not_fnd="100"
-constant string KK_st_uo_exception_tipo_trace="T"
+constant string KK_st_uo_exception_tipo_OK=kkg_esito.ok
+constant string KK_st_uo_exception_tipo_db_ko=kkg_esito.db_ko
+constant string KK_st_uo_exception_tipo_dati_utente="UT"
+constant string KK_st_uo_exception_tipo_allerta="AL"
+constant string KK_st_uo_exception_tipo_non_eseguito=kkg_esito.NO_ESECUZIONE
+constant string KK_st_uo_exception_tipo_err_int=kkg_esito.blok
+constant string KK_st_uo_exception_tipo_interr_da_utente="UC"
+constant string KK_st_uo_exception_tipo_dati_insufficienti="DI"
+constant string KK_st_uo_exception_tipo_dati_insufficienti1=kkg_esito.DATI_INSUFF 
+constant string KK_st_uo_exception_tipo_dati_anomali="AN"
+constant string KK_st_uo_exception_tipo_dati_wrn=kkg_esito.DATI_WRN
+constant string KK_st_uo_exception_tipo_generico="XX"
+constant string KK_st_uo_exception_tipo_ko=kkg_esito.KO 
+constant string KK_st_uo_exception_tipo_noAUT=kkg_esito.NO_AUT
+constant string KK_st_uo_exception_tipo_not_fnd=kkg_esito.NOT_FND
+constant string KK_st_uo_exception_tipo_trace=kkg_esito.TRACE
 constant string KK_st_uo_exception_tipo_SINO="N"
 
 end variables
@@ -88,7 +88,7 @@ else
 	choose case ki_st_uo_exception.tipo
 		case KK_st_uo_exception_tipo_generico
 			k_titolo = "Operazione non eseguita"
-		case KK_st_uo_exception_tipo_dati_non_eseguito
+		case KK_st_uo_exception_tipo_non_eseguito
 			k_titolo = "Operazione non eseguita"
 		case KK_st_uo_exception_tipo_dati_anomali, KK_st_uo_exception_tipo_dati_wrn
 			k_titolo = "Dati Anomali"
@@ -118,7 +118,7 @@ end if
 choose case ki_st_uo_exception.tipo
 	case KK_st_uo_exception_tipo_generico
 		messaggio_utente (k_titolo,  getmessage())
-	case KK_st_uo_exception_tipo_dati_non_eseguito
+	case KK_st_uo_exception_tipo_non_eseguito
 		messaggio_utente (k_titolo,  getmessage())
 	case KK_st_uo_exception_tipo_dati_anomali, KK_st_uo_exception_tipo_dati_wrn
 		messaggio_utente (k_titolo, getmessage())
@@ -199,6 +199,7 @@ public subroutine setmessage (string newmessage);//
 kist_esito.sqlerrtext = trim(newmessage)
 
 if trim(kist_esito.esito) > " " then
+else
 	kist_esito.esito = this.kk_st_uo_exception_tipo_dati_wrn
 end if
 
@@ -335,7 +336,7 @@ if len(trim(kist_esito.esito)) = 0 or isnull(kist_esito.esito) then
 		case  KK_st_uo_exception_tipo_allerta
 			kist_esito.esito = kkg_esito.DATI_WRN
 			
-		case  KK_st_uo_exception_tipo_dati_non_eseguito
+		case  KK_st_uo_exception_tipo_non_eseguito
 			kist_esito.esito = kkg_esito.NO_ESECUZIONE
 			
 		case  KK_st_uo_exception_tipo_err_int
@@ -567,5 +568,7 @@ st_uo_exception kist_uo_exception
 
 //--- costanti x valori del tipo di errore
 constant int kk_tipo_ex_generico = 1
+
+
 end event
 

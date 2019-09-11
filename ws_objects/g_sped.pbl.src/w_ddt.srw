@@ -322,10 +322,13 @@ k_riga = 1 //tab_1.tabpage_1.dw_1.getrow()
 					end if
 					kst_tab_sped.num_bolla_out = kst_tab_sped_app.num_bolla_out 
 				else
+					if kst_tab_sped.num_bolla_out > 9000000 then // se sono su un DDT BIS allora non faccio controlli sul nr
+					else
 					// verifica che il nr non sia oltre al numero da assegnare
-					kst_tab_sped_app.num_bolla_out = kiuf_sped.get_numero_nuovo(kst_tab_sped, 0)   // get nuovo numero ddt
-					if kst_tab_sped.num_bolla_out > kst_tab_sped_app.num_bolla_out then
-						kst_tab_sped.num_bolla_out = kst_tab_sped_app.num_bolla_out 
+						kst_tab_sped_app.num_bolla_out = kiuf_sped.get_numero_nuovo(kst_tab_sped, 0)   // get nuovo numero ddt
+						if kst_tab_sped.num_bolla_out > kst_tab_sped_app.num_bolla_out then
+							kst_tab_sped.num_bolla_out = kst_tab_sped_app.num_bolla_out 
+						end if
 					end if
 				end if
 				tab_1.tabpage_1.dw_1.setitem(1, "num_bolla_out", kst_tab_sped.num_bolla_out )   //  Imposta il DDT 'definitivo' sul documento 
@@ -793,7 +796,7 @@ try
 				if not kiuf_sped.if_modifica(kist_tab_sped) then
 					ki_st_open_w.flag_modalita = kkg_flag_modalita.visualizzazione
 					kguo_exception.inizializza()
-					kguo_exception.set_tipo( kguo_exception.kk_st_uo_exception_tipo_dati_non_eseguito )
+					kguo_exception.set_tipo( kguo_exception.KK_st_uo_exception_tipo_non_eseguito )
 					kguo_exception.setmessage(  &
 						"Attenzione, il DDT non può essere Modificato (ad esempio il lotto è già stato Chiuso). ~n~r" + &
 						"(ID Documento cercato:" + string(kist_tab_sped_orig.id_sped) + ") " )
@@ -2151,7 +2154,7 @@ try
 	else
 		kguo_exception.inizializza( )
 		kst_esito.sqlerrtext = "Manca ID riga Lotto di entrata, non posso proseguire!"
-		kguo_exception.set_tipo(kguo_exception.kk_st_uo_exception_tipo_dati_non_eseguito)
+		kguo_exception.set_tipo(kguo_exception.KK_st_uo_exception_tipo_non_eseguito)
 		kguo_exception.set_esito( kst_esito )
 		throw kguo_exception
 	end if
@@ -2962,7 +2965,7 @@ try
 			kiuf_armo.get_clie(kst_tab_meca_1)  //--- get del ricevente
 			if kst_tab_meca_1.clie_2 > 0 and kst_tab_meca_1.clie_2 <> kst_tab_meca.clie_2 then
 				kguo_exception.inizializza( )
-				kguo_exception.set_tipo(kguo_exception.kk_st_uo_exception_tipo_dati_non_eseguito)
+				kguo_exception.set_tipo(kguo_exception.KK_st_uo_exception_tipo_non_eseguito)
 				kguo_exception.setmessage("Ricevente " + string(kst_tab_meca_1.clie_2) + " del Lotto " + string(kst_tab_armo.num_int) + " " + string(kst_tab_armo.data_int) &
 													+ " diverso da quello del documento (" + string(kst_tab_meca.clie_2) + ") !")
 				throw kguo_exception
@@ -2976,7 +2979,7 @@ try
 			tab_1.selecttab(4)
 		else
 			kguo_exception.inizializza( )
-			kguo_exception.set_tipo(kguo_exception.kk_st_uo_exception_tipo_dati_non_eseguito)
+			kguo_exception.set_tipo(kguo_exception.KK_st_uo_exception_tipo_non_eseguito)
 			kguo_exception.setmessage("Lotto " + string(kst_tab_armo.num_int) + " " + string(kst_tab_armo.data_int) &
 												+ " senza righe da aggiungere, probabilmente già evaso")
 			throw kguo_exception

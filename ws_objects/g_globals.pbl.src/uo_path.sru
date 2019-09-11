@@ -22,6 +22,8 @@ string ki_doc_root = ""  //path file di root dei documenti (impostato sul BASE)
 string ki_doc_root_interno = ""  //path file di root dei documenti x uso interno 
 string ki_doc_root_esterno = ""  //path file di root dei documenti x uso esterno tipo WEB
 
+string ki_app_extract_certif_E1_pdf="" //path + nome programma di Estrazione da file pdf stampati da E1 dei Certificati
+
 
 //--- Root dei Documenti Elettronici 
 constant string kki_doc_root_uso_interno = KKG.PATH_SEP + "interno"    //-- x uso interno 
@@ -40,7 +42,6 @@ public function string get_base ()
 public function string get_risorse ()
 public function string get_help ()
 public subroutine set_path_base_del_server ()
-public subroutine set_path_base ()
 public function string get_temp ()
 public function string get_nome_file_errori_txt ()
 public function string get_nome_file_errori_xml ()
@@ -49,10 +50,11 @@ public function string get_nome_path_file_errori_xml ()
 public function string get_doc_root ()
 public function string get_doc_root_interno ()
 public function string get_doc_root_esterno ()
-public function boolean u_drectory_create (string k_path)
 public subroutine set_doc_root ()
 public subroutine set_arch_saveas ()
 public subroutine set_path_icone ()
+public function string get_app_extract_certif_e1_pdf ()
+public function st_esito set_path_base ()
 end prototypes
 
 public subroutine set_path ();//
@@ -189,51 +191,6 @@ if isvalid(kuo_exception) then destroy kuo_exception
 
 end subroutine
 
-public subroutine set_path_base ();//
-//--- Imposta il PATH dell'utente (in cui è installato M2000) es. c:\at_m2000\db
-//
-//
-st_esito kst_esito
-uo_exception kuo_exception
-
-
-//	kpointer = setpointer(hourglass!)
-	
-	kst_esito.esito = kkg_esito.ok
-	kst_esito.sqlcode = 0
-	kst_esito.SQLErrText = ""
-	kst_esito.nome_oggetto = this.classname()
-	
-	kuo_exception = create uo_exception
-
-
-	ki_base = kGuf_data_base.profilestring_leggi_scrivi (1, "arch_base", "")
-
-	if trim(ki_base) > " " then
-		if not DirectoryExists(ki_base) then
-			if not u_drectory_create(ki_base) then
-				kst_esito.esito = kkg_esito.ko
-				kst_esito.SQLErrText = "La cartella 'Archivi Base' (DB) della Procedura non è raggiungibile: " + ki_base
-			end if
-		end if
-	else
-		ki_base = "."
-		kst_esito.esito = kkg_esito.ko
-		kst_esito.SQLErrText = "La cartella 'Archivi Base' (DB) non è stata indicata nel file '" + trim(kGuf_data_base.kki_nome_profile_base) + "' della Procedura!!!  " 
-	end if
-
-//setpointer(kpointer)
-
-if kst_esito.esito <> kkg_esito.ok then
-	kuo_exception.inizializza()
-	kuo_exception.set_esito(kst_esito)
-	kuo_exception.messaggio_utente( )
-end if
-
-if isvalid(kuo_exception) then destroy kuo_exception
-
-end subroutine
-
 public function string get_temp ();//
 //--- torna Cartella pr il file temporanei:  c:\at_m2000\temp
 //
@@ -244,7 +201,7 @@ k_base = get_base( )
 if trim(k_base) > " " then
 	k_temp = get_base( ) + kkg.path_sep + k_temp
 
-	u_drectory_create(k_temp)
+	//u_drectory_create(k_temp)
 
 end if
 
@@ -310,77 +267,6 @@ return trim(ki_doc_root) + kki_doc_root_uso_esterno
 
 end function
 
-public function boolean u_drectory_create (string k_path);//---
-//--- Creazione del path indicato (potrebbe creare anche l'intero percorso) se non esiste
-//---
-//--- Input: il PATH da creare se non esiste (NO il nome file!!!) es. \\syrio\datisyrio\gruppi\pippo con o senza slash finale
-//--- Rit.: TRUE = OK
-//---
-boolean k_return=false, k_primo_giro=true, k_percorso_di_rete=false
-int k_pos_ini, k_pos_fin, k_len_path, k_errore, k_len
-string k_path_lav
-
-if right(trim(k_path),1) <>  KKG.PATH_SEP then 
-	k_path_lav = trim(k_path) + KKG.PATH_SEP   // aggiungo il separatore x la fine cartella
-else
-	k_path_lav = trim(k_path)
-end if
-k_len_path = len(k_path_lav) 
-
-if k_len_path > 0 then
-	
-//--- se inizia con un path di rete quale ad esempio:  \\proxima   allora devo saperlo	
-	if left(k_path_lav,1) = KKG.PATH_SEP and mid(k_path_lav,2,1) = KKG.PATH_SEP then
-		k_percorso_di_rete = true
-		k_pos_ini = 3
-	else
-		k_pos_ini = 1
-	end if
-	
-//--- cerca il primo '\'
-	k_pos_ini = pos(k_path_lav, KKG.PATH_SEP, k_pos_ini )
-	
-	k_errore = 1 // OK nel caso il PATH esista gia'
-	do while k_pos_ini < k_len_path and k_errore > 0
-		
-		if mid(k_path_lav, k_pos_ini - 1, 1) <> KKG.PATH_SEP then
-			k_pos_ini ++
-			k_pos_fin = pos(k_path_lav, KKG.PATH_SEP, k_pos_ini )
-			if k_pos_fin > k_pos_ini then
-//				k_len = k_pos_fin - k_pos_ini
-				
-				if k_percorso_di_rete and k_primo_giro then  // se ad esempio sono su un path net es. \\proxima\pippo\pluto salto il '\\proxima'
-					k_primo_giro = false
-				else
-					If not DirectoryExists ( mid(k_path_lav, 1, k_pos_fin) ) Then  // NON esiste la  sub-cartella
-						k_errore = CreateDirectory( mid(k_path_lav, 1, k_pos_fin))   // crea la sub-cartella
-					end if
-				end if
-				
-			end if
-		else
-			k_pos_fin = k_pos_ini + 1
-		end if
-			
-//--- Posizione sul fine cartella trovata prima  ('\')			
-		k_pos_ini = k_pos_fin 
-//		k_pos_ini = pos(k_path_lav, KKG.PATH_SEP, k_pos_ini )
-				
-	loop
-
-
-	if k_errore > 0 then
-		k_return = true
-	end if
-
-end if
-	
-
-
-return k_return
-
-end function
-
 public subroutine set_doc_root ();//
 //--- Imposta il PATH root dei documenti elettronici
 //
@@ -409,8 +295,6 @@ st_esito kst_esito
 uo_exception kuo_exception
 
 
-//	kpointer = setpointer(hourglass!)
-	
 	kst_esito.esito = kkg_esito.ok
 	kst_esito.sqlcode = 0
 	kst_esito.SQLErrText = ""
@@ -423,26 +307,20 @@ uo_exception kuo_exception
 
 	if trim(ki_arch_saveas) > " " then
 		if not DirectoryExists(ki_arch_saveas) then
-			if not u_drectory_create(ki_arch_saveas) then
-				kst_esito.esito = kkg_esito.ko
-				kst_esito.SQLErrText = "La cartella di salvatggio 'dati elenco' (DW) della Procedura non è raggiungibile: " + ki_arch_saveas
-			end if
+			kst_esito.esito = kkg_esito.not_fnd
+			kst_esito.SQLErrText = "La cartella 'Salvataggio dati generici' non è raggiungibile: " + ki_base
+//			if not u_drectory_create(ki_arch_saveas) then
+//				kst_esito.esito = kkg_esito.ko
+//				kst_esito.SQLErrText = "La cartella di salvatggio 'dati elenco' (DW) della Procedura non è raggiungibile: " + ki_arch_saveas
+//			end if
 		end if
 	else
 		ki_arch_saveas = "."
 		kst_esito.esito = kkg_esito.ko
-		kst_esito.SQLErrText = "La cartella di salvatggio 'dati elenco' (DW) non è stata indicata nel file '" + trim(kGuf_data_base.kki_nome_profile_base) + "' della Procedura!!!  " 
+		kst_esito.SQLErrText = "Manca nel file di configurazione '" + trim(kGuf_data_base.kki_nome_profile_base) + "' la chiave 'arch_saveas' dove indicare la cartella di 'Salvataggio dati generici' !!  " 
 	end if
 
-//setpointer(kpointer)
 
-if kst_esito.esito <> kkg_esito.ok then
-	kuo_exception.inizializza()
-	kuo_exception.set_esito(kst_esito)
-	kuo_exception.messaggio_utente( )
-end if
-
-if isvalid(kuo_exception) then destroy kuo_exception
 
 end subroutine
 
@@ -486,6 +364,46 @@ uo_exception kuo_exception
 if isvalid(kuo_exception) then destroy kuo_exception
 
 end subroutine
+
+public function string get_app_extract_certif_e1_pdf ();//
+return trim(ki_BASE_DEL_SERVER_JOB) + KKG.PATH_SEP + "mCertE1ChangeName" + KKG.PATH_SEP + "mCertE1ChangeName.exe"
+
+end function
+
+public function st_esito set_path_base ();//
+//--- Imposta il PATH dell'utente (in cui è installato M2000) es. c:\at_m2000\db
+//
+//
+st_esito kst_esito
+
+	
+	kst_esito.esito = kkg_esito.ok
+	kst_esito.sqlcode = 0
+	kst_esito.SQLErrText = ""
+	kst_esito.nome_oggetto = this.classname()
+	
+	ki_base = kGuf_data_base.profilestring_leggi_scrivi (1, "arch_base", "")
+
+	if trim(ki_base) > " " then
+		if not DirectoryExists(ki_base) then
+			kst_esito.esito = kkg_esito.not_fnd
+			kst_esito.SQLErrText = "La cartella 'Archivi Base' non è raggiungibile: " + ki_base
+//			if not u_drectory_create(ki_base) then
+//				kst_esito.esito = kkg_esito.ko
+//				kst_esito.SQLErrText = "La cartella 'Archivi Base' (DB) della Procedura non è raggiungibile: " + ki_base
+//			end if
+		end if
+	else
+		ki_base = "."
+		kst_esito.esito = kkg_esito.ko
+		kst_esito.SQLErrText = "Manca nel file di configurazione '" + trim(kGuf_data_base.kki_nome_profile_base) + "' la chiave 'arch_base' dove indicare la cartella 'Archivi Base' !!  " 
+	end if
+
+
+return kst_esito
+
+
+end function
 
 on uo_path.create
 call super::create

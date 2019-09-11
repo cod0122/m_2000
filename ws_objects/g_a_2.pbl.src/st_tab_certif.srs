@@ -4,6 +4,8 @@ global type st_tab_certif from structure
 	long		id
 	long		num_certif
 	date		data		descriptor "comment" = "data di generazione attestato (preso da MECA_DOSIM)"
+	time		ora		descriptor "comment" = "ora di generazione attestato"
+	datetime		data_ora		descriptor "comment" = "fusione dei due campi data + ora di generazione attestato"
 	date		data_stampa		descriptor "comment" = "data di stampa"
 	time		ora_stampa		descriptor "comment" = "ora di stampa"
 	long		id_meca

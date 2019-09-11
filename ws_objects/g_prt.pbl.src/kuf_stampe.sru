@@ -2357,17 +2357,20 @@ return k_return
 end function
 
 public function string get_path_tempemail ();//---
-//--- Valorizza datawindows
+//--- 
 //---
 //---
 string k_return
-
+kuf_file_explorer kuf1_file_explorer
 
 	
+	kuf1_file_explorer = create kuf_file_explorer
+
 	k_return = kguo_path.get_temp( ) + kkg.path_sep + kki_dirEmail
 
-	kguo_path.u_drectory_create(k_return) 
+	kuf1_file_explorer.u_directory_create(k_return) 
 	
+	destroy kuf1_file_explorer
 
 return k_return
 end function

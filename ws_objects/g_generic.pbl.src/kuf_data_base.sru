@@ -125,6 +125,7 @@ public function string u_change_nometab_xutente (string k_nome_tab, string k_id_
 private subroutine u_set_ds_change_name_tab_1 (ref datawindow kdw_1, string k_nome_tab, string k_nome_tab_new) throws uo_exception
 public subroutine u_set_ds_change_name_tab (ref datawindow kdw_1, string k_nome_tab) throws uo_exception
 public subroutine u_set_ds_change_name_tab (ref datawindow kdw_1, string k_nome_tab, string k_id_utente) throws uo_exception
+public subroutine u_dw_extend_col_to_edge (datawindow a_dw, string a_column)
 end prototypes
 
 public function string db_commit ();//---
@@ -1962,8 +1963,6 @@ boolean k_path_ok=true
 //--- Clessidra di attesa
 setpointer(kkg.pointer_attesa)
 
-//kguo_path.u_drectory_create(kGuo_path.get_base())
-
 if k_path_ok then
 	k_return = errori_scrivi_esito ("W", kst_esito,  kGuo_path.get_nome_file_errori_txt_all())
 end if
@@ -3271,6 +3270,7 @@ st_esito kst_esito
 pointer oldpointer  // Declares a pointer variable
 kuf_menu_window kuf1_menu_window
 kuf_utility kuf1_utility
+kuf_file_explorer kuf1_file_explorer
 
 
 //=== Puntatore Cursore da attesa.....
@@ -3283,6 +3283,7 @@ kuf_utility kuf1_utility
 	kst_esito.nome_oggetto = this.classname()
 
 	kuf1_utility = create kuf_utility
+	kuf1_file_explorer = create kuf_file_explorer
 
 //--- SALVO I DATI DEL DW (o DS) CON I PARAMETRI DI ENTRATA --------------------------------------------------------------------------------------------------
 	k_path = trim(profilestring_leggi_scrivi(ki_profilestring_operazione_leggi, "arch_saveas", "")) 
@@ -3292,7 +3293,7 @@ kuf_utility kuf1_utility
 		
 //--- Crea il path, se non esiste
 	if len(k_path) > 0 then
-		kguo_path.u_drectory_create(k_path)
+		kuf1_file_explorer.u_directory_create(k_path)
 	end if
 		 
 	k_nome_file = trim(kst_stampe.DataObject)
@@ -3412,6 +3413,7 @@ kuf_utility kuf1_utility
 	end if
 
 	if isvalid(kuf1_utility) then destroy kuf1_utility
+	if isvalid(kuf1_file_explorer) then destroy kuf1_file_explorer
 
 	if kst_stampe.tipo = kuf_stampe.ki_stampa_tipo_datastore_diretta_BATCH or kst_stampe.tipo = kuf_stampe.ki_stampa_tipo_datastore_pdf_BATCH then
 		kst_stampe.ds_print.modify("Print.documentname = '"+kst_stampe.titolo+"'")
@@ -3816,6 +3818,20 @@ string k_nome_tab_new
 	end try
 		
 	
+
+end subroutine
+
+public subroutine u_dw_extend_col_to_edge (datawindow a_dw, string a_column);//
+//--- Estende la colonna fino al bordo finale
+//--- Inp: dw and column name
+//
+long k_width
+
+
+k_width = a_dw.width - long(a_dw.describe(a_column + ".x")) - 105 //105=scrollbar
+if k_width > 0 then
+	a_dw.Modify(a_column +".Width='"+ String(k_width) +"' ")
+end if
 
 end subroutine
 

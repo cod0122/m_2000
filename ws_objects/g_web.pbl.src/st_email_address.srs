@@ -1,0 +1,6 @@
+﻿$PBExportHeader$st_email_address.srs
+global type st_email_address from structure
+	string		address[]		descriptor "comment" = "lista indirizzi email"
+	string		email_all		descriptor "comment" = "il testo con tutti gli indirizzi separati da virgola o punto e virgola"
+end type
+

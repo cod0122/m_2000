@@ -80,7 +80,6 @@ private function integer u_open_riferimenti (string k_modalita)
 private function integer u_open_barcode (string k_modalita)
 private function integer u_riempi_listview_certif_dett (string k_tipo_oggetto)
 public subroutine u_aggiorna_treeview ()
-private function integer u_riempi_treeview_certif_mese (string k_tipo_oggetto)
 private function integer u_riempi_treeview_pl_barcode_dett (string k_tipo_oggetto)
 private function integer u_riempi_treeview_meca_lav_mese_att (string k_tipo_oggetto)
 private function integer u_riempi_listview_artr_dett (string k_tipo_oggetto)
@@ -147,6 +146,8 @@ private function integer u_riempi_treeview_file (string k_tipo_oggetto)
 private function integer u_riempi_listview_file (string k_tipo_oggetto)
 public function st_treeview_data u_get_st_treeview_data (st_treeview_data ast_treeview_data)
 public function integer u_dammi_pic_tree_alert ()
+public function st_tab_barcode u_barcode_rigenera_flg_dosimetro () throws uo_exception
+private function integer u_riempi_treeview_certif_mese (ref string k_tipo_oggetto)
 end prototypes
 
 public function boolean u_sicurezza (st_tab_treeview kst_tab_treeview);//
@@ -2998,28 +2999,16 @@ private function integer u_open_barcode (string k_modalita);//
 //--- Chiama finestra di dettaglio
 //
 integer k_return = 0, k_rc = 0
-long k_handle_item = 0, k_handle_item_padre = 0
-integer k_ctr
-date k_save_data_int, k_data_bolla_in
-long k_clie_1=0
-string k_rag_soc_10 , k_label 
-alignment k_align
 
 st_tab_barcode kst_tab_barcode
 st_treeview_data kst_treeview_data
 st_treeview_data_any kst_treeview_data_any
 st_tab_meca kst_tab_meca 
-st_tab_clienti kst_tab_clienti
-st_tab_sl_pt kst_tab_sl_pt
-st_tab_armo kst_tab_armo
-st_tab_pl_barcode kst_tab_pl_barcode
-st_tab_contratti kst_tab_contratti
 st_esito kst_esito
 treeviewitem ktvi_treeviewitem
 listviewitem klvi_listviewitem
 
 st_open_w kst_open_w
-//kuf_menu_window kuf1_menu_window
 kuf_barcode_tree kuf1_barcode
 kuf_armo kuf1_armo
 
@@ -3027,29 +3016,14 @@ kuf_armo kuf1_armo
 
 //--- 
 //--- ricavo il barcode e richiamo la windows				
-//	choose case kGuf_data_base.u_getfocus_typeof()
-			
-//		case listview!
-			if kilv_lv1.visible then
-				k_rc = kilv_lv1.getitem(kilv_lv1.SelectedIndex ( ), 1, klvi_listviewitem) 
-				if k_rc > 0 then 
-					kst_treeview_data = klvi_listviewitem.data  
-				end if
-			else
-				k_rc = 0
-			end if
-
-//		case treeview!
-//			k_rc = kitv_tv1.finditem(CurrentTreeItem!, 0)
-//			if k_rc > 0 then
-//				kitv_tv1.getitem(k_rc, ktvi_treeviewitem)
-//				kst_treeview_data = ktvi_treeviewitem.data  
-//			end if
-
-//		case else
-//			k_rc = 0
-			
-//	end choose
+	if kilv_lv1.visible then
+		k_rc = kilv_lv1.getitem(kilv_lv1.SelectedIndex ( ), 1, klvi_listviewitem) 
+		if k_rc > 0 then 
+			kst_treeview_data = klvi_listviewitem.data  
+		end if
+	else
+		k_rc = 0
+	end if
 
 	if k_rc > 0 then		
 		
@@ -3059,18 +3033,18 @@ kuf_armo kuf1_armo
 	
 		kst_tab_barcode = kst_treeview_data_any.st_tab_barcode 
 		kst_tab_meca = kst_treeview_data_any.st_tab_meca 
-		kst_tab_clienti = kst_treeview_data_any.st_tab_clienti 
-		kst_tab_sl_pt = kst_treeview_data_any.st_tab_sl_pt 
-		kst_tab_armo = kst_treeview_data_any.st_tab_armo 
+//		kst_tab_clienti = kst_treeview_data_any.st_tab_clienti 
+//		kst_tab_sl_pt = kst_treeview_data_any.st_tab_sl_pt 
+//		kst_tab_armo = kst_treeview_data_any.st_tab_armo 
 
-		if len(trim(kst_tab_barcode.barcode)) > 0 or k_modalita = kkg_flag_modalita.inserimento &
+		if trim(kst_tab_barcode.barcode) > " " or k_modalita = kkg_flag_modalita.inserimento &
 		   or kst_tab_meca.id > 0 then
 
 			choose case k_modalita  
 
 				case kkg_flag_modalita.anteprima
 					
-				   if len(trim(kst_tab_barcode.barcode)) > 0 then
+				   if trim(kst_tab_barcode.barcode) > " " then
 						kuf1_barcode = create kuf_barcode_tree
 						kst_esito = kuf1_barcode.anteprima ( kidw_1, kst_tab_barcode )
 						destroy kuf1_barcode
@@ -3100,19 +3074,13 @@ kuf_armo kuf1_armo
 					kst_open_w.key1 = trim(kst_tab_barcode.barcode)
 					kst_open_w.key2 = " "
 					kst_open_w.flag_where = " "
-					
-					//kuf1_menu_window = create kuf_menu_window 
 					kGuf_menu_window.open_w_tabelle(kst_open_w)
-					//destroy kuf1_menu_window
 					
 			end choose
 		
 		else
 			k_return = 1
-			
 //			messagebox("Dettaglio Codice a Barre", "Valore non disponibile. ")
-			
-			
 		end if
 
 	else
@@ -3176,33 +3144,6 @@ st_treeview_data kst_treeview_data
 		
  		
 end subroutine
-
-private function integer u_riempi_treeview_certif_mese (string k_tipo_oggetto);// 
-//
-//--- Visualizza Listview
-//
-integer k_return = 0
-//kuf_certif kuf1_certif
-
-//kuf1_certif = create kuf_certif
-
-choose case k_tipo_oggetto
-
-	case kist_treeview_oggetto.certif_st_mese
-		k_return = kiuf_certif.u_tree_riempi_treeview_x_mese ( ki_this, k_tipo_oggetto )
-
-	case kist_treeview_oggetto.certif_st_giorno
-		k_return = kiuf_certif.u_tree_riempi_treeview_x_giorno ( ki_this, k_tipo_oggetto )
-		
-	case else
-		
-end choose
-
-//if isvalid(kuf1_certif) then destroy kuf1_certif
-
-return k_return
-
-end function
 
 private function integer u_riempi_treeview_pl_barcode_dett (string k_tipo_oggetto);// 
 //
@@ -4254,7 +4195,7 @@ st_open_w kst_open_w
 								else
 									k_certif_selected_eof = true // forzo uscita ciclo
 									k_return = 1
-									kguo_exception.set_tipo(kguo_exception.KK_st_uo_exception_tipo_dati_non_eseguito)
+									kguo_exception.set_tipo(kguo_exception.KK_st_uo_exception_tipo_non_eseguito)
 									kguo_exception.messaggio_utente("Stampa Attestato non eseguita", "Da questo elenco non e' possibile stampare l'Attestato " + string( kst_treeview_data_any.st_tab_certif) +	"~n~r" + trim(kst_esito.sqlerrtext))
 								
 								end if
@@ -4280,7 +4221,7 @@ st_open_w kst_open_w
 					catch(uo_exception kuo1_exception)
 						k_return = 1
 						kst_esito = kuo1_exception.get_st_esito()
-						kguo_exception.set_tipo(kguo_exception.KK_st_uo_exception_tipo_dati_non_eseguito)
+						kguo_exception.set_tipo(kguo_exception.KK_st_uo_exception_tipo_non_eseguito)
 						kguo_exception.setmessage( "Preparazione per Stampa Attestato Fallita. " +	"~n~r" + trim(kst_esito.sqlerrtext))
 						kguo_exception.messaggio_utente( )
 
@@ -12133,7 +12074,7 @@ st_open_w kst_open_w
 						k_return = 1
 						kst_esito = kuo1_exception.get_st_esito()
 						kguo_exception.inizializza()
-						kguo_exception.set_tipo(kguo_exception.KK_st_uo_exception_tipo_dati_non_eseguito)
+						kguo_exception.set_tipo(kguo_exception.KK_st_uo_exception_tipo_non_eseguito)
 						kguo_exception.setmessage( "Preparazione per Stampa documento Fallita. " +	"~n~r" + trim(kst_esito.sqlerrtext))
 						kguo_exception.messaggio_utente( )
 
@@ -12228,7 +12169,7 @@ st_open_w kst_open_w
 						k_return = 1
 						kst_esito = kuo2_exception.get_st_esito()
 						kguo_exception.inizializza()
-						kguo_exception.set_tipo(kguo_exception.KK_st_uo_exception_tipo_dati_non_eseguito)
+						kguo_exception.set_tipo(kguo_exception.KK_st_uo_exception_tipo_non_eseguito)
 						kguo_exception.setmessage( "Apertura documento Fallita. " +	"~n~r" + trim(kst_esito.sqlerrtext))
 						kguo_exception.messaggio_utente( )
 
@@ -12446,6 +12387,123 @@ end function
 
 public function integer u_dammi_pic_tree_alert ();//
 return ki_picture_alarm
+end function
+
+public function st_tab_barcode u_barcode_rigenera_flg_dosimetro () throws uo_exception;//
+//--- Chiama finestra di dettaglio
+//--- rit: st_tab_barcode con diversi dati oltre al numero dei dosim generati in st_tab_g_0.contati
+//
+integer k_rc = 0
+
+st_tab_barcode kst_tab_barcode
+st_treeview_data kst_treeview_data
+st_treeview_data_any kst_treeview_data_any
+st_tab_meca kst_tab_meca 
+st_esito kst_esito
+treeviewitem ktvi_treeviewitem
+listviewitem klvi_listviewitem
+kuf_barcode kuf1_barcode
+
+
+try
+
+//--- 
+//--- ricavo il barcode e richiamo la windows				
+	if kilv_lv1.visible then
+		k_rc = kilv_lv1.getitem(kilv_lv1.SelectedIndex ( ), 1, klvi_listviewitem) 
+		if k_rc > 0 then 
+			kst_treeview_data = klvi_listviewitem.data  
+		end if
+	else
+		k_rc = 0
+	end if
+
+	if k_rc > 0 then		
+		
+		ktvi_treeviewitem.data = kst_treeview_data 
+	
+		kst_treeview_data_any = kst_treeview_data.struttura
+	
+		kst_tab_barcode = kst_treeview_data_any.st_tab_barcode
+		kst_tab_meca = kst_treeview_data_any.st_tab_meca 
+
+		if kst_tab_meca.id > 0 then
+			kst_tab_barcode.id_meca = kst_tab_meca.id
+
+			kuf1_barcode = create kuf_barcode
+			kst_tab_barcode.st_tab_g_0.contati = kuf1_barcode.set_flg_dosimetro_rigenera(kst_tab_barcode)
+
+		else
+			kst_esito.esito = kkg_esito.no_esecuzione
+			kst_esito.sqlerrtext = "Rigenerazione indicatori dosimetri barcode per Lotto non eseguito. Manca indicazione del Lotto!"
+			kguo_exception.inizializza( )
+			kguo_exception.set_esito(kst_esito)
+			throw kguo_exception
+		end if
+		
+	else
+		kst_esito.esito = kkg_esito.no_esecuzione
+		kst_esito.sqlerrtext = "Rigenerazione indicatori dosimetri barcode per Lotto non eseguito. Selezionare un Lotto e riprovare!"
+		kguo_exception.inizializza( )
+		kguo_exception.set_esito(kst_esito)
+		throw kguo_exception
+	end if
+	
+catch (uo_exception kuo_exception)
+	throw kuo_exception
+		
+finally
+	if isvalid(kuf1_barcode) then	destroy kuf1_barcode
+
+end try
+ 
+ 
+return kst_tab_barcode
+
+end function
+
+private function integer u_riempi_treeview_certif_mese (ref string k_tipo_oggetto);// 
+//
+//--- Visualizza Listview
+//
+integer k_return = 0
+//kuf_certif kuf1_certif
+
+//kuf1_certif = create kuf_certif
+
+choose case k_tipo_oggetto
+
+	case kist_treeview_oggetto.certif_st_mese
+		k_return = kiuf_certif.u_tree_riempi_treeview_x_mese ( ki_this, k_tipo_oggetto )
+
+	case kist_treeview_oggetto.certif_st_giorno
+
+		long k_rc
+		st_treeview_data kst_treeview_data
+		st_treeview_data_any kst_treeview_data_any
+		st_tab_certif kst_tab_certif
+		listviewitem klvi_listviewitem
+		k_rc = kilv_lv1.selectedindex( )
+		kilv_lv1.getitem(k_rc, klvi_listviewitem )
+		kst_treeview_data = klvi_listviewitem.data
+		kst_treeview_data_any = kst_treeview_data.struttura
+		kst_tab_certif = kst_treeview_data_any.st_tab_certif 
+//se anno [completo] allora salta di 1 livello e chiama per far vedere il dettaglio
+		if relativedate(kst_tab_certif.data, 365) = kst_tab_certif.data_stampa then
+			k_tipo_oggetto = kist_treeview_oggetto.certif_st_dett
+			k_return = kiuf_certif.u_tree_riempi_treeview(ki_this, k_tipo_oggetto)
+		else		
+			k_return = kiuf_certif.u_tree_riempi_treeview_x_giorno(ki_this, k_tipo_oggetto)
+		end if
+		
+	case else
+		
+end choose
+
+//if isvalid(kuf1_certif) then destroy kuf1_certif
+
+return k_return
+
 end function
 
 on kuf_treeview.create

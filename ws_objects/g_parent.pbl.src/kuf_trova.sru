@@ -119,7 +119,7 @@ if isvalid(a_w_attiva) then
 	k_obj_su_cui_trovare = kiw_su_cui_trovare.kigrf_x_trova
 	if not isvalid(k_obj_su_cui_trovare) then
 		kguo_exception.inizializza( )
-		kguo_exception.set_tipo( kguo_exception.kk_st_uo_exception_tipo_dati_non_eseguito )
+		kguo_exception.set_tipo( kguo_exception.KK_st_uo_exception_tipo_non_eseguito )
 		kguo_exception.setmessage( "Seleziona l'elenco sul quale effettuare la ricerca!" )
 		throw kguo_exception
 	end if		

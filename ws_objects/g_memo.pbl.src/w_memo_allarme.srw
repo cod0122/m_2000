@@ -15,7 +15,7 @@ boolean titlebar = true
 boolean controlmenu = true
 boolean resizable = true
 long backcolor = 553648127
-string icon = "Asterisk!"
+string icon = "main.ico"
 integer transparency = 20
 windowanimationstyle openanimation = bottomroll!
 windowanimationstyle closeanimation = toproll!
@@ -278,7 +278,6 @@ integer width = 1920
 integer height = 360
 integer taborder = 10
 boolean hscrollbar = true
-boolean ki_notifica_a_video = true
 end type
 
 event u_keydown;//

@@ -347,7 +347,7 @@ datastore kds_meca_reportpilota, kds_meca_reportpilota_errori
 													+ "_id" + string(kst_tab_meca.id, "#") + ".pdf"
 	
 	//--- copia il file dalla cartella PILOTA alla cartella Interna definita in Procedura (crea la cartella se non esiste)
-									kguo_path.u_drectory_create(k_path_all[k_npath])
+									kuf1_file_explorer.u_directory_create(k_path_all[k_npath])
 									k_rcn = FileCopy (kst_tab_base.dir_report_pilota + kkg.path_sep + k_file, k_path_all[k_npath] + k_nome_file_dest, true)
 									
 									choose case k_rcn
@@ -432,7 +432,7 @@ datastore kds_meca_reportpilota, kds_meca_reportpilota_errori
 				kds_meca_reportpilota.saveas(k_path[1]+kkg.path_sep +"ReportPilotaOKFileList.xlsx", XLSX!, true)
 			else
 				if upperbound(k_path) > 0 then
-					kguo_path.u_drectory_create(k_path[1])
+					kuf1_file_explorer.u_directory_create(k_path[1])
 					kds_meca_reportpilota.saveas(k_path[1]+kkg.path_sep +"ReportPilotaERRORFileList.xlsx", XLSX!, true)
 				else
 					k_path[1] = ""
@@ -450,7 +450,7 @@ datastore kds_meca_reportpilota, kds_meca_reportpilota_errori
 //--- se ci sono ERRORI li segnala				
 		if k_wo_non_importati > 0 then
 			if upperbound(k_path) > 0 then
-				kguo_path.u_drectory_create(k_path[1])
+				kuf1_file_explorer.u_directory_create(k_path[1])
 				kds_meca_reportpilota_errori.saveas(k_path[1]+kkg.path_sep +"ReportPilotaERRORFileList.xlsx", XLSX!, true)
 			else
 				k_path[1] = ""

@@ -63,7 +63,7 @@ private function string inizializza ();//
 //======================================================================
 //
 string k_return="0 "
-int k_importa = 0
+int k_importa = 0, k_righe
 st_tab_sped kst_tab_sped
 kuf_listino kuf1_listino
 pointer oldpointer  // Declares a pointer variable
@@ -86,13 +86,18 @@ pointer oldpointer  // Declares a pointer variable
 		else
 			kst_tab_sped.clie_2 = 0
 		end if
-		if dw_lista_0.retrieve(dw_periodo.ki_data_ini, dw_periodo.ki_data_fin, kst_tab_sped.clie_2) < 1 then
+		k_righe = dw_lista_0.retrieve(dw_periodo.ki_data_ini, dw_periodo.ki_data_fin, kst_tab_sped.clie_2)
+		if k_righe < 1 then
 			k_return = "1Nessuna Spedizione per il periodo: " + string(dw_periodo.ki_data_ini) + " - " + string(dw_periodo.ki_data_fin)
 
 			SetPointer(oldpointer)
 			messagebox("Elenco ddt", &
 					"Nessuna Spedizione per il periodo: " + string(dw_periodo.ki_data_ini) + " - " + string(dw_periodo.ki_data_fin))
-
+		else
+			if k_righe = 1 then
+				dw_lista_0.setrow(1)
+				dw_lista_0.selectrow(1, true)
+			end if
 		end if		
 	end if
 

@@ -1145,7 +1145,7 @@ st_esito kst_esito
 		   SELECT 
 			      meca.id,
 			      meca.num_int,   
-					meca.data_int,   
+					meca.data_int,    
 					meca.num_bolla_in,   
 					meca.data_bolla_in,   
 					meca.clie_1,   
@@ -6417,7 +6417,7 @@ try
 //--- Controlla se ATTESTATO è stato già stampato
 	kuf1_certif = create kuf_certif
 	kst_tab_certif.id_meca = kst_tab_meca.id
-	kuf1_certif.get_id_da_id_meca(kst_tab_certif)
+	kuf1_certif.get_id_da_id_meca(kst_tab_certif) 
 	if kst_tab_certif.id > 0 then
 		k_att_stampato = kuf1_certif.if_stampato(kst_tab_certif)
 	end if

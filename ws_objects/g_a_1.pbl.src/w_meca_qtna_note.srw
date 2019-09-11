@@ -269,7 +269,7 @@ event dw_dett_0::resize;call super::resize;//
 //this.modify("t_x_datins.y = x_datins.y")
 //this.modify("x_utente.y = x_datins.y")
 
-this.Modify("note.Width='"+ String(this.width - 100) +"' ")
+this.Modify("note.Width='"+ String(this.width - 105) +"' ")
 this.Modify("note.Height='"+ String(long(this.describe("x_datins.y")) - long(this.describe("note.y") )  - 20) +"' ")
 
 end event

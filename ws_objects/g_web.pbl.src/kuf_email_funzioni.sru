@@ -14,7 +14,7 @@ type variables
 public constant string kki_cod_funzione_fatturaNOallegati = "FTAV"   // fattura solo con avviso
 public constant string kki_cod_funzione_fatturaSIallegati = "FTAL"    // fattura con allagato
 public constant string kki_cod_funzione_prontoMerce = "MTPR"   // pronto merce - lotti pronti x il ricevente
-
+public constant string kki_cod_funzione_Attestati = "CRTF"   // attestati stampa pdf da E1 e M2000
 
 end variables
 
@@ -30,6 +30,7 @@ public function long get_id_email_xcodfunzione (st_tab_email_funzioni ast_tab_em
 public function long get_id_email_funzione_xcodfunzione (st_tab_email_funzioni ast_tab_email_funzioni) throws uo_exception
 public function long get_id_email_xidemailfunzione (st_tab_email_funzioni ast_tab_email_funzioni) throws uo_exception
 public function long get_id_email_funzione_xidemail (st_tab_email_funzioni ast_tab_email_funzioni) throws uo_exception
+public function string get_des (ref st_tab_email_funzioni kst_tab_email_funzioni) throws uo_exception
 end prototypes
 
 public subroutine tb_delete (st_tab_email_funzioni ast_tab_email_funzioni) throws uo_exception;//
@@ -600,6 +601,61 @@ else
 end if
 
 if ast_tab_email_funzioni.id_email_funzione > 0 then k_return = ast_tab_email_funzioni.id_email_funzione 
+
+return k_return 
+
+end function
+
+public function string get_des (ref st_tab_email_funzioni kst_tab_email_funzioni) throws uo_exception;//
+//====================================================================
+//=== 
+//=== Leggo tabella e-mail codici funzioni per avere la descrizione
+//=== 
+//=== input: st_tab_email_funzioni con valorizzato il campo id_email
+//=== out: cod_funzione
+//=== Ritorna  cod_funzione
+//=== 
+//====================================================================
+//
+string k_return = ""
+string k_email_funzioni_cod_des
+st_esito kst_esito
+
+
+
+kst_esito.esito = kkg_esito.ok
+kst_esito.sqlcode = 0
+kst_esito.SQLErrText = ""
+kst_esito.nome_oggetto = this.classname()
+
+
+if kst_tab_email_funzioni.cod_funzione > " " then
+
+  SELECT
+         email_funzioni_cod.des 
+    INTO 
+         :k_email_funzioni_cod_des
+    FROM email_funzioni_cod  
+	where email_funzioni_cod.cod_funzione = :kst_tab_email_funzioni.cod_funzione
+	using kguo_sqlca_db_magazzino;
+
+	if kguo_sqlca_db_magazzino.sqlcode < 0 then
+		kst_esito.esito = kkg_esito.db_ko
+		kst_esito.sqlcode = kguo_sqlca_db_magazzino.sqlcode
+		kst_esito.SQLErrText = "Fallita lettura Descrizione Codice Funzione E-mail, codice " + string(kst_tab_email_funzioni.cod_funzione) + " ~n~r" + trim(kguo_sqlca_db_magazzino.SQLErrText)
+		kguo_exception.inizializza( )
+		kguo_exception.set_esito(kst_esito)
+		throw kguo_exception
+	end if
+else
+	kst_esito.SQLErrText = "Manca codice funzione E-mail x leggere la descrizione"
+	kst_esito.esito = kkg_esito.no_esecuzione
+	kguo_exception.inizializza( )
+	kguo_exception.set_esito(kst_esito)
+	throw kguo_exception
+end if
+
+if k_email_funzioni_cod_des > " " then k_return = trim(k_email_funzioni_cod_des)
 
 return k_return 
 

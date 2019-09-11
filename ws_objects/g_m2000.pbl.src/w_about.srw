@@ -54,21 +54,27 @@ event ue_open();string k_path_risorse
 string k_ultimo_utente_login_data, k_utente_codice
 int k_revision=0
 string k_build=""
+st_esito kst_esito
 kuf_base kuf1_base
 kuf_utility kuf1_utility
+kuf_file_explorer kuf1_file_explorer
 environment kenv
+pointer kpointer
+
 
 try
+	
+	kpointer = setpointer(hourglass!)
 	
 	dw_1.move(1,1)
 	dw_1.resize(this.width, this.height)
 	//st_versione.text = kkG_versione
 	
-	kuf1_utility = create kuf_utility			 
+	kuf1_utility = create kuf_utility	
+	kuf1_file_explorer = create kuf_file_explorer
 	
 	this.title = trim(this.title) + "  Vers." + trim(string(kkG.versione, '00.0000')) 
 	this.title = this.title + " su " + trim(kuf1_utility.u_nome_computer()) //prendo nome del Computer
-	
 	
 //--- connessione al DB
 	if not isvalid(KGuo_sqlca_db_magazzino)  then KGuo_sqlca_db_magazzino = SQLCA
@@ -80,9 +86,12 @@ try
 	KG_PATH_BASE_DEL_SERVER_JOB = kGuo_path.get_base_del_server_job( )
 	
 //--- set la path BASE ovvero dove risiedono ad esempio gli errori (spesso c:\at_m2000)
-	kGuo_path.set_path_base( )
+	kst_esito = kGuo_path.set_path_base( )
 	kg_path_base = kGuo_path.get_base()
-	kGuo_path.set_arch_saveas( )  //cartella salvataggio DW 
+	if kst_esito.esito = kkg_esito.not_fnd then
+		kuf1_file_explorer.u_directory_create(kg_path_base)
+	end if
+//	kGuo_path.set_arch_saveas( )  //cartella salvataggio DW 
 	
 //--- path per reperire il grafico del LOGO 
 	k_path_risorse = kGuo_path.get_risorse()
@@ -168,6 +177,9 @@ catch (uo_exception kuo_exception)
 
 finally
 	if isvalid(kuf1_utility) then destroy kuf1_utility
+	if isvalid(kuf1_file_explorer) then destroy kuf1_file_explorer
+	
+	setpointer(kpointer)
 	
 end try
 

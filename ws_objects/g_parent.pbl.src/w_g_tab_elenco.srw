@@ -326,7 +326,7 @@ if ki_st_open_w.flag_primo_giro <> "S" then
 		ki_menu.m_strumenti.m_fin_gest_libero1.toolbaritemText = 	"Chiudi, Chiudi scheda Selezionata  "
 //		ki_menu.m_strumenti.m_fin_gest_libero1.toolbaritembarindex=2
 //		ki_menu.m_strumenti.m_fin_gest_libero1.toolbaritemName = kGuo_path.get_risorse() + "\Cancel16.ico"
-		ki_menu.m_strumenti.m_fin_gest_libero1.toolbaritemName = "Cancel16.png"
+		ki_menu.m_strumenti.m_fin_gest_libero1.toolbaritemName = "Close_2!"
 		ki_menu.m_strumenti.m_fin_gest_libero1.visible = true
 		ki_menu.m_strumenti.m_fin_gest_libero1.enabled = true
 		ki_menu.m_strumenti.m_fin_gest_libero1.toolbaritemVisible = true
@@ -345,7 +345,7 @@ if ki_st_open_w.flag_primo_giro <> "S" then
 		ki_menu.m_strumenti.m_fin_gest_libero2.toolbaritemText = 	"Importa, Importa riga/righe Selezionata  "
 //		ki_menu.m_strumenti.m_fin_gest_libero2.toolbaritembarindex=2
 //		ki_menu.m_strumenti.m_fin_gest_libero2.toolbaritemName = kGuo_path.get_risorse() + "\spunta.gif"
-		ki_menu.m_strumenti.m_fin_gest_libero2.toolbaritemName = "spunta.gif"
+		ki_menu.m_strumenti.m_fin_gest_libero2.toolbaritemName = "Custom038_2!"
 		ki_menu.m_strumenti.m_fin_gest_libero2.visible = true
 		ki_menu.m_strumenti.m_fin_gest_libero2.enabled = cb_conferma.enabled
 		ki_menu.m_strumenti.m_fin_gest_libero2.toolbaritemVisible = true
@@ -358,7 +358,7 @@ if ki_st_open_w.flag_primo_giro <> "S" then
 		ki_menu.m_strumenti.m_fin_gest_libero3.microhelp = "Mostra Elenco Selezionati "
 		ki_menu.m_strumenti.m_fin_gest_libero3.toolbaritemText = "Mostra, Mosta/Nascondi elenco Righe già Selezonate  "
 //		ki_menu.m_strumenti.m_fin_gest_libero3.toolbaritembarindex=2
-		ki_menu.m_strumenti.m_fin_gest_libero3.toolbaritemName = "PlaceColumn5!"
+		ki_menu.m_strumenti.m_fin_gest_libero3.toolbaritemName = "PlaceColumn_2!"
 		ki_menu.m_strumenti.m_fin_gest_libero3.visible = true
 		ki_menu.m_strumenti.m_fin_gest_libero3.enabled = true
 		ki_menu.m_strumenti.m_fin_gest_libero3.toolbaritemVisible = true

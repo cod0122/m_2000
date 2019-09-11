@@ -51,7 +51,7 @@ kst_esito.nome_oggetto = this.classname()
 	if ast_tab_meca_ptmerce.id_meca > 0 then
 	else
 		kst_esito.esito = kkg_esito.no_esecuzione
-		kst_esito.sqlerrtext = "Operazione di inserimento del 'Pronto Merce' interrotta, manca ID del Lotto"
+		kst_esito.sqlerrtext = "Generazione avviso nel 'Pronto Merce' interrotta, manca ID del Lotto"
 		kguo_exception.inizializza( )
 		kguo_exception.set_esito(kst_esito)
 		throw kguo_exception
@@ -59,7 +59,7 @@ kst_esito.nome_oggetto = this.classname()
 
 	if if_esiste(ast_tab_meca_ptmerce) then
 		kst_esito.esito = kkg_esito.no_esecuzione
-		kst_esito.sqlerrtext = "Inserimento avviso nel 'Pronto Merce' fallito, il Lotto id " + string(ast_tab_meca_ptmerce.id_meca) + " è  già stato caricato in archivio!"
+		kst_esito.sqlerrtext = "Generazione avviso nel 'Pronto Merce' fallita, il Lotto id " + string(ast_tab_meca_ptmerce.id_meca) + " è  già stato caricato in archivio!"
 		kguo_exception.inizializza( )
 		kguo_exception.set_esito(kst_esito)
 		throw kguo_exception
@@ -274,7 +274,7 @@ try
 	if ast_tab_meca.id > 0 then 
 	else
 		kguo_exception.inizializza( )
-		kguo_exception.set_tipo(kguo_exception.kk_st_uo_exception_tipo_dati_non_eseguito )
+		kguo_exception.set_tipo(kguo_exception.KK_st_uo_exception_tipo_non_eseguito )
 		kguo_exception.set_nome_oggetto(this.classname( ) )
 		kguo_exception.setmessage( "Manca id Lotto. Generazione e-mail non eseguita. ")
 		throw kguo_exception
@@ -306,7 +306,10 @@ try
 			kguo_exception.inizializza( )
 			kguo_exception.set_tipo(kguo_exception.kk_st_uo_exception_tipo_not_fnd )
 			kguo_exception.set_nome_oggetto(this.classname( ) )
-			kguo_exception.setmessage( "Impostare da 'Proprietà della Procedura' il Prototipo e-mail da utilizzare per l'invio funzionale '" + trim(kst_tab_email_funzioni.cod_funzione)+"' (Pronto merce)")
+			kguo_exception.setmessage( "Impostare da 'Proprietà della Procedura' il Prototipo e-mail da utilizzare per l'invio codificato come '" &
+						+ trim(kst_tab_email_funzioni.cod_funzione) &
+						+ " '(" + kuf1_email_funzioni.get_des(kst_tab_email_funzioni) + ")")
+			//kguo_exception.setmessage( "Impostare da 'Proprietà della Procedura' il Prototipo e-mail da utilizzare per l'invio funzionale '" + trim(kst_tab_email_funzioni.cod_funzione)+"' (Pronto merce)")
 			throw kguo_exception
 		end if
 		
@@ -325,21 +328,22 @@ try
 		
 //--- Composizione dell'OGGETTO: somma alla dicitura del Prototipo il ddt del mandante a anche il Nome quando cliente diverso da mandante
 		if ast_tab_meca.num_bolla_in > " " then
-			kst_tab_email_invio.oggetto = trim(kst_tab_email_invio.oggetto) + " D.D.T. n. " + trim(ast_tab_meca.num_bolla_in)
+			kst_tab_email_invio.oggetto = trim(kst_tab_email_invio.oggetto) + " related to delivery Notes # " + trim(ast_tab_meca.num_bolla_in)
+			//kst_tab_email_invio.oggetto = trim(kst_tab_email_invio.oggetto) + " D.D.T. n. " + trim(ast_tab_meca.num_bolla_in)
 			if ast_tab_meca.data_bolla_in > date(0) then
-				kst_tab_email_invio.oggetto += " del " + string(ast_tab_meca.data_bolla_in)
+				kst_tab_email_invio.oggetto += " of " + string(ast_tab_meca.data_bolla_in, "dd mmm yyyy")
 			end if
 		end if
-		if ast_tab_meca.num_int > 0 then
-			kst_tab_email_invio.oggetto = trim(kst_tab_email_invio.oggetto) + " rif. interno " + string(ast_tab_meca.num_int)
-		end if
+//		if ast_tab_meca.num_int > 0 then
+//			kst_tab_email_invio.oggetto = trim(kst_tab_email_invio.oggetto) + " rif. interno " + string(ast_tab_meca.num_int)
+//		end if
 		if kst_tab_email_invio.id_cliente <> ast_tab_meca.clie_1 then // se cliente mandante diverso aggiungo il nome
 			kst_tab_clienti.codice = ast_tab_meca.clie_1
 			kuf1_clienti.get_nome(kst_tab_clienti)
-			kst_tab_email_invio.oggetto = trim(kst_tab_email_invio.oggetto) + " di " + trim(kst_tab_clienti.rag_soc_10)
+			kst_tab_email_invio.oggetto = trim(kst_tab_email_invio.oggetto) + ". Customer '" + trim(kst_tab_clienti.rag_soc_10) + "'"
 		end if
 
-		kst_tab_email_invio.note = "da Convalida dosimetria, Lotto " + string(ast_tab_meca.num_int) + "  " +  string(ast_tab_meca.data_int) + "   id " + string(ast_tab_meca.id) + " "  
+		kst_tab_email_invio.note = "generato dalla Convalida dosimetrica, Lotto " + string(ast_tab_meca.num_int) + "  " +  string(ast_tab_meca.data_int) + "   id " + string(ast_tab_meca.id) + " "  
 		
 //--- Controllo la presenza in elenco della EMAIL
 		kst_tab_email_invio.id_email_invio = kuf1_email_invio.if_presente_x_id_oggetto(kst_tab_email_invio)
@@ -360,7 +364,7 @@ try
 		end if		
 		if k_return = 0 then
 			kst_esito.esito = kkg_esito.no_esecuzione
-			kst_esito.sqlerrtext = "Errore durante preparazione e-mail da inviare!"
+			kst_esito.sqlerrtext = "Errore durante preparazione e-mail da inviare 'Avvisi Pronto Merce'!"
 			kguo_exception.inizializza( )
 			kguo_exception.set_esito(kst_esito)
 			throw kguo_exception

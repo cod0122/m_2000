@@ -433,7 +433,7 @@ boolean k_attiva
 		ki_menu.m_strumenti.m_fin_gest_libero2.toolbaritemvisible = true
 		ki_menu.m_strumenti.m_fin_gest_libero2.toolbaritembarindex=2
 		//ki_menu.m_strumenti.m_fin_gest_libero2.toolbaritemname = ki_path_risorse + "\cicli.bmp"
-		ki_menu.m_strumenti.m_fin_gest_libero2.toolbaritemname = "cicli.bmp"
+		ki_menu.m_strumenti.m_fin_gest_libero2.toolbaritemname = "cicli16.png"
 	end if
 	
 	if not ki_menu.m_strumenti.m_fin_gest_libero3.visible then
@@ -493,7 +493,7 @@ boolean k_attiva
 	//	ki_menu.m_strumenti.m_fin_gest_libero6.toolbaritembarindex = 2
 		ki_menu.m_strumenti.m_fin_gest_libero6.toolbaritemvisible = true
 		ki_menu.m_strumenti.m_fin_gest_libero6.toolbaritembarindex=2
-		ki_menu.m_strumenti.m_fin_gest_libero6.toolbaritemname = "barcode.bmp"
+		ki_menu.m_strumenti.m_fin_gest_libero6.toolbaritemname = "barcode16.png"
 	end if
 
 
@@ -508,7 +508,6 @@ protected subroutine smista_funz (string k_par_in);//---
 //=== Usata per esempio dal menu popup
 //=== Par. input : k_par_in stringa
 //===
-uo_exception kuo1_exception
 st_esito kst_esito
 
 
@@ -533,11 +532,12 @@ choose case Left(k_par_in, 2)
 						if kst_esito.esito = kkg_esito.ok then
 							modifica_giri(dw_modifica.ki_modalita_modifica_giri_riga)
 						else
-							kuo1_exception = create uo_exception
-							kuo1_exception.setmessage("La coda Pilota e' stata Inaspettatamente Aggiornata~n~r" &
+							kguo_exception.inizializza( )
+							kguo_exception.set_tipo(kguo_exception.KK_st_uo_exception_tipo_non_eseguito)
+							kguo_exception.setmessage("La coda Pilota e' stata Inaspettatamente Aggiornata~n~r" &
 																+ kst_esito.sqlerrtext & 
 																 +" ~n~rL'operazione non puo' essere effettuata. Uscire dalla Funzione.") //--- errore
-							kuo1_exception.messaggio_utente()
+							kguo_exception.messaggio_utente()
 						end if
 					catch (uo_exception kuo_exception)
 						kuo_exception.messaggio_utente()
@@ -563,16 +563,18 @@ choose case Left(k_par_in, 2)
 	case "l5"		//Crea e Invia al Pilota la coda
 		try
 			crea_richiesta_pilota()
-			kuo1_exception = create uo_exception
-			kuo1_exception.setmessage("Operazione Conclusa, dati Inviati al Pilota.")
-			kuo1_exception.messaggio_utente()
-		catch (uo_exception k1uo_exception)
+			kguo_exception.inizializza( )
+			kguo_exception.set_tipo(kguo_exception.kk_st_uo_exception_tipo_ok)
+			kguo_exception.setmessage("Operazione Conclusa, dati Inviati al Pilota.")
+			kguo_exception.messaggio_utente()
+			
+		catch (uo_exception kuo1_exception)
 
 			if not(ki_invio_programma_eseguito) then
 				modifica_giri_ripristina()
 			end if
 
-			k1uo_exception.messaggio_utente()
+			kuo1_exception.messaggio_utente()
 		end try
 
 	case "l6"		//dettaglio barcode
@@ -2277,6 +2279,9 @@ end type
 type dw_guida from w_g_tab0`dw_guida within w_pl_barcode_coda_pilota
 end type
 
+type st_duplica from w_g_tab0`st_duplica within w_pl_barcode_coda_pilota
+end type
+
 type st_barcode from statictext within w_pl_barcode_coda_pilota
 boolean visible = false
 integer x = 658
@@ -2313,8 +2318,6 @@ string title = "Coda Programmazione Impianto aggiornata alle"
 string dataobject = "d_pilota_queue_table"
 boolean minbox = true
 boolean maxbox = true
-boolean hscrollbar = true
-boolean vscrollbar = true
 boolean resizable = true
 boolean ki_db_conn_standard = false
 end type

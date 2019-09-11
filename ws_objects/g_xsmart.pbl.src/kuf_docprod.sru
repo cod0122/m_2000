@@ -2687,6 +2687,7 @@ int k_file
 long k_bytes, k_ctr, k_item=0, k_item_max=0
 boolean k_file_esiste=false
 st_esito kst_esito
+kuf_file_explorer kuf1_file_explorer
 //st_uf_docpath kst_uf_docpath
 //kuf_base kuf1_base
 
@@ -2698,7 +2699,9 @@ kst_esito.nome_oggetto = this.classname()
 
 k_path_nome_file = kguo_path.get_doc_root( ) + kkg.path_sep
 
-kguo_path.u_drectory_create(k_path_nome_file)
+kuf1_file_explorer = create kuf_file_explorer
+kuf1_file_explorer.u_directory_create(k_path_nome_file)
+destroy kuf1_file_explorer
 
 k_path_nome_file += "M2000elencoDocumentiPDF.txt"
 
@@ -3074,15 +3077,12 @@ string k_path="", k_path_interno="", k_path_esterno="", k_esito="", k_path_x_doc
 int k_rc=0
 st_tab_docpath kst_tab_docpath
 st_tab_doctipo kst_tab_doctipo
-//st_tab_docpathtipo kst_tab_docpathtipo
 st_tab_clienti_mkt kst_tab_clienti_mkt
 st_esito kst_esito
-//kuf_docpathtipo kuf1_docpathtipo 
 kuf_doctipo kuf1_doctipo 
 kuf_docpath kuf1_docpath
 kuf_clienti kuf1_clienti 
-//kuf_base kuf1_base
-//kuf_utility kuf1_utility
+kuf_file_explorer kuf1_file_explorer
 
 
 	kst_esito.esito = kkg_esito.ok
@@ -3095,12 +3095,9 @@ kuf_clienti kuf1_clienti
 		try
 		
 			kuf1_docpath = create kuf_docpath
-//			kuf1_docpathtipo = create kuf_docpathtipo	  
 			kuf1_doctipo = create kuf_doctipo	  
 			kuf1_clienti = create kuf_clienti 
-//			kuf1_base = create kuf_base 
-//			kuf1_utility = create kuf_utility
-
+			kuf1_file_explorer = create kuf_file_explorer
 
 //--- se id_docpath non passato allora reperisco con il tipo l'unico id_docpath nella tabella docpathtipo se c'e'....
 			if ast_tab_docprod.id_docpath > 0 then
@@ -3146,7 +3143,7 @@ kuf_clienti kuf1_clienti
 //--- formatta il PATH INTERNO completo					
 				k_path_interno +=  KKG.PATH_SEP + ast_tab_docprod.doc_esporta_prefpath + KKG.PATH_SEP  + trim(kst_tab_docpath.path) &
 													+ KKG.PATH_SEP  + string(year(ast_tab_docprod.doc_data)) 
-				if not kguo_path.u_drectory_create(k_path_interno ) then // Crea eventuale percorso COMPLETO!!!
+				if not kuf1_file_explorer.u_directory_create(k_path_interno ) then // Crea eventuale percorso COMPLETO!!!
 					kst_esito.esito = kkg_esito.no_esecuzione  
 					kst_esito.SQLErrText = "Problemi durante verifica path 'Uso Interno' per l'esportazione Documenti: " + k_path_interno
 				end if
@@ -3155,7 +3152,7 @@ kuf_clienti kuf1_clienti
 				if len(trim(k_path_esterno)) > 0 then
 					k_path_esterno +=  KKG.PATH_SEP + kst_tab_clienti_mkt.doc_esporta_prefpath + KKG.PATH_SEP  + trim(kst_tab_docpath.path) &
 														+ KKG.PATH_SEP  + string(year(ast_tab_docprod.doc_data)) 
-					if not kguo_path.u_drectory_create(k_path_esterno ) then // Crea eventuale percorso COMPLETO!!!
+					if not kuf1_file_explorer.u_directory_create(k_path_esterno ) then // Crea eventuale percorso COMPLETO!!!
 						kst_esito.esito = kkg_esito.no_esecuzione  
 						kst_esito.SQLErrText = "Problemi durante verifica path 'Uso Esterno' per l'esportazione Documenti: " + k_path_esterno
 					end if
@@ -3163,7 +3160,7 @@ kuf_clienti kuf1_clienti
 
 //--- formatta il PATH DOCUMENTALE completo					
 				k_path_x_documentale +=  KKG.PATH_SEP + kst_tab_docpath.path_x_documentale  
-				if not kguo_path.u_drectory_create(k_path_x_documentale ) then // Crea eventuale percorso COMPLETO!!!
+				if not kuf1_file_explorer.u_directory_create(k_path_x_documentale ) then // Crea eventuale percorso COMPLETO!!!
 					kst_esito.esito = kkg_esito.no_esecuzione  
 					kst_esito.SQLErrText = "Problemi durante verifica path Uso Documentale per l'esportazione Documenti: " + k_path_x_documentale
 				end if
@@ -3185,11 +3182,9 @@ kuf_clienti kuf1_clienti
          
 		finally
 			if isvalid(kuf1_docpath) then destroy kuf1_docpath
-//			if isvalid(kuf1_docpathtipo) then destroy kuf1_docpathtipo	  
 			if isvalid(kuf1_doctipo) then destroy kuf1_doctipo	  
 			if isvalid(kuf1_clienti) then destroy kuf1_clienti 
-//			if isvalid(kuf1_base) then destroy kuf1_base
-//			if isvalid(kuf1_utility ) then destroy kuf1_utility
+			if isvalid(kuf1_file_explorer) then destroy kuf1_file_explorer
 			
    		end try
 	

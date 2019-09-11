@@ -5,10 +5,10 @@ COM:Sterigenics Italy
 DES:Magazzino Sterigenics Italy
 CPY:GNU GPL v.3
 PRD:M2000
-PVS:19.03.00.7046
-PVN:19,6,0,1
-FVS:19.03.00.7046
-FVN:19,6,0,1
+PVS:19.08.00.7046
+PVN:19,9,0,1
+FVS:19.08.00.7046
+FVN:19,9,0,1
 MAN:1,asInvoker,0
 PBD:g_m2000.pbl,,1
 PBD:g_parent.pbl,,1
@@ -56,6 +56,7 @@ OBJ:C:\Sterigenics\app\g_mkt.pbl,st_clienti_esenzione_iva,s
 OBJ:C:\Sterigenics\app\g_sr.pbl,kuf_sr_activedirectory,u
 OBJ:C:\Sterigenics\app\g_sr.pbl,st_tab_sr_settori,s
 OBJ:C:\Sterigenics\app\g_treeview.pbl,st_tab_treeview_icone,s
+OBJ:C:\Sterigenics\app\g_generic.pbl,kuf_file_run,u
 OBJ:C:\Sterigenics\app\g_listini.pbl,kuf_listino_pregruppo,u
 OBJ:C:\Sterigenics\app\g_a_2.pbl,st_txt_pilota_cmd,s
 OBJ:C:\Sterigenics\app\g_parent.pbl,m_popup,m
@@ -93,18 +94,18 @@ OBJ:C:\Sterigenics\app\g_fatt.pbl,d_profis_exp_fatt,d
 OBJ:C:\Sterigenics\app\g_sr.pbl,st_tab_sr_utenti,s
 OBJ:C:\Sterigenics\app\g_a_2.pbl,kds_certif_stampa_allegati,u
 OBJ:C:\Sterigenics\app\g_a_1.pbl,st_tab_sd_md,s
+OBJ:C:\Sterigenics\app\g_generic.pbl,st_file_explorer_shellexecute,s
 OBJ:C:\Sterigenics\app\g_listini.pbl,st_tab_listino_link_pregruppi,s
 OBJ:C:\Sterigenics\app\g_e1.pbl,ds_e1_f5548014_ifesiste,d
-OBJ:C:\Sterigenics\app\g_generic.pbl,st_file_explorer_shellexecute,s
 OBJ:C:\Sterigenics\app\g_sped.pbl,ds_ddt_stampa,u
 OBJ:C:\Sterigenics\app\g_a_2.pbl,d_att_stampa_ed1b01_2013,d
 OBJ:C:\Sterigenics\app\g_e1.pbl,st_get_e1barcode,s
 OBJ:C:\Sterigenics\app\g_globals.pbl,kds_current_datetime,u
+OBJ:C:\Sterigenics\app\g_generic.pbl,st_file_explorer_win32_find_data,s
 OBJ:C:\Sterigenics\app\g_listini.pbl,st_tab_listino_pregruppi_voci,s
 OBJ:C:\Sterigenics\app\g_a_2.pbl,st_tab_pilota_cmd,s
 OBJ:C:\Sterigenics\app\g_e1.pbl,kds_e1_wo_f5548014,u
 OBJ:C:\Sterigenics\app\g_generic.pbl,kuf_ddw_grid,u
-OBJ:C:\Sterigenics\app\g_generic.pbl,st_file_explorer_win32_find_data,s
 OBJ:C:\Sterigenics\app\g_mkt.pbl,st_tab_contratti_rd,s
 OBJ:C:\Sterigenics\app\g_fatt.pbl,kuf_ricevute,u
 OBJ:C:\Sterigenics\app\g_base.pbl,kuo_sqlca_db_magazzino,u
@@ -147,9 +148,9 @@ OBJ:C:\Sterigenics\app\g_a_2.pbl,ds_pl_barcode,u
 OBJ:C:\Sterigenics\app\g_base.pbl,kuf_menu_tree,u
 OBJ:C:\Sterigenics\app\g_parent.pbl,st_toolbar_programmi,s
 OBJ:C:\Sterigenics\app\g_sped.pbl,st_ddt_stampa,s
+OBJ:C:\Sterigenics\app\g_a_2.pbl,kuf_certif_email,u
 OBJ:C:\Sterigenics\app\g_a_2.pbl,kuf_certif_file,u
 OBJ:C:\Sterigenics\app\g_base.pbl,st_tab_base,s
-OBJ:C:\Sterigenics\app\g_skedula.pbl,kuf_sv_skedula_run,u
 OBJ:C:\Sterigenics\app\g_a_2.pbl,st_tab_barcode,s
 OBJ:C:\Sterigenics\app\g_listini.pbl,st_tab_listino_voci,s
 OBJ:C:\Sterigenics\app\g_base.pbl,w_menu_tree,w
@@ -201,20 +202,20 @@ OBJ:C:\Sterigenics\app\g_a_2.pbl,kuf_pilota_previsioni,u
 OBJ:C:\Sterigenics\app\g_xsmart.pbl,st_tab_docpath,s
 OBJ:C:\Sterigenics\app\g_base.pbl,kuo_sqlca_db_wm,u
 OBJ:C:\Sterigenics\app\g_mkt.pbl,st_tab_contratti_dp,s
+OBJ:C:\Sterigenics\app\g_web.pbl,st_tab_email,s
 OBJ:C:\Sterigenics\app\g_a_2.pbl,kuf_pl_barcode_tree,u
 OBJ:C:\Sterigenics\app\g_fatt.pbl,st_prof_exp_anag,s
 OBJ:C:\Sterigenics\app\g_a_2.pbl,st_ricevute_scadenze,s
-OBJ:C:\Sterigenics\app\g_web.pbl,st_tab_email,s
 OBJ:C:\Sterigenics\app\g_a_1.pbl,st_tab_meca_stato,s
 OBJ:C:\Sterigenics\app\g_generic.pbl,kuf_menu,u
 OBJ:C:\Sterigenics\app\g_a_1.pbl,kuf_meca_chiudi,u
 OBJ:C:\Sterigenics\app\g_web.pbl,kuf_email_invio,u
+OBJ:C:\Sterigenics\app\g_web.pbl,kuf_email,u
 OBJ:C:\Sterigenics\app\g_wm.pbl,kuf_wm_pklist_web,u
 OBJ:C:\Sterigenics\app\g_e1.pbl,st_tab_f5547013,s
 OBJ:C:\Sterigenics\app\g_mkt.pbl,st_tab_contratti_doc,s
 OBJ:C:\Sterigenics\app\g_xcrm.pbl,kuf_m2000tocrm,u
 OBJ:C:\Sterigenics\app\g_memo.pbl,st_memo_allarme,s
-OBJ:C:\Sterigenics\app\g_web.pbl,kuf_email,u
 OBJ:C:\Sterigenics\app\g_parent.pbl,uo_exception,u
 OBJ:C:\Sterigenics\app\g_generic.pbl,st_tab_menu_window_anteprima,s
 OBJ:C:\Sterigenics\app\g_listini.pbl,kuf_listino_prezzi,u
@@ -233,6 +234,7 @@ OBJ:C:\Sterigenics\app\g_generic.pbl,kuf_data_base,u
 OBJ:C:\Sterigenics\app\g_prt.pbl,st_stampante,s
 OBJ:C:\Sterigenics\app\g_memo.pbl,st_tab_sl_pt_memo,s
 OBJ:C:\Sterigenics\app\g_a_2.pbl,kuf_certif,u
+OBJ:C:\Sterigenics\app\g_web.pbl,st_email_address,s
 OBJ:C:\Sterigenics\app\g_e1.pbl,kds_e1_asn_accettato,u
 OBJ:C:\Sterigenics\app\g_m2000.pbl,w_about_start,w
 OBJ:C:\Sterigenics\app\powerfilter.pbl,d_powerfilter_ddbuttons,d
@@ -254,6 +256,7 @@ OBJ:C:\Sterigenics\app\g_skedula.pbl,kuf_sv_skedula,u
 OBJ:C:\Sterigenics\app\g_parent.pbl,w_main_0,w
 OBJ:C:\Sterigenics\app\g_mkt.pbl,d_import_csv_crm_anag_rid,d
 OBJ:C:\Sterigenics\app\g_a_1.pbl,kuf_meca_qtna,u
+OBJ:C:\Sterigenics\app\g_a_2.pbl,kuf_certif_e1_pdf,u
 OBJ:C:\Sterigenics\app\g_xsmart.pbl,st_tab_web_utenti,s
 OBJ:C:\Sterigenics\app\g_memo.pbl,w_memo,w
 OBJ:C:\Sterigenics\app\g_parent.pbl,uo_d_std_trova,u
@@ -309,8 +312,8 @@ OBJ:C:\Sterigenics\app\powerfilter.pbl,u_powerfilter_monthopts,u
 OBJ:C:\Sterigenics\app\g_e1.pbl,kds_e1_asn_x_schedule_l,u
 OBJ:C:\Sterigenics\app\g_fatt.pbl,kuf_fatt_forza_mod,u
 OBJ:C:\Sterigenics\app\g_globals.pbl,uo_path,u
-OBJ:C:\Sterigenics\app\g_mkt.pbl,w_import_cvs_crm_anag,w
 OBJ:C:\Sterigenics\app\g_generic.pbl,st_file_explorer_filetime,s
+OBJ:C:\Sterigenics\app\g_mkt.pbl,w_import_cvs_crm_anag,w
 OBJ:C:\Sterigenics\app\g_mkt.pbl,ds_contratti_rd_select,u
 OBJ:C:\Sterigenics\app\g_a_1.pbl,w_convalida_calc,w
 OBJ:C:\Sterigenics\app\g_mkt.pbl,st_tab_clienti_mkt,s
@@ -471,9 +474,9 @@ OBJ:C:\Sterigenics\app\pbdom190.pbd,pbdom_builder,u
 OBJ:C:\Sterigenics\app\pbdom190.pbd,pbdom_document,u
 OBJ:C:\Sterigenics\app\g_e1.pbl,ds_e1_asn_f5547013,d
 OBJ:C:\Sterigenics\app\g_a_1.pbl,kds_meca_ready_e1asn,u
+OBJ:C:\Sterigenics\app\g_generic.pbl,kuf_file_explorer,u
 OBJ:C:\Sterigenics\app\g_listini.pbl,kuf_listino_link_pregruppi,u
 OBJ:C:\Sterigenics\app\g_e1.pbl,kds_e1_f5548014,u
-OBJ:C:\Sterigenics\app\g_generic.pbl,kuf_file_explorer,u
 OBJ:C:\Sterigenics\app\pbdom190.pbd,pbdom_processinginstruction,u
 OBJ:C:\Sterigenics\app\g_fatt.pbl,st_prof_trk_fatt_esolver,s
 OBJ:C:\Sterigenics\app\g_m2000.pbl,w_main,w
@@ -489,4 +492,5 @@ OBJ:C:\Sterigenics\app\g_fatt.pbl,kuf_fatt,u
 OBJ:C:\Sterigenics\app\g_a_1.pbl,st_tab_artr,s
 OBJ:C:\Sterigenics\app\g_sr.pbl,st_tab_sr_funzioni,s
 OBJ:C:\Sterigenics\app\g_base.pbl,kuo_sqlca_db_crm,u
+OBJ:C:\Sterigenics\app\g_a_2.pbl,st_tab_certif_email,s
 OBJ:C:\Sterigenics\app\g_memo.pbl,kuf_memo_inout,u

@@ -45,7 +45,6 @@ public function integer if_esiste_barcode_lav_con_dosim (st_tab_meca_dosim ast_t
 public function integer u_genera_rimuove_barcode (st_tab_meca_dosim ast_tab_meca_dosim) throws uo_exception
 public function boolean link_call (ref datawindow adw_link, string a_campo_link) throws uo_exception
 public subroutine if_isnull (ref st_tab_meca_dosim kst_tab_meca_dosim)
-public function date get_data_x_certif (ref st_tab_meca_dosim kst_tab_meca_dosim) throws uo_exception
 public subroutine set_barcode (st_tab_meca_dosim ast_tab_meca_dosim) throws uo_exception
 public function boolean if_dosimetria_gia_definitivo (string a_err_lav_ok)
 public function boolean if_dosimetria_gia_autorizzata (string a_err_lav_ok)
@@ -73,7 +72,8 @@ public subroutine set_forza_convalida (st_tab_meca_dosim ast_tab_meca_dosim) thr
 private subroutine set_convalida_lotto_ripristino (readonly st_tab_meca_dosim ast_tab_meca_dosim) throws uo_exception
 public function integer get_nr_dosim_non_letti (st_tab_meca_dosim ast_tab_meca_dosim) throws uo_exception
 public subroutine get_dosim_dosemax_min (ref st_tab_meca_dosim ast_tab_meca_dosim) throws uo_exception
-public function date get_dosim_data_max (readonly st_tab_meca_dosim ast_tab_meca_dosim) throws uo_exception
+public function datetime get_data_x_certif (ref st_tab_meca_dosim kst_tab_meca_dosim) throws uo_exception
+public function datetime get_dosim_data_max (readonly st_tab_meca_dosim ast_tab_meca_dosim) throws uo_exception
 end prototypes
 
 public function boolean get_id_meca_da_barcode_dosimetro (ref st_tab_meca_dosim kst_tab_meca_dosim) throws uo_exception;//
@@ -999,7 +999,7 @@ integer k_ctr
 st_esito kst_esito 
 st_tab_meca kst_tab_meca_appo
 st_tab_barcode kst_tab_barcode
-kuf_armo kuf1_armo 
+//kuf_armo kuf1_armo 
 kuf_barcode kuf1_barcode
 
 
@@ -1061,9 +1061,14 @@ try
 
 // se dosim esistente faccio update								 
 	if k_ctr > 0 then
+		if ast_tab_meca.st_tab_meca_dosim.dosim_ora > time(00,00,01) then
+		else
+			ast_tab_meca.st_tab_meca_dosim.dosim_ora = time(kGuf_data_base.prendi_x_datins())
+		end if
 		update meca_dosim set 	 
 				 dosim_dose  = :ast_tab_meca.st_tab_meca_dosim.dosim_dose
 				 ,dosim_data  = :ast_tab_meca.st_tab_meca_dosim.dosim_data
+				 ,dosim_ora  = :ast_tab_meca.st_tab_meca_dosim.dosim_ora
 				 ,dosim_flg_tipo_dose = :ast_tab_meca.st_tab_meca_dosim.dosim_flg_tipo_dose 
 				 ,dosim_lotto_dosim = :ast_tab_meca.st_tab_meca_dosim.dosim_lotto_dosim 
 				 ,dosim_assorb = :ast_tab_meca.st_tab_meca_dosim.dosim_assorb 
@@ -1216,6 +1221,8 @@ catch (uo_exception kuo_exception)
 	end if
 	throw kuo_exception
 
+finally
+	if isvalid(kuf1_barcode) then destroy kuf1_barcode	
 
 end try
 		
@@ -2011,6 +2018,8 @@ if isnull(kst_tab_meca_dosim.dosim_lotto_dosim) then	kst_tab_meca_dosim.dosim_lo
 if isnull(kst_tab_meca_dosim.dosim_temperatura) then	kst_tab_meca_dosim.dosim_temperatura = 0 	
 if isnull(kst_tab_meca_dosim.dosim_umidita) then	kst_tab_meca_dosim.dosim_umidita = 0 	
 if isnull(kst_tab_meca_dosim.dosim_data) then	kst_tab_meca_dosim.dosim_data = date(0)
+if isnull(kst_tab_meca_dosim.dosim_ora) then	kst_tab_meca_dosim.dosim_ora = time(0)
+kst_tab_meca_dosim.dosim_data_ora = datetime(kst_tab_meca_dosim.dosim_data, kst_tab_meca_dosim.dosim_ora)
 if isnull(kst_tab_meca_dosim.dosim_dose) then	kst_tab_meca_dosim.dosim_dose = 0.0
 if isnull(kst_tab_meca_dosim.x_data_dosim_verifica) then	kst_tab_meca_dosim.x_data_dosim_verifica = datetime(date(0))
 if isnull(kst_tab_meca_dosim.x_utente_dosim_verifica) then	kst_tab_meca_dosim.x_utente_dosim_verifica = ""
@@ -2029,121 +2038,6 @@ if isnull(kst_tab_meca_dosim.sl_pt_dosimpos_seq) then	kst_tab_meca_dosim.sl_pt_d
 
 
 end subroutine
-
-public function date get_data_x_certif (ref st_tab_meca_dosim kst_tab_meca_dosim) throws uo_exception;//
-//--------------------------------------------------------------------------------------------
-//--- Torna la DATA di generazione per il CERTIFICATO
-//--- 
-//--- 
-//---  input: id_meca
-//---  Output: le date lette
-//---  Ritorna: data da pigliare se data(0) allora non trovata
-//---  lancia EXCEPTION x errore                          
-//--------------------------------------------------------------------------------------------
-//
-date k_return=kkg.data_zero
-st_tab_meca kst_tab_meca
-st_esito kst_esito
-kuf_armo kuf1_armo
-
-
-kst_esito.esito = kkg_esito.ok
-kst_esito.sqlcode = 0
-kst_esito.SQLErrText = ""
-kst_esito.nome_oggetto = this.classname()
-
-try
-	if kst_tab_meca_dosim.id_meca > 0 then
-	
-		SELECT max(dosim_data)
-				 ,max(x_data_dosim_verifica)
-				 ,max(x_data_dosim_sblocco_ko)
-				 INTO 
-						:kst_tab_meca_dosim.dosim_data
-						,:kst_tab_meca_dosim.x_data_dosim_verifica
-						,:kst_tab_meca_dosim.x_data_dosim_sblocco_ko
-				 FROM meca_dosim  
-				WHERE meca_dosim.id_meca = :kst_tab_meca_dosim.id_meca
-					 using kguo_sqlca_db_magazzino;
-				
-		if kguo_sqlca_db_magazzino.sqlcode = 0 then
-//--- x default piglia la data di convalida
-			if kst_tab_meca_dosim.dosim_data > kguo_g.get_datazero( ) then 
-				k_return = kst_tab_meca_dosim.dosim_data
-			end if
-//--- se data di verifica superiore a quella precedente
-			if date(kst_tab_meca_dosim.x_data_dosim_verifica) > kguo_g.get_datazero( ) then 
-				if date(kst_tab_meca_dosim.x_data_dosim_verifica) > k_return then
-					k_return = date(kst_tab_meca_dosim.x_data_dosim_verifica)
-				end if
-			end if
-//--- x se data di Sblocco superiore a quella precedente
-			if date(kst_tab_meca_dosim.x_data_dosim_sblocco_ko) > kguo_g.get_datazero( ) then 
-				if date(kst_tab_meca_dosim.x_data_dosim_sblocco_ko) > k_return then
-					k_return = date(kst_tab_meca_dosim.x_data_dosim_sblocco_ko)
-				end if
-			end if
-			
-//--- check date di autorizzazione e sblocco su meca magari ce n'e' una più recente
-			kuf1_armo = create kuf_armo
-			kst_tab_meca.id = kst_tab_meca_dosim.id_meca
-			kuf1_armo.get_dati_certif(kst_tab_meca) 
-			if date(kst_tab_meca.x_data_cert_f_st) > k_return then  // data sblocco + recente?
-				k_return = date(kst_tab_meca.x_data_cert_f_st)
-			end if
-			if date(kst_tab_meca.x_data_cert_alim) > k_return then  // data aut alimentari + recente?
-				k_return = date(kst_tab_meca.x_data_cert_alim)
-			end if
-			if date(kst_tab_meca.x_data_cert_farma) > k_return then  // data aut farmaceutici + recente?
-				k_return = date(kst_tab_meca.x_data_cert_farma)
-			end if
-			
-		
-		else
-			kst_esito.sqlcode = kguo_sqlca_db_magazzino.sqlcode
-			kst_esito.SQLErrText = "Tab.Dosimetri Lotto (id=" + string(kst_tab_meca_dosim.id_meca) + ") " &
-										 + "~n~r"  + trim(kguo_sqlca_db_magazzino.SQLErrText)
-			if kguo_sqlca_db_magazzino.sqlcode = 100 then
-				kst_esito.esito = kkg_esito.not_fnd
-				kst_tab_meca_dosim.id_meca = 0
-			else
-				if kguo_sqlca_db_magazzino.sqlcode > 0 then
-					kst_esito.esito = kkg_esito.db_wrn
-					kst_tab_meca_dosim.id_meca = 0
-				else  
-					kst_esito.esito = kkg_esito.db_ko
-				end if
-			end if
-		end if
-	 
-		if kst_esito.esito = kkg_esito.db_ko then
-			
-			kguo_exception.inizializza( )
-			kguo_exception.set_esito( kst_esito )
-			throw kguo_exception
-			
-		end if
-	else
-		kst_esito.esito = kkg_esito.no_esecuzione
-		kst_esito.sqlerrtext = "Manca il numero Lotto, impossibile estrarre la data in Dosimetria. Operazione non eseguita"	
-		kguo_exception.inizializza( )
-		kguo_exception.set_esito( kst_esito )
-		throw kguo_exception
-	end if
-
-
-catch (uo_exception kuo_exception)
-	throw kuo_exception
-
-	
-finally
-	if isvalid(kuf1_armo) then destroy kuf1_armo
-
-end try
-
-return k_return
-
-end function
 
 public subroutine set_barcode (st_tab_meca_dosim ast_tab_meca_dosim) throws uo_exception;//
 //--------------------------------------------------------------------------------------------------------
@@ -2498,9 +2392,14 @@ try
 
 //--- se dosim esistente faccio update								 
 	if kguo_sqlca_db_magazzino.sqlcode = 0 then
+		if ast_tab_meca_dosim.dosim_ora > time(00,00,01) then
+		else
+			ast_tab_meca_dosim.dosim_ora = time(kGuf_data_base.prendi_x_datins())
+		end if
 		update meca_dosim set 	 
 				 dosim_dose  = :ast_tab_meca_dosim.dosim_dose
 				 ,dosim_data  = :ast_tab_meca_dosim.dosim_data
+				 ,dosim_ora  = :ast_tab_meca_dosim.dosim_ora
 				 ,dosim_flg_tipo_dose = :ast_tab_meca_dosim.dosim_flg_tipo_dose 
 				 ,dosim_lotto_dosim = :ast_tab_meca_dosim.dosim_lotto_dosim 
 				 ,dosim_assorb = :ast_tab_meca_dosim.dosim_assorb 
@@ -3497,7 +3396,7 @@ try
 	if ast_tab_meca.id > 0 then 
 	else
 		kguo_exception.inizializza( )
-		kguo_exception.set_tipo(kguo_exception.kk_st_uo_exception_tipo_dati_non_eseguito )
+		kguo_exception.set_tipo(kguo_exception.KK_st_uo_exception_tipo_non_eseguito )
 		kguo_exception.set_nome_oggetto(this.classname( ) )
 		kguo_exception.setmessage( "Manca id Lotto. Carico dell'avviso in archivio Pronto Merce non eseguito. ")
 		throw kguo_exception
@@ -3516,7 +3415,7 @@ try
 		k_return = true
 	else		
 		kst_esito.esito = kkg_esito.no_esecuzione
-		kst_esito.sqlerrtext = "Errore durante il carico dell'avviso in tabella Pronto Merce del Lotto, id " + string(kst_tab_meca_ptmerce.id_meca) + "!"
+		kst_esito.sqlerrtext = "Errore in generazione avviso 'Pronto Merce' del Lotto, id " + string(kst_tab_meca_ptmerce.id_meca) + "!"
 		kguo_exception.inizializza( )
 		kguo_exception.set_esito(kst_esito)
 		throw kguo_exception
@@ -4221,18 +4120,137 @@ st_tab_meca_dosim kst_tab_meca_dosim
 
 end subroutine
 
-public function date get_dosim_data_max (readonly st_tab_meca_dosim ast_tab_meca_dosim) throws uo_exception;//
+public function datetime get_data_x_certif (ref st_tab_meca_dosim kst_tab_meca_dosim) throws uo_exception;//
+//--------------------------------------------------------------------------------------------
+//--- Torna la DATA di generazione per il CERTIFICATO
+//--- 
+//--- 
+//---  input: id_meca
+//---  Output: le date lette
+//---  Ritorna: data da pigliare se data(0) allora non trovata
+//---  lancia EXCEPTION x errore                          
+//--------------------------------------------------------------------------------------------
+//
+datetime k_return
+st_tab_meca kst_tab_meca
+st_esito kst_esito
+kuf_armo kuf1_armo
+
+
+kst_esito.esito = kkg_esito.ok
+kst_esito.sqlcode = 0
+kst_esito.SQLErrText = ""
+kst_esito.nome_oggetto = this.classname()
+
+try
+	
+	k_return = datetime(date(0))
+	
+	if kst_tab_meca_dosim.id_meca > 0 then
+	
+//		SELECT max(dosim_data)
+		SELECT max(CONVERT(DATETIME, CONVERT(varchar(20), dosim_data,105)  + ' ' + CONVERT(varchar(8), coalesce(dosim_ora, '00:00:00'), 108)))
+				 ,max(x_data_dosim_verifica)
+				 ,max(x_data_dosim_sblocco_ko)
+				 INTO 
+						:kst_tab_meca_dosim.dosim_data_ora
+						,:kst_tab_meca_dosim.x_data_dosim_verifica
+						,:kst_tab_meca_dosim.x_data_dosim_sblocco_ko
+				 FROM meca_dosim  
+				WHERE meca_dosim.id_meca = :kst_tab_meca_dosim.id_meca
+					 using kguo_sqlca_db_magazzino;
+				
+		if kguo_sqlca_db_magazzino.sqlcode = 0 then
+//--- x default piglia la data di convalida
+			if date(kst_tab_meca_dosim.dosim_data_ora) > kguo_g.get_datazero( ) then 
+				k_return = kst_tab_meca_dosim.dosim_data_ora
+			end if
+//--- se data di verifica superiore a quella precedente
+			if date(kst_tab_meca_dosim.x_data_dosim_verifica) > kguo_g.get_datazero( ) then 
+				if kst_tab_meca_dosim.x_data_dosim_verifica > k_return then
+					k_return = kst_tab_meca_dosim.x_data_dosim_verifica
+				end if
+			end if
+//--- x se data di Sblocco superiore a quella precedente
+			if date(kst_tab_meca_dosim.x_data_dosim_sblocco_ko) > kguo_g.get_datazero( ) then 
+				if kst_tab_meca_dosim.x_data_dosim_sblocco_ko > k_return then
+					k_return = kst_tab_meca_dosim.x_data_dosim_sblocco_ko
+				end if
+			end if
+			
+//--- check date di autorizzazione e sblocco su meca magari ce n'e' una più recente
+			kuf1_armo = create kuf_armo
+			kst_tab_meca.id = kst_tab_meca_dosim.id_meca
+			kuf1_armo.get_dati_certif(kst_tab_meca) 
+			if kst_tab_meca.x_data_cert_f_st > k_return then  // data sblocco + recente?
+				k_return = kst_tab_meca.x_data_cert_f_st
+			end if
+			if kst_tab_meca.x_data_cert_alim > k_return then  // data aut alimentari + recente?
+				k_return = kst_tab_meca.x_data_cert_alim
+			end if
+			if kst_tab_meca.x_data_cert_farma > k_return then  // data aut farmaceutici + recente?
+				k_return = kst_tab_meca.x_data_cert_farma
+			end if
+			
+		
+		else
+			kst_esito.sqlcode = kguo_sqlca_db_magazzino.sqlcode
+			kst_esito.SQLErrText = "Tab.Dosimetri Lotto (id=" + string(kst_tab_meca_dosim.id_meca) + ") " &
+										 + "~n~r"  + trim(kguo_sqlca_db_magazzino.SQLErrText)
+			if kguo_sqlca_db_magazzino.sqlcode = 100 then
+				kst_esito.esito = kkg_esito.not_fnd
+				kst_tab_meca_dosim.id_meca = 0
+			else
+				if kguo_sqlca_db_magazzino.sqlcode > 0 then
+					kst_esito.esito = kkg_esito.db_wrn
+					kst_tab_meca_dosim.id_meca = 0
+				else  
+					kst_esito.esito = kkg_esito.db_ko
+				end if
+			end if
+		end if
+	 
+		if kst_esito.esito = kkg_esito.db_ko then
+			
+			kguo_exception.inizializza( )
+			kguo_exception.set_esito( kst_esito )
+			throw kguo_exception
+			
+		end if
+	else
+		kst_esito.esito = kkg_esito.no_esecuzione
+		kst_esito.sqlerrtext = "Manca il numero Lotto, impossibile estrarre la data Certificato in Dosimetria. Operazione non eseguita"	
+		kguo_exception.inizializza( )
+		kguo_exception.set_esito( kst_esito )
+		throw kguo_exception
+	end if
+
+
+catch (uo_exception kuo_exception)
+	throw kuo_exception
+
+	
+finally
+	if isvalid(kuf1_armo) then destroy kuf1_armo
+
+end try
+
+return k_return
+
+end function
+
+public function datetime get_dosim_data_max (readonly st_tab_meca_dosim ast_tab_meca_dosim) throws uo_exception;//
 //-------------------------------------------------------------------------------------------------------
-//--- get valore max DATA 
+//--- get valore max DATA+ORA 
 //--- 
 //--- Input : st_tab_meca_dosim.id_meca 
 //--- out: 
-//--- Ritorna: st_tab_meca_dosim.dosim_data 
+//--- Ritorna: st_tab_meca_dosim.dosim_data_ora (ultimo data e ora di trattamento) 
 //--- Exception se errore con st_esito valorizzato
 //---					
 //---   
 //--------------------------------------------------------------------------------------------------------
-date k_return 
+datetime k_return 
 st_esito kst_esito
 
 
@@ -4242,8 +4260,9 @@ st_esito kst_esito
 	kst_esito.nome_oggetto = this.classname()
 
 
-	select max(dosim_data)
-		into :ast_tab_meca_dosim.dosim_data
+	//select max(dosim_data)
+	SELECT max(CONVERT(DATETIME, CONVERT(varchar(20), dosim_data,105)  + ' ' + CONVERT(varchar(8), coalesce(dosim_ora, '00:00:00'), 108)))
+		into :ast_tab_meca_dosim.dosim_data_ora
 		from meca_dosim 
 		where meca_dosim.id_meca = :ast_tab_meca_dosim.id_meca
                  	or meca_dosim.barcode_lav in 
@@ -4261,10 +4280,10 @@ st_esito kst_esito
 		end if
 	end if
 	
-	if ast_tab_meca_dosim.dosim_data > kkg.data_zero then
-		k_return = ast_tab_meca_dosim.dosim_data  
+	if ast_tab_meca_dosim.dosim_data_ora > datetime(date(0)) then
+		k_return = ast_tab_meca_dosim.dosim_data_ora  
 	else
-		k_return = kkg.data_no
+		k_return = datetime(date(0))
 	end if
 
 return k_return 

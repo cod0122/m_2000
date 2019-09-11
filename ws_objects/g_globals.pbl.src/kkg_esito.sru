@@ -17,7 +17,7 @@ constant string KO="A" // errore grave ma non da DB, ma de sempio da WINSOCKET
 constant string NOT_FND="100" // errore record non trovato sqlcode = 100
 constant string DB_WRN="3" // errore con avvertimento (warning)
 constant string NO_AUT="2" // errore Utente non Autorizzato
-constant string blok="5" // errore Bloccante
+constant string BLOK="5" // errore Bloccante
 constant string NO_ESECUZIONE="6" // operazione chiusa in modo gestito dal pgm o dall'Utente 
 constant string ERR_FORMALE="7" // errore formale dei dati (es. not numeric) 
 constant string ERR_LOGICO="8" // errore congruenza dei dati  
@@ -29,7 +29,6 @@ constant string PWD_SCADUTA="PWDSCAD" // pwd in scaduta
 constant string PWD_VUOTA="PWDVUOTA" // pwd vuota
 
 end variables
-
 on kkg_esito.create
 call super::create
 TriggerEvent( this, "constructor" )

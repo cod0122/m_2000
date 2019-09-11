@@ -7,7 +7,7 @@ end type
 end forward
 
 global type w_clienti from w_g_tab_3
-integer width = 1755
+integer width = 3840
 integer height = 980
 string title = "Anagrafica "
 boolean ki_toolbar_window_presente = true
@@ -73,6 +73,7 @@ public function long u_drop_file (integer a_k_tipo_drag, long a_handle)
 public subroutine u_retrieve_associazioni ()
 protected subroutine attiva_tasti_0 ()
 protected function boolean sicurezza (st_open_w kst_open_w)
+protected subroutine inizializza_7 () throws uo_exception
 end prototypes
 
 protected function string aggiorna ();//
@@ -228,6 +229,30 @@ if left(k_return,1) = "0" and tab_1.tabpage_4.dw_4.getnextmodified(0, primary!) 
 		kst_esito = kguo_sqlca_db_magazzino.db_rollback()
 		k_return="1Fallito aggiornamento archivio '" + &
 					tab_1.tabpage_4.text + "' ~n~r" 
+	end if	
+end if
+
+//=== Aggiorna, se modificato, la TAB_8 DATI ESPORTAZIONE REGISTRO CONTO DEPOSITO
+if left(k_return,1) = "0" and tab_1.tabpage_8.dw_8.getnextmodified(0, primary!) > 0 	then
+
+	tab_1.tabpage_8.dw_8.setitem(1, "x_datins", kGuf_data_base.prendi_x_datins())
+	tab_1.tabpage_8.dw_8.setitem(1, "x_utente", kGuf_data_base.prendi_x_utente())
+	if tab_1.tabpage_8.dw_8.update() = 1 then
+
+//--- Se tutto OK faccio la COMMIT		
+		kst_esito = kguo_sqlca_db_magazzino.db_commit()
+		if kst_esito.esito = kkg_esito.db_ko then
+			k_return = "3" + "Archivio " + tab_1.tabpage_8.text + " " + kst_esito.sqlerrtext
+		else // Tutti i Dati Caricati in Archivio
+			tab_1.tabpage_8.dw_8.resetupdate( )
+			k_return ="0 "
+			kuf1_utility = create kuf_utility
+			kuf1_utility.u_proteggi_dw("1", 0, tab_1.tabpage_8.dw_8)
+		end if
+	else
+		kst_esito = kguo_sqlca_db_magazzino.db_rollback()
+		k_return="1Fallito aggiornamento archivio '" + &
+					tab_1.tabpage_8.text + "' ~n~r" 
 	end if	
 end if
 
@@ -489,6 +514,8 @@ st_web kst_web
 kuf_base kuf1_base
 kuf_ausiliari kuf1_ausiliari
 kuf_web kuf1_web
+st_email_address kst_email_address	
+kuf_email kuf1_email
 
 
 kuf1_ausiliari = create kuf_ausiliari
@@ -745,38 +772,72 @@ kuf1_ausiliari = create kuf_ausiliari
 						k_errore = "4"
 					end if
 				end if	
+//--- Controllo sintassi Indirizzi email				
+				kuf1_email = create kuf_email 
+				kst_email_address.email_all = tab_1.tabpage_3.dw_3.getitemstring( k_riga, "email")
+				if len(trim(kst_email_address.email_all)) > 0 then
+					kst_esito = kuf1_email.get_email_from_string(kst_email_address)
+					if kst_esito.esito <> kkg_esito.ok then
+						k_return = trim(k_return) +  tab_1.tabpage_3.text + ": riscontrato indirizzo 'e-mail' non corretto, prego controllare" &
+						+"~n~r" + kst_esito.sqlerrtext + "~n~r" 
+						k_errore = "4"
+						k_nr_errori++
+					end if
+				end if
+				kst_email_address.email_all = tab_1.tabpage_3.dw_3.getitemstring( k_riga, "email1")
+				if len(trim(kst_email_address.email_all)) > 0 then
+					kst_esito = kuf1_email.get_email_from_string(kst_email_address)
+					if kst_esito.esito <> kkg_esito.ok then
+						k_return = trim(k_return) +  tab_1.tabpage_3.text + ": riscontrato indirizzo 'e-mail' non corretto, prego controllare" &
+						+"~n~r" + kst_esito.sqlerrtext + "~n~r" 
+						k_errore = "4"
+						k_nr_errori++
+					end if
+				end if
+				kst_email_address.email_all = tab_1.tabpage_3.dw_3.getitemstring( k_riga, "email2")
+				if len(trim(kst_email_address.email_all)) > 0 then
+					kst_esito = kuf1_email.get_email_from_string(kst_email_address)
+					if kst_esito.esito <> kkg_esito.ok then
+						k_return = trim(k_return) +  tab_1.tabpage_3.text + ": riscontrato indirizzo 'e-mail' non corretto, prego controllare" &
+						+"~n~r" + kst_esito.sqlerrtext + "~n~r" 
+						k_errore = "4"
+						k_nr_errori++
+					end if
+				end if
 				
+//				kuf1_web = create kuf_web 
+//				kst_tab_clienti_web.email =  tab_1.tabpage_3.dw_3.getitemstring( k_riga, "email")
+//				if len(trim(kst_tab_clienti_web.email)) > 0 then
+//					kst_web.email = kst_tab_clienti_web.email
+//					if not kuf1_web.if_sintassi_email_ok( kst_web ) then
+//						k_return = trim(k_return) +  tab_1.tabpage_3.text + ": il primo campo 'e-mail' non sembra corretto, prego controllare " &
+//						+" ~n~r" 
+//						k_errore = "4"
+//						k_nr_errori++
+//					end if
+//				end if
+//				kst_tab_clienti_web.email =  tab_1.tabpage_3.dw_3.getitemstring( k_riga, "email1")
+//				if len(trim(kst_tab_clienti_web.email1)) > 0 then
+//					kst_web.email = kst_tab_clienti_web.email1
+//					if not kuf1_web.if_sintassi_email_ok( kst_web ) then
+//						k_return = trim(k_return) +  tab_1.tabpage_3.text + ": il secondo campo 'e-mail' non sembra corretto, prego controllare " &
+//						+" ~n~r" 
+//						k_errore = "4"
+//						k_nr_errori++
+//					end if
+//				end if
+//				kst_tab_clienti_web.email2 =  tab_1.tabpage_3.dw_3.getitemstring( k_riga, "email2")
+//				if len(trim(kst_tab_clienti_web.email2)) > 0 then
+//					kst_web.email = kst_tab_clienti_web.email2
+//					if not kuf1_web.if_sintassi_email_ok( kst_web ) then
+//						k_return = trim(k_return) +  tab_1.tabpage_3.text + ": Terzo campo 'e-mail' non sembra corretto, prego controllare " &
+//						+" ~n~r" 
+//						k_errore = "4"
+//						k_nr_errori++
+//					end if
+//				end if
+//--- Controllo sintassi Sito WEB
 				kuf1_web = create kuf_web 
-				kst_tab_clienti_web.email =  tab_1.tabpage_3.dw_3.getitemstring( k_riga, "email")
-				if len(trim(kst_tab_clienti_web.email)) > 0 then
-					kst_web.email = kst_tab_clienti_web.email
-					if not kuf1_web.if_sintassi_email_ok( kst_web ) then
-						k_return = trim(k_return) +  tab_1.tabpage_3.text + ": il primo campo 'e-mail' non sembra corretto, prego controllare " &
-						+" ~n~r" 
-						k_errore = "4"
-						k_nr_errori++
-					end if
-				end if
-				kst_tab_clienti_web.email =  tab_1.tabpage_3.dw_3.getitemstring( k_riga, "email1")
-				if len(trim(kst_tab_clienti_web.email1)) > 0 then
-					kst_web.email = kst_tab_clienti_web.email1
-					if not kuf1_web.if_sintassi_email_ok( kst_web ) then
-						k_return = trim(k_return) +  tab_1.tabpage_3.text + ": il secondo campo 'e-mail' non sembra corretto, prego controllare " &
-						+" ~n~r" 
-						k_errore = "4"
-						k_nr_errori++
-					end if
-				end if
-				kst_tab_clienti_web.email2 =  tab_1.tabpage_3.dw_3.getitemstring( k_riga, "email2")
-				if len(trim(kst_tab_clienti_web.email2)) > 0 then
-					kst_web.email = kst_tab_clienti_web.email2
-					if not kuf1_web.if_sintassi_email_ok( kst_web ) then
-						k_return = trim(k_return) +  tab_1.tabpage_3.text + ": Terzo campo 'e-mail' non sembra corretto, prego controllare " &
-						+" ~n~r" 
-						k_errore = "4"
-						k_nr_errori++
-					end if
-				end if
 				kst_tab_clienti_web.sito_web =  tab_1.tabpage_3.dw_3.getitemstring( k_riga, "sito_web")
 				if len(trim(kst_tab_clienti_web.sito_web )) > 0 then
 					kst_web.url = kst_tab_clienti_web.sito_web
@@ -812,6 +873,7 @@ kuf1_ausiliari = create kuf_ausiliari
 	
 	finally
 		if isvalid(kuf1_web) then destroy kuf1_web
+		if isvalid(kuf1_email) then destroy kuf1_email
 	
 	end try
 
@@ -1268,7 +1330,7 @@ if left(k_errore, 1) = "0" then
 
 //=== Aggiunge una riga al data windows
 //	choose case tab_1.selectedtab 
-	choose case ki_selectedtab 
+	choose case tab_1.selectedtab
 
 		case  1 
 			
@@ -1294,7 +1356,7 @@ if left(k_errore, 1) = "0" then
 			
 			tab_1.tabpage_1.dw_1.insertrow(0)
 			
-			tab_1.tabpage_1.dw_1.setitem(k_ctr, "codice", 0)
+			tab_1.tabpage_1.dw_1.setitem(1, "codice", 0)
 			tab_1.tabpage_1.dw_1.setcolumn("p_iva")
 			
 			tab_1.tabpage_1.dw_1.SetItemStatus( 1, 0, Primary!, NotModified!)
@@ -1351,38 +1413,19 @@ if left(k_errore, 1) = "0" then
 				tab_1.tabpage_4.dw_4.setrow(k_riga)
 
 			end if
-				
-//		case 5 // listino
-//				k_cod_cli = tab_1.tabpage_1.dw_1.getitemnumber(tab_1.tabpage_1.dw_1.getrow(), "codice") 
-//				k_cod_art = ""
-//				k_dose = 0
-//				k_mis_x = 0
-//				k_mis_y = 0
-//				k_mis_z = 0
-//				K_st_open_w.id_programma = kkg_id_programma.listini
-//				K_st_open_w.flag_primo_giro = "S"
-//				K_st_open_w.flag_modalita = kkg_flag_modalita.inserimento
-//				K_st_open_w.flag_adatta_win = KKG.ADATTA_WIN_NO
-//				K_st_open_w.flag_leggi_dw = " "
-//				K_st_open_w.flag_cerca_in_lista = " "
-//				K_st_open_w.key1 = trim(string(k_cod_cli)) // cod cliente
-//				K_st_open_w.key2 = trim(k_cod_art) // cod articolo 
-//				K_st_open_w.key3 = trim(string(k_dose)) // dose
-//				K_st_open_w.key4 = trim(string(k_mis_x)) // misure imballo
-//				K_st_open_w.key5 = trim(string(k_mis_y)) // misure imballo
-//				K_st_open_w.key6 = trim(string(k_mis_z)) // misure imballo
-//				K_st_open_w.flag_where = " "
-//				
-//				kuf1_menu_window = create kuf_menu_window 
-//				kuf1_menu_window.open_w_tabelle(k_st_open_w)
-//				destroy kuf1_menu_window
-//											
-//			else
-//			
-//				messagebox("Operazione non eseguita", "Nessun cliente presente")
-//			
-//			end if
-				
+		
+		case 8  
+			k_codice = tab_1.tabpage_1.dw_1.getitemnumber(1, "codice")
+	
+			k_riga = tab_1.tabpage_8.dw_8.insertrow(0)
+			tab_1.tabpage_8.dw_8.setitem(1, "id_cliente", k_codice)
+			tab_1.tabpage_8.dw_8.setitem(1, "registro_anno", year(today()))
+			tab_1.tabpage_8.dw_8.setitem(1, "registro_nr_ultimo", 0)
+			tab_1.tabpage_8.dw_8.setitem(1, "registro_tipo", kiuf_clienti.kki_registro_tipo_nessuno)
+			tab_1.tabpage_8.dw_8.setitem(1, "id_meca_ultimo", 0)
+			tab_1.tabpage_8.dw_8.setitem(1, "codice", "")
+			tab_1.tabpage_8.dw_8.SetItemStatus( 1, 0, Primary!, NotModified!)
+			
 			
 	end choose	
 
@@ -2339,6 +2382,7 @@ kuf1_utility = create kuf_utility
 if trim(ki_st_open_w.flag_modalita) = kkg_flag_modalita.visualizzazione then
 
 	kuf1_utility.u_proteggi_dw("1", 0, tab_1.tabpage_3.dw_3)
+	kuf1_utility.u_proteggi_dw("1", "clienti_mkt_qualifica", tab_1.tabpage_3.dw_3)
 
 else		
 		
@@ -2966,7 +3010,7 @@ if tab_1.tabpage_1.dw_1.rowcount() > 0 then
 		tab_1.tabpage_7.enabled = false
 	end if
 	
-	choose case ki_selectedtab // tab_1.selectedtab
+	choose case tab_1.selectedtab // tab_1.selectedtab
 		case 1
 			cb_aggiorna.enabled = true
 		case 2
@@ -3002,7 +3046,7 @@ else
 	
 end if
 
-if ki_selectedtab <> 5 and ki_selectedtab <> 4 and ki_selectedtab <> 2  &
+if tab_1.selectedtab <> 5 and tab_1.selectedtab <> 4 and tab_1.selectedtab <> 2 and tab_1.selectedtab <> 8 &
    		and (ki_st_open_w.flag_modalita = kkg_flag_modalita.visualizzazione &
 			   or ki_st_open_w.flag_modalita = kkg_flag_modalita.cancellazione) then
 	cb_inserisci.enabled = false
@@ -3029,6 +3073,62 @@ else
 end if
 
 end function
+
+protected subroutine inizializza_7 () throws uo_exception;//======================================================================
+//=== Inizializzazione del TAB 8 controllandone i valori se gia' presenti
+//======================================================================
+//
+long k_codice
+int k_anno
+string k_codice_prec
+datawindowchild kdwc_lotti
+kuf_utility kuf1_utility
+
+
+	k_codice = tab_1.tabpage_1.dw_1.getitemnumber(1, "codice")  
+
+//--- salvo i parametri cosi come sono stati immessi x evitare la rilettura
+	k_codice_prec = tab_1.tabpage_8.st_8_retrieve.text
+	tab_1.tabpage_8.st_8_retrieve.text = string(k_codice)
+	
+	if tab_1.tabpage_8.st_8_retrieve.text = k_codice_prec then
+	else
+
+		if tab_1.tabpage_8.dw_8.retrieve(k_codice) = 0 then
+			inserisci( )
+		end if
+
+		k_anno = tab_1.tabpage_8.dw_8.getitemnumber(1, "registro_anno")  
+		if k_anno > 0 then
+		else
+			k_anno = year(kguo_g.get_dataoggi( )) 
+		end if
+		k_anno -= 1
+
+		tab_1.tabpage_8.dw_8.getchild("id_meca_ultimo", kdwc_lotti)
+		kdwc_lotti.settransobject(sqlca)
+		if k_codice > 0 then
+			kdwc_lotti.retrieve(k_anno, k_codice)
+		end if
+		kdwc_lotti.insertrow(1)
+
+
+	end if
+
+	kuf1_utility = create kuf_utility
+	if trim(ki_st_open_w.flag_modalita) <> kkg_flag_modalita.inserimento and trim(ki_st_open_w.flag_modalita) <> kkg_flag_modalita.modifica then
+     	kuf1_utility.u_proteggi_dw("1", 0, tab_1.tabpage_8.dw_8)
+	else		
+     	kuf1_utility.u_proteggi_dw("0", 0, tab_1.tabpage_8.dw_8)
+	end if
+	destroy kuf1_utility
+
+
+	attiva_tasti()
+
+
+
+end subroutine
 
 on w_clienti.create
 int iCurrent
@@ -3284,7 +3384,7 @@ end type
 type tab_1 from w_g_tab_3`tab_1 within w_clienti
 integer x = 37
 integer y = 20
-integer width = 3369
+integer width = 1934
 integer height = 1556
 long backcolor = 32435950
 end type
@@ -3319,7 +3419,7 @@ end event
 
 type tabpage_1 from w_g_tab_3`tabpage_1 within tab_1
 integer y = 176
-integer width = 3333
+integer width = 1897
 integer height = 1364
 string text = " Anagrafica"
 string picturename = "C:\GAMMARAD\PB_GMMRD125\ICONE\cliente.gif"
@@ -3612,7 +3712,7 @@ end type
 
 type tabpage_2 from w_g_tab_3`tabpage_2 within tab_1
 integer y = 176
-integer width = 3333
+integer width = 1897
 integer height = 1364
 string text = " memo"
 string picturename = "Copy!"
@@ -3645,7 +3745,7 @@ end type
 type tabpage_3 from w_g_tab_3`tabpage_3 within tab_1
 boolean visible = true
 integer y = 176
-integer width = 3333
+integer width = 1897
 integer height = 1364
 string text = " Marketing~r~n & Web"
 string picturename = "Custom073!"
@@ -3800,7 +3900,7 @@ end type
 type tabpage_4 from w_g_tab_3`tabpage_4 within tab_1
 boolean visible = true
 integer y = 176
-integer width = 3333
+integer width = 1897
 integer height = 1364
 long backcolor = 32435950
 string text = " Mandanti~r~n & Riceventi"
@@ -3957,7 +4057,7 @@ end type
 type tabpage_5 from w_g_tab_3`tabpage_5 within tab_1
 boolean visible = true
 integer y = 176
-integer width = 3333
+integer width = 1897
 integer height = 1364
 long backcolor = 32435950
 string text = " Listino"
@@ -3978,7 +4078,7 @@ end type
 type tabpage_6 from w_g_tab_3`tabpage_6 within tab_1
 boolean visible = true
 integer y = 176
-integer width = 3333
+integer width = 1897
 integer height = 1364
 boolean enabled = true
 string text = " Movimenti ~r~n Magazzino"
@@ -4010,7 +4110,7 @@ end event
 
 type tabpage_7 from w_g_tab_3`tabpage_7 within tab_1
 integer y = 176
-integer width = 3333
+integer width = 1897
 integer height = 1364
 string text = " Fatture non di Magazzino~r~n (senza Lotto di Entrata) "
 long tabbackcolor = 32435950
@@ -4038,20 +4138,70 @@ end if
 end event
 
 type tabpage_8 from w_g_tab_3`tabpage_8 within tab_1
+boolean visible = true
 integer y = 176
-integer width = 3333
+integer width = 1897
 integer height = 1364
+boolean enabled = true
+string text = "A.C.O.~r~nCto Deposito"
+string powertiptext = "Configura esportazione dati Registro Conto Deposito"
 end type
 
 type st_8_retrieve from w_g_tab_3`st_8_retrieve within tabpage_8
 end type
 
 type dw_8 from w_g_tab_3`dw_8 within tabpage_8
+boolean visible = true
+boolean enabled = true
+string dataobject = "d_clienti_cntdep_cfg"
+boolean hsplitscroll = false
+boolean ki_colora_riga_aggiornata = false
+boolean ki_attiva_standard_select_row = false
+boolean ki_d_std_1_attiva_sort = false
+boolean ki_d_std_1_attiva_cerca = false
 end type
+
+event dw_8::itemchanged;call super::itemchanged;//
+int k_riga, k_rc
+string k_id, k_nome
+datetime k_dt
+datawindowchild kdwc_x
+
+
+choose case dwo.name
+
+	case "id_meca_ultimo" 
+		if len(trim(data)) > 0 then
+			k_rc = this.getchild("id_meca_ultimo", kdwc_x)
+			if isnumber(Trim(data)) then
+				k_id = Trim(data)
+				k_riga = kdwc_x.find("id_meca = " + k_id + " ",0,kdwc_x.rowcount())
+				if k_riga > 0  then
+					k_dt = kdwc_x.getitemdatetime(k_riga, "data_ent")
+				end if
+			end if
+		end if
+		this.setitem(row, "meca_data_ent", k_dt)
+
+	case "id_nazione" 
+		if len(trim(data)) > 0 then
+			k_rc = this.getchild("id_nazione", kdwc_x)
+			if Trim(data) > " " then
+				k_id = Trim(data)
+				k_riga = kdwc_x.find("id_nazione = '" + k_id + "' ",0,kdwc_x.rowcount())
+				if k_riga > 0  then
+					k_nome = kdwc_x.getitemstring(k_riga, "nome")
+				end if
+			end if
+		end if
+		this.setitem(row, "nazioni_nome", k_nome)
+		
+end choose
+end event
 
 type tabpage_9 from w_g_tab_3`tabpage_9 within tab_1
 integer y = 176
-integer width = 3333
+integer width = 1897
 integer height = 1364
 end type
 

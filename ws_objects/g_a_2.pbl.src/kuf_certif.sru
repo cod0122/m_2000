@@ -41,19 +41,15 @@ public function st_esito anteprima (ref datastore kdw_anteprima, st_tab_certif k
 public function st_esito get_num_certif (ref st_tab_certif kst_tab_certif)
 public function st_esito get_ultimo_doc_ins (ref st_tab_certif kst_tab_certif)
 public function boolean link_call (ref datawindow adw_link, string a_campo_link) throws uo_exception
-public function st_esito aggiorna_dati_stampa (ref st_tab_certif kst_tab_certif)
 public function boolean get_form_di_stampa (ref st_tab_certif kst_tab_certif) throws uo_exception
 public function boolean stampa (ref st_tab_certif ast_tab_certif[]) throws uo_exception
 public function boolean set_id_docprod (st_tab_certif kst_tab_certif) throws uo_exception
 public function st_esito get_id (ref st_tab_certif kst_tab_certif)
-public function st_esito get_clie (ref st_tab_certif kst_tab_certif)
 public function long aggiorna_docprod (ref st_tab_certif kst_tab_certif[]) throws uo_exception
 public function boolean if_esiste (readonly st_tab_certif kst_tab_certif) throws uo_exception
-public function st_esito get_data (ref st_tab_certif kst_tab_certif)
 public function boolean if_crea_certif (st_tab_certif kst_tab_certif) throws uo_exception
 private function st_esito stampa_attestato_registra () throws uo_exception
 public function boolean if_stampato (readonly st_tab_certif kst_tab_certif) throws uo_exception
-public function st_esito get_id_da_id_meca (ref st_tab_certif kst_tab_certif)
 public function st_esito tb_delete (st_tab_certif kst_tab_certif) throws uo_exception
 private function boolean stampa_attestato_set_printer () throws uo_exception
 private function boolean stampa_attestato_prepara () throws uo_exception
@@ -66,7 +62,6 @@ public function boolean get_id_meca_da_id (ref st_tab_certif kst_tab_certif) thr
 public function long get_num_certif_da_nome (string a_nome_file)
 private function long stampa_digitale () throws uo_exception
 public function date get_data_stampa (ref st_tab_certif kst_tab_certif) throws uo_exception
-private function any stampa_attestato_get_nome_pdf (ref st_tab_certif ast_tab_certif, ref st_tab_meca ast_tab_meca, boolean a_ristampa) throws uo_exception
 public function long get_id_meca (ref st_tab_certif kst_tab_certif) throws uo_exception
 public function integer u_tree_riempi_treeview_x_giorno (ref kuf_treeview kuf1_treeview, readonly string k_tipo_oggetto)
 private function boolean stampa_1 (ref st_tab_certif ast_tab_certif) throws uo_exception
@@ -75,6 +70,16 @@ public function boolean set_flg_ristampa_xddt (st_tab_certif kst_tab_certif) thr
 public function boolean set_flg_ristampa_xddt_on (st_tab_certif kst_tab_certif) throws uo_exception
 public function boolean set_flg_ristampa_xddt_off (st_tab_certif kst_tab_certif) throws uo_exception
 public function boolean if_stampato_x_id_meca (ref st_tab_certif kst_tab_certif) throws uo_exception
+private function integer get_path_root (ref st_tab_docpath ast_tab_docpath[]) throws uo_exception
+public function string get_path_email (ref st_tab_certif ast_tab_certif) throws uo_exception
+private function any get_path_doc (ref st_tab_certif ast_tab_certif, boolean a_ristampa) throws uo_exception
+private function string get_nome_pdf (ref st_tab_certif ast_tab_certif) throws uo_exception
+private function any stampa_attestato_get_nome_pdf (ref st_tab_certif ast_tab_certif, boolean a_ristampa) throws uo_exception
+public function long get_id_da_id_meca (ref st_tab_certif kst_tab_certif) throws uo_exception
+public function date get_data (ref st_tab_certif kst_tab_certif) throws uo_exception
+public function st_esito aggiorna_dati_stampa (ref st_tab_certif kst_tab_certif) throws uo_exception
+public function st_esito get_clie (ref st_tab_certif kst_tab_certif) throws uo_exception
+public function boolean stampa_digitale_esporta_1 (string a_path_pdf) throws uo_exception
 end prototypes
 
 public subroutine if_isnull (ref st_tab_certif kst_tab_certif);//---
@@ -84,6 +89,8 @@ public subroutine if_isnull (ref st_tab_certif kst_tab_certif);//---
 if isnull(kst_tab_certif.id) then kst_tab_certif.id = 0
 if isnull(kst_tab_certif.num_certif) then kst_tab_certif.num_certif = 0
 if isnull(kst_tab_certif.data) then kst_tab_certif.data = date(0)
+if isnull(kst_tab_certif.ora) then kst_tab_certif.ora = time(0)
+kst_tab_certif.data_ora = datetime(kst_tab_certif.data, kst_tab_certif.ora)
 if isnull(kst_tab_certif.id_meca) then kst_tab_certif.id_meca = 0
 if isnull(kst_tab_certif.data_stampa) then kst_tab_certif.data_stampa = date(0)
 if isnull(kst_tab_certif.ora_stampa) then kst_tab_certif.ora_stampa = time(0)
@@ -433,6 +440,7 @@ kst_esito.nome_oggetto = this.classname()
 	update certif  
 			  set id_meca = :kst_tab_certif.id_meca
 			  ,data = :kst_tab_certif.DATA
+			  ,ora = :kst_tab_certif.ORA
 			  ,clie_2 = :kst_tab_certif.CLIE_2
 			  ,colli = :kst_tab_certif.colli   
 			  ,dose = :kst_tab_certif.DOSE
@@ -512,6 +520,7 @@ kst_esito.nome_oggetto = this.classname()
 			(   
 			  num_certif
 			  ,data   
+			  ,ora   
 			  ,id_meca
 			  ,clie_2   
 			  ,colli   
@@ -535,6 +544,7 @@ kst_esito.nome_oggetto = this.classname()
 	VALUES (    
 			  :kst_tab_certif.NUM_CERTIF
 			  ,:kst_tab_certif.DATA
+			  ,:kst_tab_certif.ORA
 			  ,:kst_tab_certif.id_meca
 			  ,:kst_tab_certif.CLIE_2
 			  ,:kst_tab_certif.colli
@@ -559,7 +569,7 @@ kst_esito.nome_oggetto = this.classname()
 
 	if sqlca.sqlcode <> 0 then
 		kst_esito.sqlcode = sqlca.sqlcode
-		kst_esito.SQLErrText = "Produzione Nuovo Attestato (kuf_certif.tb_add):" + trim(sqlca.SQLErrText)
+		kst_esito.SQLErrText = "Errore in Generazione Nuovo Attestato (kuf_certif.tb_add):" + trim(sqlca.SQLErrText)
 		if sqlca.sqlcode > 0 then
 			kst_esito.esito = kkg_esito.db_wrn
 		else
@@ -1051,7 +1061,7 @@ st_profilestring_ini kst_profilestring_ini
 			k_campo[k_ind] = "Dose min-max; Data inizio-fine trattamento "
 			k_align[k_ind] = left!
 			k_ind++
-			k_campo[k_ind] = "Note"
+			k_campo[k_ind] = "generato il"
 			k_align[k_ind] = left!
 //			k_ind++
 //			k_campo[k_ind] = "Ulteriori Informazioni"
@@ -1210,21 +1220,22 @@ st_profilestring_ini kst_profilestring_ini
 			k_ind ++
 			kuf1_treeview.kilv_lv1.setitem(k_ctr, k_ind, trim(kst_tab_treeview.voce) )
 
-			if len(trim(kst_treeview_data_any.st_tab_certif.note)) > 0 then
-				kst_tab_treeview.voce =  &
-									  trim(kst_treeview_data_any.st_tab_certif.note) &
-									  +" "
-			end if
-			if len(trim(kst_treeview_data_any.st_tab_certif.note_1)) > 0 then
-				kst_tab_treeview.voce =  kst_tab_treeview.voce &
-									  + trim(kst_treeview_data_any.st_tab_certif.note_1) &
-									  +" "
-			end if
-			if len(trim(kst_treeview_data_any.st_tab_certif.note_2)) > 0 then
-				kst_tab_treeview.voce =  kst_tab_treeview.voce &
-									  + trim(kst_treeview_data_any.st_tab_certif.note_2) &
-									  +" "
-			end if
+//			if len(trim(kst_treeview_data_any.st_tab_certif.note)) > 0 then
+//				kst_tab_treeview.voce =  &
+//									  trim(kst_treeview_data_any.st_tab_certif.note) &
+//									  +" "
+//			end if
+//			if len(trim(kst_treeview_data_any.st_tab_certif.note_1)) > 0 then
+//				kst_tab_treeview.voce += &
+//									  + trim(kst_treeview_data_any.st_tab_certif.note_1) &
+//									  +" "
+//			end if
+//			if len(trim(kst_treeview_data_any.st_tab_certif.note_2)) > 0 then
+//				kst_tab_treeview.voce += &
+//									  + trim(kst_treeview_data_any.st_tab_certif.note_2) &
+//									  +" "
+//			end if
+			kst_tab_treeview.voce = string(kst_treeview_data_any.st_tab_certif.data_ora, "dd mmm yyyy hh:mm")
 			k_ind ++
 			kuf1_treeview.kilv_lv1.setitem(k_ctr, k_ind, trim(kst_tab_treeview.voce) )
 				
@@ -1275,7 +1286,7 @@ st_tab_armo kst_tab_armo
 st_tab_contratti kst_tab_contratti
 st_tab_certif kst_tab_certif
 st_tab_memo kst_tab_memo
-kuf_certif kuf1_certif
+//kuf_certif kuf1_certif
 
 
 	k_data_0 = date(0)		 
@@ -1318,11 +1329,11 @@ kuf_certif kuf1_certif
 		k_data_a = date(9999,12,31)
 	else	
 	
-//--- Periodo di estrazione, se la data e' a zero allora calcolo in automatico -3 mesi
+//--- Periodo di estrazione, se la data e' a zero allora calcolo in automatico -tot mesi
 		if (kst_treeview_data_any.st_tab_certif.data = date (0) or isnull(kst_treeview_data_any.st_tab_certif.data)) then
 
 //--- Ricavo la data da dataoggi e vado indietro per sicurezza di alcuni mesi
-			k_data_da = date(string(relativedate(k_dataoggi,-90), "yyyy,mm,01"))
+			k_data_da = date(string(relativedate(k_dataoggi,-180), "yyyy,mm,01"))
 
 		else
 //--- prelevo il periodo da a 
@@ -1355,7 +1366,7 @@ kuf_certif kuf1_certif
 		choose case k_tipo_oggetto
 				
 			case kuf1_treeview.kist_treeview_oggetto.certif_st_dett &
-					,kuf1_treeview.kist_treeview_oggetto.certif_uff_ddt_dett
+					,kuf1_treeview.kist_treeview_oggetto.certif_uff_ddt_dett 
 //				k_query_where = " where " 
 				if k_data_da  <> k_data_a then
 					k_nr_righe = kids_certif_tree_stampati_xdata.retrieve(0, k_data_da, k_data_a)
@@ -1392,13 +1403,14 @@ kuf_certif kuf1_certif
 		
 		if k_nr_righe > 0 then
 
-			kuf1_certif = create kuf_certif
+//			kuf1_certif = create kuf_certif
 			
 			for k_riga = 1 to k_nr_righe
 
 				kst_tab_certif.id = kids_certif_tree_stampati_xdata.getitemnumber(k_riga, "id")
 				kst_tab_certif.num_certif	 = kids_certif_tree_stampati_xdata.getitemnumber(k_riga, "num_certif")
 				kst_tab_certif.data  = kids_certif_tree_stampati_xdata.getitemdate(k_riga, "data")
+				kst_tab_certif.ora  = kids_certif_tree_stampati_xdata.getitemtime(k_riga, "ora")
 				kst_tab_certif.id_meca = kids_certif_tree_stampati_xdata.getitemnumber(k_riga, "id_meca")
 				kst_tab_certif.data_stampa = kids_certif_tree_stampati_xdata.getitemdate(k_riga, "data_stampa")
 				kst_tab_certif.ora_stampa = kids_certif_tree_stampati_xdata.getitemtime(k_riga, "ora_stampa")
@@ -1432,7 +1444,7 @@ kuf_certif kuf1_certif
 				kst_tab_memo.id_memo = kids_certif_tree_stampati_xdata.getitemnumber(k_riga, "id_memo")
 	
 //---toglie i NULL dai campi
-				kuf1_certif.if_isnull(kst_tab_certif)
+				if_isnull(kst_tab_certif)
 				if isnull(kst_tab_meca.contratto) then kst_tab_meca.contratto = 0
 				if isnull(kst_tab_contratti.mc_co) then kst_tab_contratti.mc_co = ""
 				if isnull(kst_tab_contratti.sc_cf) then kst_tab_contratti.sc_cf = ""
@@ -1512,7 +1524,7 @@ kuf_certif kuf1_certif
 			
 //			close kc_treeview;
 
-			destroy kuf1_certif
+//			destroy kuf1_certif
 
 		end if
 
@@ -2133,123 +2145,6 @@ return k_return
 
 end function
 
-public function st_esito aggiorna_dati_stampa (ref st_tab_certif kst_tab_certif);//
-//====================================================================
-//=== Aggiorna Data di stampa nella tabella ATTESTATI
-//=== 
-//=== 
-//=== Ritorna tab. ST_ESITO, Esiti:   vedi standard 
-//===                               
-//=== 
-//====================================================================
-boolean k_autorizza
-int k_sn=0
-int k_rek_ok=0
-long k_id
-st_tab_artr kst_tab_artr
-st_esito kst_esito, kst_esito_1
-st_open_w kst_open_w
-kuf_artr kuf1_artr
-kuf_sicurezza kuf1_sicurezza
-
-
-kst_esito.esito = kkg_esito.ok
-kst_esito.sqlcode = 0
-kst_esito.SQLErrText = ""
-kst_esito.nome_oggetto = this.classname()
-
-kst_open_w = kst_open_w
-kst_open_w.flag_modalita = kkg_flag_modalita.modifica
-kst_open_w.id_programma = kkg_id_programma_attestati
-
-//--- controlla se utente autorizzato alla funzione in atto
-kuf1_sicurezza = create kuf_sicurezza
-k_autorizza = kuf1_sicurezza.autorizza_funzione(kst_open_w)
-destroy kuf1_sicurezza
-
-if not k_autorizza then
-
-	kst_esito.sqlcode = sqlca.sqlcode
-	kst_esito.SQLErrText = "Aggiornamento Attestato non Autorizzata: ~n~r" + "La funzione richiesta non e' stata abilitata"
-	kst_esito.esito = kkg_esito.no_aut
-
-else
-
-
-	kst_tab_certif.x_datins = kGuf_data_base.prendi_x_datins()
-	kst_tab_certif.x_utente = kGuf_data_base.prendi_x_utente()
-
-
-
-	kst_tab_certif.id = 0
-	if kst_tab_certif.num_certif > 0 then
-		kst_esito = get_id(kst_tab_certif )   			// recupera il ID dell'attestato
-	end if
-		
-	if kst_esito.esito = kkg_esito.ok and kst_tab_certif.id > 0 then
-
-		if isnull(kst_tab_certif.id_docprod) then kst_tab_certif.id_docprod = 0
-
-		update certif 
-		   set form_di_stampa =  :kst_tab_certif.form_di_stampa,
-			    data_stampa = :kst_tab_certif.data_stampa,
-			    ora_stampa = :kst_tab_certif.ora_stampa,
-				id_docprod = :kst_tab_certif.id_docprod, 
-			    x_datins = :kst_tab_certif.x_datins,
-			    x_utente = :kst_tab_certif.x_utente
-			where id = :kst_tab_certif.id  
-			using sqlca;
-	
-		if sqlca.sqlcode <> 0 then
-			kst_esito.sqlcode = sqlca.sqlcode
-			kst_esito.SQLErrText = "Aggiornamento Attestato (certif):" + trim(sqlca.SQLErrText)
-			if sqlca.sqlcode > 0 then
-				kst_esito.esito = kkg_esito.db_wrn
-			else
-				kst_esito.esito = kkg_esito.db_ko
-			end if
-		else
-			
-//--- la data su ARTR è meglio quella di emissione		
-			get_data(kst_tab_certif)
-			kst_tab_artr.num_certif = kst_tab_certif.num_certif
-			kst_tab_artr.data_st = kst_tab_certif.data
-			kuf1_artr = create kuf_artr
-			kst_tab_artr.st_tab_g_0.esegui_commit = "N"
-			kst_esito_1=kuf1_artr.aggiorna_data_stampa_attestato(kst_tab_artr)
-			destroy kuf1_artr 
-			
-			if kst_esito_1.sqlcode < 0 then
-				kst_esito = kst_esito_1
-
-			else
-	
-				kst_esito.esito = kkg_esito.OK
-				
-			end if
-				
-		end if
-		
-		
-//--- Commit
-		if kst_tab_certif.st_tab_g_0.esegui_commit <> "N" or isnull(kst_tab_certif.st_tab_g_0.esegui_commit) then
-	
-			if kst_esito.esito = kkg_esito.ok or kst_esito.esito = kkg_esito.db_wrn or kst_esito.esito = kkg_esito.not_fnd then
-				kst_esito = kGuf_data_base.db_commit_1()
-			else
-				kGuf_data_base.db_rollback_1( )
-			end if
-			
-		end if
-		
-	end if
-
-end if
-
-return kst_esito
-
-end function
-
 public function boolean get_form_di_stampa (ref st_tab_certif kst_tab_certif) throws uo_exception;//
 //----------------------------------------------------------------------------------------------------------------------------
 //--- 
@@ -2546,62 +2441,6 @@ return kst_esito
 
 end function
 
-public function st_esito get_clie (ref st_tab_certif kst_tab_certif);//
-//----------------------------------------------------------------------------------------------------------------
-//--- 
-//--- Torna il Codice Cliente dal ID Certificato
-//--- 
-//--- 
-//--- Input: st_tab_certif.id
-//--- Out: st_tab_certif.clie_2
-//---
-//--- Ritorna tab. ST_ESITO, Esiti:   Vedi standard
-//---
-//----------------------------------------------------------------------------------------------------------------
-//
-string k_return = "0 "
-st_esito kst_esito
-
-
-
-kst_esito.esito = kkg_esito.ok
-kst_esito.sqlcode = 0
-kst_esito.SQLErrText = " "
-kst_esito.nome_oggetto = this.classname()
-
-
-//--- x numero certificato			
-	SELECT
-				certif.clie_2
-			into
-		         :kst_tab_certif.clie_2  
-			 FROM certif  
-			 where 
-						(id  = :kst_tab_certif.id)					     
-				 using sqlca;
-		
-	if sqlca.sqlcode <> 0 then
-		kst_esito.sqlcode = sqlca.sqlcode
-		kst_esito.SQLErrText = "Attestato non Trovato (certif) id = " + string(kst_tab_certif.id) + " " &
-						 + "~n~rErrore: " + trim(SQLCA.SQLErrText)
-									 
-		if sqlca.sqlcode = 100 then
-			kst_esito.esito = kkg_esito.not_fnd
-		else
-			if sqlca.sqlcode > 0 then
-				kst_esito.esito = kkg_esito.db_wrn
-			else	
-				kst_esito.esito = kkg_esito.db_ko
-			end if
-		end if
-	end if
-	
-
-return kst_esito
-
-
-end function
-
 public function long aggiorna_docprod (ref st_tab_certif kst_tab_certif[]) throws uo_exception;//
 //--- Aggiorna righe tabelle DOCPROD
 //---
@@ -2612,7 +2451,8 @@ public function long aggiorna_docprod (ref st_tab_certif kst_tab_certif[]) throw
 //---
 long k_return = 0
 long k_riga_certif=0, k_nr_certif=0, k_nr_doc=0, k_righe, k_riga
-string k_nome
+string k_nome, k_nome_file
+string k_path_nomefile[]
 st_esito kst_esito
 st_tab_docprod kst_tab_docprod
 st_tab_meca kst_tab_meca
@@ -2660,17 +2500,16 @@ kuf_clienti kuf1_clienti
 					kst_tab_docprod.st_tab_g_0.esegui_commit = kst_tab_certif[1].st_tab_g_0.esegui_commit 
 	
 //---			kst_docprod_esporta.flg_img_bn[]
-					kst_docprod_esporta.path[] = stampa_attestato_get_nome_pdf(kst_tab_certif[k_riga_certif], kst_tab_meca, false)	// recupera il nome del path+file 
-					if kst_docprod_esporta.path[1] > " " then 
-						k_righe = upperbound(kst_docprod_esporta.path[])
-						for k_riga = 1 to k_righe
-
+					kst_docprod_esporta.path[] = stampa_attestato_get_nome_pdf(kst_tab_certif[k_riga_certif], false)	// recupera il nome del path+file 
+					k_righe = upperbound(kst_docprod_esporta.path[])
+					if k_righe > 0 then
+						if kst_docprod_esporta.path[1] > " " then 
 							kst_docprod_esporta.kst_tab_docprod[1] = kst_tab_docprod
 
 							kuf1_docprod.tb_add_certif ( kst_tab_docprod, true ) // AGGIUNGE IN DOCPROD e lo ESPORTA subito
 
 							k_nr_doc++
-						end for
+						end if
 					end if
 					
 				end if		
@@ -2747,60 +2586,6 @@ kst_esito.nome_oggetto = this.classname()
 
 return k_return
 
-
-
-end function
-
-public function st_esito get_data (ref st_tab_certif kst_tab_certif);//
-//====================================================================
-//=== 
-//=== Torna il Data del Certificato 
-//=== 
-//=== 
-//--- Input: st_tab_certif.id
-//---
-//--- Ritorna tab. ST_ESITO, Esiti:   Vedi standard
-//---
-//====================================================================
-//
-string k_return = "0 "
-st_esito kst_esito
-
-
-
-kst_esito.esito = kkg_esito.ok
-kst_esito.sqlcode = 0
-kst_esito.SQLErrText = " "
-kst_esito.nome_oggetto = this.classname()
-
-
-	SELECT
-				certif.data
-				into
-		         :kst_tab_certif.data
-			 FROM certif  
-			 where id  = :kst_tab_certif.id
-				 using sqlca;
-		
-	if sqlca.sqlcode <> 0 then
-		kst_esito.sqlcode = sqlca.sqlcode
-		kst_esito.SQLErrText = "Tab.Attestati CERTIF nr. =" &
-						 + string(kst_tab_certif.num_certif) + " " &
-						 + "~n~rErrore: " + trim(SQLCA.SQLErrText)
-									 
-		if sqlca.sqlcode = 100 then
-			kst_esito.esito = KKG_ESITO.not_fnd
-		else
-			if sqlca.sqlcode > 0 then
-				kst_esito.esito = KKG_ESITO.db_wrn
-			else	
-				kst_esito.esito = KKG_ESITO.db_ko
-			end if
-		end if
-	end if
-	
-
-return kst_esito
 
 
 end function
@@ -2935,119 +2720,115 @@ if not k_rc_sr then
 
 else
 
+	try  
+
+
 //--- registra la data di stampa in attestato rendendolo definitivo
-	kist_tab_certif.data_stampa = kguo_g.get_dataoggi( )  // kg_dataoggi
-	kist_tab_certif.ora_stampa = time(kguo_g.get_datetime_current( )) // ora di stampa
+		kist_tab_certif.data_stampa = kguo_g.get_dataoggi( )  // kg_dataoggi
+		kist_tab_certif.ora_stampa = time(kguo_g.get_datetime_current( )) // ora di stampa
+		kist_tab_certif.form_di_stampa = trim(kids_certif_stampa.dataobject	) // il form di stampa definitivo	
+		kst_tab_certif[1] = kist_tab_certif
+		kst_tab_certif[1].st_tab_g_0.esegui_commit = "S"
+		aggiorna_dati_stampa(kst_tab_certif[1])
 
-//--- il form di stampa definitivo	
-	kist_tab_certif.form_di_stampa = trim(kids_certif_stampa.dataobject	)
-
-	kst_tab_certif[1] = kist_tab_certif
-
-	kst_tab_certif[1].st_tab_g_0.esegui_commit = "S"
-	kst_esito_1 = aggiorna_dati_stampa(kst_tab_certif[1])
-	
-	if kst_esito_1.esito <> kkg_esito.ok and kst_esito_1.esito <> kkg_esito.db_wrn then
-		kst_esito.esito = kkg_esito.blok
-		kst_esito.sqlcode = kst_esito_1.sqlcode 
-		kst_esito.SQLErrText = "Registrazione attestato Fallita.~n~r" + kst_esito_1.SQLErrText
-	else
+//	kst_esito_1 = aggiorna_dati_stampa(kst_tab_certif[1])
+//	
+//	if kst_esito_1.esito <> kkg_esito.ok and kst_esito_1.esito <> kkg_esito.db_wrn then
+//		kst_esito.esito = kkg_esito.blok
+//		kst_esito.sqlcode = kst_esito_1.sqlcode 
+//		kst_esito.SQLErrText = "Registrazione attestato Fallita.~n~r" + kst_esito_1.SQLErrText
+//	else
 		
-		try  
 
 //--- Recupera il ID del Lotto di entrata
-			if get_id_meca(kst_tab_certif[1]) > 0 then
-				if kst_tab_certif[1].id_meca > 0 then
+		if get_id_meca(kst_tab_certif[1]) > 0 then
+			if kst_tab_certif[1].id_meca > 0 then
 
 //--- alimenta tabella dati trattamento da Inviare a E1
-					kuf1_e1_wo_f5548014 = create kuf_e1_wo_f5548014
-					if kguo_g.if_e1_enabled( ) then
-						kuf1_barcode = create kuf_barcode
-						kuf1_armo = create kuf_armo
-						kst_tab_meca.id = kst_tab_certif[1].id_meca
-						kst_tab_e1_wo_f5548014.wo_osdoco = kuf1_armo.get_e1doco(kst_tab_meca)
-						if kst_tab_e1_wo_f5548014.wo_osdoco > 0 then
-							kst_tab_e1_wo_f5548014.flag_osev01 = kuf1_e1_wo_f5548014.kki_stato_ev01_qtdata
-							kst_tab_e1_wo_f5548014.dosemin_os55gs25a = string(kst_tab_certif[1].dose_min, "#0.00")
-							kst_tab_e1_wo_f5548014.dosemax_os55gs25b = string(kst_tab_certif[1].dose_max, "#0.00")
+				kuf1_e1_wo_f5548014 = create kuf_e1_wo_f5548014
+				if kguo_g.if_e1_enabled( ) then
+					kuf1_barcode = create kuf_barcode
+					kuf1_armo = create kuf_armo
+					kst_tab_meca.id = kst_tab_certif[1].id_meca
+					kst_tab_e1_wo_f5548014.wo_osdoco = kuf1_armo.get_e1doco(kst_tab_meca)
+					if kst_tab_e1_wo_f5548014.wo_osdoco > 0 then
+						kst_tab_e1_wo_f5548014.flag_osev01 = kuf1_e1_wo_f5548014.kki_stato_ev01_qtdata
+						kst_tab_e1_wo_f5548014.dosemin_os55gs25a = string(kst_tab_certif[1].dose_min, "#0.00")
+						kst_tab_e1_wo_f5548014.dosemax_os55gs25b = string(kst_tab_certif[1].dose_max, "#0.00")
 //--- set durata del trattamento							
-							kst_tab_barcode.id_meca = kst_tab_meca.id
-							k_durata_lav_secondi = kuf1_barcode.get_durata_lav(kst_tab_barcode) //25-10-2017 durata lavorazione solo di 1 barcode
-							kst_tab_e1_wo_f5548014.ciclo_os55gs25c = string(k_durata_lav_secondi) //kst_tab_certif[1].dose, "#0.00")
+						kst_tab_barcode.id_meca = kst_tab_meca.id
+						k_durata_lav_secondi = kuf1_barcode.get_durata_lav(kst_tab_barcode) //25-10-2017 durata lavorazione solo di 1 barcode
+						kst_tab_e1_wo_f5548014.ciclo_os55gs25c = string(k_durata_lav_secondi) //kst_tab_certif[1].dose, "#0.00")
 //--- set num giri del trattamento							
 //							kuf1_barcode.get_lav_fila_tot_x_id_meca(kst_tab_barcode)  // 23-08-2017 calcolo dei giri totali dei barcode per lotto
-							kst_tab_barcode_1[1].id_meca = kst_tab_barcode.id_meca   				// 25-10-2017 get dei giri di un barcode del lotto
-							k_ctr_max = kuf1_barcode.get_barcode_da_id_meca(kst_tab_barcode_1[]) // 25-10-2017 get dei giri di un barcode del lotto
-							if k_ctr_max > 0 then 		// 25-10-2017 get dei giri di un barcode del lotto
-								k_ctr = 1
-								do while k_ctr < k_ctr_max and kst_tab_barcode_1[k_ctr].lav_fila_1 = 0 and kst_tab_barcode_1[k_ctr].lav_fila_2 = 0
-									k_ctr++
-								loop	
-								if kst_tab_barcode_1[k_ctr].lav_fila_1 > 0 or kst_tab_barcode_1[k_ctr].lav_fila_2 > 0 then // se ho trovato che è stato lavorato...
-									kst_tab_e1_wo_f5548014.ngiri_ossetl = kst_tab_barcode_1[k_ctr].lav_fila_1 + kst_tab_barcode_1[k_ctr].lav_fila_1p + kst_tab_barcode_1[k_ctr].lav_fila_2 + kst_tab_barcode_1[k_ctr].lav_fila_2p
-								end if
+						kst_tab_barcode_1[1].id_meca = kst_tab_barcode.id_meca   				// 25-10-2017 get dei giri di un barcode del lotto
+						k_ctr_max = kuf1_barcode.get_barcode_da_id_meca(kst_tab_barcode_1[]) // 25-10-2017 get dei giri di un barcode del lotto
+						if k_ctr_max > 0 then 		// 25-10-2017 get dei giri di un barcode del lotto
+							k_ctr = 1
+							do while k_ctr < k_ctr_max and kst_tab_barcode_1[k_ctr].lav_fila_1 = 0 and kst_tab_barcode_1[k_ctr].lav_fila_2 = 0
+								k_ctr++
+							loop	
+							if kst_tab_barcode_1[k_ctr].lav_fila_1 > 0 or kst_tab_barcode_1[k_ctr].lav_fila_2 > 0 then // se ho trovato che è stato lavorato...
+								kst_tab_e1_wo_f5548014.ngiri_ossetl = kst_tab_barcode_1[k_ctr].lav_fila_1 + kst_tab_barcode_1[k_ctr].lav_fila_1p + kst_tab_barcode_1[k_ctr].lav_fila_2 + kst_tab_barcode_1[k_ctr].lav_fila_2p
 							end if
-//--- set fila del trattamento							
-							kuf1_barcode.get_lav_fila_tot_x_id_meca(kst_tab_barcode)  // 25-10-2017 calcolo dei giri totali dei barcode per lotto
-							kst_tab_e1_wo_f5548014.tcicli_osmmcu = " " 
-							if (kst_tab_barcode.lav_fila_1 + kst_tab_barcode.lav_fila_1p) > 0 and (kst_tab_barcode.lav_fila_2 + kst_tab_barcode.lav_fila_2p) > 0 then
-								kst_tab_e1_wo_f5548014.tcicli_osmmcu = kuf1_e1_wo_f5548014.kki_tcicli_osmmcu_MISTO  // CICLI MISTI
-							else
-								if (kst_tab_barcode.lav_fila_1 + kst_tab_barcode.lav_fila_1p) > 0 then
-									kst_tab_e1_wo_f5548014.tcicli_osmmcu = kuf1_e1_wo_f5548014.kki_tcicli_osmmcu_fila1  // FILA 1
-								else
-									if (kst_tab_barcode.lav_fila_2 + kst_tab_barcode.lav_fila_2p) > 0 then
-										kst_tab_e1_wo_f5548014.tcicli_osmmcu = kuf1_e1_wo_f5548014.kki_tcicli_osmmcu_fila2  // FILA 2
-									end if
-								end if
-							end if
-							
-							//kst_tab_e1_wo_f5548014.data_osa801 = kGuf_data_base.get_e1_dateformat(kst_tab_certif[1].data)
-							kst_tab_e1_wo_f5548014.data_osa801 = string(kst_tab_certif[1].data, "dd/mm/yy")
-							k_anno = integer(string(kst_tab_certif[1].data, "yyyy"))
-							k_anno_rid = integer(string(kst_tab_certif[1].data, "yy"))
-							k_datainizioanno = date(k_anno,01,01)
-							k_giorniafter = DaysAfter(k_datainizioanno, date(kst_tab_certif[1].data)) + 1
-							kst_tab_e1_wo_f5548014.data_osdee = 100000 + k_anno_rid * 1000 + k_giorniafter
-							kst_tab_e1_wo_f5548014.ora_oswwaet = long(kGuf_data_base.get_e1_timeformat(time(kGuf_data_base.prendi_dataora( ))))
-							
-							kuf1_e1_wo_f5548014.set_datilav_f5548014(kst_tab_e1_wo_f5548014)  // registra i dati su tb di scambio con E-ONE
 						end if
+//--- set fila del trattamento							
+						kuf1_barcode.get_lav_fila_tot_x_id_meca(kst_tab_barcode)  // 25-10-2017 calcolo dei giri totali dei barcode per lotto
+						kst_tab_e1_wo_f5548014.tcicli_osmmcu = " " 
+						if (kst_tab_barcode.lav_fila_1 + kst_tab_barcode.lav_fila_1p) > 0 and (kst_tab_barcode.lav_fila_2 + kst_tab_barcode.lav_fila_2p) > 0 then
+							kst_tab_e1_wo_f5548014.tcicli_osmmcu = kuf1_e1_wo_f5548014.kki_tcicli_osmmcu_MISTO  // CICLI MISTI
+						else
+							if (kst_tab_barcode.lav_fila_1 + kst_tab_barcode.lav_fila_1p) > 0 then
+								kst_tab_e1_wo_f5548014.tcicli_osmmcu = kuf1_e1_wo_f5548014.kki_tcicli_osmmcu_fila1  // FILA 1
+							else
+								if (kst_tab_barcode.lav_fila_2 + kst_tab_barcode.lav_fila_2p) > 0 then
+									kst_tab_e1_wo_f5548014.tcicli_osmmcu = kuf1_e1_wo_f5548014.kki_tcicli_osmmcu_fila2  // FILA 2
+								end if
+							end if
+						end if
+						
+						//kst_tab_e1_wo_f5548014.data_osa801 = kGuf_data_base.get_e1_dateformat(kst_tab_certif[1].data)
+						kst_tab_e1_wo_f5548014.data_osa801 = string(kst_tab_certif[1].data, "dd/mm/yy")
+						k_anno = integer(string(kst_tab_certif[1].data, "yyyy"))
+						k_anno_rid = integer(string(kst_tab_certif[1].data, "yy"))
+						k_datainizioanno = date(k_anno,01,01)
+						k_giorniafter = DaysAfter(k_datainizioanno, date(kst_tab_certif[1].data)) + 1
+						kst_tab_e1_wo_f5548014.data_osdee = 100000 + k_anno_rid * 1000 + k_giorniafter
+						kst_tab_e1_wo_f5548014.ora_oswwaet = long(kGuf_data_base.get_e1_timeformat(time(kGuf_data_base.prendi_dataora( ))))
+						
+						kuf1_e1_wo_f5548014.set_datilav_f5548014(kst_tab_e1_wo_f5548014)  // registra i dati su tb di scambio con E-ONE
 					end if
-
-					
-//--- Esegue diverse operazioni post stampa Attestato ----------------------------------------------------------------------------------------------
-					kuf1_armo_inout = create kuf_armo_inout
-					kst_tab_meca.id = kist_tab_certif.id_meca
-
-					kuf1_armo_inout.update_post_stampa_attestato(kst_tab_meca) // chiude Quarantena, set Voci da Fatturare ecc....
-					
 				end if
+
+				
+//--- Esegue diverse operazioni post stampa Attestato ----------------------------------------------------------------------------------------------
+				kuf1_armo_inout = create kuf_armo_inout
+				kst_tab_meca.id = kist_tab_certif.id_meca
+
+				kuf1_armo_inout.update_post_stampa_attestato(kst_tab_meca) // chiude Quarantena, set Voci da Fatturare ecc....
+				
 			end if
+		end if
 
 //--- DISTATTIVA LA REGISTRAZIONE SU TAB DOCPROD ORA SOLO STAMPA!!!					Aggiunge la riga in DOCPROD x l'esportazione digitale ----------------------------------------------------------------------------------------
 //			kst_tab_certif[1].st_tab_g_0.esegui_commit = "S"
 //			aggiorna_docprod(kst_tab_certif[])
-			
-		catch (uo_exception kuo_exception1)
-			kst_esito = kuo_exception1.get_st_esito( )
-			kst_esito.sqlerrtext = "Archivi Attestato Aggiornati Correttamente !  Ma si sono verificate le seguenti anonalie: ~n~r" + trim(kst_esito.sqlerrtext)
+		
+	catch (uo_exception kuo_exception1)
+		kst_esito = kuo_exception1.get_st_esito( )
+		kst_esito.sqlerrtext = "Aggiornamento Attestato Corretto!  Ma attenzione ai seguenti avvertimenti: ~n~r" + trim(kst_esito.sqlerrtext)
 
-			
-		finally
-			if isvalid(kuf1_e1_wo_f5548014) then destroy kuf1_e1_wo_f5548014
-			if isvalid(kuf1_armo_inout) then destroy kuf1_armo_inout
-			if isvalid(kuf1_armo) then destroy kuf1_armo
-			if isvalid(kuf1_barcode) then destroy kuf1_barcode
-			
 		
-		end try
-				
+	finally
+		if isvalid(kuf1_e1_wo_f5548014) then destroy kuf1_e1_wo_f5548014
+		if isvalid(kuf1_armo_inout) then destroy kuf1_armo_inout
+		if isvalid(kuf1_armo) then destroy kuf1_armo
+		if isvalid(kuf1_barcode) then destroy kuf1_barcode
 		
-		
-	end if
 	
-	
+	end try
+			
+//	end if
 	
 end if
 
@@ -3106,62 +2887,6 @@ kst_esito.nome_oggetto = this.classname()
 
 return k_return
 
-
-
-end function
-
-public function st_esito get_id_da_id_meca (ref st_tab_certif kst_tab_certif);//
-//----------------------------------------------------------------------------------------------------------------
-//--- 
-//--- Torna il ID dal ID lotto
-//--- 
-//--- 
-//--- Input: st_tab_certif.id_meca
-//--- Out: st_tab_certif.id
-//---
-//--- Ritorna tab. ST_ESITO, Esiti:   Vedi standard
-//---
-//----------------------------------------------------------------------------------------------------------------
-//
-string k_return = "0 "
-st_esito kst_esito
-
-
-
-kst_esito.esito = kkg_esito.ok
-kst_esito.sqlcode = 0
-kst_esito.SQLErrText = " "
-kst_esito.nome_oggetto = this.classname()
-
-
-//--- x numero certificato			
-	SELECT
-				certif.id
-			into
-		         :kst_tab_certif.id  
-			 FROM certif  
-			 where 
-						(id_meca  = :kst_tab_certif.id_meca)					     
-				 using kguo_sqlca_db_magazzino;
-		
-	if kguo_sqlca_db_magazzino.sqlcode <> 0 then
-		kst_esito.sqlcode = kguo_sqlca_db_magazzino.sqlcode
-		kst_esito.SQLErrText = "Errore durante Lettura Attestato (certif) da ID Lotto = " + string(kst_tab_certif.id_meca) + " " &
-						 + "~n~rErrore: " + trim(kguo_sqlca_db_magazzino.SQLErrText)
-									 
-		if kguo_sqlca_db_magazzino.sqlcode = 100 then
-			kst_esito.esito = kkg_esito.not_fnd
-		else
-			if kguo_sqlca_db_magazzino.sqlcode > 0 then
-				kst_esito.esito = kkg_esito.db_wrn
-			else	
-				kst_esito.esito = kkg_esito.db_ko
-			end if
-		end if
-	end if
-	
-
-return kst_esito
 
 
 end function
@@ -3969,18 +3694,15 @@ public function long stampa_digitale_esporta (ref st_docprod_esporta kst_docprod
 //---			
 //---
 long k_return=0
-int k_n_documenti_stampati=0, k_id_stampa, k_righe_certif
-string k_stampante_pdf="", k_esito="", k_path
-int k_item_attestato=0, k_pos, k_end
+int k_n_documenti_emessi=0, k_id_stampa, k_righe_certif
+string k_esito="", k_path
+int k_item_attestato=0, k_pos, k_end, k_n_attestati, k_n_pdf_exp_tot, k_n_pdf_exp
 st_esito kst_esito
 boolean k_sicurezza=false
 st_tab_certif kst_tab_certif
 st_open_w kst_open_w
 kuf_sicurezza kuf1_sicurezza
-kuf_base kuf1_base
-//kuf_utility kuf1_utility
 uo_exception kuo1_exception
-//datastore kdw_attestato
 
 
 try
@@ -3990,48 +3712,32 @@ try
 	kst_esito.SQLErrText = ""
 	kst_esito.nome_oggetto = this.classname()
 	
-	kst_open_w = kst_open_w
-	kst_open_w.flag_modalita = kkg_flag_modalita.stampa
-	kst_open_w.id_programma = kkg_id_programma_attestati
+	if_sicurezza(kkg_flag_modalita.stampa)
+//	kst_open_w = kst_open_w
+//	kst_open_w.flag_modalita = kkg_flag_modalita.stampa
+//	kst_open_w.id_programma = kkg_id_programma_attestati
+//	
+//	//--- controlla se utente autorizzato alla funzione in atto
+//	kuf1_sicurezza = create kuf_sicurezza
+//	k_sicurezza = kuf1_sicurezza.autorizza_funzione(kst_open_w)
+//	if not k_sicurezza then
+//		kst_esito.sqlcode = sqlca.sqlcode
+//		kst_esito.SQLErrText = "Emissione Attestato non Autorizzata: ~n~r" + "La funzione richiesta non e' stata abilitata"
+//		kst_esito.esito = kkg_esito.no_aut
+//		kuo1_exception = create uo_exception
+//		kuo1_exception.set_esito(kst_esito)
+//		throw kuo1_exception
+//	end if
 	
-	//--- controlla se utente autorizzato alla funzione in atto
-	kuf1_sicurezza = create kuf_sicurezza
-	k_sicurezza = kuf1_sicurezza.autorizza_funzione(kst_open_w)
-
-	if not k_sicurezza then
-	
-		kst_esito.sqlcode = sqlca.sqlcode
-		kst_esito.SQLErrText = "Emissione Attestato non Autorizzata: ~n~r" + "La funzione richiesta non e' stata abilitata"
-		kst_esito.esito = kkg_esito.no_aut
-		kuo1_exception = create uo_exception
-		kuo1_exception.set_esito(kst_esito)
-		throw kuo1_exception
-	end if
-	
-	
-	kist_tab_certif.id = kst_docprod_esporta.kst_tab_docprod[1].id_doc
-
-		
-	if kist_tab_certif.id = 0 or isnull(kist_tab_certif.id) then		
-
-		kst_esito.sqlcode = 0
-		kst_esito.SQLErrText = "Nessun Attestato da emettere: ~n~r" + "nessun numero attestato indicato"
-		kst_esito.esito = kkg_esito.blok
-		kuo1_exception = create uo_exception
-		kuo1_exception.set_esito(kst_esito)
-		throw kuo1_exception
-		
-	end if
-
-//--- Piglio il nome della stampante PDF
-	kuf1_base = create kuf_base
-	k_esito = kuf1_base.prendi_dato_base( "stamp_pdf")
-	if left(k_esito,1) <> "0" then
-		k_stampante_pdf = ""
-	else
-		k_stampante_pdf	= trim(mid(k_esito,2))
-	end if
-	destroy kuf1_base
+////--- Piglio il nome della stampante PDF
+//	kuf1_base = create kuf_base
+//	k_esito = kuf1_base.prendi_dato_base( "stamp_pdf")
+//	if left(k_esito,1) <> "0" then
+//		k_stampante_pdf = ""
+//	else
+//		k_stampante_pdf	= trim(mid(k_esito,2))
+//	end if
+//	destroy kuf1_base
 
 //--- OK finalmente inizio a lavorare -----------------------------------------------------------------------------
 
@@ -4044,114 +3750,61 @@ try
 		kids_certif_stampa = create kds_certif_stampa 
 	end if
 
-//	kuf1_utility = create kuf_utility
-
-	for k_item_attestato = 1 to upperbound(kst_docprod_esporta.kst_tab_docprod[])
+	k_n_attestati = upperbound(kst_docprod_esporta.kst_tab_docprod[])
+	for k_item_attestato = 1 to k_n_attestati
 
 		kist_tab_certif.id = kst_docprod_esporta.kst_tab_docprod[k_item_attestato].id_doc
-		if kist_tab_certif.id > 0 then
+		if kist_tab_certif.id > 0 then		
+		else
+			kst_esito.sqlcode = 0
+			kst_esito.SQLErrText = "Numero Attestato assente nell'elemento trattato n. " + string(k_item_attestato) + "."//: ~n~r" + "nessun numero attestato indicato"
+			kst_esito.esito = kkg_esito.blok
+			kuo1_exception = create uo_exception
+			kuo1_exception.set_esito(kst_esito)
+			throw kuo1_exception
+		end if
 			
 //--- Popola area dell'attestato sul quale sto lavorando
-			kist_tab_certif.num_certif = kst_docprod_esporta.kst_tab_docprod[k_item_attestato].doc_num
-			kist_tab_certif.data = kst_docprod_esporta.kst_tab_docprod[k_item_attestato].doc_data
+		kist_tab_certif.num_certif = kst_docprod_esporta.kst_tab_docprod[k_item_attestato].doc_num
+		kist_tab_certif.data = kst_docprod_esporta.kst_tab_docprod[k_item_attestato].doc_data
 
 //--- piglia il Ricevente			
-			kst_esito = get_clie(kist_tab_certif)
-			if kst_esito.esito = kkg_esito.db_ko then
-				kguo_exception.inizializza( )
-				kguo_exception.set_esito(kst_esito)
-				throw kguo_exception
-			end if
-//			kist_tab_certif.clie_2 = kst_docprod_esporta.kst_tab_docprod[k_item_attestato].id_cliente
+		get_clie(kist_tab_certif)
 
 //--- Decide quale form dell'Attesto utilizzare (Gold/Silver/...) o RISTAMPA
-			if not kids_certif_stampa.set_attestato(kist_tab_certif) then
-				kst_esito.sqlcode = 0
-				kst_esito.SQLErrText = "Fallita associazione modello di stampa per l'Attestato n.: "+ string(kist_tab_certif.num_certif) //+ "~n~r"&
-				kst_esito.esito = kkg_esito.ko
-				kguo_exception.inizializza( )
-				kguo_exception.set_esito(kst_esito)
-				throw kguo_exception
-			end if
-			
+		kids_certif_stampa.set_attestato(kist_tab_certif) 
 		
 //--- retrive dell'attestato 
-			k_righe_certif = kids_certif_stampa.retrieve(kist_tab_certif.num_certif, kist_tab_certif.num_certif )
-//			kdw_attestato.dataobject = kids_certif_stampa.dataobject			
-//			kdw_attestato.settransobject(sqlca)
-
-		
-//			if NOT stampa_attestato_prepara () then // prepara il ds kids_certif_stampa Attestato in base all'area KIST_TAB_CERTIF
-//				kguo_exception.inizializza( )
-//				kguo_exception.set_tipo(kguo_exception.kk_st_uo_exception_tipo_ko)
-//				kguo_exception.setmessage("Operazione di preparzione per 'Emissione Attestato' " + string( kist_tab_certif.num_certif ) + " fallita! ")
-//				throw kguo_exception
-//			end if
-			
+		k_righe_certif = kids_certif_stampa.retrieve(kist_tab_certif.num_certif, kist_tab_certif.num_certif )
 	
-			if k_righe_certif > 0 then
+		if k_righe_certif > 0 then
 
-////---- Sono sulla copia da fare in Bianco e nero?
-//				if kst_docprod_esporta.flg_img_bn[k_item_attestato] then
-//					kids_certif_stampa.setitem(1, "k_flg_img_bn", "1")
-//
 //--- Imposta immagini e risorse grafiche della stampa 
-					kids_certif_stampa.u_set_img()
-//					
-//				end if
+			kids_certif_stampa.u_set_img()
 
-				kids_certif_stampa.object.k_test[1] = '0' // evita la banda TEST
+			kids_certif_stampa.object.k_test[1] = '0' // evita la banda TEST
+		
+			k_n_pdf_exp_tot = upperbound(kst_docprod_esporta.path[])
 			
-//--- Controllo indicato un percorso
-				if len(trim(kst_docprod_esporta.path[k_item_attestato])) > 0 then 
+			for k_n_pdf_exp = 1 to k_n_pdf_exp_tot
 
-					k_n_documenti_stampati ++
-					
-//--- estrazione del solo path senza nome file
-					k_path = trim(kst_docprod_esporta.path[k_item_attestato])
-					k_pos = 0
-					do 
-						k_pos = pos(k_path, kkg.path_sep, k_pos + 1)
-						if k_pos > 0 then
-							k_end = k_pos
-						end if
-					loop while k_pos > 0
-					k_path = left(k_path, k_end)
-					kguo_path.u_drectory_create(k_path)
-
-//=== Crea il PDF
-//					kids_certif_stampa.Object.DataWindow.Export.PDF.Method = Distill!
-//					kids_certif_stampa.Object.DataWindow.Printer = k_stampante_pdf   
-//					kids_certif_stampa.Object.DataWindow.Export.PDF.Distill.CustomPostScript = "1"
-					kids_certif_stampa.object.DataWindow.Export.PDF.Method = NativePDF!
-//					kids_certif_stampa.Object.DataWindow.Export.PDF.NativePDF.ImageFormat = "0"  //BMP
-					k_id_stampa = kids_certif_stampa.saveas(trim( kst_docprod_esporta.path[k_item_attestato]),PDF!, false)   //
+//--- Registrazione documento digitali				
+				if stampa_digitale_esporta_1(kst_docprod_esporta.path[k_n_pdf_exp]) then
+					k_n_documenti_emessi ++
+				end if
 				
-					if k_id_stampa < 1 then
-						
-						kst_esito.sqlcode = 0
-						kst_esito.SQLErrText = "Emissione Attestato digitale su: '" + k_stampante_pdf + "' non generato: ~n~r"  &
-																	 + "documento: " + trim(kst_docprod_esporta.path[k_item_attestato]) + " ~n~r" &
-																	 + "Esportazione fallita per errore: " + string(k_id_stampa)
-						kst_esito.esito = kkg_esito.no_esecuzione
-						kguo_exception.set_esito(kst_esito)
-						throw kguo_exception
-
-					end if
+			next
+			k_return += k_n_documenti_emessi
 
 //--- Aggiorna tab Attestato		
-					if kst_docprod_esporta.kst_tab_docprod[k_item_attestato].id_docprod > 0 then
-						kst_tab_certif.id = kst_docprod_esporta.kst_tab_docprod[k_item_attestato].id_doc
-						kst_tab_certif.id_docprod = kst_docprod_esporta.kst_tab_docprod[k_item_attestato].id_docprod
-						set_id_docprod(kst_tab_certif)
-					end if
-				
-				end if
+			if kst_docprod_esporta.kst_tab_docprod[k_item_attestato].id_docprod > 0 then
+				kst_tab_certif.id = kst_docprod_esporta.kst_tab_docprod[k_item_attestato].id_doc
+				kst_tab_certif.id_docprod = kst_docprod_esporta.kst_tab_docprod[k_item_attestato].id_docprod
+				set_id_docprod(kst_tab_certif)
 			end if
 			
-			k_return = k_n_documenti_stampati
-			
 		end if
+			
 	end for
 
 catch (uo_exception kuo_exception)
@@ -4302,15 +3955,15 @@ return k_return
 end function
 
 private function long stampa_digitale () throws uo_exception;//
-//--- Aggiorna righe tabelle DOCPROD
+//--- Emissione e Aggiornamento Attestati pdf nella tabella DOCPROD
 //---
-//--- input:  array st_tab_certif con l'elenco dei documenti da aggiornare
-//--- out: Numero documenti caricati
+//--- input: array st_tab_certif con l'elenco dei documenti da emettere/aggiornare
+//--- out: Numero documenti trattati
 //---
 //--- Lancia EXCEPTION
 //---
 long k_return = 0
-long k_nr_doc=0, k_righe, k_riga
+long k_nr_doc=0, k_righe
 st_esito kst_esito
 st_tab_meca kst_tab_meca
 st_docprod_esporta kst_docprod_esporta
@@ -4348,20 +4001,14 @@ try
 		kst_docprod_esporta.kst_tab_docprod[1].id_cliente = kst_tab_meca.clie_3
 		kst_docprod_esporta.flg_img_bn[1] = false 
 
-		kst_docprod_esporta.path[] = stampa_attestato_get_nome_pdf(kst_tab_certif, kst_tab_meca, kids_certif_stampa.ki_flag_ristampa)	// recupera il nome documento path+file 
+		kst_docprod_esporta.path[] = stampa_attestato_get_nome_pdf(kst_tab_certif, kids_certif_stampa.ki_flag_ristampa)	// recupera il nome documento path+file 
 				
 		k_righe = upperbound(kst_docprod_esporta.path[])
-		for k_riga = 1 to k_righe
-			if kst_docprod_esporta.path[k_riga] > " " then 
-//					kst_docprod_esporta.kst_tab_docprod[1] = kst_tab_docprod
-				stampa_digitale_esporta(kst_docprod_esporta)
-
-				k_nr_doc++
-			end if
-		next
+		if k_righe > 1 then
+			k_nr_doc = stampa_digitale_esporta(kst_docprod_esporta)  // Emissione documenti digitali nelle cartelle indicate
+		end if
 				
 	end if		
-
 	
 	
 catch (uo_exception kuo1_exception)
@@ -4445,124 +4092,6 @@ kst_esito.nome_oggetto = this.classname()
 
 return k_return
 
-
-end function
-
-private function any stampa_attestato_get_nome_pdf (ref st_tab_certif ast_tab_certif, ref st_tab_meca ast_tab_meca, boolean a_ristampa) throws uo_exception;//
-//--- Compone il nome del file compreso di PATH
-//---
-//--- input: st_tab_certif id, num_certif, data, id_meca; st_tab_meca.clie_3;   TRUE=ristampa del documento, FALSE=stampa nuova
-//--- Rit: string array = path + nome file il primo trovato (può essercene più di 1)
-//---
-//--- Lancia EXCEPTION
-//---
-string k_return[20]
-long k_righe, k_riga
-string k_nome_file, k_path[20], k_esito, k_path_interno, k_path_esterno
-date k_dataoggi
-//st_esito kst_esito
-st_tab_docpath kst_tab_docpath[]
-st_tab_doctipo kst_tab_doctipo
-st_tab_clienti kst_tab_clienti
-st_esito kst_esito
-kuf_armo kuf1_armo
-kuf_docpath kuf1_docpath
-kuf_doctipo kuf1_doctipo
-kuf_clienti kuf1_clienti
-kuf_base kuf1_base
-
-
-try
-
-	kst_esito.esito = kkg_esito.ok
-	kst_esito.sqlcode = 0
-	kst_esito.SQLErrText = ""
-	kst_esito.nome_oggetto = this.classname()
-
-
-	if ast_tab_certif.id > 0 then
-		
-		kuf1_docpath = create kuf_docpath
-		kuf1_doctipo = create kuf_doctipo
-		kuf1_clienti = create kuf_clienti
-		kuf1_armo = create kuf_armo
-		kuf1_base = create kuf_base
-
-		ast_tab_meca.id = ast_tab_certif.id_meca
-
-		ast_tab_meca.e1doco = kuf1_armo.get_e1doco(ast_tab_meca)
-		ast_tab_meca.e1rorn = kuf1_armo.get_e1rorn(ast_tab_meca)
-		kst_tab_clienti.codice = ast_tab_certif.clie_2
-		kst_tab_clienti.e1ancodrs = kuf1_clienti.get_e1ancodrs(kst_tab_clienti)
-
-		k_nome_file = "att" + string(ast_tab_certif.data, "yymmdd") + "_nr" + string(ast_tab_certif.num_certif, "#") &
-		         + "_" + trim(kst_tab_clienti.e1ancodrs) + "_WO" + string(ast_tab_meca.e1doco) &
-					+ "_SO" + string(ast_tab_meca.e1rorn) + "_id" + string(ast_tab_certif.id, "#") + ".pdf"
-
-		kst_tab_doctipo.tipo = kuf1_doctipo.kki_tipo_attestati
-		kst_tab_docpath[1].id_doctipo = kuf1_doctipo.get_id_doctipo_da_tipo(kst_tab_doctipo)
-		if kst_tab_docpath[1].id_doctipo > 0 then 
-			
-			k_righe = kuf1_docpath.get_path_x_tipo(kst_tab_docpath[])
-
-//--- get dati lotto da usare per il path	
-			kuf1_armo.get_clie(ast_tab_meca )
-			kuf1_armo.get_data_ent(ast_tab_meca)
-
-//--- Path x uso interno sempre presente 
-			k_path_interno = kguo_path.get_doc_root_interno() 
-					
-//--- valuto se PATH anche x documento Uso Esterno
-			if kuf1_docpath.if_uso_esterno(kst_tab_docpath[1]) then 
-				k_path_esterno = kguo_path.get_doc_root_esterno()
-			end if
-			
-			k_dataoggi = kguo_g.get_dataoggi( )
-			
-			for k_riga = 1 to k_righe
-				k_path[k_riga] = k_path_interno &
-								     	+ kkg.path_sep + kst_tab_docpath[k_riga].path &
-										+ kkg.path_sep  &
-										+ string(kg_dataoggi, "yyyy") &
-										+ kkg.path_sep &
-										+ string(kg_dataoggi, "mm")  &
-										+ kkg.path_sep & 
-										+ string(kg_dataoggi, "dd")  &
-										+ kkg.path_sep 
-
-//												+  kuf1_docpath.get_path_suff_generale(ast_tab_meca.clie_3, date(ast_tab_meca.data_ent))
-//										 + kkg.path_sep &
-//										+ string(kg_dataoggi, "yyyy") + kkg.path_sep &
-//										+ string(kg_dataoggi, "mm")  &
-
-//									+ string(a_id_cliente, "00000") + kkg.path_sep &
-
-				if a_ristampa then
-					k_path[k_riga] += "ristampe" +  kkg.path_sep 
-				end if
-				k_path[k_riga] += k_nome_file
-			next
-			
-			k_return = k_path
-			
-		end if
-					
-	end if		
-
-catch (uo_exception kuo1_exception)
-	throw kuo1_exception
-	
-finally
-	if isvalid(kuf1_armo) then destroy kuf1_armo
-	if isvalid(kuf1_docpath) then destroy kuf1_docpath
-	if isvalid(kuf1_doctipo) then destroy kuf1_doctipo
-	if isvalid(kuf1_clienti) then destroy kuf1_clienti
-	if isvalid(kuf1_base) then destroy kuf1_base
-	
-end try
-			
-
-return k_return[]
 
 end function
 
@@ -4782,68 +4311,11 @@ st_treeview_data_any kst_treeview_data_any
 
 //--- find where the next group break is and get rownumber
 			do while k_riga > 0
-//			do while sqlca.sqlcode = 0
 
 //--- get the value of the computed field at that row
 				kst_treeview_data_any.contati = kids_certif_tree_stampati_xgiornomeseanno.getitemnumber(k_riga, "giorno_tot")
 				k_giorno = kids_certif_tree_stampati_xgiornomeseanno.getitemnumber(k_riga, "giorno")
 	
-//--- a rottura di anno presenta la riga totale a inizio
-//				if k_anno <> k_anno_old then
-//			
-//					if k_totale > 0 then
-//				
-////--- Estrazione del primo Item, quello dei totali
-//						ktvi_treeviewitem.selected = false
-//						k_handle_item = kuf1_treeview.kitv_tv1.getitem(k_handle_primo, ktvi_treeviewitem)
-//						kst_treeview_data = ktvi_treeviewitem.data
-//						kst_treeview_data_any = kst_treeview_data.struttura
-//						kst_tab_treeview = kst_treeview_data_any.st_tab_treeview
-//
-////--- Aggiorno il primo Item con i totali
-//						kst_tab_treeview.descrizione = string(k_totale, "###,###,##0") + "  Attestati presenti"
-//						k_totale = 0
-//			
-//						kst_tab_certif.data = date(k_anno_old,01,01)
-//						kst_tab_certif.data_stampa = date(k_anno_old+1,01,01)
-//						
-//						kst_treeview_data_any.st_tab_certif = kst_tab_certif
-//						kst_treeview_data_any.st_tab_treeview = kst_tab_treeview
-//						kst_treeview_data.struttura = kst_treeview_data_any
-//						ktvi_treeviewitem.data = kst_treeview_data
-//						
-//						k_handle_item = kuf1_treeview.kitv_tv1.setitem(k_handle_primo, ktvi_treeviewitem)
-//					end if
-					
-//					k_anno_old = k_anno // memorizzo l'anno x la rottura
-					
-//					kst_treeview_data.label = k_mese_desc[k_mese] &
-//													  + "  " &
-//													  + string(k_anno) 
-//					kst_tab_treeview.voce = kst_treeview_data.label
-//					kst_tab_treeview.id = "0"
-//					kst_tab_treeview.descrizione = "  ...conteggio in esecuzione..."
-//					kst_tab_treeview.descrizione_tipo = "Attestati " 
-//					kst_treeview_data.pic_list = k_pic_list
-//					kst_treeview_data.oggetto = k_tipo_oggetto_figlio 
-//					kst_treeview_data_any.st_tab_treeview = kst_tab_treeview
-//					kst_treeview_data_any.st_tab_certif = kst_tab_certif
-//					kst_treeview_data_any.st_tab_certif.data_stampa = date(0)
-//					kst_treeview_data.struttura = kst_treeview_data_any
-//					kst_treeview_data.handle = k_handle_item_padre
-//					ktvi_treeviewitem.label = kst_treeview_data.label
-//					ktvi_treeviewitem.data = kst_treeview_data
-	//--- Nuovo Item
-//					ktvi_treeviewitem.selected = false
-//					k_handle_item = kuf1_treeview.kitv_tv1.insertitemlast(k_handle_item_padre, ktvi_treeviewitem)
-	//--- salvo handle del item appena inserito nella stessa struttura
-//					kst_treeview_data.handle = k_handle_item
-//					k_handle_primo = k_handle_item
-	//--- inserisco il handle di questa riga tra i dati del item
-//					ktvi_treeviewitem.data = kst_treeview_data
-//					kuf1_treeview.kitv_tv1.setitem(k_handle_item, ktvi_treeviewitem)
-	//			end if
-	 
 				k_totale = k_totale + kst_treeview_data_any.contati
 				kst_tab_certif.data = date(k_annoN, k_meseN, k_giorno)
 				kst_tab_certif.data_stampa = kst_tab_certif.data
@@ -4854,20 +4326,6 @@ st_treeview_data_any kst_treeview_data_any
 										  	+ k_giorno_desc[DayNumber(kst_tab_certif.data)]  &
 										  	+ ")" 
 											  
-//				if k_mese = 0 or k_mese > 12 or isnull(k_mese) then
-//					k_mese = 13
-//					kst_tab_certif.data = date(k_anno,01,01)
-//					kst_tab_certif.data_stampa = date(k_anno+1,01,01)
-//				else			
-//					kst_tab_certif.data = date(k_anno,k_mese,01)
-//					k_mese++
-//					if k_mese > 12 then
-//						k_mese = 1
-//						k_anno++
-//					end if
-//					kst_tab_certif.data_stampa = date(k_anno, k_mese, 01)
-//				end if
-
 				kst_tab_treeview.voce = kst_treeview_data.label
 				kst_tab_treeview.id = string(k_anno, "0000")  + string(k_mese, "00") + string(k_giorno, "00") 
 				if kst_treeview_data_any.contati = 1 then
@@ -4914,7 +4372,9 @@ st_treeview_data_any kst_treeview_data_any
 				k_handle_item = kuf1_treeview.kitv_tv1.getitem(k_handle_primo, ktvi_treeviewitem)
 				kst_treeview_data = ktvi_treeviewitem.data
 				kst_treeview_data_any = kst_treeview_data.struttura
-				kst_treeview_data_any.st_tab_certif.data_stampa = date(k_annoN, k_meseN, k_giorno)
+				kst_treeview_data_any.st_tab_certif.data = date(k_annoN, k_meseN, 01)
+				k_data = relativedate(kst_treeview_data_any.st_tab_certif.data, +31) // data al mese successivo
+				kst_treeview_data_any.st_tab_certif.data_stampa = relativedate(date(year(k_data), month(k_data), 01), -1) // si posiziona sull'ultimo gg del mese precedente
 				kst_tab_treeview = kst_treeview_data_any.st_tab_treeview
 //--- Aggiorno il primo Item con i totali
 				kst_tab_treeview.descrizione = string(k_totale, "###,###,##0") + "  Attestati presenti"
@@ -5497,13 +4957,17 @@ try
 		if kst_tab_sl_pt_MAX.DOSE > 0 and kst_tab_certif.DOSE_MAX = 0.00 then
 			kst_tab_certif.DOSE_MAX = kst_tab_sl_pt_MAX.DOSE 
 		end if
-	end if
+	end if  
 	
 //--- Get della data del CERTIFICATO da stampare
 	kst_tab_meca_dosim.id_meca = kst_tab_certif.id_meca
-	kst_tab_certif.data = kuf1_meca_dosim.get_data_x_certif(kst_tab_meca_dosim)
-	if isnull(kst_tab_certif.data) then
-		kst_tab_certif.data = kguo_g.get_dataoggi( ) //se proprio non trova la DATA allora ci mette la data-oggi
+	kst_tab_meca_dosim.dosim_data_ora = kuf1_meca_dosim.get_data_x_certif(kst_tab_meca_dosim)
+	if kst_tab_meca_dosim.dosim_data_ora > datetime(date(0)) then
+		kst_tab_certif.data = date(kst_tab_meca_dosim.dosim_data_ora)
+		kst_tab_certif.ora = time(kst_tab_meca_dosim.dosim_data_ora)
+	else
+		kst_tab_certif.data = date(kGuf_data_base.prendi_x_datins()) //kguo_g.get_dataoggi( ) //se proprio non trova la DATA allora ci mette la data-oggi
+		kst_tab_certif.ora = time(kGuf_data_base.prendi_x_datins())
 	end if
 
 
@@ -5700,6 +5164,713 @@ kst_esito.nome_oggetto = this.classname()
 return k_return
 
 
+
+end function
+
+private function integer get_path_root (ref st_tab_docpath ast_tab_docpath[]) throws uo_exception;//
+//--- Get del PATH root prefisso da aggiunere al path definitivo
+//--- Out: riempie array kst_tab_docpath[]
+//--- Rit: numero path trovati
+//---
+//--- Lancia EXCEPTION
+//---
+int k_return
+st_tab_doctipo kst_tab_doctipo
+st_esito kst_esito
+kuf_docpath kuf1_docpath
+kuf_doctipo kuf1_doctipo
+
+
+try
+
+	kst_esito.esito = kkg_esito.ok
+	kst_esito.sqlcode = 0
+	kst_esito.SQLErrText = ""
+	kst_esito.nome_oggetto = this.classname()
+
+	
+	kuf1_docpath = create kuf_docpath
+	kuf1_doctipo = create kuf_doctipo
+
+	kst_tab_doctipo.tipo = kuf1_doctipo.kki_tipo_attestati
+	ast_tab_docpath[1].id_doctipo = kuf1_doctipo.get_id_doctipo_da_tipo(kst_tab_doctipo)
+	if ast_tab_docpath[1].id_doctipo > 0 then 
+			
+		k_return = kuf1_docpath.get_path_x_tipo(ast_tab_docpath[])
+
+	end if
+	
+catch (uo_exception kuo1_exception)
+	throw kuo1_exception
+	
+finally
+	if isvalid(kuf1_docpath) then destroy kuf1_docpath
+	if isvalid(kuf1_doctipo) then destroy kuf1_doctipo
+	
+end try
+			
+
+return k_return
+
+end function
+
+public function string get_path_email (ref st_tab_certif ast_tab_certif) throws uo_exception;//
+//--- Get del PATH (senza nome file) di dove mettere i documenti da inviare via email
+//---
+//--- input: st_tab_certif.id_meca
+//--- Rit: string = path completo root + personalizzazioni NO il nome file 
+//---
+//--- Lancia EXCEPTION
+//---
+string k_return
+int k_righe
+string k_path_interno, k_path_suffisso
+st_tab_meca kst_tab_meca
+st_tab_docpath kst_tab_docpath[]
+st_esito kst_esito
+kuf_armo kuf1_armo
+
+
+try
+
+	kst_esito.esito = kkg_esito.ok
+	kst_esito.sqlcode = 0
+	kst_esito.SQLErrText = ""
+	kst_esito.nome_oggetto = this.classname()
+
+
+	if ast_tab_certif.id_meca > 0 then
+		
+		kst_tab_meca.id = ast_tab_certif.id_meca
+		
+		kuf1_armo = create kuf_armo
+
+		k_righe = get_path_root(kst_tab_docpath[])
+
+		if k_righe > 0 then
+				
+//--- get dati lotto da usare per il path	
+			kuf1_armo.get_clie(kst_tab_meca )
+			this.get_id_da_id_meca(ast_tab_certif) 
+			this.get_data(ast_tab_certif)
+//			kuf1_armo.get_data_ent(kst_tab_meca)
+
+//--- Path x uso interno sempre presente 
+			k_path_interno = kguo_path.get_doc_root_interno() 
+					
+			k_path_suffisso = kkg.path_sep  &
+										+ string(year(ast_tab_certif.data)) &
+										+ kkg.path_sep &
+										+ "email"  &
+										+ kkg.path_sep &
+										+ "c" + string(kst_tab_meca.clie_3, "#") &
+										+ kkg.path_sep &
+										+ "lot" + string(kst_tab_meca.id, "#")  &
+										+ kkg.path_sep 
+			k_return = k_path_interno &
+										+ kkg.path_sep + kst_tab_docpath[1].path &
+										+ k_path_suffisso
+		end if
+					
+	end if		
+
+catch (uo_exception kuo1_exception)
+	throw kuo1_exception
+	
+finally
+	if isvalid(kuf1_armo) then destroy kuf1_armo
+	
+end try
+			
+
+return k_return[]
+
+end function
+
+private function any get_path_doc (ref st_tab_certif ast_tab_certif, boolean a_ristampa) throws uo_exception;//
+//--- Get del PATH senza nome file
+//---
+//--- input: st_tab_certif.id_meca   TRUE=ristampa del documento, FALSE=stampa nuova
+//--- Rit: string array = recupera i path completi di root e personalizzazioni (NO il nome file)
+//---
+//--- Lancia EXCEPTION
+//---
+string k_return[]
+int k_righe, k_riga, k_path_riga
+string k_path[], k_esito, k_path_interno, k_path_esterno, k_path_suffisso, k_path_email
+date k_dataoggi
+//st_tab_meca kst_tab_meca
+st_tab_docpath kst_tab_docpath[]
+st_tab_doctipo kst_tab_doctipo
+st_esito kst_esito
+kuf_docpath kuf1_docpath
+//kuf_armo kuf1_armo
+
+
+try
+
+	kst_esito.esito = kkg_esito.ok
+	kst_esito.sqlcode = 0
+	kst_esito.SQLErrText = ""
+	kst_esito.nome_oggetto = this.classname()
+
+
+	if ast_tab_certif.id_meca > 0 then
+		
+//		kuf1_armo = create kuf_armo
+		kuf1_docpath = create kuf_docpath
+
+		k_righe = get_path_root(kst_tab_docpath[])
+
+		if k_righe > 0 then
+				
+//--- get dati lotto da usare per il path	
+//			kuf1_armo.get_clie(ast_tab_meca )
+//			kuf1_armo.get_data_ent(ast_tab_meca)
+
+//--- Path x uso interno sempre presente 
+			k_path_interno = kguo_path.get_doc_root_interno() 
+					
+//--- valuto se PATH anche x documento Uso Esterno
+			if kuf1_docpath.if_uso_esterno(kst_tab_docpath[1]) then 
+				k_path_esterno = kguo_path.get_doc_root_esterno()
+			end if
+			
+			k_dataoggi = kguo_g.get_dataoggi( )
+			k_path_suffisso = kkg.path_sep  &
+										+ string(kg_dataoggi, "yyyy") &
+										+ kkg.path_sep &
+										+ string(kg_dataoggi, "mm")  &
+										+ kkg.path_sep & 
+										+ string(kg_dataoggi, "dd")  &
+										+ kkg.path_sep 
+			k_path_riga = 0
+			for k_riga = 1 to k_righe
+				k_path_riga++   
+				k_path[k_path_riga] = k_path_interno &
+										+ kkg.path_sep + kst_tab_docpath[k_riga].path &
+										+ k_path_suffisso
+				if a_ristampa then
+					k_path[k_path_riga] += "ristampe" +  kkg.path_sep 
+				else
+					if k_path_esterno > " " then
+						k_path_riga++
+						k_path[k_path_riga] = k_path_esterno &
+											+ kkg.path_sep + kst_tab_docpath[k_riga].path &
+											+ k_path_suffisso
+					end if
+				end if
+			next
+			
+			// aggiunge la cartella per le email
+			if not a_ristampa then
+				k_path_email = get_path_email(ast_tab_certif)
+				if k_path_email > " " then
+					k_path_riga++
+					k_path[k_path_riga] = k_path_email
+				end if
+			end if
+			
+			k_return[] = k_path
+				
+		end if
+					
+	end if		
+
+catch (uo_exception kuo1_exception)
+	throw kuo1_exception
+	
+finally
+//	if isvalid(kuf1_armo) then destroy kuf1_armo
+	if isvalid(kuf1_docpath) then destroy kuf1_docpath
+	
+end try
+			
+
+return k_return[]
+
+end function
+
+private function string get_nome_pdf (ref st_tab_certif ast_tab_certif) throws uo_exception;//
+//--- Compone il nome del file 
+//---
+//--- input: st_tab_certif id, num_certif, data, id_meca; st_tab_meca.clie_2;
+//--- Rit: nome file 
+//---
+//--- Lancia EXCEPTION
+//---
+string k_return
+st_tab_clienti kst_tab_clienti
+st_tab_meca kst_tab_meca
+st_esito kst_esito
+kuf_armo kuf1_armo
+kuf_clienti kuf1_clienti
+
+
+try
+
+	kst_esito.esito = kkg_esito.ok
+	kst_esito.sqlcode = 0
+	kst_esito.SQLErrText = ""
+	kst_esito.nome_oggetto = this.classname()
+
+
+	if ast_tab_certif.id > 0 and ast_tab_certif.id_meca > 0 then
+		
+		kuf1_clienti = create kuf_clienti
+		kuf1_armo = create kuf_armo
+
+		kst_tab_meca.id = ast_tab_certif.id_meca
+
+		kst_tab_meca.e1doco = kuf1_armo.get_e1doco(kst_tab_meca)
+		kst_tab_meca.e1rorn = kuf1_armo.get_e1rorn(kst_tab_meca)
+		kst_tab_clienti.codice = ast_tab_certif.clie_2
+		kst_tab_clienti.e1ancodrs = kuf1_clienti.get_e1ancodrs(kst_tab_clienti)
+
+		k_return = "att" + string(ast_tab_certif.data, "yymmdd") + "_nr" + string(ast_tab_certif.num_certif, "#") &
+		         + "_" + trim(kst_tab_clienti.e1ancodrs) + "_WO" + string(kst_tab_meca.e1doco) &
+					+ "_SO" + string(kst_tab_meca.e1rorn) + "_id" + string(ast_tab_certif.id, "#") + ".pdf"
+
+					
+	end if		
+
+catch (uo_exception kuo1_exception)
+	throw kuo1_exception
+	
+finally
+	if isvalid(kuf1_armo) then destroy kuf1_armo
+	if isvalid(kuf1_clienti) then destroy kuf1_clienti
+	
+end try
+			
+
+return k_return
+
+end function
+
+private function any stampa_attestato_get_nome_pdf (ref st_tab_certif ast_tab_certif, boolean a_ristampa) throws uo_exception;//
+//--- Compone il nome del file compreso di PATH
+//---
+//--- input: st_tab_certif id, num_certif, data, id_meca; st_tab_meca.clie_3;   TRUE=ristampa del documento, FALSE=stampa nuova
+//--- Rit: string array = path + nome file il primo trovato (può essercene più di 1)
+//---
+//--- Lancia EXCEPTION
+//---
+string k_return[]
+string k_nome_file
+string k_path_nomefile[]
+int k_righe, k_riga
+st_esito kst_esito
+
+try
+
+	kst_esito.esito = kkg_esito.ok
+	kst_esito.sqlcode = 0
+	kst_esito.SQLErrText = ""
+	kst_esito.nome_oggetto = this.classname()
+
+
+	if ast_tab_certif.id > 0 then
+
+		k_nome_file = get_nome_pdf(ast_tab_certif)	// recupera il nome del file 
+		k_path_nomefile[] = get_path_doc(ast_tab_certif, a_ristampa)
+		
+		k_righe = upperbound(k_path_nomefile)
+		for k_riga = 1 to k_righe
+			if k_path_nomefile[1] > " " then 
+				k_return[k_riga] = k_path_nomefile[k_riga] + k_nome_file
+			end if
+		end for
+		
+	end if		
+
+catch (uo_exception kuo1_exception)
+	throw kuo1_exception
+	
+finally
+	
+end try
+			
+
+return k_return[]
+
+end function
+
+public function long get_id_da_id_meca (ref st_tab_certif kst_tab_certif) throws uo_exception;//
+//----------------------------------------------------------------------------------------------------------------
+//--- 
+//--- Torna il ID dal ID lotto
+//--- 
+//--- 
+//--- Input: st_tab_certif.id_meca
+//--- Out: st_tab_certif.id
+//---
+//--- Ritorna tab. st_tab_certif.id
+//---
+//----------------------------------------------------------------------------------------------------------------
+//
+st_esito kst_esito
+
+
+kst_esito.esito = kkg_esito.ok
+kst_esito.sqlcode = 0
+kst_esito.SQLErrText = " "
+kst_esito.nome_oggetto = this.classname()
+
+//--- x numero certificato			
+	SELECT
+				certif.id
+			into
+		         :kst_tab_certif.id  
+			 FROM certif  
+			 where 
+						(id_meca  = :kst_tab_certif.id_meca)					     
+				 using kguo_sqlca_db_magazzino;
+		
+	if kguo_sqlca_db_magazzino.sqlcode <> 0 then
+		kst_tab_certif.id = 0
+		kst_esito.sqlcode = kguo_sqlca_db_magazzino.sqlcode
+		kst_esito.SQLErrText = "Errore in Lettura Attestato (certif) da ID Lotto = " + string(kst_tab_certif.id_meca) + " " &
+						 + "~n~rErrore: " + trim(kguo_sqlca_db_magazzino.SQLErrText)
+									 
+		if kguo_sqlca_db_magazzino.sqlcode = 100 then
+			kst_esito.esito = kkg_esito.not_fnd
+		else
+			if kguo_sqlca_db_magazzino.sqlcode > 0 then
+				kst_esito.esito = kkg_esito.db_wrn
+			else	
+				kst_esito.esito = kkg_esito.db_ko
+				kguo_exception.inizializza( )
+				kguo_exception.set_esito(kst_esito)					
+				throw kguo_exception
+			end if
+		end if
+	end if
+	
+	if isnull(kst_tab_certif.id) then kst_tab_certif.id = 0
+
+return kst_tab_certif.id
+
+
+end function
+
+public function date get_data (ref st_tab_certif kst_tab_certif) throws uo_exception;//
+//====================================================================
+//=== 
+//=== Torna il Data del Certificato 
+//=== 
+//=== 
+//--- Input: st_tab_certif.id
+//---
+//--- Ritorna tab. st_tab_certif.id
+//---
+//====================================================================
+//
+st_esito kst_esito
+
+
+kst_esito.esito = kkg_esito.ok
+kst_esito.sqlcode = 0
+kst_esito.SQLErrText = " "
+kst_esito.nome_oggetto = this.classname()
+
+
+	SELECT
+				certif.data
+				into
+		         :kst_tab_certif.data
+			 FROM certif  
+			 where id  = :kst_tab_certif.id
+				 using sqlca;
+		
+	if sqlca.sqlcode <> 0 then
+		kst_tab_certif.data = date(0)
+		kst_esito.sqlcode = sqlca.sqlcode
+		kst_esito.SQLErrText = "Errore in lettura Data dell'Attestato (CERTIF) id. =" &
+						 + string(kst_tab_certif.id) + " " &
+						 + "~n~rErrore: " + trim(SQLCA.SQLErrText)
+									 
+		if sqlca.sqlcode = 100 then
+			kst_esito.esito = KKG_ESITO.not_fnd
+		else
+			if sqlca.sqlcode > 0 then
+				kst_esito.esito = KKG_ESITO.db_wrn
+			else	
+				kst_esito.esito = KKG_ESITO.db_ko
+				kguo_exception.inizializza( )
+				kguo_exception.set_esito(kst_esito)					
+				throw kguo_exception
+			end if
+		end if
+	end if
+
+	if isnull(kst_tab_certif.data) then kst_tab_certif.data = date(0)
+
+return kst_tab_certif.data
+
+
+end function
+
+public function st_esito aggiorna_dati_stampa (ref st_tab_certif kst_tab_certif) throws uo_exception;//
+//====================================================================
+//=== Aggiorna Data di stampa nella tabella ATTESTATI
+//=== 
+//=== 
+//=== Ritorna tab. ST_ESITO, Esiti:   vedi standard 
+//===                               
+//=== 
+//====================================================================
+boolean k_autorizza
+int k_sn=0
+int k_rek_ok=0
+long k_id
+st_tab_artr kst_tab_artr
+st_esito kst_esito, kst_esito_1
+st_open_w kst_open_w
+kuf_artr kuf1_artr
+kuf_sicurezza kuf1_sicurezza
+
+kst_esito.esito = kkg_esito.ok
+kst_esito.sqlcode = 0
+kst_esito.SQLErrText = ""
+kst_esito.nome_oggetto = this.classname()
+
+kst_open_w = kst_open_w
+kst_open_w.flag_modalita = kkg_flag_modalita.modifica
+kst_open_w.id_programma = kkg_id_programma_attestati
+
+//--- controlla se utente autorizzato alla funzione in atto
+kuf1_sicurezza = create kuf_sicurezza
+k_autorizza = kuf1_sicurezza.autorizza_funzione(kst_open_w)
+destroy kuf1_sicurezza
+
+if not k_autorizza then
+
+	kst_esito.sqlcode = sqlca.sqlcode
+	kst_esito.SQLErrText = "Aggiornamento Attestato non Autorizzata: ~n~r" + "La funzione richiesta non e' stata abilitata"
+	kst_esito.esito = kkg_esito.no_aut
+
+else
+
+
+	kst_tab_certif.x_datins = kGuf_data_base.prendi_x_datins()
+	kst_tab_certif.x_utente = kGuf_data_base.prendi_x_utente()
+
+	kst_tab_certif.id = 0
+	if kst_tab_certif.num_certif > 0 then
+		kst_esito = get_id(kst_tab_certif )   			// recupera il ID dell'attestato
+	end if
+		
+	if kst_esito.esito = kkg_esito.ok and kst_tab_certif.id > 0 then
+
+		try
+
+			if isnull(kst_tab_certif.id_docprod) then kst_tab_certif.id_docprod = 0
+	
+			update certif 
+				set form_di_stampa =  :kst_tab_certif.form_di_stampa,
+					 data_stampa = :kst_tab_certif.data_stampa,
+					 ora_stampa = :kst_tab_certif.ora_stampa,
+					id_docprod = :kst_tab_certif.id_docprod, 
+					 x_datins = :kst_tab_certif.x_datins,
+					 x_utente = :kst_tab_certif.x_utente
+				where id = :kst_tab_certif.id  
+				using sqlca;
+		
+			if sqlca.sqlcode <> 0 then
+				kst_esito.sqlcode = sqlca.sqlcode
+				kst_esito.SQLErrText = "Errore in Aggiornamento Attestato (certif):" + trim(sqlca.SQLErrText)
+				if sqlca.sqlcode > 0 then
+					kst_esito.esito = kkg_esito.db_wrn
+				else
+					kst_esito.esito = kkg_esito.db_ko
+					kguo_exception.inizializza( )
+					kguo_exception.set_esito(kst_esito)
+					throw kguo_exception
+				end if
+			else
+				
+	//--- la data su ARTR è meglio quella di emissione		
+				get_data(kst_tab_certif)
+				kst_tab_artr.num_certif = kst_tab_certif.num_certif
+				kst_tab_artr.data_st = kst_tab_certif.data
+				kuf1_artr = create kuf_artr
+				kst_tab_artr.st_tab_g_0.esegui_commit = "N"
+				kst_esito_1=kuf1_artr.aggiorna_data_stampa_attestato(kst_tab_artr)
+				destroy kuf1_artr 
+				
+				if kst_esito_1.sqlcode < 0 then
+					kst_esito = kst_esito_1
+					kguo_exception.inizializza( )
+					kguo_exception.set_esito(kst_esito)
+					throw kguo_exception
+				else
+		
+					kst_esito.esito = kkg_esito.OK
+					
+				end if
+					
+			end if
+			
+
+		catch (uo_exception kuo_exception)
+			throw kuo_exception
+	
+		finally
+		//--- Commit
+			if kst_tab_certif.st_tab_g_0.esegui_commit <> "N" or isnull(kst_tab_certif.st_tab_g_0.esegui_commit) then
+		
+				if kst_esito.esito = kkg_esito.ok or kst_esito.esito = kkg_esito.db_wrn or kst_esito.esito = kkg_esito.not_fnd then
+					kGuf_data_base.db_commit_1()
+				else
+					kGuf_data_base.db_rollback_1( )
+				end if
+				
+			end if
+	
+		end try
+	end if
+end if
+
+return kst_esito
+
+end function
+
+public function st_esito get_clie (ref st_tab_certif kst_tab_certif) throws uo_exception;//
+//----------------------------------------------------------------------------------------------------------------
+//--- 
+//--- Torna il Codice Cliente dal ID Certificato
+//--- 
+//--- 
+//--- Input: st_tab_certif.id
+//--- Out: st_tab_certif.clie_2
+//---
+//--- Ritorna tab. ST_ESITO, Esiti:   Vedi standard
+//---
+//----------------------------------------------------------------------------------------------------------------
+//
+string k_return = "0 "
+st_esito kst_esito
+
+
+
+kst_esito.esito = kkg_esito.ok
+kst_esito.sqlcode = 0
+kst_esito.SQLErrText = " "
+kst_esito.nome_oggetto = this.classname()
+
+
+//--- x numero certificato			
+	SELECT
+				certif.clie_2
+			into
+		         :kst_tab_certif.clie_2  
+			 FROM certif  
+			 where 
+						(id  = :kst_tab_certif.id)					     
+				 using sqlca;
+		
+	if sqlca.sqlcode <> 0 then
+		kst_tab_certif.clie_2 = 0
+		kst_esito.sqlcode = sqlca.sqlcode
+		kst_esito.SQLErrText = "Errore in lettura Cliente in Attestato (certif) id = '" + string(kst_tab_certif.id) + "'" &
+									 + "~n~rErrore: " + trim(SQLCA.SQLErrText)
+									 
+		if sqlca.sqlcode = 100 then
+			kst_esito.esito = kkg_esito.not_fnd
+		else
+			if sqlca.sqlcode > 0 then
+				kst_esito.esito = kkg_esito.db_wrn
+			else	
+				kst_esito.esito = kkg_esito.db_ko
+				kguo_exception.inizializza( )
+				kguo_exception.set_esito(kst_esito)
+				throw kguo_exception
+			end if
+		end if
+	end if
+	
+	if isnull(kst_tab_certif.clie_2) then kst_tab_certif.clie_2 = 0
+
+return kst_esito
+
+
+end function
+
+public function boolean stampa_digitale_esporta_1 (string a_path_pdf) throws uo_exception;//---
+//--- Esporta in digitale (pdf) l'ATTESTATI indicato
+//--- inp: 	a_path_pdf il nome file con il percorso da salvare
+//---	rit: TRUE = documento emesso
+//---
+boolean k_return
+int k_n_documenti_stampati=0, k_id_stampa
+string k_path
+int k_pos, k_end
+kuf_file_explorer kuf1_file_explorer
+st_esito kst_esito
+
+
+try
+	
+	kst_esito.esito = kkg_esito.ok
+	kst_esito.sqlcode = 0
+	kst_esito.SQLErrText = ""
+	kst_esito.nome_oggetto = this.classname()
+	
+	kuf1_file_explorer = create kuf_file_explorer
+	
+	a_path_pdf = trim(a_path_pdf)
+	
+//--- Controllo se indicato un percorso
+	if a_path_pdf > " " then 
+
+		k_n_documenti_stampati ++
+				
+//--- estrazione del solo path senza nome file
+		k_path = trim(a_path_pdf)
+		k_pos = 0
+		do 
+			k_pos = pos(k_path, kkg.path_sep, k_pos + 1)
+			if k_pos > 0 then
+				k_end = k_pos
+			end if
+		loop while k_pos > 0
+		k_path = left(k_path, k_end)
+		kuf1_file_explorer.u_directory_create(k_path)
+
+//=== Crea il PDF
+//					kids_certif_stampa.Object.DataWindow.Export.PDF.Distill.CustomPostScript = "1"
+		kids_certif_stampa.object.DataWindow.Export.PDF.Method = NativePDF!
+//					kids_certif_stampa.Object.DataWindow.Export.PDF.NativePDF.ImageFormat = "0"  //BMP
+		k_id_stampa = kids_certif_stampa.saveas(a_path_pdf,PDF!, false)   //
+
+		if k_id_stampa < 1 then
+						
+			kst_esito.sqlcode = 0
+			kst_esito.SQLErrText = "Emissione Attestato digitale non generato nella cartella:~n~r"  &
+														 + a_path_pdf + " ~n~r" &
+														 + "Esportazione fallita per errore: " + string(k_id_stampa)
+			kst_esito.esito = kkg_esito.no_esecuzione
+			kguo_exception.set_esito(kst_esito)
+			throw kguo_exception
+
+		end if
+		
+		k_return = true
+
+	end if	
+
+			
+
+catch (uo_exception kuo_exception)
+	throw kuo_exception
+	
+finally
+	if isvalid(kuf1_file_explorer) then destroy kuf1_file_explorer
+	
+end try
+		
+return k_return		
 
 end function
 

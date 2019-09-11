@@ -175,13 +175,16 @@ type m_0 from menu within m_magazzino
 end type
 type m_email0 from menu within m_magazzino
 end type
+type m_e-mailprontomerce from menu within m_email0
+end type
+type m_emailattestati from menu within m_email0
+end type
 type m_emailfatture from menu within m_email0
 end type
-type m_emailprontomerce from menu within m_email0
-end type
 type m_email0 from menu within m_magazzino
+m_e-mailprontomerce m_e-mailprontomerce
+m_emailattestati m_emailattestati
 m_emailfatture m_emailfatture
-m_emailprontomerce m_emailprontomerce
 end type
 type m_esportadocumenti from menu within m_magazzino
 end type
@@ -206,19 +209,40 @@ type m_barcodedosimetro from menu within m_magazzino
 end type
 type m_-5 from menu within m_magazzino
 end type
-type m_creapackinglistdaweb from menu within m_magazzino
-end type
-type m_importapackinglist from menu within m_magazzino
-end type
-type m_getbcodedaeone from menu within m_magazzino
-end type
 type m_inviapianoalpilota from menu within m_magazzino
 end type
-type m_importalavorazioni from menu within m_magazzino
+type m_elaborazioniesterne from menu within m_magazzino
 end type
-type m_datilavtoe1 from menu within m_magazzino
+type m_creapackinglistdaweb from menu within m_elaborazioniesterne
 end type
-type m_reportpilota from menu within m_magazzino
+type m_importapackinglist from menu within m_elaborazioniesterne
+end type
+type m_getbcodedaeone from menu within m_elaborazioniesterne
+end type
+type m_importalavorazioni from menu within m_elaborazioniesterne
+end type
+type m_datilavtoe1 from menu within m_elaborazioniesterne
+end type
+type m_importareportpilota from menu within m_elaborazioniesterne
+end type
+type m_creaemailattestatie1m2000 from menu within m_elaborazioniesterne
+end type
+type m_preparaarchivioemailcertificati from menu within m_creaemailattestatie1m2000
+end type
+type m_importacertificatie1pdf from menu within m_creaemailattestatie1m2000
+end type
+type m_creaemailattestatie1m2000 from menu within m_elaborazioniesterne
+m_preparaarchivioemailcertificati m_preparaarchivioemailcertificati
+m_importacertificatie1pdf m_importacertificatie1pdf
+end type
+type m_elaborazioniesterne from menu within m_magazzino
+m_creapackinglistdaweb m_creapackinglistdaweb
+m_importapackinglist m_importapackinglist
+m_getbcodedaeone m_getbcodedaeone
+m_importalavorazioni m_importalavorazioni
+m_datilavtoe1 m_datilavtoe1
+m_importareportpilota m_importareportpilota
+m_creaemailattestatie1m2000 m_creaemailattestatie1m2000
 end type
 type m_5 from menu within m_magazzino
 end type
@@ -251,13 +275,8 @@ m_etichbarcode m_etichbarcode
 m_barcodemanuale m_barcodemanuale
 m_barcodedosimetro m_barcodedosimetro
 m_-5 m_-5
-m_creapackinglistdaweb m_creapackinglistdaweb
-m_importapackinglist m_importapackinglist
-m_getbcodedaeone m_getbcodedaeone
 m_inviapianoalpilota m_inviapianoalpilota
-m_importalavorazioni m_importalavorazioni
-m_datilavtoe1 m_datilavtoe1
-m_reportpilota m_reportpilota
+m_elaborazioniesterne m_elaborazioniesterne
 m_5 m_5
 m_modificaprogrammazione m_modificaprogrammazione
 end type
@@ -1455,9 +1474,9 @@ destroy(this.m_help)
 end on
 
 event clicked;//
-m_filtro.menuimage = "filtro.png"
-m_filtro.toolbaritemname = "filtro.png"
-m_archivi.m_quotazioni.menuimage = "contract16.png"
+//m_filtro.menuimage = "filtro.png"
+//m_filtro.toolbaritemname = "filtro.png"
+//m_archivi.m_quotazioni.menuimage = "contract16.png"
 
 end event
 
@@ -1542,7 +1561,7 @@ on m_setupstampante.create
 call super::create
 this.text = "Se&tup stampante"
 this.microhelp = "Definizione dei vari parametri della stampante"
-this.menuimage = "Print!"
+this.menuimage = "Print_2!"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -1573,30 +1592,36 @@ event u_constructor;//
 this.text = 'CIAO'
 end event
 
-on clicked;//
+event clicked;//
 //=== Chiudo tutte le windows children
-boolean bValid
-window wSheet
+window wSheet, wSheetNEXT
 
-wSheet = w_main.GetFirstSheet()
-IF IsValid(wSheet) THEN
-	close(wSheet)
-	DO
+
+	wSheet = w_main.GetFirstSheet()
+	do WHILE IsValid(wSheet) and wSheet.classname( ) <> "w_menu_tree"
+		close(wSheet)
 		wSheet = w_main.GetFirstSheet()
-		bValid = IsValid (wSheet)
-		IF bValid THEN close(wSheet)
-	LOOP WHILE bValid
-END IF
+	loop
+	if isvalid(wsheet) then
+		wSheetNEXT = wsheet
+	end if
+
+	do while isvalid(wSheet)
+		wSheet = w_main.GetNextSheet(wSheetNEXT)
+		if IsValid (wSheet) then
+			close(wSheet)
+		end if
+	loop
 
 
 
-end on
+end event
 
 on m_f_chiudodb.create
 call super::create
 this.text = "&Chiudi tutto"
 this.microhelp = "Ripristino le videate alla situazione iniziale, chiudendo tutte le windows aperte"
-this.menuimage = "Exit!"
+this.menuimage = "Close_2!"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -1655,7 +1680,7 @@ on m_proprieta.create
 call super::create
 this.text = "Proprietà"
 this.microhelp = "Configurazioni personaloizzate e della Procedura"
-this.menuimage = "Preferences!"
+this.menuimage = "Preferences_2!"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -1844,7 +1869,7 @@ call super::create
 this.tag = "about"
 this.text = "Cambia Password"
 this.microhelp = "Modifica la Password di accesso alla Procedura "
-this.menuimage = "Custom016!"
+this.menuimage = "Custom016_2!"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -1883,7 +1908,7 @@ on m_cambiautente.create
 call super::create
 this.text = "Cambia Utente"
 this.microhelp = "Riconnessione Utente"
-this.menuimage = "UserObject1!"
+this.menuimage = "UserObject1_2!"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -3412,7 +3437,7 @@ end type
 on m_mostrabarrastrumenti.create
 call super::create
 this.text = "Mostra Barra Strumenti"
-this.menuimage = "Menu!"
+this.menuimage = "Custom041_2!"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -3554,6 +3579,7 @@ call super::create
 this.text = "&Uscita"
 this.microhelp = "Fine Lavoro"
 this.menuitemtype = menuitemtypeexit!
+this.menuimage = "Exit_2!"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -3603,13 +3629,8 @@ m_etichbarcode m_etichbarcode
 m_barcodemanuale m_barcodemanuale
 m_barcodedosimetro m_barcodedosimetro
 m_-5 m_-5
-m_creapackinglistdaweb m_creapackinglistdaweb
-m_importapackinglist m_importapackinglist
-m_getbcodedaeone m_getbcodedaeone
 m_inviapianoalpilota m_inviapianoalpilota
-m_importalavorazioni m_importalavorazioni
-m_datilavtoe1 m_datilavtoe1
-m_reportpilota m_reportpilota
+m_elaborazioniesterne m_elaborazioniesterne
 m_5 m_5
 m_modificaprogrammazione m_modificaprogrammazione
 end type
@@ -3660,13 +3681,8 @@ this.m_etichbarcode=create m_etichbarcode
 this.m_barcodemanuale=create m_barcodemanuale
 this.m_barcodedosimetro=create m_barcodedosimetro
 this.m_-5=create m_-5
-this.m_creapackinglistdaweb=create m_creapackinglistdaweb
-this.m_importapackinglist=create m_importapackinglist
-this.m_getbcodedaeone=create m_getbcodedaeone
 this.m_inviapianoalpilota=create m_inviapianoalpilota
-this.m_importalavorazioni=create m_importalavorazioni
-this.m_datilavtoe1=create m_datilavtoe1
-this.m_reportpilota=create m_reportpilota
+this.m_elaborazioniesterne=create m_elaborazioniesterne
 this.m_5=create m_5
 this.m_modificaprogrammazione=create m_modificaprogrammazione
 this.Item[UpperBound(this.Item)+1]=this.m_mag_navigatore
@@ -3695,13 +3711,8 @@ this.Item[UpperBound(this.Item)+1]=this.m_etichbarcode
 this.Item[UpperBound(this.Item)+1]=this.m_barcodemanuale
 this.Item[UpperBound(this.Item)+1]=this.m_barcodedosimetro
 this.Item[UpperBound(this.Item)+1]=this.m_-5
-this.Item[UpperBound(this.Item)+1]=this.m_creapackinglistdaweb
-this.Item[UpperBound(this.Item)+1]=this.m_importapackinglist
-this.Item[UpperBound(this.Item)+1]=this.m_getbcodedaeone
 this.Item[UpperBound(this.Item)+1]=this.m_inviapianoalpilota
-this.Item[UpperBound(this.Item)+1]=this.m_importalavorazioni
-this.Item[UpperBound(this.Item)+1]=this.m_datilavtoe1
-this.Item[UpperBound(this.Item)+1]=this.m_reportpilota
+this.Item[UpperBound(this.Item)+1]=this.m_elaborazioniesterne
 this.Item[UpperBound(this.Item)+1]=this.m_5
 this.Item[UpperBound(this.Item)+1]=this.m_modificaprogrammazione
 end on
@@ -3734,13 +3745,8 @@ destroy(this.m_etichbarcode)
 destroy(this.m_barcodemanuale)
 destroy(this.m_barcodedosimetro)
 destroy(this.m_-5)
-destroy(this.m_creapackinglistdaweb)
-destroy(this.m_importapackinglist)
-destroy(this.m_getbcodedaeone)
 destroy(this.m_inviapianoalpilota)
-destroy(this.m_importalavorazioni)
-destroy(this.m_datilavtoe1)
-destroy(this.m_reportpilota)
+destroy(this.m_elaborazioniesterne)
 destroy(this.m_5)
 destroy(this.m_modificaprogrammazione)
 end on
@@ -3779,7 +3785,7 @@ this.microhelp = "Navigatore dati"
 this.toolbaritemname = "treeview!"
 this.toolbaritemtext = "Nav., Navigatore"
 this.toolbaritemorder = 1
-this.menuimage = "treeview!"
+this.menuimage = "DeclareProcedure_2!"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -3846,7 +3852,7 @@ this.tag = "mkt"
 this.text = "Marketing~tCtrl+K"
 this.shortcut = 331
 this.microhelp = "Supporto all~'ufficio Mkt"
-this.menuimage = "Custom073!"
+this.menuimage = "Custom073_2!"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -3892,7 +3898,7 @@ this.tag = "meca_l"
 this.text = "Lotti~tCtrl+F1"
 this.shortcut = 368
 this.microhelp = "Elenco Riferimenti Lotti"
-this.menuimage = "browseobject!"
+this.menuimage = "BrowseObjects_2!"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -3990,7 +3996,7 @@ call super::create
 this.tag = "meca_armo_pt"
 this.text = "Lotti SD"
 this.microhelp = "Imposta Pianificazione ai Lotti entrati per Contratto SD"
-this.menuimage = "browseobject!"
+this.menuimage = "BrowseObjects_2!"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -4114,7 +4120,7 @@ call super::create
 this.tag = "lettore_grp "
 this.text = "Groupage"
 this.microhelp = "Groupage da Lettore"
-this.menuimage = "CheckIn5!"
+this.menuimage = "Select All_2!"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -4178,10 +4184,10 @@ this.tag = "pl_barcode_l"
 this.text = "Piani di Lavorazione~tCtrl+L"
 this.shortcut = 332
 this.microhelp = "Elenco P.L. inseriti"
-this.toolbaritemname = "structure!"
+this.toolbaritemname = "pianifp50.png"
 this.toolbaritemtext = "P.L.,Pianificazione Trattamenti"
 this.toolbaritemorder = 3
-this.menuimage = "structure!"
+this.menuimage = "Run preview object_2!"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -4262,7 +4268,7 @@ call super::create
 this.tag = "convalida"
 this.text = "Lettura"
 this.microhelp = "Lettura dosimetria"
-this.menuimage = "DeclareVariable!"
+this.menuimage = "DeclareVariable_2!"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -4345,7 +4351,7 @@ call super::create
 this.tag = "convalida"
 this.text = "Convalida"
 this.microhelp = "Convalida Dosimetria"
-this.menuimage = "DeclareVariable!"
+this.menuimage = "SetVariable_2!"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -4416,7 +4422,7 @@ call super::create
 this.tag = "convcalc "
 this.text = "Simulatore"
 this.microhelp = "Convalida: verifica dati"
-this.menuimage = "DeclareVariable!"
+this.menuimage = "Toolkit Size Calculator_2!"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -4611,7 +4617,7 @@ call super::create
 this.tag = "attestati_l"
 this.text = "Attestati"
 this.microhelp = "Certificazione Trattamenti"
-this.menuimage = "ScriptYes!"
+this.menuimage = "Control Nest Report_2!"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -5108,8 +5114,9 @@ call super::destroy
 end on
 
 type m_email0 from menu within m_magazzino
+m_e-mailprontomerce m_e-mailprontomerce
+m_emailattestati m_emailattestati
 m_emailfatture m_emailfatture
-m_emailprontomerce m_emailprontomerce
 end type
 
 on m_email0.create
@@ -5131,17 +5138,154 @@ this.toolbartextcolor = 134217746
 this.toolbarbackcolor = 134217732
 this.toolbarhighlightcolor = 134217741
 this.bitmapgradient = true
+this.m_e-mailprontomerce=create m_e-mailprontomerce
+this.m_emailattestati=create m_emailattestati
 this.m_emailfatture=create m_emailfatture
-this.m_emailprontomerce=create m_emailprontomerce
+this.Item[UpperBound(this.Item)+1]=this.m_e-mailprontomerce
+this.Item[UpperBound(this.Item)+1]=this.m_emailattestati
 this.Item[UpperBound(this.Item)+1]=this.m_emailfatture
-this.Item[UpperBound(this.Item)+1]=this.m_emailprontomerce
 end on
 
 on m_email0.destroy
 call super::destroy
+destroy(this.m_e-mailprontomerce)
+destroy(this.m_emailattestati)
 destroy(this.m_emailfatture)
-destroy(this.m_emailprontomerce)
 end on
+
+type m_e-mailprontomerce from menu within m_email0
+end type
+
+event clicked;//
+//
+//=== Parametri : 
+//=== struttura st_open_w
+//=== dati particolare programma
+//
+//=== Si potrebbero passare:
+//=== key= vedi sotto
+	st_open_w k_st_open_w
+	kuf_email_invio kuf1_email_invio
+	kuf_email_funzioni kuf1_email_funzioni
+	
+	
+	kuf1_email_invio = create kuf_email_invio
+	
+
+	K_st_open_w.id_programma = kuf1_email_invio.get_id_programma(kkg_flag_modalita.elenco ) 
+	K_st_open_w.flag_primo_giro = "S"
+	K_st_open_w.flag_modalita = kkg_flag_modalita.elenco
+	K_st_open_w.flag_adatta_win = KKG.ADATTA_WIN
+	K_st_open_w.flag_leggi_dw = " "
+	K_st_open_w.flag_cerca_in_lista = " "
+	K_st_open_w.key1 = " " // 
+	K_st_open_w.key2 = " " //
+	K_st_open_w.key3 = ""
+	K_st_open_w.key4 = kuf1_email_funzioni.kki_cod_funzione_prontomerce
+	K_st_open_w.key5 = " " // 
+	K_st_open_w.key6 = " " // 
+	K_st_open_w.flag_where = " "
+	
+	kGuf_menu_window.open_w_tabelle(k_st_open_w)
+								
+	destroy kuf1_email_invio
+	
+end event
+
+on m_e-mailprontomerce.create
+call super::create
+this.tag = "email_invio"
+this.text = "E-mail Pronto Merce"
+this.microhelp = "Elenco e-mail generate dalla Convalida"
+this.menuimage = "Custom025_2!"
+this.menustyle = contemporarymenu!
+this.menubackcolor = 32567536
+this.menuhighlightcolor = 134217741
+this.textsize = -10
+this.weight = 400
+this.facename = "Verdana"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.menuanimation = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_e-mailprontomerce.destroy
+call super::destroy
+end on
+
+type m_emailattestati from menu within m_email0
+end type
+
+on m_emailattestati.create
+call super::create
+this.tag = "email_invio"
+this.text = "E-mail Attestati"
+this.microhelp = "Elenco e-mail generate dalla stampa Certificati E1 e M2000"
+this.menuimage = "Custom025_2!"
+this.menustyle = contemporarymenu!
+this.menubackcolor = 32567536
+this.menuhighlightcolor = 134217741
+this.textsize = -10
+this.weight = 400
+this.facename = "Verdana"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_emailattestati.destroy
+call super::destroy
+end on
+
+event clicked;//
+//=== Parametri : 
+//=== struttura st_open_w
+//=== dati particolare programma
+//
+//=== Si potrebbero passare:
+//=== key= vedi sotto
+	st_open_w k_st_open_w
+	kuf_email_invio kuf1_email_invio
+	kuf_email_funzioni kuf1_email_funzioni
+	
+	
+	kuf1_email_invio = create kuf_email_invio
+	
+
+	K_st_open_w.id_programma = kuf1_email_invio.get_id_programma(kkg_flag_modalita.elenco ) 
+	K_st_open_w.flag_primo_giro = "S"
+	K_st_open_w.flag_modalita = kkg_flag_modalita.elenco
+	K_st_open_w.flag_adatta_win = KKG.ADATTA_WIN
+	K_st_open_w.flag_leggi_dw = " "
+	K_st_open_w.flag_cerca_in_lista = " "
+	K_st_open_w.key1 = " " // 
+	K_st_open_w.key2 = " " //
+	K_st_open_w.key3 = ""
+	K_st_open_w.key4 = kuf1_email_funzioni.kki_cod_funzione_attestati
+	K_st_open_w.key5 = " " // 
+	K_st_open_w.key6 = " " // 
+	K_st_open_w.flag_where = " "
+	
+	kGuf_menu_window.open_w_tabelle(k_st_open_w)
+								
+	destroy kuf1_email_invio
+	
+end event
 
 type m_emailfatture from menu within m_email0
 end type
@@ -5186,7 +5330,7 @@ call super::create
 this.tag = "email_invio"
 this.text = "E-mail Fatture"
 this.microhelp = "Elenco e-mail generate dalla Fatturazione"
-this.menuimage = "Custom025!"
+this.menuimage = "Custom025_2!"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -5207,74 +5351,6 @@ this.bitmapgradient = true
 end on
 
 on m_emailfatture.destroy
-call super::destroy
-end on
-
-type m_emailprontomerce from menu within m_email0
-end type
-
-event clicked;//
-//
-//=== Parametri : 
-//=== struttura st_open_w
-//=== dati particolare programma
-//
-//=== Si potrebbero passare:
-//=== key= vedi sotto
-	st_open_w k_st_open_w
-	kuf_email_invio kuf1_email_invio
-	kuf_email_funzioni kuf1_email_funzioni
-	
-	
-	kuf1_email_invio = create kuf_email_invio
-	
-
-	K_st_open_w.id_programma = kuf1_email_invio.get_id_programma(kkg_flag_modalita.elenco ) 
-	K_st_open_w.flag_primo_giro = "S"
-	K_st_open_w.flag_modalita = kkg_flag_modalita.elenco
-	K_st_open_w.flag_adatta_win = KKG.ADATTA_WIN
-	K_st_open_w.flag_leggi_dw = " "
-	K_st_open_w.flag_cerca_in_lista = " "
-	K_st_open_w.key1 = " " // 
-	K_st_open_w.key2 = " " //
-	K_st_open_w.key3 = ""
-	K_st_open_w.key4 = kuf1_email_funzioni.kki_cod_funzione_prontomerce
-	K_st_open_w.key5 = " " // 
-	K_st_open_w.key6 = " " // 
-	K_st_open_w.flag_where = " "
-	
-	kGuf_menu_window.open_w_tabelle(k_st_open_w)
-								
-	destroy kuf1_email_invio
-	
-end event
-
-on m_emailprontomerce.create
-call super::create
-this.tag = "email_invio"
-this.text = "E-mail Pronto Merce"
-this.microhelp = "Elenco e-mail generate dalla Fatturazione"
-this.menuimage = "Custom025!"
-this.menustyle = contemporarymenu!
-this.menubackcolor = 32567536
-this.menuhighlightcolor = 134217741
-this.textsize = -10
-this.weight = 400
-this.facename = "Verdana"
-this.titlebackcolor = 134217730
-this.bitmapbackcolor = 15780518
-this.menutitles = true
-this.menubitmaps = true
-this.menuanimation = true
-this.titlegradient = true
-this.toolbarstyle = contemporarytoolbar!
-this.toolbartextcolor = 134217746
-this.toolbarbackcolor = 134217732
-this.toolbarhighlightcolor = 134217741
-this.bitmapgradient = true
-end on
-
-on m_emailprontomerce.destroy
 call super::destroy
 end on
 
@@ -5319,8 +5395,9 @@ end event
 on m_esportadocumenti.create
 call super::create
 this.tag = "docprodl"
+this.visible = false
 this.text = "Esporta Documenti"
-this.menuimage = "SaveAs!"
+this.menuimage = "SaveAs_2!"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -5634,7 +5711,7 @@ call super::create
 this.tag = "mecadosimbrc"
 this.text = "Accoppia Dosimetro"
 this.microhelp = "Associa barcode al Dosimetro "
-this.menuimage = "UnionReturn!"
+this.menuimage = "Custom078_2!"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -5685,7 +5762,148 @@ on m_-5.destroy
 call super::destroy
 end on
 
-type m_creapackinglistdaweb from menu within m_magazzino
+type m_inviapianoalpilota from menu within m_magazzino
+end type
+
+event clicked;//
+kuf_pilota_cmd kuf1_pilota_cmd
+
+		
+//--- apre la connessione al DB PILOTA
+try
+
+	SetPointer(kkg.pointer_attesa)
+	kuf1_pilota_cmd = create kuf_pilota_cmd
+	kuf1_pilota_cmd.get_path_file_pl_barcode()  // solo X testare se PATH raggiungibile
+	SetPointer(kkg.pointer_default)
+
+	if messagebox ("Generazione del file 'Piano di Lavorazione'", &
+						"Il file di Pianificazione per il 'PILOTA' sarà creato solo se:~n~r" &
+						+"     1-l'ultima Richiesta e' stata evasa positivamente~n~r" &
+						+"     2-almeno un Piano di Lavoro nello stato di 'Chiuso' (ovvero da Inviare)~n~r" &
+						+" ~n~r" &
+						+ "Avviare l'operazione?" &
+						 ,question!, YesNo!, 2) = 1 then
+
+		if kuf1_pilota_cmd.job_pianificazione_lavorazioni() then
+			
+			SetPointer(kkg.pointer_attesa)
+			kuf1_pilota_cmd.get_pilota_cfg()
+			
+			SetPointer(kkg.pointer_default)
+			messagebox ("Generazione File Piano di Lavorazione", &
+					"L'operazione conclusa correttamente.~n~r" &
+					+ "E' stato creato il file del Piano di Lavoro per il 'PILOTA' nella cartella:~n~r" &
+					+ kuf1_pilota_cmd.kist_tab_pilota_cfg.path_file_pl_barcode &
+					+ kuf1_pilota_cmd.kist_tab_pilota_cfg.ultimo_nome_file_pl_barcode &
+					 ,Information!) 
+		else
+			messagebox ("Generazione File Piano di Lavorazione", &
+					"Operazione conclusa.~n~rNessun file del Piano di Lavoro creato, per uno dei seguenti motivi:~n~r" &
+						+ "   1-Nessun Piano di Lavoro nello stato di Chiuso~n~r" &
+						+ "   2-Un Piano precedentemente creato non è ancora stato evaso dal Pilota (non scaduto)~n~r" &
+						+" ~n~r" &
+					 ,Information!) 
+		end if
+	
+	end if
+	
+catch (uo_exception kuo_exception)
+	SetPointer(kkg.pointer_default)
+	kuo_exception.messaggio_utente()
+
+finally
+	if isvalid(kuf1_pilota_cmd) then destroy kuf1_pilota_cmd
+
+end try
+
+end event
+
+on m_inviapianoalpilota.create
+call super::create
+this.tag = "pilota_exp_p"
+this.text = "Invia Piano al Pilota "
+this.microhelp = "Crea il file di scambio da Piano di Lavorazione Chiuso per il Pilota"
+this.menuimage = "Destination5_2!"
+this.menustyle = contemporarymenu!
+this.menubackcolor = 32567536
+this.menuhighlightcolor = 134217741
+this.textsize = -10
+this.weight = 400
+this.facename = "Verdana"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_inviapianoalpilota.destroy
+call super::destroy
+end on
+
+type m_elaborazioniesterne from menu within m_magazzino
+m_creapackinglistdaweb m_creapackinglistdaweb
+m_importapackinglist m_importapackinglist
+m_getbcodedaeone m_getbcodedaeone
+m_importalavorazioni m_importalavorazioni
+m_datilavtoe1 m_datilavtoe1
+m_importareportpilota m_importareportpilota
+m_creaemailattestatie1m2000 m_creaemailattestatie1m2000
+end type
+
+on m_elaborazioniesterne.create
+call super::create
+this.text = "Elaborazioni Esterne"
+this.menustyle = contemporarymenu!
+this.menubackcolor = 32567536
+this.menuhighlightcolor = 134217741
+this.textsize = -10
+this.weight = 400
+this.facename = "Verdana"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+this.m_creapackinglistdaweb=create m_creapackinglistdaweb
+this.m_importapackinglist=create m_importapackinglist
+this.m_getbcodedaeone=create m_getbcodedaeone
+this.m_importalavorazioni=create m_importalavorazioni
+this.m_datilavtoe1=create m_datilavtoe1
+this.m_importareportpilota=create m_importareportpilota
+this.m_creaemailattestatie1m2000=create m_creaemailattestatie1m2000
+this.Item[UpperBound(this.Item)+1]=this.m_creapackinglistdaweb
+this.Item[UpperBound(this.Item)+1]=this.m_importapackinglist
+this.Item[UpperBound(this.Item)+1]=this.m_getbcodedaeone
+this.Item[UpperBound(this.Item)+1]=this.m_importalavorazioni
+this.Item[UpperBound(this.Item)+1]=this.m_datilavtoe1
+this.Item[UpperBound(this.Item)+1]=this.m_importareportpilota
+this.Item[UpperBound(this.Item)+1]=this.m_creaemailattestatie1m2000
+end on
+
+on m_elaborazioniesterne.destroy
+call super::destroy
+destroy(this.m_creapackinglistdaweb)
+destroy(this.m_importapackinglist)
+destroy(this.m_getbcodedaeone)
+destroy(this.m_importalavorazioni)
+destroy(this.m_datilavtoe1)
+destroy(this.m_importareportpilota)
+destroy(this.m_creaemailattestatie1m2000)
+end on
+
+type m_creapackinglistdaweb from menu within m_elaborazioniesterne
 event create ( )
 event destroy ( )
 end type
@@ -5693,7 +5911,8 @@ end type
 on m_creapackinglistdaweb.create
 call super::create
 this.text = "Importa Packing-List Mandante"
-this.microhelp = "Carica a magazzino i file di Packing-List del cliente in formato XML e lineare (TXT) "
+this.microhelp = "Carica a magazzino i file di Packing-List del cliente in formato XML e lineare "
+this.menuimage = "Custom013_2!"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -5779,7 +5998,7 @@ end try
 
 end event
 
-type m_importapackinglist from menu within m_magazzino
+type m_importapackinglist from menu within m_elaborazioniesterne
 end type
 
 event clicked;//
@@ -5852,6 +6071,7 @@ on m_importapackinglist.create
 call super::create
 this.text = "Importa Packing-List in Area di Lavoro"
 this.microhelp = "Prepara i Packing-List caricati in modo da fare i Riferimenti (LOTTI)"
+this.menuimage = "Custom013_2!"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -5874,7 +6094,7 @@ on m_importapackinglist.destroy
 call super::destroy
 end on
 
-type m_getbcodedaeone from menu within m_magazzino
+type m_getbcodedaeone from menu within m_elaborazioniesterne
 end type
 
 event clicked;//
@@ -5925,7 +6145,8 @@ end event
 on m_getbcodedaeone.create
 call super::create
 this.text = "Riceve i Barcode generati da E-ONE"
-this.microhelp = "Tenta importazione Barcode generati dal Sistema E-ONE per i Lotti che ancora ne sono sprovvisti"
+this.microhelp = "Tenta importazione Barcode generati dal Sistema E-ONE per i Lotti che ancora ne"
+this.menuimage = "Custom013_2!"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -5948,91 +6169,7 @@ on m_getbcodedaeone.destroy
 call super::destroy
 end on
 
-type m_inviapianoalpilota from menu within m_magazzino
-end type
-
-event clicked;//
-kuf_pilota_cmd kuf1_pilota_cmd
-
-		
-//--- apre la connessione al DB PILOTA
-try
-
-	SetPointer(kkg.pointer_attesa)
-	kuf1_pilota_cmd = create kuf_pilota_cmd
-	kuf1_pilota_cmd.get_path_file_pl_barcode()  // solo X testare se PATH raggiungibile
-	SetPointer(kkg.pointer_default)
-
-	if messagebox ("Generazione File Piano di Lavorazione", &
-						"Il file di Pianificazione per il 'PILOTA' sarà creato solo se:~n~r" &
-						+"     1-l'ultima Richiesta e' stata evasa positivamente~n~r" &
-						+"     2-almeno un Piano di Lavoro nello stato di 'Chiuso' (ovvero da Inviare)~n~r" &
-						+" ~n~r" &
-						+ "Vuoi proseguire con l'operazione?" &
-						 ,question!, YesNo!, 2) = 1 then
-
-		if kuf1_pilota_cmd.job_pianificazione_lavorazioni() then
-			
-			SetPointer(kkg.pointer_attesa)
-			kuf1_pilota_cmd.get_pilota_cfg()
-			
-			SetPointer(kkg.pointer_default)
-			messagebox ("Generazione File Piano di Lavorazione", &
-					"L'operazione conclusa correttamente.~n~r" &
-					+ "E' stato creato il file del Piano di Lavoro per il 'PILOTA' nella cartella:~n~r" &
-					+ kuf1_pilota_cmd.kist_tab_pilota_cfg.path_file_pl_barcode &
-					+ kuf1_pilota_cmd.kist_tab_pilota_cfg.ultimo_nome_file_pl_barcode &
-					 ,Information!) 
-		else
-			messagebox ("Generazione File Piano di Lavorazione", &
-					"Operazione conclusa.~n~rNessun file del Piano di Lavoro creato, per uno dei seguenti motivi:~n~r" &
-						+ "   1-Nessun Piano di Lavoro nello stato di Chiuso~n~r" &
-						+ "   2-Un Piano precedentemente creato non è ancora stato evaso dal Pilota (non scaduto)~n~r" &
-						+" ~n~r" &
-					 ,Information!) 
-		end if
-	
-	end if
-	
-catch (uo_exception kuo_exception)
-	SetPointer(kkg.pointer_default)
-	kuo_exception.messaggio_utente()
-
-finally
-	if isvalid(kuf1_pilota_cmd) then destroy kuf1_pilota_cmd
-
-end try
-
-end event
-
-on m_inviapianoalpilota.create
-call super::create
-this.tag = "pilota_exp_p"
-this.text = "Invia Piano al Pilota "
-this.microhelp = "Crea il file di scambio da Piano di Lavorazione Chiuso per il Pilota"
-this.menustyle = contemporarymenu!
-this.menubackcolor = 32567536
-this.menuhighlightcolor = 134217741
-this.textsize = -10
-this.weight = 400
-this.facename = "Verdana"
-this.titlebackcolor = 134217730
-this.bitmapbackcolor = 15780518
-this.menutitles = true
-this.menubitmaps = true
-this.titlegradient = true
-this.toolbarstyle = contemporarytoolbar!
-this.toolbartextcolor = 134217746
-this.toolbarbackcolor = 134217732
-this.toolbarhighlightcolor = 134217741
-this.bitmapgradient = true
-end on
-
-on m_inviapianoalpilota.destroy
-call super::destroy
-end on
-
-type m_importalavorazioni from menu within m_magazzino
+type m_importalavorazioni from menu within m_elaborazioniesterne
 end type
 
 event clicked;//
@@ -6045,11 +6182,11 @@ kuf_pl_barcode kuf1_pl_barcode
 try
 	kuf1_pl_barcode = create kuf_pl_barcode
 
-	if messagebox ("Importa dati lavorazione dei Pallet", &
-						"L'operazione AGGIORNA gli Archivi!!~n~r" &
-						+ "Saranno importati i dati di lavorazione di inizio e fine dal Pilota." &
+	if messagebox ("Importa dati di trattamento dei Pallet", &
+						"Operazione di AGGIORNAMENTO degli Archivi!!~n~r" &
+						+ "Importa inizio e fine periodo di lavorazione in Impianto dal 'Pilota'." &
 						+" ~n~r" &
-						+ "Vuoi proseguire con l'operazione?" &
+						+ "Avviare l'operazione?" &
 						 ,question!, YesNo!, 2) = 1 then
 
 		SetPointer(kkg.pointer_attesa)
@@ -6061,15 +6198,15 @@ try
 		SetPointer(kkg.pointer_default)
 
 		if (k_importati_ini + k_importati_fin) > 0 then
-			messagebox ("Importa dati lavorazione dei Pallet", &
-					"L'operazione conclusa correttamente.~n~r" &
+			messagebox ("Importa dati di trattamento dei Pallet", &
+					"Operazione conclusa correttamente.~n~r" &
 					+ "Sono stati importati " + string(k_importati_ini)  &
 					+ " barcode per inizio lavorazione e " + string(k_importati_fin) &
 					+ " per fine lavorazione," &
-					+ " dal Pilota." &
+					+ " dal 'Pilota'." &
 					 ,Information!) 
 		else
-			messagebox ("Importa dati lavorazione dei Pallet", &
+			messagebox ("Importa dati di trattamento dei Pallet", &
 					"Operazione conclusa.~n~rNessun dato importato dal Pilota.~n~r" &
 						+ "Nessun Barcode ha iniziato o concluso il Trattamento" &
 					 ,Information!) 
@@ -6079,9 +6216,10 @@ try
 	
 catch (uo_exception kuo_exception)
 	SetPointer(kkg.pointer_default)
-	kst_esito = kuo_exception.get_st_esito()
-	kst_esito.sqlerrtext = "Operazione INTERROTTA!!~n~r" + kst_esito.sqlerrtext
-	kguo_exception.messaggio_utente("Importa dati lavorazione dei Pallet", kst_esito.sqlerrtext)
+	kuo_exception.messaggio_utente() 
+//	kst_esito = kuo_exception.get_st_esito()
+//	kst_esito.sqlerrtext = "Operazione INTERROTTA!!~n~r" + kst_esito.sqlerrtext
+//	kguo_exception.messaggio_utente("Importa dati di trattamento dei Pallet", kst_esito.sqlerrtext)
 
 finally
 	destroy kuf1_pl_barcode
@@ -6095,6 +6233,7 @@ call super::create
 this.tag = "pilota_imp_p"
 this.text = "Importa Lavorazioni "
 this.microhelp = "Importa i dati di Trattamento dalle Tabelle del Nuovo Pilota"
+this.menuimage = "Custom013_2!"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -6117,7 +6256,7 @@ on m_importalavorazioni.destroy
 call super::destroy
 end on
 
-type m_datilavtoe1 from menu within m_magazzino
+type m_datilavtoe1 from menu within m_elaborazioniesterne
 end type
 
 event clicked;//
@@ -6170,6 +6309,7 @@ on m_datilavtoe1.create
 call super::create
 this.text = "Invia dati Trattamento a E-ONE"
 this.microhelp = "Invio dati di inizio-fine lavorazione e convalida dosimetrica al Sistema E-ONE"
+this.menuimage = "Custom013_2!"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -6192,7 +6332,7 @@ on m_datilavtoe1.destroy
 call super::destroy
 end on
 
-type m_reportpilota from menu within m_magazzino
+type m_importareportpilota from menu within m_elaborazioniesterne
 end type
 
 event clicked;//
@@ -6206,9 +6346,9 @@ try
 
 	if messagebox ("Importa Report Pilota", &
 						"Copia i Report generati dal Pilota (file pdf) nelle cartelle della Procedura~n~r" &
-						+ "Saranno copiati tutti i nuovi Report prodotti dal Pilota con i dati di fine trattamento per ogni singolo barcode (meca_reportpilota)." &
+						+ "Saranno copiati tutti i nuovi Report prodotti dal Pilota che contengono i dati di fine trattamento di ogni singolo barcode (meca_reportpilota)." &
 						+" ~n~r" &
-						+ "Proseguire con l'operazione?" &
+						+ "Avviare l'operazione?" &
 						 ,question!, YesNo!, 2) = 1 then
 
 		SetPointer(kkg.pointer_attesa)
@@ -6233,9 +6373,10 @@ try
 	
 catch (uo_exception kuo_exception)
 	SetPointer(kkg.pointer_default)
-	kst_esito = kuo_exception.get_st_esito()
-	kguo_exception.inizializza( )
-	kguo_exception.messaggio_utente( "Operazione Conclusa con anomalia", kst_esito.sqlerrtext)
+	kuo_exception.messaggio_utente() 
+//	kst_esito = kuo_exception.get_st_esito()
+//	kguo_exception.inizializza( )
+//	kguo_exception.messaggio_utente( "Operazione Conclusa con anomalia", kst_esito.sqlerrtext)
 
 finally
 	if isvalid(kuf1_meca_reportpilota) then destroy kuf1_meca_reportpilota
@@ -6244,10 +6385,11 @@ end try
 
 end event
 
-on m_reportpilota.create
+on m_importareportpilota.create
 call super::create
 this.text = "Importa Report Pilota"
 this.microhelp = "Importa i report (file pdf) generati dal Pilota al termine del Trattamento"
+this.menuimage = "Custom013_2!"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -6266,7 +6408,193 @@ this.toolbarhighlightcolor = 134217741
 this.bitmapgradient = true
 end on
 
-on m_reportpilota.destroy
+on m_importareportpilota.destroy
+call super::destroy
+end on
+
+type m_creaemailattestatie1m2000 from menu within m_elaborazioniesterne
+m_preparaarchivioemailcertificati m_preparaarchivioemailcertificati
+m_importacertificatie1pdf m_importacertificatie1pdf
+end type
+
+on m_creaemailattestatie1m2000.create
+call super::create
+this.text = "Crea email Attestati (E1, M2000)  "
+this.menustyle = contemporarymenu!
+this.menubackcolor = 32567536
+this.menuhighlightcolor = 134217741
+this.textsize = -10
+this.weight = 400
+this.facename = "Verdana"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+this.m_preparaarchivioemailcertificati=create m_preparaarchivioemailcertificati
+this.m_importacertificatie1pdf=create m_importacertificatie1pdf
+this.Item[UpperBound(this.Item)+1]=this.m_preparaarchivioemailcertificati
+this.Item[UpperBound(this.Item)+1]=this.m_importacertificatie1pdf
+end on
+
+on m_creaemailattestatie1m2000.destroy
+call super::destroy
+destroy(this.m_preparaarchivioemailcertificati)
+destroy(this.m_importacertificatie1pdf)
+end on
+
+type m_preparaarchivioemailcertificati from menu within m_creaemailattestatie1m2000
+end type
+
+event clicked;//
+int k_righe=0
+kuf_certif_email kuf1_certif_email
+st_esito kst_esito
+		
+
+try
+	kuf1_certif_email = create kuf_certif_email
+
+	if messagebox ("Prepara tabella email Certificati E1", &
+						"Popola la tabella email dei Certificati dalla tabella Attestati della Procedura~n~r" &
+						+" ~n~r" &
+						+ "Avviare l'operazione?" &
+						 ,question!, YesNo!, 2) = 1 then
+
+		SetPointer(kkg.pointer_attesa)
+
+		kst_esito = kuf1_certif_email.u_batch_run( )
+
+		SetPointer(kkg.pointer_default)
+		if kst_esito.esito = kkg_esito.ok then
+			messagebox ("Prepara tabella email Certificati E1", &
+					"Operazione conclusa correttamente.~n~r" &
+					+ kst_esito.sqlerrtext &
+					 ,Information!) 
+		else
+			messagebox ("Prepara tabella email Certificati E1", &
+					"Operazione terminata.~n~r" &
+					+ kst_esito.sqlerrtext &
+					 ,Information!) 
+		end if
+	
+	end if
+	
+catch (uo_exception kuo_exception)
+	SetPointer(kkg.pointer_default)
+	kuo_exception.messaggio_utente() 
+
+finally
+	if isvalid(kuf1_certif_email) then destroy kuf1_certif_email
+
+end try
+
+end event
+
+on m_preparaarchivioemailcertificati.create
+call super::create
+this.text = "Prepara Archivio Email Certificati "
+this.microhelp = "Popoloa tabella email dei Certificati E1 leggendo la tabella Attestati della Procedura"
+this.menuimage = "Custom013_2!"
+this.menustyle = contemporarymenu!
+this.menubackcolor = 32567536
+this.menuhighlightcolor = 134217741
+this.textsize = -10
+this.weight = 400
+this.facename = "Verdana"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_preparaarchivioemailcertificati.destroy
+call super::destroy
+end on
+
+type m_importacertificatie1pdf from menu within m_creaemailattestatie1m2000
+end type
+
+event clicked;//
+int k_righe=0
+kuf_certif_e1_pdf kuf1_certif_e1_pdf
+st_esito kst_esito
+		
+
+try
+	kuf1_certif_e1_pdf = create kuf_certif_e1_pdf
+
+	if messagebox ("Importa Certificati E1 e genera email", &
+						"Importa i Certificati stampati da E1 in pdf e li sposta nella cartella degli Attestati da inviare via email~n~r" &
+						+" ~n~r" &
+						+ "Avviare l'operazione?" &
+						 ,question!, YesNo!, 2) = 1 then
+
+		SetPointer(kkg.pointer_attesa)
+
+		kst_esito = kuf1_certif_e1_pdf.u_batch_run( )
+		
+		SetPointer(kkg.pointer_default)
+		if kst_esito.esito = kkg_esito.ok then
+			messagebox ("Importa Certificati E1 e genera email", &
+					"Operazione conclusa correttamente.~n~r" &
+					+ kst_esito.sqlerrtext &
+					 ,Information!) 
+		else
+			messagebox ("Importa Certificati E1 e genera email", &
+					"Operazione terminata.~n~r" &
+					+ kst_esito.sqlerrtext &
+					 ,Information!) 
+		end if
+	
+	end if
+	
+catch (uo_exception kuo_exception)
+	SetPointer(kkg.pointer_default)
+	kuo_exception.messaggio_utente() 
+
+finally
+	if isvalid(kuf1_certif_e1_pdf) then destroy kuf1_certif_e1_pdf
+
+end try
+
+end event
+
+on m_importacertificatie1pdf.create
+call super::create
+this.text = "Importa Certificati E1 (PDF)"
+this.microhelp = "Importa Certificati E1 dai file PDF e genera email da inviare che include anche"
+this.menuimage = "Custom013_2!"
+this.menustyle = contemporarymenu!
+this.menubackcolor = 32567536
+this.menuhighlightcolor = 134217741
+this.textsize = -10
+this.weight = 400
+this.facename = "Verdana"
+this.titlebackcolor = 134217730
+this.bitmapbackcolor = 15780518
+this.menutitles = true
+this.menubitmaps = true
+this.titlegradient = true
+this.toolbarstyle = contemporarytoolbar!
+this.toolbartextcolor = 134217746
+this.toolbarbackcolor = 134217732
+this.toolbarhighlightcolor = 134217741
+this.bitmapgradient = true
+end on
+
+on m_importacertificatie1pdf.destroy
 call super::destroy
 end on
 
@@ -6452,10 +6780,10 @@ call super::create
 this.tag = "stat_produz"
 this.text = "Produzione"
 this.microhelp = "Statistici Merce entrata e trattata con esposizione valori importi"
-this.toolbaritemname = "graph1!"
+this.toolbaritemname = "stat48.png"
 this.toolbaritemtext = "Stat.,Statistici Produzione"
 this.toolbaritemorder = 7
-this.menuimage = "graph1!"
+this.menuimage = "Graph1_2!"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -6527,10 +6855,10 @@ call super::create
 this.tag = "stat_invent"
 this.text = "Inventario"
 this.microhelp = "Statistici Inventario per periodo "
-this.toolbaritemname = "graph2!"
+this.toolbaritemname = "graph2_2!"
 this.toolbaritemtext = "Invent.,Inventario di magazzino"
 this.toolbaritemorder = 7
-this.menuimage = "graph2!"
+this.menuimage = "Graph2_2!"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -6597,10 +6925,10 @@ call super::create
 this.tag = "skc"
 this.text = "Fatturato/ABC"
 this.microhelp = "Statistici Fatturato e Classifiche ABC "
-this.toolbaritemname = "graph!"
+this.toolbaritemname = "graph1_2!"
 this.toolbaritemtext = "St.Fatt, Statistico Fatturato"
 this.toolbaritemorder = 7
-this.menuimage = "graph!"
+this.menuimage = "Graph1_2!"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -6667,7 +6995,7 @@ call super::create
 this.tag = "st_prod_nimp"
 this.text = "Produzione (no imp.)"
 this.microhelp = "Statistici Merce entrata e trattata con esposizione solo movimentazioni e senza importi"
-this.menuimage = "Graph1!"
+this.menuimage = "Graph1_2!"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -6914,10 +7242,10 @@ this.tag = "cll"
 this.text = "Lista generale~tCtrl+N"
 this.shortcut = 334
 this.microhelp = "Lista di tutte le anagrafiche clienti (Mandanti/Riceventi/Fatturati)"
-this.toolbaritemname = "picture!"
+this.toolbaritemname = "client50.png"
 this.toolbaritemtext = "Anag.,Anagrafiche "
 this.toolbaritemorder = 2
-this.menuimage = "picture!"
+this.menuimage = "QueryGovernor_2!"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -7218,7 +7546,7 @@ call super::create
 this.tag = "prl"
 this.text = "Articoli"
 this.microhelp = "Gestione Archivio Prodotti"
-this.menuimage = "UserObject!"
+this.menuimage = "ViewPainter_2!"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -7283,6 +7611,7 @@ on m_sd_md.create
 call super::create
 this.tag = "sd_md       "
 this.text = "Dose-Mapping"
+this.menuimage = "map"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -7355,7 +7684,7 @@ on m_contodeposito.create
 call super::create
 this.tag = "ct_dp_l     "
 this.text = "Conto Deposito (CD)"
-this.menuimage = "BrowseObject!"
+this.menuimage = "CheckIn5_2!"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -7398,7 +7727,7 @@ call super::create
 this.tag = "ct_rd_l"
 this.text = "Studio e Sviluppo (SD)"
 this.microhelp = "Contratti Studio e Sviluppo"
-this.menuimage = "ComputePage5!"
+this.menuimage = "Control Average_2!"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -7442,7 +7771,7 @@ call super::create
 this.tag = "ct_co_l"
 this.text = "Commerciale (CO)"
 this.microhelp = "Contratti Commerciali"
-this.menuimage = "Custom048!"
+this.menuimage = "Custom048_2!"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -7474,7 +7803,7 @@ call super::create
 this.tag = "ct_doc_l"
 this.text = "Quotazioni"
 this.microhelp = "Contratti Quotazioni "
-this.menuimage = "contract16.png"
+this.menuimage = "Custom026!"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -7576,7 +7905,7 @@ call super::create
 this.tag = "sc_cf"
 this.text = "Capitolati (CF)"
 this.microhelp = "CF Capitolati di Fornitura"
-this.menuimage = "CreateRuntime!"
+this.menuimage = "Structure_2!"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -7639,10 +7968,11 @@ call super::create
 this.tag = "ct"
 this.text = "Conferme Ordini (CO)"
 this.microhelp = "Documenti di riepilogo Contratti"
-this.toolbaritemname = "custom004!"
+this.toolbaritemvisible = false
+this.toolbaritemname = "paste shared_2!"
 this.toolbaritemtext = "CO,Conferme Ordini Contratti Capitolati e PT "
 this.toolbaritemorder = 4
-this.menuimage = "Custom004!"
+this.menuimage = "Paste Shared_2!"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -7705,7 +8035,7 @@ this.tag = "ptl"
 this.text = "Piani di Trattamento (PT)"
 this.microhelp = "Piani di Trattamento"
 this.toolbaritemvisible = false
-this.menuimage = "Custom093!"
+this.menuimage = "Custom093_2!"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -7798,10 +8128,10 @@ call super::create
 this.tag = "listino_l"
 this.text = "Listini"
 this.microhelp = "Listini Prezzi Clienti"
-this.toolbaritemname = "formatdollar!"
+this.toolbaritemname = "euro24.png"
 this.toolbaritemtext = "List.,Listini"
 this.toolbaritemorder = 3
-this.menuimage = "formatdollar!"
+this.menuimage = "euro16.png"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -7812,7 +8142,6 @@ this.titlebackcolor = 134217730
 this.bitmapbackcolor = 15780518
 this.menutitles = true
 this.menubitmaps = true
-this.menuanimation = true
 this.titlegradient = true
 this.toolbarstyle = contemporarytoolbar!
 this.toolbartextcolor = 134217746
@@ -7991,7 +8320,7 @@ call super::create
 this.tag = "webutentil  "
 this.text = "Utenti Web"
 this.microhelp = "Utenti e Ruoli sul sito web (SMART)"
-this.menuimage = "Custom042!"
+this.menuimage = "Custom042_2!"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -8116,6 +8445,7 @@ this.tag = "sped_vettori"
 this.text = "Vettori"
 this.microhelp = "Gestione archivio Spedizionieri"
 this.toolbaritemvisible = false
+this.menuimage = "DeployTarget!"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -8192,7 +8522,7 @@ call super::create
 this.tag = "memo_u"
 this.text = "Memo"
 this.microhelp = "Annotazioni e allegati a clienti e lotti"
-this.menuimage = "Comment!"
+this.menuimage = "Custom019_2!"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -8406,7 +8736,7 @@ call super::create
 this.tag = "svsked_g"
 this.text = "Gestione"
 this.microhelp = "Aggiungi, modifica, cancella operazioni da eseguire in automatico"
-this.menuimage = "AddWatch!"
+this.menuimage = "Custom015_2!"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -8460,6 +8790,7 @@ call super::create
 this.tag = "svsked_v"
 this.text = "Elenco"
 this.microhelp = "Aggiungi, modifica, cancella operazioni da eseguire in automatico"
+this.menuimage = "RunWindow!"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -8750,10 +9081,10 @@ this.tag = "int_1"
 this.text = "Report~tCtrl+R"
 this.shortcut = 338
 this.microhelp = "Interrogazioni generiche"
-this.toolbaritemname = "library!"
+this.toolbaritemname = "report16.png"
 this.toolbaritemtext = "Report,Report"
 this.toolbaritemorder = 5
-this.menuimage = "library!"
+this.menuimage = "reportc16.png"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -8950,7 +9281,7 @@ this.toolbaritemtext = "Salva,Registra in archivio"
 this.toolbaritembarindex = 3
 this.toolbaritemorder = 14
 this.toolbaritemspace = 1
-this.menuimage = "save!"
+this.menuimage = "Save_2!"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -8997,12 +9328,12 @@ this.text = "Visualizza~tCtrl+O"
 this.enabled = false
 this.shortcut = 335
 this.microhelp = "Apri in modalità Visualizzazione dati"
-this.toolbaritemname = "preview!"
+this.toolbaritemname = "view48.png"
 this.toolbaritemtext = "Vis.,Visualizza dettaglio"
 this.toolbaritembarindex = 3
 this.toolbaritemorder = 15
 this.toolbaritemspace = 1
-this.menuimage = "Preview!"
+this.menuimage = "Preview_2!"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -9050,12 +9381,12 @@ this.text = "Modifica~tCtrl+M"
 this.enabled = false
 this.shortcut = 333
 this.microhelp = "Apri in modalità Modifica per aggiornare i dati"
-this.toolbaritemname = "inkedit!"
+this.toolbaritemname = "edit48.png"
 this.toolbaritemtext = "Mod., Modifica"
 this.toolbaritembarindex = 3
 this.toolbaritemorder = 16
 this.toolbaritemspace = 1
-this.menuimage = "InkEdit!"
+this.menuimage = "Edit_2!"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -9103,12 +9434,12 @@ this.text = "Nuovo~tCtrl+N"
 this.enabled = false
 this.shortcut = 334
 this.microhelp = "Apri per Inserire nuovi dati"
-this.toolbaritemname = "new!"
+this.toolbaritemname = "add16.png"
 this.toolbaritemtext = "Nuovo, Nuovo"
 this.toolbaritembarindex = 3
 this.toolbaritemorder = 17
 this.toolbaritemspace = 1
-this.menuimage = "New!"
+this.menuimage = "add16.png"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -9139,12 +9470,12 @@ call super::create
 this.visible = false
 this.text = "Duplica"
 this.enabled = false
-this.toolbaritemname = "viewpainter!"
+this.toolbaritemname = "duplicate48.png"
 this.toolbaritemtext = "Duplica,Duplica"
 this.toolbaritembarindex = 3
 this.toolbaritemorder = 17
 this.toolbaritemspace = 1
-this.menuimage = "ViewPainter!"
+this.menuimage = "Copy_2!"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -9238,7 +9569,7 @@ this.toolbaritemname = "custom021!"
 this.toolbaritemtext = "Canc., Elimina"
 this.toolbaritembarindex = 3
 this.toolbaritemorder = 19
-this.menuimage = "custom021!"
+this.menuimage = "Custom021_2!"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -9314,10 +9645,10 @@ this.tag = "st"
 this.text = "Stampa~tCtrl+P"
 this.enabled = false
 this.shortcut = 336
-this.toolbaritemname = "print!"
+this.toolbaritemname = "printer48.png"
 this.toolbaritemtext = "Stampa,Dati video in stampa"
 this.toolbaritemorder = 12
-this.menuimage = "print!"
+this.menuimage = "Print_2!"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -9393,10 +9724,10 @@ this.text = "Aggiorna elenco~tF5"
 this.enabled = false
 this.shortcut = 116
 this.microhelp = "Ricostruisce la Lista coi dati aggiornati rileggendo la Base Dati "
-this.toolbaritemname = "regenerate5!"
+this.toolbaritemname = "refresh48.png"
 this.toolbaritemtext = "Rilegge,Rilegge dati da DB"
 this.toolbaritemorder = 13
-this.menuimage = "Regenerate5!"
+this.menuimage = "Regenerate_2!"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -9604,11 +9935,11 @@ this.text = "Visualizzazione predefinita "
 this.enabled = false
 this.microhelp = "Ripristina il look prededefinito della finestra"
 this.toolbaritemvisible = false
-this.toolbaritemname = "custom081!"
+this.toolbaritemname = "custom081_2!"
 this.toolbaritemtext = "Std,RipristinaVisualizzazione Standard"
 this.toolbaritemorder = 50
 this.toolbaritemspace = 1
-this.menuimage = "custom081!"
+this.menuimage = "Custom081_2!"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -9637,7 +9968,9 @@ end type
 on m_abilitadockingpredefinito.create
 call super::create
 this.tag = "dp"
+this.visible = false
 this.text = "Abilita Docking predefinito"
+this.enabled = false
 this.checked = true
 this.microhelp = "Abilita temporaneamente l~'apertura delle window nella modalità predefinita"
 this.menustyle = contemporarymenu!
@@ -9676,9 +10009,11 @@ end type
 on m_rimuovepersonalizzazionidocking.create
 call super::create
 this.tag = "dr"
+this.visible = false
 this.text = "Rimuove personalizzazioni Docking"
+this.enabled = false
 this.microhelp = "Rimuove le tue personalizzazioni delle window ripristinando la modalità predefinita"
-this.menuimage = "Layer!"
+this.menuimage = "Layer_2!"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -10011,12 +10346,12 @@ this.enabled = false
 this.shortcut = 633
 this.microhelp = "Chiude funzione attiva"
 this.toolbaritemvisible = false
-this.toolbaritemname = "exit!"
+this.toolbaritemname = "close_2!"
 this.toolbaritemtext = "Chiudi, Chiudi funzione"
 this.toolbaritemorder = 20
 this.toolbaritemspace = 1
 this.menuitemtype = menuitemtypeexit!
-this.menuimage = "exit!"
+this.menuimage = "Close_2!"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -10109,11 +10444,11 @@ this.tag = "ce"
 this.text = "Trova~tCtrl+F"
 this.shortcut = 326
 this.microhelp = "Ricerca dati in elenco"
-this.toolbaritemname = "find!"
+this.toolbaritemname = "find32.png"
 this.toolbaritemtext = "Trova, Cerca in elenco"
 this.toolbaritembarindex = 2
 this.toolbaritemorder = 10
-this.menuimage = "Find!"
+this.menuimage = "Find_2!"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -10161,11 +10496,11 @@ this.text = "Trova ancora...~tCtrl+G"
 this.enabled = false
 this.shortcut = 327
 this.microhelp = "Continua la ricerca in elenco"
-this.toolbaritemname = "findnext!"
+this.toolbaritemname = "find next_2!"
 this.toolbaritemtext = "Trova+,Trova il successivo"
 this.toolbaritembarindex = 2
 this.toolbaritemorder = 11
-this.menuimage = "findnext!"
+this.menuimage = "Find Next_2!"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -10206,11 +10541,11 @@ this.tag = "or"
 this.text = "Ordina dati in elenco"
 this.enabled = false
 this.microhelp = "scegli come ordinare l~'elenco"
-this.toolbaritemname = "sort!"
+this.toolbaritemname = "sort_2!"
 this.toolbaritemtext = "Ordina, Ordina elenco"
 this.toolbaritembarindex = 2
 this.toolbaritemorder = 12
-this.menuimage = "sort!"
+this.menuimage = "Sort_2!"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -10253,11 +10588,11 @@ this.text = "Filtra righe in elenco~tAlt+F"
 this.enabled = false
 this.shortcut = 582
 this.microhelp = "Permette di togliere dalla lista le righe che non intaressano   "
-this.toolbaritemname = "custom096!"
+this.toolbaritemname = "filter_2!"
 this.toolbaritemtext = "Filtra,Filtra in elenco"
 this.toolbaritembarindex = 2
 this.toolbaritemorder = 13
-this.menuimage = "custom096!"
+this.menuimage = "Filter_2!"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -10298,11 +10633,11 @@ this.tag = "ce"
 this.visible = false
 this.text = "Filtro"
 this.microhelp = "Attiva filtro ai dati delle colonne (in stile EXCEL)"
-this.toolbaritemname = "custom096!"
+this.toolbaritemname = "filter_2!"
 this.toolbaritemtext = "Filtro, Attiva Filtro"
 this.toolbaritembarindex = 2
 this.toolbaritemorder = 13
-this.menuimage = "custom096!"
+this.menuimage = "Filter_2!"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -11270,7 +11605,7 @@ on m_chk_update.create
 call super::create
 this.text = "Controlla aggiornamenti"
 this.microhelp = "Verifica se ci sono nuovi aggiornamenti"
-this.menuimage = "Custom044!"
+this.menuimage = "Update5!"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741
@@ -11325,7 +11660,7 @@ on m_about.create
 call super::create
 this.text = "About"
 this.menuitemtype = menuitemtypeabout!
-this.menuimage = "Having!"
+this.menuimage = "Having_2!"
 this.menustyle = contemporarymenu!
 this.menubackcolor = 32567536
 this.menuhighlightcolor = 134217741

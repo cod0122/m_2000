@@ -531,7 +531,7 @@ if not ki_menu.m_strumenti.m_fin_gest_libero2.visible then
 	ki_menu.m_strumenti.m_fin_gest_libero2.toolbaritemvisible = true
 	ki_menu.m_strumenti.m_fin_gest_libero2.toolbaritembarindex=2
 	//ki_menu.m_strumenti.m_fin_gest_libero2.toolbaritemname = kGuo_path.get_risorse() + "\cicli.bmp"
-	ki_menu.m_strumenti.m_fin_gest_libero2.toolbaritemname = "cicli.bmp"
+	ki_menu.m_strumenti.m_fin_gest_libero2.toolbaritemname = "cicli16.png"
 	ki_menu.m_strumenti.m_fin_gest_libero2.visible = true
 end if
 
@@ -554,7 +554,7 @@ if not ki_menu.m_strumenti.m_fin_gest_libero8.visible then
 	ki_menu.m_strumenti.m_fin_gest_libero8.enabled = true
 	ki_menu.m_strumenti.m_fin_gest_libero8.toolbaritemVisible = true
 	ki_menu.m_strumenti.m_fin_gest_libero8.toolbaritemText = "Crea,"+ki_menu.m_strumenti.m_fin_gest_libero8.text
-	ki_menu.m_strumenti.m_fin_gest_libero8.toolbaritemName = "CheckIn5!"
+	ki_menu.m_strumenti.m_fin_gest_libero8.toolbaritemName = "Group_2!"
 	ki_menu.m_strumenti.m_fin_gest_libero8.toolbaritembarindex=2
 end if	
 
@@ -884,6 +884,9 @@ boolean ki_link_standard_sempre_possibile = true
 end type
 
 type dw_guida from w_g_tab0`dw_guida within w_lettore_grp
+end type
+
+type st_duplica from w_g_tab0`st_duplica within w_lettore_grp
 end type
 
 type dw_modifica from uo_dw_modifica_giri_barcode within w_lettore_grp

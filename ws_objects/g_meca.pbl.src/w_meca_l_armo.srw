@@ -852,7 +852,7 @@ try
 		k_righe_articoli = kds_1.retrieve(kst_tab_meca.contratto, kst_tab_meca.clie_3)
 	else
 		kguo_exception.inizializza( )
-		kguo_exception.set_tipo(kguo_exception.kk_st_uo_exception_tipo_dati_non_eseguito )
+		kguo_exception.set_tipo(kguo_exception.KK_st_uo_exception_tipo_non_eseguito )
 		kguo_exception.setmessage("Non è stato indicato alcun Contratto in Testata, operazione bloccata")
 		throw kguo_exception
 	end if

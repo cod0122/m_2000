@@ -1,10 +1,10 @@
-﻿$PBExportHeader$kuf_sv_skedula_run.sru
+﻿$PBExportHeader$kuf_file_run.sru
 forward
-global type kuf_sv_skedula_run from nonvisualobject
+global type kuf_file_run from nonvisualobject
 end type
-type process_information from structure within kuf_sv_skedula_run
+type process_information from structure within kuf_file_run
 end type
-type startupinfo from structure within kuf_sv_skedula_run
+type startupinfo from structure within kuf_file_run
 end type
 end forward
 
@@ -36,9 +36,9 @@ type startupinfo from structure
 	unsignedlong		hstderror
 end type
 
-global type kuf_sv_skedula_run from nonvisualobject
+global type kuf_file_run from nonvisualobject
 end type
-global kuf_sv_skedula_run kuf_sv_skedula_run
+global kuf_file_run kuf_file_run
 
 type prototypes
 Function Boolean CreateProcessA ( &
@@ -333,12 +333,12 @@ Return li_rtn
 
 end function
 
-on kuf_sv_skedula_run.create
+on kuf_file_run.create
 call super::create
 TriggerEvent( this, "constructor" )
 end on
 
-on kuf_sv_skedula_run.destroy
+on kuf_file_run.destroy
 TriggerEvent( this, "destructor" )
 call super::destroy
 end on

@@ -29,9 +29,10 @@ public constant string kki_dw_elenco_indirizzi = "d_sped_l_indirizzi"
 public constant string kki_dw_elenco_note = "d_sped_note_l" 
 public constant string kki_dw_meca_da_sped = "d_merce_da_sped"  
 
+public constant long kki_num_bolla_out_extra = 9000000   //numero oltre il quale fare ddt 'BIS' o particolari
+
 private datastore kdsi_dw_elenco_indirizzi
 end variables
-
 forward prototypes
 public subroutine if_isnull_testa (ref st_tab_sped kst_tab_sped)
 public function st_esito tb_delete_testa (st_tab_sped kst_tab_sped)
@@ -7366,6 +7367,7 @@ public function long get_num_bolla_out_ultimo (ref st_tab_sped kst_tab_sped) thr
 //---
 //----------------------------------------------------------------------------------------------------------------
 long k_return
+long k_num_bolla_out_extra
 int k_anno
 date k_data_da, k_data_a
 st_esito kst_esito
@@ -7384,6 +7386,7 @@ st_esito kst_esito
 		k_data_a = date(k_anno,12,31)
 		
 		if isnull(kst_tab_sped.id_sped) then kst_tab_sped.id_sped = 0
+		k_num_bolla_out_extra = kki_num_bolla_out_extra
 		
 		SELECT max(num_bolla_out)
 		 INTO 
@@ -7391,7 +7394,7 @@ st_esito kst_esito
 	 	FROM sped  
 		WHERE  data_bolla_out between :k_data_da and :k_data_a  
 		              and id_sped <> :kst_tab_sped.id_sped
-						  and num_bolla_out < 9000000
+						  and num_bolla_out < :k_num_bolla_out_extra
 			  using kguo_sqlca_db_magazzino;
 	
 	end if

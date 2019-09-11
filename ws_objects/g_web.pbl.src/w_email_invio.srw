@@ -140,14 +140,32 @@ string k_errore = "0"
 int k_rc=0
 long k_riga
 string k_descr=""
+kuf_email kuf1_email
 st_tab_email_invio kst_tab_email_invio
+st_email_address kst_email_address
+st_esito kst_esito
 
-
+		
    k_riga = dw_dett_0.getrow()
 
    kst_tab_email_invio.email = dw_dett_0.getitemstring ( k_riga, "email") 
-   if isnull(kst_tab_email_invio.email) or LenA(trim(kst_tab_email_invio.email)) = 0 then
-      k_return = k_return + "Manca indirizzo E-mail destinatario" + "~n~r"
+   if trim(kst_tab_email_invio.email) > " " then
+		
+//--- Controllo sintassi Indirizzi email				
+		kst_email_address.email_all = kst_tab_email_invio.email
+		if len(trim(kst_email_address.email_all)) > 0 then
+			kuf1_email = create kuf_email
+			kst_esito = kuf1_email.get_email_from_string(kst_email_address)
+			if kst_esito.esito <> kkg_esito.ok then
+				k_return = trim(k_return) + "Indirizzo e-mail non corretto: " &
+				+"~n~r" + kst_esito.sqlerrtext + "~n~r" 
+				k_errore = "4"
+			end if
+			destroy kuf1_email
+		end if
+
+	else
+      k_return = k_return + "Manca indirizzo e-mail" + "~n~r"
       k_errore = "3"
 
    end if
@@ -842,7 +860,7 @@ try
 					if len(trim(kst_tab_email_invio_1.email)) > 0 then
 						
 						k_ctr_invio++
-						kst_tab_email_invio[k_ctr_invio]  = kst_tab_email_invio_1
+						kst_tab_email_invio[k_ctr_invio] = kst_tab_email_invio_1
 						
 					else
 						
@@ -887,11 +905,11 @@ try
 			
 //msg utente			 
 			kguo_exception.set_tipo(kguo_exception.kk_st_uo_exception_tipo_ok )
-			kguo_exception.setmessage("Sono state inviate  " + string(k_nr_invii) + "  e-mail.  Ma ci sono anomalie, vedi sotto: " + kkg.acapo + k_mail_no )
+			kguo_exception.setmessage("Sono state inviate " + string(k_nr_invii) + " e-mail.  Ma ci sono anomalie, vedi sotto: " + kkg.acapo + k_mail_no )
 
 		end if
 	else
-		kguo_exception.set_tipo(kguo_exception.kk_st_uo_exception_tipo_ok )
+		kguo_exception.set_tipo(kguo_exception.KK_st_uo_exception_tipo_non_eseguito)
 		kguo_exception.setmessage("Non sono state inviate e-mail " )
 	end if
 	kguo_exception.set_tipo(kguo_exception.kk_st_uo_exception_tipo_ok )
@@ -978,7 +996,8 @@ integer height = 688
 boolean enabled = true
 string dataobject = "d_email_invio"
 boolean border = true
-borderstyle borderstyle = StyleRaised!
+string icon = "AppIcon!"
+borderstyle borderstyle = styleraised!
 boolean ki_link_standard_attivi = false
 boolean ki_colora_riga_aggiornata = false
 end type
@@ -987,15 +1006,17 @@ event dw_dett_0::editchanged;//soppressione codice del padre
 end event
 
 event dw_dett_0::buttonclicked;call super::buttonclicked;//
-	if dwo.name = "b_path_lettera" then
+choose case dwo.name
+	case "b_path_lettera" 
 		get_path_lettera()
-	end if
-	if dwo.name = "p_img_lettera_vedi" then
+	
+	case "p_img_lettera_vedi" 
 		run_app_lettera()
-	end if
-	if dwo.name = "b_path_allegati" then
+	
+	case "b_path_allegati" 
 		get_path_allegati()
-	end if
+		
+end choose
 
 end event
 
@@ -1089,9 +1110,12 @@ integer y = 32
 integer width = 2866
 integer height = 864
 string dataobject = "d_email_invio_l"
-boolean ki_link_standard_attivi = false
+boolean ki_link_standard_sempre_possibile = true
 end type
 
 type dw_guida from w_g_tab0`dw_guida within w_email_invio
+end type
+
+type st_duplica from w_g_tab0`st_duplica within w_email_invio
 end type
 

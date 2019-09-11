@@ -439,7 +439,13 @@ end on
 
 on w_email_funzione.destroy
 call super::destroy
+if IsValid(MenuID) then destroy(MenuID)
 end on
+
+event close;call super::close;//
+if isvalid(kiuf_email_funzioni) then destroy kiuf_email_funzioni
+
+end event
 
 type st_ritorna from w_g_tab0`st_ritorna within w_email_funzione
 end type
@@ -535,5 +541,10 @@ string dataobject = "d_email_funzione_l"
 end type
 
 type dw_guida from w_g_tab0`dw_guida within w_email_funzione
+integer x = 59
+integer y = 0
+end type
+
+type st_duplica from w_g_tab0`st_duplica within w_email_funzione
 end type
 

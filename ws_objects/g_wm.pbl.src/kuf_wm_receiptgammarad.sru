@@ -2915,7 +2915,7 @@ try
 			end for
 		else
 			kguo_exception.inizializza( )
-			kguo_exception.set_tipo( kguo_exception.kk_st_uo_exception_tipo_dati_non_eseguito )
+			kguo_exception.set_tipo( kguo_exception.KK_st_uo_exception_tipo_non_eseguito )
 			kguo_exception.setmessage( "NON eseguito. Se si vuole importare PKL-WEB,  RIATTIVARE da Proprietà della proceura.")
 			throw kguo_exception
 		end if

@@ -156,7 +156,7 @@ st_esito kst_esito
 st_tab_meca_dosim kst_tab_meca_dosim
 
 
-try
+try 
 	SetPointer(kkg.pointer_attesa)
 
 //--- Verifica dati Dosimetrici

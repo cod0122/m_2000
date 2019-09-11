@@ -2,11 +2,11 @@
 forward
 global type w_base_personale from w_g_tab_3
 end type
-type cb_1 from commandbutton within tabpage_3
+type cb_logerr from commandbutton within tabpage_3
 end type
-type cb_2 from commandbutton within tabpage_3
+type cb_informix from commandbutton within tabpage_3
 end type
-type cb_3 from commandbutton within tabpage_3
+type cb_config_ini from commandbutton within tabpage_3
 end type
 type st_non_auth_4 from statictext within tabpage_4
 end type
@@ -88,17 +88,21 @@ type st_28 from statictext within tabpage_8
 end type
 type st_4 from statictext within tabpage_9
 end type
-type cb_4 from commandbutton within tabpage_9
+type cb_protemail from commandbutton within tabpage_9
 end type
 type st_22 from statictext within tabpage_9
 end type
-type cb_5 from commandbutton within tabpage_9
+type cb_prototipi from commandbutton within tabpage_9
 end type
 type tabpage_10 from userobject within tab_1
 end type
+type st_29 from statictext within tabpage_10
+end type
+type cb_aco from commandbutton within tabpage_10
+end type
 type st_27 from statictext within tabpage_10
 end type
-type cb_6 from commandbutton within tabpage_10
+type cb_smart from commandbutton within tabpage_10
 end type
 type cb_meca_chiude from commandbutton within tabpage_10
 end type
@@ -107,8 +111,10 @@ end type
 type dw_10 from uo_d_std_1 within tabpage_10
 end type
 type tabpage_10 from userobject within tab_1
+st_29 st_29
+cb_aco cb_aco
 st_27 st_27
-cb_6 cb_6
+cb_smart cb_smart
 cb_meca_chiude cb_meca_chiude
 st_meca_chiude st_meca_chiude
 dw_10 dw_10
@@ -152,8 +158,8 @@ end type
 end forward
 
 global type w_base_personale from w_g_tab_3
-integer width = 1669
-integer height = 584
+integer width = 2222
+integer height = 1736
 string title = "Proprietà Personali"
 long backcolor = 67108864
 string icon = "Form!"
@@ -205,7 +211,9 @@ protected subroutine stampa_esegui (st_stampe ast_stampe)
 protected subroutine attiva_tasti_0 ()
 private subroutine get_path_reportpilota ()
 private subroutine get_fgrp_out_path ()
-private subroutine get_report_export_dir ()
+private subroutine get_path_report_export_dir ()
+private subroutine get_path_aco_exp_regcdp_dir ()
+private subroutine get_path_e1_certif_saved_dir ()
 end prototypes
 
 protected subroutine pulizia_righe ();////
@@ -1131,7 +1139,7 @@ else
 	k_path=".."
 end if
 
-k_ret = GetFolder ( "Scegliere la cartella del Server Centrale utile per raggiungere le risorse utili a tutti gli utenti", k_path )
+k_ret = GetFolder ( "Scegliere la cartella del Server Centrale comune a tutti gli utenti (utile per raggiungere le risorse grafiche)", k_path )
 
 if k_ret = 1 then
 	tab_1.tabpage_4.dw_4.setitem(1, "path_centrale", trim(k_path))
@@ -1257,6 +1265,8 @@ try
 				kst_tab_base.e1dtlav_allineagg = tab_1.tabpage_4.dw_4.getitemnumber(1, "e1dtlav_allineagg")
 				kst_tab_base.dir_report_pilota = tab_1.tabpage_4.dw_4.getitemstring(1, "dir_report_pilota")
 				kst_tab_base.report_export_dir = tab_1.tabpage_4.dw_4.getitemstring(1, "report_export_dir")
+				kst_tab_base.aco_exp_regcdp_dir = tab_1.tabpage_4.dw_4.getitemstring(1, "aco_exp_regcdp_dir")
+				kst_tab_base.e1_certif_saved_dir = tab_1.tabpage_4.dw_4.getitemstring(1, "e1_certif_saved_dir")
 				kst_tab_base.st_tab_g_0.esegui_commit = "N" 
 				kst_esito = kuf1_base.tb_update_base_dir(kst_tab_base) 
 			
@@ -1375,7 +1385,7 @@ else
 	k_path=".."
 end if
 
-k_ret = GetFolder ( "Scegli Cartella per le Fatture", k_path )
+k_ret = GetFolder ( "Scegliere la Cartella per le Fatture", k_path )
 
 if k_ret = 1 then
 	tab_1.tabpage_4.dw_4.setitem(1, "dir_fatt", trim(k_path))
@@ -1760,7 +1770,7 @@ else
 	k_path=".."
 end if
 
-k_ret = GetFolder ( "Scegli Cartella per le Anagrafiche da esportare a ESOLVER", k_path )
+k_ret = GetFolder ( "Scegliere la Cartella dove esportare le Anagrafiche per ESOLVER", k_path )
 
 if k_ret = 1 then
 	tab_1.tabpage_4.dw_4.setitem(1, "esolver_expanag_dir", trim(k_path))
@@ -1784,7 +1794,7 @@ else
 	k_path=".."
 end if
 
-k_ret = GetFolder ( "Scegli Cartella di scambio dati FIDO con ESOLVER", k_path )
+k_ret = GetFolder ( "Scegliere la Cartella di scambio dati FIDO con ESOLVER", k_path )
 
 if k_ret = 1 then
 	tab_1.tabpage_4.dw_4.setitem(1, "esolver_fidi_dir", trim(k_path))
@@ -2173,7 +2183,7 @@ else
 	k_path=".."
 end if
 
-k_ret = GetFolder ( "Scegliere la cartella dove il 'PILOTA' genera i Report", k_path )
+k_ret = GetFolder ( "Scegliere la cartella dove trovare i Report generati dal 'PILOTA'", k_path )
 
 if k_ret = 1 then
 	tab_1.tabpage_4.dw_4.setitem(1, "dir_report_pilota", trim(k_path))
@@ -2210,7 +2220,7 @@ end if
 
 end subroutine
 
-private subroutine get_report_export_dir ();//
+private subroutine get_path_report_export_dir ();//
 string k_path=".."
 int k_ret
 
@@ -2221,10 +2231,58 @@ else
 	k_path=".."
 end if
 
-k_ret = GetFolder ( "Scegli Cartella dove esportare i Report", k_path )
+k_ret = GetFolder ( "Scegli la Cartella dove esportare i Report", k_path )
 
 if k_ret = 1 then
 	tab_1.tabpage_4.dw_4.setitem(1, "report_export_dir", trim(k_path))
+else
+	if k_ret < 0 then
+//--- ERRORE	
+	end if
+end if
+
+
+end subroutine
+
+private subroutine get_path_aco_exp_regcdp_dir ();//
+string k_path=".."
+int k_ret
+
+
+k_path = tab_1.tabpage_4.dw_4.getitemstring (1, "aco_exp_regcdp_dir")
+if len(trim(k_path)) > 0 then
+else
+	k_path=".."
+end if
+
+k_ret = GetFolder ( "Scegliere la Cartella dove esportare i dati di Registro C.to Deposito per ACO", k_path )
+
+if k_ret = 1 then
+	tab_1.tabpage_4.dw_4.setitem(1, "aco_exp_regcdp_dir", trim(k_path))
+else
+	if k_ret < 0 then
+//--- ERRORE	
+	end if
+end if
+
+
+end subroutine
+
+private subroutine get_path_e1_certif_saved_dir ();//
+string k_path=".."
+int k_ret
+
+
+k_path = tab_1.tabpage_4.dw_4.getitemstring (1, "e1_certif_saved_dir")
+if len(trim(k_path)) > 0 then
+else
+	k_path=".."
+end if
+
+k_ret = GetFolder ( "Scegliere la Cartella dove cercare gli Attestati di E1", k_path )
+
+if k_ret = 1 then
+	tab_1.tabpage_4.dw_4.setitem(1, "e1_certif_saved_dir", trim(k_path))
 else
 	if k_ret < 0 then
 //--- ERRORE	
@@ -2340,6 +2398,7 @@ end type
 type cb_ritorna from w_g_tab_3`cb_ritorna within w_base_personale
 integer x = 1536
 integer y = 1504
+boolean flatstyle = true
 end type
 
 type st_stampa from w_g_tab_3`st_stampa within w_base_personale
@@ -2351,36 +2410,41 @@ type cb_visualizza from w_g_tab_3`cb_visualizza within w_base_personale
 integer x = 2487
 integer y = 1536
 integer taborder = 60
+boolean flatstyle = true
 end type
 
 type cb_modifica from w_g_tab_3`cb_modifica within w_base_personale
 integer x = 439
 integer y = 1504
 integer taborder = 50
+boolean flatstyle = true
 end type
 
 type cb_aggiorna from w_g_tab_3`cb_aggiorna within w_base_personale
 integer x = 805
 integer y = 1504
 integer taborder = 80
+boolean flatstyle = true
 end type
 
 type cb_cancella from w_g_tab_3`cb_cancella within w_base_personale
 integer x = 1170
 integer y = 1504
 integer taborder = 90
+boolean flatstyle = true
 end type
 
 type cb_inserisci from w_g_tab_3`cb_inserisci within w_base_personale
 integer x = 73
 integer y = 1504
 integer taborder = 70
+boolean flatstyle = true
 end type
 
 type tab_1 from w_g_tab_3`tab_1 within w_base_personale
 integer x = 23
-integer width = 2386
-integer height = 972
+integer width = 2501
+integer height = 1040
 integer taborder = 40
 boolean fixedwidth = true
 boolean showtext = false
@@ -2450,12 +2514,12 @@ end on
 type tabpage_1 from w_g_tab_3`tabpage_1 within tab_1
 integer x = 146
 integer y = 16
-integer width = 2222
-integer height = 940
+integer width = 2336
+integer height = 1008
 long backcolor = 67108864
 string text = "Personalizza"
 long tabbackcolor = 67108864
-string picturename = "UserObject5!"
+string picturename = "Preferences_2!"
 string powertiptext = "impostazioni utente"
 end type
 
@@ -2483,12 +2547,12 @@ end type
 type tabpage_2 from w_g_tab_3`tabpage_2 within tab_1
 integer x = 146
 integer y = 16
-integer width = 2222
-integer height = 940
+integer width = 2336
+integer height = 1008
 long backcolor = 67108864
 string text = " la mia Connessione"
 long tabbackcolor = 67108864
-string picturename = "Database!"
+string picturename = "Database_2!"
 end type
 
 type dw_2 from w_g_tab_3`dw_2 within tabpage_2
@@ -2508,34 +2572,34 @@ type tabpage_3 from w_g_tab_3`tabpage_3 within tab_1
 boolean visible = true
 integer x = 146
 integer y = 16
-integer width = 2222
-integer height = 940
+integer width = 2336
+integer height = 1008
 long backcolor = 67108864
 string text = " Messaggi~r~n della Procedura"
 long tabbackcolor = 67108864
-string picturename = "Error!"
-cb_1 cb_1
-cb_2 cb_2
-cb_3 cb_3
+string picturename = "Error_icon_2!"
+cb_logerr cb_logerr
+cb_informix cb_informix
+cb_config_ini cb_config_ini
 end type
 
 on tabpage_3.create
-this.cb_1=create cb_1
-this.cb_2=create cb_2
-this.cb_3=create cb_3
+this.cb_logerr=create cb_logerr
+this.cb_informix=create cb_informix
+this.cb_config_ini=create cb_config_ini
 int iCurrent
 call super::create
 iCurrent=UpperBound(this.Control)
-this.Control[iCurrent+1]=this.cb_1
-this.Control[iCurrent+2]=this.cb_2
-this.Control[iCurrent+3]=this.cb_3
+this.Control[iCurrent+1]=this.cb_logerr
+this.Control[iCurrent+2]=this.cb_informix
+this.Control[iCurrent+3]=this.cb_config_ini
 end on
 
 on tabpage_3.destroy
 call super::destroy
-destroy(this.cb_1)
-destroy(this.cb_2)
-destroy(this.cb_3)
+destroy(this.cb_logerr)
+destroy(this.cb_informix)
+destroy(this.cb_config_ini)
 end on
 
 type dw_3 from w_g_tab_3`dw_3 within tabpage_3
@@ -2552,8 +2616,8 @@ end type
 type tabpage_4 from w_g_tab_3`tabpage_4 within tab_1
 integer x = 146
 integer y = 16
-integer width = 2222
-integer height = 940
+integer width = 2336
+integer height = 1008
 long backcolor = 67108864
 string text = " Proprietà Procedura"
 long tabbackcolor = 67108864
@@ -2578,8 +2642,8 @@ end on
 type dw_4 from w_g_tab_3`dw_4 within tabpage_4
 integer x = 41
 integer y = 28
-integer width = 2939
-integer height = 1440
+integer width = 2295
+integer height = 980
 boolean enabled = true
 string dataobject = "d_base_gen"
 boolean hsplitscroll = false
@@ -2647,7 +2711,11 @@ elseif dwo.name = "b_path_esolver_fidi" then
 elseif dwo.name = "b_listini_no_contratto" then
 	u_call_art_x_no_contratto( )
 elseif dwo.name = "b_report_export_dir" then
-	get_report_export_dir()
+	get_path_report_export_dir()
+elseif dwo.name = "b_aco_exp_regcdp_dir" then
+	get_path_aco_exp_regcdp_dir()
+elseif dwo.name = "b_e1_certif_saved_dir" then
+	get_path_e1_certif_saved_dir()
 end if
 
 
@@ -2764,8 +2832,8 @@ end type
 type tabpage_5 from w_g_tab_3`tabpage_5 within tab_1
 integer x = 146
 integer y = 16
-integer width = 2222
-integer height = 940
+integer width = 2336
+integer height = 1008
 string text = " Contatori Procedura"
 long tabbackcolor = 67108864
 string picturename = "Application!"
@@ -2786,6 +2854,8 @@ destroy(this.st_non_auth_5)
 end on
 
 type dw_5 from w_g_tab_3`dw_5 within tabpage_5
+integer x = 14
+integer y = 0
 integer width = 2359
 integer height = 844
 boolean enabled = true
@@ -2799,13 +2869,13 @@ end type
 type tabpage_6 from w_g_tab_3`tabpage_6 within tab_1
 integer x = 146
 integer y = 16
-integer width = 2222
-integer height = 940
+integer width = 2336
+integer height = 1008
 boolean enabled = true
 long backcolor = 67108864
 string text = " DB Esterni~r~n (Pilota, E-ONE, Pk-List...) "
 long tabbackcolor = 67108864
-string picturename = "DBConnect!"
+string picturename = "DB Profile_2!"
 long picturemaskcolor = 553648127
 st_1 st_1
 cb_pilota_proprieta cb_pilota_proprieta
@@ -2885,8 +2955,8 @@ end type
 type tabpage_7 from w_g_tab_3`tabpage_7 within tab_1
 integer x = 146
 integer y = 16
-integer width = 2222
-integer height = 940
+integer width = 2336
+integer height = 1008
 long backcolor = 67108864
 long tabbackcolor = 67108864
 end type
@@ -2906,13 +2976,13 @@ end type
 type tabpage_8 from w_g_tab_3`tabpage_8 within tab_1
 integer x = 146
 integer y = 16
-integer width = 2222
-integer height = 940
+integer width = 2336
+integer height = 1008
 boolean enabled = true
 long backcolor = 16777215
 string text = " Ausiliari"
 long tabbackcolor = 67108864
-string picturename = "ArrangeTables!"
+string picturename = "ArrangeTables5_2!"
 rr_1 rr_1
 rr_4 rr_4
 rr_2 rr_2
@@ -3042,40 +3112,40 @@ end type
 type tabpage_9 from w_g_tab_3`tabpage_9 within tab_1
 integer x = 146
 integer y = 16
-integer width = 2222
-integer height = 940
+integer width = 2336
+integer height = 1008
 boolean enabled = true
 long backcolor = 16777215
 string text = " E-Mail"
 long tabbackcolor = 67108864
-string picturename = "Custom025!"
+string picturename = "Custom025_2!"
 long picturemaskcolor = 553648127
 st_4 st_4
-cb_4 cb_4
+cb_protemail cb_protemail
 st_22 st_22
-cb_5 cb_5
+cb_prototipi cb_prototipi
 end type
 
 on tabpage_9.create
 this.st_4=create st_4
-this.cb_4=create cb_4
+this.cb_protemail=create cb_protemail
 this.st_22=create st_22
-this.cb_5=create cb_5
+this.cb_prototipi=create cb_prototipi
 int iCurrent
 call super::create
 iCurrent=UpperBound(this.Control)
 this.Control[iCurrent+1]=this.st_4
-this.Control[iCurrent+2]=this.cb_4
+this.Control[iCurrent+2]=this.cb_protemail
 this.Control[iCurrent+3]=this.st_22
-this.Control[iCurrent+4]=this.cb_5
+this.Control[iCurrent+4]=this.cb_prototipi
 end on
 
 on tabpage_9.destroy
 call super::destroy
 destroy(this.st_4)
-destroy(this.cb_4)
+destroy(this.cb_protemail)
 destroy(this.st_22)
-destroy(this.cb_5)
+destroy(this.cb_prototipi)
 end on
 
 type st_9_retrieve from w_g_tab_3`st_9_retrieve within tabpage_9
@@ -3093,7 +3163,7 @@ end type
 type st_duplica from w_g_tab_3`st_duplica within w_base_personale
 end type
 
-type cb_1 from commandbutton within tabpage_3
+type cb_logerr from commandbutton within tabpage_3
 integer x = 101
 integer y = 84
 integer width = 965
@@ -3107,6 +3177,7 @@ fontpitch fontpitch = variable!
 fontfamily fontfamily = swiss!
 string facename = "Arial"
 string text = "Vedi Segnalazioni (LOG anomalie)"
+boolean flatstyle = true
 end type
 
 event clicked;//
@@ -3124,7 +3195,7 @@ kuf_utility kuf1_utility
 	
 end event
 
-type cb_2 from commandbutton within tabpage_3
+type cb_informix from commandbutton within tabpage_3
 boolean visible = false
 integer x = 114
 integer y = 276
@@ -3140,6 +3211,7 @@ fontfamily fontfamily = swiss!
 string facename = "Arial"
 boolean enabled = false
 string text = "Vedi ~'Log~' Errori Informix"
+boolean flatstyle = true
 end type
 
 event clicked;//
@@ -3157,7 +3229,7 @@ kuf_utility kuf1_utility
 
 end event
 
-type cb_3 from commandbutton within tabpage_3
+type cb_config_ini from commandbutton within tabpage_3
 integer x = 1157
 integer y = 84
 integer width = 1006
@@ -3171,6 +3243,7 @@ fontpitch fontpitch = variable!
 fontfamily fontfamily = swiss!
 string facename = "Arial"
 string text = "Apri il mio file di Configurazione"
+boolean flatstyle = true
 end type
 
 event clicked;//
@@ -3260,6 +3333,7 @@ fontpitch fontpitch = variable!
 fontfamily fontfamily = swiss!
 string facename = "Arial"
 string text = "Proprietà DB  Pilota Impianto "
+boolean flatstyle = true
 end type
 
 event clicked;//=== Parametri : 
@@ -3308,6 +3382,7 @@ fontpitch fontpitch = variable!
 fontfamily fontfamily = swiss!
 string facename = "Arial"
 string text = "Proprietà Packing-List (WM)"
+boolean flatstyle = true
 end type
 
 event clicked;//=== Parametri : 
@@ -3380,6 +3455,7 @@ fontfamily fontfamily = swiss!
 string facename = "Arial"
 boolean enabled = false
 string text = "Proprietà DB x il WEB"
+boolean flatstyle = true
 end type
 
 event clicked;//=== Parametri : 
@@ -3451,6 +3527,7 @@ fontfamily fontfamily = swiss!
 string facename = "Arial"
 boolean enabled = false
 string text = "Proprietà DB x il CRM"
+boolean flatstyle = true
 end type
 
 event clicked;//=== Parametri : 
@@ -3522,6 +3599,7 @@ fontfamily fontfamily = swiss!
 string facename = "Arial"
 boolean enabled = false
 string text = "Proprietà DB ~'Previsionali~'"
+boolean flatstyle = true
 end type
 
 event clicked;//=== Parametri : 
@@ -3592,6 +3670,7 @@ fontpitch fontpitch = variable!
 fontfamily fontfamily = swiss!
 string facename = "Arial"
 string text = "Connessione E-ONE"
+boolean flatstyle = true
 end type
 
 event clicked;//=== Parametri : 
@@ -3719,6 +3798,7 @@ fontpitch fontpitch = variable!
 fontfamily fontfamily = swiss!
 string facename = "Arial"
 string text = "Archivi Ausiliari 1"
+boolean flatstyle = true
 end type
 
 event clicked;//=== Parametri : 
@@ -3771,6 +3851,7 @@ fontpitch fontpitch = variable!
 fontfamily fontfamily = swiss!
 string facename = "Arial"
 string text = "Archivi Ausiliari 2"
+boolean flatstyle = true
 end type
 
 event clicked;//=== Parametri : 
@@ -4110,6 +4191,7 @@ fontpitch fontpitch = variable!
 fontfamily fontfamily = swiss!
 string facename = "Arial"
 string text = "Cartelle Documenti"
+boolean flatstyle = true
 end type
 
 event clicked;//=== Parametri : 
@@ -4283,7 +4365,7 @@ alignment alignment = right!
 boolean focusrectangle = false
 end type
 
-type cb_4 from commandbutton within tabpage_9
+type cb_protemail from commandbutton within tabpage_9
 integer x = 1458
 integer y = 172
 integer width = 672
@@ -4297,6 +4379,7 @@ fontpitch fontpitch = variable!
 fontfamily fontfamily = swiss!
 string facename = "Arial"
 string text = "Prototipi E-mail"
+boolean flatstyle = true
 end type
 
 event clicked;//=== Parametri : 
@@ -4333,7 +4416,7 @@ alignment alignment = right!
 boolean focusrectangle = false
 end type
 
-type cb_5 from commandbutton within tabpage_9
+type cb_prototipi from commandbutton within tabpage_9
 integer x = 1458
 integer y = 516
 integer width = 672
@@ -4347,6 +4430,7 @@ fontpitch fontpitch = variable!
 fontfamily fontfamily = swiss!
 string facename = "Arial"
 string text = "Associa Prototipi"
+boolean flatstyle = true
 end type
 
 event clicked;//=== Parametri : 
@@ -4367,41 +4451,118 @@ type tabpage_10 from userobject within tab_1
 boolean visible = false
 integer x = 146
 integer y = 16
-integer width = 2222
-integer height = 940
+integer width = 2336
+integer height = 1008
 long backcolor = 16777215
 string text = " Kit"
 long tabtextcolor = 33554432
 string picturename = "Strikethrough!"
 long picturemaskcolor = 536870912
 string powertiptext = "Funzioni varie"
+st_29 st_29
+cb_aco cb_aco
 st_27 st_27
-cb_6 cb_6
+cb_smart cb_smart
 cb_meca_chiude cb_meca_chiude
 st_meca_chiude st_meca_chiude
 dw_10 dw_10
 end type
 
 on tabpage_10.create
+this.st_29=create st_29
+this.cb_aco=create cb_aco
 this.st_27=create st_27
-this.cb_6=create cb_6
+this.cb_smart=create cb_smart
 this.cb_meca_chiude=create cb_meca_chiude
 this.st_meca_chiude=create st_meca_chiude
 this.dw_10=create dw_10
-this.Control[]={this.st_27,&
-this.cb_6,&
+this.Control[]={this.st_29,&
+this.cb_aco,&
+this.st_27,&
+this.cb_smart,&
 this.cb_meca_chiude,&
 this.st_meca_chiude,&
 this.dw_10}
 end on
 
 on tabpage_10.destroy
+destroy(this.st_29)
+destroy(this.cb_aco)
 destroy(this.st_27)
-destroy(this.cb_6)
+destroy(this.cb_smart)
 destroy(this.cb_meca_chiude)
 destroy(this.st_meca_chiude)
 destroy(this.dw_10)
 end on
+
+type st_29 from statictext within tabpage_10
+integer x = 1285
+integer y = 672
+integer width = 2066
+integer height = 112
+boolean bringtotop = true
+integer textsize = -10
+integer weight = 400
+fontcharset fontcharset = ansi!
+fontpitch fontpitch = variable!
+fontfamily fontfamily = swiss!
+string facename = "Arial"
+long textcolor = 8388608
+long backcolor = 16777215
+string text = "Esporta dati Resistro Conto Deposito (ACO)"
+boolean focusrectangle = false
+end type
+
+type cb_aco from commandbutton within tabpage_10
+integer x = 357
+integer y = 648
+integer width = 891
+integer height = 112
+integer taborder = 102
+boolean bringtotop = true
+integer textsize = -10
+integer weight = 400
+fontcharset fontcharset = ansi!
+fontpitch fontpitch = variable!
+fontfamily fontfamily = swiss!
+string facename = "Arial"
+string text = "Esporta dati ACO"
+boolean flatstyle = true
+end type
+
+event clicked;//--- 
+st_esito kst_esito 
+kuf_clienti_cntdep kuf1_clienti_cntdep
+
+
+try
+	
+	if messagebox("Esporta dati Conto Deposito", "Vuoi generare e aggiornare i dati di Registro di Conto Deposito per ACO?" &
+			+ " ATTENZIONE questi dati non potranno più essere esportati se non riportando i contatori indietro maualmente.", question!, yesno!, 2) = 1 then
+		
+		kuf1_clienti_cntdep = create kuf_clienti_cntdep
+		//kst_open_w.flag_modalita = kkg_flag_modalita.batch
+		//kuf1_clienti_cntdep.u_open(kkg_flag_modalita.batch)
+		kst_esito = kuf1_clienti_cntdep.u_batch_run( )
+		
+		messagebox("Operazione terminata", kst_esito.sqlerrtext)
+	else
+		messagebox("Operazione interrotta", "Nessun dato trattato")
+	end if
+
+catch (uo_exception kuo_exception)
+	kuo_exception.messaggio_utente()
+	
+finally
+	if isvalid(kuf1_clienti_cntdep) then destroy kuf1_clienti_cntdep
+	
+end try
+
+
+
+
+
+end event
 
 type st_27 from statictext within tabpage_10
 integer x = 1285
@@ -4421,7 +4582,7 @@ string text = "Esporta dati Contratti/Legami per le funzioni di Packing List Web
 boolean focusrectangle = false
 end type
 
-type cb_6 from commandbutton within tabpage_10
+type cb_smart from commandbutton within tabpage_10
 integer x = 357
 integer y = 416
 integer width = 891
@@ -4435,6 +4596,7 @@ fontpitch fontpitch = variable!
 fontfamily fontfamily = swiss!
 string facename = "Arial"
 string text = "Esporta dati x il WEB (SMART)"
+boolean flatstyle = true
 end type
 
 event clicked;//--- 
@@ -4468,6 +4630,7 @@ fontpitch fontpitch = variable!
 fontfamily fontfamily = swiss!
 string facename = "Arial"
 string text = "Chusura Lotti Massiva"
+boolean flatstyle = true
 end type
 
 event clicked;//
@@ -4510,8 +4673,8 @@ type tabpage_11 from userobject within tab_1
 boolean visible = false
 integer x = 146
 integer y = 16
-integer width = 2222
-integer height = 940
+integer width = 2336
+integer height = 1008
 boolean enabled = false
 long backcolor = 16777215
 string text = "none"
@@ -4539,12 +4702,12 @@ type tabpage_12 from userobject within tab_1
 boolean visible = false
 integer x = 146
 integer y = 16
-integer width = 2222
-integer height = 940
+integer width = 2336
+integer height = 1008
 long backcolor = 16777215
 string text = "Log Segnalazioni"
 long tabtextcolor = 33554432
-string picturename = "ToDoList!"
+string picturename = "Debug!"
 long picturemaskcolor = 536870912
 dw_12 dw_12
 end type
@@ -4591,12 +4754,12 @@ type tabpage_13 from userobject within tab_1
 boolean visible = false
 integer x = 146
 integer y = 16
-integer width = 2222
-integer height = 940
+integer width = 2336
+integer height = 1008
 long backcolor = 67108864
 string text = "Monitor"
 long tabtextcolor = 33554432
-string picturename = "Custom077!"
+string picturename = "Custom077_2!"
 long picturemaskcolor = 536870912
 st_esiti_operazioni st_esiti_operazioni
 pb_st_esiti_operazioni pb_st_esiti_operazioni
@@ -4696,6 +4859,7 @@ fontpitch fontpitch = variable!
 fontfamily fontfamily = swiss!
 string facename = "Arial"
 string text = "Avvia controlli"
+boolean flatstyle = true
 end type
 
 event clicked;//

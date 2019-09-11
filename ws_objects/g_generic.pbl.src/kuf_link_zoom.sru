@@ -196,8 +196,17 @@ string k_num_colonne, k_nome
 					, "id_memo" & 
 					, "e1doco" & 
 					, "e1rorn" &
-					, "packinglistcode"
-
+					, "packinglistcode" &
+					, "allegati_cartella" &
+					,"doc_root" &
+					,"fgrp_out_path" &
+					,"dir_report_pilota" &
+					,"report_export_dir" &
+					,"aco_exp_regcdp_dir" &
+					,"e1_certif_saved_dir" &
+					,"path_centrale" &
+					,"dir_fatt" &
+					,"path_file_pilota"
 //					, "id_meca_righe" &
 					
 //--- se e' del tipo grid o tabular link sul valore alrimenti sul testo		
@@ -424,6 +433,18 @@ choose case a_nome_link
 		
 	case "meca_reportpilota_id_meca"
 		kuf1_parent = create using "kuf_meca_reportpilota"
+		
+	case "allegati_cartella" &
+			,"doc_root" &
+			,"fgrp_out_path" &
+			,"dir_report_pilota" &
+			,"report_export_dir" &
+			,"aco_exp_regcdp_dir" &
+			,"e1_certif_saved_dir" &
+			,"path_centrale" &
+			,"dir_fatt" &
+			,"path_file_pilota"
+		kuf1_parent = create using "kuf_folder_open"
 		
 	case else
 		k_return = false

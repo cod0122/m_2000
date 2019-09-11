@@ -128,16 +128,12 @@ long k_riga
 string k_descr=""
 st_tab_email kst_tab_email
 
+		
 
 	k_riga = dw_dett_0.getrow()
 
 	kst_tab_email.codice = dw_dett_0.getitemstring ( k_riga, "codice") 
-	if isnull(kst_tab_email.codice) or LenA(trim(kst_tab_email.codice)) = 0 then
-		k_return = k_return + "Manca il Codice E-mail " + "~n~r"
-		k_errore = "3"
-
-	else
-
+	if trim(kst_tab_email.codice) > " " then
 
 //--- c'e' gia' il Codice?
 		if ki_st_open_w.flag_modalita = kkg_flag_modalita.inserimento then
@@ -164,6 +160,11 @@ st_tab_email kst_tab_email
 		
 			end if		
 		end if
+
+	else
+		k_return = k_return + "Manca il Codice E-mail " + "~n~r"
+		k_errore = "3"
+
 	end if
 
 	
@@ -184,6 +185,12 @@ st_tab_email kst_tab_email
 		if isnull(dw_dett_0.getitemstring(dw_dett_0.getrow(), "link_lettera")) & 
 				   or len(trim(dw_dett_0.getitemstring(dw_dett_0.getrow(), "link_lettera"))) = 0 then 
 			k_return = k_return + "Manca la Comunicazione " + "~n~r" 
+			k_errore = "3"
+		end if
+
+		if isnull(dw_dett_0.getitemstring(dw_dett_0.getrow(), "email_di_ritorno")) & 
+				   or len(trim(dw_dett_0.getitemstring(dw_dett_0.getrow(), "email_di_ritorno"))) = 0 then 
+			k_return = k_return + "Manca l'indirizzo da cui far partire le email " + "~n~r" 
 			k_errore = "3"
 		end if
 		
@@ -706,6 +713,7 @@ end on
 
 on w_email.destroy
 call super::destroy
+if IsValid(MenuID) then destroy(MenuID)
 end on
 
 event close;call super::close;//
@@ -788,5 +796,8 @@ string dataobject = "d_email_l"
 end type
 
 type dw_guida from w_g_tab0`dw_guida within w_email
+end type
+
+type st_duplica from w_g_tab0`st_duplica within w_email
 end type
 

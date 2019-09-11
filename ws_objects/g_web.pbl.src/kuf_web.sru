@@ -21,27 +21,12 @@ Inet  kiInet_base
 end variables
 
 forward prototypes
-public function boolean if_sintassi_email_ok (st_web kst_web)
 public function boolean if_url_esiste (st_web kst_web)
 public subroutine apre_url (st_web kst_web)
 public subroutine url_aggiusta_http (ref st_web kst_web)
 public function st_esito u_start_www (string k_sito) throws uo_exception
 public function boolean u_call_mail_client (string k_mail, string k_oggetto, string k_corpo, string k_allegato)
 end prototypes
-
-public function boolean if_sintassi_email_ok (st_web kst_web);//---
-//--- Controllo sintassi E-MAIL
-//---
-//--- Input: st_web.email valorizzato
-//--- Out: TRUE=ok, False=indirizzo errato
-
-kst_web.email = trim(kst_web.email)
-
-return match(kst_web.email,"[a-zA-z0-9]+[-.]*[a-zA-z0-9]*[@][a-zA-z0-9]+[-.][a-zA-z0-9]+[a-zA-z0-9]$")
-
-//return match(kst_web.email,"[a-zA-Z0-9_\.]+@[a-zA-Z0-9-]+\.[a-zA-Z]{0,4}")
-
-end function
 
 public function boolean if_url_esiste (st_web kst_web);//---
 //--- Controllo Esisenza del URL

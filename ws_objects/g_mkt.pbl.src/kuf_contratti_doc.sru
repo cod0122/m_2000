@@ -72,6 +72,7 @@ private function long u_conv_conferma_ordine_to_listino_val (ref datastore kds_c
 private function long u_conv_conferma_ordine_to_listino_irr (ref datastore kds_contratti_doc, st_tab_listino kst_tab_listino, st_contratti_doc_to_listini kst_contratti_doc_to_listini) throws uo_exception
 public function st_esito anteprima_dettaglio (ref datawindow kdw_anteprima, st_tab_contratti_doc kst_tab_contratti_doc)
 public function st_esito anteprima_dettaglio (ref datastore kdw_anteprima, st_tab_contratti_doc kst_tab_contratti_doc)
+public function string get_stato_descrizione (ref st_tab_contratti_doc kst_tab_contratti_doc)
 end prototypes
 
 public function st_esito anteprima (ref datastore kdw_anteprima, st_tab_contratti_doc kst_tab_contratti_doc);//
@@ -2088,17 +2089,24 @@ try
 			end if
 		end if
 
-//--- check se TIPO coerente con il CODICE Quotazione
+//--- check se TIPO Quotazione presente e se coerente con il CODICE 
 		kst_tab_contratti_doc.quotazione_tipo = trim(ads_inp.getitemstring(k_riga, "quotazione_tipo"))
 		kst_tab_contratti_doc.quotazione_cod = trim(ads_inp.getitemstring(k_riga, "quotazione_cod"))
-		if kst_tab_contratti_doc.quotazione_tipo > " " and kst_tab_contratti_doc.quotazione_cod > " "  then
-			k_ctr = pos(kst_tab_contratti_doc.quotazione_cod, "-" + kst_tab_contratti_doc.quotazione_tipo + "-")
-			if k_ctr = 0 then
-				k_errori++
-				k_tipo_errore = "4"
-				kst_esito.esito = kkg_esito.DATI_WRN
-				kst_esito.sqlerrtext = "Tipo Quotazione '" + kst_tab_contratti_doc.quotazione_tipo + "' non congruente con il Codice '" + kst_tab_contratti_doc.quotazione_cod + "~n~r"   + trim(kst_esito.sqlerrtext)
+		if kst_tab_contratti_doc.quotazione_tipo > " " then
+			if kst_tab_contratti_doc.quotazione_tipo > " " and kst_tab_contratti_doc.quotazione_cod > " "  then
+				k_ctr = pos(kst_tab_contratti_doc.quotazione_cod, "-" + kst_tab_contratti_doc.quotazione_tipo + "-")
+				if k_ctr = 0 then
+					k_errori++
+					k_tipo_errore = "4"
+					kst_esito.esito = kkg_esito.DATI_WRN
+					kst_esito.sqlerrtext = "Tipo Quotazione '" + kst_tab_contratti_doc.quotazione_tipo + "' non congruente con il Codice '" + kst_tab_contratti_doc.quotazione_cod + "~n~r"   + trim(kst_esito.sqlerrtext)
+				end if
 			end if
+		else
+			k_errori++
+			k_tipo_errore = "3"
+			kst_esito.esito = kkg_esito.DATI_INSUFF
+			kst_esito.sqlerrtext = "Indicare il Tipo Quotazione" + "~n~r"   + trim(kst_esito.sqlerrtext)
 		end if
 
 
@@ -4297,6 +4305,50 @@ end try
 
 
 return kst_esito
+
+end function
+
+public function string get_stato_descrizione (ref st_tab_contratti_doc kst_tab_contratti_doc);//
+//----------------------------------------------------------------------------------------------------------------------------
+//--- 
+//--- Legge lo STATO
+//--- 
+//--- 
+//--- Input: st_tab_contratti_doc.stato
+//--- Out: 
+//---
+//--- Ritorna: descrizione dello stato
+//---
+//--- Lancia EXCEPTION x errore
+//---
+//----------------------------------------------------------------------------------------------------------------------------
+//
+string k_return
+
+
+
+	choose case kst_tab_contratti_doc.stato
+		case kki_STATO_nuovo
+			k_return = "Nuovo"
+		case kki_STATO_riaperto
+			k_return = "Riaperto"
+		case kki_STATO_stampato
+			k_return = "Stampato"
+		case kki_STATO_accettato
+			k_return = "Accettato"
+		case kki_STATO_respinto
+			k_return = "Respinto"
+		case kki_STATO_trasferito
+			k_return = "Trasferito"
+		case kki_STATO_annullato
+			k_return = "Annullato"
+		case else
+			k_return = "*non riconosciuto*"
+	end choose
+
+
+return k_return
+
 
 end function
 

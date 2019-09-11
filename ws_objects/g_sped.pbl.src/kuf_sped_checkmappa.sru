@@ -29,6 +29,7 @@ public function boolean if_num_data_congruenti (ref st_tab_sped kst_tab_sped) th
 //---  se ERRORE lancia un Exception
 //---
 boolean k_return = false
+long k_num_bolla_out_extra
 string k_presente
 int k_anno
 st_esito kst_esito 
@@ -41,15 +42,18 @@ kst_esito.nome_oggetto = this.classname()
 
 if kst_tab_sped.num_bolla_out > 0 then 
 
+	k_num_bolla_out_extra = kiuf_sped.kki_num_bolla_out_extra
 	k_anno = year(kst_tab_sped.data_bolla_out)
 
-   	select distinct '1'
+  	select distinct '1'
 	   	into :k_presente
 	   	from  sped
 		 where 
 				year(data_bolla_out) =  :k_anno
 				and ( (num_bolla_out >  :kst_tab_sped.num_bolla_out and data_bolla_out <  :kst_tab_sped.data_bolla_out)
 				        or (num_bolla_out <  :kst_tab_sped.num_bolla_out and data_bolla_out >  :kst_tab_sped.data_bolla_out) )
+			   and num_bolla_out < :k_num_bolla_out_extra 
+
 		 using kguo_sqlca_db_magazzino ;
 		 
 	if sqlca.sqlcode = 0 then

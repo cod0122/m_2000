@@ -118,7 +118,7 @@ try
 //#--- 7.3.2006 --------------------> PROBABILMENTE può essere usato fino a 9999 ma bisogna provare
 	 if a_id_cliente > 9000 then
 		kguo_exception.inizializza()
-		kguo_exception.set_tipo(kguo_exception.kk_st_uo_exception_tipo_dati_non_eseguito)
+		kguo_exception.set_tipo(kguo_exception.KK_st_uo_exception_tipo_non_eseguito)
 		kguo_exception.setmessage("BARCODE NON GENERABILE perchè Codice Cliente troppo ALTO " &
                             + string(a_id_cliente) + ". Eccede limite massimo consentito di 9000!! ")
 		throw kguo_exception
@@ -350,7 +350,7 @@ try
 	k_esito = kuf1_base.prendi_dato_base( "barcode_pref")
 	if left(k_esito,1) <> "0" then
 		kguo_exception.inizializza( )
-		kguo_exception.set_tipo(kguo_exception.kk_st_uo_exception_tipo_dati_non_eseguito)
+		kguo_exception.set_tipo(kguo_exception.KK_st_uo_exception_tipo_non_eseguito)
 		kguo_exception.setmessage("Errore durante accesso alle PROPRIETA' per leggere il Prefisso dei barcode. Err.=" + trim(k_esito))
 	else
 		k_barcode_pref = trim(mid(k_esito,2))
@@ -363,7 +363,7 @@ try
 	k_esito = kuf1_base.prendi_dato_base( "barcode_progr")
 	if left(k_esito,1) <> "0" then
 		kguo_exception.inizializza( )
-		kguo_exception.set_tipo(kguo_exception.kk_st_uo_exception_tipo_dati_non_eseguito)
+		kguo_exception.set_tipo(kguo_exception.KK_st_uo_exception_tipo_non_eseguito)
 		kguo_exception.setmessage("Errore durante accesso alle PROPRIETA' per leggere il Prefisso dei barcode. Err.=" + trim(k_esito))
 	else
 		k_barcode_num = integer(trim(mid(k_esito,2)))

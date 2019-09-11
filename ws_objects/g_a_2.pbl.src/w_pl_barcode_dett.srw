@@ -148,7 +148,6 @@ public subroutine u_aggiorna_data_consegna (st_tab_meca kst_tab_meca, long k_rig
 private subroutine u_abilita_chiusura_pl ()
 private subroutine u_abilita_modifica_giri ()
 public subroutine u_mostra_proprieta (boolean k_forza_visible)
-private subroutine copia_dw_barcode_to_dw_groupage (integer k_riga1, integer k_riga2)
 private subroutine copia_dw_barcode_to_dw_lista_0 (integer k_riga1, integer k_riga2)
 public subroutine aggiungi_grp_barcode_singolo (ref datawindow kdw_2)
 private subroutine copia_dw_lista_0_to_dw_groupage (integer k_riga1, integer k_riga2)
@@ -167,6 +166,7 @@ public subroutine u_obj_visible_0 ()
 public function boolean u_resize_predefinita ()
 private subroutine u_check_troppi_barcode ()
 public subroutine u_resize_1 ()
+private subroutine copia_dw_barcode_to_dw_groupage (integer k_riga1, integer k_riga2) throws uo_exception
 end prototypes
 
 event u_check_troppi_barcode();//---
@@ -1637,12 +1637,14 @@ if dw_meca.rowcount() > 0 then
 							dw_meca.selectrow(k_riga_meca_fila_davanti, true)
 							dw_meca.selectrow(k_riga_meca, false)
 							
-							if messagebox("Trovato Lotto in Posizione migliore del n. " + string(dw_meca.getitemnumber(k_riga_meca, "meca_num_int")) &
-										, "Lotto n. " + string(dw_meca.getitemnumber(k_riga_meca_fila_davanti, "meca_num_int")) &
+							if messagebox("Trovato Lotto n."  &
+										, " " + string(dw_meca.getitemnumber(k_riga_meca_fila_davanti, "meca_num_int")) &
 										+ " in area " + trim(dw_meca.getitemstring(k_riga_meca_fila_davanti, "meca_area_mag")) &
 										+ " di " + trim(dw_meca.getitemstring(k_riga_meca_fila_davanti, "k_fatturato")) &
-										+ " alla riga n. " + string(k_riga_meca_fila_davanti) + " sembra essere in una fila davanti" &
-										+ ". ~n~rVuoi comunque Continuare ?", Question!, yesno!, 1) = 2 then
+										+ " alla riga n. " + string(k_riga_meca_fila_davanti) &
+										+ " in Posizione migliore in magazzino di quello selezionato (" + string(dw_meca.getitemnumber(k_riga_meca, "meca_num_int")) &
+										+ ")."&
+										+ "~n~rVuoi comunque Continuare ?", Question!, yesno!, 1) = 2 then
 								
 								k_elaborazione = false  // forzo uscita ciclo
 								k_blocca_operazione = true  // blocca l'operazione
@@ -1666,7 +1668,7 @@ if dw_meca.rowcount() > 0 then
 		
 									k_riga_kdw_1 = kdw_1.insertrow(k_riga_kdw_1 + k_insertrow)
 	
-//--- copia la barcode in kdw_1, il formato e' il solito dettaglio
+//--- copia barcode in kdw_1, il formato e' il solito dettaglio
 									if kdw_1.dataobject = dw_groupage.dataobject then
 										copia_dw_barcode_to_dw_groupage(k_riga_kdw_1, k_riga_drag)
 									else
@@ -2220,7 +2222,7 @@ if ki_st_open_w.flag_primo_giro <> "S" then
 		ki_menu.m_strumenti.m_fin_gest_libero2.enabled = cb_file.enabled
 		ki_menu.m_strumenti.m_fin_gest_libero2.toolbaritemtext = "Giri,"+ ki_menu.m_strumenti.m_fin_gest_libero2.text
 		ki_menu.m_strumenti.m_fin_gest_libero2.toolbaritemvisible = true
-		ki_menu.m_strumenti.m_fin_gest_libero2.toolbaritemname = "cicli.bmp"
+		ki_menu.m_strumenti.m_fin_gest_libero2.toolbaritemname = "cicli16.png"
 	//	ki_menu.m_strumenti.m_fin_gest_libero2.toolbaritembarindex = 2
 		ki_menu.m_strumenti.m_fin_gest_libero2.visible = true
 	end if
@@ -2242,22 +2244,22 @@ if ki_st_open_w.flag_primo_giro <> "S" then
 	
 	if ki_menu.m_strumenti.m_fin_gest_libero4.enabled <> cb_aggiungi.enabled then
 		ki_menu.m_strumenti.m_fin_gest_libero4.text = "Aggiungi Barcode (&+)"
-		ki_menu.m_strumenti.m_fin_gest_libero4.microhelp = "Aggiunge Barcode da trattare a fine elenco   "
+		ki_menu.m_strumenti.m_fin_gest_libero4.microhelp = "Aggiunge Barcode da trattare a fine elenco"
 		ki_menu.m_strumenti.m_fin_gest_libero4.enabled = cb_aggiungi.enabled
 		ki_menu.m_strumenti.m_fin_gest_libero4.toolbaritemtext = "Metti,"+ ki_menu.m_strumenti.m_fin_gest_libero4.text
 		ki_menu.m_strumenti.m_fin_gest_libero4.toolbaritemvisible = false
-		ki_menu.m_strumenti.m_fin_gest_libero4.toolbaritemName = "custom038!"
+		ki_menu.m_strumenti.m_fin_gest_libero4.toolbaritemName = "barcode16.png"
 //		ki_menu.m_strumenti.m_fin_gest_libero4.toolbaritembarindex = 2
 		ki_menu.m_strumenti.m_fin_gest_libero4.visible = true
 	end if
 	
 	if ki_menu.m_strumenti.m_fin_gest_libero5.enabled <> cb_togli.enabled then
 		ki_menu.m_strumenti.m_fin_gest_libero5.text = "Togli Barcode (&-)"
-		ki_menu.m_strumenti.m_fin_gest_libero5.microhelp = "Toglie Barcode da trattare dall'elenco   "
+		ki_menu.m_strumenti.m_fin_gest_libero5.microhelp = "Toglie Barcode da trattare dall'elenco"
 		ki_menu.m_strumenti.m_fin_gest_libero5.enabled = cb_togli.enabled
 		ki_menu.m_strumenti.m_fin_gest_libero5.toolbaritemtext = "Leva,"+ ki_menu.m_strumenti.m_fin_gest_libero5.text
 		ki_menu.m_strumenti.m_fin_gest_libero5.toolbaritemvisible = false
-		ki_menu.m_strumenti.m_fin_gest_libero5.toolbaritemName = "custom080!"
+		ki_menu.m_strumenti.m_fin_gest_libero5.toolbaritemName = "barcodeno16.png"
 //		ki_menu.m_strumenti.m_fin_gest_libero5.toolbaritembarindex = 2
 		ki_menu.m_strumenti.m_fin_gest_libero5.visible = true
 	end if
@@ -2267,12 +2269,12 @@ if ki_st_open_w.flag_primo_giro <> "S" then
 		ki_menu.m_strumenti.m_fin_gest_libero6.microhelp = 	"Salva e Chiude il Piano di Lavorazione, NON SARA' PIU' possibile effettuare alcuna modifica     "
 		ki_menu.m_strumenti.m_fin_gest_libero6.toolbaritemtext = "Chiudi,"+ ki_menu.m_strumenti.m_fin_gest_libero6.text
 		//ki_menu.m_strumenti.m_fin_gest_libero6.toolbaritemname = kGuo_path.get_risorse() + "\lucch32.png"
-		ki_menu.m_strumenti.m_fin_gest_libero6.toolbaritemname = "lucch32.png"
+		ki_menu.m_strumenti.m_fin_gest_libero6.toolbaritemname = "lucch16.png"
 	else
 		ki_menu.m_strumenti.m_fin_gest_libero6.text = "Riapre P.L."
 		ki_menu.m_strumenti.m_fin_gest_libero6.microhelp = 	"Riapre il Piano di Lavorazione appena inviato, SARA' di nuovo possibile effettuare le modifiche    "
 		ki_menu.m_strumenti.m_fin_gest_libero6.toolbaritemtext = "Apre,"+ ki_menu.m_strumenti.m_fin_gest_libero6.text
-		ki_menu.m_strumenti.m_fin_gest_libero6.toolbaritemname = "lucchOpen32.png"
+		ki_menu.m_strumenti.m_fin_gest_libero6.toolbaritemname = "lucchOpen16.png"
 	end if
 	if ki_menu.m_strumenti.m_fin_gest_libero6.enabled <> cb_chiudi.enabled or not ki_menu.m_strumenti.m_fin_gest_libero6.toolbaritemvisible then
 		ki_menu.m_strumenti.m_fin_gest_libero6.enabled = cb_chiudi.enabled
@@ -2617,7 +2619,7 @@ if dw_meca.rowcount() > 0 then
 			k_insertrow = 1
 		end if
 	else
-		messagebox("Nessuna Operazione Eseguita", "Selezionare una riga dall'elenco." + "~n~r", StopSign!)
+		messagebox("Nessuna Operazione Eseguita", "Selezionare una riga dall'elenco.", StopSign!) // + "~n~r"
 	end if	
 
 	
@@ -2668,16 +2670,22 @@ if dw_meca.rowcount() > 0 then
 				
 			else
 
-				do while k_riga_drag <= dw_barcode.rowcount() 
-		
-					k_riga = kdw_1.insertrow(k_riga + k_insertrow)
-
-//--- copia la barcode in kdw_1, il formato e' il solito dettaglio			
-					copia_dw_barcode_to_dw_groupage(k_riga, k_riga_drag)
-
-					k_riga_drag++
+				try
+					do while k_riga_drag <= dw_barcode.rowcount() 
+			
+						k_riga = kdw_1.insertrow(k_riga + k_insertrow)
+	
+	//--- copia la barcode in kdw_1, il formato e' il solito dettaglio			
+						copia_dw_barcode_to_dw_groupage(k_riga, k_riga_drag)
+	
+						k_riga_drag++
+						
+					loop
 					
-				loop
+				catch (uo_exception kuo_exception1)
+					kuo_exception1.messaggio_utente()
+					
+				end try
 				
 				if k_riga > 0 then
 					
@@ -2809,9 +2817,6 @@ ki_lista_0_modifcato = true
 
 		kds_1 = kuf1_barcode.get_figli_barcode(kst_tab_barcode)  //get figli del barcode per aggiungerli
 		if kds_1.rowcount( ) > 0 then
-//			kdw_ds = create datawindow
-//			kdw_ds.dataobject = dw_groupage.dataobject
-//			kdw_ds.rowscopy( 1, kds_1.rowcount( ), primary!, kds_1, 1, primary!)
 			k_riga_grp = dw_groupage.rowcount( )
 			k_riga_grp_copia=1
 			
@@ -2819,7 +2824,7 @@ ki_lista_0_modifcato = true
 
 				kst_tab_barcode.barcode = kds_1.object.barcode[k_riga_grp_copia]
 
-//--- Cerco il barcode tra i filgi e padri gia' presenti (non ci possono essere NONNI)
+//--- Cerco il barcode tra i figli e padri gia' presenti (non ci possono essere NONNI)
 				k_riga_find = dw_groupage.find("barcode_barcode = '" + trim(kst_tab_barcode.barcode) + "' or barcode_lav = '" + trim(kst_tab_barcode.barcode) + "'", 1, dw_groupage.rowcount()) 
 
 //--- se il barcode non c'e' ancora tra i figli allora lo aggiungo
@@ -2873,13 +2878,15 @@ ki_lista_0_modifcato = true
 				
 			loop
 		end if
+		
 	catch (uo_exception kuo_exception)
 		kuo_exception.messaggio_utente()
+		
 	finally
-		destroy kuf1_barcode
-		destroy kuf1_armo 
-		destroy kuf1_clienti
-		destroy kuf1_prodotti
+		if isvalid(kuf1_barcode) then destroy kuf1_barcode
+		if isvalid(kuf1_armo) then destroy kuf1_armo 
+		if isvalid(kuf1_clienti) then destroy kuf1_clienti
+		if isvalid(kuf1_prodotti) then destroy kuf1_prodotti
 		
 	end try
 
@@ -5223,83 +5230,6 @@ end if
 
 end subroutine
 
-private subroutine copia_dw_barcode_to_dw_groupage (integer k_riga1, integer k_riga2);//---
-//--- copia dalla dw_barcode in dw del groupage 
-//--- parametri: riga1 riga della dw1
-//---            riga2 riga della dw2
-//---
-st_tab_barcode kst_tab_barcode
-st_esito kst_esito
-kuf_barcode kuf1_barcode
-	
-	
-	try 
-		kuf1_barcode = create kuf_barcode
-		kst_tab_barcode.barcode = dw_barcode.getitemstring(k_riga2, "barcode_barcode")
-		if not kuf1_barcode.get_padre(kst_tab_barcode) then
-			kst_tab_barcode.barcode_lav = " "
-		end if
-	catch (uo_exception kuo_exception)
-		kuo_exception.messaggio_utente()
-	finally 
-		destroy kuf1_barcode
-	end try
-	
-			dw_groupage.setitem(k_riga1, "barcode_lav",  kst_tab_barcode.barcode_lav)
-			dw_groupage.setitem(k_riga1, "barcode_barcode", &
-						 dw_barcode.getitemstring(k_riga2, "barcode_barcode"))
-			dw_groupage.setitem(k_riga1, "barcode_tipo_cicli", &
-						 dw_barcode.getitemstring(k_riga2, "barcode_tipo_cicli"))
-			dw_groupage.setitem(k_riga1, "barcode_fila_1", &
-						 dw_barcode.getitemnumber(k_riga2, "barcode_fila_1"))
-			dw_groupage.setitem(k_riga1, "barcode_fila_2", &
-						 dw_barcode.getitemnumber(k_riga2, "barcode_fila_2"))
-			dw_groupage.setitem(k_riga1, "barcode_fila_1p", &
-						 dw_barcode.getitemnumber(k_riga2, "barcode_fila_1p"))
-			dw_groupage.setitem(k_riga1, "barcode_fila_2p", &
-						 dw_barcode.getitemnumber(k_riga2, "barcode_fila_2p"))
-			dw_groupage.setitem(k_riga1, "barcode_num_int", &
-						 dw_barcode.getitemnumber(k_riga2, "barcode_num_int"))
-			dw_groupage.setitem(k_riga1, "barcode_data_int", &
-						 dw_barcode.getitemdate(k_riga2, "barcode_data_int"))
-			dw_groupage.setitem(k_riga1, "dose", &
-						 dw_barcode.getitemnumber(k_riga2, "armo_dose"))
-			dw_groupage.setitem(k_riga1, "peso_kg", &
-						 dw_barcode.getitemnumber(k_riga2, "armo_peso_kg"))
-			dw_groupage.setitem(k_riga1, "larg_2", &
-						 dw_barcode.getitemnumber(k_riga2, "armo_larg_2"))
-			dw_groupage.setitem(k_riga1, "lung_2", &
-						 dw_barcode.getitemnumber(k_riga2, "armo_lung_2"))
-			dw_groupage.setitem(k_riga1, "alt_2", &
-						 dw_barcode.getitemnumber(k_riga2, "armo_alt_2"))
-			dw_groupage.setitem(k_riga1, "pedane", &
-						 dw_barcode.getitemnumber(k_riga2, "armo_pedane"))
-			dw_groupage.setitem(k_riga1, "campione", &
-						 dw_barcode.getitemstring(k_riga2, "armo_campione"))
-			dw_groupage.setitem(k_riga1, "art", &
-						 dw_barcode.getitemstring(k_riga2, "armo_art"))
-//			dw_groupage.setitem(k_riga1, "armo_cod_sl_pt", &
-//						 dw_barcode.getitemstring(k_riga2, "armo_cod_sl_pt"))
-			dw_groupage.setitem(k_riga1, "area_mag", &
-						 dw_barcode.getitemstring(k_riga2, "meca_area_mag"))
-			dw_groupage.setitem(k_riga1, "id_armo", &
-						 dw_barcode.getitemnumber(k_riga2, "armo_id_armo"))
-			dw_groupage.setitem(k_riga1, "id_meca", &
-						 dw_barcode.getitemnumber(k_riga2, "id_meca"))
-
-			dw_groupage.setitem(k_riga1, "e1ancodrs", &
-						 dw_barcode.getitemstring(k_riga2, "e1ancodrs"))
-
-//			dw_groupage.setitem(k_riga1, "clie_2", &
-//						 dw_barcode.getitemnumber(k_riga2, "meca_clie_2"))
-//			dw_groupage.setitem(k_riga1, "des", &
-//						 dw_barcode.getitemstring(k_riga2, "prodotti_des"))
-//			dw_groupage.setitem(k_riga1, "rag_soc_10", &
-//						 dw_barcode.getitemstring(k_riga2, "k_ricevente"))
-
-
-end subroutine
-
 private subroutine copia_dw_barcode_to_dw_lista_0 (integer k_riga1, integer k_riga2);//---
 //--- copia dati dal DW di dettaglio (dw_bacode) al dw di lavoro (dw_lista_0) 
 //--- parametri:
@@ -6227,6 +6157,7 @@ if ki_st_open_w.flag_modalita = kkg_flag_modalita.inserimento &
 else
 	cb_aggiorna.enabled = false
 	cb_togli.enabled = false
+	cb_aggiungi.enabled = false
 	cb_chiudi.enabled = ki_chiudi_PL_enabled
 	cb_cancella.enabled = false
 end if
@@ -6321,6 +6252,95 @@ end subroutine
 public subroutine u_resize_1 ();//
 //--- evita evento padre
 //
+end subroutine
+
+private subroutine copia_dw_barcode_to_dw_groupage (integer k_riga1, integer k_riga2) throws uo_exception;//---
+//--- copia dalla dw_barcode in dw del groupage 
+//--- parametri: riga1 riga della dw1
+//---            riga2 riga della dw2
+//---
+st_tab_barcode kst_tab_barcode
+st_esito kst_esito
+kuf_barcode kuf1_barcode
+	
+	
+	try 
+		kuf1_barcode = create kuf_barcode
+		kst_tab_barcode.barcode = dw_barcode.getitemstring(k_riga2, "barcode_barcode")
+		if not kuf1_barcode.get_padre(kst_tab_barcode) then
+			kst_tab_barcode.barcode_lav = " "
+		end if
+		if kuf1_barcode.if_barcode_padre(kst_tab_barcode) then
+			kst_esito.esito = kkg_esito.no_esecuzione
+			kst_esito.sqlcode = 0
+			kst_esito.sqlerrtext = "Il barcode " + kst_tab_barcode.barcode + " utilizzato come figlio risulta già 'padre'. Operazione non consentita!"
+			kguo_exception.inizializza( )
+			kguo_exception.set_esito(kst_esito)
+			throw kguo_exception
+		end if
+	
+		dw_groupage.setitem(k_riga1, "barcode_lav",  kst_tab_barcode.barcode_lav)
+		dw_groupage.setitem(k_riga1, "barcode_barcode", &
+					 dw_barcode.getitemstring(k_riga2, "barcode_barcode"))
+		dw_groupage.setitem(k_riga1, "barcode_tipo_cicli", &
+					 dw_barcode.getitemstring(k_riga2, "barcode_tipo_cicli"))
+		dw_groupage.setitem(k_riga1, "barcode_fila_1", &
+					 dw_barcode.getitemnumber(k_riga2, "barcode_fila_1"))
+		dw_groupage.setitem(k_riga1, "barcode_fila_2", &
+					 dw_barcode.getitemnumber(k_riga2, "barcode_fila_2"))
+		dw_groupage.setitem(k_riga1, "barcode_fila_1p", &
+					 dw_barcode.getitemnumber(k_riga2, "barcode_fila_1p"))
+		dw_groupage.setitem(k_riga1, "barcode_fila_2p", &
+					 dw_barcode.getitemnumber(k_riga2, "barcode_fila_2p"))
+		dw_groupage.setitem(k_riga1, "barcode_num_int", &
+					 dw_barcode.getitemnumber(k_riga2, "barcode_num_int"))
+		dw_groupage.setitem(k_riga1, "barcode_data_int", &
+					 dw_barcode.getitemdate(k_riga2, "barcode_data_int"))
+		dw_groupage.setitem(k_riga1, "dose", &
+					 dw_barcode.getitemnumber(k_riga2, "armo_dose"))
+		dw_groupage.setitem(k_riga1, "peso_kg", &
+					 dw_barcode.getitemnumber(k_riga2, "armo_peso_kg"))
+		dw_groupage.setitem(k_riga1, "larg_2", &
+					 dw_barcode.getitemnumber(k_riga2, "armo_larg_2"))
+		dw_groupage.setitem(k_riga1, "lung_2", &
+					 dw_barcode.getitemnumber(k_riga2, "armo_lung_2"))
+		dw_groupage.setitem(k_riga1, "alt_2", &
+					 dw_barcode.getitemnumber(k_riga2, "armo_alt_2"))
+		dw_groupage.setitem(k_riga1, "pedane", &
+					 dw_barcode.getitemnumber(k_riga2, "armo_pedane"))
+		dw_groupage.setitem(k_riga1, "campione", &
+					 dw_barcode.getitemstring(k_riga2, "armo_campione"))
+		dw_groupage.setitem(k_riga1, "art", &
+					 dw_barcode.getitemstring(k_riga2, "armo_art"))
+//			dw_groupage.setitem(k_riga1, "armo_cod_sl_pt", &
+//						 dw_barcode.getitemstring(k_riga2, "armo_cod_sl_pt"))
+		dw_groupage.setitem(k_riga1, "area_mag", &
+					 dw_barcode.getitemstring(k_riga2, "meca_area_mag"))
+		dw_groupage.setitem(k_riga1, "id_armo", &
+					 dw_barcode.getitemnumber(k_riga2, "armo_id_armo"))
+		dw_groupage.setitem(k_riga1, "id_meca", &
+					 dw_barcode.getitemnumber(k_riga2, "id_meca"))
+
+		dw_groupage.setitem(k_riga1, "e1ancodrs", &
+					 dw_barcode.getitemstring(k_riga2, "e1ancodrs"))
+
+//			dw_groupage.setitem(k_riga1, "clie_2", &
+//						 dw_barcode.getitemnumber(k_riga2, "meca_clie_2"))
+//			dw_groupage.setitem(k_riga1, "des", &
+//						 dw_barcode.getitemstring(k_riga2, "prodotti_des"))
+//			dw_groupage.setitem(k_riga1, "rag_soc_10", &
+//						 dw_barcode.getitemstring(k_riga2, "k_ricevente"))
+
+		
+	catch (uo_exception kuo_exception)
+		throw kuo_exception
+//		kuo_exception.messaggio_utente()
+		
+	finally 
+		destroy kuf1_barcode
+		
+	end try
+
 end subroutine
 
 on w_pl_barcode_dett.create
@@ -7305,6 +7325,7 @@ string dataobject = "d_meca_barcode_elenco_no_lav"
 boolean minbox = true
 boolean maxbox = true
 boolean resizable = true
+boolean ki_link_standard_sempre_possibile = true
 boolean ki_attiva_dragdrop = true
 end type
 

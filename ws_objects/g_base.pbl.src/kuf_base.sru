@@ -2205,6 +2205,29 @@ kuf_stampe kuf1_stampe
 			k_pos_ini = 1
 			k_lungo = len(k_record)
 			
+		case "aco_exp_regcdp_dir" // Cartella di esportazione dei dati x ACO (registro conto deposito)
+			select aco_exp_regcdp_dir
+				 into :k_record
+				 from base_dir;
+			k_record = trim(k_record)
+			if isnull(k_record) then
+				k_record = ""
+			end if
+			k_record = trim(k_record)
+			k_pos_ini = 1
+			k_lungo = len(k_record)
+			
+		case "e1_certif_saved_dir" // Cartella ATTESTATI E1
+			select e1_certif_saved_dir
+				 into :k_record
+				 from base_dir;
+			k_record = trim(k_record)
+			if isnull(k_record) then
+				k_record = ""
+			end if
+			k_record = trim(k_record)
+			k_pos_ini = 1
+			k_lungo = len(k_record)
 
 			
 //		case "arch_esolver_anag"  // Cartella + nome file x esportare verso Contabilità versione da Utente
@@ -2876,7 +2899,12 @@ if len(trim(kst_tab_base.id_base)) > 0 then
 	if isnull(kst_tab_base.report_export_dir) then
 		kst_tab_base.report_export_dir = ""
 	end if
-	
+	if isnull(kst_tab_base.aco_exp_regcdp_dir) then
+		kst_tab_base.aco_exp_regcdp_dir = ""
+	end if
+	if isnull(kst_tab_base.e1_certif_saved_dir) then
+		kst_tab_base.e1_certif_saved_dir = ""
+	end if
 	
 	kst_open_w.flag_modalita = kkg_flag_modalita.modifica
 	kst_open_w.id_programma = "az"
@@ -2900,7 +2928,7 @@ if len(trim(kst_tab_base.id_base)) > 0 then
 		select count(*)
 			into :k_rcn
 			from base_dir
-			WHERE base_dir.id_base = :kst_tab_base.id_base 
+			WHERE base_dir.id_base = :kst_tab_base.id_base
 			using kguo_sqlca_db_magazzino;
 			
 				
@@ -2920,6 +2948,8 @@ if len(trim(kst_tab_base.id_base)) > 0 then
 						e1dtlav_allineagg = :kst_tab_base.e1dtlav_allineagg,
 						dir_report_pilota = :kst_tab_base.dir_report_pilota,
 						report_export_dir = :kst_tab_base.report_export_dir,
+						aco_exp_regcdp_dir = :kst_tab_base.aco_exp_regcdp_dir,
+						e1_certif_saved_dir = :kst_tab_base.e1_certif_saved_dir,
 						x_datins = :kst_tab_base.x_datins,  
 						x_utente = :kst_tab_base.x_utente  
 					WHERE id_base = :kst_tab_base.id_base 
@@ -2938,6 +2968,9 @@ if len(trim(kst_tab_base.id_base)) > 0 then
 							  esolver_expfidi_nome,
 							  esolver_inpfidi_nome,
 							  dir_report_pilota,
+							  report_export_dir,
+							  aco_exp_regcdp_dir,
+							  e1_certif_saved_dir,
 							  x_datins,   
 							  x_utente )  
 					  VALUES ( :kst_tab_base.id_base,   
@@ -2950,6 +2983,9 @@ if len(trim(kst_tab_base.id_base)) > 0 then
 							  :kst_tab_base.esolver_expfidi_nome,
 							  :kst_tab_base.esolver_inpfidi_nome,
 							  :kst_tab_base.dir_report_pilota,
+							  :kst_tab_base.report_export_dir,
+							  :kst_tab_base.aco_exp_regcdp_dir,
+							  :kst_tab_base.e1_certif_saved_dir,
 							  :kst_tab_base.x_datins,   
 							  :kst_tab_base.x_utente )  
 					using kguo_sqlca_db_magazzino;

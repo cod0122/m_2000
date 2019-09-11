@@ -1547,8 +1547,9 @@ public subroutine u_proteggi_dw (character k_operazione, integer k_id_campo, ref
 //---    k_dw la datawindows da proteggere/sproteggere
 //---
 int k_rc
-string k_rc1, k_style, k_colore, k_prot="1", k_num_colonne, k_campo //DBG, k_appo
+string k_style, k_colore, k_prot="1", k_num_colonne, k_campo //DBG, k_appo
 int k_ctr, k_taborder, k_num_colonne_nr
+string k_rcx //, k_modify
 
 
 	k_dw.setredraw(false)
@@ -1578,7 +1579,6 @@ int k_ctr, k_taborder, k_num_colonne_nr
 	end if
 		
 
-	k_rc1 = ""
 	k_taborder=0
 	if k_id_campo > 0 then
 		k_ctr=k_id_campo
@@ -1605,25 +1605,29 @@ int k_ctr, k_taborder, k_num_colonne_nr
 			if lower(k_style) <> "checkbox" and lower(k_style) <> "radiobuttons" then
 				
 				if k_operazione <> "2" and k_operazione <> "3" then  //proteggi senza mod il colore
-					k_dw.Modify("#" + k_campo+".Background.Color='"+k_colore+"' " &
-				              +"#" + k_campo+".Background.Transparency=1") 
-				              //+"#" + k_campo+".Transparency=1")
-					end if
 				
-				k_rc1=""
+					//k_modify += "#" + k_campo+".Background.Color='"+k_colore+"' " &
+				   //           +"#" + k_campo+".Background.Transparency=1" + " "
+							 
+					k_rcx = k_dw.Modify("#" + k_campo+".Background.Color='"+k_colore+"' " &
+				                       +"#" + k_campo+".Background.Transparency=1") 
+
+					end if
 				
 			end if
 				
 		end if
 
-		k_rc1=k_dw.Modify("#" + k_campo + ".Protect='"+trim(k_prot)+"'")
+		//k_modify += "#" + k_campo + ".Protect='"+trim(k_prot)+"'" + " "
+		k_rcx=k_dw.Modify("#" + k_campo + ".Protect='"+trim(k_prot)+"'")
 		k_ctr = k_ctr + 1 
 
 	loop while k_ctr <= k_num_colonne_nr and k_id_campo = 0
 //	loop while k_rc1 = "" and k_id_campo = 0
 
-	k_dw.setredraw(true)
 
+	k_dw.setredraw(true)
+	k_rcx = ""
 
 end subroutine
 
@@ -1909,6 +1913,7 @@ public subroutine u_proteggi_dw (character k_operazione, string k_txt_campo, ref
 int k_rc
 string k_rc1, k_style, k_colore, k_prot="1", k_num_colonne, k_visible="1"
 int k_ctr, k_taborder, k_num_colonne_nr
+string k_rcx, k_modify
 
 
 //--- protezione campi per impedire la modifica
@@ -1956,7 +1961,7 @@ int k_ctr, k_taborder, k_num_colonne_nr
 			
 			if k_operazione <> "2" and k_operazione <> "3" then  //proteggi senza mod il colore
 			
-				k_dw.Modify(trim(k_txt_campo)+".Background.Color='"+k_colore+"'" &
+				k_rcx = k_dw.Modify(trim(k_txt_campo)+".Background.Color='"+k_colore+"'" &
 				          + trim(k_txt_campo)+".Background.Transparency=1")
 			end if
 			
@@ -3937,7 +3942,7 @@ li_FileNum = FileOpen(a_file, StreamMode!, Read!, Shared!)
 
 if li_FileNum < 1 then	
 	kguo_exception.inizializza()
-	kguo_exception.set_tipo(kguo_exception.kk_st_uo_exception_tipo_dati_non_eseguito )
+	kguo_exception.set_tipo(kguo_exception.KK_st_uo_exception_tipo_non_eseguito )
 	kguo_exception.setmessage("File " + trim(a_file) + " non riesco ad Importarlo; probabile problemi di accesso/autorizzazione al Documento (u_filetoblob)")
 	throw kguo_exception
 end if
@@ -4021,7 +4026,7 @@ if k_filenum > 0 then
 else
 	
 	kguo_exception.inizializza()
-	kguo_exception.set_tipo(kguo_exception.kk_st_uo_exception_tipo_dati_non_eseguito )
+	kguo_exception.set_tipo(kguo_exception.KK_st_uo_exception_tipo_non_eseguito )
 	kguo_exception.setmessage("File " + trim(a_file) + " non generato, probabile problema di accesso/autorizzazione del file")
 	throw kguo_exception
 	
@@ -4069,7 +4074,7 @@ if k_filenum > 0 then
 else
 	
 	kguo_exception.inizializza()
-	kguo_exception.set_tipo(kguo_exception.kk_st_uo_exception_tipo_dati_non_eseguito )
+	kguo_exception.set_tipo(kguo_exception.KK_st_uo_exception_tipo_non_eseguito )
 	kguo_exception.setmessage("File " + trim(a_file) + " non generato, probabile problemi di accesso/autorizzazione")
 	throw kguo_exception
 	
@@ -4610,7 +4615,7 @@ if k_filenum > 0 then
 else
 	
 	kguo_exception.inizializza()
-	kguo_exception.set_tipo(kguo_exception.kk_st_uo_exception_tipo_dati_non_eseguito )
+	kguo_exception.set_tipo(kguo_exception.KK_st_uo_exception_tipo_non_eseguito )
 	kguo_exception.setmessage("File " + trim(a_file) + " non generato, probabile problema di accesso/autorizzazione di scrittura del file")
 	throw kguo_exception
 	
@@ -5113,7 +5118,7 @@ string k_nomi_file
 			k_return = k_nr_doc_merged
 		else
 			kguo_exception.inizializza()
-			kguo_exception.set_tipo( kguo_exception.kk_st_uo_exception_tipo_dati_non_eseguito )
+			kguo_exception.set_tipo( kguo_exception.KK_st_uo_exception_tipo_non_eseguito )
 			kguo_exception.setmessage( "Unione file pdf", "utility 'pdftk' non eseguita, verificare che sia installata nella cartella del programma o sul sistema")
 			throw kguo_exception
 		end if
@@ -5136,7 +5141,7 @@ boolean k_return=false
 		k_return = true
 	else
 		kguo_exception.inizializza()
-		kguo_exception.set_tipo( kguo_exception.kk_st_uo_exception_tipo_dati_non_eseguito )
+		kguo_exception.set_tipo( kguo_exception.KK_st_uo_exception_tipo_non_eseguito )
 		kguo_exception.setmessage( "Decriptazione file pdf", "utility 'qpdf' non eseguita, verificare che sia installata nella cartella del programma o sul sistema")
 		throw kguo_exception
 	end if

@@ -875,7 +875,8 @@ try
 	
 					kst_tab_meca_dosim = kiuf_meca_dosim.convalida_dosim(kst_tab_meca_dosim)  // CONVALIDA
 	
-					kst_tab_meca_dosim.dosim_data = kguo_g.get_dataoggi( )
+					kst_tab_meca_dosim.dosim_data = date(kGuf_data_base.prendi_x_datins()) //kguo_g.get_dataoggi( )
+					kst_tab_meca_dosim.dosim_ora = time(kGuf_data_base.prendi_x_datins())
 					kst_tab_meca_dosim.dosim_assorb = kds_1.getitemnumber(1, "dosim_assorb")
 					kst_tab_meca_dosim.dosim_spessore = kds_1.getitemnumber(1, "dosim_spessore")
 					kst_tab_meca_dosim.dosim_temperatura = kds_1.getitemnumber(1, "dosim_temperatura")

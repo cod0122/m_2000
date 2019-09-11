@@ -625,16 +625,16 @@ private subroutine run_eventi_sched_dos (long a_ctr) throws uo_exception;//---
 //---
 //string k_id_programma = ""
 int k_rc
-kuf_sv_skedula_run kuf1_sv_skedula_run
+kuf_file_run kuf1_file_run
 st_esito kst_esito
 
 
 		try 
-			kuf1_sv_skedula_run = create kuf_sv_skedula_run
+			kuf1_file_run = create kuf_file_run
 
 //--- Se non Attendere la fine del JOB allora setto i parametri	
 			if kist_sv_eventi_sked[1].attendi_fine = "N" then
-				kuf1_sv_skedula_run.of_set_options(false, 1)
+				kuf1_file_run.of_set_options(false, 1)
 			end if
 	
 //---- Richiesta disconnessione?
@@ -654,7 +654,7 @@ st_esito kst_esito
 							//			messagebox("Problemi durante disconnessione DB~n~r", trim(kst_esito.sqlerrtext ))
 							
 						finally
-//									destroy kuf1_db
+//									destroy kuf1_db 
 				
 						end try
 				
@@ -663,13 +663,13 @@ st_esito kst_esito
 				
 			end if
 	
-			k_rc = kuf1_sv_skedula_run.of_run(trim(kids_eventi_da_lanciare.object.cmd_dos[a_ctr]), Minimized!)
+			k_rc = kuf1_file_run.of_run(trim(kids_eventi_da_lanciare.object.cmd_dos[a_ctr]), Minimized!)
 	
 // check return code
 			CHOOSE CASE k_rc
-				CASE kuf1_sv_skedula_run.WAIT_COMPLETE
+				CASE kuf1_file_run.WAIT_COMPLETE
 					kist_sv_eventi_sked[1].esito = "operazione terminata correttamente"
-				CASE kuf1_sv_skedula_run.WAIT_TIMEOUT
+				CASE kuf1_file_run.WAIT_TIMEOUT
 					kist_sv_eventi_sked[1].esito = "Time Out. Operazione interrotta, era oltre il tempo prestabilito"
 				CASE ELSE
 					kist_sv_eventi_sked[1].esito = "Operazione terminata con codice errore: " + String(k_rc)
@@ -687,7 +687,7 @@ st_esito kst_esito
 		
 		finally
 
-			if isvalid(kuf1_sv_skedula_run) then destroy kuf1_sv_skedula_run
+			if isvalid(kuf1_file_run) then destroy kuf1_file_run
 			
 			kist_sv_eventi_sked[1].run_giorno_stop = kGuf_data_base.prendi_dataora() 
 			kist_sv_eventi_sked[1].stato = kki_sv_eventi_sked_stato_eseg

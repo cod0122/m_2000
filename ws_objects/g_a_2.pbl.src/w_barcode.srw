@@ -1027,7 +1027,7 @@ protected subroutine attiva_menu ();//
 												 ki_menu.m_strumenti.m_fin_gest_libero1.text
 		ki_menu.m_strumenti.m_fin_gest_libero1.toolbaritemvisible = true
 		ki_menu.m_strumenti.m_fin_gest_libero1.toolbaritembarindex=2
-		ki_menu.m_strumenti.m_fin_gest_libero1.toolbaritemname =  "Insert!"
+		ki_menu.m_strumenti.m_fin_gest_libero1.toolbaritemname =  "Insert_2!"
 	end if
 	
 //--- Modifica CICLI di Trattamento	
@@ -1043,7 +1043,7 @@ protected subroutine attiva_menu ();//
 		ki_menu.m_strumenti.m_fin_gest_libero2.toolbaritemvisible = true
 		ki_menu.m_strumenti.m_fin_gest_libero2.toolbaritembarindex=2
 		//ki_menu.m_strumenti.m_fin_gest_libero2.toolbaritemname = ki_path_risorse + "\cicli.bmp"
-		ki_menu.m_strumenti.m_fin_gest_libero2.toolbaritemname = "cicli.bmp"
+		ki_menu.m_strumenti.m_fin_gest_libero2.toolbaritemname = "cicli16.png"
 	end if
 
 	super::attiva_menu()

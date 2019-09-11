@@ -148,7 +148,7 @@ try
 		k_nr_fatture = kuf1_fatt.stampa_fattura (kids_fatture)
 	
 		if k_nr_fatture = 0 then
-			kuo1_exception.set_tipo(kuo1_exception.kk_st_uo_exception_tipo_dati_non_eseguito )
+			kuo1_exception.set_tipo(kuo1_exception.KK_st_uo_exception_tipo_non_eseguito )
 			kuo1_exception.setmessage(" Nessun documento Stampato ")
 		else
 			kuo1_exception.set_tipo(kuo1_exception.kk_st_uo_exception_tipo_ok )
@@ -166,7 +166,7 @@ try
 		k_nr_fatture = kuf1_fatt.stampa_fattura_digitale (kids_fatture)
 		
 		if k_nr_fatture = 0 then
-			kuo1_exception.set_tipo(kuo1_exception.kk_st_uo_exception_tipo_dati_non_eseguito )
+			kuo1_exception.set_tipo(kuo1_exception.KK_st_uo_exception_tipo_non_eseguito )
 			kuo1_exception.setmessage(" Nessun documento digitalizzato ")
 		else
 			kuo1_exception.set_tipo(kuo1_exception.kk_st_uo_exception_tipo_ok )

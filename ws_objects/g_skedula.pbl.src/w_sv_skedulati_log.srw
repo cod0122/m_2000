@@ -486,7 +486,16 @@ boolean ki_d_std_1_attiva_sort = false
 boolean ki_dw_visibile_in_open_window = false
 end type
 
+event dw_lista_0::resize;call super::resize;//
+//---- estende la colonna fino al bordo
+kguf_data_base.u_dw_extend_col_to_edge( this, "log_testo")
+
+end event
+
 type dw_guida from w_g_tab0`dw_guida within w_sv_skedulati_log
+end type
+
+type st_duplica from w_g_tab0`st_duplica within w_sv_skedulati_log
 end type
 
 type cb_schedula from commandbutton within w_sv_skedulati_log

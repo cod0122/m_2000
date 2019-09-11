@@ -697,8 +697,8 @@ if dw_lista_0.rowcount() > 0 then
 		end if
 		
 	//=== Richiesta di conferma operazione
-		if messagebox("Duplica", "Sei sicuro di voler DUPLICARE questo Listino: ~n~r" &
-					+ string(kst_tab_listino.id, "#####") + " - " + trim(k_rag_soc_10),  &
+		if messagebox("Duplica Listino", "Genera il nuovo Listino copiando i dati da questo~n~r" &
+					+ "id " + string(kst_tab_listino.id, "#") + " - " + trim(k_rag_soc_10),  &
 					question!, yesno!, 2) = 1 then
 			
 			
@@ -1380,6 +1380,9 @@ event dw_guida::itemchanged;call super::itemchanged;//
 
 
 end event
+
+type st_duplica from w_g_tab0`st_duplica within w_listino_l
+end type
 
 type dw_data from uo_d_std_1 within w_listino_l
 integer x = 1829

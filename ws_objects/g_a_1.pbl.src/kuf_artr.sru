@@ -925,6 +925,9 @@ kuf_meca_dosim kuf1_meca_dosim
 			k_ind++
 			k_campo[k_ind] = "Dosimetria"
 			k_align[k_ind] = left!
+			k_ind++
+			k_campo[k_ind] = "Convalidato il"
+			k_align[k_ind] = left!
 //			k_ind++
 //			k_campo[k_ind] = "Ulteriori Informazioni"
 //			k_align[k_ind] = left!
@@ -1074,16 +1077,16 @@ kuf_meca_dosim kuf1_meca_dosim
 
 
 			kst_tab_treeview.voce = ""
-			if kst_treeview_data_any.st_tab_meca.st_tab_meca_dosim.dosim_data > date(0) then 
+			if kst_treeview_data_any.st_tab_meca.st_tab_meca_dosim.dosim_data_ora > datetime(date(0)) then 
 				if kst_treeview_data_any.st_tab_meca.err_lav_ok = kuf1_meca_dosim.ki_err_lav_ok_conv_ko_sbloc then
-					if kst_treeview_data_any.st_tab_meca.cert_forza_stampa = "1" then
+					if kst_treeview_data_any.st_tab_meca.cert_forza_stampa = kuf1_armo.ki_cert_forza_stampa_si then
 						kst_tab_treeview.voce = "stampa forzata! " 
 					else
 						kst_tab_treeview.voce = "con Anomalia! " 
 					end if
 				else
 					if kst_treeview_data_any.st_tab_meca.err_lav_ok = kuf1_meca_dosim.ki_err_lav_ok_conv_ko_bloc then
-						if kst_treeview_data_any.st_tab_meca.cert_forza_stampa = "1" then
+						if kst_treeview_data_any.st_tab_meca.cert_forza_stampa = kuf1_armo.ki_cert_forza_stampa_si then
 							kst_tab_treeview.voce = "stampa forzata! "
 						else
 							kst_tab_treeview.voce = "da Sbloccare (anomalie)!  "
@@ -1110,6 +1113,13 @@ kuf_meca_dosim kuf1_meca_dosim
 			k_ind++
 			kuf1_treeview.kilv_lv1.setitem(k_ctr, k_ind, trim(kst_tab_treeview.voce) )
 
+			if kst_treeview_data_any.st_tab_meca.st_tab_meca_dosim.dosim_data_ora > datetime(date(0)) then 
+				kst_tab_treeview.voce = string(kst_treeview_data_any.st_tab_meca.st_tab_meca_dosim.dosim_data_ora, "dd mmm yyyy hh:m")
+			else
+				kst_tab_treeview.voce = ""
+			end if
+			k_ind++
+			kuf1_treeview.kilv_lv1.setitem(k_ctr, k_ind, trim(kst_tab_treeview.voce) )
 				
 			k_handle_item = kuf1_treeview.kitv_tv1.finditem(NextTreeItem!, k_handle_item)
 			
@@ -1261,7 +1271,7 @@ try
 
 	
 		k_query_select = &
-		"  	SELECT top 1 " &
+		"  	SELECT " &
 		+ " artr.num_certif, " &
 		+ "  meca.id, " &
 		+ "  meca.num_int, " &
@@ -1396,7 +1406,7 @@ try
 					
 			case kuf1_treeview.kist_treeview_oggetto.certif_err_dett
 				k_query_where = " where " 
-				if k_data_da  <> k_data_0 then
+				if k_data_da  <> k_data_0 then 
 					k_query_where = k_query_where &
 					+ " artr.data_in > '01.01.2004' " &
 					+ " and (artr.data_in >= ? and artr.data_in < ?) and "
@@ -1574,7 +1584,7 @@ try
 					k_flag_lotto_lav_completata = false
 					k_flag_record_da_esporre = false
 					k_lotto_convalidato = false
-					kst_tab_meca.st_tab_meca_dosim.dosim_data = kkg.data_no
+					kst_tab_meca.st_tab_meca_dosim.dosim_data_ora = datetime(date(0))
 					
 //--- per ogni lotto controllo se lavorazione completata 					
 					kst_tab_armo.id_meca = kst_tab_meca.id
@@ -1595,7 +1605,7 @@ try
 						end if
 //--- get della data di Convalida
 						kst_tab_meca.st_tab_meca_dosim.id_meca = kst_tab_meca.id
-						kst_tab_meca.st_tab_meca_dosim.dosim_data = kuf1_meca_dosim.get_dosim_data_max(kst_tab_meca.st_tab_meca_dosim)
+						kst_tab_meca.st_tab_meca_dosim.dosim_data_ora = kuf1_meca_dosim.get_dosim_data_max(kst_tab_meca.st_tab_meca_dosim)
 					end if
 					
 //--- lotto da_stampare/da_stampare_farmaceutico/da_stampare_alimentare
@@ -1620,7 +1630,7 @@ try
 //4-3-05						 and kst_treeview_data_any.st_tab_artr.colli <= kst_treeview_data_any.st_tab_artr.colli_trattati &
 					if k_tipo_oggetto = kuf1_treeview.kist_treeview_oggetto.certif_err_dett &
 						 			and k_flag_lotto_lav_completata &
-									and kst_tab_meca.st_tab_meca_dosim.dosim_data > kkg.data_zero then
+									and kst_tab_meca.st_tab_meca_dosim.dosim_data_ora > datetime(date(0)) then
 						k_flag_record_da_esporre = true
 					end if
 
@@ -2352,11 +2362,9 @@ end function
 
 on kuf_artr.create
 call super::create
-TriggerEvent( this, "constructor" )
 end on
 
 on kuf_artr.destroy
-TriggerEvent( this, "destructor" )
 call super::destroy
 end on
 

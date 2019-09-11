@@ -541,20 +541,23 @@ public function boolean invio (st_tab_email_invio kst_tab_email_invio);//---
 //---
 boolean k_return = false
 boolean k_flg_ricevuta = false
-String ls_body, ls_server, ls_uid, ls_pwd
+String ls_body, ls_server, ls_uid, ls_pwd, k_email
 String ls_filename, ls_port
-Integer li_idx, li_max
+Integer li_idx, li_max, k_pos_ini, k_pos_fin
 Boolean lb_html
 string k_esito=""
 integer li_FileNum
 string ls_Emp_Input
 long ll_FLength
+int k_idx, k_idx_max
 datastore kds_dirlist
 st_tab_base kst_tab_base
 st_esito kst_esito
 kuf_base kuf1_base
 kuf_file_explorer kuf1_file_explorer
 n_smtp gn_smtp
+kuf_email kuf1_email
+st_email_address kst_email_address
  
 
 SetPointer(HourGlass!)
@@ -702,25 +705,6 @@ else
 end if
 gn_smtp.of_SetServer(kst_tab_base.smtp_server)
 
-if kst_tab_email_invio.flg_ritorno_ricev = ki_ricev_ritorno_si then
-	gn_smtp.of_SetReceipt(true)
-	
-	if len(trim(kst_tab_email_invio.email_di_ritorno)) = 0 or isnull(kst_tab_email_invio.email_di_ritorno) then
-		k_esito = kuf1_base.prendi_dato_base( "e_mail")
-		if left(k_esito,1) <> "0" then
-			kst_esito.nome_oggetto = this.classname()
-			kst_esito.esito = kkg_esito.db_ko  
-			kst_esito.sqlcode = 0
-			kst_esito.SQLErrText = mid(k_esito,2)
-		else
-			kst_tab_email_invio.email_di_ritorno = trim(mid(k_esito,2))
-		end if
-	end if
-
-else
-	gn_smtp.of_SetReceipt(false)
-end if
-
 k_esito = kuf1_base.prendi_dato_base( "rag_soc_1")
 if left(k_esito,1) <> "0" then
 	kst_esito.nome_oggetto = this.classname()
@@ -741,7 +725,26 @@ else
 end if
 if isnull(kst_tab_base.rag_soc_1) then kst_tab_base.rag_soc_1 = " "
 if isnull(kst_tab_base.rag_soc_2) then kst_tab_base.rag_soc_2 = " "
+if trim(kst_tab_email_invio.email_di_ritorno) > " " then
+else
+	k_esito = kuf1_base.prendi_dato_base( "e_mail")
+	if left(k_esito,1) <> "0" then
+		kst_esito.nome_oggetto = this.classname()
+		kst_esito.esito = kkg_esito.db_ko  
+		kst_esito.sqlcode = 0
+		kst_esito.SQLErrText = mid(k_esito,2)
+		kst_tab_email_invio.email_di_ritorno = "email@email.com"   // nel caso la email non si trovi neanche in Proprietà Azienda
+	else
+		kst_tab_email_invio.email_di_ritorno = trim(mid(k_esito,2))
+	end if
+end if
 gn_smtp.of_SetFrom(trim(kst_tab_email_invio.email_di_ritorno), kst_tab_base.rag_soc_1 + " " + kst_tab_base.rag_soc_2 )
+
+if kst_tab_email_invio.flg_ritorno_ricev = ki_ricev_ritorno_si then
+	gn_smtp.of_SetReceipt(true)
+else
+	gn_smtp.of_SetReceipt(false)
+end if
 
 
 //--- Imposto l'oggetto e la LETTERA da Inviare!!!!!!!
@@ -773,7 +776,25 @@ end if
 
 gn_smtp.of_Reset()
 
-gn_smtp.of_AddTo(kst_tab_email_invio.email, " ")  // potrei mettere IL NOME del destinatario: sle_send_name.text)
+//--- Aggiungo gli Indirizzi email separati da ',' o ';' se più di uno nel recipient 
+//---      e Controllo sintassi Indirizzi email				
+kst_email_address.email_all = kst_tab_email_invio.email
+kuf1_email = create kuf_email
+kst_esito = kuf1_email.get_email_from_string(kst_email_address)
+if kst_esito.esito <> kkg_esito.ok then
+	kst_esito.esito = kkg_esito.no_esecuzione  
+	kst_esito.SQLErrText = "Indirizzo e-mail non corretto: " + kst_esito.sqlerrtext + "~n~r" 
+else
+	k_idx_max = upperbound(kst_email_address.address[])
+	for k_idx = 1 to k_idx_max
+		k_email = kst_email_address.address[k_idx]
+		if k_email > " " then
+			gn_smtp.of_AddTo(k_email, " ")  // potrei mettere IL NOME del destinatario: sle_send_name.text)
+		end if
+	next
+end if
+destroy kuf1_email
+
 
 // add any attachments
 if kst_tab_email_invio.flg_allegati = ki_allegati_si then
@@ -786,7 +807,11 @@ if kst_tab_email_invio.flg_allegati = ki_allegati_si then
 			for li_idx = 1 to li_max
 	//--- estrae il file da allegare
 				ls_filename = trim(kds_dirlist.getitemstring(li_idx, "nome"))
-				gn_smtp.of_AddFile(kst_tab_email_invio.allegati_cartella + "\" + ls_filename)
+				if right(kst_tab_email_invio.allegati_cartella, 1) = kkg.path_sep then
+				else
+					kst_tab_email_invio.allegati_cartella += kkg.path_sep
+				end if
+				gn_smtp.of_AddFile(kst_tab_email_invio.allegati_cartella + ls_filename)
 			end for
 		else
 //--- se la cartella non esiste

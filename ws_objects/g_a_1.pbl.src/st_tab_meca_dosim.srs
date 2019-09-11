@@ -5,7 +5,9 @@ global type st_tab_meca_dosim from structure
 	long		id_meca
 	string		barcode		descriptor "comment" = "barcode su cui applicare il barcode del dosimetro"
 	string		barcode_dosimetro		descriptor "comment" = "barcode esterno del desimetro applicato dalla casa fornitrice"
-	date		dosim_data
+	date		dosim_data		descriptor "comment" = "data inserimento prima convalida"
+	time		dosim_ora		descriptor "comment" = "ora di inserimento prima convalida"
+	datetime		dosim_data_ora		descriptor "comment" = "combinazione delle due colonne dosim_data + dosim_ora"
 	string		dosim_flg_tipo_dose		descriptor "comment" = "tipo di dose rilevata: M='minima',X= 'massima', A='altro'."
 	double		dosim_dose
 	integer		dosim_assorb

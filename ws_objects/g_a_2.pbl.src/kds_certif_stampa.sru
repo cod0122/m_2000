@@ -104,7 +104,6 @@ try
 	end if
 
 	k_return=true
-//	end if	
 
 //--- cerca il nuovo form 
 	if trim(this.dataobject) > " " then
@@ -161,7 +160,6 @@ try
 
 
 catch (uo_exception kuo_exception)
-	k_return=false
 	throw kuo_exception 
 	
 finally

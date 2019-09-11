@@ -1938,7 +1938,7 @@ try
 	kuf1_wm_pklist_cfg.get_wm_pklist_cfg( kst_tab_wm_pklist_cfg)
  
 	if kst_tab_wm_pklist_cfg.blocca_importa = kuf1_wm_pklist_cfg.ki_blocca_importa_si then	
-		kguo_exception.set_tipo( kguo_exception.kk_st_uo_exception_tipo_dati_non_eseguito )
+		kguo_exception.set_tipo( kguo_exception.KK_st_uo_exception_tipo_non_eseguito )
 		kguo_exception.setmessage( "BLOCCATA importazione da WMF (vedi Archivio Impostazioni WMF) - L'operazione non può proseguire. ")
 		kGuo_exception.messaggio_utente( ) 
 	else	
@@ -2137,16 +2137,16 @@ protected subroutine attiva_tasti_0 ();//
 
 super::attiva_tasti_0()
 
+ki_consenti_duplica = false
+if tab_1.tabpage_1.dw_1.rowcount( ) > 0 then
 
-if tab_1.tabpage_1.dw_1.getitemnumber(1, "id_wm_pklist") > 0 &
-			and (ki_st_open_w.flag_modalita = kkg_flag_modalita.modifica &
-						or ki_st_open_w.flag_modalita = kkg_flag_modalita.visualizzazione) &
-			and ki_tab_1_index_new = 1 then
-	ki_consenti_duplica = true
-else
-	ki_consenti_duplica = false
+	if tab_1.tabpage_1.dw_1.getitemnumber(1, "id_wm_pklist") > 0 &
+				and (ki_st_open_w.flag_modalita = kkg_flag_modalita.modifica &
+							or ki_st_open_w.flag_modalita = kkg_flag_modalita.visualizzazione) &
+				and ki_tab_1_index_new = 1 then
+		ki_consenti_duplica = true
+	end if
 end if
-
 tab_1.tabpage_2.enabled = false
 tab_1.tabpage_3.enabled = false
 tab_1.tabpage_4.enabled = false
@@ -2514,8 +2514,8 @@ try
 
 	ki_aggiorna_richiesta_conferma = false  // evita la richiesta della conferma, salva automaticamente
 
-	if messagebox("Duplicazione del Packing-List", & 
-			"Vuoi generare un nuovo Packing-List identico e collegato a questo?", question!, yesno!, 2) = 1 then  //~n~r
+	if messagebox("Duplica Packing-List", & 
+			"Genera il nuovo Packing-List identico e collegato a questo?", question!, yesno!, 2) = 1 then  //~n~r
 
 //--- prima salva e se OK allora poi parte la duplica						
 		if left(aggiorna_dati(),1) = "0" then

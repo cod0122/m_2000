@@ -45,6 +45,8 @@ public function datastore dirlist (string path)
 public function boolean of_print (string a_file, string a_printer)
 public function boolean of_email (string a_address, string a_cc, string a_subject, string a_body, string a_attachement)
 public subroutine of_removedirectory (string a_folder)
+public function integer u_filemove (string a_src, string a_dst, boolean a_replace)
+public function boolean u_directory_create (string k_path)
 end prototypes
 
 public function boolean of_execute (readonly string as_file, readonly string as_extension);//
@@ -298,6 +300,102 @@ public subroutine of_removedirectory (string a_folder);//
 RemoveDirectory(a_folder)
 
 end subroutine
+
+public function integer u_filemove (string a_src, string a_dst, boolean a_replace);//
+//--- sposta un file da una path a un altro
+//--- inp: 	a_src = path sorgente + nome file
+//--- 		a_dst = path destinatario + nome file
+//--- 		a_replace = true replace file
+//--- rit:	1 ok, -1 errore file input, -2 errore file output, -3 err in delete
+//
+int k_return
+int k_rc_fileCopy
+
+
+	k_rc_fileCopy = fileCopy(a_src, a_dst, a_replace) // copia il pdf 
+	if k_rc_fileCopy = 1 then
+		if FileDelete(a_src) then
+			k_return = 1
+		else
+			k_return = -3
+		end if
+	else
+		k_return = k_rc_fileCopy
+	end if
+
+return k_return
+end function
+
+public function boolean u_directory_create (string k_path);//---
+//--- Creazione del path indicato (potrebbe creare anche l'intero percorso) se non esiste
+//---
+//--- Input: il PATH da creare se non esiste (NO il nome file!!!) es. \\syrio\datisyrio\gruppi\pippo con o senza slash finale
+//--- Rit.: TRUE = OK
+//---
+boolean k_return=false, k_primo_giro=true, k_percorso_di_rete=false
+int k_pos_ini, k_pos_fin, k_len_path, k_errore, k_len
+string k_path_lav
+
+if right(trim(k_path),1) <>  KKG.PATH_SEP then 
+	k_path_lav = trim(k_path) + KKG.PATH_SEP   // aggiungo il separatore x la fine cartella
+else
+	k_path_lav = trim(k_path)
+end if
+k_len_path = len(k_path_lav) 
+
+if k_len_path > 0 then
+	
+//--- se inizia con un path di rete quale ad esempio:  \\proxima   allora devo saperlo	
+	if left(k_path_lav,1) = KKG.PATH_SEP and mid(k_path_lav,2,1) = KKG.PATH_SEP then
+		k_percorso_di_rete = true
+		k_pos_ini = 3
+	else
+		k_pos_ini = 1
+	end if
+	
+//--- cerca il primo '\'
+	k_pos_ini = pos(k_path_lav, KKG.PATH_SEP, k_pos_ini )
+	
+	k_errore = 1 // OK nel caso il PATH esista gia'
+	do while k_pos_ini < k_len_path and k_errore > 0
+		
+		if mid(k_path_lav, k_pos_ini - 1, 1) <> KKG.PATH_SEP then
+			k_pos_ini ++
+			k_pos_fin = pos(k_path_lav, KKG.PATH_SEP, k_pos_ini )
+			if k_pos_fin > k_pos_ini then
+//				k_len = k_pos_fin - k_pos_ini
+				
+				if k_percorso_di_rete and k_primo_giro then  // se ad esempio sono su un path net es. \\proxima\pippo\pluto salto il '\\proxima'
+					k_primo_giro = false
+				else
+					If not DirectoryExists ( mid(k_path_lav, 1, k_pos_fin) ) Then  // NON esiste la  sub-cartella
+						k_errore = CreateDirectory( mid(k_path_lav, 1, k_pos_fin))   // crea la sub-cartella
+					end if
+				end if
+				
+			end if
+		else
+			k_pos_fin = k_pos_ini + 1
+		end if
+			
+//--- Posizione sul fine cartella trovata prima  ('\')			
+		k_pos_ini = k_pos_fin 
+//		k_pos_ini = pos(k_path_lav, KKG.PATH_SEP, k_pos_ini )
+				
+	loop
+
+
+	if k_errore > 0 then
+		k_return = true
+	end if
+
+end if
+	
+
+
+return k_return
+
+end function
 
 on kuf_file_explorer.create
 call super::create

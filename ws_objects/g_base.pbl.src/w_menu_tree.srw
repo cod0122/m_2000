@@ -137,7 +137,7 @@ end forward
 global type w_menu_tree from w_g_tab
 boolean visible = true
 integer width = 219
-integer height = 3112
+integer height = 3416
 string menuname = ""
 boolean clientedge = true
 boolean ki_esponi_msg_dati_modificati = false
@@ -726,7 +726,7 @@ boolean k_return
 
 
 if apb_1.visible <> (amenuitem_1.enabled and (amenuitem_1.toolbaritemvisible or amenuitem_1.visible)) &
-		or 	apb_1.powertiptext <> mid(amenuitem_1.toolbaritemtext, (pos(amenuitem_1.toolbaritemtext, ",")) + 1) then
+		or apb_1.powertiptext <> mid(amenuitem_1.toolbaritemtext, (pos(amenuitem_1.toolbaritemtext, ",")) + 1) then
 
 	k_return = true
 
@@ -795,8 +795,8 @@ if k_changed then k_return = true
 k_changed = u_toolbar_set_pb(pb_3,  ki_menu.m_magazzino.m_pianidilavorazione, st_3)
 if k_changed then k_return = true
 k_changed = u_toolbar_set_pb(pb_4,  ki_menu.m_archivi.m_listino, st_4)
-if k_changed then k_return = true
-k_changed = u_toolbar_set_pb(pb_5,  ki_menu.m_archivi.m_contratti, st_5)
+//if k_changed then k_return = true
+//k_changed = u_toolbar_set_pb(pb_5,  ki_menu.m_archivi.m_contratti, st_5)
 if k_changed then k_return = true
 k_changed = u_toolbar_set_pb(pb_6,  ki_menu.m_interrogazioni.m_report, st_6)
 if k_changed then k_return = true
@@ -819,18 +819,10 @@ boolean k_return, k_changed
 //--- Inizio TROVA/FILTRO...
 k_changed = u_toolbar_set_pb(pb_t1,  ki_menu.m_trova.m_fin_cerca, st_t1)
 if k_changed then k_return = true
-k_changed = u_toolbar_set_pb(pb_t2,  ki_menu.m_trova.m_fin_ordina, st_t2)
-if k_changed then k_return = true
+//k_changed = u_toolbar_set_pb(pb_t2,  ki_menu.m_trova.m_fin_ordina, st_t2)
+//if k_changed then k_return = true
 k_changed = u_toolbar_set_pb(pb_t3,  ki_menu.m_filtro, st_t3)
 if k_changed then k_return = true
-
-//pb_t1.enabled = ki_menu.m_trova.m_fin_cerca.enabled
-//pb_t1.visible = ki_menu.m_trova.m_fin_cerca.enabled //visible
-//pb_t1.picturename = ki_menu.m_trova.m_fin_cerca.toolbaritemname
-//pb_t1.disabledname = ki_menu.m_trova.m_fin_cerca.toolbaritemname
-//k_pos = pos(ki_menu.m_trova.m_fin_cerca.toolbaritemtext, ",")
-//pb_t1.powertiptext = mid(ki_menu.m_trova.m_fin_cerca.toolbaritemtext, k_pos + 1)
-//	st_t1.text = left(ki_menu.m_trova.m_fin_cerca.toolbaritemtext, k_pos - 1)
 
 return k_return
 end function
@@ -1283,6 +1275,8 @@ type cb_ritorna from w_g_tab`cb_ritorna within w_menu_tree
 integer x = 9
 integer y = 2728
 integer taborder = 0
+integer transparency = 100
+boolean flatstyle = true
 end type
 
 type st_stampa from w_g_tab`st_stampa within w_menu_tree
@@ -1475,7 +1469,7 @@ end type
 type pb_1 from picturebutton within w_menu_tree
 boolean visible = false
 integer x = 27
-integer y = 80
+integer y = 84
 integer width = 123
 integer height = 104
 integer taborder = 50
@@ -1486,9 +1480,11 @@ fontcharset fontcharset = ansi!
 fontpitch fontpitch = variable!
 fontfamily fontfamily = swiss!
 string facename = "Arial"
-string picturename = "treeview!"
+boolean flatstyle = true
+string picturename = "TreeView2!"
 alignment htextalign = left!
 string powertiptext = "Navigazione dati magazzino"
+long backcolor = 553648127
 end type
 
 event clicked;//
@@ -1510,8 +1506,10 @@ fontcharset fontcharset = ansi!
 fontpitch fontpitch = variable!
 fontfamily fontfamily = swiss!
 string facename = "Arial"
+boolean flatstyle = true
 string picturename = "Border3DRaised!"
 alignment htextalign = left!
+long backcolor = 553648127
 end type
 
 event clicked;//
@@ -1533,8 +1531,10 @@ fontcharset fontcharset = ansi!
 fontpitch fontpitch = variable!
 fontfamily fontfamily = swiss!
 string facename = "Arial"
+boolean flatstyle = true
 string picturename = "Border3DRaised!"
 alignment htextalign = left!
+long backcolor = 553648127
 end type
 
 event clicked;//
@@ -1556,8 +1556,10 @@ fontcharset fontcharset = ansi!
 fontpitch fontpitch = variable!
 fontfamily fontfamily = swiss!
 string facename = "Arial"
+boolean flatstyle = true
 string picturename = "Border3DRaised!"
 alignment htextalign = left!
+long backcolor = 553648127
 end type
 
 event clicked;//
@@ -1579,8 +1581,10 @@ fontcharset fontcharset = ansi!
 fontpitch fontpitch = variable!
 fontfamily fontfamily = swiss!
 string facename = "Arial"
+boolean flatstyle = true
 string picturename = "Border3DRaised!"
 alignment htextalign = left!
+long backcolor = 553648127
 end type
 
 event clicked;//
@@ -1602,9 +1606,11 @@ fontcharset fontcharset = ansi!
 fontpitch fontpitch = variable!
 fontfamily fontfamily = swiss!
 string facename = "Arial"
+boolean flatstyle = true
 string picturename = "picture!"
 alignment htextalign = left!
 string powertiptext = "Elenco Anagrafiche"
+long backcolor = 553648127
 end type
 
 event clicked;//
@@ -1626,8 +1632,10 @@ fontcharset fontcharset = ansi!
 fontpitch fontpitch = variable!
 fontfamily fontfamily = swiss!
 string facename = "Arial"
+boolean flatstyle = true
 string picturename = "picture!"
 alignment htextalign = left!
+long backcolor = 553648127
 end type
 
 event clicked;//
@@ -1649,8 +1657,10 @@ fontcharset fontcharset = ansi!
 fontpitch fontpitch = variable!
 fontfamily fontfamily = swiss!
 string facename = "Arial"
+boolean flatstyle = true
 string picturename = "picture!"
 alignment htextalign = left!
+long backcolor = 553648127
 end type
 
 event clicked;//
@@ -1672,8 +1682,10 @@ fontcharset fontcharset = ansi!
 fontpitch fontpitch = variable!
 fontfamily fontfamily = swiss!
 string facename = "Arial"
+boolean flatstyle = true
 string picturename = "picture!"
 alignment htextalign = left!
+long backcolor = 553648127
 end type
 
 event clicked;//
@@ -1695,8 +1707,10 @@ fontcharset fontcharset = ansi!
 fontpitch fontpitch = variable!
 fontfamily fontfamily = swiss!
 string facename = "Arial"
+boolean flatstyle = true
 string picturename = "picture!"
 alignment htextalign = left!
+long backcolor = 553648127
 end type
 
 event clicked;//
@@ -1718,8 +1732,10 @@ fontcharset fontcharset = ansi!
 fontpitch fontpitch = variable!
 fontfamily fontfamily = swiss!
 string facename = "Arial"
+boolean flatstyle = true
 string picturename = "picture!"
 alignment htextalign = left!
+long backcolor = 553648127
 end type
 
 event clicked;//
@@ -1741,8 +1757,10 @@ fontcharset fontcharset = ansi!
 fontpitch fontpitch = variable!
 fontfamily fontfamily = swiss!
 string facename = "Arial"
+boolean flatstyle = true
 string picturename = "picture!"
 alignment htextalign = left!
+long backcolor = 553648127
 end type
 
 event clicked;//
@@ -1764,8 +1782,10 @@ fontcharset fontcharset = ansi!
 fontpitch fontpitch = variable!
 fontfamily fontfamily = swiss!
 string facename = "Arial"
+boolean flatstyle = true
 string picturename = "picture!"
 alignment htextalign = left!
+long backcolor = 553648127
 end type
 
 event clicked;//
@@ -1787,8 +1807,10 @@ fontcharset fontcharset = ansi!
 fontpitch fontpitch = variable!
 fontfamily fontfamily = swiss!
 string facename = "Arial"
+boolean flatstyle = true
 string picturename = "Border3DLowered!"
 alignment htextalign = left!
+long backcolor = 553648127
 end type
 
 event clicked;//
@@ -1810,8 +1832,10 @@ fontcharset fontcharset = ansi!
 fontpitch fontpitch = variable!
 fontfamily fontfamily = swiss!
 string facename = "Arial"
+boolean flatstyle = true
 string picturename = "Border3DLowered!"
 alignment htextalign = left!
+long backcolor = 553648127
 end type
 
 event clicked;//
@@ -1833,8 +1857,10 @@ fontcharset fontcharset = ansi!
 fontpitch fontpitch = variable!
 fontfamily fontfamily = swiss!
 string facename = "Arial"
+boolean flatstyle = true
 string picturename = "Border3DLowered!"
 alignment htextalign = left!
+long backcolor = 553648127
 end type
 
 event clicked;//
@@ -1856,8 +1882,10 @@ fontcharset fontcharset = ansi!
 fontpitch fontpitch = variable!
 fontfamily fontfamily = swiss!
 string facename = "Arial"
+boolean flatstyle = true
 string picturename = "Border3DLowered!"
 alignment htextalign = left!
+long backcolor = 553648127
 end type
 
 event clicked;//
@@ -1879,8 +1907,10 @@ fontcharset fontcharset = ansi!
 fontpitch fontpitch = variable!
 fontfamily fontfamily = swiss!
 string facename = "Arial"
+boolean flatstyle = true
 string picturename = "Border3DLowered!"
 alignment htextalign = left!
+long backcolor = 553648127
 end type
 
 event clicked;//
@@ -1902,8 +1932,10 @@ fontcharset fontcharset = ansi!
 fontpitch fontpitch = variable!
 fontfamily fontfamily = swiss!
 string facename = "Arial"
+boolean flatstyle = true
 string picturename = "Border3DLowered!"
 alignment htextalign = left!
+long backcolor = 553648127
 end type
 
 event clicked;//
@@ -1925,8 +1957,10 @@ fontcharset fontcharset = ansi!
 fontpitch fontpitch = variable!
 fontfamily fontfamily = swiss!
 string facename = "Arial"
+boolean flatstyle = true
 string picturename = "Border3DLowered!"
 alignment htextalign = left!
+long backcolor = 553648127
 end type
 
 event clicked;//
@@ -1948,8 +1982,10 @@ fontcharset fontcharset = ansi!
 fontpitch fontpitch = variable!
 fontfamily fontfamily = swiss!
 string facename = "Arial"
+boolean flatstyle = true
 string picturename = "Border3DLowered!"
 alignment htextalign = left!
+long backcolor = 553648127
 end type
 
 event clicked;//
@@ -1971,8 +2007,10 @@ fontcharset fontcharset = ansi!
 fontpitch fontpitch = variable!
 fontfamily fontfamily = swiss!
 string facename = "Arial"
+boolean flatstyle = true
 string picturename = "Border3DLowered!"
 alignment htextalign = left!
+long backcolor = 553648127
 end type
 
 event clicked;//
@@ -1994,8 +2032,10 @@ fontcharset fontcharset = ansi!
 fontpitch fontpitch = variable!
 fontfamily fontfamily = swiss!
 string facename = "Arial"
+boolean flatstyle = true
 string picturename = "Border3DLowered!"
 alignment htextalign = left!
+long backcolor = 553648127
 end type
 
 event clicked;//
@@ -2017,8 +2057,10 @@ fontcharset fontcharset = ansi!
 fontpitch fontpitch = variable!
 fontfamily fontfamily = swiss!
 string facename = "Arial"
+boolean flatstyle = true
 string picturename = "Border3DLowered!"
 alignment htextalign = left!
+long backcolor = 553648127
 end type
 
 event clicked;//
@@ -2040,8 +2082,10 @@ fontcharset fontcharset = ansi!
 fontpitch fontpitch = variable!
 fontfamily fontfamily = swiss!
 string facename = "Arial"
+boolean flatstyle = true
 string picturename = "Border3DLowered!"
 alignment htextalign = left!
+long backcolor = 553648127
 end type
 
 event clicked;//
@@ -2063,8 +2107,10 @@ fontcharset fontcharset = ansi!
 fontpitch fontpitch = variable!
 fontfamily fontfamily = swiss!
 string facename = "Arial"
+boolean flatstyle = true
 string picturename = "Border3DLowered!"
 alignment htextalign = left!
+long backcolor = 553648127
 end type
 
 event clicked;//
@@ -2086,8 +2132,10 @@ fontcharset fontcharset = ansi!
 fontpitch fontpitch = variable!
 fontfamily fontfamily = swiss!
 string facename = "Arial"
+boolean flatstyle = true
 string picturename = "Border3DLowered!"
 alignment htextalign = left!
+long backcolor = 553648127
 end type
 
 event clicked;//
@@ -2109,8 +2157,10 @@ fontcharset fontcharset = ansi!
 fontpitch fontpitch = variable!
 fontfamily fontfamily = swiss!
 string facename = "Arial"
+boolean flatstyle = true
 string picturename = "BorderBox!"
 alignment htextalign = left!
+long backcolor = 553648127
 end type
 
 event clicked;//
@@ -2131,8 +2181,10 @@ fontcharset fontcharset = ansi!
 fontpitch fontpitch = variable!
 fontfamily fontfamily = swiss!
 string facename = "Arial"
+boolean flatstyle = true
 string picturename = "BorderBox!"
 alignment htextalign = left!
+long backcolor = 553648127
 end type
 
 event clicked;//
@@ -2154,8 +2206,10 @@ fontcharset fontcharset = ansi!
 fontpitch fontpitch = variable!
 fontfamily fontfamily = swiss!
 string facename = "Arial"
+boolean flatstyle = true
 string picturename = "BorderBox!"
 alignment htextalign = left!
+long backcolor = 553648127
 end type
 
 event clicked;//
@@ -2619,8 +2673,10 @@ fontcharset fontcharset = ansi!
 fontpitch fontpitch = variable!
 fontfamily fontfamily = swiss!
 string facename = "Arial"
+boolean flatstyle = true
 string picturename = "Border3DRaised!"
 alignment htextalign = left!
+long backcolor = 553648127
 end type
 
 event clicked;//

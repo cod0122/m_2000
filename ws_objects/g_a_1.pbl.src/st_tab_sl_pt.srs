@@ -51,6 +51,8 @@ global type st_tab_sl_pt from structure
 	string		cert_st_dose_max		descriptor "comment" = "flag Attestato: in stampa la dose massima applicata in lavorazione"
 	string		cert_st_data_ini		descriptor "comment" = "flag Attestato: in stampa la data di inizio lavorazione"
 	string		cert_st_data_fin		descriptor "comment" = "flag Attestato: in stampa la data di fine lavorazione"
+	decimal { 1 }		unitwork		descriptor "comment" = "unità di trattamento: simile a occupazione impianto ma più rivolto al materiale in trattamento solitamente è 100% (se vuoto) o 50% "
+	integer		savedosimeter		descriptor "comment" = "1=risparmia il dosimetro sull'ultimo pallet quando ad esempio è già su quello precedente"
 	datetime		x_datins
 	string		x_utente
 end type

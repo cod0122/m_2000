@@ -102,7 +102,7 @@ try
 		db_disconnetti( ) // devo disconnettermi poichè la connessione è bloccata
 	
 		kguo_exception.inizializza( )
-		kguo_exception.set_tipo( kguo_exception.kk_st_uo_exception_tipo_dati_non_eseguito )
+		kguo_exception.set_tipo( kguo_exception.KK_st_uo_exception_tipo_non_eseguito )
 		kguo_exception.setmessage( "La connessione dati a " + ki_db_descrizione + " è BLOCCATA, puoi abilitarla da 'Proprietà del DB' - Nessuna operazione verso questo DB può proseguire. ")
 		kGuo_exception.messaggio_utente( ) 
 		throw kguo_exception
@@ -809,7 +809,7 @@ try
 			
 		catch (uo_exception kuo_exception)
 			kst_esito = kuo_exception.get_st_esito()
-			if kst_esito.esito = kguo_exception.kk_st_uo_exception_tipo_dati_non_eseguito then
+			if kst_esito.esito = kguo_exception.KK_st_uo_exception_tipo_non_eseguito then
 				k_ritenta = false
 			end if
 		end try

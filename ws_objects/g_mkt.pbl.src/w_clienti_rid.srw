@@ -533,8 +533,10 @@ st_tab_nazioni kst_tab_nazioni
 st_tab_clienti_web kst_tab_clienti_web
 st_tab_clienti_mkt kst_tab_clienti_mkt
 st_web kst_web 
+st_email_address kst_email_address
 kuf_base kuf1_base
 kuf_ausiliari kuf1_ausiliari
+kuf_email kuf1_email
 kuf_web kuf1_web
 
 
@@ -687,44 +689,77 @@ kuf1_ausiliari = create kuf_ausiliari
 		k_nr_righe = tab_1.tabpage_1.dw_1.rowcount()
 		k_riga = tab_1.tabpage_1.dw_1.getnextmodified(0, primary!) 
 		if k_riga > 0 then
+//--- Controllo sintassi Indirizzi email				
+			kuf1_email = create kuf_email 
+			kst_email_address.email_all = tab_1.tabpage_1.dw_1.getitemstring( k_riga, "email")
+			if len(trim(kst_email_address.email_all)) > 0 then
+				kst_esito = kuf1_email.get_email_from_string(kst_email_address)
+				if kst_esito.esito <> kkg_esito.ok then
+					k_return = trim(k_return) +  tab_1.tabpage_1.text + ": riscontrato indirizzo 'e-mail' non corretto, prego controllare" &
+					+"~n~r" + kst_esito.sqlerrtext + "~n~r" 
+					k_errore = "4"
+					k_nr_errori++
+				end if
+			end if
+			kst_email_address.email_all = tab_1.tabpage_1.dw_1.getitemstring( k_riga, "email1")
+			if len(trim(kst_email_address.email_all)) > 0 then
+				kst_esito = kuf1_email.get_email_from_string(kst_email_address)
+				if kst_esito.esito <> kkg_esito.ok then
+					k_return = trim(k_return) +  tab_1.tabpage_1.text + ": riscontrato indirizzo 'e-mail' non corretto, prego controllare" &
+					+"~n~r" + kst_esito.sqlerrtext + "~n~r" 
+					k_errore = "4"
+					k_nr_errori++
+				end if
+			end if
+			kst_email_address.email_all = tab_1.tabpage_1.dw_1.getitemstring( k_riga, "email2")
+			if len(trim(kst_email_address.email_all)) > 0 then
+				kst_esito = kuf1_email.get_email_from_string(kst_email_address)
+				if kst_esito.esito <> kkg_esito.ok then
+					k_return = trim(k_return) +  tab_1.tabpage_1.text + ": riscontrato indirizzo 'e-mail' non corretto, prego controllare" &
+					+"~n~r" + kst_esito.sqlerrtext + "~n~r" 
+					k_errore = "4"
+					k_nr_errori++
+				end if
+			end if
+			destroy kuf1_email
+//			kst_tab_clienti_web.email =  tab_1.tabpage_1.dw_1.getitemstring( k_riga, "email")
+//			if len(trim(kst_tab_clienti_web.email)) > 0 then
+//				kst_web.email = kst_tab_clienti_web.email
+//				if not kuf1_email.if_sintassi_email_ok( kst_web ) then
+//					k_return = trim(k_return) +  tab_1.tabpage_1.text + ": il primo campo 'e-mail' non sembra corretto, prego controllare " &
+//					+" ~n~r" 
+//					k_errore = "4"
+//					k_nr_errori++
+//				end if
+//			end if
+//			kst_tab_clienti_web.email =  tab_1.tabpage_1.dw_1.getitemstring( k_riga, "email1")
+//			if len(trim(kst_tab_clienti_web.email1)) > 0 then
+//				kst_web.email = kst_tab_clienti_web.email1
+//				if not kuf1_email.if_sintassi_email_ok( kst_web ) then
+//					k_return = trim(k_return) +  tab_1.tabpage_1.text + ": il secondo campo 'e-mail' non sembra corretto, prego controllare " &
+//					+" ~n~r" 
+//					k_errore = "4"
+//					k_nr_errori++
+//				end if
+//			end if
+//			kst_tab_clienti_web.email2 =  tab_1.tabpage_1.dw_1.getitemstring( k_riga, "email2")
+//			if len(trim(kst_tab_clienti_web.email2)) > 0 then
+//				kst_web.email = kst_tab_clienti_web.email2
+//				if not kuf1_email.if_sintassi_email_ok( kst_web ) then
+//					k_return = trim(k_return) +  tab_1.tabpage_1.text + ": Terzo campo 'e-mail' non sembra corretto, prego controllare " &
+//					+" ~n~r" 
+//					k_errore = "4"
+//					k_nr_errori++
+//				end if
+//			end if
 			kuf1_web = create kuf_web 
-			kst_tab_clienti_web.email =  tab_1.tabpage_1.dw_1.getitemstring( k_riga, "email")
-			if len(trim(kst_tab_clienti_web.email)) > 0 then
-				kst_web.email = kst_tab_clienti_web.email
-				if not kuf1_web.if_sintassi_email_ok( kst_web ) then
-					k_return = trim(k_return) +  tab_1.tabpage_3.text + ": il primo campo 'e-mail' non sembra corretto, prego controllare " &
-					+" ~n~r" 
-					k_errore = "4"
-					k_nr_errori++
-				end if
-			end if
-			kst_tab_clienti_web.email =  tab_1.tabpage_1.dw_1.getitemstring( k_riga, "email1")
-			if len(trim(kst_tab_clienti_web.email1)) > 0 then
-				kst_web.email = kst_tab_clienti_web.email1
-				if not kuf1_web.if_sintassi_email_ok( kst_web ) then
-					k_return = trim(k_return) +  tab_1.tabpage_3.text + ": il secondo campo 'e-mail' non sembra corretto, prego controllare " &
-					+" ~n~r" 
-					k_errore = "4"
-					k_nr_errori++
-				end if
-			end if
-			kst_tab_clienti_web.email2 =  tab_1.tabpage_1.dw_1.getitemstring( k_riga, "email2")
-			if len(trim(kst_tab_clienti_web.email2)) > 0 then
-				kst_web.email = kst_tab_clienti_web.email2
-				if not kuf1_web.if_sintassi_email_ok( kst_web ) then
-					k_return = trim(k_return) +  tab_1.tabpage_3.text + ": Terzo campo 'e-mail' non sembra corretto, prego controllare " &
-					+" ~n~r" 
-					k_errore = "4"
-					k_nr_errori++
-				end if
-			end if
 			kst_tab_clienti_web.sito_web =  tab_1.tabpage_1.dw_1.getitemstring( k_riga, "sito_web")
 			if len(trim(kst_tab_clienti_web.sito_web )) > 0 then
 				kst_web.url = kst_tab_clienti_web.sito_web
 				kuf1_web.url_aggiusta_http( kst_web ) //aggiunge http:// all'indirizzo
 				tab_1.tabpage_1.dw_1.setitem( k_riga, "sito_web", kst_web.url)
 				if not kuf1_web.if_url_esiste( kst_web ) then
-					k_return = trim(k_return) +  tab_1.tabpage_3.text + ": Il 'Sito Web' indicato sembra non esistere, prego controllare " &
+					k_return = trim(k_return) +  tab_1.tabpage_1.text + ": Il 'Sito Web' indicato sembra non esistere, prego controllare " &
 					+" ~n~r" 
 					k_errore = "4"
 					k_nr_errori++
@@ -736,7 +771,7 @@ kuf1_ausiliari = create kuf_ausiliari
 				kuf1_web.url_aggiusta_http(kst_web)  //aggiunge http:// all'indirizzo
 				tab_1.tabpage_1.dw_1.setitem( k_riga, "sito_web", kst_web.url)
 				if not kuf1_web.if_url_esiste( kst_web ) then
-					k_return = trim(k_return) +  tab_1.tabpage_3.text + ": L'indirizzo di 'Altro Sito' sembra non esistere, prego controllare " &
+					k_return = trim(k_return) +  tab_1.tabpage_1.text + ": L'indirizzo di 'Altro Sito' sembra non esistere, prego controllare " &
 					+" ~n~r" 
 					k_errore = "4"
 					k_nr_errori++
@@ -850,6 +885,7 @@ end on
 
 on w_clienti_rid.destroy
 call super::destroy
+if IsValid(MenuID) then destroy(MenuID)
 destroy(this.dw_tipo)
 end on
 
@@ -963,7 +999,6 @@ end on
 type tabpage_1 from w_g_tab_3`tabpage_1 within tab_1
 integer width = 3003
 integer height = 1268
-long backcolor = 32435950
 string text = " Anagrafica "
 long tabbackcolor = 32435950
 long picturemaskcolor = 32435950
@@ -1011,7 +1046,6 @@ end type
 type tabpage_2 from w_g_tab_3`tabpage_2 within tab_1
 integer width = 3003
 integer height = 1268
-long backcolor = 32435950
 string text = " Tutti i dati "
 long tabbackcolor = 32435950
 end type
@@ -1216,6 +1250,9 @@ type st_9_retrieve from w_g_tab_3`st_9_retrieve within tabpage_9
 end type
 
 type dw_9 from w_g_tab_3`dw_9 within tabpage_9
+end type
+
+type st_duplica from w_g_tab_3`st_duplica within w_clienti_rid
 end type
 
 type ln_1 from line within tabpage_4

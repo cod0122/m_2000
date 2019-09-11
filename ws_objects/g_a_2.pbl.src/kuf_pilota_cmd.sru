@@ -981,6 +981,7 @@ int k_FileNum, k_byte, k_pos_ctr_ini, k_pos_ctr_fin, k_pos_ctr_len, k_rc
 string k_record, k_sep=","
 string k_nome_file=""
 kuf_utility kuf1_utility
+kuf_file_explorer kuf1_file_explorer
 
 
 try
@@ -994,6 +995,7 @@ try
 	kst_esito.nome_oggetto = this.classname()
 	
 	kuf1_utility = create kuf_utility
+	kuf1_file_explorer = create kuf_file_explorer
 	
 	//--- Inizializzo i campi
 	kst_tab_pilota_cfg = kist_tab_pilota_cfg
@@ -1017,7 +1019,7 @@ try
 	
 	//--- la cartella Temporanea dei file di scambio tra M2000 e PILOTA esiste? 
 	if trim ( kst_tab_pilota_cfg.path_temp ) > " "  then 
-		if not kguo_path.u_drectory_create( kst_tab_pilota_cfg.path_temp) then
+		if not kuf1_file_explorer.u_directory_create( kst_tab_pilota_cfg.path_temp) then
 //		if not DirectoryExists ( kst_tab_pilota_cfg.path_temp ) then 
 			kst_esito.esito = kkg_esito.blok
 			kst_esito.sqlcode = 0
@@ -1031,7 +1033,7 @@ try
 	end if
 	
 	//--- le cartelle dei file di scambio tra M2000 e PILOTA esistono? 
-	if not kguo_path.u_drectory_create( kst_tab_pilota_cfg.path_pilota_out) then
+	if not kuf1_file_explorer.u_directory_create( kst_tab_pilota_cfg.path_pilota_out) then
 //	if not DirectoryExists ( kst_tab_pilota_cfg.path_pilota_out ) then 
 		kst_esito.esito = kkg_esito.blok
 		kst_esito.sqlcode = 0
@@ -1133,6 +1135,7 @@ finally
 	end if
 	
 	if isvalid(kuf1_utility) then destroy kuf1_utility
+	if isvalid(kuf1_file_explorer) then destroy kuf1_file_explorer
 
 	SetPointer(oldpointer)
 

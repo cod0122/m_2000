@@ -56,10 +56,11 @@ long k_riga, k_righe, k_filenum, k_byte
 string k_record="", k_nome_file, k_path
 st_prof_exp_anag kst_prof_exp_anag[]
 st_tab_prof kst_tab_prof
-pointer kp_originale
-
+kuf_file_explorer kuf1_file_explorer
 kuf_utility kuf1_utility
 st_esito kst_esito
+pointer kp_originale
+
 
 
 kp_originale = setpointer(hourglass!)
@@ -83,11 +84,12 @@ try
 	else
 
 		kuf1_utility = create kuf_utility
-		
+		kuf1_file_explorer = create kuf_file_explorer
+
 		k_nome_file = kuf1_utility.u_get_nome_file(a_file)
 		k_path = kuf1_utility.u_get_path_file(a_file)
 		if len(k_path) > 0 then
-			kguo_path.u_drectory_create(k_path)
+			kuf1_file_explorer.u_directory_create(k_path)
 		end if
 		
 		k_FileNum = FileOpen(a_file, LineMode!, Write!, LockWrite!, Replace!)
@@ -186,6 +188,7 @@ catch (uo_exception kuo_exception)
 finally
 	FileClose(k_FileNum)
 	if isvalid(kuf1_utility) then destroy kuf1_utility
+	if isvalid(kuf1_file_explorer) then destroy kuf1_file_explorer
 	setpointer(kp_originale)
 
 end try
@@ -1039,10 +1042,10 @@ string k_record="", k_nome_file, k_path
 st_prof_exp_fidi kst_prof_exp_fidi
 st_prof_trk_fidi_esolver kst_prof_trk_fidi_esolver[]
 st_tab_prof kst_tab_prof
-pointer kp_originale
-
 kuf_utility kuf1_utility
+kuf_file_explorer kuf1_file_explorer
 st_esito kst_esito
+pointer kp_originale
 
 
 kp_originale = setpointer(hourglass!)
@@ -1066,11 +1069,12 @@ try
 	else
 
 		kuf1_utility = create kuf_utility
+		kuf1_file_explorer = create kuf_file_explorer
 		
 		k_nome_file = kuf1_utility.u_get_nome_file(a_file)
 		k_path = kuf1_utility.u_get_path_file(a_file)
 		if len(k_path) > 0 then
-			kguo_path.u_drectory_create(k_path)
+			kuf1_file_explorer.u_directory_create(k_path)
 		end if
 		
 		k_FileNum = FileOpen(a_file, LineMode!, Write!, LockWrite!, Replace!)
@@ -1119,6 +1123,7 @@ catch (uo_exception kuo_exception)
 finally
 	FileClose(k_FileNum)
 	if isvalid(kuf1_utility) then destroy kuf1_utility
+	if isvalid(kuf1_file_explorer) then destroy kuf1_file_explorer
 	setpointer(kp_originale)
 
 end try
@@ -1190,9 +1195,8 @@ string k_record="", k_nome_file, k_path, k_filetemp
 st_prof_exp_fidi kst_prof_exp_fidi
 st_prof_trk_fidi_esolver_inp kst_prof_trk_fidi_esolver_inp[]
 st_tab_prof kst_tab_prof
-//pointer kp_originale
-
 kuf_utility kuf1_utility
+kuf_file_explorer kuf1_file_explorer
 st_esito kst_esito
 
 
@@ -1207,11 +1211,12 @@ try
 
 
 	kuf1_utility = create kuf_utility
-	
+	kuf1_file_explorer = create kuf_file_explorer
+
 	k_nome_file = kuf1_utility.u_get_nome_file(a_file)
 	k_path = kuf1_utility.u_get_path_file(a_file)
 	if len(k_path) > 0 then
-		kguo_path.u_drectory_create(k_path)
+		kuf1_file_explorer.u_directory_create(k_path)
 	end if
 //--- Copia il file in cartella temporanea per poterlo trattare senza problemi
 	k_filetemp = kguo_path.get_temp( ) + kkg.PATH_SEP + k_nome_file
@@ -1299,6 +1304,8 @@ finally
 		FileClose(k_FileNum)
 	end if
 	if isvalid(kuf1_utility) then destroy kuf1_utility
+	if isvalid(kuf1_file_explorer) then destroy kuf1_file_explorer
+	
 //	setpointer(kp_originale)
 
 end try
@@ -1343,7 +1350,7 @@ try
 //--- se su BASE non è stato impostato il codice causale rigetto con errore
 	if kst_tab_clienti.id_meca_causale = 0 then
 		kguo_exception.inizializza( )
-		kguo_exception.set_tipo(kguo_exception.kk_st_uo_exception_tipo_dati_non_eseguito )
+		kguo_exception.set_tipo(kguo_exception.KK_st_uo_exception_tipo_non_eseguito )
 		kguo_exception.setmessage( "Manca indicazione Causale Lotto per i Fuori Fido in Proprietà Procedura. Operazione non eseguita.")
 		throw kguo_exception
 	else
@@ -1565,6 +1572,7 @@ st_tab_prof kst_tab_prof[]
 kuf_prof kuf1_prof
 pointer kp_originale
 kuf_utility kuf1_utility
+kuf_file_explorer kuf1_file_explorer
 st_esito kst_esito
 
 
@@ -1589,11 +1597,12 @@ try
 	else
 
 		kuf1_utility = create kuf_utility
-		
+		kuf1_file_explorer = create kuf_file_explorer
+
 		k_nome_file = kuf1_utility.u_get_nome_file(ast_prof_exp_fatt.nome_file )
 		k_path = kuf1_utility.u_get_path_file(ast_prof_exp_fatt.nome_file)
 		if len(k_path) > 0 then
-			kguo_path.u_drectory_create(k_path)
+			kuf1_file_explorer.u_directory_create(k_path)
 		end if
 		
 		k_FileNum = FileOpen(ast_prof_exp_fatt.nome_file, LineMode!, Write!, LockWrite!, Replace!)
@@ -1697,6 +1706,8 @@ finally
 	FileClose(k_FileNum)
 	if isvalid(kuf1_utility) then destroy kuf1_utility
 	if isvalid(kuf1_prof) then destroy kuf1_prof
+	if isvalid(kuf1_file_explorer) then destroy kuf1_file_explorer
+		
 	setpointer(kp_originale)
 
 end try
@@ -1725,6 +1736,7 @@ st_tab_prof kst_tab_prof[]
 kuf_prof kuf1_prof
 pointer kp_originale
 kuf_utility kuf1_utility
+kuf_file_explorer kuf1_file_explorer
 st_esito kst_esito
 
 
@@ -1749,11 +1761,12 @@ try
 	else
 
 		kuf1_utility = create kuf_utility
+		kuf1_file_explorer = create kuf_file_explorer
 		
 		k_nome_file = kuf1_utility.u_get_nome_file(ast_prof_exp_fatt.nome_file )
 		k_path = kuf1_utility.u_get_path_file(ast_prof_exp_fatt.nome_file)
 		if len(k_path) > 0 then
-			kguo_path.u_drectory_create(k_path)
+			kuf1_file_explorer.u_directory_create(k_path)
 		end if
 		
 		k_FileNum = FileOpen(ast_prof_exp_fatt.nome_file, LineMode!, Write!, LockWrite!, Replace!)
@@ -1842,6 +1855,7 @@ finally
 	FileClose(k_FileNum)
 	if isvalid(kuf1_utility) then destroy kuf1_utility
 	if isvalid(kuf1_prof) then destroy kuf1_prof
+	if isvalid(kuf1_file_explorer) then destroy kuf1_file_explorer
 	setpointer(kp_originale)
 
 end try

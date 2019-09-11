@@ -37,6 +37,8 @@ public function st_esito anteprima (datastore kdw_anteprima, st_tab_email kst_ta
 public function st_esito get_oggetto (ref st_tab_email kst_tab_email)
 public function st_esito get_link_lettera (ref st_tab_email kst_tab_email)
 public function boolean if_presente (st_tab_email kst_tab_email) throws uo_exception
+public function st_esito get_email_from_string (ref st_email_address ast_email_address)
+public function boolean if_sintassi_email_ok (string kst_email)
 end prototypes
 
 public function st_esito tb_delete (st_tab_email kst_tab_email);//
@@ -435,6 +437,96 @@ end if
 if k_trovato = "1" then k_return = true   // TROVATO!!!
 
 return k_return
+
+end function
+
+public function st_esito get_email_from_string (ref st_email_address ast_email_address);//
+string k_email
+int k_pos_ini, k_pos_fin, k_len, k_email_idx, k_pos_fin_puntovirgola
+int k_email_n_max
+//string k_sep_char[2] = {",", ";"}
+st_esito kst_esito
+st_email_address kst_email_address
+
+
+	kst_esito.esito = kkg_esito.ok
+	kst_esito.sqlcode = 0
+	kst_esito.SQLErrText = ""
+	kst_esito.nome_oggetto = this.classname()
+
+	kst_email_address.email_all = trim(ast_email_address.email_all)
+
+//--- estrae gli Indirizzi email separati da ',' o ';' 
+
+	k_pos_ini = 1
+	k_pos_fin = pos(kst_email_address.email_all, ",")
+	k_pos_fin_puntovirgola = pos(kst_email_address.email_all, ";")
+	if k_pos_fin = 0 or (k_pos_fin_puntovirgola > 0 and k_pos_fin_puntovirgola < k_pos_fin) then
+		k_pos_fin = k_pos_fin_puntovirgola
+	end if
+	do while k_pos_fin > 0
+		k_len = k_pos_fin - k_pos_ini  
+		k_email = trim(mid(kst_email_address.email_all, k_pos_ini, k_len))
+		if k_email > " " then
+			k_email_idx ++
+			kst_email_address.address[k_email_idx] = k_email
+		end if
+		k_pos_ini = k_pos_fin + 1
+		k_pos_fin = pos(kst_email_address.email_all, ",", k_pos_ini)
+		k_pos_fin_puntovirgola = pos(kst_email_address.email_all, ";", k_pos_ini)
+		if k_pos_fin = 0 or (k_pos_fin_puntovirgola > 0 and k_pos_fin_puntovirgola < k_pos_fin) then
+			k_pos_fin = k_pos_fin_puntovirgola
+		end if
+	loop
+	
+//--- accoda l'ultima email se non ha il separatore
+	k_pos_fin = len(kst_email_address.email_all)
+	if k_pos_fin > k_pos_ini then
+		k_len = k_pos_fin - k_pos_ini  + 1
+		k_email = trim(mid(kst_email_address.email_all, k_pos_ini, k_len))
+		if k_email > " " then
+			k_email_idx ++
+			kst_email_address.address[k_email_idx] = k_email
+		end if
+	end if
+
+	k_email_n_max = UpperBound(kst_email_address.address)
+	for k_email_idx = 1 to k_email_n_max
+		
+		if not if_sintassi_email_ok(kst_email_address.address[k_email_idx]) then
+				  
+			kst_esito.esito = kkg_esito.ko
+			if kst_esito.sqlerrtext = "" then
+				kst_esito.sqlerrtext = "Indirizzi errati: " + kst_email_address.address[k_email_idx] 
+			else
+				kst_esito.sqlerrtext += ", " + kst_email_address.address[k_email_idx] 
+			end if
+			//+ " (n." + string(k_email_idx) + ") "
+				  
+		end if
+	next
+	
+ast_email_address.address[] = kst_email_address.address[]
+
+
+return kst_esito
+
+
+
+end function
+
+public function boolean if_sintassi_email_ok (string kst_email);//---
+//--- Controllo sintassi E-MAIL
+//---
+//--- Input: st_web.email valorizzato
+//--- Out: TRUE=ok, False=indirizzo errato
+
+kst_email = trim(kst_email)
+
+return match(kst_email, "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$")
+//								"[a-zA-z0-9]+[-.]*[a-zA-z0-9]*[@][a-zA-z0-9]+[-.][a-zA-z0-9]+[a-zA-z0-9]$")
+//                      '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z][a-zA-Z][a-zA-Z]*[a-zA-Z]*$'
+//    						"[a-zA-Z0-9_\.]+@[a-zA-Z0-9-]+\.[a-zA-Z]{0,4}"
 
 end function
 

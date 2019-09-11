@@ -402,7 +402,7 @@ try
 		
 //--- se importazione non bloccate faccio!
 			if kst_tab_wm_pklist_cfg.blocca_importa = kuf1_wm_pklist_cfg.ki_blocca_importa_SI then
-				kguo_exception.set_tipo( kguo_exception.kk_st_uo_exception_tipo_dati_non_eseguito )
+				kguo_exception.set_tipo( kguo_exception.KK_st_uo_exception_tipo_non_eseguito )
 				kguo_exception.setmessage( "BLOCCATA importazione da WMF (vedi Archivio Impostazioni WMF) - L'operazione non può proseguire. ")
 				throw kguo_exception
 			end if

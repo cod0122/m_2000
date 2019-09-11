@@ -959,7 +959,7 @@ try
 	
 	if ast_tab_memo_link.id_memo_link = 0 then
 		kguo_exception.inizializza()
-		kguo_exception.set_tipo(kguo_exception.kk_st_uo_exception_tipo_dati_non_eseguito)
+		kguo_exception.set_tipo(kguo_exception.KK_st_uo_exception_tipo_non_eseguito)
 		kguo_exception.setmessage("Manca il riferimento (id_memo_link) al file allegato da mostrare")
 		throw kguo_exception
 	end if				
@@ -980,7 +980,7 @@ try
 			ast_tab_memo_link.memo_link = kuf1_utility.u_filetoblob(ast_tab_memo_link.link)
 		else
 			kguo_exception.inizializza()
-			kguo_exception.set_tipo(kguo_exception.kk_st_uo_exception_tipo_dati_non_eseguito)
+			kguo_exception.set_tipo(kguo_exception.KK_st_uo_exception_tipo_non_eseguito)
 			kguo_exception.setmessage("E' necessario indicare il nome completo dell'allegato da mostrare")
 			throw kguo_exception
 			

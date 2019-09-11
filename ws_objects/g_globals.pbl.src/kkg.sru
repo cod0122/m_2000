@@ -13,7 +13,7 @@ type variables
 public:
 
 //--- Versione Procedura
-constant double VERSIONE=19.0605
+constant double VERSIONE=19.0911
 
 //--- icone risorse grafiche
 constant string PATH_SEP ="\" 
@@ -31,8 +31,10 @@ constant pointer POINTER_ATTESA = HourGlass!
 
 //--- data a zero
 constant date DATA_ZERO=date(0) //data a zero
-constant date DATA_NO=date("01.01.1990") //data praticamente da considerare nulla
+constant date DATA_NO=date(1990, 01, 01) //data praticamente da considerare nulla
 constant date DATA_START_E1=date(2016,10,03) //data di partenza di E1
+constant time TIME_ZERO=time(0)
+//datetime DATETIME_ZERO=datetime(date(0)) //datetime(date(0)) 
 
 //--- 'sicurezza' vive solo x mantenere la compatibilita' con il passato
 constant int PWD_MAX=1 // privilegio massimo

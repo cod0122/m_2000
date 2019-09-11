@@ -879,7 +879,15 @@ end try
 
 end event
 
-event dw_guida::ue_dwnkey;call super::ue_dwnkey;//
+event dw_guida::ue_retrieve_dinamico;//---	
+//--- 
+//---
+if k_campo = "quotazione_tipo" then 
+	
+	this.post event ue_buttonclicked()
+	
+end if
+
 end event
 
 type st_duplica from w_g_tab0`st_duplica within w_contratti_doc_l

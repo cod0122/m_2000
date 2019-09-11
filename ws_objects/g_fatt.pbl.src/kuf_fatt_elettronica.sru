@@ -165,6 +165,7 @@ st_tab_arfa kst_tab_arfa
 st_fattura_scadenze kst_fattura_scadenze
 st_fatt_elettronica kst_fatt_elettronica[]
 kuf_utility kuf1_utility
+kuf_file_explorer kuf1_file_explorer
 st_esito kst_esito
 datastore kds_fatt_elett_testa, kds_fatt_elett_righe, kds_rag_soc, kds_fatt_elett_iva
 PBDOM_Document kpbdom_doc
@@ -196,6 +197,7 @@ try
 	kds_rag_soc.settransobject( kguo_sqlca_db_magazzino )
 
 	kuf1_utility = create kuf_utility  // ultility generiche
+	kuf1_file_explorer = create kuf_file_explorer
 
 //--- lancia estrazione fatture 
 	k_righe = kds_fatt_elett_testa.retrieve(ast_fatt_elettronica.num_fattura_da, ast_fatt_elettronica.data_fattura_da, ast_fatt_elettronica.num_fattura_a,  ast_fatt_elettronica.data_fattura_a ) 
@@ -214,7 +216,7 @@ try
 //		k_path = kuf1_utility.u_get_path_file(ast_fatt_elettronica.nome_file)
 		k_path = ast_fatt_elettronica.nome_file
 		if len(k_path) > 0 then
-			kguo_path.u_drectory_create(k_path)
+			kuf1_file_explorer.u_directory_create(k_path)
 		end if
 		
 //--- get dati Azienda
@@ -1004,6 +1006,7 @@ finally
 	if isvalid(kpbdom_el_node111) then destroy kpbdom_el_node111
 	if isvalid(kpbdom_el_node1111) then destroy kpbdom_el_node1111
 	if isvalid(kpbdom_el_node11111) then destroy kpbdom_el_node11111
+	if isvalid(kuf1_file_explorer) then destroy kuf1_file_explorer
 
 	setpointer(kkg.pointer_default)
 

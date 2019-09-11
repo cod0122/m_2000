@@ -613,7 +613,7 @@ kuf_armo kuf1_armo
 			k_ind++
 			if kst_treeview_data_any.st_tab_meca.st_tab_meca_dosim.dosim_data > date(0) then
 				kst_tab_treeview.voce =  &
-										string(kst_treeview_data_any.st_tab_meca.st_tab_meca_dosim.dosim_data, "dd.mm.yy") + " "
+										string(kst_treeview_data_any.st_tab_meca.st_tab_meca_dosim.dosim_data_ora, "dd.mm.yy hh:mm") + " "
 				k_campo_valorizzato[k_ind] = true
 			else
 				kst_tab_treeview.voce = " "
@@ -902,7 +902,7 @@ try
 
 			//--- MAX tot righe!!!
 			k_query_select = &
-					"SELECT TOP 6000 " &
+					"SELECT TOP 10000 " &
 					+ "meca.id, " &
 					+ "meca.num_int, " &
 					+ "meca.data_int, " &
@@ -1511,6 +1511,7 @@ kuf_meca_dosim kuf1_meca_dosim
 					+ "meca.err_lav_fin,    " &
 					+ "meca_dosim.barcode_dosimetro,    " &
 					+ "meca_dosim.dosim_data,    " &
+ 					+ "CONVERT(DATETIME, CONVERT(varchar(20), dosim_data,105)  + ' ' + CONVERT(varchar(8), coalesce(dosim_ora, '00:00:00'), 108))" &
 					+ "meca_dosim.dosim_dose,    " &
 					+ "meca.err_lav_ok,    " &
 					+ "meca.note_lav_ok,   " &
@@ -1687,6 +1688,7 @@ kuf_meca_dosim kuf1_meca_dosim
 					 ,:kst_tab_meca.err_lav_fin   
 					 ,:kst_tab_meca.st_tab_meca_dosim.barcode_dosimetro   
 					 ,:kst_tab_meca.st_tab_meca_dosim.dosim_data   
+					 ,:kst_tab_meca.st_tab_meca_dosim.dosim_data_ora   
 					 ,:kst_tab_meca.st_tab_meca_dosim.dosim_dose
 					 ,:kst_tab_meca.err_lav_ok   
 					 ,:kst_tab_meca.note_lav_ok  
@@ -1776,6 +1778,7 @@ kuf_meca_dosim kuf1_meca_dosim
 					 ,:kst_tab_meca.err_lav_fin   
 					 ,:kst_tab_meca.st_tab_meca_dosim.barcode_dosimetro   
 					 ,:kst_tab_meca.st_tab_meca_dosim.dosim_data   
+					 ,:kst_tab_meca.st_tab_meca_dosim.dosim_data_ora   
 					 ,:kst_tab_meca.st_tab_meca_dosim.dosim_dose
 					 ,:kst_tab_meca.err_lav_ok   
 					 ,:kst_tab_meca.note_lav_ok  

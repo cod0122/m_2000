@@ -1581,14 +1581,14 @@ try
 					else
 						kguo_exception.inizializza( )
 						kst_esito.sqlerrtext = "Nessuna riga caricata in elenco!"
-						kguo_exception.set_tipo(kguo_exception.kk_st_uo_exception_tipo_dati_non_eseguito)
+						kguo_exception.set_tipo(kguo_exception.KK_st_uo_exception_tipo_non_eseguito)
 						kguo_exception.set_esito( kst_esito )
 						throw kguo_exception
 					end if
 				else
 					kguo_exception.inizializza( )
 					kst_esito.sqlerrtext = "Manca codice Listino, operazione interrotta!"
-					kguo_exception.set_tipo(kguo_exception.kk_st_uo_exception_tipo_dati_non_eseguito)
+					kguo_exception.set_tipo(kguo_exception.KK_st_uo_exception_tipo_non_eseguito)
 					kguo_exception.set_esito( kst_esito )
 					throw kguo_exception
 				end if
@@ -2040,7 +2040,7 @@ try
 		k_righe_articoli = kds_1.retrieve(kst_tab_meca.contratto, kst_tab_meca.clie_3)
 	else
 		kguo_exception.inizializza( )
-		kguo_exception.set_tipo(kguo_exception.kk_st_uo_exception_tipo_dati_non_eseguito )
+		kguo_exception.set_tipo(kguo_exception.KK_st_uo_exception_tipo_non_eseguito )
 		kguo_exception.setmessage("Non è stato indicato alcun Contratto in Testata, operazione bloccata")
 		throw kguo_exception
 	end if
@@ -4794,7 +4794,7 @@ kuf_certif kuf1_certif
 		if kiuf_armo.if_lotto_chiuso(kist_tab_meca) then
 			ki_st_open_w.flag_modalita = kkg_flag_modalita.visualizzazione
 			kguo_exception.inizializza()
-			kguo_exception.set_tipo( kguo_exception.kk_st_uo_exception_tipo_dati_non_eseguito )
+			kguo_exception.set_tipo( kguo_exception.KK_st_uo_exception_tipo_non_eseguito )
 			kguo_exception.setmessage(  &
 				"Attenzione, Lotto 'CHIUSO', modifiche non consentite! ~n~r" + &
 				"(ID lotto: " + string(kist_tab_meca.id) + ") " )
