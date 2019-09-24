@@ -464,6 +464,15 @@ integer y = 56
 string dataobject = "d_sv_skedula_l"
 end type
 
+event dw_lista_0::resize;call super::resize;//
+//---- estende la colonna fino al bordo
+kguf_data_base.u_dw_extend_col_to_edge( this, "menu_window_descr")
+
+end event
+
 type dw_guida from w_g_tab0`dw_guida within w_sv_skedula
+end type
+
+type st_duplica from w_g_tab0`st_duplica within w_sv_skedula
 end type
 

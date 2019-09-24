@@ -1792,6 +1792,7 @@ pointer oldpointer  // Declares a pointer variable
 		+ " , trim(JSON_VALUE(ctr.dati_contratto, '$.logistica_des')) logistica_des " &
 		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.altro_prezzo') > '0' then convert(float, JSON_VALUE(ctr.dati_contratto ,'$.altro_prezzo')) else 0.00 end altro_prezzo " & 
 		+ " , trim(JSON_VALUE(ctr.dati_contratto, '$.altro_des')) altro_des " &
+		+ " , trim(JSON_VALUE(ctr.dati_contratto, '$.rif_interno_alt')) rif_interno_alt " &
 		+ " , ctr.x_datins " &
 		+ " , ctr.x_utente " &
 		+ " FROM contratti_doc as ctr " 

@@ -1192,12 +1192,11 @@ CHOOSE CASE kst_errori_gestione.SQLdbcode
 
 
 //informix	case -1811, -349, -1803, -25580 //--- manca connessione 
-	case 	-4060, -40197, -40501, -40613, -49918, -49919, -49920, -4221, 10054, 64
+	case 	-4060, -40197, -40501, -40613, -49918, -49919, -49920, -4221, 10054, 64 //, 121 timeout
 		
 		try 
 			kst_esito.sqlerrtext = "Tentativo di Ri-connessione al DB... " 
 			errori_scrivi_esito("W", kst_esito) 
-			sleep (5) // un attimo di attesa....
 //--- tentativo di connessione al db.....
 			if not kguo_sqlca_db_magazzino.db_riconnetti( ) then
 				MessageBox("Programma non operativo", "Persa la Connessione dati al DB, il programma verrà chiuso.", information!)
@@ -1215,14 +1214,24 @@ CHOOSE CASE kst_errori_gestione.SQLdbcode
 		end try
 		
 //		"~n~r"
+	CASE 121  // errore strano interno
+		MessageBox("Connessione di rete Interrotta",  &
+			"Riconnettersi alla rete e riaprire questa funzione. Altrimenti chiudere la Procedura.~n~r" &
+			+ " Oggetto: " + trim(kst_errori_gestione.nome_oggetto)   &
+			+ " dbcode: " + string(kst_errori_gestione.sqldbcode)  &
+			+ " sqlcode: " + string(kst_errori_gestione.sqlca) &
+			+ " syntax: " + trim(kst_errori_gestione.SQLErrText) + " -> " + trim(kst_errori_gestione.sqlsyntax))   
+
+		
+//		"~n~r"
 	CASE -04  // errore strano interno
 		MessageBox("Codice programma errato",  &
 			"Probabile errore interno di programmazione. " &
-			+ "Non è possibile proseguire correttamente l'operazione!! " + trim(kst_errori_gestione.SQLErrText)  &
-			+ " oggetto: " + trim(kst_errori_gestione.nome_oggetto)   &
-			+ " syntax: " + trim(kst_errori_gestione.sqlsyntax)   &
+			+ "Non è possibile proseguire correttamente l'operazione!!~n~r" + trim(kst_errori_gestione.SQLErrText)  &
+			+ "- Oggetto: " + trim(kst_errori_gestione.nome_oggetto)   &
 			+ " dbcode: " + string(kst_errori_gestione.sqldbcode)  &
-			+ " sqlcode: " + string(kst_errori_gestione.sqlca))
+			+ " sqlcode: " + string(kst_errori_gestione.sqlca) &
+			+ " syntax: " + trim(kst_errori_gestione.sqlsyntax))
 
 
 END CHOOSE

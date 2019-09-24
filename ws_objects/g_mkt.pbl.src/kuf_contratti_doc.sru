@@ -365,6 +365,8 @@ if isnull(kst_tab_contratti_doc.acconto_imp ) then kst_tab_contratti_doc.acconto
 if isnull(kst_tab_contratti_doc.acconto_cod_pag) then kst_tab_contratti_doc.acconto_cod_pag = 0
 if isnull(kst_tab_contratti_doc.id_meca_causale ) then kst_tab_contratti_doc.id_meca_causale = 0
 
+if isnull(kst_tab_contratti_doc.rif_interno_alt ) then kst_tab_contratti_doc.rif_interno_alt = ""
+
 if isnull(kst_tab_contratti_doc.x_datins) then kst_tab_contratti_doc.x_datins = datetime(date(0))
 if isnull(kst_tab_contratti_doc.x_utente) then kst_tab_contratti_doc.x_utente = " "
 
@@ -2923,7 +2925,8 @@ kuf_utility kuf1_utility
 			k_idx_max ++; k_json_key[k_idx_max] = "$." + "stoccaggio_des"; k_json_val[k_idx_max] = trim(string(kst_tab_contratti_doc.stoccaggio_des))
 			k_idx_max ++; k_json_key[k_idx_max] = "$." + "altro_prezzo"; k_json_val[k_idx_max] = kuf1_utility.u_num_itatousa2(trim(string(kst_tab_contratti_doc.altro_prezzo)), true) 
 			k_idx_max ++; k_json_key[k_idx_max] = "$." + "altro_des"; k_json_val[k_idx_max] = trim(string(kst_tab_contratti_doc.altro_des))
-			k_idx_max ++; k_json_key[k_idx_max] = "$." + "note_interne		"; k_json_val[k_idx_max] = trim(string(kst_tab_contratti_doc.note_interne))
+			k_idx_max ++; k_json_key[k_idx_max] = "$." + "note_interne"; k_json_val[k_idx_max] = trim(string(kst_tab_contratti_doc.note_interne))
+			k_idx_max ++; k_json_key[k_idx_max] = "$." + "rif_interno_alt"; k_json_val[k_idx_max] = trim(string(kst_tab_contratti_doc.rif_interno_alt))
 
 			kguo_sqlca_db_magazzino.sqlcode = 0
 			k_idx = 0

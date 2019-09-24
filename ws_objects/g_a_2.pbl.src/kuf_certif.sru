@@ -23,7 +23,6 @@ public string ki_stampante[2]
 
 
 end variables
-
 forward prototypes
 public subroutine if_isnull (ref st_tab_certif kst_tab_certif)
 public function st_esito anteprima (ref datawindow kdw_anteprima, st_tab_certif kst_tab_certif)
@@ -53,7 +52,6 @@ public function boolean if_stampato (readonly st_tab_certif kst_tab_certif) thro
 public function st_esito tb_delete (st_tab_certif kst_tab_certif) throws uo_exception
 private function boolean stampa_attestato_set_printer () throws uo_exception
 private function boolean stampa_attestato_prepara () throws uo_exception
-private function integer stampa_attestato () throws uo_exception
 private function integer stampa_attestato_allegati () throws uo_exception
 private function integer stampa_attestato_documento () throws uo_exception
 public function long stampa_digitale_esporta (ref st_docprod_esporta kst_docprod_esporta) throws uo_exception
@@ -80,6 +78,7 @@ public function date get_data (ref st_tab_certif kst_tab_certif) throws uo_excep
 public function st_esito aggiorna_dati_stampa (ref st_tab_certif kst_tab_certif) throws uo_exception
 public function st_esito get_clie (ref st_tab_certif kst_tab_certif) throws uo_exception
 public function boolean stampa_digitale_esporta_1 (string a_path_pdf) throws uo_exception
+private function integer stampa_attestato_esegui () throws uo_exception
 end prototypes
 
 public subroutine if_isnull (ref st_tab_certif kst_tab_certif);//---
@@ -2268,14 +2267,9 @@ try
 
 		if ast_tab_certif[k_item_attestato].num_certif  > 0 then
 			
-//--- introduco un delayed precauzionale per evitare problemi con la generazione del PDF
-			if k_item_attestato > 1 then
-				sleep(2)  
-			end if
-			
 //--- STAMPA ATTESTATO			
+			if k_item_attestato > 1 then sleep(2) //--- introduco un delayed precauzionale per evitare problemi con la generazione del PDF
 			k_return = stampa_1(ast_tab_certif[k_item_attestato])
-			
 		
 //--- se NON sono in ristampa registro definitivamente l'attestato in archivio 								
 			if kids_certif_stampa.ki_flag_ristampa then
@@ -3349,175 +3343,6 @@ return k_return
 
 end function
 
-private function integer stampa_attestato () throws uo_exception;//
-//====================================================================
-//=== Stampa Attestato di Trattamento e Allegati
-//=== per eseguire la stampa lanciare prima la routine "stampa_attestato_prepara"
-//===
-//=== Par. Input:    
-//===               datawindow da popolare
-//=== 
-//=== Ritorna tab. ST_ESITO, Esiti:    Vedi standard 
-//=== 
-//====================================================================
-//
-int k_return=0
-int k_errore  
-string k_old_str, k_new_str, k_str
-int k_start_pos
-long k_rc
-int k_nr_doc_printed
-string k_attestato_pdf //, k_nome_pdf_out
-st_tab_meca kst_tab_meca
-st_esito kst_esito
-kuf_base kuf1_base
-kuf_utility kuf1_utility
-kuf_meca_stampa kuf1_meca_stampa
-//kds_att_stampa kds1_att_stampa
-//datawindowchild kdwc_nested
-
-
-try
-	
-	kst_esito.esito = KKG_ESITO.ok
-	kst_esito.sqlcode = 0
-	kst_esito.SQLErrText = ""
-	kst_esito.nome_oggetto = this.classname()
-	
-//			kds1_att_stampa = create kds_att_stampa
-
-//			kds_attestato.Object.DataWindow.Print.Margin.Top = '400'
-//			kds_attestato.Object.DataWindow.Print.Margin.Bottom = '300'
-//			kds_attestato.Object.DataWindow.Print.Margin.Left = '500'
-//			kds_attestato.Object.DataWindow.Print.Margin.Right = '500'
-
-	kids_certif_stampa.u_set_test(ki_flag_stampa_di_test)
-
-//--- prepara il datastore composite di stampa
-	if isvalid(kids_certif_stampa_completa) then destroy kids_certif_stampa_completa
-	kids_certif_stampa_completa = create kds_certif_stampa_completa
-	if NOT kids_certif_stampa_completa.u_compone_attestato(kids_certif_stampa) then
-		kst_esito.sqlcode = 0
-		kst_esito.SQLErrText = "Attestato n. " + string(kist_tab_certif.num_certif) + " non trovato in esecuzione di stampa~n~r" 
-		kst_esito.esito = KKG_ESITO.no_esecuzione
-		kguo_exception.inizializza( )
-		kguo_exception.set_esito(kst_esito)
-		throw kguo_exception
-	end if	
-//			kds1_att_stampa.u_set_attestato_dw(kds_attestato.dataobject)
-//			kds1_att_stampa.retrieve(1, kds_attestato.getitemnumber(1, "id_meca")) // retrieve delle pagine allegate con le info del Lotto
-//			kds1_att_stampa.getchild( "dw_1", kdwc_nested)
-//			if kdwc_nested.rowcount( ) > 0 then
-//				kdwc_nested.deleterow(1)
-//			end if
-//			kds_attestato.rowscopy(1,1,primary!,kdwc_nested,1,primary!) // copia l'attestato sul datastore composite da stampare
-//	
-//--- Imposta immagini e risorse grafiche della stampa 
-//			stampa_attestato_set_img(kdwc_nested)
-//	kids_certif_stampa.u_set_img()
-
-//	kids_certif_stampa.Object.DataWindow.Print.DocumentName = kids_certif_stampa.u_get_nome_doc( )
-//			kds1_att_stampa.Object.DataWindow.Print.DocumentName= "attestato_" + trim(string(kds_attestato.object.certif_num_certif[1])) + "_" + trim(k_rag_soc) 
-		
-//--- ricava la stampante-certificato solo se Stampa vera e stampante non impostata
-//			if not kiuo1_d_certif_stampa.ki_flag_ristampa and (len(trim(ki_stampante)) = 0 or isnull(ki_stampante)) then
-//	if ki_stampante[1] > " " then
-//	else
-//		stampa_attestato_set_printer( )   // imposta le stampanti ki_stampante[]
-//	
-////				kuf1_base = create kuf_base
-////				ki_stampante = trim(mid(kuf1_base.prendi_dato_base( "stamp_attestato"),2))
-////				destroy kuf1_base
-//	end if
-
-//			if kiuo1_d_certif_stampa.ki_flag_ristampa or len(trim(ki_stampante)) = 0 or isnull(ki_stampante) then
-//				if printsetup() > 0 then
-//					ki_stampante = PrintGetPrinter ( )
-//	//=== Puntatore Cursore da attesa.....
-//					SetPointer(kkg.pointer_attesa)
-//					//if kds_attestato.print() > 0 then
-//					if kds1_att_stampa.print( ) > 0 then
-//						kst_esito.esito = KKG_ESITO.OK
-//						k_return ++
-//					else
-//						kst_esito.sqlcode = 0
-//						kst_esito.SQLErrText = "Errore durante la stampa dell'Attestato ~n~r" 
-//						kst_esito.esito = KKG_ESITO.blok
-//						kguo_exception.inizializza( )
-//						kguo_exception.set_esito(kst_esito)
-//						throw kguo_exception
-//					end if
-//				else	
-//					kst_esito.sqlcode = 0
-//					kst_esito.SQLErrText = "Nessun Attestato stampato ~n~r" 
-//					kst_esito.esito = KKG_ESITO.blok
-//					kguo_exception.inizializza( )
-//					kguo_exception.set_esito(kst_esito)
-//					throw kguo_exception
-//				end if
-//	
-//			else		
-	if ki_stampante[1] > " " then
-		if PrintSetPrinter (ki_stampante[1]) > 0 then
-			SetPointer(kkg.pointer_attesa)
-//--- stampa dw direttamente sulla stampante indicata				
-//			if kids_certif_stampa.print() > 0 then
-
-			kuf1_meca_stampa = create kuf_meca_stampa
-			kuf1_meca_stampa.u_inizializza_stampa_pdf()  // inizializza l'array che conterrà i pdf da stampare
-			k_attestato_pdf = kguo_path.get_temp( ) + kkg.path_sep + "Attestato_" + string(kist_tab_certif.num_certif) + ".pdf"
-			kids_certif_stampa_completa.object.DataWindow.Export.PDF.Method = NativePDF!
-			//kids_certif_stampa_completa.Object.DataWindow.Export.PDF.NativePDF.ImageFormat = "0"  //BMP
-			if kids_certif_stampa_completa.saveas(k_attestato_pdf, PDF!, false) >= 0 then  // esporta ATTESTATO+DATI LOTTO in PDF
-				kuf1_meca_stampa.u_add_stampa_pdf(k_attestato_pdf)
-				kst_tab_meca.id = kist_tab_certif.id_meca
-				if kuf1_meca_stampa.u_add_stampa_pdf_reportpilota(kst_tab_meca) then  // get REPORT-PILOTA in PDF
-				end if
-				//k_nome_pdf_out = kguo_path.get_temp( ) + KKG.PATH_SEP + "LottoAttestato" + string(kist_tab_certif.num_certif) +"_"+string(kguo_g.get_datetime_current( ) ,"yymmdd_hhmm") +".pdf"
-				//k_nr_doc_printed = kuf1_utility.u_pdf_merge( kuf1_meca_stampa.ki_stampa_pdf, k_nome_pdf_out)	// unisce i file pdf da stampare
-				k_nr_doc_printed = kuf1_meca_stampa.u_stampa_all_pdf( )  // stampa i file PDF accantonati:  ATTESTATO + DATI LOTTO + REPORT PILOTA
-			
-			//20180201 k_rc = kids_certif_stampa_completa.print() 
-			//if k_rc > 0 then
-				kst_esito.esito = KKG_ESITO.OK
-				k_return ++
-			else
-				kuf1_utility = create kuf_utility
-				k_str = kuf1_utility.u_stringa_pulisci_asc(ki_stampante[1])
-				kst_esito.sqlcode = 0
-				kst_esito.SQLErrText = "Errore in stampa dell'Attestato n. " + string(kist_tab_certif.num_certif) // ~n~r"   
-//				kst_esito.SQLErrText = "Errore STAMPANTE '" + trim(k_str) + "' ("+ string(k_rc) + "), in stampa dell'Attestato n. " + string(kist_tab_certif.num_certif) // ~n~r"   
-				kst_esito.esito = KKG_ESITO.blok
-				kguo_exception.inizializza( )
-				kguo_exception.set_esito(kst_esito)
-				throw kguo_exception
-			end if
-		else	
-			kst_esito.sqlcode = 0
-			kst_esito.SQLErrText = "Nessun Attestato stampato ~n~r" 
-			kst_esito.esito = KKG_ESITO.blok
-			kguo_exception.inizializza( )
-			kguo_exception.set_esito(kst_esito)
-			throw kguo_exception
-		end if
-	end if
-
-
-
-catch (uo_exception kuo_exception)
-	throw kuo_exception
-
-finally	
-	if isvalid(kuf1_utility) then destroy kuf1_utility
-	SetPointer(kkg.pointer_default)
-	
-end try
-
-
-return k_return 
-
-end function
-
 private function integer stampa_attestato_allegati () throws uo_exception;//
 //====================================================================
 //=== Stampa gli Allegati all'Attestato di Trattamento
@@ -4429,7 +4254,6 @@ try
 //			kds_attestato.settransobject(sqlca)
 
 	if NOT stampa_attestato_prepara () then   // prepara il ds kids_certif_stampa
-		
 		kguo_exception.inizializza( )
 		kguo_exception.set_tipo(kguo_exception.kk_st_uo_exception_tipo_ko)
 		kguo_exception.setmessage("Operazioni di preparzione per 'Stampa Attestato' " + string( kist_tab_certif.num_certif ) + " non riuscite! ")
@@ -4460,13 +4284,13 @@ try
 	if ki_stampante[1] > " " then
 	else
 		stampa_attestato_set_printer( )   // imposta le stampanti ki_stampante[]
-	end if
+	end if 
 	
 	if not kids_certif_stampa.ki_flag_ristampa then
-		stampa_attestato ()  		// STAMPA ATTESTATO CON ALLEGATI!!
+		stampa_attestato_esegui()  		// STAMPA ATTESTATO CON ALLEGATI!!
+	else	
+		stampa_attestato_documento()	// STAMPA SINGOLA DELL'ATTESTATO !!
 	end if
-	//stampa_attestato_allegati()	// STAMPA ALLEGATI ALL'ATTESTATO !!
-	stampa_attestato_documento()	// STAMPA SINGOLA DELL'ATTESTATO !!
 
 	stampa_digitale() // EMISSIONE DIGITALE DELL'ATTESTATO
 	
@@ -5871,6 +5695,136 @@ finally
 end try
 		
 return k_return		
+
+end function
+
+private function integer stampa_attestato_esegui () throws uo_exception;//
+//====================================================================
+//=== Stampa Attestato di Trattamento e Allegati
+//=== per eseguire la stampa lanciare prima la routine "stampa_attestato_prepara"
+//===
+//=== Par. Input:  preparare il kids_certif_stampa 
+//=== 
+//=== Ritorna: 1 = attestato stampato
+//=== 
+//====================================================================
+//
+int k_return=0
+string k_str
+long k_rc
+int k_nr_doc_printed
+string k_attestato_pdf, k_nome_report_pilota
+st_tab_meca_reportpilota kst_tab_meca_reportpilota
+st_esito kst_esito
+kuf_utility kuf1_utility
+kuf_meca_reportpilota kuf1_meca_reportpilota
+kuf_pdf kuf1_pdf 
+
+
+try
+
+	SetPointer(kkg.pointer_attesa)
+
+	kst_esito.esito = KKG_ESITO.ok
+	kst_esito.sqlcode = 0
+	kst_esito.SQLErrText = ""
+	kst_esito.nome_oggetto = this.classname()
+	
+	kuf1_utility = create kuf_utility
+
+	kids_certif_stampa.u_set_test(ki_flag_stampa_di_test)
+
+//--- prepara il datastore composite di stampa
+	if isvalid(kids_certif_stampa_completa) then destroy kids_certif_stampa_completa
+	kids_certif_stampa_completa = create kds_certif_stampa_completa
+	if NOT kids_certif_stampa_completa.u_compone_attestato(kids_certif_stampa) then
+		kst_esito.SQLErrText = "Attestato n. " + string(kist_tab_certif.num_certif) + " non trovato durante l'operazione di stampa" //~n~r" 
+		kst_esito.esito = KKG_ESITO.no_esecuzione
+		kguo_exception.inizializza( )
+		kguo_exception.set_esito(kst_esito)
+		throw kguo_exception
+	end if	
+
+	if ki_stampante[1] <= " " then
+		kst_esito.SQLErrText = "Nessuna stampante indicata per la stampa Attestati (n. " + string(kist_tab_certif.num_certif) + "). Stampa interrotta" 
+		kst_esito.esito = KKG_ESITO.no_esecuzione
+		kguo_exception.inizializza( )
+		kguo_exception.set_esito(kst_esito)
+		throw kguo_exception
+	end if
+	
+	if PrintSetPrinter (ki_stampante[1]) < 1 then
+		k_str = kuf1_utility.u_stringa_pulisci_asc(ki_stampante[1])
+		kst_esito.SQLErrText = "Stampante '" + k_str + "' non trovata, Attestato n. " + string(kist_tab_certif.num_certif) + " non stampato" 
+		kst_esito.esito = KKG_ESITO.no_esecuzione
+		kguo_exception.inizializza( )
+		kguo_exception.set_esito(kst_esito)
+		throw kguo_exception
+	end if
+		
+		
+//--- Genera i PDF e li accumula per la stampa finale
+	kuf1_meca_reportpilota = create kuf_meca_reportpilota
+	kuf1_pdf = create kuf_pdf
+	
+	kuf1_pdf.u_inizializza()  // inizializza l'array che conterrà i pdf da stampare
+	
+	k_attestato_pdf = kguo_path.get_temp( ) + kkg.path_sep + "Attestato_" + string(kist_tab_certif.num_certif) + ".pdf"
+	kids_certif_stampa_completa.object.DataWindow.Export.PDF.Method = NativePDF!
+	//kids_certif_stampa_completa.Object.DataWindow.Export.PDF.NativePDF.ImageFormat = "0"  //BMP
+	if kids_certif_stampa_completa.saveas(k_attestato_pdf, PDF!, false) < 0 then  // fa PDF per ATTESTATO+DATI LOTTO 
+		kst_esito.SQLErrText = "Errore in preparazione PDF dell'Attestato e Dati Lotto n. " + string(kist_tab_certif.num_certif) // ~n~r"   
+		kst_esito.esito = KKG_ESITO.ko
+		kguo_exception.inizializza( )
+		kguo_exception.set_esito(kst_esito)
+		throw kguo_exception
+	end if
+	
+	kuf1_pdf.u_add_file(k_attestato_pdf) 
+
+	kst_tab_meca_reportpilota.id_meca = kist_tab_certif.id_meca
+	k_nome_report_pilota = kuf1_meca_reportpilota.u_get_path_nomereport(kst_tab_meca_reportpilota) // get REPORT-PILOTA in PDF
+	if trim(k_nome_report_pilota) > " " then
+		kuf1_pdf.u_add_file(k_nome_report_pilota) // add REPORT-PILOTA in PDF
+	end if
+
+//--- accoda una seconda copia del solo Attestato	
+	k_attestato_pdf = kguo_path.get_temp( ) + kkg.path_sep + "Attestato_" + string(kist_tab_certif.num_certif) + "_CopiaSingola.pdf"
+	kids_certif_stampa.object.DataWindow.Export.PDF.Method = NativePDF!
+	if kids_certif_stampa.saveas(k_attestato_pdf, PDF!, false) < 0 then  // fa PDF del solo ATTESTATO 
+		kst_esito.SQLErrText = "Errore in preparazione PDF dell'Attestato n. " + string(kist_tab_certif.num_certif) // ~n~r"   
+		kst_esito.esito = KKG_ESITO.ko
+		kguo_exception.inizializza( )
+		kguo_exception.set_esito(kst_esito)
+		throw kguo_exception
+	end if
+	kuf1_pdf.u_add_file(k_attestato_pdf) 
+	
+	k_nr_doc_printed = kuf1_pdf.u_print_pdf( )  // stampa i file PDF accantonati:  ATTESTATO + DATI LOTTO + REPORT PILOTA
+	if k_nr_doc_printed < 1 then
+		kst_esito.SQLErrText = "Errore in stampa Attestato n. " + string(kist_tab_certif.num_certif) // ~n~r"   
+		kst_esito.esito = KKG_ESITO.ko
+		kguo_exception.inizializza( )
+		kguo_exception.set_esito(kst_esito)
+		throw kguo_exception
+	end if
+
+	kst_esito.esito = KKG_ESITO.OK
+	k_return ++
+
+catch (uo_exception kuo_exception)
+	throw kuo_exception
+
+finally	
+	if isvalid(kuf1_utility) then destroy kuf1_utility
+	if isvalid(kuf1_meca_reportpilota) then destroy kuf1_meca_reportpilota
+	if isvalid(kuf1_pdf) then destroy kuf1_pdf
+	SetPointer(kkg.pointer_default)
+	
+end try
+
+
+return k_return 
 
 end function
 

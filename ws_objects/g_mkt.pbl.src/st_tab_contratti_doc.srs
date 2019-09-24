@@ -84,6 +84,7 @@ global type st_tab_contratti_doc from structure
 	decimal { 2 }		altro_prezzo
 	string		altro_des
 	string		note_interne		descriptor "comment" = "note non interne (non in stampa)"
+	string		rif_interno_alt		descriptor "comment" = "riferimento interno alternativo"
 	datetime		x_datins
 	string		x_utente
 end type

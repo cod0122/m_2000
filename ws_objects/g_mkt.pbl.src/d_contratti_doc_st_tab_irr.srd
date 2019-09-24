@@ -1,5 +1,5 @@
 ﻿$PBExportHeader$d_contratti_doc_st_tab_irr.srd
-release 17;
+release 19;
 datawindow(units=3 timer_interval=0 color=1073741824 brushmode=0 transparency=0 gradient.angle=0 gradient.color=8421504 gradient.focus=0 gradient.repetition.count=0 gradient.repetition.length=100 gradient.repetition.mode=0 gradient.scale=100 gradient.spread=100 gradient.transparency=0 picture.blur=0 picture.clip.bottom=0 picture.clip.left=0 picture.clip.right=0 picture.clip.top=0 picture.mode=0 picture.scale.x=100 picture.scale.y=100 picture.transparency=0 processing=1 HTMLDW=yes print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 635 print.margin.right = 635 print.margin.top = 635 print.margin.bottom = 635 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes print.background=no print.preview.background=no print.preview.outline=yes hidegrayline=no showbackcoloronxp=no picture.file="" grid.lines=0 selected.mouse=no )
 header(height=2989 color="536870912" transparency="0" gradient.color="8421504" gradient.transparency="0" gradient.angle="0" brushmode="0" gradient.repetition.mode="0" gradient.repetition.count="0" gradient.repetition.length="100" gradient.focus="0" gradient.scale="100" gradient.spread="100" )
 summary(height=0 color="536870912" transparency="0" gradient.color="8421504" gradient.transparency="0" gradient.angle="0" brushmode="0" gradient.repetition.mode="0" gradient.repetition.count="0" gradient.repetition.length="100" gradient.focus="0" gradient.scale="100" gradient.spread="100" )
@@ -19,7 +19,10 @@ table(column=(type=char(4000) updatewhereclause=yes name=prodotto dbname="prodot
          ,trim(ctr.density_x) density_range
          ,('cm ' + trim(cast(ctr.mis_z_1/10 as varchar)) + ' x '  + trim(cast(ctr.mis_x_1/10 as varchar)) + ' x '  + trim(cast(ctr.mis_y_1/10 as varchar)) + '   weight ' + trim(cast(ctr.peso_max_kg as varchar)) + ' kg') size_weight
          ,trim(ctr.e1litm) e1_item_number
-         ,(trim(ctr.quotazione_tipo) + ' ' + trim(cast(id_contratto_doc as varchar)) + '/' +  trim(cast(ctr.anno as varchar))) rif_interno
+    		,CASE 
+      		   WHEN trim(rif_interno_alt) > ' ' THEN trim(rif_interno_alt) 
+		         ELSE (trim(ctr.quotazione_tipo) + ' ' + trim(cast(id_contratto_doc as varchar)) + '/' +  trim(cast(ctr.anno as varchar)))
+      	END rif_interno
          ,concat(cast(format(COALESCE(ctr.prezzo_1, 0.00), 'N2') as varchar), ' €/', trim(COALESCE(ctr.unita_misura, '')))  prezzo
          , ctr.stampa_tradotta stampa_tradotta 
 		FROM v_contratti_doc as ctr 
@@ -85,4 +88,3 @@ export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
 import.xml()
 export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" nativepdf.customsize=0 nativepdf.customorientation=0 nativepdf.pdfstandard=0 nativepdf.useprintspec=no )
 export.xhtml()
- 

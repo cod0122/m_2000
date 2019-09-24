@@ -790,6 +790,8 @@ public function boolean db_riconnetti () throws uo_exception;//---
 boolean k_return=false, k_ritenta=true
 st_esito kst_esito
 int k_riconnessione_ctr=0
+pointer oldpointer
+
 	
 try
 
@@ -801,11 +803,17 @@ try
 	do while k_ritenta and k_riconnessione_ctr < 10
 		
 		try 
-			k_riconnessione_ctr ++
-			db_connetti( )
-			k_ritenta = false
+//--- Puntatore Cursore da attesa.....
+			oldpointer = SetPointer("cur_connection.cur")
 			
-			k_return = true // RI-CONNESSO!!
+			sleep (2) // un attimo di attesa....
+			k_riconnessione_ctr ++
+			
+//--- Connessione al db
+			if x_db_connetti() then
+				k_ritenta = false
+				k_return = true // RI-CONNESSO!!
+			end if
 			
 		catch (uo_exception kuo_exception)
 			kst_esito = kuo_exception.get_st_esito()
@@ -821,6 +829,7 @@ catch (uo_exception kuo1_exception)
 	throw kuo1_exception
 	
 finally
+	SetPointer(oldpointer)
 	
 
 end try

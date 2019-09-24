@@ -25,6 +25,8 @@ private function string u_esporta_dati_aco (long k_id_cliente) throws uo_excepti
 private function long u_elabora_ds_exp_regcdp (long k_id_cliente) throws uo_exception
 private function long u_elabora_ds_exp (ref datastore ads_ds_clienti_cntdep_cfg_xupd) throws uo_exception
 private function long u_elabora_ds_exp_regcdp_xpklist (long k_id_cliente) throws uo_exception
+public function boolean link_call (ref datawindow adw_link, string a_campo_link) throws uo_exception
+public function st_esito anteprima (ref datastore kds_anteprima, st_tab_clienti_cntdep_cfg kst_tab_clienti_cntdep_cfg)
 end prototypes
 
 public subroutine _readme ();//
@@ -203,14 +205,17 @@ private function long u_elabora_ds_exp (ref datastore ads_ds_clienti_cntdep_cfg_
 //----------------------------------------------------------------------------------------------------------
 st_tab_clienti_cntdep_cfg kst_tab_clienti_cntdep_cfg 
 long k_ornumvia_progr, k_row_max, k_row, k_row_xupd
-int k_id_meca_x_len, k_ornumvia_x_len, k_rc
-string k_orrifdes_packinglist, k_id_meca_x, k_ornumvia_x
+int k_idpkl_len, k_ornumvia_x_len, k_rc
+string k_orrifdes_packinglist, k_ornumvia_x, k_idpkl
 st_tab_meca kst_tab_meca
+st_tab_wm_pklist kst_tab_wm_pklist
 kuf_armo kuf1_armo
+kuf_wm_pklist kuf1_wm_pklist
 
 
 try
 	kuf1_armo = create kuf_armo
+	kuf1_wm_pklist = create kuf_wm_pklist
 
 	k_row_max = ads_ds_clienti_cntdep_cfg_xupd.rowcount( )
 	
@@ -220,13 +225,13 @@ try
 	
 		k_row = u_elabora_ds_exp_regcdp(kst_tab_meca.clie_3)
 		if k_row > 0 then
-			k_ornumvia_x = kids_clienti_cntdep_l_xbcode.getitemstring(k_row, "ornumvia")
-			k_id_meca_x = trim(kids_clienti_cntdep_l_xbcode.getitemstring(k_row, "ordocarr"))
+			k_ornumvia_x = kids_clienti_cntdep_l_xbcode.getitemstring(k_row, "ornumvia") //numero registro
+			k_idpkl = trim(kids_clienti_cntdep_l_xbcode.getitemstring(k_row, "orrifdes")) //pakinglistcode
 		else
 			k_row = u_elabora_ds_exp_regcdp_xpklist(kst_tab_meca.clie_3)
 			if k_row > 0 then
-				k_ornumvia_x = kids_clienti_cntdep_l_xpklist.getitemstring(k_row, "ornumvia")
-				k_id_meca_x = trim(kids_clienti_cntdep_l_xpklist.getitemstring(k_row, "ordocarr"))
+				k_ornumvia_x = kids_clienti_cntdep_l_xpklist.getitemstring(k_row, "ornumvia") //numero registro
+				k_idpkl = trim(kids_clienti_cntdep_l_xpklist.getitemstring(k_row, "orrifdes")) //pakinglistcode
 			end if
 		end if
 
@@ -234,9 +239,10 @@ try
 //--- preleva i dati di ritorno dal ds da registrare in tab
 			k_ornumvia_x_len = len(k_ornumvia_x)
 			k_ornumvia_progr = long(left(k_ornumvia_x, k_ornumvia_x_len - 1))
-			k_id_meca_x_len = len(k_id_meca_x)
-			kst_tab_meca.id = long(left(k_id_meca_x, k_id_meca_x_len - 1))
-			kuf1_armo.get_clie(kst_tab_meca)
+			k_idpkl_len = len(k_idpkl)
+			kst_tab_wm_pklist.idpkl = trim(left(k_idpkl, k_idpkl_len - 1))
+			kst_tab_meca.id_wm_pklist = kuf1_wm_pklist.get_id_wm_pklist_da_idpkl(kst_tab_wm_pklist)
+			kuf1_armo.get_id_da_id_wm_pklist(kst_tab_meca)
 	//		k_row_xupd = ads_ds_clienti_cntdep_cfg_xupd.insertrow(0)
 			ads_ds_clienti_cntdep_cfg_xupd.setitem(k_row_xupd, "registro_nr_ultimo", k_ornumvia_progr)
 			ads_ds_clienti_cntdep_cfg_xupd.setitem(k_row_xupd, "id_meca_ultimo", kst_tab_meca.id)
@@ -252,6 +258,8 @@ catch (uo_exception kuo_exception)
 
 finally
 	if isvalid(kuf1_armo) then destroy kuf1_armo
+	if isvalid(kuf1_wm_pklist) then destroy kuf1_wm_pklist
+	
 	
 end try
 
@@ -315,6 +323,142 @@ finally
 end try
 
 return k_row_max
+end function
+
+public function boolean link_call (ref datawindow adw_link, string a_campo_link) throws uo_exception;//--------------------------------------------------------------------------------------------------------------
+//--- Funzione di ZOOM: attiva LINK cliccato 
+//---
+//--- Par. Inut: 
+//---               datawindow con i dati da visualizzare oppure su cui è stato attivato il LINK
+//---               nome campo di LINK 
+//--- 
+//--- Ritorna TRUE tutto OK - FALSE: link non effettuato
+//---
+//--- Lancia EXCEPTION con  ST_ESITO  standard
+//---
+//----------------------------------------------------------------------------------------------------------------
+// 
+long k_rc
+boolean k_return=true
+kuf_elenco kuf1_elenco
+datastore kdsi_elenco_output  
+st_tab_clienti_cntdep_cfg kst_tab_clienti_cntdep_cfg
+st_esito kst_esito
+st_open_w kst_open_w 
+
+
+try
+	
+	SetPointer(kkg.pointer_attesa)
+
+	kdsi_elenco_output = create datastore
+	kst_esito.esito = kkg_esito.ok
+	kst_esito.sqlcode = 0
+	kst_esito.SQLErrText = ""
+	kst_esito.nome_oggetto = this.classname()
+
+	kst_esito = this.anteprima( kdsi_elenco_output, kst_tab_clienti_cntdep_cfg )
+	if kst_esito.esito <> kkg_esito.ok then
+		kguo_exception.inizializza( )
+		kguo_exception.set_esito( kst_esito)
+		throw kguo_exception
+	end if
+
+	if isvalid(adw_link) then
+		adw_link.dataobject = kdsi_elenco_output.dataobject
+		kdsi_elenco_output.rowscopy(1,kdsi_elenco_output.rowcount(),Primary!,adw_link,1,Primary!)
+	end if
+
+	if kdsi_elenco_output.rowcount() > 0 then
+		kst_open_w.flag_modalita = kkg_flag_modalita.elenco
+		kst_open_w.key1 = "Elenco Anagrafiche in Conto Deposito"
+		kst_open_w.key2 = trim(kdsi_elenco_output.dataobject)
+		kst_open_w.key4 = ""
+		kst_open_w.key12_any = kdsi_elenco_output
+		kuf1_elenco = create kuf_elenco
+		kuf1_elenco.u_open(kst_open_w)
+	else
+		kguo_exception.inizializza( )
+		kguo_exception.setmessage(u_get_errmsg_nontrovato(kst_open_w.flag_modalita) )
+		throw kguo_exception
+	end if
+
+catch (uo_exception kuo_exception)
+	throw kuo_exception
+
+finally
+	if isvalid(kuf1_elenco) then destroy kuf1_elenco
+	SetPointer(kkg.pointer_default)
+
+end try
+
+
+return k_return
+
+end function
+
+public function st_esito anteprima (ref datastore kds_anteprima, st_tab_clienti_cntdep_cfg kst_tab_clienti_cntdep_cfg);//====================================================================
+//=== Operazione di Anteprima 
+//===
+//=== Par. Inut: 
+//===               datawindow su cui fare l'anteprima
+//===               dati tabella per estrazione dell'anteprima
+//=== 
+//=== Ritorna tab. ST_ESITO, Esiti: 0=OK; 1=Errore Grave
+//===                                     2=Errore gestito
+//===                                     3=altro errore
+//===                                     100=Non trovato 
+//=== 
+//====================================================================
+// 
+long k_rc
+boolean k_return
+st_open_w kst_open_w
+st_esito kst_esito
+kuf_sicurezza kuf1_sicurezza
+kuf_utility kuf1_utility
+
+
+kst_esito.esito = kkg_esito.ok
+kst_esito.sqlcode = 0
+kst_esito.SQLErrText = ""
+kst_esito.nome_oggetto = this.classname()
+
+kst_open_w = kst_open_w
+kst_open_w.flag_modalita = kkg_flag_modalita.anteprima
+kst_open_w.id_programma = kkg_id_programma_anag
+
+//--- controlla se utente autorizzato alla funzione in atto
+kuf1_sicurezza = create kuf_sicurezza
+k_return = kuf1_sicurezza.autorizza_funzione(kst_open_w)
+destroy kuf1_sicurezza
+
+if not k_return then
+
+	kst_esito.sqlcode = sqlca.sqlcode
+	kst_esito.SQLErrText = "Anteprima non Autorizzata: ~n~r" + "La funzione richiesta non e' stata abilitata"
+	kst_esito.esito = kkg_esito.no_aut
+
+else
+
+	if isvalid(kds_anteprima)  then
+		if kds_anteprima.dataobject = "" or kds_anteprima.dataobject = "d_nulla" then
+			kds_anteprima.dataobject = "d_clienti_l_aco"		
+		end if
+	end if
+
+
+	kds_anteprima.settransobject(sqlca)
+
+	kds_anteprima.reset()	
+//--- retrive dell'attestato 
+	k_rc=kds_anteprima.retrieve("%")
+
+end if
+
+
+return kst_esito
+
 end function
 
 on kuf_clienti_cntdep.create

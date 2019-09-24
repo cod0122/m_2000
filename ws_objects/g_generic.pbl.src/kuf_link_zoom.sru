@@ -126,7 +126,8 @@ choose case a_button
 		, "b_barcode_dosim_l", "b_meca_dosim_barcode_l", "b_dosim_lotto_dosim_l" &
 		, "b_asn", "b_e1doco_lav", "b_e1apid_dett", "b_certif_stampa", "b_contratto_doc_dettaglio" &
 		, "p_memo_alarm_certif" &
-		, "p_memo_alarm_ddt"
+		, "p_memo_alarm_ddt" &
+		, "cb_clienti_cntdep_l"
 		k_return = a_button
 		
 		
@@ -433,6 +434,11 @@ choose case a_nome_link
 		
 	case "meca_reportpilota_id_meca"
 		kuf1_parent = create using "kuf_meca_reportpilota"
+		
+	case "cb_clienti_cntdep_l"
+		kuf1_parent = create using "kuf_clienti_cntdep"
+		
+		
 		
 	case "allegati_cartella" &
 			,"doc_root" &

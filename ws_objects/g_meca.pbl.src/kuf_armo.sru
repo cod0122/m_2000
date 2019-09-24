@@ -205,6 +205,7 @@ public function string u_get_consegna_tempi (ref st_tab_meca kst_tab_meca) throw
 public subroutine set_consegna_ora (st_tab_meca kst_tab_meca) throws uo_exception
 public function integer set_dosimprev (ref st_tab_meca kst_tab_meca) throws uo_exception
 public function boolean if_lotto_chiuso (ref st_tab_meca kst_tab_meca) throws uo_exception
+public function long get_id_meca_da_id_wm_pklist (ref st_tab_meca kst_tab_meca) throws uo_exception
 end prototypes
 
 public function st_esito setta_errore_lav (st_tab_meca kst_tab_meca);//
@@ -9338,7 +9339,7 @@ st_esito kst_esito
 	else
 		kst_tab_meca.id = 0
 		kst_esito.esito = kkg_esito.no_esecuzione
-		kst_esito.SQLErrText = "Tab. righe Lotto (armo): ID riga non indicato, operazione interrotta! "
+		kst_esito.SQLErrText = "Tab. Lotto: WO di E1 non indicato, operazione interrotta! "
 	end if
 	
 return k_return 
@@ -10024,6 +10025,61 @@ uo_exception kuo_exception
 	
 return k_return
 
+
+end function
+
+public function long get_id_meca_da_id_wm_pklist (ref st_tab_meca kst_tab_meca) throws uo_exception;//
+//------------------------------------------------------------------
+//--- Legge MECA 
+//--- 
+//--- 
+//---  inp: kst_tab_meca.id_wm_pklist 
+//---  Out: kst_tab_meca.ID_MECA (l'ultimo)
+//---                                     
+//------------------------------------------------------------------
+//
+long k_return
+st_esito kst_esito
+
+
+	kst_esito.esito = kkg_esito.ok
+	kst_esito.sqlcode = 0
+	kst_esito.SQLErrText = ""
+	kst_esito.nome_oggetto = this.classname()
+
+	kst_tab_meca.id = 0
+
+	if kst_tab_meca.id_wm_pklist > 0 then
+
+		SELECT max(meca.id)
+				 INTO 
+						:kst_tab_meca.id
+				 FROM meca
+				WHERE meca.id_wm_pklist = :kst_tab_meca.id_wm_pklist
+					 using kguo_sqlca_db_magazzino;
+				
+		if kguo_sqlca_db_magazzino.sqlcode < 0 then
+			kst_tab_meca.id = 0
+			kst_esito.sqlcode = kguo_sqlca_db_magazzino.sqlcode
+			kst_esito.SQLErrText = "Errore in ricerca ID Lotto da Id del Packing List, id = '" + string(kst_tab_meca.id_wm_pklist) + "' " &
+										 + "~n~r"  + trim(kguo_sqlca_db_magazzino.SQLErrText)
+			kst_esito.esito = kkg_esito.db_ko
+			kguo_exception.inizializza( )
+			kguo_exception.set_esito(kst_esito)
+			throw kguo_exception
+		end if
+	
+		if kst_tab_meca.id > 0 then
+			k_return = kst_tab_meca.id 
+		end if
+	
+	else
+		kst_tab_meca.id = 0
+		kst_esito.esito = kkg_esito.no_esecuzione
+		kst_esito.SQLErrText = "Tab. Lotto: ID Packing List non indicato, operazione interrotta! "
+	end if
+	
+return k_return 
 
 end function
 

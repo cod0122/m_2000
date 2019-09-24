@@ -110,6 +110,8 @@ type st_meca_chiude from statictext within tabpage_10
 end type
 type dw_10 from uo_d_std_1 within tabpage_10
 end type
+type cb_clienti_cntdep_l from commandbutton within tabpage_10
+end type
 type tabpage_10 from userobject within tab_1
 st_29 st_29
 cb_aco cb_aco
@@ -118,6 +120,7 @@ cb_smart cb_smart
 cb_meca_chiude cb_meca_chiude
 st_meca_chiude st_meca_chiude
 dw_10 dw_10
+cb_clienti_cntdep_l cb_clienti_cntdep_l
 end type
 type tabpage_11 from userobject within tab_1
 end type
@@ -158,7 +161,7 @@ end type
 end forward
 
 global type w_base_personale from w_g_tab_3
-integer width = 2222
+integer width = 3653
 integer height = 1736
 string title = "Proprietà Personali"
 long backcolor = 67108864
@@ -2442,9 +2445,8 @@ boolean flatstyle = true
 end type
 
 type tab_1 from w_g_tab_3`tab_1 within w_base_personale
-integer x = 23
-integer width = 2501
-integer height = 1040
+integer width = 3543
+integer height = 1172
 integer taborder = 40
 boolean fixedwidth = true
 boolean showtext = false
@@ -2514,8 +2516,8 @@ end on
 type tabpage_1 from w_g_tab_3`tabpage_1 within tab_1
 integer x = 146
 integer y = 16
-integer width = 2336
-integer height = 1008
+integer width = 3378
+integer height = 1140
 long backcolor = 67108864
 string text = "Personalizza"
 long tabbackcolor = 67108864
@@ -2547,8 +2549,8 @@ end type
 type tabpage_2 from w_g_tab_3`tabpage_2 within tab_1
 integer x = 146
 integer y = 16
-integer width = 2336
-integer height = 1008
+integer width = 3378
+integer height = 1140
 long backcolor = 67108864
 string text = " la mia Connessione"
 long tabbackcolor = 67108864
@@ -2572,8 +2574,8 @@ type tabpage_3 from w_g_tab_3`tabpage_3 within tab_1
 boolean visible = true
 integer x = 146
 integer y = 16
-integer width = 2336
-integer height = 1008
+integer width = 3378
+integer height = 1140
 long backcolor = 67108864
 string text = " Messaggi~r~n della Procedura"
 long tabbackcolor = 67108864
@@ -2616,8 +2618,8 @@ end type
 type tabpage_4 from w_g_tab_3`tabpage_4 within tab_1
 integer x = 146
 integer y = 16
-integer width = 2336
-integer height = 1008
+integer width = 3378
+integer height = 1140
 long backcolor = 67108864
 string text = " Proprietà Procedura"
 long tabbackcolor = 67108864
@@ -2832,8 +2834,8 @@ end type
 type tabpage_5 from w_g_tab_3`tabpage_5 within tab_1
 integer x = 146
 integer y = 16
-integer width = 2336
-integer height = 1008
+integer width = 3378
+integer height = 1140
 string text = " Contatori Procedura"
 long tabbackcolor = 67108864
 string picturename = "Application!"
@@ -2869,8 +2871,8 @@ end type
 type tabpage_6 from w_g_tab_3`tabpage_6 within tab_1
 integer x = 146
 integer y = 16
-integer width = 2336
-integer height = 1008
+integer width = 3378
+integer height = 1140
 boolean enabled = true
 long backcolor = 67108864
 string text = " DB Esterni~r~n (Pilota, E-ONE, Pk-List...) "
@@ -2955,8 +2957,8 @@ end type
 type tabpage_7 from w_g_tab_3`tabpage_7 within tab_1
 integer x = 146
 integer y = 16
-integer width = 2336
-integer height = 1008
+integer width = 3378
+integer height = 1140
 long backcolor = 67108864
 long tabbackcolor = 67108864
 end type
@@ -2976,8 +2978,8 @@ end type
 type tabpage_8 from w_g_tab_3`tabpage_8 within tab_1
 integer x = 146
 integer y = 16
-integer width = 2336
-integer height = 1008
+integer width = 3378
+integer height = 1140
 boolean enabled = true
 long backcolor = 16777215
 string text = " Ausiliari"
@@ -3112,8 +3114,8 @@ end type
 type tabpage_9 from w_g_tab_3`tabpage_9 within tab_1
 integer x = 146
 integer y = 16
-integer width = 2336
-integer height = 1008
+integer width = 3378
+integer height = 1140
 boolean enabled = true
 long backcolor = 16777215
 string text = " E-Mail"
@@ -4451,8 +4453,8 @@ type tabpage_10 from userobject within tab_1
 boolean visible = false
 integer x = 146
 integer y = 16
-integer width = 2336
-integer height = 1008
+integer width = 3378
+integer height = 1140
 long backcolor = 16777215
 string text = " Kit"
 long tabtextcolor = 33554432
@@ -4466,6 +4468,7 @@ cb_smart cb_smart
 cb_meca_chiude cb_meca_chiude
 st_meca_chiude st_meca_chiude
 dw_10 dw_10
+cb_clienti_cntdep_l cb_clienti_cntdep_l
 end type
 
 on tabpage_10.create
@@ -4476,13 +4479,15 @@ this.cb_smart=create cb_smart
 this.cb_meca_chiude=create cb_meca_chiude
 this.st_meca_chiude=create st_meca_chiude
 this.dw_10=create dw_10
+this.cb_clienti_cntdep_l=create cb_clienti_cntdep_l
 this.Control[]={this.st_29,&
 this.cb_aco,&
 this.st_27,&
 this.cb_smart,&
 this.cb_meca_chiude,&
 this.st_meca_chiude,&
-this.dw_10}
+this.dw_10,&
+this.cb_clienti_cntdep_l}
 end on
 
 on tabpage_10.destroy
@@ -4493,12 +4498,13 @@ destroy(this.cb_smart)
 destroy(this.cb_meca_chiude)
 destroy(this.st_meca_chiude)
 destroy(this.dw_10)
+destroy(this.cb_clienti_cntdep_l)
 end on
 
 type st_29 from statictext within tabpage_10
 integer x = 1285
 integer y = 672
-integer width = 2066
+integer width = 1271
 integer height = 112
 boolean bringtotop = true
 integer textsize = -10
@@ -4669,12 +4675,49 @@ integer height = 256
 integer taborder = 40
 end type
 
+type cb_clienti_cntdep_l from commandbutton within tabpage_10
+integer x = 2523
+integer y = 648
+integer width = 576
+integer height = 112
+integer taborder = 112
+boolean bringtotop = true
+integer textsize = -10
+integer weight = 400
+fontcharset fontcharset = ansi!
+fontpitch fontpitch = variable!
+fontfamily fontfamily = swiss!
+string facename = "Arial"
+string text = "Elenco clienti ACO"
+boolean flatstyle = true
+end type
+
+event clicked;//
+boolean k_return
+datawindow kdw_1
+kuf_link_zoom kuf1_link_zoom
+
+ 
+try
+	kuf1_link_zoom = create kuf_link_zoom
+
+	k_return = kuf1_link_zoom.link_standard_call_p (kdw_1, this.classname( )) 
+
+catch (uo_exception kuo_exception)
+	throw kuo_exception
+	
+finally 
+	if isnull(kuf1_link_zoom) then destroy kuf1_link_zoom
+	
+end try
+end event
+
 type tabpage_11 from userobject within tab_1
 boolean visible = false
 integer x = 146
 integer y = 16
-integer width = 2336
-integer height = 1008
+integer width = 3378
+integer height = 1140
 boolean enabled = false
 long backcolor = 16777215
 string text = "none"
@@ -4702,8 +4745,8 @@ type tabpage_12 from userobject within tab_1
 boolean visible = false
 integer x = 146
 integer y = 16
-integer width = 2336
-integer height = 1008
+integer width = 3378
+integer height = 1140
 long backcolor = 16777215
 string text = "Log Segnalazioni"
 long tabtextcolor = 33554432
@@ -4754,8 +4797,8 @@ type tabpage_13 from userobject within tab_1
 boolean visible = false
 integer x = 146
 integer y = 16
-integer width = 2336
-integer height = 1008
+integer width = 3378
+integer height = 1140
 long backcolor = 67108864
 string text = "Monitor"
 long tabtextcolor = 33554432

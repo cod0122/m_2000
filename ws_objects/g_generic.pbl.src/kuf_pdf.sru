@@ -56,12 +56,12 @@ int k_nr_doc, k_ind, k_nr_doc_printed
 try
 
 	kguo_exception.inizializza()
+	kguo_exception.kist_esito.nome_oggetto = this.classname()
 
 	if ki_stampa_pdf_idx > upperbound(ki_stampa_pdf) then
 		k_nr_doc = upperbound(ki_stampa_pdf)  // Mooolto strano questa sforamento della tabella!!!
-		kguo_exception.kist_esito.SQLErrText = "Stampa PDF, indice interno " + string(ki_stampa_pdf_idx) + " stranamente maggiore della tabella " + string(k_nr_doc) + " !!! Non blocco l'esecuzione."
 		kguo_exception.kist_esito.esito = kkg_esito.ko
-		kguo_exception.kist_esito.nome_oggetto = this.classname()
+		kguo_exception.kist_esito.SQLErrText = "Stampa PDF, indice interno " + string(ki_stampa_pdf_idx) + " stranamente maggiore della tabella " + string(k_nr_doc) + " !!! Non blocco l'esecuzione."
 	else
 		k_nr_doc = ki_stampa_pdf_idx
 	end if
@@ -70,7 +70,7 @@ try
 	for k_ind = 1 to k_nr_doc
 		try
 			if ki_stampa_pdf[k_ind] > " " then
-				sleep(1)
+				if k_ind > 1 then sleep(2)
 				if this.u_print_esegui(ki_stampa_pdf[k_ind]) then
 					k_nr_doc_printed ++
 				else

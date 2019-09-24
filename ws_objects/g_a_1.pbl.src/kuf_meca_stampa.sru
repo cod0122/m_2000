@@ -235,7 +235,6 @@ string k_nome_report //, k_nome_report_decripted
 st_esito kst_esito
 st_tab_meca_reportpilota kst_tab_meca_reportpilota
 kuf_meca_reportpilota kuf1_meca_reportpilota
-//kuf_utility kuf1_utility
 
 
 kst_esito.esito = kkg_esito.ok
@@ -245,7 +244,6 @@ kst_esito.nome_oggetto = this.classname()
 
 try
 
-//	kuf1_utility = create kuf_utility
 	kuf1_meca_reportpilota = create kuf_meca_reportpilota
 
 //--- aggiunge all'array il percorso del Report Pilota
@@ -253,11 +251,6 @@ try
 	k_nome_report = kuf1_meca_reportpilota.u_get_path_nomereport(kst_tab_meca_reportpilota)
 	if trim(k_nome_report) > " " then
 		u_add_stampa_pdf(k_nome_report)   // aggiunge all'array il nome del report 
-//		//--- il Report Pilota deve essere 'decriptato' anche se non ne capisco il motivo, quindo lo copio nella TEMP
-//		k_nome_report_decripted = kguo_path.get_temp( ) + KKG.PATH_SEP + kst_tab_meca_reportpilota.nomereport
-//		if kuf1_utility.u_pdf_decrypt(k_nome_report, k_nome_report_decripted) then
-//			u_add_stampa_pdf(k_nome_report_decripted)   // aggiunge all'array il nome del report generato
-//		end if
 	end if
 
 catch (uo_exception kuo_exception)
@@ -266,7 +259,6 @@ catch (uo_exception kuo_exception)
 	
 finally
 	if isvalid(kuf1_meca_reportpilota) then destroy kuf1_meca_reportpilota
-//	if isvalid(kuf1_utility) then destroy kuf1_utility
 
 end try
 

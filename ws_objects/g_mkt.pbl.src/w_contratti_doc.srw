@@ -1485,6 +1485,7 @@ if tab_1.tabpage_3.dw_3.rowcount( ) > 0 then
 	kst_tab_contratti_doc.note_qtax = tab_1.tabpage_3.dw_3.getitemstring(1, "note_qtax")
 	kst_tab_contratti_doc.contratti_des = tab_1.tabpage_3.dw_3.getitemstring(1, "contratti_des")
 	kst_tab_contratti_doc.id_sd_md = tab_1.tabpage_3.dw_3.getitemnumber(1, "id_sd_md")
+	kst_tab_contratti_doc.rif_interno_alt = tab_1.tabpage_3.dw_3.getitemstring( 1, "rif_interno_alt")
 end if
 
 return kst_tab_contratti_doc

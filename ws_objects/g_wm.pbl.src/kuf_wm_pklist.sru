@@ -50,6 +50,7 @@ public function boolean u_open (st_wm_pklist kst_wm_pklist[], st_open_w kst_open
 public function boolean set_da_importare (st_wm_pklist kst_wm_pklist) throws uo_exception
 public function boolean if_tipo_interna (ref st_wm_pklist kst_wm_pklist) throws uo_exception
 public function boolean if_tipo_cliente (ref st_wm_pklist kst_wm_pklist) throws uo_exception
+public function long get_id_wm_pklist_da_idpkl (ref st_tab_wm_pklist kst_tab_wm_pklist) throws uo_exception
 end prototypes
 
 public function boolean u_open_applicazione (ref st_tab_wm_pklist kst_tab_wm_pklist, string k_flag_modalita);//---
@@ -828,6 +829,61 @@ return k_return
 
 
 
+
+end function
+
+public function long get_id_wm_pklist_da_idpkl (ref st_tab_wm_pklist kst_tab_wm_pklist) throws uo_exception;//
+//------------------------------------------------------------------
+//--- Legge ultimo codice packing list ID_WM_PKLIST del Movimento
+//--- 
+//--- 
+//---  input: st_tab_wm_pklist.idpkl (packinglistcode) 
+//---  out/return: kst_tab_wm_pklist.id_wm_pklist
+//---  exception: ST_ESITO, Esiti: 0=OK; 100=not found
+//---                                     1=errore grave
+//---                                     2=errore > 0
+//---                                     
+//------------------------------------------------------------------
+//
+long k_return = 0
+st_esito kst_esito
+
+
+try
+	
+	kst_esito.esito = kkg_esito.ok
+	kst_esito.sqlcode = 0
+	kst_esito.SQLErrText = ""
+	kst_esito.nome_oggetto = this.classname()
+
+	SELECT id_wm_pklist
+			 INTO :kst_tab_wm_pklist.id_wm_pklist
+			 FROM wm_pklist
+			WHERE idpkl = :kst_tab_wm_pklist.idpkl
+				 using kguo_sqlca_db_magazzino;
+			
+	if kguo_sqlca_db_magazzino.sqlcode < 0 then
+		kst_esito.sqlcode = kguo_sqlca_db_magazzino.sqlcode
+		kst_esito.SQLErrText = "Errore in lettuta 'cod. Packing List' in archivio Packing List (idpkl " + string(kst_tab_wm_pklist.idpkl) + ") " &
+									 + "~n~r"  + trim(kguo_sqlca_db_magazzino.SQLErrText)
+		kst_esito.esito = kkg_esito.db_ko
+		kguo_exception.inizializza( )
+		kguo_exception.set_esito(kst_esito)
+		throw kguo_exception
+	end if
+
+	if isnull(kst_tab_wm_pklist.id_wm_pklist) then kst_tab_wm_pklist.id_wm_pklist = 0
+
+	k_return = kst_tab_wm_pklist.id_wm_pklist
+
+catch (uo_exception kuo_exception)
+	throw kuo_exception
+
+finally
+
+end try
+
+return k_return
 
 end function
 
