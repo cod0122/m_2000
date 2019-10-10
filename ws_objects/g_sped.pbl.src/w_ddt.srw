@@ -983,7 +983,8 @@ try
 			end if
 			if tab_1.tabpage_1.dw_1.getitemstring(1, "porto") > " " then
 			else
-				tab_1.tabpage_1.dw_1.setitem( 1, "porto", "ASS.TO")
+				//tab_1.tabpage_1.dw_1.setitem( 1, "porto", "ASS.TO")
+				tab_1.tabpage_1.dw_1.setitem( 1, "porto", "")
 			end if
 			if tab_1.tabpage_1.dw_1.getitemstring(1, "mezzo") > " " then
 			else

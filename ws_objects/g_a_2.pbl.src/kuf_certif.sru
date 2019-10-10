@@ -23,6 +23,7 @@ public string ki_stampante[2]
 
 
 end variables
+
 forward prototypes
 public subroutine if_isnull (ref st_tab_certif kst_tab_certif)
 public function st_esito anteprima (ref datawindow kdw_anteprima, st_tab_certif kst_tab_certif)
@@ -1322,9 +1323,9 @@ st_tab_memo kst_tab_memo
 	k_dataoggi = kguo_g.get_dataoggi()
 	kst_treeview_data_any = kst_treeview_data.struttura
 
-//--- In questo caso la data parte da oggi meno 3 gg
+//--- In questo caso la data parte da oggi meno 15 gg
 	if k_tipo_oggetto = kuf1_treeview.kist_treeview_oggetto.certif_uff_ddt_dett then
-		k_data_da = relativedate(k_dataoggi,-3)
+		k_data_da = relativedate(k_dataoggi,-15)
 		k_data_a = date(9999,12,31)
 	else	
 	

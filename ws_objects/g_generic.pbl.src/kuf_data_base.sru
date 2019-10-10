@@ -1199,23 +1199,23 @@ CHOOSE CASE kst_errori_gestione.SQLdbcode
 			errori_scrivi_esito("W", kst_esito) 
 //--- tentativo di connessione al db.....
 			if not kguo_sqlca_db_magazzino.db_riconnetti( ) then
-				MessageBox("Programma non operativo", "Persa la Connessione dati al DB, il programma verrà chiuso.", information!)
+				kguo_exception.messaggio_utente("Programma non operativo", "Persa la Connessione dati al DB, il programma verrà chiuso.")
 				halt close
+			else
+				kst_esito.esito = kkg_esito.ok
+				kst_esito.sqlcode = 0
+				kst_esito.sqlerrtext = "Ri-connessione al DB conclusa con successo. " 
+				errori_scrivi_esito("W", kst_esito) 
 			end if
 		catch (uo_exception kuo_exception)
-			if MessageBox("Programma non operativo", "Persa la Connessione al DB, vuoi ritentare? Altrimenti il programma verrà chiuso.", question!, yesno!, 2) = 1 then
-				kguo_sqlca_db_magazzino.db_disconnetti( )
-				kguo_sqlca_db_magazzino.db_connetti( )
-			else
-				halt close
-			end if
+			kguo_exception.messaggio_utente("Programma non operativo", "Persa la Connessione al DB, prego chiudere e riavviare la Procedura")
 		finally
 
 		end try
 		
 //		"~n~r"
 	CASE 121  // errore strano interno
-		MessageBox("Connessione di rete Interrotta",  &
+		kguo_exception.messaggio_utente("Connessione di rete Interrotta",  &
 			"Riconnettersi alla rete e riaprire questa funzione. Altrimenti chiudere la Procedura.~n~r" &
 			+ " Oggetto: " + trim(kst_errori_gestione.nome_oggetto)   &
 			+ " dbcode: " + string(kst_errori_gestione.sqldbcode)  &
@@ -1225,7 +1225,7 @@ CHOOSE CASE kst_errori_gestione.SQLdbcode
 		
 //		"~n~r"
 	CASE -04  // errore strano interno
-		MessageBox("Codice programma errato",  &
+		kguo_exception.messaggio_utente("Codice programma errato",  &
 			"Probabile errore interno di programmazione. " &
 			+ "Non è possibile proseguire correttamente l'operazione!!~n~r" + trim(kst_errori_gestione.SQLErrText)  &
 			+ "- Oggetto: " + trim(kst_errori_gestione.nome_oggetto)   &

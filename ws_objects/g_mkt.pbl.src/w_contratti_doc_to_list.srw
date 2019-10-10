@@ -59,7 +59,7 @@ st_tab_contratti_doc kst_tab_contratti_doc
 			k_ctr = messagebox("Operazione DEFINITIVA", "Proseguire con l'operazione di trasferimento dei Contratti?", Question!, yesno!, 2)
 		else
 			if kst_contratti_doc_to_listini.k_simulazione = "M" then
-				k_ctr = messagebox("Operazione DEFINITIVA", "Dovrai creare Conferma Ordine e Listini manualmente, sei sicuro di voler proseguire?", Question!, yesno!, 2)
+				k_ctr = messagebox("Operazione DEFINITIVA", "Dovrai creare la Conferma Ordine e il Listino manualmente, sei sicuro di voler proseguire?", Question!, yesno!, 2)
 			else
 				k_ctr = 1  // simulazione non chiedo nulla
 			end if

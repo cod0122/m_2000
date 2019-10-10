@@ -828,6 +828,17 @@ datawindowchild  kdwc_clienti_des, kdwc_clienti, kdwc_clie_settori, kdwc_gru, kd
 	k_rc = tab_1.tabpage_1.dw_1.getchild("id_listino_voce_1", kdwc_x)
 	k_rc = kdwc_x.settransobject(sqlca)
 	k_rc = kdwc_x.insertrow(1)
+//--- Attivo dw Voci-Prezzi
+	k_rc = tab_1.tabpage_1.dw_1.getchild("id_listino_voce_1", kdwc_x)
+	k_rc = kdwc_x.settransobject(sqlca)
+	k_rc = kdwc_x.insertrow(1)
+//--- Attivo dw Venditore
+	k_rc = tab_1.tabpage_1.dw_1.getchild("venditore_nome", kdwc_x)
+	k_rc = kdwc_x.settransobject(sqlca)
+	k_rc = kdwc_x.insertrow(1)
+	k_rc = tab_1.tabpage_1.dw_1.getchild("venditore_ruolo", kdwc_x)
+	k_rc = kdwc_x.settransobject(sqlca)
+	k_rc = kdwc_x.insertrow(1)
 
 
 
@@ -1423,7 +1434,7 @@ kst_tab_contratti_doc.acconto_cod_pag = tab_1.tabpage_1.dw_1.getitemnumber( 1, "
 kst_tab_contratti_doc.fattura_da = tab_1.tabpage_1.dw_1.getitemstring( 1, "fattura_da")
 kst_tab_contratti_doc.altre_condizioni = tab_1.tabpage_1.dw_1.getitemstring( 1, "altre_condizioni")
 kst_tab_contratti_doc.esito_operazioni_ts_operazione = tab_1.tabpage_1.dw_1.getitemdatetime( 1, "esito_operazioni_ts_operazione")
-//kst_tab_contratti_doc.form_di_stampa = tab_1.tabpage_1.dw_1.getitemstring( 1, "form_di_stampa")
+kst_tab_contratti_doc.form_di_stampa = tab_1.tabpage_1.dw_1.getitemstring( 1, "form_di_stampa")
 kst_tab_contratti_doc.flg_fatt_dopo_valid = tab_1.tabpage_1.dw_1.getitemstring( 1, "flg_fatt_dopo_valid")	
 kst_tab_contratti_doc.id_meca_causale = tab_1.tabpage_1.dw_1.getitemnumber( 1, "id_meca_causale")
 
@@ -1442,6 +1453,8 @@ kst_tab_contratti_doc.stoccaggio_prezzo = tab_1.tabpage_1.dw_1.getitemnumber( 1,
 kst_tab_contratti_doc.stoccaggio_des = tab_1.tabpage_1.dw_1.getitemstring( 1, "stoccaggio_des")
 kst_tab_contratti_doc.altro_prezzo = tab_1.tabpage_1.dw_1.getitemnumber( 1, "altro_prezzo")	
 kst_tab_contratti_doc.altro_des = tab_1.tabpage_1.dw_1.getitemstring( 1, "altro_des")
+kst_tab_contratti_doc.venditore_nome = tab_1.tabpage_1.dw_1.getitemstring( 1, "venditore_nome")
+kst_tab_contratti_doc.venditore_ruolo = tab_1.tabpage_1.dw_1.getitemstring( 1, "venditore_ruolo")
 
 
 kst_tab_contratti_doc.x_datins = tab_1.tabpage_1.dw_1.getitemdatetime( 1, "x_datins")
@@ -2373,7 +2386,9 @@ if ki_st_open_w.flag_modalita = kkg_flag_modalita.inserimento or  ki_st_open_w.f
 					or dwo.name = "analisi_lab_des" &
 					or dwo.name = "stoccaggio_des" &
 					or dwo.name = "logistica_des" &
-					or dwo.name = "altro_des" then
+					or dwo.name = "altro_des" &
+					or dwo.name = "venditore_nome" &
+					or dwo.name = "venditore_ruolo" then
 			this.getchild(dwo.name, kdwc_1)
 			k_rc = kdwc_1.settransobject(sqlca)
 			if kdwc_1.rowcount() < 2 then

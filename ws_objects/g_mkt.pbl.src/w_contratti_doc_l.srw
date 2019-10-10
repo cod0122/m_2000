@@ -36,12 +36,12 @@ protected subroutine attiva_menu ()
 protected subroutine smista_funz (string k_par_in)
 private subroutine cambia_periodo_elenco ()
 protected subroutine open_start_window ()
-public subroutine stampa_doc_lancia ()
 private subroutine stampa_doc ()
 private function any popola_array_da_lista ()
 public subroutine call_crea_listino ()
 private subroutine call_memo_old ()
 public function integer u_retrieve_dw_lista ()
+public subroutine stampa_doc_lancia (integer k_tipo_stampa)
 end prototypes
 
 private function string cancella ();//
@@ -266,59 +266,26 @@ kiuf_contratti_doc = create kuf_contratti_doc
 
 end subroutine
 
-public subroutine stampa_doc_lancia ();//--
-//--- Lancia Stampa delle fatture 
-//---
-int k_idx
-st_esito kst_esito
-st_tab_contratti_doc kst_tab_contratti_doc []
-
-
-try 
-	kst_tab_contratti_doc[] = popola_array_da_lista() // popola array con i doc selezionati per fare la stampa
-	if upperbound(kst_tab_contratti_doc) > 0 then
-
-		for k_idx = 1 to upperbound(kst_tab_contratti_doc)
-	
-			if not isnull(kst_tab_contratti_doc) and kst_tab_contratti_doc[k_idx].id_contratto_doc > 0 then
-			
-				if not isnull(kst_tab_contratti_doc) and kst_tab_contratti_doc[k_idx].id_contratto_doc > 0 then
-				
-					if dw_stampa.object.rb_stampa[1] = 0 then
-						
-						kiuf_contratti_doc.stampa_documento_prova( kst_tab_contratti_doc [k_idx])
-					else
-						
-						kiuf_contratti_doc.stampa_documento_definitiva(  kst_tab_contratti_doc [k_idx])
-					end if
-				end if
-	
-			end if
-		next	
-			
-	else
-		kguo_exception.setmessage( "Selezionare almeno un Documento da stampare")
-		kguo_exception.messaggio_utente( )
-	end if
-
-	
-	
-catch (uo_exception kuo_exception)
-	kuo_exception.messaggio_utente()
-	
-finally
-
-end try
-
-
-
-end subroutine
-
 private subroutine stampa_doc ();//---
 //--- Visualizza il box x di stampa 
 //---
+st_tab_contratti_doc kst_tab_contratti_doc
 
-dw_stampa.event ue_visibile(not dw_stampa.visible)
+
+try
+	kst_tab_contratti_doc.id_contratto_doc = dw_lista_0.getitemnumber(dw_lista_0.getrow(), "id_contratto_doc")
+	if kiuf_contratti_doc.get_stato(kst_tab_contratti_doc) <> kiuf_contratti_doc.kki_stato_stampato then
+		dw_stampa.event ue_visibile(not dw_stampa.visible)
+	else
+		if messagebox("Stampa Contratti", "Ristampare la Quotazione Selezionata/e", question!, yesno!, 1) = 1 then
+			stampa_doc_lancia(0)
+		end if
+	end if
+
+catch (uo_exception kuo_exception)
+	kuo_exception.messaggio_utente()
+	
+end try
 
 end subroutine
 
@@ -473,6 +440,55 @@ return k_return
 	
 
 end function
+
+public subroutine stampa_doc_lancia (integer k_tipo_stampa);//--
+//--- Lancia Stampa delle fatture 
+//--- Inp: k_tipo_stampa 0=di Prova/Ristampa, 1=Definitiva
+//---
+int k_idx
+st_esito kst_esito
+st_tab_contratti_doc kst_tab_contratti_doc []
+
+
+try 
+	kst_tab_contratti_doc[] = popola_array_da_lista() // popola array con i doc selezionati per fare la stampa
+	if upperbound(kst_tab_contratti_doc) > 0 then
+
+		for k_idx = 1 to upperbound(kst_tab_contratti_doc)
+	
+			if not isnull(kst_tab_contratti_doc) and kst_tab_contratti_doc[k_idx].id_contratto_doc > 0 then
+			
+				if not isnull(kst_tab_contratti_doc) and kst_tab_contratti_doc[k_idx].id_contratto_doc > 0 then
+				
+					if k_tipo_stampa = 0 then
+						
+						kiuf_contratti_doc.stampa_documento_prova( kst_tab_contratti_doc [k_idx])
+					else
+						
+						kiuf_contratti_doc.stampa_documento_definitiva(  kst_tab_contratti_doc [k_idx])
+					end if
+				end if
+	
+			end if
+		next	
+			
+	else
+		kguo_exception.setmessage( "Selezionare almeno un Documento da stampare")
+		kguo_exception.messaggio_utente( )
+	end if
+
+	
+	
+catch (uo_exception kuo_exception)
+	kuo_exception.messaggio_utente()
+	
+finally
+
+end try
+
+
+
+end subroutine
 
 on w_contratti_doc_l.create
 int iCurrent
@@ -962,7 +978,7 @@ end event
 type dw_stampa from uo_d_std_1 within w_contratti_doc_l
 integer x = 215
 integer y = 1236
-integer width = 1166
+integer width = 1390
 integer height = 504
 integer taborder = 80
 boolean bringtotop = true
@@ -992,7 +1008,7 @@ if dwo.name = "b_ok" then
 	
 	oldpointer = SetPointer(HourGlass!)
 	
-	stampa_doc_lancia()
+	stampa_doc_lancia(dw_stampa.object.rb_stampa[1])
 	
 	if dw_stampa.object.rb_stampa[1] = 1 then  // se definitiva rilegge 
 	

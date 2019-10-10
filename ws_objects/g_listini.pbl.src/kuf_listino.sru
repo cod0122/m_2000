@@ -106,6 +106,7 @@ public function integer if_e1litm_x_contratto (st_tab_listino ast_tab_listino) t
 public function long tb_gia_spedito (st_tab_listino kst_tab_listino) throws uo_exception
 public function long get_id_max () throws uo_exception
 public function long get_id_listini (ref st_tab_listino kst_tab_listino[]) throws uo_exception
+public function decimal get_prezzo_dosimetro () throws uo_exception
 end prototypes
 
 public function integer autorizza_campi (ref datawindow kdw_listino);//---
@@ -2788,7 +2789,7 @@ end function
 
 public subroutine get_prezzi123 (ref st_tab_listino kst_tab_listino) throws uo_exception;//---
 //--- Torna i Prezzi 1 2 3 
-//--- Inp: st_tab_listino.id_listino
+//--- Inp: st_tab_listino.id
 //--- Out: st_tab_listino con i prezzi 1-2-3
 //---
 st_esito kst_esito
@@ -3570,6 +3571,63 @@ end try
 
 return k_return
 
+
+end function
+
+public function decimal get_prezzo_dosimetro () throws uo_exception;//
+//------------------------------------------------------------------
+//--- Torna il prezzo del dosimetro
+//--- 
+//---  input: 
+//---  ret: prezzo
+//---                                     
+//------------------------------------------------------------------
+//
+dec{2} k_return
+st_tab_listino kst_tab_listino
+st_esito kst_esito
+kuf_base kuf1_base
+string k_base
+
+try
+	
+	kst_esito.esito = kkg_esito.ok
+	kst_esito.sqlcode = 0
+	kst_esito.SQLErrText = ""
+	kst_esito.nome_oggetto = this.classname()
+
+	kuf1_base = create kuf_base
+	k_base = kuf1_base.prendi_dato_base("e1_id_listino_dsm_tof554701")
+	if left(k_base,1) <> "0" then
+		kst_esito.esito = kkg_esito.db_ko  
+		kst_esito.sqlcode = 0
+		kst_esito.SQLErrText = "Errore in lettura codice Listino Dosimetro in archivio Proprietà. Esito = " + mid(k_base,2)
+		kguo_exception.inizializza( )
+		kguo_exception.set_esito(kst_esito)
+		throw kguo_exception
+	end if
+
+	kst_tab_listino.id	= long(mid(k_base,2))
+
+	if kst_tab_listino.id > 0 then
+		get_prezzi123(kst_tab_listino)
+
+		if kst_tab_listino.prezzo <> 0 then
+			k_return = kst_tab_listino.prezzo
+		end if		
+	end if
+	
+catch (uo_exception kuo_exception)
+	throw kguo_exception
+
+finally
+	if isvalid(kuf1_base) then destroy kuf1_base
+	
+end try
+
+	
+
+return k_return
 
 end function
 

@@ -11,7 +11,7 @@ global kuf_sped_ddt kuf_sped_ddt
 type variables
 //
 //OLD public string ki_dw_stampa_ddt = "d_ddt_st_ed1_08_2009"  
-public string ki_dw_stampa_ddt = "d_ddt_st_ed5_05_2016" //"d_ddt_st_ed4_09_2015" //"d_ddt_st_ed3_05_2011" //"d_ddt_st_ed2_08_2010"
+public string ki_dw_stampa_ddt = "d_ddt_st_ed7_10_2019" //"d_ddt_st_ed5_05_2016" //"d_ddt_st_ed4_09_2015" //"d_ddt_st_ed3_05_2011" //"d_ddt_st_ed2_08_2010"
 private  st_ddt_stampa kist_ddt_stampa[]
 public datastore kids_stampa_ddt
 private kuf_sped kiuf_sped
@@ -618,7 +618,7 @@ long k_riga
 		case "V"
 			kids_stampa_ddt.setitem(k_riga, "trasporto",  "Vettore")  
 		case else
-			kids_stampa_ddt.setitem(k_riga, "trasporto",  "Vettore")  
+			kids_stampa_ddt.setitem(k_riga, "trasporto",  " ")  
 	end choose
 
 	if trim(kds_ddt_stampa.object.sped_cura_trasp[k_riga_dw]) <> "V" then

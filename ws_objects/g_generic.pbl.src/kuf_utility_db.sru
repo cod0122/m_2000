@@ -1678,7 +1678,7 @@ pointer oldpointer  // Declares a pointer variable
 		+ " ,trim(JSON_VALUE(ctr.dati_contratto ,'$.note')) note " & 
 		+ " ,trim(JSON_VALUE(ctr.dati_contratto ,'$.note_audit')) note_audit " & 
 		+ " ,trim(JSON_VALUE(ctr.dati_contratto ,'$.note_fasi_operative')) note_fasi_operative " & 
-		+ " ,JSON_VALUE(ctr.dati_contratto ,'$.iva') iva " & 
+		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.iva') > '0' then convert(INTEGER, JSON_VALUE(ctr.dati_contratto ,'$.iva')) else 0 end iva " & 
 		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.cod_pag') > '0' then convert(INTEGER, JSON_VALUE(ctr.dati_contratto ,'$.cod_pag')) else 0 end cod_pag " & 
 		+ " ,trim(JSON_VALUE(ctr.dati_contratto ,'$.banca')) banca " & 
 		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.abi') > '0' then convert(INTEGER, JSON_VALUE(ctr.dati_contratto ,'$.abi')) else 0 end abi " & 
@@ -1793,10 +1793,14 @@ pointer oldpointer  // Declares a pointer variable
 		+ " , case when JSON_VALUE(ctr.dati_contratto ,'$.altro_prezzo') > '0' then convert(float, JSON_VALUE(ctr.dati_contratto ,'$.altro_prezzo')) else 0.00 end altro_prezzo " & 
 		+ " , trim(JSON_VALUE(ctr.dati_contratto, '$.altro_des')) altro_des " &
 		+ " , trim(JSON_VALUE(ctr.dati_contratto, '$.rif_interno_alt')) rif_interno_alt " &
+		+ " , trim(JSON_VALUE(ctr.dati_contratto, '$.venditore_nome')) venditore_nome " &
+		+ " , trim(JSON_VALUE(ctr.dati_contratto, '$.venditore_ruolo')) venditore_ruolo " &
 		+ " , ctr.x_datins " &
 		+ " , ctr.x_utente " &
 		+ " FROM contratti_doc as ctr " 
-		
+
+//				+ " ,JSON_VALUE(ctr.dati_contratto ,'$.iva') iva " & 
+
 	EXECUTE IMMEDIATE "drop VIEW v_contratti_doc " using sqlca;
 
 	EXECUTE IMMEDIATE :k_sql using sqlca;

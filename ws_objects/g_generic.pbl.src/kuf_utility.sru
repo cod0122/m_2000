@@ -4665,8 +4665,8 @@ end for
 end subroutine
 
 public function string u_num_itatousa2 (string a_stringa, boolean a_forzaconversione);//
-//--- restituisce campo con numerico in formato inglese 
-//--- input: il numero da covertire + TRUE se forzare conversione anche se già il pc è impostato in inglese
+//--- Campo numerico da formato ITA a USA
+//--- input: il numero da convertire + TRUE se forzare conversione anche se già il pc è impostato in inglese
 //--- Out: il numero convertito
 //--- esempio  '-1.127.123,75'    torna   '-1,127,123.75'
 //

@@ -75,7 +75,7 @@ st_open_w k_st_open_w
 	if k_flag_modalita = kkg_flag_modalita.inserimento then
 		kst_tab_g_0.id = 0
 		kst_tab_g_0.idx = ""
-	else
+	end if
 
 	if not isnull(kst_tab_g_0.id) then 
 		
@@ -101,7 +101,7 @@ st_open_w k_st_open_w
 		k_return = true
 	end if
 
-end if
+
 
 
 return k_return

@@ -85,6 +85,8 @@ global type st_tab_contratti_doc from structure
 	string		altro_des
 	string		note_interne		descriptor "comment" = "note non interne (non in stampa)"
 	string		rif_interno_alt		descriptor "comment" = "riferimento interno alternativo"
+	string		venditore_nome		descriptor "comment" = "nome del venditore della Quotazione"
+	string		venditore_ruolo		descriptor "comment" = "ruolo del venditore della Quotazione (es. resp. vendite)"
 	datetime		x_datins
 	string		x_utente
 end type

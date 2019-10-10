@@ -46,7 +46,6 @@ public function boolean get_form_di_stampa (ref st_tab_contratti_doc kst_tab_con
 public function st_esito get_offerta_data (ref st_tab_contratti_doc kst_tab_contratti_doc) throws uo_exception
 public function long stampa_esporta_digitale (st_docprod_esporta kst_docprod_esporta) throws uo_exception
 public function boolean if_esiste (st_tab_contratti_doc kst_tab_contratti_doc) throws uo_exception
-public function boolean get_stato (ref st_tab_contratti_doc kst_tab_contratti_doc) throws uo_exception
 private function st_esito set_stato (ref st_tab_contratti_doc kst_tab_contratti_doc)
 private function boolean set_form_di_stampa (st_tab_contratti_doc kst_tab_contratti_doc) throws uo_exception
 private function boolean set_data_stampa (st_tab_contratti_doc kst_tab_contratti_doc) throws uo_exception
@@ -73,6 +72,7 @@ private function long u_conv_conferma_ordine_to_listino_irr (ref datastore kds_c
 public function st_esito anteprima_dettaglio (ref datawindow kdw_anteprima, st_tab_contratti_doc kst_tab_contratti_doc)
 public function st_esito anteprima_dettaglio (ref datastore kdw_anteprima, st_tab_contratti_doc kst_tab_contratti_doc)
 public function string get_stato_descrizione (ref st_tab_contratti_doc kst_tab_contratti_doc)
+public function string get_stato (ref st_tab_contratti_doc kst_tab_contratti_doc) throws uo_exception
 end prototypes
 
 public function st_esito anteprima (ref datastore kdw_anteprima, st_tab_contratti_doc kst_tab_contratti_doc);//
@@ -366,6 +366,8 @@ if isnull(kst_tab_contratti_doc.acconto_cod_pag) then kst_tab_contratti_doc.acco
 if isnull(kst_tab_contratti_doc.id_meca_causale ) then kst_tab_contratti_doc.id_meca_causale = 0
 
 if isnull(kst_tab_contratti_doc.rif_interno_alt ) then kst_tab_contratti_doc.rif_interno_alt = ""
+if isnull(kst_tab_contratti_doc.venditore_nome ) then kst_tab_contratti_doc.venditore_nome = ""
+if isnull(kst_tab_contratti_doc.venditore_ruolo ) then kst_tab_contratti_doc.venditore_ruolo = ""
 
 if isnull(kst_tab_contratti_doc.x_datins) then kst_tab_contratti_doc.x_datins = datetime(date(0))
 if isnull(kst_tab_contratti_doc.x_utente) then kst_tab_contratti_doc.x_utente = " "
@@ -1438,63 +1440,6 @@ return k_return
 
 end function
 
-public function boolean get_stato (ref st_tab_contratti_doc kst_tab_contratti_doc) throws uo_exception;//
-//----------------------------------------------------------------------------------------------------------------------------
-//--- 
-//--- Legge lo STATO
-//--- 
-//--- 
-//--- Input: st_tab_contratti_doc.id_contratto_doc
-//--- Out: stato
-//---
-//--- Ritorna true = ok
-//---
-//--- Lancia EXCEPTION x errore
-//---
-//----------------------------------------------------------------------------------------------------------------------------
-//
-boolean k_return = false
-st_esito kst_esito
-
-
-
-kst_esito.esito = kkg_esito.ok
-kst_esito.sqlcode = 0
-kst_esito.SQLErrText = ""
-kst_esito.nome_oggetto = this.classname()
-
-
-	select stato
-	  into :kst_tab_contratti_doc.stato
-	  from contratti_doc 
-	  where id_contratto_doc = :kst_tab_contratti_doc.id_contratto_doc  
-	  using sqlca;
-	
-
-	if sqlca.sqlcode < 0 then
-		kst_esito.sqlcode = sqlca.sqlcode
-		kst_esito.SQLErrText = "Legge lo Stato del Contratto R. & D. (tab. contratti_doc id=" + string(kst_tab_contratti_doc.id_contratto_doc) + " " + "): " + trim(SQLCA.SQLErrText)
-									 
-		kst_esito.esito = kkg_esito.db_ko
-		
-		kguo_exception.inizializza( )
-		kguo_exception.set_esito(kst_esito)		
-		throw kguo_exception
-		
-	end if
-	
-	if len(trim(kst_tab_contratti_doc.stato)) > 0 then
-	else
-		kst_tab_contratti_doc.stato = kki_STATO_nuovo
-	end if
-	
-	k_return = true 
-
-return k_return
-
-
-end function
-
 private function st_esito set_stato (ref st_tab_contratti_doc kst_tab_contratti_doc);//
 //====================================================================
 //=== Set del flag STATO
@@ -2111,6 +2056,17 @@ try
 			kst_esito.sqlerrtext = "Indicare il Tipo Quotazione" + "~n~r"   + trim(kst_esito.sqlerrtext)
 		end if
 
+//--- Nome Venditore da stampare sul Contratto 
+		if k_tipo_errore = "4" or k_tipo_errore = kkg_esito.DATI_WRN or k_tipo_errore = "0" then 
+			kst_tab_contratti_doc.venditore_nome = ads_inp.getitemstring(k_riga, "venditore_nome")
+			if trim(kst_tab_contratti_doc.venditore_nome) > " "  then
+			else
+				k_errori++
+				k_tipo_errore = "4"
+				kst_esito.esito = kkg_esito.DATI_INSUFF
+				kst_esito.sqlerrtext = "Manca il Nome del Venditore, se sconosciuto mettere un punto '.' (non verrà in stampa)~n~r"  + trim(kst_esito.sqlerrtext)
+			end if
+		end if
 
 		if k_tipo_errore <> "0"  and k_tipo_errore <> "4" and k_tipo_errore <> kkg_esito.DATI_WRN then
 			kguo_exception.inizializza( )
@@ -2927,6 +2883,8 @@ kuf_utility kuf1_utility
 			k_idx_max ++; k_json_key[k_idx_max] = "$." + "altro_des"; k_json_val[k_idx_max] = trim(string(kst_tab_contratti_doc.altro_des))
 			k_idx_max ++; k_json_key[k_idx_max] = "$." + "note_interne"; k_json_val[k_idx_max] = trim(string(kst_tab_contratti_doc.note_interne))
 			k_idx_max ++; k_json_key[k_idx_max] = "$." + "rif_interno_alt"; k_json_val[k_idx_max] = trim(string(kst_tab_contratti_doc.rif_interno_alt))
+			k_idx_max ++; k_json_key[k_idx_max] = "$." + "venditore_nome"; k_json_val[k_idx_max] = trim(string(kst_tab_contratti_doc.venditore_nome))
+			k_idx_max ++; k_json_key[k_idx_max] = "$." + "venditore_ruolo"; k_json_val[k_idx_max] = trim(string(kst_tab_contratti_doc.venditore_ruolo))
 
 			kguo_sqlca_db_magazzino.sqlcode = 0
 			k_idx = 0
@@ -3027,7 +2985,7 @@ public function long u_conv_to_conferma_ordine_e_listini (st_tab_contratti_doc k
 //---------------------------------------------------------------------------------------------------------------------------------------------------
 //
 long k_ctr_contratti_doc_trasferiti=0
-long k_ctr_st_tab_contratti=1, k_ctr=0, k_ctr_contratti_doc_to_listini=0, k_ctr_ins_contratti=0
+long k_ctr_st_tab_contratti=1, k_ctr=0, k_ctr_max, k_ctr_contratti_doc_to_listini=0, k_ctr_ins_contratti=0
 int k_nr_capitolato
 string k_capitolati[]
 st_tab_gru kst_tab_gru
@@ -3061,9 +3019,13 @@ try
 	kds_contratti_doc.settransobject( sqlca)
 	if kds_contratti_doc.retrieve(kst_tab_contratti_doc.id_contratto_doc) > 0 then
 	
+		kst_tab_contratti[k_ctr_st_tab_contratti].cert_st_dose_min =  "N"
+		kst_tab_contratti[k_ctr_st_tab_contratti].sc_cf = ""
+		kst_tab_contratti[k_ctr_st_tab_contratti].sl_pt = ""
 	
 		kst_tab_contratti[k_ctr_st_tab_contratti].codice = 0
-		kst_tab_contratti[k_ctr_st_tab_contratti].mc_co = trim(kds_contratti_doc.getitemstring(1, "quotazione_tipo")) + string(kst_tab_contratti_doc.id_contratto_doc) + "/" + string(kds_contratti_doc.getitemnumber(1, "anno"), "0000")
+		//kst_tab_contratti[k_ctr_st_tab_contratti].mc_co = trim(kds_contratti_doc.getitemstring(1, "quotazione_tipo")) + string(kst_tab_contratti_doc.id_contratto_doc) + "/" + string(kds_contratti_doc.getitemnumber(1, "anno"), "0000")
+		kst_tab_contratti[k_ctr_st_tab_contratti].mc_co = string(kst_tab_contratti_doc.id_contratto_doc) + "/" + string(kds_contratti_doc.getitemnumber(1, "anno"), "0000")
 		
 		kst_tab_contratti[k_ctr_st_tab_contratti].cod_cli = kds_contratti_doc.getitemnumber(1, "id_cliente")
 		kst_tab_contratti[k_ctr_st_tab_contratti].contratto_co_data_ins = kGuf_data_base.prendi_dataora( )
@@ -3073,7 +3035,7 @@ try
 		kst_tab_contratti[k_ctr_st_tab_contratti].data_scad = kds_contratti_doc.getitemdate(1, "data_fine")
 		kst_tab_contratti[k_ctr_st_tab_contratti].flg_fatt_dopo_valid = kds_contratti_doc.getitemstring(1, "flg_fatt_dopo_valid")
 		kst_tab_contratti[k_ctr_st_tab_contratti].id_meca_causale = kds_contratti_doc.getitemnumber(1, "id_meca_causale")
-		if  kds_contratti_doc.getitemnumber(1, "acconto_imp") > 0 then
+		if kds_contratti_doc.getitemnumber(1, "acconto_imp") > 0 then
 			kst_tab_contratti[k_ctr_st_tab_contratti].flg_acconto = kuf1_contratti.kki_flg_acconto_si
 		else
 			kst_tab_contratti[k_ctr_st_tab_contratti].flg_acconto = kuf1_contratti.kki_flg_acconto_no
@@ -3083,15 +3045,15 @@ try
 		
 //--- aggiunge riga al log
 		if kst_contratti_doc_to_listini.k_simulazione = "N"  then // se non sono in simulazione eseguo!
-			kiuf_esito_operazioni.tb_add_riga("-----------> Inizio carico trasferimento Quotazione: " + kst_tab_contratti[k_ctr_st_tab_contratti].mc_co &
+			kiuf_esito_operazioni.tb_add_riga("-----------> Inizio 'TRASFERIMENTO' Quotazione: " + kst_tab_contratti[k_ctr_st_tab_contratti].mc_co &
 							+ " del Cliente " + string(kst_tab_contratti[k_ctr_st_tab_contratti].cod_cli) + "; carico in automatico CO / LISTINI<-----------", false)
 		else
 			if kst_contratti_doc_to_listini.k_simulazione = "S"  then // se sono in simulazione eseguo!
 				kiuf_esito_operazioni.tb_add_riga("-----------> Inizio SIMULAZIONE trasferimento Quotazione: " + kst_tab_contratti[k_ctr_st_tab_contratti].mc_co &
 							+ " del Cliente " + string(kst_tab_contratti[k_ctr_st_tab_contratti].cod_cli) + "<-----------", false)
 			else
-				kiuf_esito_operazioni.tb_add_riga("-----------> Inizio ad impostare a 'TRASFERITO' il Quotazione: " + kst_tab_contratti[k_ctr_st_tab_contratti].mc_co &
-							+ " del Cliente " + string(kst_tab_contratti[k_ctr_st_tab_contratti].cod_cli) + "; Compito dell'operatore caricare CO e LISTINI<-----------", false)
+				kiuf_esito_operazioni.tb_add_riga("-----------> Inizio 'TRASFERIMENTO' Quotazione: " + kst_tab_contratti[k_ctr_st_tab_contratti].mc_co &
+							+ " del Cliente " + string(kst_tab_contratti[k_ctr_st_tab_contratti].cod_cli) + "; Caricare manualmente CO e LISTINI<-----------", false)
 			end if
 		end if
 
@@ -3106,55 +3068,57 @@ try
 				kst_tab_contratti[k_ctr_st_tab_contratti].descr = "Gruppo " + string(kds_contratti_doc.getitemnumber(1, "gruppo")) + " non trovato "
 			end if
 		end if
+
+//--- get Cliente da Quotazione
+		kst_tab_contratti[k_ctr_st_tab_contratti].cod_cli = kds_contratti_doc.getitemnumber(1,"id_cliente")
 		
 	//--- se CAPITOLATI presenti attivo 'stampa della DOSE MINIMA'
-			if len(trim(kds_contratti_doc.getitemstring(1, "contratti_des"))) > 0 then
-				kst_tab_contratti[k_ctr_st_tab_contratti].cert_st_dose_min =  "S"
-			end if
+		if len(trim(kds_contratti_doc.getitemstring(1, "contratti_des"))) > 0 then
+			kst_tab_contratti[k_ctr_st_tab_contratti].cert_st_dose_min =  "S"
+		end if
 	
 	//--- get SC_CF dal campo CAPITOLATI (possono essere saparati da ; se ne ho più di uno)
-			if len(trim(kds_contratti_doc.getitemstring(1, "contratti_des"))) > 0 then
-				
-				k_nr_capitolato = kuf1_contratti.get_capitolati(kds_contratti_doc.getitemstring(1, "contratti_des"), k_capitolati[]) // Spacchetto CAMPO CAPITOLATI
-		
-				for k_ctr = 1 to k_nr_capitolato
-					
-					if k_ctr > 1 then  //--- se ho trovato + capitolati ribalto anche gli altri dati 
-					
-						kst_tab_contratti[k_ctr] = kst_tab_contratti[k_ctr - 1]
-					
-					end if
-					kst_tab_contratti[k_ctr].sc_cf = k_capitolati[k_ctr]
-
-//--- get del SL_PT da Capitolato
-					kst_tab_contratti[k_ctr].sl_pt = kuf1_contratti.get_sl_pt(kst_tab_contratti[k_ctr].sc_cf)
-//--- get Cliente da Capitolato NON PIU' IL 12/1/2010 LO HA DETTO LA BARBARA
-//					kst_tab_contratti[k_ctr_st_tab_contratti].cod_cli = kuf1_contratti.get_cod_cli(kst_tab_contratti[k_ctr].sc_cf)
-					kiuf_esito_operazioni.tb_add_riga("elaborazione Capitolato: " + trim(kst_tab_contratti[k_ctr].sc_cf) + "; PT: " + trim(kst_tab_contratti[k_ctr].sl_pt) + " ", false)
-				
-				end for
+		if len(trim(kds_contratti_doc.getitemstring(1, "contratti_des"))) > 0 then
 			
-//--- get Cliente da Contratto Commerciale
-				kst_tab_contratti[k_ctr_st_tab_contratti].cod_cli = kds_contratti_doc.getitemnumber(1,"id_cliente")
+			k_nr_capitolato = kuf1_contratti.get_capitolati(kds_contratti_doc.getitemstring(1, "contratti_des"), k_capitolati[]) // Spacchetto CAMPO CAPITOLATI
+			k_ctr_max = k_nr_capitolato + k_ctr_st_tab_contratti - 1
 	
-				k_ctr_st_tab_contratti = k_nr_capitolato //03.02.2016 k_ctr - 1
-		
-			else
+			for k_ctr = k_ctr_st_tab_contratti to k_ctr_max
 				
-	//--- se indicato almeno il Dose-Mapping, piglio il SL_PT	
-				if kds_contratti_doc.getitemnumber(1, "id_sd_md") > 0 then
-					kst_tab_sd_md.id_sd_md = kds_contratti_doc.getitemnumber(1, "id_sd_md")
-					kiuf_esito_operazioni.tb_add_riga("elaborazione Dose-Mapping id: " + string(kst_tab_sd_md.id_sd_md) + " ", false)
-					kst_esito = kuf1_contratti.get_sl_pt(kst_tab_sd_md)
-					if kst_esito.esito = kkg_esito.ok then
-						kst_tab_contratti[k_ctr_st_tab_contratti].sl_pt = kst_tab_sd_md.sl_pt
-					else
-						kst_tab_contratti[k_ctr_st_tab_contratti].sl_pt = ""
-					end if
-					kiuf_esito_operazioni.tb_add_riga("elaborazione PT: " + trim(kst_tab_contratti[k_ctr_st_tab_contratti].sl_pt) + " ", false)
+				if k_ctr > k_ctr_st_tab_contratti then  //--- se ho trovato + capitolati ribalto anche gli altri dati 
+				
+					kst_tab_contratti[k_ctr] = kst_tab_contratti[k_ctr - 1]
+				
 				end if
 				
+				kst_tab_contratti[k_ctr].sc_cf = k_capitolati[k_ctr - k_ctr_st_tab_contratti + 1]
+
+//--- get del SL_PT da Capitolato
+				kst_tab_contratti[k_ctr].sl_pt = kuf1_contratti.get_sl_pt(kst_tab_contratti[k_ctr].sc_cf)
+//--- get Cliente da Capitolato NON PIU' IL 12/1/2010 LO HA DETTO LA BARBARA
+//					kst_tab_contratti[k_ctr_st_tab_contratti].cod_cli = kuf1_contratti.get_cod_cli(kst_tab_contratti[k_ctr].sc_cf)
+				kiuf_esito_operazioni.tb_add_riga("estratto il Capitolato: " + trim(kst_tab_contratti[k_ctr].sc_cf) + "; e il PT: " + trim(kst_tab_contratti[k_ctr].sl_pt) + " ", false)
+				
+			end for
+	
+			k_ctr_st_tab_contratti = k_ctr_max //03.02.2016 k_ctr - 1
+		
+		else
+				
+	//--- se indicato almeno il Dose-Mapping, piglio il SL_PT	
+			if kds_contratti_doc.getitemnumber(1, "id_sd_md") > 0 then
+				kst_tab_sd_md.id_sd_md = kds_contratti_doc.getitemnumber(1, "id_sd_md")
+				kiuf_esito_operazioni.tb_add_riga("estratto il Dose-Mapping id: " + string(kst_tab_sd_md.id_sd_md) + " ", false)
+				kst_esito = kuf1_contratti.get_sl_pt(kst_tab_sd_md)
+				if kst_esito.esito = kkg_esito.ok then
+					kst_tab_contratti[k_ctr_st_tab_contratti].sl_pt = kst_tab_sd_md.sl_pt
+				else
+					kst_tab_contratti[k_ctr_st_tab_contratti].sl_pt = ""
+				end if
+				kiuf_esito_operazioni.tb_add_riga("estratto il PT: " + trim(kst_tab_contratti[k_ctr_st_tab_contratti].sl_pt) + " ", false)
 			end if
+			
+		end if
 		
 		
 //--- se ho trovato errore Grave lancio eccezione
@@ -3165,20 +3129,15 @@ try
 			throw kGuo_exception
 		end if
 
-//--- nessun capitolato e sl-pt previsto				
-		kst_tab_contratti[k_ctr_st_tab_contratti].cert_st_dose_min =  "N"
-		kst_tab_contratti[k_ctr_st_tab_contratti].sc_cf = ""
-		kst_tab_contratti[k_ctr_st_tab_contratti].sl_pt = ""
 
-//--- get Cliente da Quotazione
-		kst_tab_contratti[k_ctr_st_tab_contratti].cod_cli = kds_contratti_doc.getitemnumber(1,"id_cliente")
-
-//--- Carico le Conferme Ordine e Listini 
+//--- Carico Conferme Ordine e Listini 
 		for  k_ctr_ins_contratti = 1 to k_ctr_st_tab_contratti 
 			
 			if len(trim(kst_tab_contratti[k_ctr_ins_contratti].mc_co)) > 0 then 
 				
-				if kst_contratti_doc_to_listini.k_simulazione <> "M" then // se carico arch. MANUALMENTE non fa nulla
+				if kst_contratti_doc_to_listini.k_simulazione = "M" then // se carico arch. MANUALMENTE='M' allora non fa nulla
+					kst_esito.sqlerrtext = "operazione di SIMULAZIONE Conferma Ordine non caricata  ~n~r"
+				else
 				
 //--- Controlla l'esistenza del CO se già esiste NON carico
 					kst_tab_contratti_select = kst_tab_contratti[k_ctr_ins_contratti]
@@ -3189,6 +3148,8 @@ try
 //						if kst_contratti_doc_to_listini.k_simulazione = "N"  then // se non sono in simulazione eseguo!
 							kst_tab_contratti[k_ctr_ins_contratti].st_tab_g_0.esegui_commit = "N"
 							kst_tab_contratti[k_ctr_ins_contratti].codice = kuf1_contratti.tb_add(kst_tab_contratti[k_ctr_ins_contratti]) // ADD DEL CO
+							kst_esito.sqlerrtext = "Conferma Ordine caricata con il codice " + string(kst_tab_contratti[k_ctr_ins_contratti].codice) + ".  ~n~r"
+							kiuf_esito_operazioni.tb_add_riga(kst_esito.sqlerrtext, true) //--- aggiunge riga al log
 //						end if
 					else
 //--- aggiunge riga al log
@@ -3200,7 +3161,7 @@ try
 					kst_tab_listino.st_tab_g_0.esegui_commit = "N"
 					kst_tab_listino.id = this.u_conv_conferma_ordine_to_listino(kds_contratti_doc,  kst_tab_contratti[k_ctr_ins_contratti], kst_contratti_doc_to_listini)  // ADD DEL LISTINO
 						
-				end if  // fine SE carico tab MANUALMENTE
+				end if  
 					
 //--- Aggiorna lo STATO del Quotazione a TRASFERITO
 //				if kst_contratti_doc_to_listini.k_simulazione <> "S" then
@@ -4349,6 +4310,65 @@ string k_return
 			k_return = "*non riconosciuto*"
 	end choose
 
+
+return k_return
+
+
+end function
+
+public function string get_stato (ref st_tab_contratti_doc kst_tab_contratti_doc) throws uo_exception;//
+//----------------------------------------------------------------------------------------------------------------------------
+//--- 
+//--- Legge lo STATO
+//--- 
+//--- 
+//--- Input: st_tab_contratti_doc.id_contratto_doc
+//--- Out: st_tab_contratti_doc.stato
+//---
+//--- Ritorna st_tab_contratti_doc.stato
+//---
+//--- Lancia EXCEPTION x errore
+//---
+//----------------------------------------------------------------------------------------------------------------------------
+//
+string k_return 
+st_esito kst_esito
+
+
+
+kst_esito.esito = kkg_esito.ok
+kst_esito.sqlcode = 0
+kst_esito.SQLErrText = ""
+kst_esito.nome_oggetto = this.classname()
+
+
+	select stato
+	  into :kst_tab_contratti_doc.stato
+	  from contratti_doc 
+	  where id_contratto_doc = :kst_tab_contratti_doc.id_contratto_doc  
+	  using sqlca;
+	
+
+	if sqlca.sqlcode < 0 then
+		kst_esito.sqlcode = sqlca.sqlcode
+		kst_esito.SQLErrText = "Legge lo Stato del Contratto R. & D. (tab. contratti_doc id=" + string(kst_tab_contratti_doc.id_contratto_doc) + " " + "): " + trim(SQLCA.SQLErrText)
+									 
+		kst_esito.esito = kkg_esito.db_ko
+		
+		kguo_exception.inizializza( )
+		kguo_exception.set_esito(kst_esito)		
+		throw kguo_exception
+		
+	end if
+	
+	if sqlca.sqlcode = 0 then
+		if len(trim(kst_tab_contratti_doc.stato)) > 0 then
+		else
+			kst_tab_contratti_doc.stato = kki_STATO_nuovo
+		end if
+	
+		k_return = kst_tab_contratti_doc.stato 
+	end if
 
 return k_return
 
