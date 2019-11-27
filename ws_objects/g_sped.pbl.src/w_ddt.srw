@@ -15,7 +15,7 @@ end forward
 global type w_ddt from w_g_tab_3
 integer width = 2446
 integer height = 2448
-string title = "Documento di Vendita"
+string title = "DDT"
 boolean ki_toolbar_window_presente = true
 boolean ki_sincronizza_window_consenti = false
 boolean ki_fai_nuovo_dopo_update = false
@@ -57,6 +57,9 @@ private date ki_data_competenza //data periodo inizio estrazioni
 private st_tab_base kist_tab_base
 
 private boolean ki_riga_rimossaxelencolotti=false
+
+private string ki_righe_titolo
+private string ki_memo_titolo
 
 
 end variables
@@ -567,11 +570,14 @@ protected function string dati_modif (string k_titolo);//
 //=== Controllo se ci sono state modifiche di dati sui DW
 string k_return="0 "
 int k_msg=0
+int k_row
 
 
 //=== Toglie le righe eventualmente da non registrare
 	pulizia_righe()
 	
+//	k_row = tab_1.tabpage_1.dw_1.getnextmodified(0, primary!)
+//	k_row = tab_1.tabpage_4.dw_4.getnextmodified(0, primary!)
 	if (tab_1.tabpage_4.dw_4.getnextmodified(0, primary!) > 0  & 
 				or tab_1.tabpage_4.dw_4.deletedcount() > 0)  & 
  		 		or tab_1.tabpage_1.dw_1.getnextmodified(0, primary!) > 0 & 
@@ -649,9 +655,12 @@ if tab_1.tabpage_1.dw_1.rowcount() = 0 then
 //		kist_tab_sped_orig.id_sped = kst_tab_sped_attuale.id_sped
 //	end if
 
+	tab_1.tabpage_4.text = ki_righe_titolo
 	tab_1.tabpage_4.dw_4.reset( ) // inizializzo le righe
 	tab_1.tabpage_4.text = "righe"
 	tab_1.tabpage_5.dw_5.visible = false
+	tab_1.tabpage_5.text = ki_memo_titolo
+	tab_1.tabpage_5.dw_5.reset( ) // inizializzo le righe
 	tab_1.tabpage_5.text = "Allarmi Memo"
 
 //--- SE INSERIMENTO
@@ -691,7 +700,7 @@ if tab_1.tabpage_1.dw_1.rowcount() = 0 then
 					"Mi spiace ma si e' verificato un errore interno al programma~n~r" + &
 					"(ID Documento cercato: " + string(kist_tab_sped_orig.id_sped) + ") " )
 				kguo_exception.messaggio_utente( )	
-				return ki_usitaimmediata
+				return ki_exitNow
 				//post close(this)
 
 			case 0
@@ -804,7 +813,7 @@ try
 					//kguo_exception.messaggio_utente( )	
 				else
 	//--- documento già STAMPATO allora ATTENZIONE alle Modifiche	!!!!!	
-					if kiuf_sped.if_stampata(kist_tab_sped) then 
+					if kiuf_sped.if_stampato(kist_tab_sped) then 
 						kguo_exception.inizializza()
 						kguo_exception.set_tipo( kguo_exception.kk_st_uo_exception_tipo_allerta )
 						kguo_exception.setmessage(  &
@@ -951,7 +960,10 @@ try
 				ki_data_competenza = tab_1.tabpage_1.dw_1.getitemdate( 1, "k_competenza_dal" ) 
 			end if
 	
+			tab_1.tabpage_4.text = ki_righe_titolo
 			tab_1.tabpage_4.dw_4.reset() 
+			tab_1.tabpage_5.text = ki_memo_titolo
+			tab_1.tabpage_5.dw_5.reset() 
 			tab_1.tabpage_1.dw_1.reset() 
 			
 			tab_1.tabpage_1.dw_1.insertrow(0)
@@ -984,7 +996,7 @@ try
 			if tab_1.tabpage_1.dw_1.getitemstring(1, "porto") > " " then
 			else
 				//tab_1.tabpage_1.dw_1.setitem( 1, "porto", "ASS.TO")
-				tab_1.tabpage_1.dw_1.setitem( 1, "porto", "")
+				tab_1.tabpage_1.dw_1.setitem( 1, "porto", " ")
 			end if
 			if tab_1.tabpage_1.dw_1.getitemstring(1, "mezzo") > " " then
 			else
@@ -1176,7 +1188,10 @@ protected subroutine open_start_window ();//
 	kids_elenco_input = create datastore
 
 	ki_toolbar_window_presente=true
-	
+
+	ki_righe_titolo = tab_1.tabpage_4.text
+	ki_memo_titolo = tab_1.tabpage_5.text
+
 	//tab_1.tabpage_5.picturename = 
 	
 	kist_tab_sped.id_sped  = 0
@@ -2492,7 +2507,7 @@ if left(dati_modif(""), 1) = "1" then //Richisto Aggiornamento
 
 end if
 
-
+ 
 if left(k_errore, 1) = "0" then
 //--- stampa DDT
 	kst_tab_sped[1].id_sped = tab_1.tabpage_1.dw_1.getitemnumber(1, "id_sped")
@@ -3352,9 +3367,10 @@ try
 		for k_row = 1 to k_return 
 			tab_1.tabpage_4.dw_4.setitem(k_row, "k_progressivo", k_row)
 		end for
+		tab_1.tabpage_4.dw_4.resetupdate( )
 	end if				
 
-	tab_1.tabpage_4.text = string(k_return) + " righe"
+	tab_1.tabpage_4.text = string(k_return) + " " + ki_righe_titolo
 
 	u_allarme_lotto()
 
@@ -3393,10 +3409,10 @@ try
 			tab_1.tabpage_5.visible = true
 			kGuf_data_base.POST suona_motivo(kuf1_memo_allarme.kki_suona_motivo_allarme, 0)
 		end if
-		tab_1.tabpage_5.text = " Allarmi Memo " + string(k_return) + ""
+		tab_1.tabpage_5.text = " " + ki_memo_titolo + " "+ string(k_return) + ""
 	else
 		tab_1.tabpage_5.visible = false
-		tab_1.tabpage_5.text = "Allarmi Memo"
+		tab_1.tabpage_5.text = ki_memo_titolo
 	end if
 //		kiuf_armo.get_num_int(ast_tab_meca)
 //		kst_memo_allarme.allarme = kguf_memo_allarme.kki_memo_allarme_ddt

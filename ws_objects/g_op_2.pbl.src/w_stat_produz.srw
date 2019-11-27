@@ -88,18 +88,18 @@ if ki_st_open_w.flag_primo_giro = 'S' then //se giro di prima volta
 	kuf1_base = create kuf_base 
 	kst_esito = kuf1_base.statistici_stato_elab()
 	if kst_esito.esito = kuf1_base.kci_statistici_stato_ko then
-		k_return = ki_UsitaImmediata
+		k_return = ki_exitNow
 		messagebox("Estrazioni Statistiche", &
 				"L'alimentazione dei dati Statistici non e' terminata correttamente ~n~r" + &
 				"impossibile procedere con le estrazioni.~n~r" )
-		k_return = ki_UsitaImmediata
+		k_return = ki_exitNow
 	else
 		if kst_esito.esito = kuf1_base.kci_statistici_stato_in_esec then
-			k_return = ki_UsitaImmediata
+			k_return = ki_exitNow
 			messagebox("Estrazioni Statistiche", &
 					"L'alimentazione dei dati Statistici e' in esecuzione, prego riprovare piu' tardi ~n~r" + &
 					"impossibile procedere con le estrazioni.~n~r" )
-			k_return = ki_UsitaImmediata
+			k_return = ki_exitNow
 		end if
 	
 	end if
@@ -108,7 +108,7 @@ end if
 
 
 //--- se tutto ok 
-if k_return <> ki_UsitaImmediata then
+if k_return <> ki_exitNow then
 
 	//=== Puntatore Cursore da attesa.....
 	//=== Se volessi riprist. il vecchio puntatore : SetPointer(oldpointer)

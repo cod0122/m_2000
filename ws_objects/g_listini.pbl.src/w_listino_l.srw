@@ -426,7 +426,6 @@ boolean k_rc
 
 	dw_lista_0.setredraw(false)
 
-
 //--- se NON sono al primo giro
 	if ki_st_open_w.flag_primo_giro <> "S" then
 
@@ -472,6 +471,7 @@ boolean k_rc
 		end if	
 	end if
 
+	dw_lista_0.event u_personalizza_dw( )
 
 	dw_lista_0.setredraw(true)
 

@@ -19,7 +19,7 @@ end forward
 global type w_ddt_l from w_g_tab0
 integer width = 2898
 integer height = 2084
-string title = "Documenti di Vendita"
+string title = "DDT"
 boolean ki_toolbar_window_presente = true
 rb_prova rb_prova
 rb_definitiva rb_definitiva
@@ -48,9 +48,9 @@ protected subroutine attiva_menu ()
 protected subroutine smista_funz (string k_par_in)
 private subroutine cambia_periodo_elenco ()
 public subroutine popola_st_sped_ddt_da_lista ()
-private subroutine stampa_ddt ()
 public subroutine stampa_ddt_lancia ()
 protected subroutine open_start_window ()
+public subroutine u_run_sped_free ()
 end prototypes
 
 private function string inizializza ();//
@@ -128,15 +128,23 @@ protected subroutine attiva_menu ();//--- Attiva/Dis. Voci di menu
 		ki_menu.m_strumenti.m_fin_gest_libero1.toolbaritembarindex=2
 		ki_menu.m_strumenti.m_fin_gest_libero1.toolbaritemVisible = true
 		
+		ki_menu.m_strumenti.m_fin_gest_libero3.text = "DDT libero"
+		ki_menu.m_strumenti.m_fin_gest_libero3.microhelp =  "Carico/elenco ddt a contenuto libero"
+		ki_menu.m_strumenti.m_fin_gest_libero3.visible = true
+		ki_menu.m_strumenti.m_fin_gest_libero3.enabled = true
+		ki_menu.m_strumenti.m_fin_gest_libero3.toolbaritemText = "DDT lib.,"+ki_menu.m_strumenti.m_fin_gest_libero3.text
+		ki_menu.m_strumenti.m_fin_gest_libero3.toolbaritemName = kGuo_path.get_risorse() + kkg.path_sep + "document_new16.png"
+		ki_menu.m_strumenti.m_fin_gest_libero3.toolbaritembarindex=2
+		ki_menu.m_strumenti.m_fin_gest_libero3.toolbaritemVisible = true
 		
-		ki_menu.m_strumenti.m_fin_gest_libero2.text = "Stampa ddt selezionate"
-		ki_menu.m_strumenti.m_fin_gest_libero2.microhelp =  "Stampa ddt selezionate"
-		ki_menu.m_strumenti.m_fin_gest_libero2.visible = true
-		ki_menu.m_strumenti.m_fin_gest_libero2.enabled = true
-		ki_menu.m_strumenti.m_fin_gest_libero2.toolbaritemText = "Stampa,"+ki_menu.m_strumenti.m_fin_gest_libero2.text
-		ki_menu.m_strumenti.m_fin_gest_libero2.toolbaritemName = kGuo_path.get_risorse() + "\printer16x16.gif"
-		ki_menu.m_strumenti.m_fin_gest_libero2.toolbaritembarindex=2
-		ki_menu.m_strumenti.m_fin_gest_libero2.toolbaritemVisible = true
+		ki_menu.m_strumenti.m_fin_gest_libero5.text = "Stampa ddt selezionate"
+		ki_menu.m_strumenti.m_fin_gest_libero5.microhelp =  "Stampa ddt selezionate"
+		ki_menu.m_strumenti.m_fin_gest_libero5.visible = true
+		ki_menu.m_strumenti.m_fin_gest_libero5.enabled = true
+		ki_menu.m_strumenti.m_fin_gest_libero5.toolbaritemText = "Stampa,"+ki_menu.m_strumenti.m_fin_gest_libero5.text
+		ki_menu.m_strumenti.m_fin_gest_libero5.toolbaritemName = kGuo_path.get_risorse() + kkg.path_sep + "printer16x16.gif"
+		ki_menu.m_strumenti.m_fin_gest_libero5.toolbaritembarindex=2
+		ki_menu.m_strumenti.m_fin_gest_libero5.toolbaritemVisible = true
 	end if	
 	
 //---
@@ -155,7 +163,10 @@ choose case LeftA(k_par_in, 2)
 	case KKG_FLAG_RICHIESTA.libero1		//cambia date di estrazione
 		cambia_periodo_elenco()
 
-	case KKG_FLAG_RICHIESTA.libero2		//stampa ddt
+	case KKG_FLAG_RICHIESTA.libero3		//ddt libero
+		u_run_sped_free( )
+
+	case KKG_FLAG_RICHIESTA.libero5		//stampa ddt
 		stampa_ddt_lancia()
 
 	case else
@@ -207,29 +218,6 @@ for k_riga = 1 to dw_lista_0.rowcount()
 end for
 
 
-
-end subroutine
-
-private subroutine stampa_ddt ();//---
-//--- Visualizza il box x il cambio del stampa di elenco ddt 
-//---
-
-gb_stampa.x = (kiw_this_window.width  - gb_stampa.width) / 4
-gb_stampa.y = (kiw_this_window.height - gb_stampa.height) / 4
-rb_prova.x = gb_stampa.x + 78 
-rb_prova.y = gb_stampa.y + 115
-rb_definitiva.x = rb_prova.x 
-rb_definitiva.y = gb_stampa.y + 203
-cb_stampa_ok.x = gb_stampa.x + 78
-cb_stampa_ok.y = gb_stampa.y + 319
-cb_stampa_annulla.x = gb_stampa.x + 585
-cb_stampa_annulla.y = cb_stampa_ok.y
-
-gb_stampa.visible = true
-rb_prova.visible = true
-rb_definitiva.visible = true
-cb_stampa_ok.visible = true
-cb_stampa_annulla.visible = true
 
 end subroutine
 
@@ -347,6 +335,17 @@ protected subroutine open_start_window ();//
 
 //	tab_1.tabpage_1.dw_1.object.b_ric_lotto.filename ="pdf16.png" 
 
+end subroutine
+
+public subroutine u_run_sped_free ();//
+kuf_sped_free kuf1_sped_free
+
+
+kuf1_sped_free = create kuf_sped_free
+
+kuf1_sped_free.u_open(kkg_flag_modalita.visualizzazione)
+
+destroy kuf1_sped_free
 end subroutine
 
 on w_ddt_l.create

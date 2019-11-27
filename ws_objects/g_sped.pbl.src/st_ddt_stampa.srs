@@ -7,9 +7,11 @@ global type st_ddt_stampa from structure
 	boolean		_data_ora_rit_pers		descriptor "comment" = "OBSOLETO false=prende il default da SPED; true=piglia quello qua impostato"
 	date		data_rit		descriptor "comment" = "solo se  data_ora_rit_pers = true"
 	string		ora_rit		descriptor "comment" = "solo se  data_ora_rit_pers = true"
+	string		data_ora_rit		descriptor "comment" = "nel DDT libero è un campo unico stringa"
 	long		clie_2
 	long		clie_3
 	string		stampa
 	integer		tipo_num_copie		descriptor "comment" = "1=copia generica; 2=copia x Ricevente+Interna; 3=copia x Ricevente+Interna+Cliente; 5=copia Ricevente+Interna+ eventualmente x il Cliente"
+	boolean		print_ddt_libero		descriptor "comment" = "true=stampa il di DDT libero (da v_sped)"
 end type
 

@@ -774,36 +774,42 @@ kuf1_ausiliari = create kuf_ausiliari
 				end if	
 //--- Controllo sintassi Indirizzi email				
 				kuf1_email = create kuf_email 
-				kst_email_address.email_all = tab_1.tabpage_3.dw_3.getitemstring( k_riga, "email")
-				if len(trim(kst_email_address.email_all)) > 0 then
-					kst_esito = kuf1_email.get_email_from_string(kst_email_address)
-					if kst_esito.esito <> kkg_esito.ok then
-						k_return = trim(k_return) +  tab_1.tabpage_3.text + ": riscontrato indirizzo 'e-mail' non corretto, prego controllare" &
-						+"~n~r" + kst_esito.sqlerrtext + "~n~r" 
-						k_errore = "4"
-						k_nr_errori++
+				try
+					kst_email_address.email_all = tab_1.tabpage_3.dw_3.getitemstring( k_riga, "email")
+					if len(trim(kst_email_address.email_all)) > 0 then
+						kuf1_email.get_email_from_string(kst_email_address)
 					end if
-				end if
-				kst_email_address.email_all = tab_1.tabpage_3.dw_3.getitemstring( k_riga, "email1")
-				if len(trim(kst_email_address.email_all)) > 0 then
-					kst_esito = kuf1_email.get_email_from_string(kst_email_address)
-					if kst_esito.esito <> kkg_esito.ok then
-						k_return = trim(k_return) +  tab_1.tabpage_3.text + ": riscontrato indirizzo 'e-mail' non corretto, prego controllare" &
-						+"~n~r" + kst_esito.sqlerrtext + "~n~r" 
-						k_errore = "4"
-						k_nr_errori++
+				catch (uo_exception kuo1_exception)
+					kst_esito = kuo1_exception.get_st_esito()
+					k_return = trim(k_return) +  tab_1.tabpage_3.text + ": riscontrato indirizzo 'e-mail' non corretto, prego controllare" &
+					+"~n~r" + kst_esito.sqlerrtext + "~n~r" 
+					k_errore = "4"
+					k_nr_errori++
+				end try
+				try
+					kst_email_address.email_all = tab_1.tabpage_3.dw_3.getitemstring( k_riga, "email1")
+					if len(trim(kst_email_address.email_all)) > 0 then
+						kuf1_email.get_email_from_string(kst_email_address)
 					end if
-				end if
-				kst_email_address.email_all = tab_1.tabpage_3.dw_3.getitemstring( k_riga, "email2")
-				if len(trim(kst_email_address.email_all)) > 0 then
-					kst_esito = kuf1_email.get_email_from_string(kst_email_address)
-					if kst_esito.esito <> kkg_esito.ok then
-						k_return = trim(k_return) +  tab_1.tabpage_3.text + ": riscontrato indirizzo 'e-mail' non corretto, prego controllare" &
-						+"~n~r" + kst_esito.sqlerrtext + "~n~r" 
-						k_errore = "4"
-						k_nr_errori++
+				catch (uo_exception kuo2_exception)
+					kst_esito = kuo2_exception.get_st_esito()
+					k_return = trim(k_return) +  tab_1.tabpage_3.text + ": riscontrato indirizzo 'e-mail' non corretto, prego controllare" &
+					+"~n~r" + kst_esito.sqlerrtext + "~n~r" 
+					k_errore = "4"
+					k_nr_errori++
+				end try
+				try
+					kst_email_address.email_all = tab_1.tabpage_3.dw_3.getitemstring( k_riga, "email2")
+					if len(trim(kst_email_address.email_all)) > 0 then
+						kuf1_email.get_email_from_string(kst_email_address)
 					end if
-				end if
+				catch (uo_exception kuo3_exception)
+					kst_esito = kuo3_exception.get_st_esito()
+					k_return = trim(k_return) +  tab_1.tabpage_3.text + ": riscontrato indirizzo 'e-mail' non corretto, prego controllare" &
+					+"~n~r" + kst_esito.sqlerrtext + "~n~r" 
+					k_errore = "4"
+					k_nr_errori++
+				end try
 				
 //				kuf1_web = create kuf_web 
 //				kst_tab_clienti_web.email =  tab_1.tabpage_3.dw_3.getitemstring( k_riga, "email")
@@ -1012,6 +1018,7 @@ int k_msg=0
 	 	or tab_1.tabpage_4.dw_4.getnextmodified(0, delete!) > 0  & 
 	 	or tab_1.tabpage_3.dw_3.getnextmodified(0, primary!) > 0  & 
 	 	or tab_1.tabpage_3.dw_3.getnextmodified(0, delete!) > 0  & 
+	 	or tab_1.tabpage_8.dw_8.getnextmodified(0, primary!) > 0  & 
 		then 
 
 		if isnull(k_titolo) or len(trim(k_titolo)) = 0 then
@@ -3105,7 +3112,7 @@ kuf_utility kuf1_utility
 		end if
 		k_anno -= 1
 
-		tab_1.tabpage_8.dw_8.getchild("id_meca_ultimo", kdwc_lotti)
+		tab_1.tabpage_8.dw_8.getchild("e1rorn_ultimo", kdwc_lotti)
 		kdwc_lotti.settransobject(sqlca)
 		if k_codice > 0 then
 			kdwc_lotti.retrieve(k_anno, k_codice)
@@ -3384,7 +3391,7 @@ end type
 type tab_1 from w_g_tab_3`tab_1 within w_clienti
 integer x = 37
 integer y = 20
-integer width = 1934
+integer width = 1353
 integer height = 1556
 long backcolor = 32435950
 end type
@@ -3419,7 +3426,7 @@ end event
 
 type tabpage_1 from w_g_tab_3`tabpage_1 within tab_1
 integer y = 176
-integer width = 1897
+integer width = 1317
 integer height = 1364
 string text = " Anagrafica"
 string picturename = "C:\GAMMARAD\PB_GMMRD125\ICONE\cliente.gif"
@@ -3712,7 +3719,7 @@ end type
 
 type tabpage_2 from w_g_tab_3`tabpage_2 within tab_1
 integer y = 176
-integer width = 1897
+integer width = 1317
 integer height = 1364
 string text = " memo"
 string picturename = "Copy!"
@@ -3745,7 +3752,7 @@ end type
 type tabpage_3 from w_g_tab_3`tabpage_3 within tab_1
 boolean visible = true
 integer y = 176
-integer width = 1897
+integer width = 1317
 integer height = 1364
 string text = " Marketing~r~n & Web"
 string picturename = "Custom073!"
@@ -3900,7 +3907,7 @@ end type
 type tabpage_4 from w_g_tab_3`tabpage_4 within tab_1
 boolean visible = true
 integer y = 176
-integer width = 1897
+integer width = 1317
 integer height = 1364
 long backcolor = 32435950
 string text = " Mandanti~r~n & Riceventi"
@@ -4057,7 +4064,7 @@ end type
 type tabpage_5 from w_g_tab_3`tabpage_5 within tab_1
 boolean visible = true
 integer y = 176
-integer width = 1897
+integer width = 1317
 integer height = 1364
 long backcolor = 32435950
 string text = " Listino"
@@ -4078,7 +4085,7 @@ end type
 type tabpage_6 from w_g_tab_3`tabpage_6 within tab_1
 boolean visible = true
 integer y = 176
-integer width = 1897
+integer width = 1317
 integer height = 1364
 boolean enabled = true
 string text = " Movimenti ~r~n Magazzino"
@@ -4110,7 +4117,7 @@ end event
 
 type tabpage_7 from w_g_tab_3`tabpage_7 within tab_1
 integer y = 176
-integer width = 1897
+integer width = 1317
 integer height = 1364
 string text = " Fatture non di Magazzino~r~n (senza Lotto di Entrata) "
 long tabbackcolor = 32435950
@@ -4140,7 +4147,7 @@ end event
 type tabpage_8 from w_g_tab_3`tabpage_8 within tab_1
 boolean visible = true
 integer y = 176
-integer width = 1897
+integer width = 1317
 integer height = 1364
 boolean enabled = true
 string text = "A.C.O.~r~nCto Deposito"
@@ -4165,22 +4172,25 @@ event dw_8::itemchanged;call super::itemchanged;//
 int k_riga, k_rc
 string k_id, k_nome
 datetime k_dt
+long k_id_meca
 datawindowchild kdwc_x
 
 
 choose case dwo.name
 
-	case "id_meca_ultimo" 
+	case "e1rorn_ultimo" 
 		if len(trim(data)) > 0 then
-			k_rc = this.getchild("id_meca_ultimo", kdwc_x)
+			k_rc = this.getchild("e1rorn_ultimo", kdwc_x)
 			if isnumber(Trim(data)) then
 				k_id = Trim(data)
-				k_riga = kdwc_x.find("id_meca = " + k_id + " ",0,kdwc_x.rowcount())
+				k_riga = kdwc_x.find("e1rorn = " + k_id + " ",0,kdwc_x.rowcount())
 				if k_riga > 0  then
+					k_id_meca = kdwc_x.getitemnumber(k_riga, "id_meca")
 					k_dt = kdwc_x.getitemdatetime(k_riga, "data_ent")
 				end if
 			end if
 		end if
+		this.setitem(row, "id_meca_ultimo", k_id_meca)
 		this.setitem(row, "meca_data_ent", k_dt)
 
 	case "id_nazione" 
@@ -4201,7 +4211,7 @@ end event
 
 type tabpage_9 from w_g_tab_3`tabpage_9 within tab_1
 integer y = 176
-integer width = 1897
+integer width = 1317
 integer height = 1364
 end type
 

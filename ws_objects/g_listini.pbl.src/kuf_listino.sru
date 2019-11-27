@@ -2313,7 +2313,10 @@ long k_nr_righe
 int k_riga
 string k_tipo_errore="0"
 st_esito kst_esito
-kuf_contratti kiuf_contratti
+st_tab_prodotti kst_tab_prodotti
+st_tab_contratti kst_tab_contratti
+kuf_contratti kuf1_contratti
+kuf_prodotti kuf1_prodotti
 
 
 try
@@ -2351,17 +2354,48 @@ try
 			kst_esito.sqlerrtext = "Manca valore nel campo '" + trim(ads_inp.describe(ads_inp.describe("magazzino.name") + "_t.text")) +  "'~n~r"  
 		end if
 
-//--- codice E1LITM preferibile se tipo=STANDARD
-		if trim(ads_inp.getitemstring ( k_riga, "e1litm"))  > " " then
-		else
-			if ads_inp.getitemstring ( k_riga, "tipo") = kiuf_contratti.kki_tipo_deposito then  // tipo deposito non interessa?
+//--- codice PRODOTTO 
+		kst_tab_prodotti.codice = trim(ads_inp.getitemstring ( k_riga, "cod_art"))
+		if kst_tab_prodotti.codice  > " " then
+			kuf1_prodotti = create kuf_prodotti
+			kuf1_prodotti.get_des(kst_tab_prodotti)
+			if kst_tab_prodotti.des > " " then
 			else
-				ads_inp.setitem(k_riga, "e1litm", "")
 				k_errori ++
-				k_tipo_errore = kkg_esito.DATI_WRN //"3"
-				ads_inp.modify("e1litm.tag = '" + k_tipo_errore + "' ")
-				kst_esito.esito = kkg_esito.DATI_WRN
-				kst_esito.sqlerrtext += "Manca il dato '" +   trim(ads_inp.describe("gb_e1litm.text")) + "'~n~r" 
+				k_tipo_errore = kkg_esito.DATI_INSUFF
+				ads_inp.modify("cod_art.tag = '" + k_tipo_errore + "' ")
+				kst_esito.esito = kkg_esito.DATI_INSUFF
+				kst_esito.sqlerrtext += "Verificare il campo '" +   trim(ads_inp.describe("cod_art_t.text")) + "'~n~r" 
+			end if
+		end if
+
+//--- codice CONTRATTI 
+		kst_tab_contratti.codice = ads_inp.getitemnumber ( k_riga, "contratto")
+		if kst_tab_contratti.codice  > 0 then
+			kuf1_contratti = create kuf_contratti
+			if kuf1_contratti.if_esiste(kst_tab_contratti) then
+			else
+				k_errori ++
+				k_tipo_errore = kkg_esito.DATI_INSUFF
+				ads_inp.modify("contratto.tag = '" + k_tipo_errore + "' ")
+				kst_esito.esito = kkg_esito.DATI_INSUFF
+				kst_esito.sqlerrtext += "Contratto non Trovato" + "'~n~r" 
+			end if
+		end if
+
+//--- codice E1LITM preferibile se tipo=STANDARD
+		if k_tipo_errore <> "0" and k_tipo_errore <> "4" and k_tipo_errore <> "5"  then
+			if trim(ads_inp.getitemstring ( k_riga, "e1litm"))  > " " then
+			else
+				if ads_inp.getitemstring ( k_riga, "tipo") = kuf1_contratti.kki_tipo_deposito then  // tipo deposito non interessa?
+				else
+					ads_inp.setitem(k_riga, "e1litm", "")
+					k_errori ++
+					k_tipo_errore = kkg_esito.DATI_WRN //"3"
+					ads_inp.modify("e1litm.tag = '" + k_tipo_errore + "' ")
+					kst_esito.esito = kkg_esito.DATI_WRN
+					kst_esito.sqlerrtext += "Manca il dato '" +   trim(ads_inp.describe("gb_e1litm.text")) + "'~n~r" 
+				end if
 			end if
 		end if
 
@@ -2382,6 +2416,8 @@ catch (uo_exception kuo_exception)
 	throw kuo_exception
 
 finally
+	if isvalid(kuf1_prodotti) then destroy kuf1_prodotti
+	if isvalid(kuf1_contratti) then destroy kuf1_contratti
 	if k_errori > 0 then
 		
 	end if

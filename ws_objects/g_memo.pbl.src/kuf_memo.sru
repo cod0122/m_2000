@@ -1291,7 +1291,8 @@ st_open_w kst_open_w
 	//---- se window non ancora aperta
 		if not isvalid(kiw_memo) then
 			u_open(kst_open_w)	
-	//	else
+		else
+	//		kiw_memo.event activate( )
 	//		kiw_memo.u_inizializza()
 		end if
 

@@ -143,7 +143,7 @@ int k_conta
 
 	SELECT count(*)
 	  into :k_conta 
-	  FROM global_name
+	  FROM global_name 
 	  using this; 
 	  
 	if sqlcode = 0 then

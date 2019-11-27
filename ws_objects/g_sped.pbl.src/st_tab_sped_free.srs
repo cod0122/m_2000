@@ -1,0 +1,40 @@
+﻿$PBExportHeader$st_tab_sped_free.srs
+global type st_tab_sped_free from structure
+	st_tab_g_0		st_tab_g_0
+	st_tab_arsp		st_tab_arsp
+	long		id_sped_free
+	string		num_bolla_out
+	date		data_bolla_out
+	long		clie_2
+	long		clie_3
+	string		stampa
+	datetime		data_stampa
+	string		form_di_stampa
+	string		indirizzo_riga[5]
+	string		aspetto
+	string		causale
+	string		colli
+	string		consegna
+	string		data_ora_rit
+	string		data_ora_vett
+	string		qta[19]
+	string		descr[19]
+	string		kgy[19]
+	string		dicit_ind_intest
+	string		dicit_ind_sped
+	string		intestazione
+	string		intestazione_ind[4]
+	string		note[5]
+	string		peso_kg
+	string		porto
+	string		sped_note
+	string		tipo_copia
+	string		trasporto
+	string		vett_1
+	string		vett_2
+	string		resa
+	string		annotazioni
+	datetime		x_datins
+	string		x_utente
+end type
+

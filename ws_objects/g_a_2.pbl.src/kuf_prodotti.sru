@@ -26,7 +26,7 @@ public function boolean link_call (ref datawindow adw_1, string a_campo_link) th
 public function st_esito anteprima_l (ref datastore kdw_anteprima, st_tab_prodotti kst_tab_prodotti)
 public function integer get_iva (st_tab_prodotti ast_tab_prodotti) throws uo_exception
 public function integer get_magazzino (st_tab_prodotti ast_tab_prodotti) throws uo_exception
-public function st_esito get_des (ref st_tab_prodotti ast_tab_prodotti)
+public function string get_des (ref st_tab_prodotti ast_tab_prodotti) throws uo_exception
 end prototypes
 
 public function string tb_delete (string k_codice);//
@@ -596,8 +596,8 @@ return k_return
 
 end function
 
-public function st_esito get_des (ref st_tab_prodotti ast_tab_prodotti);//
-//--- Leggo Gruppo dal Prodotto specifico
+public function string get_des (ref st_tab_prodotti ast_tab_prodotti) throws uo_exception;//
+//--- Leggo Descrizioni dal Prodotto 
 //
 string k_codice
 st_esito kst_esito
@@ -611,6 +611,8 @@ kst_esito.nome_oggetto = this.classname()
 if ast_tab_prodotti.codice > " " then
 	
 	k_codice = ast_tab_prodotti.codice
+	ast_tab_prodotti.des = ""
+	ast_tab_prodotti.des_mkt = ""
 	
 	select des  ,des_mkt 
 	 into 
@@ -620,28 +622,27 @@ if ast_tab_prodotti.codice > " " then
 		where codice = :k_codice 
 		using kguo_sqlca_db_magazzino;
 	
-	if kguo_sqlca_db_magazzino.sqlcode <> 0 then
-
+	if kguo_sqlca_db_magazzino.sqlcode < 0 then
 		kst_esito.sqlcode = kguo_sqlca_db_magazzino.sqlcode
-		kst_esito.SQLErrText = "Lettura Articolo '" + trim(k_codice) + "' campo Descrizioni: " + trim(kguo_sqlca_db_magazzino.SQLErrText)
-		if kguo_sqlca_db_magazzino.sqlcode = 100 then
-			kst_esito.esito = kkg_esito.not_fnd
-			ast_tab_prodotti.des = ""
-			ast_tab_prodotti.des_mkt = ""
-		else
-			if kguo_sqlca_db_magazzino.sqlcode > 0 then
-				kst_esito.esito = kkg_esito.db_wrn
-			else
-				kst_esito.esito = kkg_esito.db_ko
-			end if
-		end if
+		kst_esito.SQLErrText = "Errore in lettura descrizione Articolo '" + trim(k_codice) + "': " + trim(kguo_sqlca_db_magazzino.SQLErrText)
+		kst_esito.esito = kkg_esito.db_ko
+		kguo_exception.inizializza( )
+		kguo_exception.set_esito(kst_esito)
+		throw kguo_exception
 	end if
+else
+	kst_esito.sqlcode = 0
+	kst_esito.SQLErrText = "Lettura descrizione Articolo non effettuata, manca il codice. Anomalia interna di programmazione" 
+	kst_esito.esito = kkg_esito.no_esecuzione
+	kguo_exception.inizializza( )
+	kguo_exception.set_esito(kst_esito)
+	throw kguo_exception
 end if
 
 if isnull(ast_tab_prodotti.des) then ast_tab_prodotti.des = ""
 if isnull(ast_tab_prodotti.des_mkt) then ast_tab_prodotti.des_mkt = ""
 	
-return kst_esito
+return ast_tab_prodotti.des
 
 end function
 

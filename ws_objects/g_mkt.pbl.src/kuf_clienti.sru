@@ -176,6 +176,7 @@ public function long get_id_cliente_memo_max () throws uo_exception
 public function long get_codice_max () throws uo_exception
 public subroutine get_delivery (ref st_tab_clienti kst_tab_clienti) throws uo_exception
 public function string get_email_attestato (st_tab_clienti kst_tab_clienti) throws uo_exception
+public function st_esito anteprima_elenco_clienti (datastore kdw_anteprima, st_tab_clienti kst_tab_clienti)
 end prototypes
 
 public function st_esito conta_p_iva (ref st_tab_clienti kst_tab_clienti);//====================================================================
@@ -966,7 +967,6 @@ else
 
 
 		kdw_anteprima.reset()	
-//--- retrive dell'attestato 
 		k_rc=kdw_anteprima.retrieve(kst_tab_clienti.codice)
 
 	else
@@ -2879,7 +2879,7 @@ public function boolean link_call (ref datawindow adw_link, string a_campo_link)
 //
 //=== 
 long k_rc=0, k_riga=0
-string k_rcx=""
+string k_rcx="", k_titolo
 boolean k_return=true
 st_tab_clienti kst_tab_clienti
 st_tab_clienti_mkt kst_tab_clienti_mkt
@@ -2887,7 +2887,7 @@ st_tab_clienti_web kst_tab_clienti_web
 st_tab_m_r_f kst_tab_m_r_f
 st_esito kst_esito
 datastore kdsi_elenco_output   //ds da passare alla windows di elenco
-st_open_w kst_open_w 
+//st_open_w kst_open_w 
 kuf_elenco kuf1_elenco
 kuf_web kuf1_web
 pointer kp_oldpointer
@@ -2920,7 +2920,7 @@ if k_riga > 0 then
 						kguo_exception.set_esito( kst_esito)
 						throw kguo_exception
 					end if
-					kst_open_w.key1 = "Anagrafica  (codice=" + trim(string(kst_tab_clienti.codice)) + ") " 
+					k_titolo = "Anagrafica  (codice=" + trim(string(kst_tab_clienti.codice)) + ") " 
 				else
 					k_return = false
 				end if
@@ -2937,7 +2937,7 @@ if k_riga > 0 then
 					kguo_exception.set_esito( kst_esito)
 					throw kguo_exception
 				end if
-				kst_open_w.key1 = "Anagrafica  (codice=" + trim(string(kst_tab_clienti.codice)) + ") " 
+				k_titolo = "Anagrafica  (codice=" + trim(string(kst_tab_clienti.codice)) + ") " 
 			else
 				k_return = false
 			end if
@@ -2951,7 +2951,7 @@ if k_riga > 0 then
 					kguo_exception.set_esito( kst_esito)
 					throw kguo_exception
 				end if
-				kst_open_w.key1 = "Dati MKT dell'anagrafica, codice=" + trim(string(kst_tab_clienti_mkt.id_cliente)) + " " 
+				k_titolo = "Dati MKT dell'anagrafica, codice=" + trim(string(kst_tab_clienti_mkt.id_cliente)) + " " 
 			else
 				k_return = false
 			end if
@@ -2965,7 +2965,7 @@ if k_riga > 0 then
 					kguo_exception.set_esito( kst_esito)
 					throw kguo_exception
 				end if
-				kst_open_w.key1 = "Dati WEB dell'anagrafica, codice=" + trim(string(kst_tab_clienti_web.id_cliente)) + " " 
+				k_titolo = "Dati WEB dell'anagrafica, codice=" + trim(string(kst_tab_clienti_web.id_cliente)) + " " 
 			else
 				k_return = false
 			end if
@@ -2979,7 +2979,7 @@ if k_riga > 0 then
 					kguo_exception.set_esito( kst_esito)
 					throw kguo_exception
 				end if
-				kst_open_w.key1 = "Legami Mandanti-Riceventi dell'anagrafica, codice=" + trim(string(kst_tab_m_r_f.clie_3)) + " " 
+				k_titolo = "Legami Mandanti-Riceventi dell'anagrafica, codice=" + trim(string(kst_tab_m_r_f.clie_3)) + " " 
 			else
 				k_return = false
 			end if
@@ -2993,7 +2993,7 @@ if k_riga > 0 then
 					kguo_exception.set_esito( kst_esito)
 					throw kguo_exception
 				end if
-				kst_open_w.key1 = "Clienti del Contatto codice=" + trim(string(kst_tab_clienti.codice)) + " " 
+				k_titolo = "Clienti del Contatto codice=" + trim(string(kst_tab_clienti.codice)) + " " 
 			else
 				k_return = false
 			end if
@@ -3007,8 +3007,39 @@ if k_riga > 0 then
 				kguo_exception.set_esito( kst_esito)
 				throw kguo_exception
 			end if
-			kst_open_w.key1 = "Elenco Anagrafiche " 
-	
+			k_titolo = "Elenco Anagrafiche " 
+
+		case "b_clie_1_l", "clie_1_l"   // elenco clienti mandanti
+			kst_tab_clienti.rag_soc_10 = "%" 
+			kdsi_elenco_output.dataobject = "d_clienti_l_riceventi"
+			kst_esito = this.anteprima_elenco_clienti( kdsi_elenco_output, kst_tab_clienti )
+			if kst_esito.esito <> kkg_esito.ok then
+				kguo_exception.inizializza()
+				kguo_exception.set_esito( kst_esito)
+				throw kguo_exception
+			end if
+			k_titolo = "Elenco Mandanti " 
+		case "b_clie_2_l", "clie_2_l"   // elenco clienti riceventi
+			kst_tab_clienti.rag_soc_10 = "%" 
+			kdsi_elenco_output.dataobject = "d_clienti_l_riceventi"
+			kst_esito = this.anteprima_elenco_clienti( kdsi_elenco_output, kst_tab_clienti )
+			if kst_esito.esito <> kkg_esito.ok then
+				kguo_exception.inizializza()
+				kguo_exception.set_esito( kst_esito)
+				throw kguo_exception
+			end if
+			k_titolo = "Elenco Riceventi " 
+		case "b_clie_3_l", "clie_3_l"   // elenco clienti fatt
+			kst_tab_clienti.rag_soc_10 = "%" 
+			kdsi_elenco_output.dataobject = "d_clienti_l_fatturati"
+			kst_esito = this.anteprima_elenco_clienti( kdsi_elenco_output, kst_tab_clienti )
+			if kst_esito.esito <> kkg_esito.ok then
+				kguo_exception.inizializza()
+				kguo_exception.set_esito( kst_esito)
+				throw kguo_exception
+			end if
+			k_titolo = "Elenco Clienti " 
+
 		case "email", "email1", "email2", "email3" 
 			kst_tab_clienti_web.email = trim(adw_link.getitemstring(k_riga, a_campo_link))
 			if len(kst_tab_clienti_web.email) > 0 then
@@ -3056,7 +3087,7 @@ if k_riga > 0 then
 					kguo_exception.set_esito( kst_esito)
 					throw kguo_exception
 				end if
-				kst_open_w.key1 = "Fascicoli Memo Anagrafica=" + trim(string(kst_tab_clienti.codice)) + " " 
+				k_titolo = "Fascicoli Memo Anagrafica=" + trim(string(kst_tab_clienti.codice)) + " " 
 			else
 				k_return = false
 			end if
@@ -3071,17 +3102,19 @@ if k_riga > 0 then
 		//
 		//=== Parametri : 
 		//=== struttura st_open_w
-			kst_open_w.flag_modalita = kkg_flag_modalita.elenco
-			kst_open_w.flag_adatta_win = KKG.ADATTA_WIN
-			kst_open_w.flag_leggi_dw = " "
-			kst_open_w.flag_cerca_in_lista = " "
-			kst_open_w.key2 = trim(kdsi_elenco_output.dataobject)
-			kst_open_w.key3 = "0"     //--- viene riempito con il nr di riga selezionata
-			kst_open_w.key4 = kGuf_data_base.prendi_win_attiva_titolo()    //--- Titolo della Window di chiamata per riconoscerla
-			kst_open_w.key12_any = kdsi_elenco_output
-			kst_open_w.flag_where = " "
+//			kst_open_w.flag_modalita = kkg_flag_modalita.elenco
+//			kst_open_w.flag_adatta_win = KKG.ADATTA_WIN
+//			kst_open_w.flag_leggi_dw = " "
+//			kst_open_w.flag_cerca_in_lista = " "
+//			kst_open_w.key1 = k_titolo
+//			kst_open_w.key2 = trim(kdsi_elenco_output.dataobject)
+//			kst_open_w.key3 = "0"     //--- viene riempito con il nr di riga selezionata
+//			kst_open_w.key4 = kGuf_data_base.prendi_win_attiva_titolo()    //--- Titolo della Window di chiamata per riconoscerla
+//			kst_open_w.key12_any = kdsi_elenco_output
+//			kst_open_w.flag_where = " "
 			kuf1_elenco = create kuf_elenco 
-			kuf1_elenco.u_open(kst_open_w)
+//			kuf1_elenco.u_open(kst_open_w)
+			kuf1_elenco.u_open_zoom(k_titolo, a_campo_link, kdsi_elenco_output) //CAMPO DI LINK + DATASTORE CON I DATI
 			destroy kuf1_elenco
 	
 	
@@ -4131,9 +4164,7 @@ else
 		kdw_anteprima.dataobject = "d_contatto"		
 		kdw_anteprima.settransobject(sqlca)
 
-
 		kdw_anteprima.reset()	
-//--- retrive dell'attestato 
 		k_rc=kdw_anteprima.retrieve(kst_tab_clienti.codice)
 
 	else
@@ -7964,6 +7995,73 @@ return k_return
 
 
 
+
+end function
+
+public function st_esito anteprima_elenco_clienti (datastore kdw_anteprima, st_tab_clienti kst_tab_clienti);//
+//=== 
+//====================================================================
+//=== Operazione di Anteprima 
+//===
+//=== Par. Inut: 
+//===               datawindow su cui fare l'anteprima
+//===               dati tabella per estrazione dell'anteprima
+//=== 
+//=== Ritorna tab. ST_ESITO, Esiti: 0=OK; 1=Errore Grave
+//===                                     2=Errore gestito
+//===                                     3=altro errore
+//===                                     100=Non trovato 
+//=== 
+//====================================================================
+//
+//=== 
+long k_rc
+boolean k_return
+st_open_w kst_open_w
+st_esito kst_esito
+kuf_sicurezza kuf1_sicurezza
+kuf_utility kuf1_utility
+
+
+kst_esito.esito = kkg_esito.ok
+kst_esito.sqlcode = 0
+kst_esito.SQLErrText = ""
+kst_esito.nome_oggetto = this.classname()
+
+kst_open_w = kst_open_w
+kst_open_w.flag_modalita = kkg_flag_modalita.anteprima
+kst_open_w.id_programma = kkg_id_programma_anag
+
+//--- controlla se utente autorizzato alla funzione in atto
+kuf1_sicurezza = create kuf_sicurezza
+k_return = kuf1_sicurezza.autorizza_funzione(kst_open_w)
+destroy kuf1_sicurezza
+
+if not k_return then
+
+	kst_esito.sqlcode = sqlca.sqlcode
+	kst_esito.SQLErrText = "Anteprima non Autorizzata: ~n~r" + "La funzione richiesta non e' stata abilitata"
+	kst_esito.esito = kkg_esito.no_aut
+
+else
+
+	if kst_tab_clienti.rag_soc_10 > " " then
+
+		kdw_anteprima.settransobject(sqlca)
+		
+		kdw_anteprima.reset()	
+		k_rc=kdw_anteprima.retrieve(kst_tab_clienti.rag_soc_10)
+
+	else
+		kst_esito.sqlcode = 0
+		kst_esito.SQLErrText = "Nessuna Anagrafica da visualizzare: ~n~r" + "nessun nominativo indicato"
+		kst_esito.esito = "1"
+		
+	end if
+end if
+
+
+return kst_esito
 
 end function
 

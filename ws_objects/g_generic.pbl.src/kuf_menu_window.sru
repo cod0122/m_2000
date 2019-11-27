@@ -367,16 +367,27 @@ try
 		kst_open_w.nome_oggetto = get_nome_oggetto(k_id_programma_open) 
 
 		if autorizza_funzione(kst_open_w) then
-		
+
 			kst_open_w.flag_utente_autorizzato = true 
 			
+//--- recupera il riferimento alla windows chiamante
+			setnull(kst_open_w.key10_window_chiamante)
+			if trim(kst_open_w.id_programma_chiamante) > " " then
+				kw_window_attiva = kGuf_data_base.prendi_win_x_id_programma(kst_open_w.id_programma_chiamante)
+			else
+				kst_open_w.id_programma_chiamante = ""
+				kw_window_attiva=kGuf_data_base.prendi_win_attiva()
+			end if
+			if isvalid(kw_window_attiva) and not isnull(kw_window_attiva) then
+				kst_open_w.key10_window_chiamante = kw_window_attiva
+				kst_open_w.id_programma_chiamante = trim(kw_window_attiva.get_id_programma())
+			end if
+						
 	//--- se sto aprendo una windows....
-			if LenA(trim(kGst_tab_menu_window[k_ctr].window)) > 1 then
+			if trim(kGst_tab_menu_window[k_ctr].window) > " " then
 	
 	//--- se window gia' aperta chiedo cosa fare
 				kw_window = kguo_g.window_aperta_get(trim(kGst_tab_menu_window[k_ctr].window))
-//				kw_window = prendi_win_uguale(trim(kGst_tab_menu_window[k_ctr].window))
-//					if kw_window.ClassName( ) = trim(kGst_tab_menu_window[k_ctr].window) then
 
 				if isvalid(kw_window) then
 
@@ -385,7 +396,9 @@ try
 						
 						k_open_window = false
 						try
-							kw_window.u_riopen(kst_open_w) 
+							
+							kw_window.u_riopen(kst_open_w)    // Window già aperta la mette attiva
+							
 						catch (uo_exception kuo2_exception)
 							kuo2_exception.messaggio_utente()
 						end try
@@ -419,19 +432,9 @@ try
 		
 					if isvalid(w_main) and kGst_tab_menu_window[k_ctr].primopiano <> "S"  then
 	
-//--- recupera il riferimento alla windows chiamante
-						if len(trim(kst_open_w.id_programma_chiamante)) > 0 then
-						else
-							setnull(kst_open_w.key10_window_chiamante)
-							kst_open_w.id_programma_chiamante = ""
-							kw_window_attiva=kGuf_data_base.prendi_win_attiva()
-							if isvalid(kw_window_attiva) and not isnull(kw_window_attiva) then
-								kst_open_w.key10_window_chiamante = kw_window_attiva
-								kst_open_w.id_programma_chiamante = trim(kw_window_attiva.get_id_programma())
-							end if
-						end if
 //--- passa al pgm il nome del campo chiave primaria
 						kst_open_w.nome_id_tabella = kGst_tab_menu_window[k_ctr].nome_id_tabella
+						
 					end if
 
 //--- APRO LA WINDOW STANDARD

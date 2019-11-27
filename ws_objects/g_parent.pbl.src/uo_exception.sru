@@ -65,7 +65,7 @@ st_esito kst_esito
 ki_st_uo_exception.tipo = get_tipo()
 
 
-if trim(getmessage()) > ' ' then
+if trim(getmessage()) > " " then
 else
 	kst_esito = get_st_esito()
 	if trim(kst_esito.sqlerrtext) > " " then

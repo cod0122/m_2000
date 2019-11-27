@@ -2212,6 +2212,9 @@ try
 //--- get delle NOTE e dall'Articolo indicati nella riga
 				if k_riga_elenco > 0 then
 					kst_tab_prodotti_old.codice = tab_1.tabpage_4.dw_4.getitemstring( k_riga_elenco, "art")
+					if trim(kst_tab_prodotti_old.codice) > " " then
+						kiuf_prodotti.get_des(kst_tab_prodotti_old)  // get della vecchia descrizione x capire se è stata cambiata
+					end if
 				end if
 			end if
 		end if
@@ -2298,25 +2301,13 @@ try
 		if trim(ast_tab_armo.art) > " " then 
 			kst_tab_prodotti.des = ""
 			kst_tab_prodotti.codice = ast_tab_armo.art
-			kst_esito = kiuf_prodotti.get_des(kst_tab_prodotti)
-			if kst_esito.esito = kkg_esito.ok then
-				kst_esito = kiuf_prodotti.get_des(kst_tab_prodotti_old)  // get della vecchia descrizione x capire se è stata cambiata
-			end if
-			if kst_esito.esito = kkg_esito.ok then
-				if trim(ast_tab_armo.note_2) <> trim(kst_tab_prodotti_old.des) then  // se avevo cambiato le NOTE allora le lascio così
-				else
-					ast_tab_armo.note_2 = trim(kst_tab_prodotti.des)  // imposta la descrizione articolo sulla seconda NOTA del movim
-				end if
-				if ast_tab_armo.magazzino = 0 then
-					ast_tab_armo.magazzino = kiuf_prodotti.get_magazzino(kst_tab_prodotti)
-				end if
-
+			kiuf_prodotti.get_des(kst_tab_prodotti)
+			if trim(ast_tab_armo.note_2) <> trim(kst_tab_prodotti_old.des) then  // se avevo cambiato le NOTE allora le lascio così
 			else
-				if kst_esito.esito = kkg_esito.db_ko then
-					kguo_exception.inizializza( )
-					kguo_exception.set_esito( kst_esito )
-					throw kguo_exception
-				end if
+				ast_tab_armo.note_2 = trim(kst_tab_prodotti.des)  // imposta la descrizione articolo sulla seconda NOTA del movim
+			end if
+			if ast_tab_armo.magazzino = 0 then
+				ast_tab_armo.magazzino = kiuf_prodotti.get_magazzino(kst_tab_prodotti)
 			end if
 		end if	
 

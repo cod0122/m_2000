@@ -127,7 +127,8 @@ choose case a_button
 		, "b_asn", "b_e1doco_lav", "b_e1apid_dett", "b_certif_stampa", "b_contratto_doc_dettaglio" &
 		, "p_memo_alarm_certif" &
 		, "p_memo_alarm_ddt" &
-		, "cb_clienti_cntdep_l"
+		, "cb_clienti_cntdep_l" &
+		, "b_clie_1_l" , "b_clie_2_l", "b_clie_3_l"
 		k_return = a_button
 		
 		
@@ -207,7 +208,8 @@ string k_num_colonne, k_nome
 					,"e1_certif_saved_dir" &
 					,"path_centrale" &
 					,"dir_fatt" &
-					,"path_file_pilota"
+					,"path_file_pilota" &
+					,"clie_1_l" , "clie_2_l", "clie_3_l"
 //					, "id_meca_righe" &
 					
 //--- se e' del tipo grid o tabular link sul valore alrimenti sul testo		
@@ -349,7 +351,9 @@ choose case a_nome_link
 		kuf1_parent = create using "kuf_sped"
 		
 	case "clie_1", "clie_2", "clie_3", "clie", "cod_cli", "id_cliente", "id_cliente_link", "b_cliente_mkt", "b_cliente_web", "b_m_r_f", "id_contatto_1", "id_contatto_2", "id_contatto_3", "id_contatto_4", "id_contatto_5", "b_elenco_clienti_del_contatto" &    
-			,"email", "email1", "email2",  "sito_web", "sito_web1", "b_clienti",  "p_clienti_memo_elenco"
+			,"email", "email1", "email2",  "sito_web", "sito_web1", "b_clienti",  "p_clienti_memo_elenco" &
+			, "b_clie_1_l" , "b_clie_2_l", "b_clie_3_l" &
+			, "clie_1_l" , "clie_2_l", "clie_3_l" 
 		kuf1_parent = create using "kuf_clienti"
 		
 	case "id_contratto_rd" 

@@ -278,13 +278,13 @@ try
 		end if
 	end if
 	
-	kst_tab_sped.porto = ads_inp_testa.getitemstring( k_riga_testa, "porto")
-	if trim(kst_tab_sped.porto) > " " then
-	else
-		kst_esito.esito = kkg_esito.DATI_INSUFF
-		kst_esito.sqlerrtext += "Manca '" + trim(ads_inp_testa.describe("porto_t.text")) + "' ~n~r" 
-		k_nr_errori++
-	end if
+//	kst_tab_sped.porto = ads_inp_testa.getitemstring( k_riga_testa, "porto")
+//	if trim(kst_tab_sped.porto) > " " then
+//	else
+//		kst_esito.esito = kkg_esito.DATI_INSUFF
+//		kst_esito.sqlerrtext += "Manca '" + trim(ads_inp_testa.describe("porto_t.text")) + "' ~n~r" 
+//		k_nr_errori++
+//	end if
 	
 	kst_tab_sped.colli = ads_inp_testa.getitemnumber( k_riga_testa, "colli")
 	if kst_tab_sped.colli > 0 then

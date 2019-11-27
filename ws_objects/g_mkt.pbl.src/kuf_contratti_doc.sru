@@ -31,9 +31,7 @@ end variables
 forward prototypes
 public function st_esito anteprima (ref datastore kdw_anteprima, st_tab_contratti_doc kst_tab_contratti_doc)
 public function st_esito anteprima (ref datawindow kdw_anteprima, st_tab_contratti_doc kst_tab_contratti_doc)
-public function st_esito tb_delete (st_tab_contratti_doc kst_tab_contratti_doc)
 public subroutine if_isnull (ref st_tab_contratti_doc kst_tab_contratti_doc)
-public function st_esito get_ultimo_id (ref st_tab_contratti_doc kst_tab_contratti_doc)
 public function st_esito get_dati_default (ref st_tab_contratti_doc kst_tab_contratti_doc)
 public function st_esito get_ultimo_cliente_anno (ref st_tab_contratti_doc kst_tab_contratti_doc)
 public function boolean link_call (ref datawindow adw_link, string a_campo_link) throws uo_exception
@@ -73,6 +71,8 @@ public function st_esito anteprima_dettaglio (ref datawindow kdw_anteprima, st_t
 public function st_esito anteprima_dettaglio (ref datastore kdw_anteprima, st_tab_contratti_doc kst_tab_contratti_doc)
 public function string get_stato_descrizione (ref st_tab_contratti_doc kst_tab_contratti_doc)
 public function string get_stato (ref st_tab_contratti_doc kst_tab_contratti_doc) throws uo_exception
+public function long get_ultimo_id () throws uo_exception
+public function boolean tb_delete (st_tab_contratti_doc kst_tab_contratti_doc) throws uo_exception
 end prototypes
 
 public function st_esito anteprima (ref datastore kdw_anteprima, st_tab_contratti_doc kst_tab_contratti_doc);//
@@ -223,100 +223,6 @@ return kst_esito
 
 end function
 
-public function st_esito tb_delete (st_tab_contratti_doc kst_tab_contratti_doc);//
-//====================================================================
-//=== Cancella il rek dalla tabella contratti_doc 
-//=== 
-//=== Ritorna ST_ESITO
-//===           	
-//====================================================================
-//
-st_esito kst_esito
-st_open_w kst_open_w
-st_tab_docprod kst_tab_docprod
-kuf_sicurezza kuf1_sicurezza
-kuf_docprod kuf1_docprod
-kuf_doctipo kuf1_doctipo
-boolean k_autorizza
-
-
-kst_esito.esito = kkg_esito.ok
-kst_esito.sqlcode = 0
-kst_esito.SQLErrText = ""
-kst_esito.nome_oggetto = this.classname()
-
-kst_open_w.flag_modalita = kkg_flag_modalita.cancellazione
-kst_open_w.id_programma = get_id_programma(kst_open_w.flag_modalita) 
-
-//--- controlla se utente autorizzato alla funzione in atto
-kuf1_sicurezza = create kuf_sicurezza
-k_autorizza = kuf1_sicurezza.autorizza_funzione(kst_open_w)
-destroy kuf1_sicurezza
-
-if not k_autorizza then
-
-	kst_esito.sqlcode = sqlca.sqlcode
-	kst_esito.SQLErrText = "Cancellazione 'Quotazione' non Autorizzata: ~n~r" + "La funzione richiesta non e' stata abilitata"
-	kst_esito.esito = kkg_esito.no_aut
-
-else
-
-	try
-
-		if kst_tab_contratti_doc.id_contratto_doc > 0 then
-	
-			delete from contratti_doc
-				where id_contratto_doc = :kst_tab_contratti_doc.id_contratto_doc
-				using sqlca;
-	
-			
-			if sqlca.sqlcode < 0 then
-				kst_esito.sqlcode = sqlca.sqlcode
-				kst_esito.SQLErrText = "Cancellazione 'Quotazione' (contratti_doc):" + trim(sqlca.SQLErrText)
-				kst_esito.esito = kkg_esito.db_ko
-			else
-
-//--- cancella da docprod	 tutti i riferimenti
-				kst_tab_docprod.id_doc = kst_tab_contratti_doc.id_contratto_doc
-				kuf1_docprod = create kuf_docprod
-				kuf1_doctipo = create kuf_doctipo
-				kst_tab_docprod.st_tab_g_0.esegui_commit = "N"
-				kuf1_docprod.tb_delete(kst_tab_docprod, kuf1_doctipo.kki_tipo_contr_rd )
-
-			end if
-			
-		end if
-		
-	catch 	(uo_exception kuo_exception)
-		kst_esito = kuo_exception.get_st_esito()
-
-
-	finally
-//---- COMMIT....	
-		if kst_esito.esito = kkg_esito.db_ko then
-			if kst_tab_contratti_doc.st_tab_g_0.esegui_commit <> "N" or isnull(kst_tab_contratti_doc.st_tab_g_0.esegui_commit) then
-				kGuf_data_base.db_rollback_1( )
-			end if
-		else
-			if kst_tab_contratti_doc.st_tab_g_0.esegui_commit <> "N" or isnull(kst_tab_contratti_doc.st_tab_g_0.esegui_commit) then
-				kGuf_data_base.db_commit_1( )
-			end if
-		end if
-		
-		if isvalid(kuf1_docprod) then destroy kuf1_docprod 
-		if isvalid(kuf1_doctipo) then destroy kuf1_doctipo 
-		
-	
-	
-	end try
-	
-end if
-
-
-return kst_esito
-
-end function
-
 public subroutine if_isnull (ref st_tab_contratti_doc kst_tab_contratti_doc);//---
 //--- Inizializza i campi della tabella 
 //---
@@ -374,47 +280,6 @@ if isnull(kst_tab_contratti_doc.x_utente) then kst_tab_contratti_doc.x_utente = 
 
 
 end subroutine
-
-public function st_esito get_ultimo_id (ref st_tab_contratti_doc kst_tab_contratti_doc);//
-//====================================================================
-//=== Torna l'ultimo ID caricato 
-//=== 
-//=== Input: st_tab_contratti_doc non valorizzata     Output: st_tab_contratti_doc.id_contratto_doc                  
-//=== Ritorna ST_ESITO
-//=== 
-//====================================================================
-
-st_esito kst_esito
-
-
-
-	kst_esito.esito = kkg_esito.ok
-	kst_esito.sqlcode = 0
-	kst_esito.SQLErrText = ""
-	kst_esito.nome_oggetto = this.classname()
-
-	kst_tab_contratti_doc.id_contratto_doc = 0
-	
-   SELECT   max(id_contratto_doc)
-       into :kst_tab_contratti_doc.id_contratto_doc
-		 FROM contratti_doc
-			using kguo_sqlca_db_magazzino ;
-	
-	if kguo_sqlca_db_magazzino.sqlcode < 0 then
-		kst_esito.esito = kkg_esito.db_ko
-		kst_esito.sqlcode = kguo_sqlca_db_magazzino.sqlcode
-		kst_esito.SQLErrText = "Errore in Lettura Quotazione (cercato MAX CODICE) ~n~r:" + trim(kguo_sqlca_db_magazzino.SQLErrText)
-	end if
-
-
-
-
-return kst_esito
-
-
-
-
-end function
 
 public function st_esito get_dati_default (ref st_tab_contratti_doc kst_tab_contratti_doc);//
 //====================================================================
@@ -2611,7 +2476,7 @@ st_tab_contratti_doc kst_tab_contratti_doc
 
 		//select SCOPE_IDENTITY() into :ast_tab_contratti_doc.id_contratto_doc from contratti_doc
 		//			using kguo_sqlca_db_magazzino ;
-		get_ultimo_id(ast_tab_contratti_doc)
+		ast_tab_contratti_doc.id_contratto_doc = get_ultimo_id()
 					
 //--- aggiorna i dati del Contratto (JSON)
 		kst_tab_contratti_doc = ast_tab_contratti_doc
@@ -4372,6 +4237,114 @@ kst_esito.nome_oggetto = this.classname()
 
 return k_return
 
+
+end function
+
+public function long get_ultimo_id () throws uo_exception;//
+//====================================================================
+//=== Torna l'ultimo ID caricato 
+//=== 
+//=== Ritorna: ultimo id caricato
+//=== 
+//====================================================================
+long k_return
+st_esito kst_esito
+
+
+
+	kst_esito.esito = kkg_esito.ok
+	kst_esito.sqlcode = 0
+	kst_esito.SQLErrText = ""
+	kst_esito.nome_oggetto = this.classname()
+
+   SELECT   max(id_contratto_doc)
+       into :k_return
+		 FROM contratti_doc
+			using kguo_sqlca_db_magazzino ;
+	
+	if kguo_sqlca_db_magazzino.sqlcode < 0 then
+		kst_esito.esito = kkg_esito.db_ko
+		kst_esito.sqlcode = kguo_sqlca_db_magazzino.sqlcode
+		kst_esito.SQLErrText = "Errore in Lettura Quotazione (cercato ultimo ID caricato) ~n~r:" + trim(kguo_sqlca_db_magazzino.SQLErrText)
+		kguo_exception.inizializza()
+		kguo_exception.set_esito(kst_esito)
+		throw kguo_exception 
+	end if
+
+return k_return
+
+
+
+
+end function
+
+public function boolean tb_delete (st_tab_contratti_doc kst_tab_contratti_doc) throws uo_exception;//
+//====================================================================
+//=== Cancella il rek dalla tabella contratti_doc 
+//=== 
+//===           	
+//====================================================================
+//
+boolean k_return
+st_esito kst_esito
+st_open_w kst_open_w
+st_tab_docprod kst_tab_docprod
+kuf_docprod kuf1_docprod
+kuf_doctipo kuf1_doctipo
+
+
+	kst_esito.esito = kkg_esito.ok
+	kst_esito.sqlcode = 0
+	kst_esito.SQLErrText = ""
+	kst_esito.nome_oggetto = this.classname()
+	
+	if_sicurezza(kkg_flag_modalita.cancellazione)
+
+	try
+
+		if kst_tab_contratti_doc.id_contratto_doc > 0 then
+	
+			delete from contratti_doc
+				where id_contratto_doc = :kst_tab_contratti_doc.id_contratto_doc
+				using kguo_sqlca_db_magazzino;
+			
+			if sqlca.sqlcode < 0 then
+				kst_esito.sqlcode = sqlca.sqlcode
+				kst_esito.SQLErrText = "Cancellazione 'Quotazione'  id " + string(kst_tab_contratti_doc.id_contratto_doc) + " (contratti_doc): " + trim(sqlca.SQLErrText)
+				kst_esito.esito = kkg_esito.db_ko
+				kguo_exception.inizializza( )
+				kguo_exception.set_esito(kst_esito)
+				throw kguo_exception
+			end if
+
+//--- cancella da docprod	 tutti i riferimenti
+			kst_tab_docprod.id_doc = kst_tab_contratti_doc.id_contratto_doc
+			kuf1_docprod = create kuf_docprod
+			kuf1_doctipo = create kuf_doctipo
+			kst_tab_docprod.st_tab_g_0.esegui_commit = "N"
+			kuf1_docprod.tb_delete(kst_tab_docprod, kuf1_doctipo.kki_tipo_contr_rd )
+
+//---- COMMIT....	
+			if kst_tab_contratti_doc.st_tab_g_0.esegui_commit <> "N" or isnull(kst_tab_contratti_doc.st_tab_g_0.esegui_commit) then
+				kguo_sqlca_db_magazzino.db_commit( )
+			end if
+		
+			k_return = true
+		end if
+		
+	catch (uo_exception kuo_exception)
+		if kst_tab_contratti_doc.st_tab_g_0.esegui_commit <> "N" or isnull(kst_tab_contratti_doc.st_tab_g_0.esegui_commit) then
+			kguo_sqlca_db_magazzino.db_rollback( )
+		end if
+		throw kuo_exception
+
+	finally
+		if isvalid(kuf1_docprod) then destroy kuf1_docprod 
+		if isvalid(kuf1_doctipo) then destroy kuf1_doctipo 
+		
+	end try
+	
+return k_return
 
 end function
 

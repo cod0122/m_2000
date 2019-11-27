@@ -459,7 +459,7 @@ st_tab_base_personale kst_tab_base_personale
 st_tab_base kst_tab_base
 st_esito kst_esito
 kuf_base kuf1_base
-kuf_utility kuf1_utility
+//kuf_utility kuf1_utility
 //kuf_db kuf1_db
 
 
@@ -503,7 +503,7 @@ end if
 //end if
 
 
-kuf1_utility = create kuf_utility
+//kuf1_utility = create kuf_utility
 
 //--- Se DB connesso 
 if isvalid(sqlca) then
@@ -530,7 +530,7 @@ end if
 //--- set toolbattext
 //kuf1_utility.u_toolbar_save_toolbartext()
 
-destroy kuf1_utility
+//destroy kuf1_utility
 
 	
 //--- Segnala il tentativo di Start dell'applicazione (I=messaggio Informativo)

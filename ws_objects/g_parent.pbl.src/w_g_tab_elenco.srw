@@ -612,9 +612,7 @@ protected subroutine attiva_tasti_0 ();//
 long k_nr_righe
 string k_lista, k_nome_controllo
 int k_tab_selected
-//uo_d_std_1 kdw_focus
 st_tab_menu_window_anteprima kst_tab_menu_window_anteprima
-//kuf_menu kuf1_menu
 
 
 //setta_oggetti( )
@@ -659,7 +657,7 @@ cb_conferma.visible = false
 cb_ritorna.enabled = true
 cb_conferma.enabled = true
 
-kiuo_g_tab_elenco_tabpage[tab_1.selectedtab].ki_conferma = cb_conferma.enabled
+kiuo_g_tab_elenco_tabpage[tab_1.selectedtab].set_ki_conferma(cb_conferma.enabled)
 
 end subroutine
 

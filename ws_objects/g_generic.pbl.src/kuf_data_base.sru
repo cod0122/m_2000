@@ -126,6 +126,7 @@ private subroutine u_set_ds_change_name_tab_1 (ref datawindow kdw_1, string k_no
 public subroutine u_set_ds_change_name_tab (ref datawindow kdw_1, string k_nome_tab) throws uo_exception
 public subroutine u_set_ds_change_name_tab (ref datawindow kdw_1, string k_nome_tab, string k_id_utente) throws uo_exception
 public subroutine u_dw_extend_col_to_edge (datawindow a_dw, string a_column)
+public function long u_getlistselectedrow (datawindow kdw_1)
 end prototypes
 
 public function string db_commit ();//---
@@ -1166,6 +1167,7 @@ kst_esito.sqlerrtext += &
 						+ "oggetto= " + trim(kst_errori_gestione.nome_oggetto) &
 						+ "; dbcode= " + string(kst_errori_gestione.SQLdbcode) &
                   + " - " + trim(kst_errori_gestione.SQLErrText) &
+						+ " sqlcode: " + string(kst_errori_gestione.sqlca.sqlcode) &
 						+ "; Query= " + trim(kst_errori_gestione.SQLsyntax) &
 						+ "; Utente= " + trim(kGuo_utente.get_codice())
 if kst_errori_gestione.sqlca.sqlcode <> 0 then 
@@ -1219,20 +1221,30 @@ CHOOSE CASE kst_errori_gestione.SQLdbcode
 			"Riconnettersi alla rete e riaprire questa funzione. Altrimenti chiudere la Procedura.~n~r" &
 			+ " Oggetto: " + trim(kst_errori_gestione.nome_oggetto)   &
 			+ " dbcode: " + string(kst_errori_gestione.sqldbcode)  &
-			+ " sqlcode: " + string(kst_errori_gestione.sqlca) &
+			+ " sqlcode: " + string(kst_errori_gestione.sqlca.sqlcode) &
 			+ " syntax: " + trim(kst_errori_gestione.SQLErrText) + " -> " + trim(kst_errori_gestione.sqlsyntax))   
 
 		
 //		"~n~r"
 	CASE -04  // errore strano interno
+		kst_esito.esito = kkg_esito.no_esecuzione
+		kst_esito.sqlcode = 0
+		kst_esito.sqlerrtext = "Anomalia generica. " &
+			+ "Non è possibile proseguire correttamente l'operazione!!~n~r" + trim(kst_errori_gestione.SQLErrText)  &
+			+ " Oggetto: " + trim(kst_errori_gestione.nome_oggetto)   &
+			+ " dbcode: " + string(kst_errori_gestione.sqldbcode)  &
+			+ " sqlcode: " + string(kst_errori_gestione.sqlca.sqlcode) &
+			+ " syntax: " + trim(kst_errori_gestione.sqlsyntax)
+		errori_scrivi_esito("W", kst_esito)
+
+	case else
 		kguo_exception.messaggio_utente("Codice programma errato",  &
 			"Probabile errore interno di programmazione. " &
 			+ "Non è possibile proseguire correttamente l'operazione!!~n~r" + trim(kst_errori_gestione.SQLErrText)  &
 			+ "- Oggetto: " + trim(kst_errori_gestione.nome_oggetto)   &
 			+ " dbcode: " + string(kst_errori_gestione.sqldbcode)  &
-			+ " sqlcode: " + string(kst_errori_gestione.sqlca) &
+			+ " sqlcode: " + string(kst_errori_gestione.sqlca.sqlcode) &
 			+ " syntax: " + trim(kst_errori_gestione.sqlsyntax))
-
 
 END CHOOSE
 
@@ -3843,6 +3855,24 @@ if k_width > 0 then
 end if
 
 end subroutine
+
+public function long u_getlistselectedrow (datawindow kdw_1);//
+//--- Torna la prima riga selezionata nel datawindow
+//
+long k_row
+
+
+	k_row = kdw_1.getselectedrow(0)
+	if k_row = 0 then
+		if kdw_1.rowcount( ) = 1 then
+			k_row = 1
+		end if
+	end if
+	
+return k_row
+
+
+end function
 
 on kuf_data_base.create
 call super::create

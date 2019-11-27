@@ -37,8 +37,8 @@ public function st_esito anteprima (datastore kdw_anteprima, st_tab_email kst_ta
 public function st_esito get_oggetto (ref st_tab_email kst_tab_email)
 public function st_esito get_link_lettera (ref st_tab_email kst_tab_email)
 public function boolean if_presente (st_tab_email kst_tab_email) throws uo_exception
-public function st_esito get_email_from_string (ref st_email_address ast_email_address)
 public function boolean if_sintassi_email_ok (string kst_email)
+public function int get_email_from_string (ref st_email_address ast_email_address) throws uo_exception
 end prototypes
 
 public function st_esito tb_delete (st_tab_email kst_tab_email);//
@@ -440,7 +440,27 @@ return k_return
 
 end function
 
-public function st_esito get_email_from_string (ref st_email_address ast_email_address);//
+public function boolean if_sintassi_email_ok (string kst_email);//---
+//--- Controllo sintassi E-MAIL
+//---
+//--- Input: st_web.email valorizzato
+//--- Out: TRUE=ok, False=indirizzo errato
+
+kst_email = trim(kst_email)
+
+return match(kst_email, "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$")
+//								"[a-zA-z0-9]+[-.]*[a-zA-z0-9]*[@][a-zA-z0-9]+[-.][a-zA-z0-9]+[a-zA-z0-9]$")
+//                      '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z][a-zA-Z][a-zA-Z]*[a-zA-Z]*$'
+//    						"[a-zA-Z0-9_\.]+@[a-zA-Z0-9-]+\.[a-zA-Z]{0,4}"
+
+end function
+
+public function int get_email_from_string (ref st_email_address ast_email_address) throws uo_exception;//
+//--- trova gli indirizzi email da una stringa
+//--- inp: ast_email_address.email_all stringa con email
+//--- out: kst_email_address.address[] array con le email trovate nella string
+//--- rit: n.email trovate 
+//
 string k_email
 int k_pos_ini, k_pos_fin, k_len, k_email_idx, k_pos_fin_puntovirgola
 int k_email_n_max
@@ -497,36 +517,23 @@ st_email_address kst_email_address
 				  
 			kst_esito.esito = kkg_esito.ko
 			if kst_esito.sqlerrtext = "" then
-				kst_esito.sqlerrtext = "Indirizzi errati: " + kst_email_address.address[k_email_idx] 
+				kst_esito.sqlerrtext = "Fallita verifica indirizzo email: " + kst_email_address.address[k_email_idx] 
 			else
 				kst_esito.sqlerrtext += ", " + kst_email_address.address[k_email_idx] 
 			end if
-			//+ " (n." + string(k_email_idx) + ") "
-				  
+			kguo_exception.inizializza( )
+			kguo_exception.set_esito(kst_esito)
+			throw kguo_exception
+							  
 		end if
 	next
 	
 ast_email_address.address[] = kst_email_address.address[]
 
 
-return kst_esito
+return k_email_n_max
 
 
-
-end function
-
-public function boolean if_sintassi_email_ok (string kst_email);//---
-//--- Controllo sintassi E-MAIL
-//---
-//--- Input: st_web.email valorizzato
-//--- Out: TRUE=ok, False=indirizzo errato
-
-kst_email = trim(kst_email)
-
-return match(kst_email, "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$")
-//								"[a-zA-z0-9]+[-.]*[a-zA-z0-9]*[@][a-zA-z0-9]+[-.][a-zA-z0-9]+[a-zA-z0-9]$")
-//                      '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z][a-zA-Z][a-zA-Z]*[a-zA-Z]*$'
-//    						"[a-zA-Z0-9_\.]+@[a-zA-Z0-9-]+\.[a-zA-Z]{0,4}"
 
 end function
 

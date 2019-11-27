@@ -1,31 +1,31 @@
 ﻿$PBExportHeader$ds_ddt_stampa.srd
-release 12.5;
+release 19;
 datawindow(units=0 timer_interval=0 color=1073741824 brushmode=0 transparency=0 gradient.angle=0 gradient.color=8421504 gradient.focus=0 gradient.repetition.count=0 gradient.repetition.length=100 gradient.repetition.mode=0 gradient.scale=100 gradient.spread=100 gradient.transparency=0 picture.blur=0 picture.clip.bottom=0 picture.clip.left=0 picture.clip.right=0 picture.clip.top=0 picture.mode=0 picture.scale.x=100 picture.scale.y=100 picture.transparency=0 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes print.background=no print.preview.background=no print.preview.outline=yes hidegrayline=no showbackcoloronxp=no picture.file="" grid.lines=0 )
 header(height=104 color="536870912" transparency="0" gradient.color="8421504" gradient.transparency="0" gradient.angle="0" brushmode="0" gradient.repetition.mode="0" gradient.repetition.count="0" gradient.repetition.length="100" gradient.focus="0" gradient.scale="100" gradient.spread="100" )
 summary(height=0 color="536870912" transparency="0" gradient.color="8421504" gradient.transparency="0" gradient.angle="0" brushmode="0" gradient.repetition.mode="0" gradient.repetition.count="0" gradient.repetition.length="100" gradient.focus="0" gradient.scale="100" gradient.spread="100" )
 footer(height=0 color="536870912" transparency="0" gradient.color="8421504" gradient.transparency="0" gradient.angle="0" brushmode="0" gradient.repetition.mode="0" gradient.repetition.count="0" gradient.repetition.length="100" gradient.focus="0" gradient.scale="100" gradient.spread="100" )
 detail(height=72 color="536870912" transparency="0" gradient.color="8421504" gradient.transparency="0" gradient.angle="0" brushmode="0" gradient.repetition.mode="0" gradient.repetition.count="0" gradient.repetition.length="100" gradient.focus="0" gradient.scale="100" gradient.spread="100" )
-table(column=(type=long updatewhereclause=yes name=nriga dbname="arsp.nriga" )
- column=(type=long updatewhereclause=yes identity=yes name=id_arsp dbname="arsp.id_arsp" )
- column=(type=long updatewhereclause=yes identity=yes name=id_sped dbname="sped.id_sped" )
- column=(type=long updatewhereclause=yes name=sped_num_bolla_out dbname="sped.num_bolla_out" )
- column=(type=date updatewhereclause=yes name=sped_data_bolla_out dbname="sped.data_bolla_out" )
- column=(type=long updatewhereclause=yes name=id_docprod dbname="sped.id_docprod" )
- column=(type=long updatewhereclause=yes name=sped_clie_2 dbname="sped.clie_2" )
- column=(type=long updatewhereclause=yes name=sped_clie_3 dbname="sped.clie_3" )
- column=(type=char(1) updatewhereclause=yes name=sped_cura_trasp dbname="sped_cura_trasp" )
- column=(type=char(40) updatewhereclause=yes name=sped_causale dbname="sped_causale" )
+table(column=(type=long updatewhereclause=yes name=nriga dbname="arsp.nriga" dbalias=".nriga" )
+ column=(type=long updatewhereclause=yes identity=yes name=id_arsp dbname="arsp.id_arsp" dbalias=".id_arsp" )
+ column=(type=long updatewhereclause=yes identity=yes name=id_sped dbname="sped.id_sped" dbalias=".id_sped" )
+ column=(type=long updatewhereclause=yes name=sped_num_bolla_out dbname="sped.NUM_BOLLA_OUT" dbalias=".NUM_BOLLA_OUT" )
+ column=(type=date updatewhereclause=yes name=sped_data_bolla_out dbname="sped.DATA_BOLLA_OUT" dbalias=".DATA_BOLLA_OUT" )
+ column=(type=long updatewhereclause=yes name=id_docprod dbname="sped.id_docprod" dbalias=".id_docprod" )
+ column=(type=long updatewhereclause=yes name=sped_clie_2 dbname="sped.CLIE_2" dbalias=".CLIE_2" )
+ column=(type=long updatewhereclause=yes name=sped_clie_3 dbname="sped.CLIE_3" dbalias=".CLIE_3" )
+ column=(type=char(1) updatewhereclause=yes name=sped_cura_trasp dbname="sped_CURA_TRASP" )
+ column=(type=char(40) updatewhereclause=yes name=sped_causale dbname="sped_CAUSALE" )
  column=(type=char(1) updatewhereclause=yes name=sped_ddt_st_num_data_in dbname="sped_ddt_st_num_data_in" )
- column=(type=char(20) updatewhereclause=yes name=sped_aspetto dbname="sped_aspetto" )
- column=(type=char(15) updatewhereclause=yes name=sped_porto dbname="sped_porto" )
- column=(type=char(1) updatewhereclause=yes name=sped_mezzo dbname="sped_mezzo" )
- column=(type=char(80) updatewhereclause=yes name=sped_note_1 dbname="sped_note_1" )
- column=(type=char(25) updatewhereclause=yes name=sped_note_2 dbname="sped_note_2" )
- column=(type=date updatewhereclause=yes name=sped_data_rit dbname="sped.data_rit" )
- column=(type=char(8) updatewhereclause=yes name=sped_ora_rit dbname="sped.ora_rit" )
+ column=(type=char(20) updatewhereclause=yes name=sped_aspetto dbname="sped_ASPETTO" )
+ column=(type=char(15) updatewhereclause=yes name=sped_porto dbname="sped_PORTO" )
+ column=(type=char(1) updatewhereclause=yes name=sped_mezzo dbname="sped_MEZZO" )
+ column=(type=char(80) updatewhereclause=yes name=sped_note_1 dbname="sped_NOTE_1" )
+ column=(type=char(25) updatewhereclause=yes name=sped_note_2 dbname="sped_NOTE_2" )
+ column=(type=date updatewhereclause=yes name=sped_data_rit dbname="sped.DATA_RIT" dbalias=".DATA_RIT" )
+ column=(type=char(8) updatewhereclause=yes name=sped_ora_rit dbname="sped.ORA_RIT" dbalias=".ORA_RIT" )
  column=(type=char(60) updatewhereclause=yes name=sped_vett_1 dbname="sped_vett_1" )
  column=(type=char(60) updatewhereclause=yes name=sped_vett_2 dbname="sped_vett_2" )
- column=(type=char(1) updatewhereclause=yes name=sped_stampa dbname="sped.stampa" )
+ column=(type=char(1) updatewhereclause=yes name=sped_stampa dbname="sped.STAMPA" dbalias=".STAMPA" )
  column=(type=char(30) updatewhereclause=yes name=clienti_rag_soc_10 dbname="clienti_rag_soc_10" )
  column=(type=char(30) updatewhereclause=yes name=clienti_rag_soc_11 dbname="clienti_rag_soc_11" )
  column=(type=char(30) updatewhereclause=yes name=clienti_indi_1 dbname="clienti_indi_1" )
@@ -42,53 +42,53 @@ table(column=(type=long updatewhereclause=yes name=nriga dbname="arsp.nriga" )
  column=(type=char(2) updatewhereclause=yes name=clienti_prov_2 dbname="clienti_prov_2" )
  column=(type=char(3) updatewhereclause=yes name=clienti_id_nazione_2 dbname="clienti_id_nazione_2" )
  column=(type=char(75) updatewhereclause=yes name=clienti_nazioni_nome_2 dbname="clienti_nazioni_nome_2" )
- column=(type=decimal(0) updatewhereclause=yes name=sped_colli dbname="sped.colli" )
- column=(type=char(255) updatewhereclause=yes name=sped_rag_soc_1 dbname="sped_rag_soc_1" )
- column=(type=char(255) updatewhereclause=yes name=sped_rag_soc_2 dbname="sped_rag_soc_2" )
+ column=(type=decimal(0) updatewhereclause=yes name=sped_colli dbname="sped.COLLI" dbalias=".COLLI" )
+ column=(type=char(255) updatewhereclause=yes name=sped_rag_soc_1 dbname="sped_RAG_SOC_1" )
+ column=(type=char(255) updatewhereclause=yes name=sped_rag_soc_2 dbname="sped_RAG_SOC_2" )
  column=(type=char(255) updatewhereclause=yes name=sped_indi dbname="sped_indi" )
  column=(type=char(5) updatewhereclause=yes name=sped_cap dbname="sped_cap" )
  column=(type=char(255) updatewhereclause=yes name=sped_loc dbname="sped_loc" )
  column=(type=char(2) updatewhereclause=yes name=sped_prov dbname="sped_prov" )
  column=(type=char(3) updatewhereclause=yes name=sped_id_nazione dbname="sped_id_nazione" )
  column=(type=char(75) updatewhereclause=yes name=sped_nazioni_nome dbname="sped_nazioni_nome" )
- column=(type=long updatewhereclause=yes name=arsp_id_armo dbname="arsp.id_armo" )
- column=(type=long updatewhereclause=yes name=arsp_num_bolla_out dbname="arsp.num_bolla_out" )
- column=(type=date updatewhereclause=yes name=arsp_data_bolla_out dbname="arsp.data_bolla_out" )
- column=(type=long updatewhereclause=yes name=armo_num_int dbname="armo.num_int" )
- column=(type=date updatewhereclause=yes name=armo_data_int dbname="armo.data_int" )
- column=(type=char(12) updatewhereclause=yes name=armo_art dbname="armo.art" )
- column=(type=char(80) updatewhereclause=yes name=arsp_note_1 dbname="arsp_note_1" )
- column=(type=char(80) updatewhereclause=yes name=arsp_note_2 dbname="arsp_note_2" )
- column=(type=char(80) updatewhereclause=yes name=arsp_note_3 dbname="arsp_note_3" )
- column=(type=decimal(1) updatewhereclause=yes name=armo_dose dbname="armo.dose" )
- column=(type=decimal(0) updatewhereclause=yes name=arsp_colli dbname="arsp.colli" )
- column=(type=decimal(0) updatewhereclause=yes name=arsp_colli_out dbname="arsp.colli_out" )
- column=(type=char(40) updatewhereclause=yes name=prodotti_des dbname="prodotti.des" )
- column=(type=long updatewhereclause=yes identity=yes name=meca_id_meca dbname="meca.id_meca" )
- column=(type=long updatewhereclause=yes name=meca_clie_1 dbname="meca.clie_1" )
- column=(type=long updatewhereclause=yes name=meca_clie_2 dbname="meca.clie_2" )
- column=(type=char(24) updatewhereclause=yes name=meca_num_bolla_in dbname="meca_num_bolla_in" )
- column=(type=date updatewhereclause=yes name=meca_data_bolla_in dbname="meca.data_bolla_in" )
- column=(type=char(55) updatewhereclause=yes name=armo_nt_note_1 dbname="armo_nt_note_1" )
- column=(type=char(55) updatewhereclause=yes name=armo_nt_note_2 dbname="armo_nt_note_2" )
- column=(type=char(55) updatewhereclause=yes name=armo_nt_note_3 dbname="armo_nt_note_3" )
- column=(type=char(55) updatewhereclause=yes name=armo_nt_note_4 dbname="armo_nt_note_4" )
- column=(type=char(55) updatewhereclause=yes name=armo_nt_note_5 dbname="armo_nt_note_5" )
- column=(type=char(55) updatewhereclause=yes name=armo_nt_note_6 dbname="armo_nt_note_6" )
- column=(type=char(55) updatewhereclause=yes name=armo_nt_note_7 dbname="armo_nt_note_7" )
- column=(type=char(55) updatewhereclause=yes name=armo_nt_note_8 dbname="armo_nt_note_8" )
- column=(type=char(55) updatewhereclause=yes name=armo_nt_note_9 dbname="armo_nt_note_9" )
- column=(type=char(55) updatewhereclause=yes name=armo_nt_note_10 dbname="armo_nt_note_10" )
- column=(type=char(30) updatewhereclause=yes name=mittente_rag_soc_10 dbname="mittente_rag_soc_10" )
- column=(type=char(30) updatewhereclause=yes name=mittente_rag_soc_11 dbname="mittente_rag_soc_11" )
- column=(type=char(30) updatewhereclause=yes name=mittente_indi_1 dbname="mittente_indi_1" )
- column=(type=char(5) updatewhereclause=yes name=mittente_cap_1 dbname="mittente_cap_1" )
- column=(type=char(30) updatewhereclause=yes name=mittente_loc_1 dbname="mittente_loc_1" )
- column=(type=char(2) updatewhereclause=yes name=mittente_prov_1 dbname="mittente_prov_1" )
- column=(type=char(3) updatewhereclause=yes name=mittente_id_nazione dbname="mittente_id_nazione" )
+ column=(type=long updatewhereclause=yes name=arsp_id_armo dbname="arsp.ID_ARMO" dbalias=".ID_ARMO" )
+ column=(type=long updatewhereclause=yes name=arsp_num_bolla_out dbname="arsp.NUM_BOLLA_OUT" dbalias=".NUM_BOLLA_OUT" )
+ column=(type=date updatewhereclause=yes name=arsp_data_bolla_out dbname="arsp.DATA_BOLLA_OUT" dbalias=".DATA_BOLLA_OUT" )
+ column=(type=long updatewhereclause=yes name=armo_num_int dbname="armo.NUM_INT" dbalias=".NUM_INT" )
+ column=(type=date updatewhereclause=yes name=armo_data_int dbname="armo.DATA_INT" dbalias=".DATA_INT" )
+ column=(type=char(12) updatewhereclause=yes name=armo_art dbname="armo.ART" dbalias=".ART" )
+ column=(type=char(80) updatewhereclause=yes name=arsp_note_1 dbname="ARSP_NOTE_1" )
+ column=(type=char(80) updatewhereclause=yes name=arsp_note_2 dbname="ARSP_NOTE_2" )
+ column=(type=char(80) updatewhereclause=yes name=arsp_note_3 dbname="ARSP_NOTE_3" )
+ column=(type=decimal(1) updatewhereclause=yes name=armo_dose dbname="armo.DOSE" dbalias=".DOSE" )
+ column=(type=decimal(0) updatewhereclause=yes name=arsp_colli dbname="arsp.COLLI" dbalias=".COLLI" )
+ column=(type=decimal(0) updatewhereclause=yes name=arsp_colli_out dbname="arsp.COLLI_OUT" dbalias=".COLLI_OUT" )
+ column=(type=char(40) updatewhereclause=yes name=prodotti_des dbname="prodotti.DES" dbalias=".DES" )
+ column=(type=long updatewhereclause=yes identity=yes name=meca_id_meca dbname="meca.id_meca" dbalias=".id_meca" )
+ column=(type=long updatewhereclause=yes name=meca_clie_1 dbname="meca.CLIE_1" dbalias=".CLIE_1" )
+ column=(type=long updatewhereclause=yes name=meca_clie_2 dbname="meca.CLIE_2" dbalias=".CLIE_2" )
+ column=(type=char(24) updatewhereclause=yes name=meca_num_bolla_in dbname="MECA_NUM_BOLLA_IN" )
+ column=(type=date updatewhereclause=yes name=meca_data_bolla_in dbname="meca.DATA_BOLLA_IN" dbalias=".DATA_BOLLA_IN" )
+ column=(type=char(55) updatewhereclause=yes name=armo_nt_note_1 dbname="ARMO_NT_NOTE_1" )
+ column=(type=char(55) updatewhereclause=yes name=armo_nt_note_2 dbname="ARMO_NT_NOTE_2" )
+ column=(type=char(55) updatewhereclause=yes name=armo_nt_note_3 dbname="ARMO_NT_NOTE_3" )
+ column=(type=char(55) updatewhereclause=yes name=armo_nt_note_4 dbname="ARMO_NT_NOTE_4" )
+ column=(type=char(55) updatewhereclause=yes name=armo_nt_note_5 dbname="ARMO_NT_NOTE_5" )
+ column=(type=char(55) updatewhereclause=yes name=armo_nt_note_6 dbname="ARMO_NT_NOTE_6" )
+ column=(type=char(55) updatewhereclause=yes name=armo_nt_note_7 dbname="ARMO_NT_NOTE_7" )
+ column=(type=char(55) updatewhereclause=yes name=armo_nt_note_8 dbname="ARMO_NT_NOTE_8" )
+ column=(type=char(55) updatewhereclause=yes name=armo_nt_note_9 dbname="ARMO_NT_NOTE_9" )
+ column=(type=char(55) updatewhereclause=yes name=armo_nt_note_10 dbname="ARMO_NT_NOTE_10" )
+ column=(type=char(30) updatewhereclause=yes name=mittente_rag_soc_10 dbname="MITTENTE_RAG_SOC_10" )
+ column=(type=char(30) updatewhereclause=yes name=mittente_rag_soc_11 dbname="MITTENTE_RAG_SOC_11" )
+ column=(type=char(30) updatewhereclause=yes name=mittente_indi_1 dbname="MITTENTE_indi_1" )
+ column=(type=char(5) updatewhereclause=yes name=mittente_cap_1 dbname="MITTENTE_cap_1" )
+ column=(type=char(30) updatewhereclause=yes name=mittente_loc_1 dbname="MITTENTE_loc_1" )
+ column=(type=char(2) updatewhereclause=yes name=mittente_prov_1 dbname="MITTENTE_prov_1" )
+ column=(type=char(3) updatewhereclause=yes name=mittente_id_nazione dbname="MITTENTE_id_nazione" )
  column=(type=char(1) updatewhereclause=yes name=file_prodotto dbname="file_prodotto" )
  column=(type=char(1) updatewhereclause=yes name=ddt_qtna_note dbname="ddt_qtna_note" )
- retrieve="                     select 
+ retrieve="	 select 
                          arsp.nriga,
                          arsp.id_arsp,
                          sped.id_sped,
@@ -97,53 +97,53 @@ table(column=(type=long updatewhereclause=yes name=nriga dbname="arsp.nriga" )
 					    sped.id_docprod,
                           sped.CLIE_2,
                           sped.CLIE_3,
-                          COALESCE(sped.CURA_TRASP, ~"~") as sped_CURA_TRASP,
-                          COALESCE(sped.CAUSALE, ~"~") as sped_CAUSALE,
-                          COALESCE(sped.ddt_st_num_data_in, ~"~") as sped_ddt_st_num_data_in,
-                          COALESCE(sped.ASPETTO, ~"~") as sped_ASPETTO,
-                          COALESCE(sped.PORTO, ~"~") as sped_PORTO,
-                          COALESCE(SPED.MEZZO, ~"~") as sped_MEZZO,
-                          COALESCE(sped.NOTE_1, ~"~") as sped_NOTE_1,
-                          COALESCE(sped.NOTE_2, ~"~") as sped_NOTE_2,
+                          COALESCE(sped.CURA_TRASP, '') as sped_CURA_TRASP,
+                          COALESCE(sped.CAUSALE, '') as sped_CAUSALE,
+                          COALESCE(sped.ddt_st_num_data_in, '') as sped_ddt_st_num_data_in,
+                          COALESCE(sped.ASPETTO, '') as sped_ASPETTO,
+                          COALESCE(sped.PORTO, '') as sped_PORTO,
+                          COALESCE(SPED.MEZZO, '') as sped_MEZZO,
+                          COALESCE(sped.NOTE_1, '') as sped_NOTE_1,
+                          COALESCE(sped.NOTE_2, '') as sped_NOTE_2,
                           sped.DATA_RIT,
                           sped.ORA_RIT,
-                          COALESCE(sped.VETT_1, ~" ~") as sped_vett_1,
-                          COALESCE(sped.VETT_2, ~" ~") as sped_vett_2,
+                          COALESCE(sped.VETT_1, ' ') as sped_vett_1,
+                          COALESCE(sped.VETT_2, ' ') as sped_vett_2,
                           sped.STAMPA,
-                          COALESCE(CLIENTI.RAG_SOC_10, ~" ~") as clienti_rag_soc_10,
-                          COALESCE(CLIENTI.RAG_SOC_11, ~" ~") as clienti_rag_soc_11,
-                          COALESCE(CLIENTI.INDI_1, ~" ~") as clienti_indi_1,
-                          COALESCE(CLIENTI.CAP_1, ~" ~") as clienti_cap_1,
-                          COALESCE(CLIENTI.LOC_1, ~" ~") as clienti_loc_1,
-                          COALESCE(CLIENTI.PROV_1, ~" ~") as clienti_prov_1,
-					   	    COALESCE(CLIENTI.id_nazione_1, ~" ~") as clienti_id_nazione_1,
-                          COALESCE(nazioni.nome, ~" ~") as clienti_nazioni_nome_1,
-                          COALESCE(CLIENTI.RAG_SOC_20, ~" ~") as clienti_rag_soc_20,
-                          COALESCE(CLIENTI.RAG_SOC_21, ~" ~") as clienti_rag_soc_21,
-                          COALESCE(CLIENTI.INDI_2, ~" ~") as clienti_ind_2,
-                          COALESCE(CLIENTI.CAP_2, ~" ~") as clienti_cap_2,
-                          COALESCE(CLIENTI.LOC_2, ~" ~") as clienti_loc_2,
-                          COALESCE(CLIENTI.PROV_2, ~" ~") as clienti_prov_2,
-                          COALESCE(CLIENTI.id_nazione_2, ~" ~") as clienti_id_nazione_2,
-					        COALESCE(nazioni1.nome, ~" ~") as clienti_nazioni_nome_2,
+                          COALESCE(CLIENTI.RAG_SOC_10, ' ') as clienti_rag_soc_10,
+                          COALESCE(CLIENTI.RAG_SOC_11, ' ') as clienti_rag_soc_11,
+                          COALESCE(CLIENTI.INDI_1, ' ') as clienti_indi_1,
+                          COALESCE(CLIENTI.CAP_1, ' ') as clienti_cap_1,
+                          COALESCE(CLIENTI.LOC_1, ' ') as clienti_loc_1,
+                          COALESCE(CLIENTI.PROV_1, ' ') as clienti_prov_1,
+					   	    COALESCE(CLIENTI.id_nazione_1, ' ') as clienti_id_nazione_1,
+                          COALESCE(nazioni.nome, ' ') as clienti_nazioni_nome_1,
+                          COALESCE(CLIENTI.RAG_SOC_20, ' ') as clienti_rag_soc_20,
+                          COALESCE(CLIENTI.RAG_SOC_21, ' ') as clienti_rag_soc_21,
+                          COALESCE(CLIENTI.INDI_2, ' ') as clienti_ind_2,
+                          COALESCE(CLIENTI.CAP_2, ' ') as clienti_cap_2,
+                          COALESCE(CLIENTI.LOC_2, ' ') as clienti_loc_2,
+                          COALESCE(CLIENTI.PROV_2, ' ') as clienti_prov_2,
+                          COALESCE(CLIENTI.id_nazione_2, ' ') as clienti_id_nazione_2,
+					        COALESCE(nazioni1.nome, ' ') as clienti_nazioni_nome_2,
                           sped.COLLI, 
-                          COALESCE(SPED.RAG_SOC_1, ~" ~") as sped_RAG_SOC_1,
-                          COALESCE(SPED.RAG_SOC_2, ~" ~") as sped_RAG_SOC_2,
-                          COALESCE(SPED.INDI, ~" ~") as sped_indi,
-                          COALESCE(SPED.CAP, ~" ~") as sped_cap,
-                          COALESCE(SPED.LOC, ~" ~") as sped_loc,
-                          COALESCE(SPED.PROV, ~" ~") as sped_prov,
-                          COALESCE(SPED.id_nazione, ~" ~") as sped_id_nazione,
-                          COALESCE(nazioni_sped.nome, ~" ~") as sped_nazioni_nome,
+                          COALESCE(SPED.RAG_SOC_1, ' ') as sped_RAG_SOC_1,
+                          COALESCE(SPED.RAG_SOC_2, ' ') as sped_RAG_SOC_2,
+                          COALESCE(SPED.INDI, ' ') as sped_indi,
+                          COALESCE(SPED.CAP, ' ') as sped_cap,
+                          COALESCE(SPED.LOC, ' ') as sped_loc,
+                          COALESCE(SPED.PROV, ' ') as sped_prov,
+                          COALESCE(SPED.id_nazione, ' ') as sped_id_nazione,
+                          COALESCE(nazioni_sped.nome, ' ') as sped_nazioni_nome,
                    	    ARSP.ID_ARMO,
                           ARSP.NUM_BOLLA_OUT,
                           ARSP.DATA_BOLLA_OUT,
                           ARMO.NUM_INT,
                           ARMO.DATA_INT,
                           ARMO.ART,
-                          COALESCE(ARSP.NOTE_1, ~"~") as ARSP_NOTE_1,
-                          COALESCE(ARSP.NOTE_2, ~"~") as ARSP_NOTE_2,
-                          COALESCE(ARSP.NOTE_3, ~"~") as ARSP_NOTE_3,
+                          COALESCE(ARSP.NOTE_1, '') as ARSP_NOTE_1,
+                          COALESCE(ARSP.NOTE_2, '') as ARSP_NOTE_2,
+                          COALESCE(ARSP.NOTE_3, '') as ARSP_NOTE_3,
                           ARMO.DOSE,
                           ARSP.COLLI,
                           ARSP.COLLI_OUT,
@@ -151,27 +151,27 @@ table(column=(type=long updatewhereclause=yes name=nriga dbname="arsp.nriga" )
 						MECA.ID as id_meca,
                           MECA.CLIE_1,
                           MECA.CLIE_2,
-                          COALESCE(MECA.NUM_BOLLA_IN, ~"~") as MECA_NUM_BOLLA_IN,
+                          COALESCE(MECA.NUM_BOLLA_IN, '') as MECA_NUM_BOLLA_IN,
                           MECA.DATA_BOLLA_IN,
-					  COALESCE(ARMO_NT.NOTE_1, ~"~") as ARMO_NT_NOTE_1,
-					  COALESCE(ARMO_NT.NOTE_2, ~"~") as ARMO_NT_NOTE_2,
-					  COALESCE(ARMO_NT.NOTE_3, ~"~") as ARMO_NT_NOTE_3,
-					  COALESCE(ARMO_NT.NOTE_4, ~"~") as ARMO_NT_NOTE_4,
-					  COALESCE(ARMO_NT.NOTE_5, ~"~") as ARMO_NT_NOTE_5,
-					  COALESCE(ARMO_NT.NOTE_6, ~"~") as ARMO_NT_NOTE_6,
-					  COALESCE(ARMO_NT.NOTE_7, ~"~") as ARMO_NT_NOTE_7,
-					  COALESCE(ARMO_NT.NOTE_8, ~"~") as ARMO_NT_NOTE_8,
-					  COALESCE(ARMO_NT.NOTE_9, ~"~") as ARMO_NT_NOTE_9,
-					  COALESCE(ARMO_NT.NOTE_10, ~"~") as ARMO_NT_NOTE_10,
-                          COALESCE(MITTENTE.RAG_SOC_10, ~" ~") as MITTENTE_RAG_SOC_10,
-                          COALESCE(MITTENTE.RAG_SOC_11, ~" ~") as MITTENTE_RAG_SOC_11,
-                          COALESCE(MITTENTE.INDI_1, ~" ~") as MITTENTE_indi_1,
-                          COALESCE(MITTENTE.CAP_1, ~" ~") as MITTENTE_cap_1,
-                          COALESCE(MITTENTE.LOC_1, ~" ~") as MITTENTE_loc_1,
-                          COALESCE(MITTENTE.PROV_1, ~" ~") as MITTENTE_prov_1,
-                          COALESCE(MITTENTE.id_nazione_1, ~" ~") as MITTENTE_id_nazione
+					  COALESCE(ARMO_NT.NOTE_1, '') as ARMO_NT_NOTE_1,
+					  COALESCE(ARMO_NT.NOTE_2, '') as ARMO_NT_NOTE_2,
+					  COALESCE(ARMO_NT.NOTE_3, '') as ARMO_NT_NOTE_3,
+					  COALESCE(ARMO_NT.NOTE_4, '') as ARMO_NT_NOTE_4,
+					  COALESCE(ARMO_NT.NOTE_5, '') as ARMO_NT_NOTE_5,
+					  COALESCE(ARMO_NT.NOTE_6, '') as ARMO_NT_NOTE_6,
+					  COALESCE(ARMO_NT.NOTE_7, '') as ARMO_NT_NOTE_7,
+					  COALESCE(ARMO_NT.NOTE_8, '') as ARMO_NT_NOTE_8,
+					  COALESCE(ARMO_NT.NOTE_9, '') as ARMO_NT_NOTE_9,
+					  COALESCE(ARMO_NT.NOTE_10, '') as ARMO_NT_NOTE_10,
+                          COALESCE(MITTENTE.RAG_SOC_10, ' ') as MITTENTE_RAG_SOC_10,
+                          COALESCE(MITTENTE.RAG_SOC_11, ' ') as MITTENTE_RAG_SOC_11,
+                          COALESCE(MITTENTE.INDI_1, ' ') as MITTENTE_indi_1,
+                          COALESCE(MITTENTE.CAP_1, ' ') as MITTENTE_cap_1,
+                          COALESCE(MITTENTE.LOC_1, ' ') as MITTENTE_loc_1,
+                          COALESCE(MITTENTE.PROV_1, ' ') as MITTENTE_prov_1,
+                          COALESCE(MITTENTE.id_nazione_1, ' ') as MITTENTE_id_nazione
                           ,' ' as file_prodotto
-					   ,' ' as ddt_qtna_note
+					      ,' ' as ddt_qtna_note
                      from  SPED inner join ARSP on SPED.NUM_BOLLA_OUT = ARSP.NUM_BOLLA_OUT 
 							                             and SPED.DATA_BOLLA_OUT = ARSP.DATA_BOLLA_OUT 
 								left outer join nazioni as nazioni_sped on SPED.id_nazione = nazioni_sped.id_nazione        
@@ -183,11 +183,9 @@ table(column=(type=long updatewhereclause=yes name=nriga dbname="arsp.nriga" )
 								inner join MECA on ARMO.ID_MECA = MECA.ID 
 								inner join CLIENTI as MITTENTE on meca.CLIE_1 = MITTENTE.CODICE 
 								left outer join ARMO_NT on ARMO.ID_ARMO = ARMO_NT.ID_ARMO
-                     
-                     where SPED.NUM_BOLLA_OUT   = :knum_ddt
-                            and year(SPED.DATA_BOLLA_OUT) = :k_anno
-
-					order by arsp.nriga, arsp.id_arsp" arguments=(("knum_ddt", number),("k_anno", number)) )
+                     where SPED.id_sped   = :k_id_sped
+					order by arsp.nriga, arsp.id_arsp
+					;" arguments=(("k_id_sped", number)) )
 text(band=header alignment="2" text="Sped
 Num Bolla Out" border="0" color="33554432" x="9" y="8" height="72" width="357" html.valueishtml="0"  name=sped_num_bolla_out_t visible="1"  font.face="Tahoma" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" background.transparency="0" background.gradient.color="8421504" background.gradient.transparency="0" background.gradient.angle="0" background.brushmode="0" background.gradient.repetition.mode="0" background.gradient.repetition.count="0" background.gradient.repetition.length="100" background.gradient.focus="0" background.gradient.scale="100" background.gradient.spread="100" tooltip.backcolor="134217752" tooltip.delay.initial="0" tooltip.delay.visible="32000" tooltip.enabled="0" tooltip.hasclosebutton="0" tooltip.icon="0" tooltip.isbubble="0" tooltip.maxwidth="0" tooltip.textcolor="134217751" tooltip.transparency="0" transparency="0" )
 text(band=header alignment="2" text="Sped
@@ -381,6 +379,5 @@ xsltgen()
 jsgen()
 export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
 import.xml()
-export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" nativepdf.customsize=0 nativepdf.customorientation=0 nativepdf.pdfstandard=0 nativepdf.useprintspec=no )
 export.xhtml()
- 

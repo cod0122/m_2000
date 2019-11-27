@@ -13,7 +13,7 @@ type variables
 public:
 
 //--- Versione Procedura
-constant double VERSIONE=19.1008
+constant double VERSIONE=19.1126
 
 //--- icone risorse grafiche
 constant string PATH_SEP ="\" 

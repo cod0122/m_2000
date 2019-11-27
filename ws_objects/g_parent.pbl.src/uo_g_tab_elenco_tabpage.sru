@@ -23,15 +23,15 @@ global uo_g_tab_elenco_tabpage uo_g_tab_elenco_tabpage
 
 type variables
 //
-string ki_syntaxquery
-uo_d_std_1 kidw_selezionata
-datastore kids_elenco, kids_elenco_orig
-st_open_w kist_open_w	
-boolean ki_conferma=false, ki_disattiva_exit=false, ki_u_ricevi_da_elenco_in_esec=false
-kuf_utility kiuf_utility
-tab kitab_1
+private string ki_syntaxquery
+public uo_d_std_1 kidw_selezionata
+private datastore kids_elenco
+public datastore  kids_elenco_orig
+public st_open_w kist_open_w	
+private boolean ki_conferma=false, ki_disattiva_exit=false, ki_u_ricevi_da_elenco_in_esec=false
+private kuf_utility kiuf_utility
+public tab kitab_1
 end variables
-
 forward prototypes
 public subroutine u_zoom_meno ()
 public subroutine u_zoom_off ()
@@ -52,6 +52,7 @@ private subroutine attiva_drag_drop (uo_d_std_1 adw_1)
 private function boolean u_attiva_evento_in_win_origine ()
 private function integer u_togli_righe_selezionate ()
 private function long u_riposiziona_cursore ()
+public subroutine set_ki_conferma (boolean a_conferma)
 end prototypes
 
 public subroutine u_zoom_meno ();//
@@ -156,7 +157,7 @@ if dw_1.ki_ultrigasel > 0 then
 			end if
 		else
 	
-//--- Se è stata aperta come windows di "CONFERMA" oppure come da "inquary" ma è di tipo "GRID" o "TREEVIEW" allora 
+//--- Se è stata aperta come windows di "CONFERMA" oppure come da "inquiry" ma è di tipo "GRID" o "TREEVIEW" allora 
 //--- x doppio click metto il record nella DW di appoggio 'dei selzionati'
 			if dw_1.rowcount() > 0 & 
 				and ( &
@@ -474,6 +475,10 @@ long k_riga
 
 return k_riga
 end function
+
+public subroutine set_ki_conferma (boolean a_conferma);//
+ki_conferma = a_conferma
+end subroutine
 
 event constructor;//
 	if trim(message.stringparm) > " " then 

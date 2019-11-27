@@ -4515,7 +4515,7 @@ fontfamily fontfamily = swiss!
 string facename = "Arial"
 long textcolor = 8388608
 long backcolor = 16777215
-string text = "Esporta dati Resistro Conto Deposito (ACO)"
+string text = "Esporta dati Registro Conto Deposito (ACO)"
 boolean focusrectangle = false
 end type
 

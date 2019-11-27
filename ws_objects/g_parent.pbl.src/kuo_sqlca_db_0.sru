@@ -787,7 +787,7 @@ public function boolean db_riconnetti () throws uo_exception;//---
 //---
 //---   Lancia una ECCEZIONE x errore grave
 //---
-boolean k_return=false, k_ritenta=true
+boolean k_connesso=false
 st_esito kst_esito
 int k_riconnessione_ctr=0
 pointer oldpointer
@@ -800,7 +800,9 @@ try
 	kst_esito.SQLErrText = ""
 	kst_esito.nome_oggetto = this.classname()
 
-	do while k_ritenta and k_riconnessione_ctr < 10
+	k_connesso = if_connesso_x( )
+
+	do while not k_connesso and k_riconnessione_ctr < 10
 		
 		try 
 //--- Puntatore Cursore da attesa.....
@@ -811,14 +813,13 @@ try
 			
 //--- Connessione al db
 			if x_db_connetti() then
-				k_ritenta = false
-				k_return = true // RI-CONNESSO!!
+				k_connesso = true // RI-CONNESSO!!
 			end if
 			
 		catch (uo_exception kuo_exception)
 			kst_esito = kuo_exception.get_st_esito()
 			if kst_esito.esito = kguo_exception.KK_st_uo_exception_tipo_non_eseguito then
-				k_ritenta = false
+				exit
 			end if
 		end try
 		
@@ -834,7 +835,7 @@ finally
 
 end try
 
-return k_return
+return k_connesso
 end function
 
 public function integer u_get_col_len (string a_table, string a_col);//

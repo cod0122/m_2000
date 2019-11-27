@@ -147,6 +147,7 @@ private function long u_elabora_ds_exp_regcdp (long k_id_cliente) throws uo_exce
 long k_ornumvia_progr, k_row_max, k_row
 int k_ornumvia_x_len, k_rc
 string k_orrifdes_packinglist, k_ornumvia_x, k_file
+kuf_file_explorer kuf1_file_explorer
 
 
 try
@@ -176,11 +177,16 @@ try
 		if k_row_max > 0 then
 			k_file = ki_path_export + kkg.path_sep + "ACO_reg_contodeposito" + ki_datetimex + "_" + string(k_id_cliente, "#") + ".car"
 			if kids_clienti_cntdep_l_xbcode.saveas(k_file, text!, false, EncodingUTF8!) < 0 then
-				kguo_exception.inizializza( )
-				kguo_exception.kist_esito.esito = kkg_esito.ko
-				kguo_exception.kist_esito.nome_oggetto = this.classname()
-				kguo_exception.kist_esito.sqlerrtext = "Esportazione dati Registro Conto Deposito in errore su operazione generazione del file: " + k_file
-				throw kguo_exception
+				kuf1_file_explorer = create kuf_file_explorer
+				kuf1_file_explorer.u_directory_create(ki_path_export)
+				
+				if kids_clienti_cntdep_l_xpklist.saveas(k_file, text!, false, EncodingUTF8!) < 0 then
+					kguo_exception.inizializza( )
+					kguo_exception.kist_esito.esito = kkg_esito.ko
+					kguo_exception.kist_esito.nome_oggetto = this.classname()
+					kguo_exception.kist_esito.sqlerrtext = "Esportazione dati Registro Conto Deposito in errore su operazione generazione del file: " + k_file
+					throw kguo_exception
+				end if
 			end if
 		end if
 	end if
@@ -189,6 +195,7 @@ catch (uo_exception kuo_exception)
 	throw kuo_exception
 
 finally
+	if isvalid(kuf1_file_explorer) then destroy kuf1_file_explorer
 	
 end try
 
@@ -243,9 +250,11 @@ try
 			kst_tab_wm_pklist.idpkl = trim(left(k_idpkl, k_idpkl_len - 1))
 			kst_tab_meca.id_wm_pklist = kuf1_wm_pklist.get_id_wm_pklist_da_idpkl(kst_tab_wm_pklist)
 			kuf1_armo.get_id_da_id_wm_pklist(kst_tab_meca)
+			kuf1_armo.get_e1rorn(kst_tab_meca)
 	//		k_row_xupd = ads_ds_clienti_cntdep_cfg_xupd.insertrow(0)
 			ads_ds_clienti_cntdep_cfg_xupd.setitem(k_row_xupd, "registro_nr_ultimo", k_ornumvia_progr)
 			ads_ds_clienti_cntdep_cfg_xupd.setitem(k_row_xupd, "id_meca_ultimo", kst_tab_meca.id)
+			ads_ds_clienti_cntdep_cfg_xupd.setitem(k_row_xupd, "e1rorn_ultimo", kst_tab_meca.e1rorn)
 			ads_ds_clienti_cntdep_cfg_xupd.setitem(k_row_xupd, "x_datins", kguf_data_base.prendi_x_datins( ) )
 			ads_ds_clienti_cntdep_cfg_xupd.setitem(k_row_xupd, "x_utente", kguf_data_base.prendi_x_utente( ) )
 	//		ads_ds_clienti_cntdep_cfg_xupd.setitemstatus(k_row_xupd, 0, primary!, DataModified!)
@@ -277,7 +286,7 @@ private function long u_elabora_ds_exp_regcdp_xpklist (long k_id_cliente) throws
 long k_ornumvia_progr, k_row_max, k_row
 int k_ornumvia_x_len, k_rc
 string k_orrifdes_packinglist, k_ornumvia_x, k_file
-
+kuf_file_explorer kuf1_file_explorer
 
 try
 
@@ -306,11 +315,17 @@ try
 		if k_row_max > 0 then
 			k_file = ki_path_export + kkg.path_sep + "ACO_reg_contodeposito" + ki_datetimex + "_" + string(k_id_cliente, "#") + "PN.car"
 			if kids_clienti_cntdep_l_xpklist.saveas(k_file, text!, false, EncodingUTF8!) < 0 then
-				kguo_exception.inizializza( )
-				kguo_exception.kist_esito.esito = kkg_esito.ko
-				kguo_exception.kist_esito.nome_oggetto = this.classname()
-				kguo_exception.kist_esito.sqlerrtext = "Esportazione dati Registro Conto Deposito (per Part Number) in errore su operazione generazione del file: " + k_file
-				throw kguo_exception
+				
+				kuf1_file_explorer = create kuf_file_explorer
+				kuf1_file_explorer.u_directory_create(ki_path_export)
+				
+				if kids_clienti_cntdep_l_xpklist.saveas(k_file, text!, false, EncodingUTF8!) < 0 then
+					kguo_exception.inizializza( )
+					kguo_exception.kist_esito.esito = kkg_esito.ko
+					kguo_exception.kist_esito.nome_oggetto = this.classname()
+					kguo_exception.kist_esito.sqlerrtext = "Esportazione dati Registro Conto Deposito (per Part Number) in errore su operazione di generazione del file: " + k_file 
+					throw kguo_exception
+				end if
 			end if
 		end if
 	end if
@@ -319,6 +334,7 @@ catch (uo_exception kuo_exception)
 	throw kuo_exception
 
 finally
+	if isvalid(kuf1_file_explorer) then destroy kuf1_file_explorer
 	
 end try
 

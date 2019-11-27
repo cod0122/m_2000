@@ -1,6 +1,7 @@
 ﻿$PBExportHeader$st_sped_ddt.srs
 global type st_sped_ddt from structure
 	st_tab_sped		kst_tab_sped
+	st_tab_sped_free		kst_tab_sped_free
 	st_tab_clienti		kst_tab_clienti
 	st_tab_prodotti		kst_tab_prodotti
 	st_tab_pagam		kst_tab_pagam

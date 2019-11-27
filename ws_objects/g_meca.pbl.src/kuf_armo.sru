@@ -7582,7 +7582,7 @@ try
 			
 	if kguo_sqlca_db_magazzino.sqlcode < 0 then
 		kst_esito.sqlcode = kguo_sqlca_db_magazzino.sqlcode
-		kst_esito.SQLErrText = "Codice WO di E1 nel Lotto non Trovato (" + string(kst_tab_meca.id) + ") " &
+		kst_esito.SQLErrText = "Errore in lettura Codice WO di E1, Lotto id " + string(kst_tab_meca.id) + " " &
 									 + "~n~r" + trim(kguo_sqlca_db_magazzino.SQLErrText)
 		kst_esito.esito = kkg_esito.db_ko
 		kguo_exception.inizializza( )
@@ -7958,7 +7958,7 @@ try
 			
 	if kguo_sqlca_db_magazzino.sqlcode < 0 then
 		kst_esito.sqlcode = kguo_sqlca_db_magazzino.sqlcode
-		kst_esito.SQLErrText = "Codice WO di E1 nel Lotto non Trovato (" + string(kst_tab_meca.id) + ") " &
+		kst_esito.SQLErrText = "Errore in lettura Codice SO di E1, Lotto id " + string(kst_tab_meca.id) + " " &
 									 + "~n~r" + trim(kguo_sqlca_db_magazzino.SQLErrText)
 		kst_esito.esito = kkg_esito.db_ko
 		kguo_exception.inizializza( )

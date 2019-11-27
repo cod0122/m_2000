@@ -566,7 +566,9 @@ int k_nr_errori
 string k_key_str
 string k_stato, k_tipo
 string k_key, k_testo
-
+kuf_email kuf1_email
+st_email_address kst_email_address
+st_esito kst_esito
 
 
 //=== Controllo il primo tab
@@ -587,13 +589,23 @@ string k_key, k_testo
 //		k_errore = "3"
 //		k_nr_errori++
 //	end if
+//--- Controllo sintassi Indirizzi email				
+	try
+		kuf1_email = create kuf_email 
+		kst_email_address.email_all = tab_1.tabpage_1.dw_1.getitemstring( k_riga, "email")
+		if len(trim(kst_email_address.email_all)) > 0 then
+			kuf1_email.get_email_from_string(kst_email_address)
+		end if
+	catch (uo_exception kuo_exception)
+		kst_esito = kuo_exception.get_st_esito()
+		k_return = trim(k_return) +  tab_1.tabpage_1.text + ": riscontrato indirizzo 'e-mail' non corretto, prego controllare" &
+		+"~n~r" + kst_esito.sqlerrtext + "~n~r" 
+		k_errore = "4"
+		k_nr_errori++
+	finally
+		if isvalid(kuf1_email) then destroy kuf1_email
+	end try
 
-	if k_errore <> "1" or k_errore <> "2" then
-	
-		tab_1.tabpage_1.dw_1.setitem(k_riga, "x_datins", kGuf_data_base.prendi_x_datins())
-		tab_1.tabpage_1.dw_1.setitem(k_riga, "x_utente", kGuf_data_base.prendi_x_utente())
-		
-	end if
 
 //
 ////=== Controllo altro tab

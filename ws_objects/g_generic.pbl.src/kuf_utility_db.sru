@@ -24,6 +24,7 @@ private function boolean u_crea_view_e1_v_e1barcode () throws uo_exception
 private function boolean u_crea_view_v_meca_dosim_barcode_max () throws uo_exception
 private function boolean v_crea_view_v_contratti_doc () throws uo_exception
 private function boolean v_crea_view_v_contratti_all_rid () throws uo_exception
+private function boolean v_crea_view_v_sped_free () throws uo_exception
 end prototypes
 
 private function boolean u_crea_view_v_arfa_riga () throws uo_exception;//
@@ -540,7 +541,8 @@ try
 	if not krc then k_return=false
 	krc = v_crea_view_v_contratti_all_rid()
 	if not krc then k_return=false
-
+	krc = v_crea_view_v_sped_free( )
+	if not krc then k_return=false
 
 catch (uo_exception kuo_exception)
 	k_return = false
@@ -2032,6 +2034,203 @@ k_sql = "create view  v_contratti_all_rid   " &
 		kst_esito.esito = kkg_esito.db_ko
 		kst_esito.sqlcode = sqlca.sqlcode
 		kst_esito.sqlerrtext = "Generazione VIEW 'v_contratti_all_rid' completata." 
+		kuo_exception = create uo_exception
+		kuo_exception.set_tipo( kuo_exception.KK_st_uo_exception_tipo_OK )
+		kuo_exception.set_esito(kst_esito )
+		kuo_exception.scrivi_log()
+		destroy kuo_exception
+	end if
+	
+	 
+SetPointer(oldpointer)
+
+return k_return
+
+end function
+
+private function boolean v_crea_view_v_sped_free () throws uo_exception;//
+//=== Estemporanea da lanciare una sola volta
+//=== Crae tabella View  'v_sped_free' 
+//===
+int k_errore=0
+boolean k_return = true
+string k_sql
+st_esito kst_esito
+uo_exception kuo_exception
+pointer oldpointer  // Declares a pointer variable
+
+
+
+//=== Puntatore Cursore da attesa.....
+	oldpointer = SetPointer(HourGlass!)
+
+	k_sql = "create view v_sped_free  " &
+		+ " as SELECT " &
+		+ " id_sped_free" & 
+		+ " ,data_bolla_out " & 
+		+ " ,trim(num_bolla_out) num_bolla_out " &  
+		+ " ,clie_2     " & 
+		+ " ,clie_3     " &  
+		+ " ,coalesce(stampa, 'N') stampa " & 
+		+ " ,data_stampa" & 
+		+ " ,coalesce(form_di_stampa, '') form_di_stampa " &
+		+ " ,trim(JSON_VALUE(dati ,'$.Indirizzo_riga_1'))  Indirizzo_riga_1  " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.Indirizzo_riga_2'))  Indirizzo_riga_2  " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.Indirizzo_riga_3'))  Indirizzo_riga_3  " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.Indirizzo_riga_4'))  Indirizzo_riga_4  " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.Indirizzo_riga_5'))  Indirizzo_riga_5  " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.aspetto'))           aspetto" & 
+		+ " ,trim(JSON_VALUE(dati ,'$.causale'))           causale" & 
+		+ " ,trim(JSON_VALUE(dati ,'$.colli'))             colli  " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.consegna'))          consegna   " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.data_ora_rit'))      data_ora_rit  " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.descr_1'))           descr_1" & 
+		+ " ,trim(JSON_VALUE(dati ,'$.descr_2'))           descr_2" & 
+		+ " ,trim(JSON_VALUE(dati ,'$.descr_3'))           descr_3" & 
+		+ " ,trim(JSON_VALUE(dati ,'$.descr_4'))           descr_4" & 
+		+ " ,trim(JSON_VALUE(dati ,'$.descr_5'))           descr_5" & 
+		+ " ,trim(JSON_VALUE(dati ,'$.descr_6'))           descr_6" & 
+		+ " ,trim(JSON_VALUE(dati ,'$.descr_7'))           descr_7" & 
+		+ " ,trim(JSON_VALUE(dati ,'$.descr_8'))           descr_8" & 
+		+ " ,trim(JSON_VALUE(dati ,'$.descr_9'))           descr_9" & 
+		+ " ,trim(JSON_VALUE(dati ,'$.descr_10'))          descr_10   " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.descr_11'))          descr_11   " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.descr_12'))          descr_12   " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.descr_13'))          descr_13   " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.descr_14'))          descr_14   " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.descr_15'))          descr_15   " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.descr_16'))          descr_16   " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.descr_17'))          descr_17   " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.descr_18'))          descr_18   " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.descr_19'))          descr_19   " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.dicit_ind_intest'))  dicit_ind_intest  " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.dicit_ind_sped'))    dicit_ind_sped" & 
+		+ " ,trim(JSON_VALUE(dati ,'$.intestazione'))      intestazione  " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.intestazione_ind1'))  intestazione_ind1  " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.intestazione_ind2'))  intestazione_ind2  " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.intestazione_ind3'))  intestazione_ind3  " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.intestazione_ind4'))  intestazione_ind4  " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.kgy_1'))             kgy_1  " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.kgy_2'))             kgy_2  " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.kgy_3'))             kgy_3  " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.kgy_4'))             kgy_4  " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.kgy_5'))             kgy_5  " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.kgy_6'))             kgy_6  " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.kgy_7'))             kgy_7  " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.kgy_8'))             kgy_8  " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.kgy_9'))             kgy_9  " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.kgy_10'))            kgy_10 " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.kgy_11'))            kgy_11 " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.kgy_12'))            kgy_12 " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.kgy_13'))            kgy_13 " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.kgy_14'))            kgy_14 " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.kgy_15'))            kgy_15 " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.kgy_16'))            kgy_16 " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.kgy_17'))            kgy_17 " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.kgy_18'))            kgy_18 " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.kgy_19'))            kgy_19 " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.note_1'))            note_1 " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.note_2'))            note_2 " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.note_3'))            note_3 " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.note_4'))            note_4 " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.note_5'))            note_5 " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.peso_kg'))           peso_kg" & 
+		+ " ,trim(JSON_VALUE(dati ,'$.porto'))             porto  " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.qta_1'))             qta_1  " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.qta_2'))             qta_2  " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.qta_3'))             qta_3  " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.qta_4'))             qta_4  " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.qta_5'))             qta_5  " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.qta_6'))             qta_6  " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.qta_7'))             qta_7  " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.qta_8'))             qta_8  " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.qta_9'))             qta_9  " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.qta_10'))            qta_10 " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.qta_11'))            qta_11 " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.qta_12'))            qta_12 " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.qta_13'))            qta_13 " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.qta_14'))            qta_14 " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.qta_15'))            qta_15 " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.qta_16'))            qta_16 " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.qta_17'))            qta_17 " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.qta_18'))            qta_18 " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.qta_19'))            qta_19 " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.sped_note'))         sped_note  " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.tipo_copia'))        tipo_copia " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.trasporto'))         trasporto  " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.um_1'))              um_1   " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.um_2'))              um_2   " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.um_3'))              um_3   " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.um_4'))              um_4   " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.um_5'))              um_5   " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.um_6'))              um_6   " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.um_7'))              um_7   " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.um_8'))              um_8   " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.um_9'))              um_9   " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.um_10'))             um_10  " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.um_11'))             um_11  " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.um_12'))             um_12  " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.um_13'))             um_13  " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.um_14'))             um_14  " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.um_15'))             um_15  " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.um_16'))             um_16  " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.um_17'))             um_17  " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.um_18'))             um_18  " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.um_19'))             um_19  " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.vett_1'))            vett_1 " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.vett_2'))            vett_2 " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.resa'))          resa " & 
+		+ " ,trim(JSON_VALUE(dati ,'$.annotazioni'))   annotazioni " & 
+		+ " , x_datins " &
+		+ " , coalesce(x_utente, '') x_utente" &
+		+ " FROM sped_free " 
+
+//				+ " ,JSON_VALUE(dati ,'$.iva') iva " & 
+
+	EXECUTE IMMEDIATE "drop VIEW v_sped_free " using sqlca;
+
+	EXECUTE IMMEDIATE :k_sql using sqlca;
+
+	if sqlca.sqlcode <> 0 then
+		k_return = false
+		k_errore = 1
+		SetPointer(oldpointer)
+		kuo_exception = create uo_exception
+		kst_esito.nome_oggetto = this.classname()
+		kst_esito.esito = kkg_esito.db_ko
+		kst_esito.sqlcode = sqlca.sqlcode
+		kst_esito.sqlerrtext = "Errore durante creazione View (v_sped_free): " + string(sqlca.sqldbcode, "#####") + "; " +sqlca.sqlerrtext
+		kuo_exception.set_tipo( kuo_exception.kk_st_uo_exception_tipo_err_int )
+		kuo_exception.set_esito(kst_esito )
+		throw kuo_exception
+//	else
+//		k_sql = "grant select on v_meca_pl_v1 to ixuser as informix"		
+//		EXECUTE IMMEDIATE :k_sql using sqlca;
+//		if sqlca.sqlcode <> 0 then
+//			k_return = false
+//			k_errore = 1
+//			SetPointer(oldpointer)
+//			kuo_exception = create uo_exception
+//			kst_esito.nome_oggetto = this.classname()
+//			kst_esito.esito = kkg_esito.db_ko
+//			kst_esito.sqlcode = sqlca.sqlcode
+//			kst_esito.sqlerrtext = "Errore durante GRANT View (v_meca_pl_v1): " + string(sqlca.sqldbcode, "#####") + "; " +sqlca.sqlerrtext
+//			kuo_exception.set_tipo( kuo_exception.kk_st_uo_exception_tipo_err_int )
+//			kuo_exception.set_esito(kst_esito )
+//			throw kuo_exception
+//		end if	
+	end if	
+			
+
+
+	SetPointer(oldpointer)
+
+	if k_errore = 0 then
+		
+		kst_esito.nome_oggetto = this.classname()
+		kst_esito.esito = kkg_esito.db_ko
+		kst_esito.sqlcode = sqlca.sqlcode
+		kst_esito.sqlerrtext = "Generazione VIEW 'v_contratti_doc' completata." 
 		kuo_exception = create uo_exception
 		kuo_exception.set_tipo( kuo_exception.KK_st_uo_exception_tipo_OK )
 		kuo_exception.set_esito(kst_esito )

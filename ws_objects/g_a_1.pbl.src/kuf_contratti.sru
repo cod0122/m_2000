@@ -84,6 +84,7 @@ public function long elenco_contratti_attivi_cliente (st_tab_contratti kst_tab_c
 public function long get_codice_max () throws uo_exception
 public function st_esito get_codice_da_cf_co (ref st_tab_contratti kst_tab_contratti) throws uo_exception
 public subroutine set_data_scad (st_tab_contratti ast_tab_contratti) throws uo_exception
+public function boolean if_esiste (st_tab_contratti kst_tab_contratti) throws uo_exception
 end prototypes
 
 public function string tb_delete (long k_codice);//
@@ -2729,6 +2730,52 @@ st_esito kst_esito
 
 
 end subroutine
+
+public function boolean if_esiste (st_tab_contratti kst_tab_contratti) throws uo_exception;//
+//--- Controllo esistenza del CONTRATTO (Conferma Ordine)
+//--- inp: kst_tab_contratti.codice
+//--- out: false = non trovato
+//--- lancia EXCEPTION se errore sql
+//
+boolean k_return
+int k_check
+st_esito kst_esito
+
+
+
+	kst_esito.esito = kkg_esito.ok
+	kst_esito.sqlcode = 0
+	kst_esito.SQLErrText = ""
+	kst_esito.nome_oggetto = this.classname()
+	
+	
+	select codice
+	 	into :kst_tab_contratti.codice
+			from contratti
+			where codice =  :kst_tab_contratti.codice
+			using sqlca;
+
+	
+	if sqlca.sqlcode = 0 then
+		if kst_tab_contratti.codice > 0 then
+			k_return = true    //OK TROVATO
+		end if
+	else
+		if sqlca.sqlcode < 0 then
+			kst_esito.sqlcode = sqlca.sqlcode
+			kst_esito.SQLErrText = "Errore in verifica esistenza Contratto (Conferma Ordine) codice=" + string(kst_tab_contratti.codice) + ": " &
+									 + trim(SQLCA.SQLErrText)
+			kst_esito.esito = kkg_esito.db_ko
+			kguo_exception.inizializza( )
+			kguo_exception.set_esito( kst_esito )
+			throw kguo_exception
+		end if
+	end if
+	
+return k_return
+
+
+end function
 
 on kuf_contratti.create
 call super::create

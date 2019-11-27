@@ -47,6 +47,7 @@ public function boolean of_email (string a_address, string a_cc, string a_subjec
 public subroutine of_removedirectory (string a_folder)
 public function integer u_filemove (string a_src, string a_dst, boolean a_replace)
 public function boolean u_directory_create (string k_path)
+public function datastore dirlist_path_search (string a_path, string a_search)
 end prototypes
 
 public function boolean of_execute (readonly string as_file, readonly string as_extension);//
@@ -394,6 +395,66 @@ end if
 
 
 return k_return
+
+end function
+
+public function datastore dirlist_path_search (string a_path, string a_search);//
+//--- Torna un datastore con l'elenco dei file
+//--- Inp: cartella (path) es: c:\pippo\pluto  e cosa cercare (search) es: *.pdf
+//--- Out: lista dei file e il path in cui è stata fatta la ricerca
+//
+long lul_handle
+st_file_explorer_win32_find_data str_find
+boolean lb_fin
+long k_riga
+string path
+datastore kds_dirlist
+
+
+kds_dirlist = create datastore
+kds_dirlist.dataobject = ki_ds_dirlist
+
+path = a_path + kkg.path_sep + a_search
+
+str_find.filename=space(MAX_PATH)
+str_find.altfilename=space(14)
+lul_handle = FindFirstFile(path, str_find)
+
+if lul_handle > 0 then
+	do
+	
+		if len(trim(str_find.filename)) > 0 then   // nome file maggiore di zero caratteri
+	
+			if left(trim(str_find.filename), 1) <> "."  then  //non puo' iniziare con un punto
+				k_riga = kds_dirlist.insertrow(0)
+				kds_dirlist.setitem(k_riga, "path", a_path)
+				kds_dirlist.setitem(k_riga, "search", a_search)
+				kds_dirlist.setitem(k_riga, "nome", str_find.filename)
+				if str_find.fileattributes = 16 then
+					kds_dirlist.setitem(k_riga, "tipo", k_dirlist_tipo_folder)  // è una cartella
+				else
+					if str_find.fileattributes = 38 then   // è un file nascosto
+						kds_dirlist.setitem(k_riga, "tipo", k_dirlist_tipo_hidden)  
+					else	
+						kds_dirlist.setitem(k_riga, "tipo", k_dirlist_tipo_file)  // è un file
+					end if					
+				end if					
+				kds_dirlist.setitem(k_riga, "size", str_find.filesizelow)
+				kds_dirlist.setitem(k_riga, "dato1", string(str_find.lastwritetime))
+			end if
+	
+		end if
+		
+		lb_fin = FindNextFile(lul_handle, str_find)
+	
+	loop while lb_fin
+	
+end if
+
+
+return kds_dirlist
+
+
 
 end function
 

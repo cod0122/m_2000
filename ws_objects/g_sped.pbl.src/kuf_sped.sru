@@ -33,6 +33,7 @@ public constant long kki_num_bolla_out_extra = 9000000   //numero oltre il quale
 
 private datastore kdsi_dw_elenco_indirizzi
 end variables
+
 forward prototypes
 public subroutine if_isnull_testa (ref st_tab_sped kst_tab_sped)
 public function st_esito tb_delete_testa (st_tab_sped kst_tab_sped)
@@ -85,7 +86,6 @@ public function long get_colli_x_id_armo (st_tab_arsp kst_tab_arsp) throws uo_ex
 public function long get_colli_x_id_armo_data (st_tab_arsp kst_tab_arsp) throws uo_exception
 public function st_esito get_righe_da_fatt (ref st_tab_arsp kst_tab_arsp[])
 public function st_esito get_numero_da_id (ref st_tab_sped ast_tab_sped)
-public function boolean if_stampata (st_tab_sped ast_tab_sped) throws uo_exception
 public function boolean get_id_sped_anno (ref st_tab_sped kst_tab_sped) throws uo_exception
 public subroutine elenco_note (st_tab_sped kst_tab_sped)
 public subroutine elenco_indirizzi_ddt (st_tab_sped kst_tab_sped)
@@ -121,6 +121,7 @@ public function long get_numero_nuovo (st_tab_sped ast_tab_sped, integer a_ctr) 
 public function long if_num_bolla_out_exists (st_tab_sped kst_tab_sped) throws uo_exception
 private function long u_get_clie_ds_dw_elenco_indirizzi ()
 public function boolean if_ddt_allarme_memo (st_tab_sped kst_tab_sped) throws uo_exception
+public function boolean if_stampato (st_tab_sped ast_tab_sped) throws uo_exception
 end prototypes
 
 public subroutine if_isnull_testa (ref st_tab_sped kst_tab_sped);//---
@@ -3977,12 +3978,7 @@ else
 
 //---- inizializza x stampa fattura
 			kuf1_sped_ddt = create kuf_sped_ddt
-			kuf1_sped_ddt.produci_ddt_inizializza(kst_tab_sped)
-
-			kds_anteprima.dataobject = kuf1_sped_ddt.kids_stampa_ddt.dataobject  //kuf1_sped_ddt.ki_dw_stampa_ddt		
-			kds_anteprima.settransobject(sqlca)
-	
-			kds_anteprima.reset()	
+//			kuf1_sped_ddt.produci_ddt_inizializza(kst_tab_sped)
 
 			kst_ddt_stampa[1].num_bolla_out = kst_tab_sped.num_bolla_out
 			kst_ddt_stampa[1].data_bolla_out =  kst_tab_sped.data_bolla_out
@@ -3991,6 +3987,11 @@ else
 			k_n_ddt_stampate = kuf1_sped_ddt.produci_ddt(kst_ddt_stampa[])
 		
 			if k_n_ddt_stampate > 0 then
+				kds_anteprima.dataobject = kuf1_sped_ddt.kids_stampa_ddt.dataobject  //kuf1_sped_ddt.ki_dw_stampa_ddt		
+				kds_anteprima.settransobject(sqlca)
+		
+				kds_anteprima.reset()	
+
 				kuf1_sped_ddt.produci_ddt_set_dw_loghi(kds_anteprima, kdw_nullo)
 				kuf1_sped_ddt.kids_stampa_ddt.rowscopy(1,kuf1_sped_ddt.kids_stampa_ddt.rowcount(),Primary!,kds_anteprima,1,Primary!)
 			end if
@@ -4000,7 +4001,6 @@ else
 
 		finally
 //--- distrugge oggetti x stampa ddt
-			kuf1_sped_ddt.produci_ddt_fine()
 			if isvalid(kuf1_sped_ddt) then destroy kuf1_sped_ddt
 				
 		end try
@@ -4077,17 +4077,8 @@ else
 				
 //---- inizializza x stampa ddt
 			kuf1_sped_ddt = create kuf_sped_ddt
-			kuf1_sped_ddt.produci_ddt_inizializza(kst_tab_sped)
+//			kuf1_sped_ddt.produci_ddt_inizializza(kst_tab_sped)
 			
-//			kdw_anteprima.dataobject = kuf1_sped_ddt.ki_dw_stampa_ddt		
-			kdw_anteprima.dataobject = kuf1_sped_ddt.kids_stampa_ddt.dataobject  //kuf1_sped_ddt.ki_dw_stampa_ddt		
-			kdw_anteprima.settransobject(sqlca)
-
-			kuf1_utility = create kuf_utility
-			kuf1_utility.u_dw_toglie_ddw(1, kdw_anteprima)
-
-			kdw_anteprima.reset()	
-
 			kst_ddt_stampa[1].num_bolla_out = kst_tab_sped.num_bolla_out
 			kst_ddt_stampa[1].data_bolla_out =  kst_tab_sped.data_bolla_out
 			
@@ -4095,6 +4086,13 @@ else
 			k_n_ddt_stampate = kuf1_sped_ddt.produci_ddt(kst_ddt_stampa[])
 		
 			if k_n_ddt_stampate > 0 then
+				kdw_anteprima.dataobject = kuf1_sped_ddt.kids_stampa_ddt.dataobject  //kuf1_sped_ddt.ki_dw_stampa_ddt		
+				kdw_anteprima.settransobject(sqlca)
+				kuf1_utility = create kuf_utility
+				kuf1_utility.u_dw_toglie_ddw(1, kdw_anteprima)
+	
+				kdw_anteprima.reset()	
+
 				kuf1_sped_ddt.produci_ddt_set_dw_loghi(kds_nullo, kdw_anteprima)
 				kuf1_sped_ddt.kids_stampa_ddt.rowscopy(1,kuf1_sped_ddt.kids_stampa_ddt.rowcount(),Primary!,kdw_anteprima,1,Primary!)
 				kGuf_data_base.dw_copia_attributi_generici(kuf1_sped_ddt.kids_stampa_ddt, kdw_anteprima)
@@ -4106,7 +4104,6 @@ else
 
 		finally
 //--- distrugge oggetti x stampa ddt
-			kuf1_sped_ddt.produci_ddt_fine()
 			if isvalid(kuf1_sped_ddt) then destroy kuf1_sped_ddt
 			if isvalid(kuf1_utility) then destroy kuf1_utility
 				
@@ -4206,48 +4203,66 @@ public function boolean u_open_stampa (st_tab_sped kst_tab_sped[]);//---
 //--- Stampa Sped
 //---
 //---
-
 boolean k_return = false
 long k_riga=0
-integer k_ctr, k_index
-kuf_sped_ddt kuf1_sped_ddt
-st_ddt_stampa kst_ddt_stampa[]
+integer k_ctr, k_max
+st_sped_ddt kst_sped_ddt[]
+st_open_w kst_open_w
+kuf_menu_window kuf1_menu_window
 
 
-			
+try 
+
+	this.if_sicurezza(kkg_flag_modalita.stampa)		
 		
 //--- Cicla fino a che ci sono righe selezionate
 	k_riga=0
-	k_index = 1
-	do while k_index <= UpperBound(kst_tab_sped)  //NOT k_fatt_selected_eof
+	k_max = UpperBound(kst_tab_sped)
+	for k_ctr = 1 to k_max
 		
-		if kst_tab_sped[k_index].num_bolla_out > 0 then
+		if kst_tab_sped[k_ctr].num_bolla_out > 0 then
 			k_riga++
-			kst_ddt_stampa[k_riga].id_sped = kst_tab_sped[k_index].id_sped
-			kst_ddt_stampa[k_riga].num_bolla_out = kst_tab_sped[k_index].num_bolla_out
-			kst_ddt_stampa[k_riga].data_bolla_out = kst_tab_sped[k_index].data_bolla_out
+			kst_sped_ddt[k_riga].kst_tab_sped.id_sped = kst_tab_sped[k_ctr].id_sped
+			kst_sped_ddt[k_riga].kst_tab_sped.num_bolla_out = kst_tab_sped[k_ctr].num_bolla_out
+			kst_sped_ddt[k_riga].kst_tab_sped.data_bolla_out = kst_tab_sped[k_ctr].data_bolla_out
+			kst_sped_ddt[k_riga].sel = 1
 				
 		end if								
-		k_index++
-	loop
+	next
 
 	if k_riga > 0 then	
-		k_return = true
-		try 
-			kuf1_sped_ddt = create kuf_sped_ddt
-			
-			kuf1_sped_ddt.stampa_ddt_nuovo (kst_ddt_stampa[])
 
-		catch (uo_exception kuo_exception1)
-			kuo_exception1.messaggio_utente()
+		//=== Parametri : 
+		//=== struttura st_open_w
+		//=== dati particolare programma
+		//
+		//=== Si potrebbero passare:
+		//=== key=codice prodotto;
+		kst_open_w.id_programma = get_id_programma(kkg_flag_modalita.stampa)
+		Kst_open_w.flag_primo_giro = "S"
+		Kst_open_w.flag_modalita = kkg_flag_modalita.stampa
+		Kst_open_w.flag_adatta_win = KKG.ADATTA_WIN_NO
+		Kst_open_w.flag_leggi_dw = "N"
+		kst_open_w.key12_any = kst_sped_ddt[]   // struttura
+		kst_open_w.flag_where = " "
+		
 			
-		finally
-			if isvalid(kuf1_sped_ddt) then destroy kuf1_sped_ddt
-			
-		end try
+		kuf1_menu_window = create kuf_menu_window 
+		kuf1_menu_window.open_w_tabelle(kst_open_w)
+		destroy kuf1_menu_window
+	
+		k_return = true
+		
 	end if
 	
-		
+catch (uo_exception kuo_exception1)
+	kuo_exception1.messaggio_utente()
+	
+finally
+//	if isvalid(kuf1_sped_ddt) then destroy kuf1_sped_ddt
+	
+end try
+
 
 return k_return
 
@@ -5205,81 +5220,6 @@ SELECT distinct sped.num_bolla_out
 	end if
 	
 return kst_esito
-
-
-
-end function
-
-public function boolean if_stampata (st_tab_sped ast_tab_sped) throws uo_exception;//----------------------------------------------------------------------------------------------------------------
-//--- 
-//--- Controlla se DDT interamente stampato x id_sped
-//--- 
-//--- 
-//--- Inp: st_tab_sped.id
-//--- Out: TRUE = completamente stampata
-//---
-//--- lancia exception
-//---
-//----------------------------------------------------------------------------------------------------------------
-//
-boolean k_return = true   //default stampata 
-long k_trovato=0
-st_esito kst_esito
-st_tab_sped kst_tab_sped_stampato
-
-
-kst_esito.esito = kkg_esito.ok
-kst_esito.sqlcode = 0
-kst_esito.SQLErrText = " "
-kst_esito.nome_oggetto = this.classname()
-
-kst_tab_sped_stampato.stampa = kki_sped_flg_stampa_bolla_da_stamp
-
-if if_esiste(ast_tab_sped) then
-
-	k_trovato = 0
-	SELECT count(*)
-			into :k_trovato
-			 FROM sped  
-			 where  id_sped  = :ast_tab_sped.id_sped 
-			    and (stampa is null or stampa = :kst_tab_sped_stampato.stampa)
-			 using kguo_sqlca_db_magazzino;
-	
-	if k_trovato = 0 then
-		SELECT count(*)
-			into :k_trovato
-			 FROM arsp  
-			 where  id_sped  = :ast_tab_sped.id_sped 
-			    and (stampa is null or stampa = :kst_tab_sped_stampato.stampa)
-			 using kguo_sqlca_db_magazzino;
-	end if
-	
-	if kguo_sqlca_db_magazzino.sqlcode < 0 then
-		kst_esito.sqlcode = kguo_sqlca_db_magazzino.sqlcode
-		kst_esito.SQLErrText = "Errore durante ricerca se DDT stampato (sped) id = " + string(ast_tab_sped.id_sped) + " " &
-						 + "~n~rErrore: " + trim(kguo_sqlca_db_magazzino.SQLErrText)
-									 
-		kst_esito.esito = KKG_ESITO.db_ko
-		
-		kguo_exception.inizializza( )
-		kguo_exception.set_esito(kst_esito)
-		throw kguo_exception
-		
-	else
-		k_return = true  
-		if kguo_sqlca_db_magazzino.sqlcode = 0 then
-			if k_trovato > 0 then 
-				k_return = false   //NON è completamente stampata
-			end if	
-		end if
-	end if
-	
-else
-	
-end if
-	
-
-return k_return
 
 
 
@@ -7623,6 +7563,81 @@ else
 	throw kguo_exception
 end if
 
+
+return k_return
+
+
+
+end function
+
+public function boolean if_stampato (st_tab_sped ast_tab_sped) throws uo_exception;//----------------------------------------------------------------------------------------------------------------
+//--- 
+//--- Controlla se DDT stampato x id_sped
+//--- 
+//--- 
+//--- Inp: st_tab_sped.id
+//--- Out: TRUE = completamente stampata
+//---
+//--- lancia exception
+//---
+//----------------------------------------------------------------------------------------------------------------
+//
+boolean k_return = true   //default stampata 
+long k_trovato=0
+st_esito kst_esito
+st_tab_sped kst_tab_sped_stampato
+
+
+kst_esito.esito = kkg_esito.ok
+kst_esito.sqlcode = 0
+kst_esito.SQLErrText = " "
+kst_esito.nome_oggetto = this.classname()
+
+kst_tab_sped_stampato.stampa = kki_sped_flg_stampa_bolla_da_stamp
+
+if if_esiste(ast_tab_sped) then
+
+	k_trovato = 0
+	SELECT count(*)
+			into :k_trovato
+			 FROM sped  
+			 where  id_sped  = :ast_tab_sped.id_sped 
+			    and (stampa is null or stampa = :kst_tab_sped_stampato.stampa)
+			 using kguo_sqlca_db_magazzino;
+	
+	if k_trovato = 0 then
+		SELECT count(*)
+			into :k_trovato
+			 FROM arsp  
+			 where  id_sped  = :ast_tab_sped.id_sped 
+			    and (stampa is null or stampa = :kst_tab_sped_stampato.stampa)
+			 using kguo_sqlca_db_magazzino;
+	end if
+	
+	if kguo_sqlca_db_magazzino.sqlcode < 0 then
+		kst_esito.sqlcode = kguo_sqlca_db_magazzino.sqlcode
+		kst_esito.SQLErrText = "Errore durante ricerca se DDT stampato (sped) id = " + string(ast_tab_sped.id_sped) + " " &
+						 + "~n~rErrore: " + trim(kguo_sqlca_db_magazzino.SQLErrText)
+									 
+		kst_esito.esito = KKG_ESITO.db_ko
+		
+		kguo_exception.inizializza( )
+		kguo_exception.set_esito(kst_esito)
+		throw kguo_exception
+		
+	else
+		k_return = true  
+		if kguo_sqlca_db_magazzino.sqlcode = 0 then
+			if k_trovato > 0 then 
+				k_return = false   //NON è completamente stampata
+			end if	
+		end if
+	end if
+	
+else
+	
+end if
+	
 
 return k_return
 

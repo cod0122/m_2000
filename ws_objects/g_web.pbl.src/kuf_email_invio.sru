@@ -778,13 +778,10 @@ gn_smtp.of_Reset()
 
 //--- Aggiungo gli Indirizzi email separati da ',' o ';' se più di uno nel recipient 
 //---      e Controllo sintassi Indirizzi email				
-kst_email_address.email_all = kst_tab_email_invio.email
-kuf1_email = create kuf_email
-kst_esito = kuf1_email.get_email_from_string(kst_email_address)
-if kst_esito.esito <> kkg_esito.ok then
-	kst_esito.esito = kkg_esito.no_esecuzione  
-	kst_esito.SQLErrText = "Indirizzo e-mail non corretto: " + kst_esito.sqlerrtext + "~n~r" 
-else
+try
+	kst_email_address.email_all = kst_tab_email_invio.email
+	kuf1_email = create kuf_email
+	kuf1_email.get_email_from_string(kst_email_address)
 	k_idx_max = upperbound(kst_email_address.address[])
 	for k_idx = 1 to k_idx_max
 		k_email = kst_email_address.address[k_idx]
@@ -792,8 +789,12 @@ else
 			gn_smtp.of_AddTo(k_email, " ")  // potrei mettere IL NOME del destinatario: sle_send_name.text)
 		end if
 	next
-end if
-destroy kuf1_email
+catch (uo_exception kuo1_exception)
+	kst_esito = kuo1_exception.get_st_esito()
+	kst_esito.esito = kkg_esito.no_esecuzione  
+finally
+	if isvalid(kuf1_email) then destroy kuf1_email
+end try
 
 
 // add any attachments

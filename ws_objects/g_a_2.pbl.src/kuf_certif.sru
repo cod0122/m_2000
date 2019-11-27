@@ -71,7 +71,6 @@ public function boolean set_flg_ristampa_xddt_off (st_tab_certif kst_tab_certif)
 public function boolean if_stampato_x_id_meca (ref st_tab_certif kst_tab_certif) throws uo_exception
 private function integer get_path_root (ref st_tab_docpath ast_tab_docpath[]) throws uo_exception
 public function string get_path_email (ref st_tab_certif ast_tab_certif) throws uo_exception
-private function any get_path_doc (ref st_tab_certif ast_tab_certif, boolean a_ristampa) throws uo_exception
 private function string get_nome_pdf (ref st_tab_certif ast_tab_certif) throws uo_exception
 private function any stampa_attestato_get_nome_pdf (ref st_tab_certif ast_tab_certif, boolean a_ristampa) throws uo_exception
 public function long get_id_da_id_meca (ref st_tab_certif kst_tab_certif) throws uo_exception
@@ -80,6 +79,7 @@ public function st_esito aggiorna_dati_stampa (ref st_tab_certif kst_tab_certif)
 public function st_esito get_clie (ref st_tab_certif kst_tab_certif) throws uo_exception
 public function boolean stampa_digitale_esporta_1 (string a_path_pdf) throws uo_exception
 private function integer stampa_attestato_esegui () throws uo_exception
+public function any get_path_doc (ref st_tab_certif ast_tab_certif, boolean a_ristampa) throws uo_exception
 end prototypes
 
 public subroutine if_isnull (ref st_tab_certif kst_tab_certif);//---
@@ -5112,110 +5112,6 @@ return k_return[]
 
 end function
 
-private function any get_path_doc (ref st_tab_certif ast_tab_certif, boolean a_ristampa) throws uo_exception;//
-//--- Get del PATH senza nome file
-//---
-//--- input: st_tab_certif.id_meca   TRUE=ristampa del documento, FALSE=stampa nuova
-//--- Rit: string array = recupera i path completi di root e personalizzazioni (NO il nome file)
-//---
-//--- Lancia EXCEPTION
-//---
-string k_return[]
-int k_righe, k_riga, k_path_riga
-string k_path[], k_esito, k_path_interno, k_path_esterno, k_path_suffisso, k_path_email
-date k_dataoggi
-//st_tab_meca kst_tab_meca
-st_tab_docpath kst_tab_docpath[]
-st_tab_doctipo kst_tab_doctipo
-st_esito kst_esito
-kuf_docpath kuf1_docpath
-//kuf_armo kuf1_armo
-
-
-try
-
-	kst_esito.esito = kkg_esito.ok
-	kst_esito.sqlcode = 0
-	kst_esito.SQLErrText = ""
-	kst_esito.nome_oggetto = this.classname()
-
-
-	if ast_tab_certif.id_meca > 0 then
-		
-//		kuf1_armo = create kuf_armo
-		kuf1_docpath = create kuf_docpath
-
-		k_righe = get_path_root(kst_tab_docpath[])
-
-		if k_righe > 0 then
-				
-//--- get dati lotto da usare per il path	
-//			kuf1_armo.get_clie(ast_tab_meca )
-//			kuf1_armo.get_data_ent(ast_tab_meca)
-
-//--- Path x uso interno sempre presente 
-			k_path_interno = kguo_path.get_doc_root_interno() 
-					
-//--- valuto se PATH anche x documento Uso Esterno
-			if kuf1_docpath.if_uso_esterno(kst_tab_docpath[1]) then 
-				k_path_esterno = kguo_path.get_doc_root_esterno()
-			end if
-			
-			k_dataoggi = kguo_g.get_dataoggi( )
-			k_path_suffisso = kkg.path_sep  &
-										+ string(kg_dataoggi, "yyyy") &
-										+ kkg.path_sep &
-										+ string(kg_dataoggi, "mm")  &
-										+ kkg.path_sep & 
-										+ string(kg_dataoggi, "dd")  &
-										+ kkg.path_sep 
-			k_path_riga = 0
-			for k_riga = 1 to k_righe
-				k_path_riga++   
-				k_path[k_path_riga] = k_path_interno &
-										+ kkg.path_sep + kst_tab_docpath[k_riga].path &
-										+ k_path_suffisso
-				if a_ristampa then
-					k_path[k_path_riga] += "ristampe" +  kkg.path_sep 
-				else
-					if k_path_esterno > " " then
-						k_path_riga++
-						k_path[k_path_riga] = k_path_esterno &
-											+ kkg.path_sep + kst_tab_docpath[k_riga].path &
-											+ k_path_suffisso
-					end if
-				end if
-			next
-			
-			// aggiunge la cartella per le email
-			if not a_ristampa then
-				k_path_email = get_path_email(ast_tab_certif)
-				if k_path_email > " " then
-					k_path_riga++
-					k_path[k_path_riga] = k_path_email
-				end if
-			end if
-			
-			k_return[] = k_path
-				
-		end if
-					
-	end if		
-
-catch (uo_exception kuo1_exception)
-	throw kuo1_exception
-	
-finally
-//	if isvalid(kuf1_armo) then destroy kuf1_armo
-	if isvalid(kuf1_docpath) then destroy kuf1_docpath
-	
-end try
-			
-
-return k_return[]
-
-end function
-
 private function string get_nome_pdf (ref st_tab_certif ast_tab_certif) throws uo_exception;//
 //--- Compone il nome del file 
 //---
@@ -5826,6 +5722,110 @@ end try
 
 
 return k_return 
+
+end function
+
+public function any get_path_doc (ref st_tab_certif ast_tab_certif, boolean a_ristampa) throws uo_exception;//
+//--- Get del PATH senza nome file
+//---
+//--- input: st_tab_certif.id_meca   TRUE=ristampa del documento, FALSE=stampa nuova
+//--- Rit: string array = recupera i path completi di root e personalizzazioni (NO il nome file) + il barra finale
+//---
+//--- Lancia EXCEPTION
+//---
+string k_return[]
+int k_righe, k_riga, k_path_riga
+string k_path[], k_esito, k_path_interno, k_path_esterno, k_path_suffisso, k_path_email
+date k_dataoggi
+//st_tab_meca kst_tab_meca
+st_tab_docpath kst_tab_docpath[]
+st_tab_doctipo kst_tab_doctipo
+st_esito kst_esito
+kuf_docpath kuf1_docpath
+//kuf_armo kuf1_armo
+
+
+try
+
+	kst_esito.esito = kkg_esito.ok
+	kst_esito.sqlcode = 0
+	kst_esito.SQLErrText = ""
+	kst_esito.nome_oggetto = this.classname()
+
+
+	if ast_tab_certif.id_meca > 0 then
+		
+//		kuf1_armo = create kuf_armo
+		kuf1_docpath = create kuf_docpath
+
+		k_righe = get_path_root(kst_tab_docpath[])
+
+		if k_righe > 0 then
+				
+//--- get dati lotto da usare per il path	
+//			kuf1_armo.get_clie(ast_tab_meca )
+//			kuf1_armo.get_data_ent(ast_tab_meca)
+
+//--- Path x uso interno sempre presente 
+			k_path_interno = kguo_path.get_doc_root_interno() 
+					
+//--- valuto se PATH anche x documento Uso Esterno
+			if kuf1_docpath.if_uso_esterno(kst_tab_docpath[1]) then 
+				k_path_esterno = kguo_path.get_doc_root_esterno()
+			end if
+			
+			k_dataoggi = kguo_g.get_dataoggi( )
+			k_path_suffisso = kkg.path_sep  &
+										+ string(kg_dataoggi, "yyyy") &
+										+ kkg.path_sep &
+										+ string(kg_dataoggi, "mm")  &
+										+ kkg.path_sep & 
+										+ string(kg_dataoggi, "dd")  &
+										+ kkg.path_sep 
+			k_path_riga = 0
+			for k_riga = 1 to k_righe
+				k_path_riga++   
+				k_path[k_path_riga] = k_path_interno &
+										+ kkg.path_sep + kst_tab_docpath[k_riga].path &
+										+ k_path_suffisso
+				if a_ristampa then
+					k_path[k_path_riga] += "ristampe" +  kkg.path_sep 
+				else
+					if k_path_esterno > " " then
+						k_path_riga++
+						k_path[k_path_riga] = k_path_esterno &
+											+ kkg.path_sep + kst_tab_docpath[k_riga].path &
+											+ k_path_suffisso
+					end if
+				end if
+			next
+			
+			// aggiunge la cartella per le email
+			if not a_ristampa then
+				k_path_email = get_path_email(ast_tab_certif)
+				if k_path_email > " " then
+					k_path_riga++
+					k_path[k_path_riga] = k_path_email
+				end if
+			end if
+			
+			k_return[] = k_path
+				
+		end if
+					
+	end if		
+
+catch (uo_exception kuo1_exception)
+	throw kuo1_exception
+	
+finally
+//	if isvalid(kuf1_armo) then destroy kuf1_armo
+	if isvalid(kuf1_docpath) then destroy kuf1_docpath
+	
+end try
+			
+
+return k_return[]
 
 end function
 

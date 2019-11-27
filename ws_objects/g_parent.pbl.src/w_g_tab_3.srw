@@ -148,7 +148,7 @@ protected integer ki_tab_1_index_new=0
 protected integer ki_tab_1_index_old=0
 protected boolean ki_tabpage_visible[10] // memorizza i tabpage visibili e no 
 //protected uo_d_std_1 kidw_tabselezionato  // in inizializza_lista viene impostato il DW attivo
-protected string ki_UsitaImmediata="E"  // da impostare soprattutto nelle INIZIALIZZA se si vuole uscire subito 
+protected string ki_exitNow="E"  // da impostare soprattutto nelle INIZIALIZZA se si vuole uscire subito 
 protected boolean ki_consenti_duplica=false
 
 end variables
@@ -196,6 +196,7 @@ public subroutine u_resize_1 ()
 protected function string aggiorna_dw_0 (datawindow adw_1, string a_titolo, string a_return)
 protected function boolean dati_modif_dw (ref uo_d_std_1 auo_d_std_1)
 public function boolean u_duplica () throws uo_exception
+protected subroutine modifica ()
 end prototypes
 
 protected function string check_dati ();//======================================================================
@@ -840,7 +841,7 @@ try
 //		end if
 	end if
 
-	if trim(k_ret_u_attiva_tab) = ki_UsitaImmediata then //USCITA IMMEDIATA
+	if trim(k_ret_u_attiva_tab) = ki_exitNow then //USCITA IMMEDIATA
 		cb_ritorna.post event clicked( )
 	
 	else
@@ -1901,12 +1902,21 @@ end try
 return true
 end function
 
+protected subroutine modifica ();//
+	ki_st_open_w.flag_modalita = kkg_flag_modalita.modifica
+	inizializza_lista()
+	if isvalid(kidw_selezionata) then kidw_selezionata.ki_flag_modalita = ki_st_open_w.flag_modalita
+
+end subroutine
+
 event closequery;call super::closequery;//
 //=== Controllo prima della chiusura della Windows
 //
 int k_errore=0
 
- 
+
+tab_1.visible = false
+
 cb_ritorna.enabled = false
 
 //=== Verifico DATI_MODIF solo se tasti di modif. abilitati
@@ -1919,6 +1929,7 @@ if cb_aggiorna.enabled or cb_inserisci.enabled or cb_cancella.enabled then
 	if k_errore = 1 or k_errore = 2 or k_errore = 999 then
 		ki_exit_si = false
 		attiva_tasti()
+		tab_1.visible = true
 		return 1
 	end if
 
@@ -2087,9 +2098,8 @@ if sicurezza(kst_open_w) then
 	
 	if left(k_errore, 1) = "0" then 
 		
-		ki_st_open_w.flag_modalita = kkg_flag_modalita.modifica
-		inizializza_lista()
-		if isvalid(kidw_selezionata) then kidw_selezionata.ki_flag_modalita = ki_st_open_w.flag_modalita
+		modifica()
+		
 	end if
 
 end if
@@ -2215,8 +2225,6 @@ post attiva_tasti()
 end event
 
 type tab_1 from tab within w_g_tab_3
-//event ue_rbuttondown pbm_rbuttondown
-//event ue_rbuttonup pbm_rbuttonup
 boolean visible = false
 integer width = 1842
 integer height = 1144

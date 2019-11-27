@@ -466,7 +466,7 @@ if tab_1.tabpage_1.dw_1.rowcount() = 0 then
 					"Mi spiace ma si e' verificato un errore interno al programma~n~r" + &
 					"(Riferimento cercato: " + trim(k_key) + ")~n~r" )
 				//cb_ritorna.postevent(clicked!)
-				k_return = ki_UsitaImmediata
+				k_return = ki_exitNow
 				
 
 			case 0
@@ -480,7 +480,7 @@ if tab_1.tabpage_1.dw_1.rowcount() = 0 then
 						"Mi spiace ma il Riferimento non e' in Archivio ~n~r" + &
 						"(Numero cercato: " + trim(k_key) + ")~n~r" )
 //					cb_ritorna.postevent(clicked!)
-					k_return = ki_UsitaImmediata
+					k_return = ki_exitNow
 					
 				else
 					k_err_ins = inserisci()
@@ -561,7 +561,7 @@ if k_errore = 0 then
 	end if
 end if
 
-if k_return <> ki_UsitaImmediata then
+if k_return <> ki_exitNow then
 	post attiva_tasti()
 end if
 

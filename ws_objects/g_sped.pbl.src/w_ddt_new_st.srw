@@ -136,9 +136,10 @@ try
 			
 				k_nr_ddt = kuf1_sped_ddt.stampa_ddt (kst_ddt_stampa[])  // STAMPA
 			
+				kuo1_exception.kist_esito = kst_esito
 				if k_nr_ddt = 0 then
 					kuo1_exception.set_tipo(kuo1_exception.kk_st_uo_exception_tipo_dati_insufficienti )
-					kuo1_exception.setmessage(" Nessun documento Stampato ")
+					kuo1_exception.setmessage("Nessun documento Stampato")
 				else
 					kuo1_exception.set_tipo(kuo1_exception.kk_st_uo_exception_tipo_ok )
 					if k_nr_ddt = 1 then
@@ -201,8 +202,8 @@ try
 	end if
 	
 catch (uo_exception kuo_exception)
-	
-	kGuf_data_base.errori_scrivi_esito("W", kst_esito)  //--- scrive il LOG
+	kuo_exception.scrivi_log()
+//	kGuf_data_base.errori_scrivi_esito("W", kst_esito)  //--- scrive il LOG
 	kuo_exception.messaggio_utente()
 	
 finally
@@ -313,7 +314,7 @@ for k_riga = 1 to upperbound(kist_sped_ddt[])
 //		if kst_tab_sped.stampa
 		try
 			if kst_tab_sped.stampa <> kuf1_sped.kki_sped_flg_stampa_bolla_da_stamp then
-				if not kuf1_sped.if_stampata(kst_tab_sped) then
+				if not kuf1_sped.if_stampato(kst_tab_sped) then
 					kst_tab_sped.stampa = kuf1_sped.kki_sped_flg_stampa_bolla_da_stamp
 				end if
 			end if
@@ -402,8 +403,8 @@ for k_riga = 1 to dw_documenti.rowcount()
 				kist_sped_ddt[k_riga_ins].kst_tab_sped.ora_rit = ""
 			else
 				if dw_documenti.getitemstring(k_riga,"updst_rit")	= "S" then
-					kist_sped_ddt[k_riga_ins].kst_tab_sped.data_rit = date(kGuf_data_base.prendi_dataora( ))
-					kist_sped_ddt[k_riga_ins].kst_tab_sped.ora_rit = string(kGuf_data_base.prendi_dataora( ), "hh:mm:ss")
+					kist_sped_ddt[k_riga_ins].kst_tab_sped.data_rit = today()
+					kist_sped_ddt[k_riga_ins].kst_tab_sped.ora_rit = string(now(), "hh:mm") //string(kGuf_data_base.prendi_dataora( ), "hh:mm:ss")
 				else
 					kist_sped_ddt[k_riga_ins].kst_tab_sped.data_rit = dw_documenti.getitemdate(k_riga,"data_rit")
 					kist_sped_ddt[k_riga_ins].kst_tab_sped.ora_rit = trim(dw_documenti.getitemstring(k_riga,"ora_rit"))
@@ -433,11 +434,10 @@ long k_ctr
 st_sped_ddt kst_sped_ddt_vuota[]
 ki_st_open_w.flag_modalita = kkg_flag_modalita.stampa
 kuf_sped kuf1_sped
-pointer kpointer_orig
 
 
 try 
-	kpointer_orig = setpointer(hourglass!)
+	setpointer(kkg.pointer_attesa)
 
 	pb_ok.picturename = "printer.gif" //kGuo_path.get_risorse() + KKG.PATH_SEP + "printer.gif"
 	st_aggiorna_lista.enabled  = TRUE
@@ -452,7 +452,7 @@ try
 		kist_sped_ddt[]	 = kst_sped_ddt_vuota[]		
 	end if
 
-//--- controlla se bolle già stampate o no (piu' o meno)
+//--- controlla se ddt già stampate o no (piu' o meno)
 	if check_lista_se_ristampa( ) then
 		rb_prova.checked = true
 	else
@@ -460,36 +460,15 @@ try
 	end if
 
 	post inizializza_lista()
-////--- pone i link nel dw
-//	u_personalizza_dw()
-//
-//	for k_ctr = 1 to UpperBound(kist_sped_ddt[])
-//		if kist_sped_ddt [k_ctr].kst_tab_sped.num_bolla_out > 0 then 
-//			k_bolla_trovata = true
-//			exit
-//		end if
-//	next
-//	
-//	if not k_bolla_trovata then
-//
-//		kuf1_sped = create kuf_sped
-//		kuf1_sped.get_ddt_da_stampare(kist_sped_ddt[])
-//			
-//	end if
-//	
-//	popola_lista_da_st()
-//	
-//	kist_sped_ddt[] = kst_sped_ddt_vuota[]
-//	
-//	dw_documenti.setfocus()
-//
-	catch (uo_exception kuo_exception)
-		kuo_exception.messaggio_utente()
-		this.postevent(close!)
 
-	finally
-		if isvalid(kuf1_sped) then destroy kuf1_sped
-		setpointer(kpointer_orig)  
+catch (uo_exception kuo_exception)
+	setpointer(kkg.pointer_default)
+	kuo_exception.messaggio_utente()
+	this.postevent(close!)
+
+finally
+	if isvalid(kuf1_sped) then destroy kuf1_sped
+	setpointer(kkg.pointer_default)
 		
 end try
 
@@ -558,7 +537,7 @@ protected function string leggi_liste ();//
 //
 string k_return="0 "
 long k_riga
-st_sped_ddt kst_sped_ddt_vuota[]
+//st_sped_ddt kst_sped_ddt_vuota[]
 
 
 	try
@@ -613,12 +592,11 @@ protected subroutine inizializza_lista ();//
 //
 int k_return=0
 string k_inizializza
-pointer oldpointer  // Declares a pointer variable
 
 
 
 //=== Puntatore Cursore da attesa.....
-	oldpointer = SetPointer(HourGlass!)
+	SetPointer(kkg.pointer_attesa)
 
 
 	dw_documenti.ki_d_std_1_primo_giro = true
@@ -626,8 +604,6 @@ pointer oldpointer  // Declares a pointer variable
 	dw_documenti.SetRedraw (false)
 	dw_documenti.SetRedraw (false)
 
-
-	
 	try
 		
 		k_inizializza = inizializza() //Reimposta i tasti e fa la retrieve di lista
@@ -636,8 +612,6 @@ pointer oldpointer  // Declares a pointer variable
 	catch (uo_exception kuo_exception)
 		
 	end try
-
-
 	
 //=== Se le INIZIALIZZA tornano con errore = 2 allora chiudo la windows	
 	if LeftA(k_inizializza,1) <> "2" then
@@ -650,11 +624,11 @@ pointer oldpointer  // Declares a pointer variable
 		dw_documenti.SetRedraw (true)
 		post fine_primo_giro()
 
-	 	SetPointer(oldpointer)
+	 	SetPointer(kkg.pointer_default)
 
 	else
 
-	 	SetPointer(oldpointer)
+	 	SetPointer(kkg.pointer_default)
 
 //--- FORZA USCITA!!!
 		post close(this)
@@ -749,7 +723,7 @@ for k_riga = 1 to upperbound(kist_sped_ddt[])
 	//			if kst_esito.esito = kkg_esito.ok then
 					
 	//				if kst_tab_sped.stampa <> kuf1_sped.kki_sped_flg_stampa_bolla_da_stamp then
-					if kuf1_sped.if_stampata(kst_tab_sped) then //get_sped_stampa(kst_tab_sped)
+					if kuf1_sped.if_stampato(kst_tab_sped) then //get_sped_stampa(kst_tab_sped)
 						
 						k_return = true
 						

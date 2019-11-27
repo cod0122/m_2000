@@ -67,8 +67,8 @@ table(column=(type=char(30) updatewhereclause=yes name=rag_soc_10 dbname="rag_so
     FROM (((listino  
                             inner JOIN clienti ON  listino.cod_cli = clienti.codice)  
                             LEFT OUTER JOIN contratti ON listino.contratto = contratti.codice)  
-						 INNER JOIN prodotti ON listino.cod_art = prodotti.codice)  
-  		                   inner join gru on prodotti.gruppo = gru.codice
+						 LEFT OUTER JOIN prodotti ON listino.cod_art = prodotti.codice)  
+  		                   LEFT OUTER join gru on prodotti.gruppo = gru.codice
 	 where 
                (:k_id_cliente = 0 or listino.cod_cli = :k_id_cliente) and
 	 	      (:k_contratto = 0 or listino.contratto = :k_contratto) and 
@@ -164,4 +164,3 @@ export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
 import.xml()
 export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" nativepdf.customsize=0 nativepdf.customorientation=0 nativepdf.pdfstandard=0 nativepdf.useprintspec=no )
 export.xhtml()
- 

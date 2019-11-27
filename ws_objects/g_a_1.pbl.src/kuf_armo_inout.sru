@@ -1596,12 +1596,7 @@ if kst_tab_wm_pklist.id_wm_pklist > 0 then
 
 //--- Get Descrizione Prodotto 
 					kst_tab_prodotti.codice = kst_tab_listino[k_ind_listino].cod_art
-					kst_esito = kuf1_prodotti.get_des(kst_tab_prodotti)
-					if kst_esito.esito <> kkg_esito.ok and  kst_esito.esito <> kkg_esito.db_wrn and  kst_esito.esito <> kkg_esito.not_fnd then
-						//kGuf_data_base.db_rollback_1( ) //--- Rollback delle Modifiche
-						kguo_exception.set_esito(kst_esito)
-						throw kguo_exception
-					end if
+					kuf1_prodotti.get_des(kst_tab_prodotti)
 
 					kist_tab_armo.id_armo =  0 
 					kist_tab_armo.id_meca = kist_tab_meca.id   

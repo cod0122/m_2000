@@ -154,14 +154,17 @@ st_esito kst_esito
 //--- Controllo sintassi Indirizzi email				
 		kst_email_address.email_all = kst_tab_email_invio.email
 		if len(trim(kst_email_address.email_all)) > 0 then
-			kuf1_email = create kuf_email
-			kst_esito = kuf1_email.get_email_from_string(kst_email_address)
-			if kst_esito.esito <> kkg_esito.ok then
+			try
+				kuf1_email = create kuf_email
+				kuf1_email.get_email_from_string(kst_email_address)
+			catch (uo_exception kuo_exception)
+				kst_esito = kuo_exception.get_st_esito()
 				k_return = trim(k_return) + "Indirizzo e-mail non corretto: " &
 				+"~n~r" + kst_esito.sqlerrtext + "~n~r" 
 				k_errore = "4"
-			end if
-			destroy kuf1_email
+			finally 
+				if isvalid(kuf1_email) then destroy kuf1_email
+			end try
 		end if
 
 	else

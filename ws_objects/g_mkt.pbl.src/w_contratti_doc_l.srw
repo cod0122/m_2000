@@ -45,7 +45,7 @@ public subroutine stampa_doc_lancia (integer k_tipo_stampa)
 end prototypes
 
 private function string cancella ();//
-string k_errore = "0 ", k_errore1 = "0 "
+//string k_errore = "0 ", k_errore1 = "0 "
 long k_riga
 st_tab_contratti_doc kst_tab_contratti_doc
 st_tab_clienti kst_tab_clienti
@@ -78,24 +78,25 @@ if k_riga > 0 then
 				question!, yesno!, 2) = 1 then
 		
 		
-//=== Cancella la riga dal data windows di lista
-		kst_esito = kiuf_contratti_doc.tb_delete( kst_tab_contratti_doc ) 
-		if kst_esito.esito = kkg_esito.ok then
-	
+		//=== Cancella 
+		try
+			kst_tab_contratti_doc.st_tab_g_0.esegui_commit = "S"
+			kiuf_contratti_doc.tb_delete( kst_tab_contratti_doc ) 
+		
 			dw_lista_0.setitemstatus(k_riga, 0, primary!, new!)
 			dw_lista_0.deleterow(k_riga)
 
-			dw_lista_0.setfocus()
+		catch (uo_exception kuo_exception)
+			kst_esito = kuo_exception.get_st_esito()
 
-		else
+			messagebox("Operazione fallita" &
+						,"Cancellazione in errore.~n~r" + trim(kst_esito.sqlerrtext) &
+						,stopsign!)
 
-			messagebox("Problemi durante Cancellazione - Operazione fallita !!", &
-							trim(kst_esito.sqlerrtext) )
+		end try
 	
-			attiva_tasti()
-
-		end if
-
+		attiva_tasti()
+		dw_lista_0.setfocus()
 
 	else
 		messagebox("Elimina Documento", "Operazione Annullata !!")

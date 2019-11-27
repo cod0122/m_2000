@@ -164,7 +164,7 @@ protected function integer cancella ();//
 //=== Ritorna : 0=OK 1=KO 2=non eseguita
 //
 int k_return=0
-string k_errore = "0 ", k_errore1 = "0 "
+//string k_errore = "0 ", k_errore1 = "0 "
 long k_riga
 st_tab_clienti kst_tab_clienti
 st_tab_contratti_doc kst_tab_contratti_doc
@@ -197,48 +197,31 @@ choose case tab_1.selectedtab
 						question!, yesno!, 2) = 1 then
 		 
 			
-		//=== Cancella la riga dal data windows di lista
-				kst_esito = kiuf_contratti_doc.tb_delete( kst_tab_contratti_doc ) 
-				if kst_esito.esito = kkg_esito.ok then
-					k_errore = "0" + trim(kst_esito.sqlerrtext)
-		
-					k_errore = kGuf_data_base.db_commit()
-					if LeftA(k_errore, 1) <> "0" then
-						messagebox("Problemi durante la Cancellazione !!", &
-								"Controllare i dati. " + MidA(k_errore, 2))
-		
-					else
-						
-						tab_1.tabpage_1.dw_1.deleterow(k_riga)
-						if tab_1.tabpage_2.dw_2.rowcount( ) > 0 then
-							tab_1.tabpage_2.dw_2.deleterow(1)
-						end if
-						if tab_1.tabpage_3.dw_3.rowcount( ) > 0 then
-							tab_1.tabpage_3.dw_3.deleterow(k_riga)
-						end if
-		
+		//=== Cancella 
+				try
+					kst_tab_contratti_doc.st_tab_g_0.esegui_commit = "S"
+					kiuf_contratti_doc.tb_delete( kst_tab_contratti_doc ) 
+				
+					tab_1.tabpage_1.dw_1.deleterow(k_riga)
+					if tab_1.tabpage_2.dw_2.rowcount( ) > 0 then
+						tab_1.tabpage_2.dw_2.deleterow(1)
 					end if
-		
-					tab_1.tabpage_1.dw_1.setfocus()
-		
-				else
-					k_errore = "1" + trim(kst_esito.sqlerrtext)
+					if tab_1.tabpage_3.dw_3.rowcount( ) > 0 then
+						tab_1.tabpage_3.dw_3.deleterow(k_riga)
+					end if
 
-					k_errore1 = k_errore
-					k_errore = kGuf_data_base.db_rollback()
-		
-					messagebox("Problemi durante Cancellazione - Operazione fallita !!", &
-									MidA(k_errore1, 2) ) 	
-					if LeftA(k_errore, 1) <> "0" then
-						messagebox("Problemi durante il recupero dell'errore !!", &
-							"Controllare i dati. " + MidA(k_errore, 2))
-					end if
-			
-		
-				end if
-		
-		
+				catch (uo_exception kuo_exception)
+					kst_esito = kuo_exception.get_st_esito()
+
+					messagebox("Operazione fallita" &
+								,"Cancellazione in errore.~n~r" + trim(kst_esito.sqlerrtext) &
+								,stopsign!)
+					k_return = 1
+					tab_1.tabpage_1.dw_1.setfocus()
+				end try
+						
 			else
+				k_return = 2
 				messagebox("Elimina Quotazione", "Operazione Annullata !!")
 			end if
 		

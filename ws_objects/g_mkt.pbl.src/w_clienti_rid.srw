@@ -693,33 +693,39 @@ kuf1_ausiliari = create kuf_ausiliari
 			kuf1_email = create kuf_email 
 			kst_email_address.email_all = tab_1.tabpage_1.dw_1.getitemstring( k_riga, "email")
 			if len(trim(kst_email_address.email_all)) > 0 then
-				kst_esito = kuf1_email.get_email_from_string(kst_email_address)
-				if kst_esito.esito <> kkg_esito.ok then
-					k_return = trim(k_return) +  tab_1.tabpage_1.text + ": riscontrato indirizzo 'e-mail' non corretto, prego controllare" &
-					+"~n~r" + kst_esito.sqlerrtext + "~n~r" 
-					k_errore = "4"
-					k_nr_errori++
-				end if
+				try
+					kuf1_email.get_email_from_string(kst_email_address)
+				catch (uo_exception kuo_exception)
+						kst_esito = kuo_exception.get_st_esito()
+						k_return = trim(k_return) +  tab_1.tabpage_1.text + ": riscontrato indirizzo 'e-mail' non corretto, prego controllare" &
+						+"~n~r" + kst_esito.sqlerrtext + "~n~r" 
+						k_errore = "4"
+						k_nr_errori++
+				end try
 			end if
 			kst_email_address.email_all = tab_1.tabpage_1.dw_1.getitemstring( k_riga, "email1")
 			if len(trim(kst_email_address.email_all)) > 0 then
-				kst_esito = kuf1_email.get_email_from_string(kst_email_address)
-				if kst_esito.esito <> kkg_esito.ok then
+				try
+					kuf1_email.get_email_from_string(kst_email_address)
+				catch (uo_exception kuo1_exception)
+					kst_esito = kuo1_exception.get_st_esito()
 					k_return = trim(k_return) +  tab_1.tabpage_1.text + ": riscontrato indirizzo 'e-mail' non corretto, prego controllare" &
 					+"~n~r" + kst_esito.sqlerrtext + "~n~r" 
 					k_errore = "4"
 					k_nr_errori++
-				end if
+				end try
 			end if
 			kst_email_address.email_all = tab_1.tabpage_1.dw_1.getitemstring( k_riga, "email2")
 			if len(trim(kst_email_address.email_all)) > 0 then
-				kst_esito = kuf1_email.get_email_from_string(kst_email_address)
-				if kst_esito.esito <> kkg_esito.ok then
+				try
+					kuf1_email.get_email_from_string(kst_email_address)
+				catch (uo_exception kuo2_exception)
+					kst_esito = kuo2_exception.get_st_esito()
 					k_return = trim(k_return) +  tab_1.tabpage_1.text + ": riscontrato indirizzo 'e-mail' non corretto, prego controllare" &
 					+"~n~r" + kst_esito.sqlerrtext + "~n~r" 
 					k_errore = "4"
 					k_nr_errori++
-				end if
+				end try
 			end if
 			destroy kuf1_email
 //			kst_tab_clienti_web.email =  tab_1.tabpage_1.dw_1.getitemstring( k_riga, "email")

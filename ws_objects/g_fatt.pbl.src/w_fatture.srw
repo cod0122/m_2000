@@ -1262,7 +1262,7 @@ if tab_1.tabpage_1.dw_1.rowcount() = 0 then
 					"(ID Documento cercato:" + string(kist_tab_arfa.id_fattura) + ") " )
 				kguo_exception.messaggio_utente( )	
 				//post close(this)
-				k_return = ki_UsitaImmediata
+				k_return = ki_exitNow
 
 			case 0
 				tab_1.tabpage_1.dw_1.reset()
@@ -1279,7 +1279,7 @@ if tab_1.tabpage_1.dw_1.rowcount() = 0 then
 						"(ID Documento cercato:" + string(kist_tab_arfa.id_fattura) + ") " )
 					kguo_exception.messaggio_utente( )	
 					//close(this)
-					k_return = ki_UsitaImmediata
+					k_return = ki_exitNow
 					
 				else
 					kist_tab_arfa.tipo_doc = kiuf_fatt.kki_tipo_doc_fattura
@@ -1320,14 +1320,14 @@ if tab_1.tabpage_1.dw_1.rowcount() = 0 then
 	end if	
 
 else
-	if	k_return <> ki_UsitaImmediata then
+	if	k_return <> ki_exitNow then
 		attiva_tasti()
 	end if
 end if
 
 
 
-if	k_return <> ki_UsitaImmediata then
+if	k_return <> ki_exitNow then
 
 	try
 

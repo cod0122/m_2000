@@ -6,6 +6,7 @@ global type st_tab_clienti_cntdep_cfg from structure
 	integer		registro_anno		descriptor "comment" = "Anno di competenza del Conto Deposito"
 	long		registro_nr_ultimo		descriptor "comment" = "Utlimo Numero di Registro del Conto Deposito"
 	string		registro_tipo		descriptor "comment" = "N=Registro non attivo, B=registro dati x barcode, P=registro dati riassuntivo per Part Number "
+	long		e1rorn_ultimo		descriptor "comment" = "Ultimo Numero di  E1: Sales_order number"
 	long		id_meca_ultimo		descriptor "comment" = "Utlimo Lotto estratto"
 	string		codice
 	string		ragsoc1
